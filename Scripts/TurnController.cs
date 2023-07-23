@@ -52,6 +52,7 @@ public class TurnController : MonoBehaviour
         state = Enums.TurnState.TurnStarted;
         //ShowChain();
         //MoveChainRoutine()
+        //test
     }
 
     void NextMove()
