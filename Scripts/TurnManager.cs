@@ -7,21 +7,19 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public TurnState state;
     ITurnActionHandler[] turnHandlers;
 
     public List<Tower> currentTowerGroup = new();
 
     private void OnEnable()
     {
-       Eventbus.TurnEvents.OnSelectionEnded += RiseAndFallState;
+       Eventbus.TurnEvents.OnSelectionEnded += GetTowers;
         
     }
 
     private void Start()
     {
         turnHandlers = GetComponentsInChildren<ITurnActionHandler>(true).ToArray();
-        state = TurnState.Selection;
         StartCoroutine(nameof(TurnActionRoutine));
     }
 
@@ -31,41 +29,27 @@ public class TurnManager : MonoBehaviour
        
         foreach (var turnHandler in turnHandlers)
         {
-            DisableAllTurnHandlers();
-            
-            BaseTurnHandler turnHandlerObject = turnHandler as BaseTurnHandler;
-            turnHandlerObject.gameObject.SetActive(true);
-            turnHandlerObject.enabled = true;
-            RaiseTurnStateChangeEvent(this);
+            BaseTurnHandler currentTurnHandler = turnHandler as BaseTurnHandler;
+            currentTurnHandler.enabled = true;
+            RaiseTurnActionChangeEvent(this);
 
 
-            yield return new WaitUntil(() => turnHandlerObject.turnActionState == TurnActionState.Completed);
+            yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
     }
 
-    void RaiseTurnStateChangeEvent(params object[] args)
+    void RaiseTurnActionChangeEvent(params object[] args)
     {
         Eventbus.TurnEvents.OnTurnStateChanged?.Invoke(args);
     }
-    private void RiseAndFallState(List<Tower> towers)
+    private void GetTowers(List<Tower> towers)
     {
         currentTowerGroup = towers;
-        state = TurnState.RiseAndFallState;
     }
     
 
-    void DisableAllTurnHandlers()
-    {
-        foreach (var turnHandler in turnHandlers)
-        {
-            BaseTurnHandler turnHandlerObject = turnHandler as BaseTurnHandler;
-            turnHandlerObject.enabled = false;
-            turnHandlerObject.gameObject.SetActive(false);
-        }
-    }
-
     private void OnDisable()
     {
-         Eventbus.TurnEvents.OnSelectionEnded -= RiseAndFallState;
+         Eventbus.TurnEvents.OnSelectionEnded -= GetTowers;
     }
 }

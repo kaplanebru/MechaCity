@@ -8,12 +8,11 @@ namespace Datas
 
     public enum TurnState
     {
-        Selection,
-        RiseAndFallState,
+        TurnStarted,
         TurnEnded
     }
 
-    public enum TurnActionState
+    public enum TurnAction
     {
         Started,
         Completed

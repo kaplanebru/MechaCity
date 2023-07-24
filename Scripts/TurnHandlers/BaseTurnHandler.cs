@@ -6,20 +6,24 @@ using UnityEngine;
 
 public abstract class BaseTurnHandler : MonoBehaviour
 {
-    public TurnActionState turnActionState;
+    public TurnAction turnAction;
     public abstract void Subscribe();
     public abstract void Unsubscribe();
     private void OnEnable()
     {
-        turnActionState = TurnActionState.Started;
+        turnAction = TurnAction.Started;
         Subscribe();
     }
     private void OnDisable()
     {
-        turnActionState = TurnActionState.Completed;
         Unsubscribe();
     }
-    
+
+    public void CompleteAction()
+    {
+        turnAction = TurnAction.Completed;
+        enabled = false;
+    }
     
     
 }

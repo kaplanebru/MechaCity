@@ -42,10 +42,9 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler
 
     public void SelectionEnded()
     {
-        
         //Enable TowerGroup Script
         Eventbus.TurnEvents.OnSelectionEnded?.Invoke(selectionGroup);
-        turnActionState = TurnActionState.Completed;
+        CompleteAction();
         //Disable or Disappear GroupTowersButton
     }
 
