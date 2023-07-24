@@ -6,7 +6,7 @@ using Datas;
 using UnityEngine;
 
 
-public class SelectionHandler : BaseTurnHandler, ITurnHandler
+public class SelectionHandler : BaseTurnHandler, ITurnActionHandler
 {
     public List<Tower> selectionGroup = new ();
     public int maxTowersInGroup;
@@ -45,6 +45,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnHandler
         
         //Enable TowerGroup Script
         Eventbus.TurnEvents.OnSelectionEnded?.Invoke(selectionGroup);
+        turnActionState = TurnActionState.Completed;
         //Disable or Disappear GroupTowersButton
     }
 
@@ -73,4 +74,8 @@ public class SelectionHandler : BaseTurnHandler, ITurnHandler
         Eventbus.TowerEvents.OnTowerClicked -= TowerClicked;
     }
 
+    public void PlayTurnAction()
+    {
+        
+    }
 }

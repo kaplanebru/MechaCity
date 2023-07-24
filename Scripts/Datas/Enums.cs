@@ -12,4 +12,10 @@ namespace Datas
         RiseAndFallState,
         TurnEnded
     }
+
+    public enum TurnActionState
+    {
+        Started,
+        Completed
+    }
 }

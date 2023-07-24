@@ -7,7 +7,7 @@ using DG.Tweening;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class TowerGroupHandler : BaseTurnHandler, ITurnHandler
+public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler
 {
     [SerializeField] private List<Tower> towerGroup = new();
     public override void Subscribe()
@@ -52,5 +52,10 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnHandler
     void ResetGroups()
     {
         towerGroup.Clear();
+    }
+
+    public void PlayTurnAction()
+    {
+        throw new NotImplementedException();
     }
 }
