@@ -5,27 +5,18 @@ using System.Linq;
 using Datas;
 using UnityEngine;
 
-public class SelectionHandler : MonoBehaviour
+
+public class SelectionHandler : BaseTurnHandler, ITurnHandler
 {
     public List<Tower> selectionGroup = new ();
     public int maxTowersInGroup;
-    public Enums.TurnState state;
     
-    private void OnEnable()
+    public override void Subscribe()
     {
+        selectionGroup.Clear();
         Eventbus.TowerEvents.OnTowerClicked += TowerClicked;
     }
 
-    void SelectTower(bool select,Tower newTower)
-    {
-        newTower.SetColor(select ? newTower.Data.TeamData.SelectedMaterial :  newTower.Data.TeamData.DefaultMaterial);
-
-        if(select)
-            selectionGroup.Add(newTower);
-        else
-            selectionGroup.Remove(newTower);
-    }
-    
     private void TowerClicked(Tower newTower)
     {
         //if not shown, show chain
@@ -39,12 +30,21 @@ public class SelectionHandler : MonoBehaviour
         //if more towers in the group, stretch chain
     }
     
+    void SelectTower(bool select,Tower newTower)
+    {
+        newTower.SetColor(select ? newTower.Data.TeamData.SelectedMaterial :  newTower.Data.TeamData.DefaultMaterial);
+
+        if(select)
+            selectionGroup.Add(newTower);
+        else
+            selectionGroup.Remove(newTower);
+    }
+
     public void SelectionEnded()
     {
-        state = Enums.TurnState.BoundState;
-        //Enable Bound Towers Script
+        
+        //Enable TowerGroup Script
         Eventbus.TurnEvents.OnSelectionEnded?.Invoke(selectionGroup);
-        selectionGroup.Clear();
         //Disable or Disappear GroupTowersButton
     }
 
@@ -68,7 +68,7 @@ public class SelectionHandler : MonoBehaviour
         }
     }
   
-    private void OnDisable()
+    public override void Unsubscribe()    
     {
         Eventbus.TowerEvents.OnTowerClicked -= TowerClicked;
     }

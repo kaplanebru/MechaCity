@@ -5,14 +5,21 @@ using System.Net;
 using Datas;
 using DG.Tweening;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-public class BoundTowers : MonoBehaviour
+public class TowerGroupHandler : BaseTurnHandler, ITurnHandler
 {
     [SerializeField] private List<Tower> towerGroup = new();
-    private void OnEnable()
+    public override void Subscribe()
     {
-        Eventbus.TurnEvents.OnSelectionEnded += BoundingTowers;
+        Eventbus.TurnEvents.OnTurnStateChanged += CreateTowerGroups;
         Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
+    }
+    
+    private void CreateTowerGroups(params object[] args)
+    {
+        var towers = ((TurnManager)args[0]).currentTowerGroup;
+        towerGroup.AddRange(towers);
     }
 
     private void TowerSelected(Tower tower)
@@ -35,14 +42,10 @@ public class BoundTowers : MonoBehaviour
         }
     }
 
-    private void BoundingTowers(List<Tower> towers)
-    {
-        towerGroup.AddRange(towers);
-    }
 
-    private void OnDisable()
+    public override void Unsubscribe()    
     {
-        Eventbus.TurnEvents.OnSelectionEnded -= BoundingTowers;
+        Eventbus.TurnEvents.OnTurnStateChanged -= CreateTowerGroups;
         Eventbus.TowerEvents.OnTowerClicked -= TowerSelected;
     }
 

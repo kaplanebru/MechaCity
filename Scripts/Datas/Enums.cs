@@ -11,7 +11,7 @@ namespace Datas
         public enum TurnState
         {
             Selection,
-            BoundState,
+            RiseAndFallState,
             TurnEnded
         }
     }

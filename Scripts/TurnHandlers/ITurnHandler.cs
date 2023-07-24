@@ -1,0 +1,3 @@
+public partial interface ITurnHandler
+{
+}
