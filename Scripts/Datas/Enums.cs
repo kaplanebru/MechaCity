@@ -1,18 +1,15 @@
 namespace Datas
 {
-    public class Enums
+    public enum Team
     {
-        public enum Team
-        {
-            Player,
-            Enemy
-        }
-        
-        public enum TurnState
-        {
-            Selection,
-            RiseAndFallState,
-            TurnEnded
-        }
+        Player,
+        Enemy
+    }
+
+    public enum TurnState
+    {
+        Selection,
+        RiseAndFallState,
+        TurnEnded
     }
 }

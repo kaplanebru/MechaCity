@@ -7,6 +7,6 @@ namespace Datas
     public class ChainData
     {
         public int Size;
-        public Enums.Team Team;
+        public Team Team;
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public Enums.TurnState state;
+    public TurnState state;
     ITurnHandler[] turnHandlers;
 
     public List<Tower> currentTowerGroup = new();
@@ -21,7 +21,7 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         turnHandlers = GetComponentsInChildren<ITurnHandler>(true).ToArray();
-        state = Enums.TurnState.Selection;
+        state = TurnState.Selection;
         StartCoroutine(nameof(TurnActionChainRoutine));
     }
 
@@ -37,16 +37,22 @@ public class TurnManager : MonoBehaviour
             turnHandlerObject.gameObject.SetActive(true);
             turnHandlerObject.enabled = true;
             
-            Eventbus.TurnEvents.OnTurnStateChanged?.Invoke(new object[] { this });
+            RaiseTurnStateChangeEvent(this);
+            //Eventbus.TurnEvents.OnTurnStateChanged?.Invoke(args); //new object[] { this }
 
 
             yield return new WaitUntil(() => state != oldState);
         }
     }
+
+    void RaiseTurnStateChangeEvent(params object[] args)
+    {
+        Eventbus.TurnEvents.OnTurnStateChanged?.Invoke(args);
+    }
     private void RiseAndFallState(List<Tower> towers)
     {
         currentTowerGroup = towers;
-        state = Enums.TurnState.RiseAndFallState;
+        state = TurnState.RiseAndFallState;
     }
 
     IEnumerator DelayForAWhile(float amount)
