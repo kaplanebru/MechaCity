@@ -10,9 +10,9 @@ namespace Datas
         
         public enum TurnState
         {
-            TurnStarted,
-            TurnPlaying,
-            TurnEnded,
+            Selection,
+            BoundState,
+            TurnEnded
         }
     }
 }

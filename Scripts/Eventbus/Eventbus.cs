@@ -9,11 +9,13 @@ public static class Eventbus
     {
         public static Action OnTurnStarted;
         public static Action OnTurnEnded;
+        public static Action<List<Tower>> OnSelectionEnded;
+
     }
 
     public class TowerEvents
     {
-        public static Action OnTowerSelected;
+        public static Action<Tower> OnTowerSelected;
     }
     
 }

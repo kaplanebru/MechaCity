@@ -33,6 +33,6 @@ public class Tower : MonoBehaviour
 
     private void Select()
     {
-        Eventbus.TowerEvents.OnTowerSelected?.Invoke();
+        Eventbus.TowerEvents.OnTowerSelected?.Invoke(this);
     }
 }
