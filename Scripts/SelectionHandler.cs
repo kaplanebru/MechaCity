@@ -5,9 +5,9 @@ using System.Linq;
 using Datas;
 using UnityEngine;
 
-public class TurnController : MonoBehaviour
+public class SelectionHandler : MonoBehaviour
 {
-    public List<Tower> towerGroup = new ();
+    public List<Tower> selectionGroup = new ();
     public int maxTowersInGroup;
     public Enums.TurnState state;
     
@@ -16,14 +16,14 @@ public class TurnController : MonoBehaviour
         Eventbus.TowerEvents.OnTowerClicked += TowerClicked;
     }
 
-    void SelectTower(Tower newTower, bool select)
+    void SelectTower(bool select,Tower newTower)
     {
         newTower.SetColor(select ? newTower.Data.TeamData.SelectedMaterial :  newTower.Data.TeamData.DefaultMaterial);
 
         if(select)
-            towerGroup.Add(newTower);
+            selectionGroup.Add(newTower);
         else
-            towerGroup.Remove(newTower);
+            selectionGroup.Remove(newTower);
     }
     
     private void TowerClicked(Tower newTower)
@@ -31,11 +31,11 @@ public class TurnController : MonoBehaviour
         //if not shown, show chain
         if (SelectedTwice(newTower)) return;
             
-        if(towerGroup.Count == maxTowersInGroup)
-            ResetTowerGroup();
+        if(selectionGroup.Count == maxTowersInGroup)
+            ResetSelectionGroup();
         
-        SelectTower(newTower, true);
-        //chain position will be on towerGroup[0]
+        SelectTower(true, newTower);
+        //chain position will be on selectionGroup[0]
         //if more towers in the group, stretch chain
     }
     
@@ -43,28 +43,28 @@ public class TurnController : MonoBehaviour
     {
         state = Enums.TurnState.BoundState;
         //Enable Bound Towers Script
-        Eventbus.TurnEvents.OnSelectionEnded?.Invoke(towerGroup);
-        towerGroup.Clear();
+        Eventbus.TurnEvents.OnSelectionEnded?.Invoke(selectionGroup);
+        selectionGroup.Clear();
         //Disable or Disappear GroupTowersButton
     }
 
     bool SelectedTwice(Tower newTower)
     {
-        if (towerGroup.Count == 0) 
+        if (selectionGroup.Count == 0) 
             return false;
 
-        if (towerGroup.Last() != newTower) 
+        if (!selectionGroup.Contains(newTower)) 
             return false;
         
-        SelectTower(towerGroup.Last(), false);
+        SelectTower(false, newTower);
         return true;
     }
 
-    void ResetTowerGroup()
+    void ResetSelectionGroup()
     {
         for (int i = 0; i < maxTowersInGroup; i++)
         {
-            SelectTower(towerGroup[0], false);
+            SelectTower(false, selectionGroup[0]);
         }
     }
   
