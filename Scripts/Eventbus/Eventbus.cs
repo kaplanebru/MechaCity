@@ -15,7 +15,7 @@ public static class Eventbus
 
     public class TowerEvents
     {
-        public static Action<Tower> OnTowerSelected;
+        public static Action<Tower> OnTowerClicked;
     }
     
 }

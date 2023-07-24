@@ -9,16 +9,18 @@ public class Tower : MonoBehaviour
 {
      
     public TowerData Data;
+    private MeshRenderer mesh;
 
     private void Start()
     {
         Setup();
     }
 
-    public void Setup()
+    void Setup()
     {
+        mesh = GetComponentInChildren<MeshRenderer>();
         StartRise();
-        GetComponentInChildren<MeshRenderer>().material.color = Data.TeamData.Color;
+        SetColor(Data.TeamData.DefaultMaterial); 
     }
 
     void StartRise()
@@ -26,13 +28,18 @@ public class Tower : MonoBehaviour
         transform.DOScaleY(Data.Height, 1);
     }
 
-    private void OnMouseDown()
+    public void SetColor(Material mat)
     {
-        Select();
+        mesh.material = mat;
     }
 
-    private void Select()
+    private void OnMouseDown()
     {
-        Eventbus.TowerEvents.OnTowerSelected?.Invoke(this);
+        Click();
+    }
+
+    private void Click()
+    {
+        Eventbus.TowerEvents.OnTowerClicked?.Invoke(this);
     }
 }

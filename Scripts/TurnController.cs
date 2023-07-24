@@ -1,26 +1,40 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Datas;
 using UnityEngine;
 
 public class TurnController : MonoBehaviour
 {
     public List<Tower> towerGroup = new ();
-    public Enums.TurnState state;
     public int maxTowersInGroup;
-
+    public Enums.TurnState state;
+    
     private void OnEnable()
     {
-        Eventbus.TowerEvents.OnTowerSelected += TowerSelected;
+        Eventbus.TowerEvents.OnTowerClicked += TowerClicked;
     }
-    private void TowerSelected(Tower newTower)
+
+    void SelectTower(Tower newTower, bool select)
+    {
+        newTower.SetColor(select ? newTower.Data.TeamData.SelectedMaterial :  newTower.Data.TeamData.DefaultMaterial);
+
+        if(select)
+            towerGroup.Add(newTower);
+        else
+            towerGroup.Remove(newTower);
+    }
+    
+    private void TowerClicked(Tower newTower)
     {
         //if not shown, show chain
+        if (SelectedTwice(newTower)) return;
+            
         if(towerGroup.Count == maxTowersInGroup)
-            towerGroup.Clear();
+            ResetTowerGroup();
         
-        towerGroup.Add(newTower);
+        SelectTower(newTower, true);
         //chain position will be on towerGroup[0]
         //if more towers in the group, stretch chain
     }
@@ -33,25 +47,30 @@ public class TurnController : MonoBehaviour
         towerGroup.Clear();
         //Disable or Disappear GroupTowersButton
     }
-    
-    private void CheckState()
+
+    bool SelectedTwice(Tower newTower)
     {
-        switch(state)
+        if (towerGroup.Count == 0) 
+            return false;
+
+        if (towerGroup.Last() != newTower) 
+            return false;
+        
+        SelectTower(towerGroup.Last(), false);
+        return true;
+    }
+
+    void ResetTowerGroup()
+    {
+        for (int i = 0; i < maxTowersInGroup; i++)
         {
-            case Enums.TurnState.Selection:
-                break;
-            case Enums.TurnState.BoundState:
-                break;
-            case Enums.TurnState.TurnEnded:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            SelectTower(towerGroup[0], false);
         }
     }
   
     private void OnDisable()
     {
-        Eventbus.TowerEvents.OnTowerSelected -= TowerSelected;
+        Eventbus.TowerEvents.OnTowerClicked -= TowerClicked;
     }
 
 }

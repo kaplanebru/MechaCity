@@ -12,7 +12,7 @@ public class BoundTowers : MonoBehaviour
     private void OnEnable()
     {
         Eventbus.TurnEvents.OnSelectionEnded += BoundingTowers;
-        Eventbus.TowerEvents.OnTowerSelected += TowerSelected;
+        Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
     }
 
     private void TowerSelected(Tower tower)
@@ -43,7 +43,7 @@ public class BoundTowers : MonoBehaviour
     private void OnDisable()
     {
         Eventbus.TurnEvents.OnSelectionEnded -= BoundingTowers;
-        Eventbus.TowerEvents.OnTowerSelected -= TowerSelected;
+        Eventbus.TowerEvents.OnTowerClicked -= TowerSelected;
     }
 
     void ResetGroups()

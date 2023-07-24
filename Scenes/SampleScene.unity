@@ -1063,7 +1063,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerGroup: []
   state: 0
-  maxTowersInGroup: 0
+  maxTowersInGroup: 2
 --- !u!4 &2143476197
 Transform:
   m_ObjectHideFlags: 0

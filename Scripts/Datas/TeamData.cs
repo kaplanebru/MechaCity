@@ -6,6 +6,7 @@ namespace Datas
     public class TeamData : ScriptableObject
     {
         public Enums.Team Team;
-        public Color Color;
+        public Material DefaultMaterial;
+        public Material SelectedMaterial;
     }
 }
