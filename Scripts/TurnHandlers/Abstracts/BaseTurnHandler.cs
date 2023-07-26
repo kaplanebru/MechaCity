@@ -5,33 +5,35 @@ using System.Linq;
 using Datas;
 using UnityEngine;
 
-public abstract class BaseTurnHandler : MonoBehaviour
+public abstract class BaseTransferData {}
+
+public abstract class BaseTurnHandler<TBaseTransferData> : MonoBehaviour
 {
-    public TurnTransferData DataToTransfer = new ();
-    
     public TurnAction turnAction;
+    public TBaseTransferData transferData;
     public abstract void Subscribe();
     public abstract void Unsubscribe();
-    
+
     public virtual void ProcessTransferredData(params object[] transferredData) {}
+    public virtual void SetTransferData(){}
+
     private void OnEnable()
     {
         turnAction = TurnAction.Started;
         Subscribe();
     }
-    
-    
-    
-    public void CompleteActionAndTransferData(params object[] args)
+
+
+    public void CompleteAction()
     {
-        DataToTransfer.TransferList.AddRange(args);
-        
+        SetTransferData();
+
         turnAction = TurnAction.Completed;
         //Eventbus.TurnEvents.OnTurnActionEnded?.Invoke(DataToTransfer);
-        
+
         enabled = false;
     }
-    
+
     private void OnDisable()
     {
         Unsubscribe();

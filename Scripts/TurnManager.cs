@@ -5,19 +5,13 @@ using System.Linq;
 using Datas;
 using UnityEngine;
 
-
-public class TurnTransferData
-{
-    public List<object> TransferList = new();
-}
-
 public class TurnManager : MonoBehaviour
 {
-    BaseTurnHandler[] turnHandlers;
+    public ITurnActionHandler[] turnHandlers;
     
     private void Start()
     {
-        turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
+        turnHandlers = GetComponentsInChildren<ITurnActionHandler>(true).ToArray();
         StartCoroutine(nameof(TurnActionRoutine));
     }
 
@@ -26,7 +20,7 @@ public class TurnManager : MonoBehaviour
     {
         for (var i = 0; i < turnHandlers.Length; i++)
         {
-            BaseTurnHandler currentTurnHandler = turnHandlers[i];
+            ITurnActionHandler currentTurnHandler = turnHandlers[i] as BaseTurnHandler<BaseTransferData>;
             currentTurnHandler.enabled = true;
 
             GetTransferredData(i, currentTurnHandler);
@@ -38,7 +32,7 @@ public class TurnManager : MonoBehaviour
     void GetTransferredData(int turnIndex, BaseTurnHandler currentTurnHandler)
     {
         if (turnIndex <= 0) return;
-        currentTurnHandler.ProcessTransferredData(turnHandlers[turnIndex - 1].DataToTransfer);
+        currentTurnHandler.ProcessTransferredData(turnHandlers[turnIndex - 1].transferData);
     }
 
 }

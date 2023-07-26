@@ -8,8 +8,8 @@ public static class Eventbus
 {
     public static class TurnEvents
     {
-        public static Action<TurnTransferData> OnTurnActionEnabled;
-        public static Action<TurnTransferData> OnTurnActionEnded;
+        //public static Action<TurnTransferData> OnTurnActionEnabled;
+        //public static Action<TurnTransferData> OnTurnActionEnded;
 
     }
 

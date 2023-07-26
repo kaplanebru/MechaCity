@@ -1,3 +1,4 @@
-public interface ITurnActionHandler
+public interface ITurnActionHandler<TBaseTransferData>
 {
+    
 }

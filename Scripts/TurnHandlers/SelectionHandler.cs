@@ -5,14 +5,19 @@ using System.Linq;
 using Datas;
 using UnityEngine;
 
-
-public class SelectionHandler : BaseTurnHandler, ITurnActionHandler
+public class SelectionData : BaseTransferData
 {
     public List<Tower> selectionGroup = new ();
+}
+
+public class SelectionHandler : BaseTurnHandler<SelectionData>, ITurnActionHandler
+{
+    private List<Tower> selectionGroup = new ();
     public int maxTowersInGroup;
     
     public override void Subscribe()
     {
+        transferData = new();
         selectionGroup.Clear();
         Eventbus.TowerEvents.OnTowerClicked += TowerClicked;
     }
@@ -40,9 +45,14 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler
             selectionGroup.Remove(newTower);
     }
 
+    public override void SetTransferData()
+    {
+        transferData.selectionGroup = selectionGroup;
+    }
+
     public void SelectionEnded()
     {
-        CompleteActionAndTransferData(selectionGroup);
+        CompleteAction();
     }
 
     bool SelectedTwice(Tower newTower)

@@ -8,7 +8,12 @@ using DG.Tweening;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler
+public class TowerGroupData : BaseTransferData
+{
+    public string test;
+}
+
+public class TowerGroupHandler : BaseTurnHandler<TowerGroupData>, ITurnActionHandler
 {
     [SerializeField] private List<Tower> towerGroup = new();
     public override void Subscribe()
@@ -16,10 +21,10 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler
         Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
     }
 
-    public override void ProcessTransferredData(params object[] args)
+    public override void ProcessTransferredData(params object[] args) //(params object[] args)
     {
-        var incomingData = (TurnTransferData)args[0];
-        towerGroup = (List<Tower>)incomingData.TransferList[0];
+        var incomingData = (SelectionData)args[0];
+        towerGroup = incomingData.selectionGroup;
     }
     private void TowerSelected(Tower tower)
     {
@@ -41,7 +46,7 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler
 
     public void ActionEnded()
     {
-        CompleteActionAndTransferData();
+        CompleteAction();
     }
 
 
