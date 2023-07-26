@@ -16,7 +16,7 @@ public abstract class BaseTurnHandler : MonoBehaviour
 
     public virtual void SetTransferData(){}
     
-    public virtual void ProcessTransferredData(BaseTurnHandler arg){}
+    public virtual void ProcessTransferredData(BaseTurnData data){}
 
     private void OnEnable()
     {
