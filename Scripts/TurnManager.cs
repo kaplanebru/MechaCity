@@ -32,8 +32,8 @@ public class TurnManager : MonoBehaviour
     void GetTransferredData(int turnIndex, BaseTurnHandler currentTurnHandler)
     {
         if (turnIndex <= 0) return;
-        var x = (ITurnActionHandler<BaseTurnData>)turnHandlers[turnIndex - 1];
-        currentTurnHandler.ProcessTransferredData(x.Data);
+        var transferData = ((ITurnActionHandler<BaseTurnData>)turnHandlers[turnIndex - 1]).Data;
+        currentTurnHandler.ProcessTransferredData(transferData);
 
     }
 

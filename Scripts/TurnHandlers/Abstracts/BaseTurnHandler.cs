@@ -13,8 +13,6 @@ public abstract class BaseTurnHandler : MonoBehaviour
    
     public abstract void Subscribe();
     public abstract void Unsubscribe();
-
-    public virtual void SetTransferData(){}
     
     public virtual void ProcessTransferredData(BaseTurnData data){}
 
@@ -24,14 +22,10 @@ public abstract class BaseTurnHandler : MonoBehaviour
         Subscribe();
     }
 
-
     public void CompleteAction()
     {
-        SetTransferData();
-
         turnAction = TurnAction.Completed;
         //Eventbus.TurnEvents.OnTurnActionEnded?.Invoke(DataToTransfer);
-
         enabled = false;
     }
 
