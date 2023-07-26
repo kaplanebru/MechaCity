@@ -15,13 +15,18 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler
     {
         Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
     }
-    
-   
 
+    public override void ProcessTransferredData()
+    {
+        var dataList = TransferredData.DataList;
+        foreach (var data in dataList)
+        {
+            if ((List<Tower>)data != null)
+                towerGroup = (List<Tower>)data;
+        }
+    }
     private void TowerSelected(Tower tower)
     {
-        //listede değilse selectible değil yapılabilir diğer hepsi
-        //turn state'e bakılabilir
         if (!towerGroup.Contains(tower)) return;
         //check lean input for bool
         RiseAndFall(tower, 1,true);
@@ -49,8 +54,5 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler
         towerGroup.Clear();
     }
 
-    public void PlayTurnAction()
-    {
-        throw new NotImplementedException();
-    }
+  
 }

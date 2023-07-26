@@ -42,7 +42,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler
 
     public void SelectionEnded()
     {
-        CompleteAction(selectionGroup);
+        CompleteActionAndTransferData(selectionGroup);
     }
 
     bool SelectedTwice(Tower newTower)
@@ -69,9 +69,5 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler
     {
         Eventbus.TowerEvents.OnTowerClicked -= TowerClicked;
     }
-
-    public void PlayTurnAction()
-    {
-        
-    }
+    
 }

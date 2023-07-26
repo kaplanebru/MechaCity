@@ -7,18 +7,18 @@ using UnityEngine;
 
 public class TurnDataHolder
 {
-    public List<TurnData> TurnDataList = new();
+    public List<TurnTransferData> TurnDataList = new();
     //public List<Tower> currentTowerGroup = new();
 }
 
-public class TurnData
+public class TurnTransferData
 {
-    
+    public List<object> DataList = new();
 }
 
 public class TurnManager : MonoBehaviour
 {
-    ITurnActionHandler[] turnHandlers;
+    BaseTurnHandler[] turnHandlers;
     public TurnDataHolder _turnDataHolder;
 
    
@@ -30,27 +30,33 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
-        turnHandlers = GetComponentsInChildren<ITurnActionHandler>(true).ToArray();
+        turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
         StartCoroutine(nameof(TurnActionRoutine));
     }
 
    
     IEnumerator TurnActionRoutine()
     {
-       
-        foreach (var turnHandler in turnHandlers)
+        for (var i = 0; i < turnHandlers.Length; i++)
         {
-            BaseTurnHandler currentTurnHandler = turnHandler as BaseTurnHandler;
+            BaseTurnHandler currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
-            Eventbus.TurnEvents.OnTurnStateChanged?.Invoke(_turnDataHolder);
+            
+            GetTransferredData(i);
 
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
     }
 
-    private void GetDatas(TurnData turnData)
+    void GetTransferredData(int turnIndex)
     {
-       _turnDataHolder.TurnDataList.Add(turnData);
+        if(turnIndex>0)
+            Eventbus.TurnEvents.OnTurnStateChanged?.Invoke(turnHandlers[turnIndex-1].DataToTransfer);
+    }
+
+    private void GetDatas(TurnTransferData turnTransferData)
+    {
+       _turnDataHolder.TurnDataList.Add(turnTransferData);
     }
     
 

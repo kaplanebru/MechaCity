@@ -7,7 +7,8 @@ using UnityEngine;
 
 public abstract class BaseTurnHandler : MonoBehaviour
 {
-    public TurnData turnData;
+    public TurnTransferData DataToTransfer;
+    public TurnTransferData TransferredData;
     public TurnAction turnAction;
     public abstract void Subscribe();
     public abstract void Unsubscribe();
@@ -17,35 +18,28 @@ public abstract class BaseTurnHandler : MonoBehaviour
         turnAction = TurnAction.Started;
         Subscribe();
     }
-
- 
-    private void GetPreviousTurnData(TurnDataHolder turnDataHolder)
+    
+    private void GetPreviousTurnData(TurnTransferData transferredData)
     {
-        var dataList = turnDataHolder.TurnDataList;
-        var transferredData = dataList.Last();
-        
-        
-        /*foreach (var data in dataList)
-        {
-            if((List<Tower>)data == null) continue;
-            towerGroup.AddRange((List<Tower>)data);
-            break;
-        }*/
+        TransferredData = transferredData;
     }
 
+    public virtual void ProcessTransferredData()
+    {
+    }
+    public void CompleteActionAndTransferData(params object[] args)
+    {
+        DataToTransfer.DataList.Add(args);
+        
+        turnAction = TurnAction.Completed;
+        Eventbus.TurnEvents.OnTurnActionEnded?.Invoke(DataToTransfer);
+        
+        enabled = false;
+    }
+    
     private void OnDisable()
     {
         Eventbus.TurnEvents.OnTurnStateChanged -= GetPreviousTurnData;
         Unsubscribe();
     }
-
-    public void CompleteAction(params object[] args)
-    {
-        turnData.Add(args);
-        turnAction = TurnAction.Completed;
-        Eventbus.TurnEvents.OnTurnActionEnded?.Invoke(turnData);
-        enabled = false;
-    }
-    
-    
 }
