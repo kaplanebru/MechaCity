@@ -24,7 +24,7 @@ public class TurnManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Eventbus.TurnEvents.OnTurnActionEnded += GetDatas;
+        //Eventbus.TurnEvents.OnTurnActionEnded += GetDatas;
     }
 
     private void Start()
@@ -51,7 +51,7 @@ public class TurnManager : MonoBehaviour
     {
         if (turnIndex <= 0) return;
         
-        Eventbus.TurnEvents.OnTurnActionEnabled?.Invoke(turnHandlers[turnIndex - 1].DataToTransfer);
+        Eventbus.TurnEvents.OnTurnActionEnabled?.Invoke(turnHandlers[turnIndex - 1].DataToTransfer);//_turnDataHolder.TurnDataList.Last()
         currentTurnHandler.ProcessTransferredData();
     }
 
