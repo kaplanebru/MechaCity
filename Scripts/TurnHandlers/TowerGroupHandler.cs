@@ -13,18 +13,20 @@ public class TowerGroupData : BaseTransferData
     public string test;
 }
 
-public class TowerGroupHandler : BaseTurnHandler<TowerGroupData>, ITurnActionHandler
+public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupData>
 {
+    public TowerGroupData TransferData { get; set; }
+
     [SerializeField] private List<Tower> towerGroup = new();
     public override void Subscribe()
     {
         Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
     }
 
-    public override void ProcessTransferredData(params object[] args) //(params object[] args)
+    public override void ProcessTransferredData(BaseTurnHandler arg) //(params object[] args)
     {
-        var incomingData = (SelectionData)args[0];
-        towerGroup = incomingData.selectionGroup;
+        var incomingData = (ITurnActionHandler<SelectionData>)arg;
+        towerGroup = incomingData.TransferData.selectionGroup;
     }
     private void TowerSelected(Tower tower)
     {
@@ -48,8 +50,7 @@ public class TowerGroupHandler : BaseTurnHandler<TowerGroupData>, ITurnActionHan
     {
         CompleteAction();
     }
-
-
+    
     public override void Unsubscribe()    
     {
         Eventbus.TowerEvents.OnTowerClicked -= TowerSelected;
@@ -60,5 +61,5 @@ public class TowerGroupHandler : BaseTurnHandler<TowerGroupData>, ITurnActionHan
         towerGroup.Clear();
     }
 
-  
+
 }

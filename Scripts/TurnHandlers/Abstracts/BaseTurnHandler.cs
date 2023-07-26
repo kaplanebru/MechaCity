@@ -7,15 +7,16 @@ using UnityEngine;
 
 public abstract class BaseTransferData {}
 
-public abstract class BaseTurnHandler<TBaseTransferData> : MonoBehaviour
+public abstract class BaseTurnHandler : MonoBehaviour
 {
     public TurnAction turnAction;
-    public TBaseTransferData transferData;
+   
     public abstract void Subscribe();
     public abstract void Unsubscribe();
 
-    public virtual void ProcessTransferredData(params object[] transferredData) {}
     public virtual void SetTransferData(){}
+    
+    public virtual void ProcessTransferredData(BaseTurnHandler arg){}
 
     private void OnEnable()
     {
@@ -38,4 +39,6 @@ public abstract class BaseTurnHandler<TBaseTransferData> : MonoBehaviour
     {
         Unsubscribe();
     }
+
+    
 }

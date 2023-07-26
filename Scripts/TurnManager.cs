@@ -7,11 +7,11 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public ITurnActionHandler[] turnHandlers;
+    BaseTurnHandler[] turnHandlers;
     
     private void Start()
     {
-        turnHandlers = GetComponentsInChildren<ITurnActionHandler>(true).ToArray();
+        turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
         StartCoroutine(nameof(TurnActionRoutine));
     }
 
@@ -20,7 +20,7 @@ public class TurnManager : MonoBehaviour
     {
         for (var i = 0; i < turnHandlers.Length; i++)
         {
-            ITurnActionHandler currentTurnHandler = turnHandlers[i] as BaseTurnHandler<BaseTransferData>;
+            BaseTurnHandler currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
 
             GetTransferredData(i, currentTurnHandler);
@@ -32,7 +32,8 @@ public class TurnManager : MonoBehaviour
     void GetTransferredData(int turnIndex, BaseTurnHandler currentTurnHandler)
     {
         if (turnIndex <= 0) return;
-        currentTurnHandler.ProcessTransferredData(turnHandlers[turnIndex - 1].transferData);
+        currentTurnHandler.ProcessTransferredData(turnHandlers[turnIndex - 1]); //.TransferData
+        
     }
 
 }

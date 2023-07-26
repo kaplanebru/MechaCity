@@ -10,14 +10,19 @@ public class SelectionData : BaseTransferData
     public List<Tower> selectionGroup = new ();
 }
 
-public class SelectionHandler : BaseTurnHandler<SelectionData>, ITurnActionHandler
+public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionData>
 {
+    public SelectionData TransferData { get; set; }
+    public void ProcessTransferredData(BaseTransferData transferData)
+    {
+    }
+
     private List<Tower> selectionGroup = new ();
     public int maxTowersInGroup;
     
     public override void Subscribe()
     {
-        transferData = new();
+        TransferData = new();
         selectionGroup.Clear();
         Eventbus.TowerEvents.OnTowerClicked += TowerClicked;
     }
@@ -47,7 +52,7 @@ public class SelectionHandler : BaseTurnHandler<SelectionData>, ITurnActionHandl
 
     public override void SetTransferData()
     {
-        transferData.selectionGroup = selectionGroup;
+        TransferData.selectionGroup = selectionGroup;
     }
 
     public void SelectionEnded()
@@ -79,5 +84,7 @@ public class SelectionHandler : BaseTurnHandler<SelectionData>, ITurnActionHandl
     {
         Eventbus.TowerEvents.OnTowerClicked -= TowerClicked;
     }
-    
+
+
+    public SelectionData transferData { get; set; }
 }
