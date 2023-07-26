@@ -438,6 +438,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 758528871}
+        m_TargetAssemblyTypeName: TowerGroupHandler, Assembly-CSharp
+        m_MethodName: ActionEnded
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &701792526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1058,7 +1070,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b66e0b6380d6f843b1394f3d86d88d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTowerGroup: []
 --- !u!1 &1098476069
 GameObject:
   m_ObjectHideFlags: 0

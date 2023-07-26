@@ -18,7 +18,7 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler
 
     public override void ProcessTransferredData()
     {
-        var dataList = TransferredData.DataList;
+        var dataList = TransferredData.TransferList;
         foreach (var data in dataList)
         {
             if ((List<Tower>)data != null)
@@ -41,6 +41,11 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler
             else
                 tower.transform.DOScaleY(tower.Data.Height -= amount/(towerGroup.Count-1), 1);
         }
+    }
+
+    public void ActionEnded()
+    {
+        CompleteActionAndTransferData();
     }
 
 

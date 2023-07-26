@@ -8,13 +8,15 @@ using UnityEngine;
 public abstract class BaseTurnHandler : MonoBehaviour
 {
     public TurnTransferData DataToTransfer = new ();
-    public TurnTransferData TransferredData = new();
+    protected TurnTransferData TransferredData = new();
     public TurnAction turnAction;
     public abstract void Subscribe();
     public abstract void Unsubscribe();
+    
+    public virtual void ProcessTransferredData() {}
     private void OnEnable()
     {
-        Eventbus.TurnEvents.OnTurnStateChanged += GetPreviousTurnData;
+        Eventbus.TurnEvents.OnTurnActionEnabled += GetPreviousTurnData;
         turnAction = TurnAction.Started;
         Subscribe();
     }
@@ -23,13 +25,10 @@ public abstract class BaseTurnHandler : MonoBehaviour
     {
         TransferredData = transferredData;
     }
-
-    public virtual void ProcessTransferredData()
-    {
-    }
+    
     public void CompleteActionAndTransferData(params object[] args)
     {
-        DataToTransfer.DataList.AddRange(args);
+        DataToTransfer.TransferList.AddRange(args);
         
         turnAction = TurnAction.Completed;
         Eventbus.TurnEvents.OnTurnActionEnded?.Invoke(DataToTransfer);
@@ -39,7 +38,7 @@ public abstract class BaseTurnHandler : MonoBehaviour
     
     private void OnDisable()
     {
-        Eventbus.TurnEvents.OnTurnStateChanged -= GetPreviousTurnData;
+        Eventbus.TurnEvents.OnTurnActionEnabled -= GetPreviousTurnData;
         Unsubscribe();
     }
 }

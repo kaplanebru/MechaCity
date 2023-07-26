@@ -13,7 +13,7 @@ public class TurnDataHolder
 
 public class TurnTransferData
 {
-    public List<object> DataList = new();
+    public List<object> TransferList = new();
 }
 
 public class TurnManager : MonoBehaviour
@@ -21,10 +21,10 @@ public class TurnManager : MonoBehaviour
     BaseTurnHandler[] turnHandlers;
     public TurnDataHolder _turnDataHolder = new();
 
-   
+
     private void OnEnable()
     {
-       Eventbus.TurnEvents.OnTurnActionEnded += GetDatas;
+        Eventbus.TurnEvents.OnTurnActionEnded += GetDatas;
     }
 
     private void Start()
@@ -33,34 +33,36 @@ public class TurnManager : MonoBehaviour
         StartCoroutine(nameof(TurnActionRoutine));
     }
 
-   
+
     IEnumerator TurnActionRoutine()
     {
         for (var i = 0; i < turnHandlers.Length; i++)
         {
             BaseTurnHandler currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
-            GetTransferredData(i);
-            currentTurnHandler.ProcessTransferredData();
+            
+            GetTransferredData(i, currentTurnHandler);
 
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
     }
 
-    void GetTransferredData(int turnIndex)
+    void GetTransferredData(int turnIndex, BaseTurnHandler currentTurnHandler)
     {
-        if(turnIndex>0)
-            Eventbus.TurnEvents.OnTurnStateChanged?.Invoke(turnHandlers[turnIndex-1].DataToTransfer);
+        if (turnIndex <= 0) return;
+        
+        Eventbus.TurnEvents.OnTurnActionEnabled?.Invoke(turnHandlers[turnIndex - 1].DataToTransfer);
+        currentTurnHandler.ProcessTransferredData();
     }
 
     private void GetDatas(TurnTransferData turnTransferData)
     {
-       _turnDataHolder.TurnDataList.Add(turnTransferData);
+        _turnDataHolder.TurnDataList.Add(turnTransferData);
     }
-    
+
 
     private void OnDisable()
     {
-         Eventbus.TurnEvents.OnTurnActionEnded -= GetDatas;
+        Eventbus.TurnEvents.OnTurnActionEnded -= GetDatas;
     }
 }
