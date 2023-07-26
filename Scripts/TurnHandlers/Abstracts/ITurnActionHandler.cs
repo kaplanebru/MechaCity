@@ -1,5 +1,5 @@
-public interface ITurnActionHandler<TBaseTransferData>
+public interface ITurnActionHandler<out TBaseTransferData>
 {
-    public TBaseTransferData TransferData { get; set; }
+    public TBaseTransferData Data { get; }
     
 }

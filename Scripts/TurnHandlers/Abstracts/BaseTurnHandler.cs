@@ -5,7 +5,7 @@ using System.Linq;
 using Datas;
 using UnityEngine;
 
-public abstract class BaseTransferData {}
+public abstract class BaseTurnData {}
 
 public abstract class BaseTurnHandler : MonoBehaviour
 {

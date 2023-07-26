@@ -8,41 +8,43 @@ using DG.Tweening;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class TowerGroupData : BaseTransferData
+public class TowerGroupData : BaseTurnData
 {
     public string test;
+    public List<Tower> TowerGroup = new();
 }
 
 public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupData>
 {
-    public TowerGroupData TransferData { get; set; }
+    public TowerGroupData Data { get; private set; }
 
-    [SerializeField] private List<Tower> towerGroup = new();
+   
     public override void Subscribe()
     {
+        Data = new();
         Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
     }
 
     public override void ProcessTransferredData(BaseTurnHandler arg) //(params object[] args)
     {
         var incomingData = (ITurnActionHandler<SelectionData>)arg;
-        towerGroup = incomingData.TransferData.selectionGroup;
+        Data.TowerGroup = incomingData.Data.SelectionGroup;
     }
     private void TowerSelected(Tower tower)
     {
-        if (!towerGroup.Contains(tower)) return;
+        if (!Data.TowerGroup.Contains(tower)) return;
         //check lean input for bool
         RiseAndFall(tower, 1,true);
     }
 
     void RiseAndFall(Tower selectedTower, float amount, bool rise)
     {
-        foreach (var tower in towerGroup)
+        foreach (var tower in Data.TowerGroup)
         {
             if (tower == selectedTower)
                 tower.transform.DOScaleY(tower.Data.Height += amount, 1);
             else
-                tower.transform.DOScaleY(tower.Data.Height -= amount/(towerGroup.Count-1), 1);
+                tower.transform.DOScaleY(tower.Data.Height -= amount/(Data.TowerGroup.Count-1), 1);
         }
     }
 
@@ -58,7 +60,7 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
 
     void ResetGroups()
     {
-        towerGroup.Clear();
+        Data.TowerGroup.Clear();
     }
 
 
