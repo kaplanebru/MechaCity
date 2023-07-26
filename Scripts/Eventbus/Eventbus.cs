@@ -9,7 +9,6 @@ public static class Eventbus
     public static class TurnEvents
     {
         public static Action<TurnTransferData> OnTurnStateChanged;
-        public static Action OnTurnEnded;
         public static Action<TurnTransferData> OnTurnActionEnded;
 
     }

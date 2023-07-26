@@ -7,8 +7,8 @@ using UnityEngine;
 
 public abstract class BaseTurnHandler : MonoBehaviour
 {
-    public TurnTransferData DataToTransfer;
-    public TurnTransferData TransferredData;
+    public TurnTransferData DataToTransfer = new ();
+    public TurnTransferData TransferredData = new();
     public TurnAction turnAction;
     public abstract void Subscribe();
     public abstract void Unsubscribe();
@@ -29,7 +29,7 @@ public abstract class BaseTurnHandler : MonoBehaviour
     }
     public void CompleteActionAndTransferData(params object[] args)
     {
-        DataToTransfer.DataList.Add(args);
+        DataToTransfer.DataList.AddRange(args);
         
         turnAction = TurnAction.Completed;
         Eventbus.TurnEvents.OnTurnActionEnded?.Invoke(DataToTransfer);

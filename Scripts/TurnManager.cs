@@ -19,13 +19,12 @@ public class TurnTransferData
 public class TurnManager : MonoBehaviour
 {
     BaseTurnHandler[] turnHandlers;
-    public TurnDataHolder _turnDataHolder;
+    public TurnDataHolder _turnDataHolder = new();
 
    
     private void OnEnable()
     {
        Eventbus.TurnEvents.OnTurnActionEnded += GetDatas;
-        
     }
 
     private void Start()
@@ -41,8 +40,8 @@ public class TurnManager : MonoBehaviour
         {
             BaseTurnHandler currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
-            
             GetTransferredData(i);
+            currentTurnHandler.ProcessTransferredData();
 
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
