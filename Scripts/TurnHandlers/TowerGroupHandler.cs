@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Datas;
 using DG.Tweening;
@@ -12,15 +13,10 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler
     [SerializeField] private List<Tower> towerGroup = new();
     public override void Subscribe()
     {
-        Eventbus.TurnEvents.OnTurnStateChanged += CreateTowerGroups;
         Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
     }
     
-    private void CreateTowerGroups(params object[] args)
-    {
-        var towers = ((TurnManager)args[0]).currentTowerGroup;
-        towerGroup.AddRange(towers);
-    }
+   
 
     private void TowerSelected(Tower tower)
     {
@@ -45,7 +41,6 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler
 
     public override void Unsubscribe()    
     {
-        Eventbus.TurnEvents.OnTurnStateChanged -= CreateTowerGroups;
         Eventbus.TowerEvents.OnTowerClicked -= TowerSelected;
     }
 

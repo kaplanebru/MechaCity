@@ -42,9 +42,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler
 
     public void SelectionEnded()
     {
-        Eventbus.TurnEvents.OnSelectionEnded?.Invoke(selectionGroup);
-        CompleteAction();
-        //Disable or Disappear GroupTowersButton
+        CompleteAction(selectionGroup);
     }
 
     bool SelectedTwice(Tower newTower)

@@ -5,15 +5,26 @@ using System.Linq;
 using Datas;
 using UnityEngine;
 
+public class TurnDataHolder
+{
+    public List<TurnData> TurnDataList = new();
+    //public List<Tower> currentTowerGroup = new();
+}
+
+public class TurnData
+{
+    
+}
+
 public class TurnManager : MonoBehaviour
 {
     ITurnActionHandler[] turnHandlers;
+    public TurnDataHolder _turnDataHolder;
 
-    public List<Tower> currentTowerGroup = new();
-
+   
     private void OnEnable()
     {
-       Eventbus.TurnEvents.OnSelectionEnded += GetTowers;
+       Eventbus.TurnEvents.OnTurnActionEnded += GetDatas;
         
     }
 
@@ -31,25 +42,20 @@ public class TurnManager : MonoBehaviour
         {
             BaseTurnHandler currentTurnHandler = turnHandler as BaseTurnHandler;
             currentTurnHandler.enabled = true;
-            RaiseTurnActionChangeEvent(this);
-
+            Eventbus.TurnEvents.OnTurnStateChanged?.Invoke(_turnDataHolder);
 
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
     }
 
-    void RaiseTurnActionChangeEvent(params object[] args)
+    private void GetDatas(TurnData turnData)
     {
-        Eventbus.TurnEvents.OnTurnStateChanged?.Invoke(args);
-    }
-    private void GetTowers(List<Tower> towers)
-    {
-        currentTowerGroup = towers;
+       _turnDataHolder.TurnDataList.Add(turnData);
     }
     
 
     private void OnDisable()
     {
-         Eventbus.TurnEvents.OnSelectionEnded -= GetTowers;
+         Eventbus.TurnEvents.OnTurnActionEnded -= GetDatas;
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SequentialButtons : MonoBehaviour
 {
-    public Button[] Buttons;
+    [SerializeField] private Button[] Buttons;
     private bool buttonDisabled = false;
 
     private void Start()
