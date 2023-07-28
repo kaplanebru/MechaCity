@@ -6,11 +6,16 @@ using UnityEngine.UI;
 public class SequentialButtons : MonoBehaviour
 {
     [SerializeField] private Button[] Buttons;
-    private bool buttonDisabled = false;
+    private Button currentButton;
+    private bool buttonFunctionCompleted = false;
+    private bool hasSpecialCase = false;
+    
 
     private void Start()
     {
         Buttons = GetComponentsInChildren<Button>();
+        Eventbus.UIEvents.OnButtonCall += HandleButton;
+
         StartCoroutine(nameof(ButtonSequenceRoutine));
     }
 
@@ -19,16 +24,31 @@ public class SequentialButtons : MonoBehaviour
         DisableAllButtons();
         foreach (var button in Buttons)
         {
-            button.gameObject.SetActive(true);
+            currentButton = button;
+            
+            if(!hasSpecialCase)
+                button.gameObject.SetActive(true);
+            
+            yield return new WaitUntil(() => buttonFunctionCompleted);
 
-            yield return new WaitUntil(() => buttonDisabled);
-
-            button.gameObject.SetActive(false);
-            buttonDisabled = false;
+            CompleteSequence();
         }
     }
 
-    public void ButtonDisabled() => buttonDisabled = true;
+    void HandleButton(bool enable)
+    {
+        hasSpecialCase = true;
+        currentButton.gameObject.SetActive(enable);
+    }
+
+    void CompleteSequence()
+    {
+        currentButton.gameObject.SetActive(false);
+        buttonFunctionCompleted = false;
+        hasSpecialCase = false;
+    }
+
+    public void ButtonDisabled() => buttonFunctionCompleted = true;
 
     void DisableAllButtons()
     {
@@ -36,5 +56,10 @@ public class SequentialButtons : MonoBehaviour
         {
             button.gameObject.SetActive(false);
         }
+    }
+    
+    private void OnDisable()
+    {
+        Eventbus.UIEvents.OnButtonCall -= HandleButton;
     }
 }

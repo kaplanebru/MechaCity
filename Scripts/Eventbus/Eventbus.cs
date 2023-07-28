@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 public static class Eventbus
@@ -16,6 +17,11 @@ public static class Eventbus
     public static class TowerEvents
     {
         public static Action<Tower> OnTowerClicked;
+    }
+
+    public static class UIEvents
+    {
+        public static Action<bool> OnButtonCall;
     }
     
     // public class SubscriptionModel

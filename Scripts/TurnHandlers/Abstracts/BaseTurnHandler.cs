@@ -5,8 +5,6 @@ using System.Linq;
 using Datas;
 using UnityEngine;
 
-public abstract class BaseTurnData {}
-
 public abstract class BaseTurnHandler : MonoBehaviour
 {
     public TurnAction turnAction;
@@ -28,6 +26,7 @@ public abstract class BaseTurnHandler : MonoBehaviour
         //Eventbus.TurnEvents.OnTurnActionEnded?.Invoke(DataToTransfer);
         enabled = false;
     }
+    
 
     private void OnDisable()
     {

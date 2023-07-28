@@ -5,14 +5,16 @@ using System.Linq;
 using Datas;
 using UnityEngine;
 
+[Serializable]
 public class SelectionData : BaseTurnData
 {
     public List<Tower> SelectionGroup = new ();
-    public int MaxTowersInGroup;
+    public int MaxTowersInGroup = 2;
 }
 
 public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionData>
 {
+    //learn how to serialize interface
     public SelectionData Data { get; private set; }
     
     public override void Subscribe()
@@ -26,11 +28,13 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
     {
         //if not shown, show chain
         if (SelectedTwice(newTower)) return;
-            
+
         if(Data.SelectionGroup.Count == Data.MaxTowersInGroup)
             ResetSelectionGroup();
         
         SelectTower(true, newTower);
+       
+        
         //chain position will be on selectionGroup[0]
         //if more towers in the group, stretch chain
     }
@@ -39,13 +43,17 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
     {
         newTower.SetColor(select ? newTower.Data.TeamData.SelectedMaterial :  newTower.Data.TeamData.DefaultMaterial);
 
-        if(select)
+        if (select)
             Data.SelectionGroup.Add(newTower);
         else
             Data.SelectionGroup.Remove(newTower);
+        
+        ManageButton();
     }
-
-
+    void ManageButton()
+    {
+        Eventbus.UIEvents.OnButtonCall?.Invoke(Data.SelectionGroup.Count == Data.MaxTowersInGroup);
+    }
 
     public void SelectionEnded()
     {

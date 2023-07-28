@@ -17,8 +17,7 @@ public class TowerGroupData : BaseTurnData
 public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupData>
 {
     public TowerGroupData Data { get; private set; }
-
-   
+    
     public override void Subscribe()
     {
         Data = new();
