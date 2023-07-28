@@ -8,7 +8,7 @@ using UnityEngine;
 [Serializable]
 public class SelectionData : BaseTurnData
 {
-    public List<Tower> SelectionGroup = new ();
+    public List<Tower> SelectionGroup = new();
     public int MaxTowersInGroup = 2;
 }
 
@@ -16,7 +16,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
 {
     //learn how to serialize interface
     public SelectionData Data { get; private set; }
-    
+
     public override void Subscribe()
     {
         Data = new();
@@ -30,58 +30,58 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
         //if not shown, show chain
         if (SelectedTwice(newTower)) return;
 
-        if(Data.SelectionGroup.Count == Data.MaxTowersInGroup)
+        if (Data.SelectionGroup.Count == Data.MaxTowersInGroup)
             ResetSelectionGroup();
-        
-        SelectTower(true, newTower);
-       
-        
+
+        AddToSelection(true, newTower);
+
+
         //chain position will be on selectionGroup[0]
         //if more towers in the group, stretch chain
     }
-    
-    void SelectTower(bool select,Tower newTower)
+
+    void AddToSelection(bool select, Tower newTower)
     {
-        newTower.SetColor(select ? newTower.Data.TeamData.SelectedMaterial :  newTower.Data.TeamData.DefaultMaterial);
+        newTower.SetColor(select ? newTower.Data.TeamData.SelectedMaterial : newTower.Data.TeamData.DefaultMaterial);
 
         if (select)
             Data.SelectionGroup.Add(newTower);
         else
             Data.SelectionGroup.Remove(newTower);
-        
+
         ManageCompleteButton(Data.SelectionGroup.Count == Data.MaxTowersInGroup);
+        print(Data.SelectionGroup.Count);
     }
+
     void ManageCompleteButton(bool enable)
     {
         Eventbus.UIEvents.OnButtonCall?.Invoke(enable);
     }
 
-    public void SelectionEnded()
+    public void SelectionCompleted()
     {
         CompleteAction();
     }
 
     bool SelectedTwice(Tower newTower)
     {
-        if (Data.SelectionGroup.Count == 0) 
-            return false;
-
-        if (!Data.SelectionGroup.Contains(newTower)) 
-            return false;
-        
-        SelectTower(false, newTower);
-        return true;
+        if (Data.SelectionGroup.Contains(newTower))
+        {
+            AddToSelection(false, newTower);
+            return true;
+        }
+        return false;
     }
 
     void ResetSelectionGroup()
     {
         for (int i = 0; i < Data.MaxTowersInGroup; i++)
         {
-            SelectTower(false, Data.SelectionGroup[0]);
+            AddToSelection(false, Data.SelectionGroup[0]);
         }
     }
-  
-    public override void Unsubscribe()    
+
+    public override void Unsubscribe()
     {
         Eventbus.TowerEvents.OnTowerClicked -= TowerClicked;
     }
