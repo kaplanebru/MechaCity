@@ -9,15 +9,15 @@ public class SequentialButtons : MonoBehaviour
     private Button currentButton;
     private bool buttonFunctionCompleted = false;
     private bool hasSpecialCase = false;
-    
 
-    private void Start()
+
+    private void OnEnable() //ui daha önce gelmeli turnden
     {
         Buttons = GetComponentsInChildren<Button>();
-        Eventbus.UIEvents.OnButtonCall += HandleButton;
-
         StartCoroutine(nameof(ButtonSequenceRoutine));
+        Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
     }
+    
 
     public IEnumerator ButtonSequenceRoutine()
     {
@@ -31,17 +31,17 @@ public class SequentialButtons : MonoBehaviour
             
             yield return new WaitUntil(() => buttonFunctionCompleted);
 
-            CompleteSequence();
+            CompleteAndResetSequence();
         }
     }
 
-    void HandleButton(bool enable)
+    void HandleSpecialCase(bool enable)
     {
         hasSpecialCase = true;
         currentButton.gameObject.SetActive(enable);
     }
 
-    void CompleteSequence()
+    void CompleteAndResetSequence()
     {
         currentButton.gameObject.SetActive(false);
         buttonFunctionCompleted = false;
@@ -60,6 +60,6 @@ public class SequentialButtons : MonoBehaviour
     
     private void OnDisable()
     {
-        Eventbus.UIEvents.OnButtonCall -= HandleButton;
+        Eventbus.UIEvents.OnButtonCall -= HandleSpecialCase;
     }
 }

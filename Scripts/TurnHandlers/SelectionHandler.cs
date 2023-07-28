@@ -22,6 +22,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
         Data = new();
         Data.SelectionGroup.Clear();
         Eventbus.TowerEvents.OnTowerClicked += TowerClicked;
+        ManageCompleteButton(false);
     }
 
     private void TowerClicked(Tower newTower)
@@ -48,11 +49,11 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
         else
             Data.SelectionGroup.Remove(newTower);
         
-        ManageButton();
+        ManageCompleteButton(Data.SelectionGroup.Count == Data.MaxTowersInGroup);
     }
-    void ManageButton()
+    void ManageCompleteButton(bool enable)
     {
-        Eventbus.UIEvents.OnButtonCall?.Invoke(Data.SelectionGroup.Count == Data.MaxTowersInGroup);
+        Eventbus.UIEvents.OnButtonCall?.Invoke(enable);
     }
 
     public void SelectionEnded()
