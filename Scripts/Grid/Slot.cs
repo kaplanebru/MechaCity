@@ -7,5 +7,6 @@ using UnityEngine;
 
 public class Slot
 {
+    public int number;
     public bool available;
 }

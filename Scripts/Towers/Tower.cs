@@ -42,9 +42,4 @@ public class Tower : MonoBehaviour
     {
         Eventbus.TowerEvents.OnTowerClicked?.Invoke(this);
     }
-
-    public void GetClosestAvailableTower()
-    {
-        
-    }
 }

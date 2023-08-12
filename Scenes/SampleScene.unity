@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1118,7 +1118,7 @@ GameObject:
   - component: {fileID: 1521614559}
   - component: {fileID: 1521614560}
   m_Layer: 0
-  m_Name: FightHandler
+  m_Name: GridHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1152,22 +1152,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnAction: 0
-  Main:
-    Columns:
-    - Lines:
-      - available: 0
-    - Lines:
-      - available: 0
-    - Lines:
-      - available: 0
-  Rival:
-    Columns:
-    - Lines:
-      - available: 0
-    - Lines:
-      - available: 0
-    - Lines:
-      - available: 0
+  MainGrid:
+    Slots: []
+  RivalGrid:
+    Slots: []
 --- !u!1 &1614562277
 GameObject:
   m_ObjectHideFlags: 0
@@ -1484,6 +1472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
