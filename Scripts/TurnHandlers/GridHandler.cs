@@ -27,7 +27,7 @@ public class GridHandler : BaseTurnHandler, ITurnActionHandler<GridData>
     }
 
     public GridData Data { get; private set; }
-    
+
 
     void SearchMatches(Slot slot, int number)
     {
@@ -38,9 +38,35 @@ public class GridHandler : BaseTurnHandler, ITurnActionHandler<GridData>
             slot.rivalNumber = number;
             return;
         }
-        
-        SearchMatches(slot, number-1);
-        SearchMatches(slot, number+1);
+
+        SearchMatches(slot, number - 1);
+        SearchMatches(slot, number + 1);
+    }
+
+    void SearchPossibleMatches(Slot slot)
+    {
+        for (int i = 0; i < GameGrid.SlotAmount; i++)
+        {
+            slot.rivalNumber = slot.number - i;
+            if (slot.rivalNumber >= 0)
+            {
+                if (Grids[1].Slots[slot.number].available)
+                {
+                    slot.rivalNumber = slot.number;
+                    break;
+                }
+            }
+            
+            slot.rivalNumber = slot.number + i;
+            if (slot.rivalNumber < GameGrid.SlotAmount)
+            {
+                if (Grids[1].Slots[slot.number].available)
+                {
+                    slot.rivalNumber = slot.number;
+                    break;
+                }
+            }
+        }
     }
 
     void Fight()
