@@ -10,7 +10,6 @@ using Object = UnityEngine.Object;
 
 public class TowerGroupData : BaseTurnData
 {
-    public string test;
     public List<Tower> TowerGroup = new();
 }
 

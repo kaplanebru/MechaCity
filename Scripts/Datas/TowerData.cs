@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -9,5 +10,6 @@ namespace Datas
     {
         public float Height;
         public TeamData TeamData;
+        public List<Tower> TargetTowers;
     }
 }
