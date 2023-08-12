@@ -30,48 +30,34 @@ public class GridHandler : BaseTurnHandler, ITurnActionHandler<GridData>
 
 
     private int i = 0;
-    void SearchMatches(Slot slot, int number, int pole)
-    {
-        if (number is < 0 or >= GameGrid.SlotAmount) return;
-
-        if (Grids[1].Slots[number].available)
-        {
-            slot.rivalNumber = number;
-            return;
-        }
-
-        i++;
-        if (pole == 1)
-            SearchMatches(slot, number - i, -1);
-        else
-            SearchMatches(slot, number + i, 1);
-    }
+   
+    
+    // void SearchMatches(Slot slot, int pole, int i) // i=1
+    // {
+    //     if (slot.rivalNumber is < 0 or >= GameGrid.SlotAmount) return; bu iki caseden biri olursa diğerini aramayı bırakıyor
+    //
+    //     if (Grids[1].Slots[slot.rivalNumber].available) return;
+    //     
+    //     slot.rivalNumber += i * pole;
+    //     pole *= -1;
+    //     SearchMatches(slot, pole, i++);
+    //     
+    // }
     
     //rivalnumber'a da çevrilebilir
 
-    void SearchPossibleMatches(Slot slot)
+    void SearchPossibleMatches(Slot slot, GameGrid otherGrid) //bundaki sorun hiç rival yoksa ortaya çıkıyor, son rivalNumber'a ateş etmek şeklinde
+                                                                //hasrival diye dict yapılabilir
     {
         for (int i = 0; i < GameGrid.SlotAmount; i++)
         {
             slot.rivalNumber = slot.number - i;
             if (slot.rivalNumber >= 0)
-            {
-                if (Grids[1].Slots[slot.number].available)
-                {
-                    slot.rivalNumber = slot.number;
-                    break;
-                }
-            }
+                if (otherGrid.Slots[slot.rivalNumber].available) break;
             
             slot.rivalNumber = slot.number + i;
             if (slot.rivalNumber < GameGrid.SlotAmount)
-            {
-                if (Grids[1].Slots[slot.number].available)
-                {
-                    slot.rivalNumber = slot.number;
-                    break;
-                }
-            }
+                if (otherGrid.Slots[slot.rivalNumber].available) break;
         }
     }
 
