@@ -73,6 +73,8 @@ public class GridHandler : BaseTurnHandler, ITurnActionHandler<GridData>
             }
         }
     }
+    
+    //2 taraftan biri kale kaybedince çek edilebilir. Rematch şeklinde.
 
     void Match(int number1, int number2)
     {
