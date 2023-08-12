@@ -1,4 +1,6 @@
-public interface ITurnActionHandler
+public interface ITurnActionHandler<out TTurnData>
 {
-    public void PlayTurnAction();
+    public TTurnData Data { get; }
+    
+
 }

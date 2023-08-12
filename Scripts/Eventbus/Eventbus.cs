@@ -2,21 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 public static class Eventbus
 {
-    public static class TurnEvents
-    {
-        public static Action<object[]> OnTurnStateChanged;
-        public static Action OnTurnEnded;
-        public static Action<List<Tower>> OnSelectionEnded;
-
-    }
 
     public static class TowerEvents
     {
         public static Action<Tower> OnTowerClicked;
+    }
+
+    public static class UIEvents
+    {
+        public static Action<bool> OnButtonCall;
     }
     
     // public class SubscriptionModel

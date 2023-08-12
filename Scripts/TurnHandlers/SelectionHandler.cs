@@ -5,75 +5,84 @@ using System.Linq;
 using Datas;
 using UnityEngine;
 
-
-public class SelectionHandler : BaseTurnHandler, ITurnActionHandler
+[Serializable]
+public class SelectionData : BaseTurnData
 {
-    public List<Tower> selectionGroup = new ();
-    public int maxTowersInGroup;
-    
+    public List<Tower> SelectionGroup = new();
+    public int MaxTowersInGroup = 2;
+}
+
+public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionData>
+{
+    //learn how to serialize interface
+    public SelectionData Data { get; private set; }
+
     public override void Subscribe()
     {
-        selectionGroup.Clear();
+        Data = new();
+        Data.SelectionGroup.Clear();
         Eventbus.TowerEvents.OnTowerClicked += TowerClicked;
+        ManageCompleteButton(false);
     }
 
     private void TowerClicked(Tower newTower)
     {
         //if not shown, show chain
         if (SelectedTwice(newTower)) return;
-            
-        if(selectionGroup.Count == maxTowersInGroup)
+
+        if (Data.SelectionGroup.Count == Data.MaxTowersInGroup)
             ResetSelectionGroup();
-        
-        SelectTower(true, newTower);
+
+        AddToSelection(true, newTower);
+
+
         //chain position will be on selectionGroup[0]
         //if more towers in the group, stretch chain
     }
-    
-    void SelectTower(bool select,Tower newTower)
-    {
-        newTower.SetColor(select ? newTower.Data.TeamData.SelectedMaterial :  newTower.Data.TeamData.DefaultMaterial);
 
-        if(select)
-            selectionGroup.Add(newTower);
+    void AddToSelection(bool select, Tower newTower)
+    {
+        newTower.SetColor(select ? newTower.Data.TeamData.SelectedMaterial : newTower.Data.TeamData.DefaultMaterial);
+
+        if (select)
+            Data.SelectionGroup.Add(newTower);
         else
-            selectionGroup.Remove(newTower);
+            Data.SelectionGroup.Remove(newTower);
+
+        ManageCompleteButton(Data.SelectionGroup.Count == Data.MaxTowersInGroup);
+        print(Data.SelectionGroup.Count);
     }
 
-    public void SelectionEnded()
+    void ManageCompleteButton(bool enable)
     {
-        Eventbus.TurnEvents.OnSelectionEnded?.Invoke(selectionGroup);
+        Eventbus.UIEvents.OnButtonCall?.Invoke(enable);
+    }
+
+    public void SelectionCompleted()
+    {
         CompleteAction();
-        //Disable or Disappear GroupTowersButton
     }
 
     bool SelectedTwice(Tower newTower)
     {
-        if (selectionGroup.Count == 0) 
-            return false;
-
-        if (!selectionGroup.Contains(newTower)) 
-            return false;
-        
-        SelectTower(false, newTower);
-        return true;
+        if (Data.SelectionGroup.Contains(newTower))
+        {
+            AddToSelection(false, newTower);
+            return true;
+        }
+        return false;
     }
 
     void ResetSelectionGroup()
     {
-        for (int i = 0; i < maxTowersInGroup; i++)
+        for (int i = 0; i < Data.MaxTowersInGroup; i++)
         {
-            SelectTower(false, selectionGroup[0]);
+            AddToSelection(false, Data.SelectionGroup[0]);
         }
     }
-  
-    public override void Unsubscribe()    
+
+    public override void Unsubscribe()
     {
         Eventbus.TowerEvents.OnTowerClicked -= TowerClicked;
-    }
-
-    public void PlayTurnAction()
-    {
-        
     }
 }

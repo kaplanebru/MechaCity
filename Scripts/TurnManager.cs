@@ -7,49 +7,35 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    ITurnActionHandler[] turnHandlers;
-
-    public List<Tower> currentTowerGroup = new();
-
-    private void OnEnable()
-    {
-       Eventbus.TurnEvents.OnSelectionEnded += GetTowers;
-        
-    }
-
+    BaseTurnHandler[] turnHandlers;
+    
     private void Start()
     {
-        turnHandlers = GetComponentsInChildren<ITurnActionHandler>(true).ToArray();
+        turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
         StartCoroutine(nameof(TurnActionRoutine));
     }
 
-   
+
     IEnumerator TurnActionRoutine()
     {
-       
-        foreach (var turnHandler in turnHandlers)
+        for (var i = 0; i < turnHandlers.Length; i++)
         {
-            BaseTurnHandler currentTurnHandler = turnHandler as BaseTurnHandler;
+            BaseTurnHandler currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
-            RaiseTurnActionChangeEvent(this);
 
+            GetTransferredData(i, currentTurnHandler);
 
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
     }
 
-    void RaiseTurnActionChangeEvent(params object[] args)
+    void GetTransferredData(int turnIndex, BaseTurnHandler currentTurnHandler)
     {
-        Eventbus.TurnEvents.OnTurnStateChanged?.Invoke(args);
-    }
-    private void GetTowers(List<Tower> towers)
-    {
-        currentTowerGroup = towers;
-    }
-    
+        if (turnIndex <= 0) return;
+        var transferData = ((ITurnActionHandler<BaseTurnData>)turnHandlers[turnIndex - 1]).Data;
+        currentTurnHandler.ProcessTransferredData(transferData);
 
-    private void OnDisable()
-    {
-         Eventbus.TurnEvents.OnSelectionEnded -= GetTowers;
     }
+
 }
+    
