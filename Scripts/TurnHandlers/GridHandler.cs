@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -46,22 +47,34 @@ public class GridHandler : BaseTurnHandler, ITurnActionHandler<GridData>
     
     //rivalnumber'a da çevrilebilir
 
-    void SearchPossibleMatches(Slot slot, GameGrid otherGrid) //bundaki sorun hiç rival yoksa ortaya çıkıyor, son rivalNumber'a ateş etmek şeklinde
-                                                                //hasrival diye dict yapılabilir
+    void SearchPossibleMatches(Slot slot, GameGrid otherGrid) //bundaki sorun hiç rival yoksa ortaya çıkıyordu, son rivalNumber'a ateş etmek şeklinde
+                                                                //hasrival diye dict yapılabilirdi
     {
         for (int i = 0; i < GameGrid.SlotAmount; i++)
         {
-            slot.rivalNumber = slot.number - i;
+            int rivalNumber = slot.number - i;
             if (slot.rivalNumber >= 0)
-                if (otherGrid.Slots[slot.rivalNumber].available) break;
-            
-            slot.rivalNumber = slot.number + i;
-            if (slot.rivalNumber < GameGrid.SlotAmount)
-                if (otherGrid.Slots[slot.rivalNumber].available) break;
+            {
+                if (otherGrid.Slots[rivalNumber].available)
+                {
+                    Match(slot.number, rivalNumber);
+                    break;
+                }
+            }
+
+            rivalNumber = slot.number + i;
+            if (rivalNumber < GameGrid.SlotAmount)
+            {
+                if (otherGrid.Slots[rivalNumber].available)
+                {
+                    Match(slot.number, rivalNumber);
+                    break;
+                }
+            }
         }
     }
 
-    void Fight()
+    void Match(int number1, int number2)
     {
     }
 
