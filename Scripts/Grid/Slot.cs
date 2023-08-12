@@ -9,5 +9,5 @@ public class Slot
 {
     public bool available;
     public int number;
-    public int rivalSlotNumber;
+    public int rivalNumber;
 }

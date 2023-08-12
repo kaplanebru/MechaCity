@@ -27,42 +27,20 @@ public class GridHandler : BaseTurnHandler, ITurnActionHandler<GridData>
     }
 
     public GridData Data { get; private set; }
+    
 
-    void MatchSlots(GameGrid otherGrid, int slotNumber, Slot slot)
+    void SearchMatches(Slot slot, int number)
     {
-        if (slotNumber < 0 || slotNumber == GameGrid.SlotAmount) return;
-        if (otherGrid.Slots[slotNumber].available)
-            slot.rivalSlotNumber = slotNumber;
-        else
-        {
-            MatchSlots(otherGrid, slotNumber-1, slot);
-            MatchSlots(otherGrid, slotNumber+1, slot);
-        }
-    }
+        if (number is < 0 or >= GameGrid.SlotAmount) return;
 
-    void MatchTowers()
-    {
-        for (int i = 0; i < GameGrid.SlotAmount; i++)
+        if (Grids[1].Slots[number].available)
         {
-            if (!Grids[0].Slots[i].available) continue;
-            if (Grids[1].Slots[i].available)
-            {
-                Fight();
-            }
-            else
-            {
-                if (i > 0 && Grids[1].Slots[i - 1].available)
-                {
-                    Fight();
-                    continue;
-                }
-
-                if (i < GameGrid.SlotAmount - 1 && Grids[1].Slots[i + 1].available)
-                {
-                    Fight();
-                }
-            }
+            slot.rivalNumber = number;
+            return;
         }
+        
+        SearchMatches(slot, number-1);
+        SearchMatches(slot, number+1);
     }
 
     void Fight()
