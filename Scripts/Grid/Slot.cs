@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class Slot
 {
-    public int number;
     public bool available;
+    public int number;
+    public int rivalSlotNumber;
 }
