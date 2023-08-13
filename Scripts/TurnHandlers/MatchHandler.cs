@@ -5,19 +5,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GridData : BaseTurnData
+public class GridData : BaseTurnData //bizim sonrakine göndereceğimiz
 {
     public List<Tower> MainTowers = new();
     public List<Tower> RivalTowers = new();
+    
+    public GameGridModel[] Grids = new GameGridModel[2];
 }
 
-public class GridHandler : BaseTurnHandler, ITurnActionHandler<GridData>
+public class MatchHandler : BaseTurnHandler, ITurnActionHandler<GridData>
 {
-    public GameGrid[] Grids = new GameGrid[2];
-
+    GridData gridData;
     public override void Subscribe()
     {
-        foreach (var grid in Grids)
+        foreach (var grid in gridData.Grids)
         {
             grid.Initialize();
         }
@@ -36,27 +37,36 @@ public class GridHandler : BaseTurnHandler, ITurnActionHandler<GridData>
 public interface IMatchable<out TTeamData>
 {
     public TTeamData TeamData { get; }
+    public Dictionary<int, int> Matches { get; set; }
 
-    void SearchMatches(Slot slot, GameGrid otherGrid)
+    void GetTargets()
     {
-        for (int i = 0; i < GameGrid.SlotAmount; i++)
+        // foreach (var VARIABLE in COLLECTION)
+        // {
+        //     
+        // }
+    }
+
+    void SetTarget(Slot slot, GameGridModel otherGridModel)
+    {
+        for (int i = 0; i < GameGridModel.SlotAmount; i++)
         {
             if(!slot.hasTower) continue;
             
             int number = slot.number - i;
             if (slot.rivalNumber >= 0)
             {
-                if (otherGrid.Slots[number].hasTower)
+                if (otherGridModel.Slots[number].hasTower)
                 {
-                    
+                    Match(slot.number, number);
                     break;
                 }
             }
 
             number = slot.number + i;
-            if (number < GameGrid.SlotAmount)
+            if (number < GameGridModel.SlotAmount)
             {
-                if (otherGrid.Slots[number].hasTower)
+                if (otherGridModel.Slots[number].hasTower)
                 {
                     Match(slot.number, number);
                     break;
@@ -66,7 +76,7 @@ public interface IMatchable<out TTeamData>
     }
 
 
-    public Dictionary<int, int> PlayerMatches { get; set; }
+    
     void Match(int number1, int number2)
     {
         

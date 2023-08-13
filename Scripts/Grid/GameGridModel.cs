@@ -5,9 +5,8 @@ using Unity.Collections;
 using UnityEngine;
 
 [Serializable]
-public class GameGrid
+public class GameGridModel
 {
-   
     public const int SlotAmount = 3;
     [ReadOnly]public Slot[] Slots = new Slot[SlotAmount];
 
