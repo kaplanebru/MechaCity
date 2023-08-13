@@ -5,33 +5,39 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GridData : BaseTurnData //bizim sonrakine göndereceğimiz
+public class MatchData : BaseTurnData //bizim sonrakine göndereceğimiz
 {
-    public List<Tower> MainTowers = new();
-    public List<Tower> RivalTowers = new();
-    
-    public GameGridModel[] Grids = new GameGridModel[2];
+    public List<Tower> TargetTowers = new();
 }
 
-public class MatchHandler : BaseTurnHandler, ITurnActionHandler<GridData>
+public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 {
-    GridData gridData;
+    public BasePlayer currentPlayer;
+    public MatchData Data { get; private set; }
     public override void Subscribe()
     {
-        foreach (var grid in gridData.Grids)
+        Data = new();
+    }
+
+    public List<Tower> alteredTowers = new();
+    public List<Slot> activeSlots = new();
+
+    public override void ProcessTransferredData(BaseTurnData data) //(params object[] args)
+    {
+        var incomingData = (TowerGroupData)data;
+        alteredTowers = incomingData.TowerGroup;
+    }
+
+    void SetTargets()
+    {
+        for (int i = 0; i < alteredTowers.Count; i++)
         {
-            grid.Initialize();
+            //currentPlayer.Data.RivalData.Grid.Slots[alteredTowers[i].Data.Id]
         }
     }
 
     public override void Unsubscribe() {}
 
-    public GridData Data { get; private set; }
-    
-    //2 taraftan biri kale kaybedince çek edilebilir. Rematch şeklinde.
-    //Matches.Clear();
-
-   
 }
 
 public interface IMatchable<out TTeamData>
@@ -39,24 +45,18 @@ public interface IMatchable<out TTeamData>
     public TTeamData TeamData { get; }
     public Dictionary<int, int> Matches { get; set; }
 
-    void GetTargets()
-    {
-        // foreach (var VARIABLE in COLLECTION)
-        // {
-        //     
-        // }
-    }
+  
 
-    void SetTarget(Slot slot, GameGridModel otherGridModel)
+    void SetTarget(Slot slot, GameGrid otherGrid)
     {
-        for (int i = 0; i < GameGridModel.SlotAmount; i++)
+        for (int i = 0; i < GameGrid.SlotAmount; i++)
         {
             if(!slot.hasTower) continue;
             
             int number = slot.number - i;
             if (slot.rivalNumber >= 0)
             {
-                if (otherGridModel.Slots[number].hasTower)
+                if (otherGrid.Slots[number].hasTower)
                 {
                     Match(slot.number, number);
                     break;
@@ -64,9 +64,9 @@ public interface IMatchable<out TTeamData>
             }
 
             number = slot.number + i;
-            if (number < GameGridModel.SlotAmount)
+            if (number < GameGrid.SlotAmount)
             {
-                if (otherGridModel.Slots[number].hasTower)
+                if (otherGrid.Slots[number].hasTower)
                 {
                     Match(slot.number, number);
                     break;
