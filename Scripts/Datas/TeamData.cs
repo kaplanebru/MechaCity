@@ -6,6 +6,8 @@ namespace Datas
     public class TeamData : ScriptableObject
     {
         public Team Team;
+        public int Id;
+        public int RivalId;
         public Material DefaultMaterial;
         public Material SelectedMaterial;
     }

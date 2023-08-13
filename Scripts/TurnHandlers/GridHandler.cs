@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;using Datas;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -23,67 +23,53 @@ public class GridHandler : BaseTurnHandler, ITurnActionHandler<GridData>
         }
     }
 
-    public override void Unsubscribe()
-    {
-    }
+    public override void Unsubscribe() {}
 
     public GridData Data { get; private set; }
+    
+    //2 taraftan biri kale kaybedince çek edilebilir. Rematch şeklinde.
+    //Matches.Clear();
 
-
-    private int i = 0;
    
-    
-    // void SearchMatches(Slot slot, int pole, int i) // i=1
-    // {
-    //     if (slot.rivalNumber is < 0 or >= GameGrid.SlotAmount) return; bu iki caseden biri olursa diğerini aramayı bırakıyor
-    //
-    //     if (Grids[1].Slots[slot.rivalNumber].available) return;
-    //     
-    //     slot.rivalNumber += i * pole;
-    //     pole *= -1;
-    //     SearchMatches(slot, pole, i++);
-    //     
-    // }
-    
-    //rivalnumber'a da çevrilebilir
+}
 
-    void SearchPossibleMatches(Slot slot, GameGrid otherGrid) //bundaki sorun hiç rival yoksa ortaya çıkıyordu, son rivalNumber'a ateş etmek şeklinde
-                                                                //hasrival diye dict yapılabilirdi
+public interface IMatchable<out TTeamData>
+{
+    public TTeamData TeamData { get; }
+
+    void SearchMatches(Slot slot, GameGrid otherGrid)
     {
         for (int i = 0; i < GameGrid.SlotAmount; i++)
         {
-            int rivalNumber = slot.number - i;
+            if(!slot.hasTower) continue;
+            
+            int number = slot.number - i;
             if (slot.rivalNumber >= 0)
             {
-                if (otherGrid.Slots[rivalNumber].available)
+                if (otherGrid.Slots[number].hasTower)
                 {
-                    Match(slot.number, rivalNumber);
+                    
                     break;
                 }
             }
 
-            rivalNumber = slot.number + i;
-            if (rivalNumber < GameGrid.SlotAmount)
+            number = slot.number + i;
+            if (number < GameGrid.SlotAmount)
             {
-                if (otherGrid.Slots[rivalNumber].available)
+                if (otherGrid.Slots[number].hasTower)
                 {
-                    Match(slot.number, rivalNumber);
+                    Match(slot.number, number);
                     break;
                 }
             }
         }
     }
-    
-    //2 taraftan biri kale kaybedince çek edilebilir. Rematch şeklinde.
 
+
+    public Dictionary<int, int> PlayerMatches { get; set; }
     void Match(int number1, int number2)
     {
+        
     }
-
-
-    //bu ikisi restore grid phase'inde yapılabilir
-
-    void SwitchTurn()
-    {
-    }
+    
 }
