@@ -8,6 +8,7 @@ using UnityEngine;
 public class Slot
 {
     public bool hasTower;
-    public int number;
-    public int rivalNumber;
+    public int Number;
+    public List<int> Pairs = new();
+    public Tower Tower;
 }

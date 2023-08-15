@@ -7,32 +7,31 @@ using UnityEngine.Serialization;
 
 public class MatchData : BaseTurnData //bizim sonrakine göndereceğimiz
 {
-    public List<Tower> TargetTowers = new();
+    //yeni matchleri gönderebilir. Gerçi bunlar zaten slotun ya da towerın kendisinde ekli.
 }
 
 public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 {
-    public BasePlayer currentPlayer;
+    //public BasePlayer currentPlayer;
     public MatchData Data { get; private set; }
     public override void Subscribe()
     {
         Data = new();
     }
 
-    public List<Tower> alteredTowers = new();
-    public List<Slot> activeSlots = new();
+    public List<Tower> inactiveTowers = new();
 
     public override void ProcessTransferredData(BaseTurnData data) //(params object[] args)
     {
         var incomingData = (TowerGroupData)data;
-        alteredTowers = incomingData.TowerGroup;
+        inactiveTowers = incomingData.TowerGroup;
     }
 
     void SetTargets()
     {
-        for (int i = 0; i < alteredTowers.Count; i++)
+        for (int i = 0; i < inactiveTowers.Count; i++)
         {
-            //currentPlayer.Data.RivalData.Grid.Slots[alteredTowers[i].Data.Id]
+            //currentPlayer.Data.RivalData.Grid.Slots[inactiveTowers[i].Data.Id]
         }
     }
 
@@ -53,22 +52,22 @@ public interface IMatchable<out TTeamData>
         {
             if(!slot.hasTower) continue;
             
-            int number = slot.number - i;
-            if (slot.rivalNumber >= 0)
+            int number = slot.Number - i;
+            if (number >= 0)
             {
                 if (otherGrid.Slots[number].hasTower)
                 {
-                    Match(slot.number, number);
+                    Match(slot.Number, number);
                     break;
                 }
             }
 
-            number = slot.number + i;
+            number = slot.Number + i;
             if (number < GameGrid.SlotAmount)
             {
                 if (otherGrid.Slots[number].hasTower)
                 {
-                    Match(slot.number, number);
+                    Match(slot.Number, number);
                     break;
                 }
             }

@@ -18,7 +18,7 @@ public class GameGrid
     {
         for (int i = 0; i < SlotAmount; i++)
         {
-            Slots[i].number = i;
+            Slots[i].Number = i;
         }
     }
 }

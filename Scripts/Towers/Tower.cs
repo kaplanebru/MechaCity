@@ -33,6 +33,11 @@ public class Tower : MonoBehaviour
         mesh.material = mat;
     }
 
+    public void Attack(Tower other)
+    {
+        
+    }
+
     private void OnMouseDown()
     {
         Click();

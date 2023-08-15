@@ -11,6 +11,6 @@ namespace Datas
         public int Id;
         public float Height;
         public TeamData TeamData;
-        public List<Tower> TargetTowers;
+        public List<Tower> Pairs;
     }
 }
