@@ -51,13 +51,5 @@ public class TurnManager : MonoBehaviour
         // rivalPlayer = temp;
     }
 
-    void AttackTemp()
-    {
-        foreach (var slot in currentPlayer.Data.Grid.Slots)
-        {
-            slot.Tower.Fight(); //rivalPlayer.Data.Grid.Slots[slot.Pairs[0]].Tower
-        }
-    }
-
 }
     

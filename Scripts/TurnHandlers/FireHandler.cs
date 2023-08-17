@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Models;
 using UnityEngine;
 
 public class FireData : BaseTurnData
 {
-    public List<Pairs> FightingPairs = new();
+    public List<CombatPair> CombatPairs = new();
 }
 
 public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
@@ -14,44 +15,24 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     public override void Subscribe()
     {
         Data = new(); //Startta yapılabilir
-        Data.FightingPairs.Clear();
-        Eventbus.FireEvents.OnPairsOrdered += AddToPairsList;
+        Data.CombatPairs.Clear(); //sadece değişenlerin reoder edildiği dinamik bir sistem yapılabilir
+        
+        Eventbus.FireEvents.OnPairsOrdered += AddToFightingPairsList;
+        Eventbus.FireEvents.OnFireEnabled.Invoke();
     }
 
-    private void AddToPairsList(Pairs newPair)
+    private void AddToFightingPairsList(CombatPair newPair)
     {
-        Data.FightingPairs.Add(newPair);
+        Data.CombatPairs.Add(newPair);
     }
 
     void Fire()
     {
-        foreach (var pair in Data.FightingPairs)
-        {
-            pair.Perpetrator.Attack(pair.Victim);
-        }
+        Data.CombatPairs.ForEach(p=>p.Shoot());
     }
-
-    // void Fire()
-    // {
-    //     foreach (var tower in currentPlayer.Data.Towers)
-    //     {
-    //         tower.Fight();
-    //     }
-    // }
     
-    // void Fight(Tower tower1, Tower tower2)
-    // {
-    //     if (tower1.Data.Height > tower2.Data.Height)
-    //         tower2.Descend(tower1.Data.AttackAmount);
-    //     
-    //     else
-    //         tower1.Descend(tower2.Data.AttackAmount);
-    // }
-
-
-
     public override void Unsubscribe()
     {
-        Eventbus.FireEvents.OnPairsOrdered -= AddToPairsList;
+        Eventbus.FireEvents.OnPairsOrdered -= AddToFightingPairsList;
     }
 }

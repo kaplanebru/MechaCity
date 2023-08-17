@@ -4,12 +4,17 @@ using System.Collections.Generic;
 using Datas;
 using UnityEngine;
 using DG.Tweening;
+using Models;
 
 public class Tower : MonoBehaviour
 {
-     
     public TowerData Data;
     private MeshRenderer mesh;
+
+    private void OnEnable()
+    {
+        Eventbus.FireEvents.OnFireEnabled += OrderPairsByHeight;
+    }
 
     private void Start()
     {
@@ -32,25 +37,7 @@ public class Tower : MonoBehaviour
     {
         mesh.material = mat;
     }
-
-    public void Fight()
-    {
-        foreach (var other in Data.Pairs)
-        {
-            if (Data.Height > other.Data.Height)
-            {
-                other.Descend(Data.AttackAmount);
-                break;
-            }
-            
-            if(Data.Height < other.Data.Height)
-            {
-                Descend(other.Data.AttackAmount);
-            }
-        }
-    }
-
-
+    
     public void Attack(Tower victim)
     {
         //shooting anim
@@ -63,38 +50,15 @@ public class Tower : MonoBehaviour
         {
             if (Data.Height > other.Data.Height)
             {
-                Eventbus.FireEvents.OnPairsOrdered?.Invoke(new Pairs(this, other));
+                Eventbus.FireEvents.OnPairsOrdered?.Invoke(new CombatPair(this, other));
                 break;
             }
             
             if(Data.Height < other.Data.Height)
-                Eventbus.FireEvents.OnPairsOrdered?.Invoke(new Pairs(other, this));
-            
+                Eventbus.FireEvents.OnPairsOrdered?.Invoke(new CombatPair(other, this));
         }
     }
-
-    public List<Pairs> Pairs()
-    {
-        foreach (var other in Data.Pairs)
-        {
-            if (Data.Height > other.Data.Height)
-            {
-                //currentTower, other
-                return new List<Pairs> {new Pairs(this, other)};
-
-            }
-            
-            if(Data.Height < other.Data.Height)
-            {
-                //other, current
-                //other, current
-
-                Descend(other.Data.AttackAmount);
-            }
-        }
-        return null;
-    }
-
+    
     public void Descend(int amount)
     {
         Data.Height -= amount;
@@ -116,16 +80,11 @@ public class Tower : MonoBehaviour
     {
         Eventbus.TowerEvents.OnTowerClicked?.Invoke(this);
     }
-}
 
-public class Pairs
-{
-    public Tower Perpetrator { get; private set; }
-    public Tower Victim { get; private set; }
-
-    public Pairs(Tower _perpetrator, Tower _victim)
+    private void OnDisable()
     {
-        Perpetrator = _perpetrator;
-        Victim = _victim;
+        Eventbus.FireEvents.OnFireEnabled -= OrderPairsByHeight;
     }
 }
+
+

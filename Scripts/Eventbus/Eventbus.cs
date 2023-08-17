@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Models;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -20,7 +21,8 @@ public static class Eventbus
 
     public static class FireEvents
     {
-        public static Action<Pairs> OnPairsOrdered;
+        public static Action OnFireEnabled;
+        public static Action<CombatPair> OnPairsOrdered;
     }
     
     // public class SubscriptionModel
