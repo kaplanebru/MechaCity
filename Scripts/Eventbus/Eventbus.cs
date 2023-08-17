@@ -24,6 +24,11 @@ public static class Eventbus
         public static Action OnFireEnabled;
         public static Action<CombatPair> OnPairsOrdered;
     }
+
+    public static class TowerGroupEvents
+    {
+        public static Action OnTowersAltered;
+    }
     
     // public class SubscriptionModel
     // {

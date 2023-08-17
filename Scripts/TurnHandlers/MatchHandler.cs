@@ -19,19 +19,19 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         Data = new();
     }
 
-    public List<Tower> inactiveTowers = new();
+    public List<Tower> alteredTowers = new();
 
     public override void ProcessTransferredData(BaseTurnData data) //(params object[] args)
     {
         var incomingData = (TowerGroupData)data;
-        inactiveTowers = incomingData.TowerGroup;
+        alteredTowers = incomingData.TowerGroup;
     }
 
     void SetTargets()
     {
-        for (int i = 0; i < inactiveTowers.Count; i++)
+        for (int i = 0; i < alteredTowers.Count; i++)
         {
-            //currentPlayer.Data.RivalData.Grid.Slots[inactiveTowers[i].Data.Id]
+            //currentPlayer.Data.RivalData.Grid.Slots[alteredTowers[i].Data.Id]
         }
     }
 

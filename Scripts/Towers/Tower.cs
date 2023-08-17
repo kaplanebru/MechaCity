@@ -13,7 +13,7 @@ public class Tower : MonoBehaviour
 
     private void OnEnable()
     {
-        Eventbus.FireEvents.OnFireEnabled += OrderPairsByHeight;
+        Eventbus.FireEvents.OnFireEnabled += CreateCombatPairsByHeight;
     }
 
     private void Start()
@@ -26,6 +26,24 @@ public class Tower : MonoBehaviour
         mesh = GetComponentInChildren<MeshRenderer>();
         StartRise();
         SetColor(Data.TeamData.DefaultMaterial); 
+    }
+    
+    public void SetCombatPairs()
+    {
+        Data.CombatPairs.Clear();
+        int attackCounter = 0;
+        
+        foreach (var tower in Data.LinkedTowers)
+        {
+            if (attackCounter < Data.MaxAttackAmount && Data.Height > tower.Data.Height)
+            {
+                attackCounter++;
+                Data.CombatPairs.Add(new CombatPair(this, tower));
+            }
+            
+            else if(Data.Height < tower.Data.Height)
+                Data.CombatPairs.Add(new CombatPair(tower, this));
+        }
     }
 
     void StartRise()
@@ -41,20 +59,20 @@ public class Tower : MonoBehaviour
     public void Attack(Tower victim)
     {
         //shooting anim
-        victim.Descend(Data.AttackAmount);
+        victim.Descend(Data.AttackPower);
     }
 
-    void OrderPairsByHeight()
+    void CreateCombatPairsByHeight()
     {
-        foreach (var other in Data.Pairs)
+        int attackCounter = 0;
+        foreach (var other in Data.LinkedTowers)
         {
-            if (Data.Height > other.Data.Height)
+            if (attackCounter < Data.MaxAttackAmount && Data.Height > other.Data.Height)
             {
                 Eventbus.FireEvents.OnPairsOrdered?.Invoke(new CombatPair(this, other));
-                break;
+                attackCounter++;
             }
-            
-            if(Data.Height < other.Data.Height)
+            else if(Data.Height < other.Data.Height)
                 Eventbus.FireEvents.OnPairsOrdered?.Invoke(new CombatPair(other, this));
         }
     }
@@ -83,7 +101,7 @@ public class Tower : MonoBehaviour
 
     private void OnDisable()
     {
-        Eventbus.FireEvents.OnFireEnabled -= OrderPairsByHeight;
+        Eventbus.FireEvents.OnFireEnabled -= CreateCombatPairsByHeight;
     }
 }
 

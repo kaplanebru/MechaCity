@@ -17,7 +17,13 @@ namespace Models
 
         public void Shoot()
         {
+            //if equal return;
             Perpetrator.Attack(Victim);
+        }
+
+        public bool FindTower(Tower newTower)
+        {
+            return Perpetrator == newTower || Victim == newTower;
         }
     }
 

@@ -11,6 +11,8 @@ using Object = UnityEngine.Object;
 public class TowerGroupData : BaseTurnData
 {
     public List<Tower> TowerGroup = new();
+    
+    //pairi tutalım towerda
     //tower id listesi de olabilir slotları yollamak için
 }
 
