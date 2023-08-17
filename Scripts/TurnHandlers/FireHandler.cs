@@ -6,7 +6,8 @@ using UnityEngine;
 public class FireData : BaseTurnData
 {
     public List<CombatPair> CombatPairs = new();
-    
+    public List<PassivePair> PassivePairs = new();
+
     public List<Tower> AlteredTowers = new();
 }
 
@@ -19,12 +20,15 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         Data = new(); //Startta yapılabilir
         //Data.CombatPairs.Clear(); //sadece değişenlerin reoder edildiği dinamik bir sistem yapılabilir
 
-        Eventbus.FireEvents.OnPairsOrdered += AddToFightingPairsList;
+        Eventbus.FireEvents.OnPairsAltered += AddToFightingPairsList;
+        Eventbus.FireEvents.OnEvenPairs += AddToPassivePairsList;
         //Eventbus.FireEvents.OnFireEnabled.Invoke();
         
         Fire();
     }
+
     
+
     public override void ProcessTransferredData(BaseTurnData data) //(params object[] args)
     {
         var incomingData = (TowerGroupData)data;
@@ -34,6 +38,11 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     private void AddToFightingPairsList(CombatPair newPair)
     {
         Data.CombatPairs.Add(newPair);
+    }
+    
+    private void AddToPassivePairsList(PassivePair evenPair)
+    {
+        Data.PassivePairs.Add(evenPair);
     }
 
     // void RestoreAlteredCombatPairs()
@@ -71,6 +80,7 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     
     public override void Unsubscribe()
     {
-        Eventbus.FireEvents.OnPairsOrdered -= AddToFightingPairsList;
+        Eventbus.FireEvents.OnPairsAltered -= AddToFightingPairsList;
+        Eventbus.FireEvents.OnEvenPairs -= AddToPassivePairsList;
     }
 }

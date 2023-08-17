@@ -69,11 +69,13 @@ public class Tower : MonoBehaviour
         {
             if (attackCounter < Data.MaxAttackAmount && Data.Height > other.Data.Height)
             {
-                Eventbus.FireEvents.OnPairsOrdered?.Invoke(new CombatPair(this, other));
+                Eventbus.FireEvents.OnPairsAltered?.Invoke(new CombatPair(this, other));
                 attackCounter++;
             }
             else if(Data.Height < other.Data.Height)
-                Eventbus.FireEvents.OnPairsOrdered?.Invoke(new CombatPair(other, this));
+                Eventbus.FireEvents.OnPairsAltered?.Invoke(new CombatPair(other, this));
+            else
+                Eventbus.FireEvents.OnEvenPairs?.Invoke(new PassivePair(this, other));
         }
     }
     

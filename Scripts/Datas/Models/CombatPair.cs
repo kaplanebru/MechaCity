@@ -9,6 +9,8 @@ namespace Models
         public Tower Perpetrator { get; }
         public Tower Victim { get; }
 
+        public bool isEven = false;
+
         public CombatPair(Tower _perpetrator, Tower _victim)
         {
             Perpetrator = _perpetrator;
@@ -17,7 +19,7 @@ namespace Models
 
         public void Shoot()
         {
-            //if equal return;
+            if (isEven) return;
             Perpetrator.Attack(Victim);
         }
 
