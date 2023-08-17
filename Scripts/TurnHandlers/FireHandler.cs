@@ -6,7 +6,6 @@ using UnityEngine;
 public class FireData : BaseTurnData
 {
     public List<CombatPair> CombatPairs = new();
-    public List<PassivePair> PassivePairs = new();
 
     public List<Tower> AlteredTowers = new();
 }
@@ -21,7 +20,6 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         //Data.CombatPairs.Clear(); //sadece değişenlerin reoder edildiği dinamik bir sistem yapılabilir
 
         Eventbus.FireEvents.OnPairsAltered += AddToFightingPairsList;
-        Eventbus.FireEvents.OnEvenPairs += AddToPassivePairsList;
         //Eventbus.FireEvents.OnFireEnabled.Invoke();
         
         Fire();
@@ -40,10 +38,7 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         Data.CombatPairs.Add(newPair);
     }
     
-    private void AddToPassivePairsList(PassivePair evenPair)
-    {
-        Data.PassivePairs.Add(evenPair);
-    }
+   
 
     // void RestoreAlteredCombatPairs()
     // {
@@ -81,6 +76,6 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     public override void Unsubscribe()
     {
         Eventbus.FireEvents.OnPairsAltered -= AddToFightingPairsList;
-        Eventbus.FireEvents.OnEvenPairs -= AddToPassivePairsList;
+       
     }
 }

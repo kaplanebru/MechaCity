@@ -75,7 +75,7 @@ public class Tower : MonoBehaviour
             else if(Data.Height < other.Data.Height)
                 Eventbus.FireEvents.OnPairsAltered?.Invoke(new CombatPair(other, this));
             else
-                Eventbus.FireEvents.OnEvenPairs?.Invoke(new PassivePair(this, other));
+                Eventbus.FireEvents.OnPairsAltered?.Invoke(new CombatPair(this, other, true));
         }
     }
     

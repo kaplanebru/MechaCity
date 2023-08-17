@@ -9,17 +9,18 @@ namespace Models
         public Tower Perpetrator { get; }
         public Tower Victim { get; }
 
-        public bool isEven = false;
+        public bool IsEven { get; }
 
-        public CombatPair(Tower _perpetrator, Tower _victim)
+        public CombatPair(Tower _perpetrator, Tower _victim, bool isEven = false)
         {
             Perpetrator = _perpetrator;
             Victim = _victim;
+            IsEven = isEven;
         }
 
         public void Shoot()
         {
-            if (isEven) return;
+            if (IsEven) return;
             Perpetrator.Attack(Victim);
         }
 
