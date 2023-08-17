@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Models;
 using UnityEngine;
 
 public class FireData : BaseTurnData
 {
     public List<CombatPair> CombatPairs = new();
-
     public List<Tower> AlteredTowers = new();
 }
 
@@ -17,27 +17,52 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     public override void Subscribe()
     {
         Data = new(); //Startta yapılabilir
-        //Data.CombatPairs.Clear(); //sadece değişenlerin reoder edildiği dinamik bir sistem yapılabilir
-
-        Eventbus.FireEvents.OnPairsAltered += AddToFightingPairsList;
-        //Eventbus.FireEvents.OnFireEnabled.Invoke();
         
+        RemoveAlteredCombatPairs();
+        Eventbus.FireEvents.OnPairsAltered += AddToCombatPairs;
+
         Fire();
     }
-
     
-
     public override void ProcessTransferredData(BaseTurnData data) //(params object[] args)
     {
         var incomingData = (TowerGroupData)data;
         Data.AlteredTowers = incomingData.TowerGroup;
     }
 
-    private void AddToFightingPairsList(CombatPair newPair)
+    private void AddToCombatPairs( List<CombatPair> newPairs)
     {
-        Data.CombatPairs.Add(newPair);
+        Data.CombatPairs.AddRange(newPairs);
+    }
+
+    void RemoveAlteredCombatPairs()
+    {
+        foreach (var alteredTower in Data.AlteredTowers)
+        {
+            Data.CombatPairs.RemoveAll(pair => pair.Contains(alteredTower));
+        }
     }
     
+    void Fire()
+    {
+        Data.CombatPairs.ForEach(p=>p.Shoot());
+    }
+    
+    public override void Unsubscribe()
+    {
+        Eventbus.FireEvents.OnPairsAltered -= AddToCombatPairs;
+    }
+    
+    // foreach (var alteredTower in Data.AlteredTowers)
+    // {
+    //     foreach (var pair in Data.CombatPairs)
+    //     {
+    //         if (pair.Contains(alteredTower))
+    //         {
+    //             Data.CombatPairs.Remove(pair);
+    //         }
+    //     }
+    // }
    
 
     // void RestoreAlteredCombatPairs()
@@ -60,7 +85,7 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     //     {
     //         foreach (var tower in Data.AlteredTowers)
     //         {
-    //             if (!Data.CombatPairs[i].FindTower(tower)) continue;
+    //             if (!Data.CombatPairs[i].HasTower(tower)) continue;
     //             
     //             Data.CombatPairs.Remove(Data.CombatPairs[i]);
     //             break;
@@ -68,14 +93,5 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     //     }
     // }
 
-    void Fire()
-    {
-        Data.CombatPairs.ForEach(p=>p.Shoot());
-    }
-    
-    public override void Unsubscribe()
-    {
-        Eventbus.FireEvents.OnPairsAltered -= AddToFightingPairsList;
-       
-    }
+   
 }

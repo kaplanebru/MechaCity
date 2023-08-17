@@ -24,7 +24,7 @@ namespace Models
             Perpetrator.Attack(Victim);
         }
 
-        public bool FindTower(Tower newTower)
+        public bool Contains(Tower newTower)
         {
             return Perpetrator == newTower || Victim == newTower;
         }

@@ -64,19 +64,24 @@ public class Tower : MonoBehaviour
 
     void CreateCombatPairsByHeight()
     {
+        List<CombatPair> combatPairs = new();
         int attackCounter = 0;
+        
         foreach (var other in Data.LinkedTowers)
         {
             if (attackCounter < Data.MaxAttackAmount && Data.Height > other.Data.Height)
             {
-                Eventbus.FireEvents.OnPairsAltered?.Invoke(new CombatPair(this, other));
+                combatPairs.Add(new CombatPair(this, other));
                 attackCounter++;
             }
             else if(Data.Height < other.Data.Height)
-                Eventbus.FireEvents.OnPairsAltered?.Invoke(new CombatPair(other, this));
+                combatPairs.Add(new CombatPair(other, this));
             else
-                Eventbus.FireEvents.OnPairsAltered?.Invoke(new CombatPair(this, other, true));
+                combatPairs.Add(new CombatPair(other, this, true));
         }
+
+        if (combatPairs.Count == 0) return;
+        Eventbus.FireEvents.OnPairsAltered?.Invoke(combatPairs);
     }
     
     public void Descend(int amount)
