@@ -9,6 +9,8 @@ using Models;
 public class Tower : MonoBehaviour
 {
     public TowerData Data;
+    public int bulletAmount;
+    
     private MeshRenderer mesh;
 
     private void OnEnable()
@@ -28,7 +30,6 @@ public class Tower : MonoBehaviour
         SetColor(Data.TeamData.DefaultMaterial); 
     }
     
-
     void StartRise()
     {
         transform.DOScaleY(Data.Height, 1);
@@ -45,6 +46,16 @@ public class Tower : MonoBehaviour
         victim.Descend(Data.DamagePower);
     }
 
+    void SpendBullet()
+    {
+        bulletAmount--;
+    }
+
+    void ResetBullet()
+    {
+        bulletAmount = Data.MaxBullet;
+    }
+
     int bulletCounter = 0;
     void CreateCombatPairsByHeight()
     {
@@ -53,7 +64,7 @@ public class Tower : MonoBehaviour
         
         foreach (var other in Data.LinkedTowers)
         {
-            if (bulletCounter < Data.Bullet && Data.Height > other.Data.Height)
+            if (bulletCounter < Data.MaxBullet && Data.Height > other.Data.Height)
             {
                 combatPairs.Add(new CombatPair(this, other));
                 bulletCounter++;
@@ -70,7 +81,7 @@ public class Tower : MonoBehaviour
 
     void CombatPairByHeight(Tower other, List<CombatPair> combatPairs)
     {
-        if (bulletCounter < Data.Bullet && Data.Height > other.Data.Height)
+        if (bulletCounter < Data.MaxBullet && Data.Height > other.Data.Height)
         {
             combatPairs.Add(new CombatPair(this, other));
             bulletCounter++;

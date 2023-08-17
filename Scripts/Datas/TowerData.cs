@@ -12,7 +12,7 @@ namespace Datas
         public int Id;
         public float Height;
         public int DamagePower = 1;
-        public int Bullet = 1;
+        public int MaxBullet = 1;
         public TeamData TeamData;
         public List<Tower> LinkedTowers;
     }

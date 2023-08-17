@@ -36,9 +36,10 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         Data.CombatPairs.AddRange(newPairs);
     }
 
-    private void AddCombatPair(CombatPair newPair)
+    private void SelectCombatPair(CombatPair newPair)
     {
-        Data.CombatPairs.Add(newPair);
+        if(newPair.Perpetrator.bulletAmount>0)
+            Data.CombatPairs.Add(newPair);
     }
 
     void RemoveAlteredCombatPairs()
@@ -61,19 +62,14 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     
     void CreateCombatPairsByHeight(Tower tower)
     {
-        int attackCounter = 0;
-        
         foreach (var other in tower.Data.LinkedTowers)
         {
-            if (attackCounter < tower.Data.Bullet && tower.Data.Height > other.Data.Height)
-            {
-                AddCombatPair(new CombatPair(tower, other));
-                attackCounter++;
-            }
+            if (tower.Data.Height > other.Data.Height)
+                SelectCombatPair(new CombatPair(tower, other));
             else if(tower.Data.Height < other.Data.Height)
-                AddCombatPair(new CombatPair(other, tower));
+                SelectCombatPair(new CombatPair(other, tower));
             else
-                AddCombatPair(new CombatPair(other, tower, true));
+                SelectCombatPair(new CombatPair(other, tower, true));
         }
     }
 }
