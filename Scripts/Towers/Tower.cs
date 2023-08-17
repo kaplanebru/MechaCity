@@ -28,23 +28,6 @@ public class Tower : MonoBehaviour
         SetColor(Data.TeamData.DefaultMaterial); 
     }
     
-    public void SetCombatPairs()
-    {
-        Data.CombatPairs.Clear();
-        int attackCounter = 0;
-        
-        foreach (var tower in Data.LinkedTowers)
-        {
-            if (attackCounter < Data.MaxAttackAmount && Data.Height > tower.Data.Height)
-            {
-                attackCounter++;
-                Data.CombatPairs.Add(new CombatPair(this, tower));
-            }
-            
-            else if(Data.Height < tower.Data.Height)
-                Data.CombatPairs.Add(new CombatPair(tower, this));
-        }
-    }
 
     void StartRise()
     {
@@ -59,20 +42,21 @@ public class Tower : MonoBehaviour
     public void Attack(Tower victim)
     {
         //shooting anim
-        victim.Descend(Data.AttackPower);
+        victim.Descend(Data.DamagePower);
     }
 
+    int bulletCounter = 0;
     void CreateCombatPairsByHeight()
     {
         List<CombatPair> combatPairs = new();
-        int attackCounter = 0;
+        bulletCounter = 0;
         
         foreach (var other in Data.LinkedTowers)
         {
-            if (attackCounter < Data.MaxAttackAmount && Data.Height > other.Data.Height)
+            if (bulletCounter < Data.Bullet && Data.Height > other.Data.Height)
             {
                 combatPairs.Add(new CombatPair(this, other));
-                attackCounter++;
+                bulletCounter++;
             }
             else if(Data.Height < other.Data.Height)
                 combatPairs.Add(new CombatPair(other, this));
@@ -82,6 +66,20 @@ public class Tower : MonoBehaviour
 
         if (combatPairs.Count == 0) return;
         Eventbus.FireEvents.OnPairsAltered?.Invoke(combatPairs);
+    }
+
+    void CombatPairByHeight(Tower other, List<CombatPair> combatPairs)
+    {
+        if (bulletCounter < Data.Bullet && Data.Height > other.Data.Height)
+        {
+            combatPairs.Add(new CombatPair(this, other));
+            bulletCounter++;
+        }
+        
+        else if(Data.Height < other.Data.Height)
+            combatPairs.Add(new CombatPair(other, this));
+        else
+            combatPairs.Add(new CombatPair(other, this, true));
     }
     
     public void Descend(int amount)

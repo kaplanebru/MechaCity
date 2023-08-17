@@ -19,7 +19,8 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         Data = new(); //Startta yapılabilir
         
         RemoveAlteredCombatPairs();
-        Eventbus.FireEvents.OnPairsAltered += AddToCombatPairs;
+        Data.AlteredTowers.ForEach(CreateCombatPairsByHeight);
+        //Eventbus.FireEvents.OnPairsAltered += AddToCombatPairs;
 
         Fire();
     }
@@ -33,6 +34,11 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     private void AddToCombatPairs( List<CombatPair> newPairs)
     {
         Data.CombatPairs.AddRange(newPairs);
+    }
+
+    private void AddCombatPair(CombatPair newPair)
+    {
+        Data.CombatPairs.Add(newPair);
     }
 
     void RemoveAlteredCombatPairs()
@@ -53,45 +59,21 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         Eventbus.FireEvents.OnPairsAltered -= AddToCombatPairs;
     }
     
-    // foreach (var alteredTower in Data.AlteredTowers)
-    // {
-    //     foreach (var pair in Data.CombatPairs)
-    //     {
-    //         if (pair.Contains(alteredTower))
-    //         {
-    //             Data.CombatPairs.Remove(pair);
-    //         }
-    //     }
-    // }
-   
-
-    // void RestoreAlteredCombatPairs()
-    // {
-    //     foreach (var tower in Data.AlteredTowers)
-    //     {
-    //         foreach (var combatPair in tower.Data.CombatPairs)
-    //         {
-    //             Data.CombatPairs.Remove(combatPair);
-    //             tower.SetCombatPairs();
-    //             Data.CombatPairs.Add(combatPair);
-    //         }
-    //         //Data.CombatPairs.RemoveAll(cp => tower.Data.CombatPairs.Contains(cp));
-    //     }
-    // }
-
-    // void ReorderAlteredTowers() //buna gerek yok ya, pairi çıkarıcaz zaten.
-    // {
-    //     for (int i = Data.CombatPairs.Count - 1; i >= 0; i--)
-    //     {
-    //         foreach (var tower in Data.AlteredTowers)
-    //         {
-    //             if (!Data.CombatPairs[i].HasTower(tower)) continue;
-    //             
-    //             Data.CombatPairs.Remove(Data.CombatPairs[i]);
-    //             break;
-    //         }
-    //     }
-    // }
-
-   
+    void CreateCombatPairsByHeight(Tower tower)
+    {
+        int attackCounter = 0;
+        
+        foreach (var other in tower.Data.LinkedTowers)
+        {
+            if (attackCounter < tower.Data.Bullet && tower.Data.Height > other.Data.Height)
+            {
+                AddCombatPair(new CombatPair(tower, other));
+                attackCounter++;
+            }
+            else if(tower.Data.Height < other.Data.Height)
+                AddCombatPair(new CombatPair(other, tower));
+            else
+                AddCombatPair(new CombatPair(other, tower, true));
+        }
+    }
 }

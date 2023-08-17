@@ -11,12 +11,9 @@ namespace Datas
     {
         public int Id;
         public float Height;
-        public int AttackPower = 1;
-        public int MaxAttackAmount = 1;
+        public int DamagePower = 1;
+        public int Bullet = 1;
         public TeamData TeamData;
         public List<Tower> LinkedTowers;
-
-        public List<CombatPair> CombatPairs;
-        
     }
 }
