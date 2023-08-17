@@ -10,6 +10,7 @@ namespace Datas
     {
         public int Id;
         public float Height;
+        public int AttackAmount = 1;
         public TeamData TeamData;
         public List<Tower> Pairs;
     }

@@ -17,6 +17,11 @@ public static class Eventbus
     {
         public static Action<bool> OnButtonCall;
     }
+
+    public static class FireEvents
+    {
+        public static Action<Pairs> OnPairsOrdered;
+    }
     
     // public class SubscriptionModel
     // {

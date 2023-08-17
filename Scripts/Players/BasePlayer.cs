@@ -9,7 +9,6 @@ using UnityEngine;
 public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : PlayerData
 {
     public PlayerData Data;
-    public List<Tower> Towers = new();
 
     private void Start()
     {
@@ -18,9 +17,9 @@ public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour w
 
     void EnumerateAllTowers()
     {
-        for (int i = 0; i < Towers.Count; i++)
+        for (int i = 0; i < Data.Towers.Count; i++)
         {
-            Towers[i].Data.Id = i;
+            Data.Towers[i].Data.Id = i;
         }
     }
 }

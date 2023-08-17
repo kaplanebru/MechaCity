@@ -25,6 +25,8 @@ public class TurnManager : MonoBehaviour
         {
             BaseTurnHandler currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
+            
+            currentTurnHandler.SetPlayers(currentPlayer, rivalPlayer);
 
             GetTransferredData(i, currentTurnHandler);
 
@@ -53,7 +55,7 @@ public class TurnManager : MonoBehaviour
     {
         foreach (var slot in currentPlayer.Data.Grid.Slots)
         {
-            slot.Tower.Attack(rivalPlayer.Data.Grid.Slots[slot.Pairs[0]].Tower);
+            slot.Tower.Fight(); //rivalPlayer.Data.Grid.Slots[slot.Pairs[0]].Tower
         }
     }
 

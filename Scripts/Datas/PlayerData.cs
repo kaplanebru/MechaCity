@@ -9,6 +9,7 @@ namespace Datas
     public class PlayerData : ScriptableObject
     {
         public GameGrid Grid;
+        public List<Tower> Towers = new();
         public PlayerData RivalData;
     }
 }
