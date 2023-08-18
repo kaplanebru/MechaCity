@@ -18,26 +18,25 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     {
         Data = new(); //Startta yapılabilir
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
-        
+
         RemoveAlteredCombatPairs();
         Data.AlteredTowers.ForEach(CreateCombatPairsByHeight);
 
         Fire();
     }
-    
+
     public override void ProcessTransferredData(BaseTurnData data)
     {
-        var incomingData = (TowerGroupData)data;
+        var incomingData = (TowerGroupData) data;
         Data.AlteredTowers = incomingData.TowerGroup;
     }
-    
+
     void Fire()
     {
-        Data.CombatPairs.ForEach(p=>p.Combat()); 
-        
+        Data.CombatPairs.ForEach(p => p.Combat());
+
         //bullet anim.OnComplete:
         //Heighte göre Dotween eklenir
-        
     }
 
     void CreateCombatPairsByHeight(Tower tower)
@@ -46,29 +45,28 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
 
         foreach (var other in tower.Data.LinkedTowers)
         {
-            if (tower.Data.Height > other.Data.Height)
+            if (tower.bulletAmount > 0 && tower.Data.Height > other.Data.Height)
             {
-                AddCombatPair(new CombatPair(tower, other));
+                Data.CombatPairs.Add(new CombatPair(tower, other));
                 tower.bulletAmount--;
             }
-            else if (tower.Data.Height < other.Data.Height)
+
+            else if (other.bulletAmount > 0 && other.Data.Height > tower.Data.Height)
             {
-                AddCombatPair(new CombatPair(other, tower));
+                Data.CombatPairs.Add(new CombatPair(other, tower));
                 other.bulletAmount--;
             }
+            
             else
-                AddCombatPair(new CombatPair(other, tower, true));
+                Data.CombatPairs.Add(new CombatPair(other, tower, true));
         }
     }
+
     void OrderLinkedTowersByDistance(Tower tower)
     {
         //slot id'ye göre de dizilebilir.
-        tower.Data.LinkedTowers = tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.Id-other.Data.Id)).ToList();
-    }
-    private void AddCombatPair(CombatPair newPair)
-    {
-        if (newPair.Perpetrator.bulletAmount > 0) 
-            Data.CombatPairs.Add(newPair);
+        tower.Data.LinkedTowers =
+            tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.Id - other.Data.Id)).ToList();
     }
     
     void RemoveAlteredCombatPairs()
@@ -78,6 +76,8 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
             Data.CombatPairs.RemoveAll(pair => pair.Contains(alteredTower));
         }
     }
-    
-    public override void Unsubscribe() {}
+
+    public override void Unsubscribe()
+    {
+    }
 }
