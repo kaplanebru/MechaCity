@@ -20,7 +20,7 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
 
         RemoveAlteredCombatPairs();
-        Data.AlteredTowers.ForEach(CreateCombatPairsByHeight);
+        Data.AlteredTowers.ForEach(CreateCombatPairByHeight);
 
         Fire();
     }
@@ -39,28 +39,27 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         //Heighte göre Dotween eklenir
     }
 
-    void CreateCombatPairsByHeight(Tower tower)
+    void CreateCombatPairByHeight(Tower tower)
     {
         OrderLinkedTowersByDistance(tower);
 
         foreach (var other in tower.Data.LinkedTowers)
         {
-            if (tower.bulletAmount > 0 && tower.Data.Height > other.Data.Height)
+            if (tower.Data.Height > other.Data.Height && tower.bulletAmount>0)
             {
                 Data.CombatPairs.Add(new CombatPair(tower, other));
                 tower.bulletAmount--;
             }
-
-            else if (other.bulletAmount > 0 && other.Data.Height > tower.Data.Height)
+            else if (other.Data.Height > tower.Data.Height && other.bulletAmount > 0)
             {
                 Data.CombatPairs.Add(new CombatPair(other, tower));
                 other.bulletAmount--;
             }
-            
             else
                 Data.CombatPairs.Add(new CombatPair(other, tower, true));
         }
     }
+    
 
     void OrderLinkedTowersByDistance(Tower tower)
     {
