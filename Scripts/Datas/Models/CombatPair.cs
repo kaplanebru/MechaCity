@@ -17,16 +17,15 @@ namespace Models
             Victim = _victim;
             IsEven = isEven;
         }
-
-        public void Shoot()
-        {
-            if (IsEven) return;
-            Perpetrator.Attack(Victim);
-        }
-
+        
         public bool Contains(Tower newTower)
         {
             return Perpetrator == newTower || Victim == newTower;
+        }
+        public void Combat()
+        {
+            if (IsEven) return;
+            Victim.Descend(Perpetrator.Data.DamagePower);
         }
     }
 

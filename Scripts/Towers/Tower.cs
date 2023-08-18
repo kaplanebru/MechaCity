@@ -15,9 +15,8 @@ public class Tower : MonoBehaviour
 
     private void OnEnable()
     {
-        Eventbus.FireEvents.OnFireEnabled += CreateCombatPairsByHeight;
+        Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
     }
-
     private void Start()
     {
         Setup();
@@ -40,59 +39,11 @@ public class Tower : MonoBehaviour
         mesh.material = mat;
     }
     
-    public void Attack(Tower victim)
-    {
-        //shooting anim
-        victim.Descend(Data.DamagePower);
-    }
-
-    void SpendBullet()
-    {
-        bulletAmount--;
-    }
-
-    void ResetBullet()
+    private void RestoreBullets()
     {
         bulletAmount = Data.MaxBullet;
     }
 
-    int bulletCounter = 0;
-    void CreateCombatPairsByHeight()
-    {
-        List<CombatPair> combatPairs = new();
-        bulletCounter = 0;
-        
-        foreach (var other in Data.LinkedTowers)
-        {
-            if (bulletCounter < Data.MaxBullet && Data.Height > other.Data.Height)
-            {
-                combatPairs.Add(new CombatPair(this, other));
-                bulletCounter++;
-            }
-            else if(Data.Height < other.Data.Height)
-                combatPairs.Add(new CombatPair(other, this));
-            else
-                combatPairs.Add(new CombatPair(other, this, true));
-        }
-
-        if (combatPairs.Count == 0) return;
-        Eventbus.FireEvents.OnPairsAltered?.Invoke(combatPairs);
-    }
-
-    void CombatPairByHeight(Tower other, List<CombatPair> combatPairs)
-    {
-        if (bulletCounter < Data.MaxBullet && Data.Height > other.Data.Height)
-        {
-            combatPairs.Add(new CombatPair(this, other));
-            bulletCounter++;
-        }
-        
-        else if(Data.Height < other.Data.Height)
-            combatPairs.Add(new CombatPair(other, this));
-        else
-            combatPairs.Add(new CombatPair(other, this, true));
-    }
-    
     public void Descend(int amount)
     {
         Data.Height -= amount;
@@ -117,7 +68,7 @@ public class Tower : MonoBehaviour
 
     private void OnDisable()
     {
-        Eventbus.FireEvents.OnFireEnabled -= CreateCombatPairsByHeight;
+        Eventbus.FireEvents.OnFireEnabled -= RestoreBullets;
     }
 }
 
