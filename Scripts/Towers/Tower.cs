@@ -8,15 +8,27 @@ using Models;
 
 public class Tower : MonoBehaviour
 {
-    public TowerData Data;
-    public int bulletAmount;
+    //Shooter, RiserFall, Selectable Components diye 3'e ayrılabilir
     
+    public TowerData Data;
     private MeshRenderer mesh;
-
+    private int bulletAmount;
+    public bool CanShoot { get; private set; }
+    public int BulletAmount
+    {
+        get => bulletAmount;
+        set
+        {
+            bulletAmount = value;
+            CanShoot = value > 0;
+        }
+    }
+    
     private void OnEnable()
     {
         Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
     }
+
     private void Start()
     {
         Setup();
@@ -26,9 +38,9 @@ public class Tower : MonoBehaviour
     {
         mesh = GetComponentInChildren<MeshRenderer>();
         StartRise();
-        SetColor(Data.TeamData.DefaultMaterial); 
+        SetColor(Data.TeamData.DefaultMaterial);
     }
-    
+
     void StartRise()
     {
         transform.DOScaleY(Data.Height, 1);
@@ -38,10 +50,10 @@ public class Tower : MonoBehaviour
     {
         mesh.material = mat;
     }
-    
+
     private void RestoreBullets()
     {
-        bulletAmount = Data.MaxBullet;
+        BulletAmount = Data.MaxBullet;
     }
 
     public void Descend(int amount)
@@ -71,5 +83,3 @@ public class Tower : MonoBehaviour
         Eventbus.FireEvents.OnFireEnabled -= RestoreBullets;
     }
 }
-
-

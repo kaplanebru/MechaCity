@@ -47,15 +47,15 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         {
             if (tower.Data.Height > other.Data.Height)
             {
-                if(tower.bulletAmount == 0) continue;
+                if(!tower.CanShoot) continue;
                 Data.CombatPairs.Add(new CombatPair(tower, other));
-                tower.bulletAmount--;
+                tower.BulletAmount--;
             }
             else if (other.Data.Height > tower.Data.Height)
             {
-                if(other.bulletAmount == 0) continue;
+                if(!other.CanShoot) continue;
                 Data.CombatPairs.Add(new CombatPair(other, tower));
-                other.bulletAmount--;
+                other.BulletAmount--;
             }
             else
                 Data.CombatPairs.Add(new CombatPair(other, tower, true));
