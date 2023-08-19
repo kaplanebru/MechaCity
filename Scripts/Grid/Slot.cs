@@ -9,6 +9,5 @@ public class Slot
 {
     public bool hasTower;
     public int Number;
-    public List<int> Pairs = new();
     public Tower Tower;
 }

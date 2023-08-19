@@ -10,7 +10,7 @@ namespace Datas
     [Serializable]
     public class PlayerData //: ScriptableObject
     {
-        //public GameGrid Grid;
+        public GameGrid Grid;
         public List<Tower> Towers = new();
         public Transform TowersPrefab;
         //public PlayerData RivalData;

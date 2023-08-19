@@ -12,7 +12,6 @@ public class MatchData : BaseTurnData //bizim sonrakine göndereceğimiz
 
 public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 {
-    //public BasePlayer currentPlayer;
     public MatchData Data { get; private set; }
     public override void OnHandlerEnabled()
     {
@@ -30,13 +29,37 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         var incomingData = (TowerGroupData)data;
         alteredTowers = incomingData.TowerGroup;
     }
+    
+    // void MatchTowers(int number1, int number2)
+    // {
+    //     //currentPlayer.Data.Grid.Slots[number1].Tower.Data.LinkedTowers.Add(rivalPlayer.Data.Grid.Slots[number2].Tower);
+    //     
+    // }
 
-    void SetTargets()
+    void LinkTowers(Tower tower1, Tower tower2)
     {
-        for (int i = 0; i < alteredTowers.Count; i++)
+        if(!tower1.Data.LinkedTowers.Contains(tower2))
+            tower1.Data.LinkedTowers.Add(tower2);
+    }
+
+    void CheckSlots(int number, Slot slot, GameGrid otherGrid)
+    {
+        if (number < 0 || number == GameGrid.SlotAmount) return;
+        var rivalSlot = otherGrid.Slots[number];
+        if (rivalSlot.hasTower)
         {
-            //currentPlayer.Data.RivalData.Grid.Slots[alteredTowers[i].Data.Id]
+            LinkTowers(slot.Tower, rivalSlot.Tower);
         }
+        else
+        {
+            if (otherGrid.Slots[number - 1].hasTower || otherGrid.Slots[number + 1].hasTower)
+            {
+                //LinkTowers();
+                //counter: eğer tek eşleme yapacak olsaydık counter>0 olunca break derdik.
+            }
+                
+        }
+            
     }
 
     public override void Unsubscribe() {}
@@ -49,32 +72,48 @@ public interface IMatchable<out TTeamData>
     public Dictionary<int, int> Matches { get; set; }
 
   
+    // void MatchSlots(GameGrid otherGrid, int slotNumber, Slot slot)
+    // {
+    //     if (slotNumber < 0 || slotNumber == GameGrid.SlotAmount) return;
+    //     if (otherGrid.Slots[slotNumber].hasTower)
+    //         slot.rivalSlotNumber = slotNumber;
+    //     else
+    //     {
+    //         MatchSlots(otherGrid, slotNumber-1, slot);
+    //         MatchSlots(otherGrid, slotNumber+1, slot);
+    //     }
+    // }
 
-    void SetTarget(Slot slot, GameGrid otherGrid)
+
+    void UpdateLinkedTowers(Slot slot, int deadNumber, GameGrid otherGrid)
     {
-        for (int i = 0; i < GameGrid.SlotAmount; i++)
+        //if (!slot.hasTower) return;
+        
+        for (int i = 0; i < GameGrid.SlotAmount-1; i++)
         {
-            if(!slot.hasTower) continue;
-            
-            int number = slot.Number - i;
+            int counter = 0;
+            int number = deadNumber - i;
             if (number >= 0)
             {
                 if (otherGrid.Slots[number].hasTower)
                 {
                     Match(slot.Number, number);
-                    break;
+                    counter++;
                 }
+                    
             }
 
-            number = slot.Number + i;
+            number = deadNumber + i;
             if (number < GameGrid.SlotAmount)
             {
                 if (otherGrid.Slots[number].hasTower)
                 {
                     Match(slot.Number, number);
-                    break;
+                    counter++;
                 }
             }
+            
+            if(counter>0) break;
         }
     }
 
@@ -82,7 +121,6 @@ public interface IMatchable<out TTeamData>
     
     void Match(int number1, int number2)
     {
-        
     }
     
 }
