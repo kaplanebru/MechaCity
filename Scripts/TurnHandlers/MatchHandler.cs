@@ -14,9 +14,13 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 {
     //public BasePlayer currentPlayer;
     public MatchData Data { get; private set; }
-    public override void Subscribe()
+    public override void OnHandlerEnabled()
     {
         Data = new();
+    }
+
+    public override void Setup()
+    {
     }
 
     public List<Tower> alteredTowers = new();

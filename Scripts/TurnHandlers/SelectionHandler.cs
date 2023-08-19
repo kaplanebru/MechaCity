@@ -17,11 +17,15 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
     //learn how to serialize interface
     public SelectionData Data { get; private set; }
 
-    public override void Subscribe()
+    public override void OnHandlerEnabled()
     {
         Data = new();
         Data.SelectionGroup.Clear();
         Eventbus.TowerEvents.OnTowerClicked += TowerClicked;
+    }
+
+    public override void Setup()
+    {
         ManageCompleteButton(false);
     }
 
@@ -50,7 +54,6 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
             Data.SelectionGroup.Remove(newTower);
 
         ManageCompleteButton(Data.SelectionGroup.Count == Data.MaxTowersInGroup);
-        print(Data.SelectionGroup.Count);
     }
 
     void ManageCompleteButton(bool enable)

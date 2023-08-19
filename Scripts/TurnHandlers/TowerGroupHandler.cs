@@ -20,10 +20,14 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
 {
     public TowerGroupData Data { get; private set; }
     
-    public override void Subscribe()
+    public override void OnHandlerEnabled()
     {
         Data = new();
         Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
+    }
+
+    public override void Setup()
+    {
     }
 
     public override void ProcessTransferredData(BaseTurnData data) //(params object[] args)

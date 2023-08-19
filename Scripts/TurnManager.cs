@@ -9,15 +9,30 @@ public class TurnManager : MonoBehaviour
 {
     BaseTurnHandler[] turnHandlers;
 
-    public BasePlayer[] players;
-    private BasePlayer currentPlayer;
-    private BasePlayer rivalPlayer;
+   
+    [SerializeField]private BasePlayer currentPlayer;
+    [SerializeField]private BasePlayer rivalPlayer;
 
     private void Start()
     {
         turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
-        InitializeFirstMatches();
+        DisableAllTurnHandlers();
+        InitializePlayers();
         StartCoroutine(nameof(TurnActionRoutine));
+    }
+
+    void DisableAllTurnHandlers()
+    {
+        foreach (var turnHandler in turnHandlers)
+        {
+            turnHandler.enabled = false;
+        }
+    }
+    void InitializePlayers()
+    {
+        currentPlayer.Initialize();
+        rivalPlayer.Initialize();
+        InitializeFirstMatches();
     }
     
     IEnumerator TurnActionRoutine()
@@ -30,11 +45,20 @@ public class TurnManager : MonoBehaviour
             currentTurnHandler.SetPlayers(currentPlayer, rivalPlayer);
 
             GetTransferredData(i, currentTurnHandler);
+            currentTurnHandler.Setup();
 
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
     }
-
+    
+    void GetTransferredData(int turnIndex, BaseTurnHandler currentTurnHandler)
+    {
+        if (turnIndex <= 0) return;
+        
+        var transferData = ((ITurnActionHandler<BaseTurnData>)turnHandlers[turnIndex - 1]).Data;
+        currentTurnHandler.ProcessTransferredData(transferData);
+    }
+    
     void InitializeFirstMatches() //Temporary
     {
         for (int i = 0; i < currentPlayer.Data.Towers.Count; i++)
@@ -42,14 +66,6 @@ public class TurnManager : MonoBehaviour
             currentPlayer.Data.Towers[i].Data.LinkedTowers.Add(rivalPlayer.Data.Towers[i]);
             rivalPlayer.Data.Towers[i].Data.LinkedTowers.Add(currentPlayer.Data.Towers[i]);
         }
-    }
-
-    void GetTransferredData(int turnIndex, BaseTurnHandler currentTurnHandler)
-    {
-        if (turnIndex <= 0) return;
-        
-        var transferData = ((ITurnActionHandler<BaseTurnData>)turnHandlers[turnIndex - 1]).Data;
-        currentTurnHandler.ProcessTransferredData(transferData);
     }
 
     void SwitchPlayers()

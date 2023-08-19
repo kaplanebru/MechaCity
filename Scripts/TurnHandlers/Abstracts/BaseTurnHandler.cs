@@ -12,7 +12,8 @@ public abstract class BaseTurnHandler : MonoBehaviour
     public BasePlayer currentPlayer;
     public BasePlayer rivalPlayer;
    
-    public abstract void Subscribe();
+    public abstract void OnHandlerEnabled();
+    public abstract void Setup();
     public abstract void Unsubscribe();
     
     public virtual void ProcessTransferredData(BaseTurnData data){}
@@ -20,7 +21,7 @@ public abstract class BaseTurnHandler : MonoBehaviour
     private void OnEnable()
     {
         turnAction = TurnAction.Started;
-        Subscribe();
+        OnHandlerEnabled();
     }
 
     public void CompleteAction()
