@@ -16,6 +16,7 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
+        InitializeFirstMatches();
         StartCoroutine(nameof(TurnActionRoutine));
     }
     
@@ -31,6 +32,15 @@ public class TurnManager : MonoBehaviour
             GetTransferredData(i, currentTurnHandler);
 
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
+        }
+    }
+
+    void InitializeFirstMatches() //Temporary
+    {
+        for (int i = 0; i < currentPlayer.Data.Towers.Count; i++)
+        {
+            currentPlayer.Data.Towers[i].Data.LinkedTowers.Add(rivalPlayer.Data.Towers[i]);
+            rivalPlayer.Data.Towers[i].Data.LinkedTowers.Add(currentPlayer.Data.Towers[i]);
         }
     }
 

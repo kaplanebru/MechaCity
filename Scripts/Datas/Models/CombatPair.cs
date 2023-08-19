@@ -26,6 +26,7 @@ namespace Models
         {
             if (IsEven) return;
             Victim.Descend(Perpetrator.Data.DamagePower);
+            //bunun yerine can gitmeli?
         }
     }
 

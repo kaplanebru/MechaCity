@@ -1,15 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Datas
 {
-    [CreateAssetMenu(fileName = nameof(PlayerData))]
+    //[CreateAssetMenu(fileName = nameof(PlayerData))]
 
-    public class PlayerData : ScriptableObject
+    [Serializable]
+    public class PlayerData //: ScriptableObject
     {
         public GameGrid Grid;
         public List<Tower> Towers = new();
-        public PlayerData RivalData;
+        //public PlayerData RivalData;
     }
 }
