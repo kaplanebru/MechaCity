@@ -13,31 +13,30 @@ public abstract class BaseTurnHandler : MonoBehaviour
     public BasePlayer rivalPlayer;
    
     public abstract void OnHandlerEnabled();
-    public abstract void Setup();
-    public abstract void Unsubscribe();
     
-    public virtual void ProcessTransferredData(BaseTurnData data){}
-
     private void OnEnable()
     {
         turnAction = TurnAction.Started;
         OnHandlerEnabled();
     }
-
+    
+    public virtual void ProcessTransferredData(BaseTurnData data){}
+    
+    public abstract void Setup();
+    
     public void CompleteAction()
     {
         turnAction = TurnAction.Completed;
         //Eventbus.TurnEvents.OnTurnActionEnded?.Invoke(DataToTransfer);
         enabled = false;
     }
-
     public void SetPlayers(BasePlayer _currentPlayer, BasePlayer _rivalPlayer)
     {
         currentPlayer = _currentPlayer;
         rivalPlayer = _rivalPlayer;
     }
     
-
+    public abstract void Unsubscribe();
     private void OnDisable()
     {
         Unsubscribe();

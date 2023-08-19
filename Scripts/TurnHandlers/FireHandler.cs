@@ -16,19 +16,8 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
 
     public override void OnHandlerEnabled()
     {
-        Data = new(); //Startta yapılabilir
-        //print("altered towers: " + Data.AlteredTowers.Count);
+        Data = new();
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
-
-        
-    }
-
-    public override void Setup()
-    {
-         RemoveAlteredCombatPairs();
-         Data.AlteredTowers.ForEach(CreateCombatPairByHeight);
-        
-         Fire();
     }
 
     public override void ProcessTransferredData(BaseTurnData data)
@@ -36,7 +25,14 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         var incomingData = (TowerGroupData) data;
         Data.AlteredTowers = incomingData.TowerGroup;
     }
-
+    public override void Setup()
+    {
+         RemoveAlteredCombatPairs();
+         Data.AlteredTowers.ForEach(CreateCombatPairByHeight);
+        
+         Fire();
+    }
+    
     void Fire()
     {
         Data.CombatPairs.ForEach(p => p.Combat());
@@ -84,7 +80,5 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         }
     }
 
-    public override void Unsubscribe()
-    {
-    }
+    public override void Unsubscribe() {}
 }
