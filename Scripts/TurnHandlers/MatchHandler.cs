@@ -95,17 +95,17 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         }
     }
 
-    void CheckLinkCondition(int number, Slot slot, GameGrid otherGrid, int counter)
-    {
-        if (number >= 0 && number < GameGrid.SlotAmount)
-        {
-            if (otherGrid.Slots[number].hasTower)
-            {
-                LinkTowers(slot.Tower, otherGrid.Slots[number].Tower);
-                counter++;
-            }
-        }
-    }
+    // void CheckLinkCondition(int number, Slot slot, GameGrid otherGrid, int counter)
+    // {
+    //     if (number >= 0 && number < GameGrid.SlotAmount)
+    //     {
+    //         if (otherGrid.Slots[number].hasTower)
+    //         {
+    //             LinkTowers(slot.Tower, otherGrid.Slots[number].Tower);
+    //             counter++;
+    //         }
+    //     }
+    // }
 
     public override void Unsubscribe() {}
 

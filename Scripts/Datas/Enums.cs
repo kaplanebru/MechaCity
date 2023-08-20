@@ -2,8 +2,8 @@ namespace Datas
 {
     public enum Team
     {
-        Player,
-        Enemy
+        Player1,
+        Player2
     }
 
     public enum TurnState
