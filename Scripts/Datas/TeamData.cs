@@ -7,7 +7,6 @@ namespace Datas
     {
         public Team Team;
         public int Id;
-        public int RivalId;
         public Material DefaultMaterial;
         public Material SelectedMaterial;
     }

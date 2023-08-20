@@ -10,9 +10,6 @@ using UnityEngine;
 public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : PlayerData
 {
     public PlayerData Data;
-
-   
-
     public void Initialize()
     {
         var towersPb = Instantiate(Data.TowersPrefab);

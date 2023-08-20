@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;using Datas;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,7 +8,9 @@ using UnityEngine.Serialization;
 
 public class MatchData : BaseTurnData //bizim sonrakine göndereceğimiz
 {
-    public List<Tower> deadTowers = new();
+    public List<Tower> DeadTowers = new();
+
+    public List<Tower> DetachedTowers = new();
     //yeni matchleri gönderebilir. Gerçi bunlar zaten slotun ya da towerın kendisinde ekli.
 }
 
@@ -22,14 +25,28 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     public override void ProcessTransferredData(BaseTurnData data)
     {
         var incomingData = (FireData)data;
-        Data.deadTowers = incomingData.DeadTowers;
+        Data.DeadTowers = incomingData.DeadTowers;
     }
     
     public override void Setup()
     {
-        //Data.deadTowers.ForEach();
+        //Data.DeadTowers.ForEach();
         //TODO: dead tower'a linked olanları bul, bunların slotlarını bul, othergrid 2 taraftan da biri olabilir, yani dead tower kimlerden bilmemiz lazım
         
+    }
+
+    void RematchOrphanTowers()
+    {
+        GetDetachedTowers();
+        
+    }
+
+    void GetDetachedTowers()
+    {
+        foreach (var deadTower in Data.DeadTowers)
+        {
+            Data.DetachedTowers.AddRange(deadTower.Data.LinkedTowers.Except(Data.DetachedTowers));
+        }
     }
 
     void LinkTowers(Tower tower1, Tower tower2)
@@ -75,6 +92,18 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
             }
             
             if(counter>0) break;
+        }
+    }
+
+    void CheckLinkCondition(int number, Slot slot, GameGrid otherGrid, int counter)
+    {
+        if (number >= 0 && number < GameGrid.SlotAmount)
+        {
+            if (otherGrid.Slots[number].hasTower)
+            {
+                LinkTowers(slot.Tower, otherGrid.Slots[number].Tower);
+                counter++;
+            }
         }
     }
 

@@ -13,6 +13,8 @@ namespace Datas
         public GameGrid Grid;
         public List<Tower> Towers = new();
         public Transform TowersPrefab;
+        public TeamData Team;
+
         //public PlayerData RivalData;
     }
 }
