@@ -42,6 +42,41 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
             tower1.Data.LinkedTowers.Add(tower2);
     }
 
+   
+    
+    void UpdateLinkedTowers(Slot slot, int deadTowerId, GameGrid otherGrid) 
+    {
+        //if (!slot.hasTower) return;
+        slot.Tower.Data.LinkedTowers.Remove(otherGrid.Slots[deadTowerId].Tower);
+        
+        for (int i = 0; i < GameGrid.SlotAmount-1; i++)
+        {
+            int counter = 0;
+            
+            int number = deadTowerId - i;
+            if (number >= 0)
+            {
+                if (otherGrid.Slots[number].hasTower)
+                {
+                    LinkTowers(slot.Tower, otherGrid.Slots[number].Tower);
+                    counter++;
+                }
+            }
+
+            number = deadTowerId + i;
+            if (number < GameGrid.SlotAmount)
+            {
+                if (otherGrid.Slots[number].hasTower)
+                {
+                    LinkTowers(slot.Tower, otherGrid.Slots[number].Tower);
+                    counter++;
+                }
+            }
+            
+            if(counter>0) break;
+        }
+    }
+
     void CheckSlots(int number, Slot slot, GameGrid otherGrid)
     {
         if (number < 0 || number == GameGrid.SlotAmount) return;
@@ -85,42 +120,5 @@ public interface IMatchable<out TTeamData>
     // }
 
 
-    void UpdateLinkedTowers(Slot slot, int deadNumber, GameGrid otherGrid)
-    {
-        //if (!slot.hasTower) return;
-        
-        for (int i = 0; i < GameGrid.SlotAmount-1; i++)
-        {
-            int counter = 0;
-            int number = deadNumber - i;
-            if (number >= 0)
-            {
-                if (otherGrid.Slots[number].hasTower)
-                {
-                    Match(slot.Number, number);
-                    counter++;
-                }
-                    
-            }
-
-            number = deadNumber + i;
-            if (number < GameGrid.SlotAmount)
-            {
-                if (otherGrid.Slots[number].hasTower)
-                {
-                    Match(slot.Number, number);
-                    counter++;
-                }
-            }
-            
-            if(counter>0) break;
-        }
-    }
-
-
-    
-    void Match(int number1, int number2)
-    {
-    }
-    
+   
 }
