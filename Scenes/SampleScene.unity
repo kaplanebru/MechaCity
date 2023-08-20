@@ -645,7 +645,7 @@ GameObject:
   - component: {fileID: 819990865}
   - component: {fileID: 819990866}
   m_Layer: 0
-  m_Name: FireHandler
+  m_Name: CombatPairHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

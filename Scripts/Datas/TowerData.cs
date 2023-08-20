@@ -15,5 +15,6 @@ namespace Datas
         public int MaxBullet = 1;
         public TeamData TeamData;
         public List<Tower> LinkedTowers;
+        public int Health = 5;
     }
 }

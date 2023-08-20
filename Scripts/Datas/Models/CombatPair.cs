@@ -25,8 +25,13 @@ namespace Models
         public void Combat()
         {
             if (IsEven) return;
-            Victim.Descend(Perpetrator.Data.DamagePower);
-            //bunun yerine can gitmeli?
+            //Victim.Descend(Perpetrator.Data.DamagePower);
+            Victim.Data.Health -= Perpetrator.Data.DamagePower;
+            if (Victim.Data.Health <= 0)
+            {
+                Eventbus.FireEvents.OnTowerDied?.Invoke(Victim);
+            }
+            
         }
     }
 

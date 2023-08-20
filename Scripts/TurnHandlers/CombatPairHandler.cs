@@ -8,15 +8,18 @@ public class FireData : BaseTurnData
 {
     public List<CombatPair> CombatPairs = new();
     public List<Tower> AlteredTowers = new();
+    public List<Tower> DeadTowers = new();
 }
 
-public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
+public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
 {
     public FireData Data { get; private set; }
 
     public override void OnHandlerEnabled()
     {
         Data = new();
+        Data.DeadTowers.Clear();
+        Eventbus.FireEvents.OnTowerDied += AddToDeadTowers;
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
     }
 
@@ -31,6 +34,11 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
          Data.AlteredTowers.ForEach(CreateCombatPairByHeight);
         
          Fire();
+    }
+    
+    private void AddToDeadTowers(Tower deadTower)
+    {
+        Data.DeadTowers.Add(deadTower);
     }
     
     void Fire()
@@ -64,14 +72,6 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         }
     }
     
-
-    void OrderLinkedTowersByDistance(Tower tower)
-    {
-        //slot id'ye göre de dizilebilir.
-        tower.Data.LinkedTowers =
-            tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.Id - other.Data.Id)).ToList();
-    }
-    
     void RemoveAlteredCombatPairs()
     {
         foreach (var alteredTower in Data.AlteredTowers)
@@ -80,5 +80,16 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         }
     }
 
-    public override void Unsubscribe() {}
+    void OrderLinkedTowersByDistance(Tower tower)
+    {
+        //slot id'ye göre de dizilebilir.
+        tower.Data.LinkedTowers =
+            tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.Id - other.Data.Id)).ToList();
+    }
+    
+
+    public override void Unsubscribe()
+    {
+        Eventbus.FireEvents.OnTowerDied -= AddToDeadTowers;
+    }
 }
