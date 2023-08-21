@@ -6,16 +6,14 @@ using UnityEngine;
 using DG.Tweening;
 using Models;
 
-public class Tower : MonoBehaviour
+[Serializable]
+public class TowerData
 {
-    //Shooter, RiserFall, Selectable Components diye 3'e ayrılabilir
-    
-    public TowerData Data;
     public int Id { get; set; }
-    public int health;
-    public float height;
+    public int Health;
+    public float Height;
     public List<Tower> LinkedTowers;
-    private MeshRenderer mesh;
+    
     private int bulletAmount;
     public bool CanShoot { get; private set; }
     public int BulletAmount
@@ -27,6 +25,15 @@ public class Tower : MonoBehaviour
             CanShoot = value > 0;
         }
     }
+}
+public class Tower : MonoBehaviour
+{
+    //Shooter, RiserFall, Selectable Components diye 3'e ayrılabilir
+    
+    public TowerConstantData ConstantData;
+    public TowerData Data;
+    private MeshRenderer mesh;
+  
     
     private void OnEnable()
     {
@@ -35,9 +42,9 @@ public class Tower : MonoBehaviour
     
     public void Setup(BasePlayer player)
     {
-        height = Data.StartHeight;
-        health = Data.StartHealth;
-        var towerModel = Instantiate(Data.Model, transform);
+        Data.Height = ConstantData.StartHeight;
+        Data.Health = ConstantData.StartHealth;
+        var towerModel = Instantiate(ConstantData.Model, transform);
         mesh = towerModel.GetComponentInChildren<MeshRenderer>();
         StartRise();
         SetColor(player.Data.TeamData.DefaultMaterial);
@@ -45,7 +52,7 @@ public class Tower : MonoBehaviour
 
     void StartRise()
     {
-        transform.DOScaleY(height, 1);
+        transform.DOScaleY(Data.Height, 1);
     }
 
     public void SetColor(Material mat)
@@ -55,19 +62,19 @@ public class Tower : MonoBehaviour
 
     private void RestoreBullets()
     {
-        BulletAmount = Data.MaxBullet;
+        Data.BulletAmount = ConstantData.MaxBullet;
     }
 
     public void Descend(int amount)
     {
-        height -= amount;
-        transform.DOScaleY(height, 1);
+        Data.Height -= amount;
+        transform.DOScaleY(Data.Height, 1);
     }
 
     public void Ascend(int amount)
     {
-        height += amount;
-        transform.DOScaleY(height, 1);
+        Data.Height += amount;
+        transform.DOScaleY(Data.Height, 1);
     }
 
     private void OnMouseDown()

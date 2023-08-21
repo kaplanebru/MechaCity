@@ -25,9 +25,9 @@ namespace Models
         public void Combat()
         {
             if (IsEven) return;
-            //Victim.Descend(Perpetrator.Data.DamagePower);
-            Victim.health -= Perpetrator.Data.DamagePower;
-            if (Victim.health <= 0)
+            //Victim.Descend(Perpetrator.ConstantData.DamagePower);
+            Victim.Data.Health -= Perpetrator.ConstantData.DamagePower;
+            if (Victim.Data.Health <= 0)
             {
                 //TODO: slot'a ulaşıp !hastower yapmak gerek
                 //TODO: Yani hangi grid'in slotu olduğunu bilmek için gride ulaşmak gerek

@@ -48,9 +48,9 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
         foreach (var tower in Data.TowerGroup)
         {
             if (tower == selectedTower)
-                tower.transform.DOScaleY(tower.height += amount, 1);
+                tower.transform.DOScaleY(tower.Data.Height += amount, 1);
             else
-                tower.transform.DOScaleY(tower.height -= amount/(Data.TowerGroup.Count-1), 1);
+                tower.transform.DOScaleY(tower.Data.Height -= amount/(Data.TowerGroup.Count-1), 1);
         }
     }
 

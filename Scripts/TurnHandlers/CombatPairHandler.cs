@@ -43,7 +43,7 @@ public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     
     private void AddToDeadTowers(Tower deadTower)
     {
-        //deadTower.Data.TeamData.TeamData ==
+        //deadTower.ConstantData.TeamData.TeamData ==
 
         Data.DeadTowers.Add(deadTower);
     }
@@ -60,19 +60,19 @@ public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     {
         OrderLinkedTowersByDistance(tower);
 
-        foreach (var other in tower.LinkedTowers)
+        foreach (var other in tower.Data.LinkedTowers)
         {
-            if (tower.height > other.height)
+            if (tower.Data.Height > other.Data.Height)
             {
-                if(!tower.CanShoot) continue;
+                if(!tower.Data.CanShoot) continue;
                 Data.CombatPairs.Add(new CombatPair(tower, other));
-                tower.BulletAmount--;
+                tower.Data.BulletAmount--;
             }
-            else if (other.height > tower.height)
+            else if (other.Data.Height > tower.Data.Height)
             {
-                if(!other.CanShoot) continue;
+                if(!other.Data.CanShoot) continue;
                 Data.CombatPairs.Add(new CombatPair(other, tower));
-                other.BulletAmount--;
+                other.Data.BulletAmount--;
             }
             else
                 Data.CombatPairs.Add(new CombatPair(other, tower, true));
@@ -90,8 +90,8 @@ public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     void OrderLinkedTowersByDistance(Tower tower)
     {
         //slot id'ye göre de dizilebilir.
-        tower.LinkedTowers =
-            tower.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Id - other.Id)).ToList();
+        tower.Data.LinkedTowers =
+            tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.Id - other.Data.Id)).ToList();
     }
     
 

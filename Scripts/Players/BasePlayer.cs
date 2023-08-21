@@ -22,7 +22,7 @@ public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour w
     {
         for (int i = 0; i < Data.Towers.Count; i++)
         {
-            Data.Towers[i].LinkedTowers.Add(rivalPlayer.Data.Towers[i]);
+            Data.Towers[i].Data.LinkedTowers.Add(rivalPlayer.Data.Towers[i]);
         }
     }
 
@@ -30,7 +30,7 @@ public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour w
     {
         for (int i = 0; i < Data.Towers.Count; i++)
         {
-            Data.Towers[i].Id = i;
+            Data.Towers[i].Data.Id = i;
             Data.Towers[i].Setup(this);
         }
     }

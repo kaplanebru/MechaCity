@@ -59,8 +59,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d9ca4da7a284d4ebf5d8bd83155855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 24382b7643f9bbb4d826eaf0d7c75384, type: 2}
-  height: 0
+  ConstantData: {fileID: 11400000, guid: 24382b7643f9bbb4d826eaf0d7c75384, type: 2}
+  Data:
+    Health: 0
+    Height: 0
+    LinkedTowers: []
 --- !u!65 &7628743554477222171
 BoxCollider:
   m_ObjectHideFlags: 0

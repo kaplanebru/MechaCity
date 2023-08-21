@@ -30,7 +30,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     
     public override void Setup()
     {
-        //Data.DeadTowers.ForEach();
+        //ConstantData.DeadTowers.ForEach();
         //TODO: dead tower'a linked olanları bul, bunların slotlarını bul, othergrid 2 taraftan da biri olabilir, yani dead tower kimlerden bilmemiz lazım
         
     }
@@ -45,25 +45,25 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     {
         foreach (var deadTower in Data.DeadTowers)
         {
-            Data.DetachedTowers.AddRange(deadTower.LinkedTowers.Except(Data.DetachedTowers));
+            Data.DetachedTowers.AddRange(deadTower.Data.LinkedTowers.Except(Data.DetachedTowers));
         }
     }
 
     void LinkTowers(Tower tower1, Tower tower2)
     {
-        if(!tower1.LinkedTowers.Contains(tower2))
-            tower1.LinkedTowers.Add(tower2);
+        if(!tower1.Data.LinkedTowers.Contains(tower2))
+            tower1.Data.LinkedTowers.Add(tower2);
     }
 
     void RemoveLinkedTower(Tower tower1, Tower tower2)
     {
-        tower1.LinkedTowers.Remove(tower2);
+        tower1.Data.LinkedTowers.Remove(tower2);
     }
 
     void RestoreLinkedTowers(Slot slot, Tower deadTower, GameGrid otherGrid)
     {
         RemoveLinkedTower(slot.Tower, deadTower);
-        int deadTowerId = deadTower.Id;
+        int deadTowerId = deadTower.Data.Id;
 
         //if (!slot.hasTower) return;
 

@@ -7,8 +7,8 @@ using UnityEngine;
 namespace Datas
 {
     [Serializable]
-    [CreateAssetMenu(fileName = nameof(TowerData))]
-    public class TowerData : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(TowerConstantData))]
+    public class TowerConstantData : ScriptableObject
     {
         public float StartHeight = 2;
         public Transform Model;
