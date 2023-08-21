@@ -26,8 +26,8 @@ namespace Models
         {
             if (IsEven) return;
             //Victim.Descend(Perpetrator.Data.DamagePower);
-            Victim.Data.Health -= Perpetrator.Data.DamagePower;
-            if (Victim.Data.Health <= 0)
+            Victim.health -= Perpetrator.Data.DamagePower;
+            if (Victim.health <= 0)
             {
                 //TODO: slot'a ulaşıp !hastower yapmak gerek
                 //TODO: Yani hangi grid'in slotu olduğunu bilmek için gride ulaşmak gerek

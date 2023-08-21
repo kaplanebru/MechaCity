@@ -11,6 +11,10 @@ public class Tower : MonoBehaviour
     //Shooter, RiserFall, Selectable Components diye 3'e ayrılabilir
     
     public TowerData Data;
+    public int Id { get; set; }
+    public int health;
+    public float height;
+    public List<Tower> LinkedTowers;
     private MeshRenderer mesh;
     private int bulletAmount;
     public bool CanShoot { get; private set; }
@@ -28,22 +32,20 @@ public class Tower : MonoBehaviour
     {
         Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
     }
-
-    private void Start()
+    
+    public void Setup(BasePlayer player)
     {
-        Setup();
-    }
-
-    void Setup()
-    {
-        mesh = GetComponentInChildren<MeshRenderer>();
+        height = Data.StartHeight;
+        health = Data.StartHealth;
+        var towerModel = Instantiate(Data.Model, transform);
+        mesh = towerModel.GetComponentInChildren<MeshRenderer>();
         StartRise();
-        SetColor(Data.TeamData.DefaultMaterial);
+        SetColor(player.Data.TeamData.DefaultMaterial);
     }
 
     void StartRise()
     {
-        transform.DOScaleY(Data.Height, 1);
+        transform.DOScaleY(height, 1);
     }
 
     public void SetColor(Material mat)
@@ -58,14 +60,14 @@ public class Tower : MonoBehaviour
 
     public void Descend(int amount)
     {
-        Data.Height -= amount;
-        transform.DOScaleY(Data.Height, 1);
+        height -= amount;
+        transform.DOScaleY(height, 1);
     }
 
     public void Ascend(int amount)
     {
-        Data.Height += amount;
-        transform.DOScaleY(Data.Height, 1);
+        height += amount;
+        transform.DOScaleY(height, 1);
     }
 
     private void OnMouseDown()

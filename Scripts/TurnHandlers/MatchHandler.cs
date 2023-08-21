@@ -45,25 +45,25 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     {
         foreach (var deadTower in Data.DeadTowers)
         {
-            Data.DetachedTowers.AddRange(deadTower.Data.LinkedTowers.Except(Data.DetachedTowers));
+            Data.DetachedTowers.AddRange(deadTower.LinkedTowers.Except(Data.DetachedTowers));
         }
     }
 
     void LinkTowers(Tower tower1, Tower tower2)
     {
-        if(!tower1.Data.LinkedTowers.Contains(tower2))
-            tower1.Data.LinkedTowers.Add(tower2);
+        if(!tower1.LinkedTowers.Contains(tower2))
+            tower1.LinkedTowers.Add(tower2);
     }
 
     void RemoveLinkedTower(Tower tower1, Tower tower2)
     {
-        tower1.Data.LinkedTowers.Remove(tower2);
+        tower1.LinkedTowers.Remove(tower2);
     }
 
     void RestoreLinkedTowers(Slot slot, Tower deadTower, GameGrid otherGrid)
     {
         RemoveLinkedTower(slot.Tower, deadTower);
-        int deadTowerId = deadTower.Data.Id;
+        int deadTowerId = deadTower.Id;
 
         //if (!slot.hasTower) return;
 

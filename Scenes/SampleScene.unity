@@ -617,8 +617,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnAction: 0
-  currentPlayer: {fileID: 0}
-  rivalPlayer: {fileID: 0}
 --- !u!4 &758528872
 Transform:
   m_ObjectHideFlags: 0
@@ -679,8 +677,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnAction: 0
-  currentPlayer: {fileID: 0}
-  rivalPlayer: {fileID: 0}
 --- !u!1 &917562591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1396,8 +1392,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnAction: 0
-  currentPlayer: {fileID: 0}
-  rivalPlayer: {fileID: 0}
 --- !u!4 &2143476197
 Transform:
   m_ObjectHideFlags: 0

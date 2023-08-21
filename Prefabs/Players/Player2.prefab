@@ -47,10 +47,15 @@ MonoBehaviour:
   Data:
     Grid:
       Slots:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      Team: 1
+      - hasTower: 0
+        Number: 0
+        Tower: {fileID: 0}
+      - hasTower: 0
+        Number: 0
+        Tower: {fileID: 0}
+      - hasTower: 0
+        Number: 0
+        Tower: {fileID: 0}
     Towers: []
     TowersPrefab: {fileID: 1247575438718957919, guid: 3c7ffae76fc75144fb2066bf0fa55c07, type: 3}
-    Team: {fileID: 0}
+    TeamData: {fileID: 11400000, guid: bbc84b53b875dfb4c9ba3a5ea1d7bc66, type: 2}

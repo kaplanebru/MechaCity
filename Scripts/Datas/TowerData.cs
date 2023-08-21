@@ -7,14 +7,13 @@ using UnityEngine;
 namespace Datas
 {
     [Serializable]
-    public class TowerData
+    [CreateAssetMenu(fileName = nameof(TowerData))]
+    public class TowerData : ScriptableObject
     {
-        public int Id;
-        public float Height;
+        public float StartHeight = 2;
+        public Transform Model;
+        public int StartHealth = 5;
         public int DamagePower = 1;
         public int MaxBullet = 1;
-        public TeamData TeamData;
-        public List<Tower> LinkedTowers;
-        public int Health = 5;
     }
 }
