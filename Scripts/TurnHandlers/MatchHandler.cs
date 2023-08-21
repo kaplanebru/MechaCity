@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 
 public class MatchData : BaseTurnData //bizim sonrakine göndereceğimiz
 {
-    public Dictionary<GameGrid, Tower> DeadTowerGridPairs = new();
+    public List<GridTowerRelationModel> DeadTowerGridPairs = new();
 
     public List<Tower> DetachedTowers = new();
     //yeni matchleri gönderebilir. Gerçi bunlar zaten slotun ya da towerın kendisinde ekli.
@@ -45,10 +45,10 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     {
         foreach (var deadTower in Data.DeadTowerGridPairs)
         {
-            foreach (var detachedTower in deadTower.Value.Data.LinkedTowers)
-            {
-                RestoreLinkedTowers(deadTower.Value, detachedTower, deadTower.Key);
-            }
+            // foreach (var detachedTower in deadTower.Value.Data.LinkedTowers)
+            // {
+            //     RestoreLinkedTowers(deadTower.Value, detachedTower, deadTower.Key);
+            // }
             //Data.DetachedTowers.AddRange(deadTower.Data.LinkedTowers.Except(Data.DetachedTowers));
         }
     }
@@ -106,10 +106,11 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 
 public class GridTowerRelationModel
 {
-    private Tower Tower;
     private GameGrid Grid;
+    private Tower Tower;
 
-    GridTowerRelationModel(GameGrid grid, Tower tower)
+
+    public GridTowerRelationModel(GameGrid grid, Tower tower)
     {
         Grid = grid;
         Tower = tower;

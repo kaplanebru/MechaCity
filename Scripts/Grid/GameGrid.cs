@@ -25,7 +25,7 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
             if(slot.Tower != deadTower) continue;
 
             slot.HasTower = false;
-            Eventbus.FireEvents.OnTowerDied?.Invoke(this, deadTower);
+            Eventbus.FireEvents.OnTowerDied?.Invoke(new GridTowerRelationModel(this, deadTower));
         }
     }
 
