@@ -8,7 +8,7 @@ public class FireData : BaseTurnData
 {
     public List<CombatPair> CombatPairs = new();
     public List<Tower> AlteredTowers = new();
-    public List<GridTowerRelationModel> DeadTowers = new();
+    public List<TowerGridRelationModel> DeadTowers = new();
 }
 
 public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
@@ -37,9 +37,9 @@ public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     }
     
     
-    private void AddToDeadTowers(GridTowerRelationModel gridTowerRelationModel)
+    private void AddToDeadTowers(TowerGridRelationModel towerGridRelationModel)
     {
-        Data.DeadTowers.Add(gridTowerRelationModel);
+        Data.DeadTowers.Add(towerGridRelationModel);
     }
     
     void Fire()

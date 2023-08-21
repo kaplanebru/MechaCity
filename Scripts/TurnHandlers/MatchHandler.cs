@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,7 @@ using UnityEngine.Serialization;
 
 public class MatchData : BaseTurnData //bizim sonrakine göndereceğimiz
 {
-    public List<GridTowerRelationModel> DeadTowerGridPairs = new();
-
-    public List<Tower> DetachedTowers = new();
-    //yeni matchleri gönderebilir. Gerçi bunlar zaten slotun ya da towerın kendisinde ekli.
+    public List<TowerGridRelationModel> DeadTowerGridPairs = new();
 }
 
 public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
@@ -36,20 +34,17 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         //TODO: dead tower'a linked olanları bul, othergrid 2 taraftan da biri olabilir, yani dead tower kimlerden bilmemiz lazım
     }
 
-    void RematchOrphanTowers()
+    public void RestoreDetachedTowersOfDeadTowers()
     {
-        GetDetachedTowers();
-    }
-
-    void GetDetachedTowers()
-    {
-        foreach (var deadTower in Data.DeadTowerGridPairs)
+        foreach (var deadTowerGridModel in Data.DeadTowerGridPairs)
         {
-            // foreach (var detachedTower in deadTower.Value.Data.LinkedTowers)
-            // {
-            //     RestoreLinkedTowers(deadTower.Value, detachedTower, deadTower.Key);
-            // }
-            //Data.DetachedTowers.AddRange(deadTower.Data.LinkedTowers.Except(Data.DetachedTowers));
+            for (var i = deadTowerGridModel.Tower.Data.LinkedTowers.Count - 1; i >= 0; i--)
+            {
+                var linkedTower = deadTowerGridModel.Tower.Data.LinkedTowers[i];
+                
+                RemoveLink(linkedTower, deadTowerGridModel.Tower);
+                RestoreDetachedTowers(deadTowerGridModel, linkedTower);
+            }
         }
     }
 
@@ -61,42 +56,35 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 
     void RemoveLink(Tower tower1, Tower tower2)
     {
-        tower1.Data.LinkedTowers.Remove(tower2);
+        tower1.Data.LinkedTowers.Remove(tower2);//bulletin vurulduğu yerden de gelebilir
     }
 
-    void RestoreLinkedTowers(Tower detachedTower, Tower deadTower, GameGrid otherGrid)
+    void RestoreDetachedTowers(TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
     {
-        // //if (!slot.HasTower) return;
-
-        RemoveLink(detachedTower, deadTower);
-        int deadTowerId = deadTower.Data.Id;
+        int deadTowerId = deadTowerGridModel.Tower.Data.Id;
 
         for (int i = 0; i < GameGrid.SlotAmount - 1; i++)
         {
             int counter = 0;
-
-            int number = deadTowerId - i;
-            if (number >= 0) //&& number < GameGrid.SlotAmount
-            {
-                if (otherGrid.Slots[number].HasTower)
-                {
-                    LinkTowers(detachedTower, otherGrid.Slots[number].Tower);
-                    counter++;
-                }
-            }
-
-            number = deadTowerId + i;
-            if (number < GameGrid.SlotAmount)
-            {
-                if (otherGrid.Slots[number].HasTower)
-                {
-                    LinkTowers(detachedTower, otherGrid.Slots[number].Tower);
-                    counter++;
-                }
-            }
+            
+            counter += CheckLinkPossibility(deadTowerId - i, deadTowerGridModel, detachedTower);
+            counter += CheckLinkPossibility(deadTowerId + i, deadTowerGridModel, detachedTower);
 
             if (counter > 0) break;
         }
+    }
+
+    int CheckLinkPossibility(int number, TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
+    {
+        if (number >= 0 && number < GameGrid.SlotAmount)
+        {
+            if (deadTowerGridModel.Grid.Slots[number].HasTower) //bu koşulu kontrol etmeye gerek olmayabilir
+            {
+                LinkTowers(detachedTower, deadTowerGridModel.Grid.Slots[number].Tower);
+                return 1;
+            }
+        }
+        return 0;
     }
 
     public override void Unsubscribe()
@@ -104,15 +92,14 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     }
 }
 
-public class GridTowerRelationModel
+public class TowerGridRelationModel
 {
-    private GameGrid Grid;
-    private Tower Tower;
-
-
-    public GridTowerRelationModel(GameGrid grid, Tower tower)
+    public GameGrid Grid { get; }
+    public Tower Tower { get; }
+    public TowerGridRelationModel(GameGrid grid, Tower tower)
     {
         Grid = grid;
         Tower = tower;
     }
+
 }

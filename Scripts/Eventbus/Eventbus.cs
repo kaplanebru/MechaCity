@@ -23,7 +23,7 @@ public static class Eventbus
     {
         public static Action OnFireEnabled;
         public static Action<Tower> OnTowerKilled;
-        public static Action<GridTowerRelationModel> OnTowerDied;
+        public static Action<TowerGridRelationModel> OnTowerDied;
     }
 
     public static class TowerGroupEvents
