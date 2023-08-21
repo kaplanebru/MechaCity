@@ -22,7 +22,8 @@ public static class Eventbus
     public static class FireEvents
     {
         public static Action OnFireEnabled;
-        public static Action<Tower> OnTowerDied;
+        public static Action<Tower> OnTowerKilled;
+        public static Action<GameGrid, Tower> OnTowerDied;
     }
 
     public static class TowerGroupEvents

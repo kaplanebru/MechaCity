@@ -91,6 +91,5 @@ public class TurnManager : MonoBehaviour
         // currentPlayer = rivalPlayer;
         // rivalPlayer = temp;
     }
-
 }
     

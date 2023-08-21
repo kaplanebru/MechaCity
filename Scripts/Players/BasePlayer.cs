@@ -39,4 +39,9 @@ public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour w
     {
         Data.Grid.Initialize(this);
     }
+
+    private void OnDisable()
+    {
+        Data.Grid.DisableGrid();
+    }
 }

@@ -32,7 +32,7 @@ namespace Models
                 //TODO: slot'a ulaşıp !hastower yapmak gerek
                 //TODO: Yani hangi grid'in slotu olduğunu bilmek için gride ulaşmak gerek
                 //team'i bulduran event atsın.
-                Eventbus.FireEvents.OnTowerDied?.Invoke(Victim);
+                Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
             }
             
         }

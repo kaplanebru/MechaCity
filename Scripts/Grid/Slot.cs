@@ -7,24 +7,25 @@ using UnityEngine;
 
 public class Slot
 {
-    public bool hasTower;
+    public bool HasTower;
     public int Number;
     public Tower Tower;
 
-    public void OnSlotEnabled()
-    {
-        Eventbus.FireEvents.OnTowerDied += RemoveTower;
-    }
+    // public void OnSlotEnabled()
+    // {
+    //     Eventbus.FireEvents.OnTowerKilled += RemoveTower;
+    // }
     
-    void RemoveTower(Tower tower)
-    {
-        if (tower == Tower)
-            hasTower = false;
-    }
-    public void OnSlotDisabled()
-    {
-        Eventbus.FireEvents.OnTowerDied -= RemoveTower;
-    }
+    // void RemoveTower(Tower tower)
+    // {
+    //     if (tower != Tower) return;
+    //     
+    //     HasTower = false;
+    // }
+    // public void OnSlotDisabled()
+    // {
+    //     Eventbus.FireEvents.OnTowerKilled -= RemoveTower;
+    // }
 
     
 }
