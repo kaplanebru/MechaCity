@@ -45,5 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data:
+    Grid:
+      Slots:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      Team: 1
     Towers: []
     TowersPrefab: {fileID: 1247575438718957919, guid: 3c7ffae76fc75144fb2066bf0fa55c07, type: 3}
+    Team: {fileID: 0}

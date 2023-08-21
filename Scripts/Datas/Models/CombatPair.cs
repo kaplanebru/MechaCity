@@ -30,7 +30,7 @@ namespace Models
             if (Victim.Data.Health <= 0)
             {
                 //TODO: slot'a ulaşıp !hastower yapmak gerek
-                //TODO: Yani grid'e ulaşmak gerek
+                //TODO: Yani hangi grid'in slotu olduğunu bilmek için gride ulaşmak gerek
                 //team'i bulduran event atsın.
                 Eventbus.FireEvents.OnTowerDied?.Invoke(Victim);
             }

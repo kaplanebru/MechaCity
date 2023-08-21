@@ -23,7 +23,11 @@ public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
     }
 
-    public override void ProcessTransferredData(BaseTurnData data)
+    
+    //SO yapıp elle gönderebilir miyiz? hayır, değişken datalar. SOdaki verileri input olarak alıyoruz, outputu etkilemiyor
+    //SO ortak bir input yani.
+    //Mesela Grid bilgisi So olarak yollanabilir!!!!
+    public override void ProcessTransferredData(BaseTurnData data) 
     {
         var incomingData = (TowerGroupData) data;
         Data.AlteredTowers = incomingData.TowerGroup;
@@ -36,8 +40,11 @@ public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
          Fire();
     }
     
+    
     private void AddToDeadTowers(Tower deadTower)
     {
+        //deadTower.Data.TeamData.Team ==
+
         Data.DeadTowers.Add(deadTower);
     }
     

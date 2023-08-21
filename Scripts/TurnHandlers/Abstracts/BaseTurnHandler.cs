@@ -9,8 +9,8 @@ public abstract class BaseTurnHandler : MonoBehaviour
 {
     public TurnAction turnAction;
 
-    public BasePlayer currentPlayer;
-    public BasePlayer rivalPlayer;
+    public Dictionary<string, BasePlayer> players;
+   
    
     public abstract void OnHandlerEnabled();
     
@@ -30,10 +30,9 @@ public abstract class BaseTurnHandler : MonoBehaviour
         //Eventbus.TurnEvents.OnTurnActionEnded?.Invoke(DataToTransfer);
         enabled = false;
     }
-    public void SetPlayers(BasePlayer _currentPlayer, BasePlayer _rivalPlayer)
+    public void SetPlayers(Dictionary<string, BasePlayer> _players)
     {
-        currentPlayer = _currentPlayer;
-        rivalPlayer = _rivalPlayer;
+        players = _players;
     }
     
     public abstract void Unsubscribe();
