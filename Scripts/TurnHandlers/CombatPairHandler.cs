@@ -60,22 +60,22 @@ public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     {
         OrderLinkedTowersByDistance(tower);
 
-        foreach (var other in tower.Data.LinkedTowers)
+        foreach (var linkedTower in tower.Data.LinkedTowers)
         {
-            if (tower.Data.Height > other.Data.Height)
+            if (tower.Data.Height > linkedTower.Data.Height)
             {
                 if(!tower.Data.CanShoot) continue;
-                Data.CombatPairs.Add(new CombatPair(tower, other));
+                Data.CombatPairs.Add(new CombatPair(tower, linkedTower));
                 tower.Data.BulletAmount--;
             }
-            else if (other.Data.Height > tower.Data.Height)
+            else if (linkedTower.Data.Height > tower.Data.Height)
             {
-                if(!other.Data.CanShoot) continue;
-                Data.CombatPairs.Add(new CombatPair(other, tower));
-                other.Data.BulletAmount--;
+                if(!linkedTower.Data.CanShoot) continue;
+                Data.CombatPairs.Add(new CombatPair(linkedTower, tower));
+                linkedTower.Data.BulletAmount--;
             }
             else
-                Data.CombatPairs.Add(new CombatPair(other, tower, true));
+                Data.CombatPairs.Add(new CombatPair(linkedTower, tower, true));
         }
     }
     

@@ -14,7 +14,5 @@ namespace Datas
         public List<Tower> Towers = new();
         public Transform TowersPrefab;
         public TeamData TeamData;
-
-        //public PlayerData RivalData;
     }
 }

@@ -31,7 +31,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     public override void Setup()
     {
         //ConstantData.DeadTowers.ForEach();
-        //TODO: dead tower'a linked olanları bul, bunların slotlarını bul, othergrid 2 taraftan da biri olabilir, yani dead tower kimlerden bilmemiz lazım
+        //TODO: dead tower'a linked olanları bul, othergrid 2 taraftan da biri olabilir, yani dead tower kimlerden bilmemiz lazım
         
     }
 
@@ -94,18 +94,6 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
             if(counter>0) break;
         }
     }
-
-    // void CheckLinkCondition(int number, Slot slot, GameGrid otherGrid, int counter)
-    // {
-    //     if (number >= 0 && number < GameGrid.SlotAmount)
-    //     {
-    //         if (otherGrid.Slots[number].hasTower)
-    //         {
-    //             LinkTowers(slot.Tower, otherGrid.Slots[number].Tower);
-    //             counter++;
-    //         }
-    //     }
-    // }
 
     public override void Unsubscribe() {}
 
