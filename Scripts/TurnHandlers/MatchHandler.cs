@@ -60,12 +60,12 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         tower1.Data.LinkedTowers.Remove(tower2);
     }
 
-    void RestoreLinkedTowers(Slot slot, Tower deadTower, GameGrid otherGrid)
+    void RestoreLinkedTowers(Tower detachedTower, Tower deadTower, GameGrid otherGrid)
     {
-        RemoveLinkedTower(slot.Tower, deadTower);
+        // //if (!slot.hasTower) return;
+        
+        RemoveLinkedTower(detachedTower, deadTower);
         int deadTowerId = deadTower.Data.Id;
-
-        //if (!slot.hasTower) return;
 
         for (int i = 0; i < GameGrid.SlotAmount-1; i++)
         {
@@ -76,7 +76,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
             {
                 if (otherGrid.Slots[number].hasTower)
                 {
-                    LinkTowers(slot.Tower, otherGrid.Slots[number].Tower);
+                    LinkTowers(detachedTower, otherGrid.Slots[number].Tower);
                     counter++;
                 }
             }
@@ -86,7 +86,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
             {
                 if (otherGrid.Slots[number].hasTower)
                 {
-                    LinkTowers(slot.Tower, otherGrid.Slots[number].Tower);
+                    LinkTowers(detachedTower, otherGrid.Slots[number].Tower);
                     counter++;
                 }
             }

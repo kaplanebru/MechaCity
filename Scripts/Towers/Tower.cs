@@ -6,26 +6,6 @@ using UnityEngine;
 using DG.Tweening;
 using Models;
 
-[Serializable]
-public class TowerData
-{
-    public int Id { get; set; }
-    public int Health;
-    public float Height;
-    public List<Tower> LinkedTowers;
-    
-    private int bulletAmount;
-    public bool CanShoot { get; private set; }
-    public int BulletAmount
-    {
-        get => bulletAmount;
-        set
-        {
-            bulletAmount = value;
-            CanShoot = value > 0;
-        }
-    }
-}
 public class Tower : MonoBehaviour
 {
     //Shooter, RiserFall, Selectable Components diye 3'e ayrılabilir

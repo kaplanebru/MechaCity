@@ -6,7 +6,7 @@ using Unity.Collections;
 using UnityEngine;
 
 [Serializable]
-public class GameGrid
+public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
 {
     public const int SlotAmount = 3;
     [ReadOnly]public Slot[] Slots = new Slot[SlotAmount];
