@@ -43,7 +43,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 836925315153596545, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_Name
-      value: P1 - Tower (1)
+      value: P1 - Tower 2
       objectReference: {fileID: 0}
     - target: {fileID: 2432366265923635597, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: Data.Team
@@ -129,7 +129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 836925315153596545, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_Name
-      value: P1 -Tower (2)
+      value: P1 -Tower 3
       objectReference: {fileID: 0}
     - target: {fileID: 2432366265923635597, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: Data.Team
@@ -215,7 +215,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 836925315153596545, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_Name
-      value: P1 - Tower
+      value: P1 - Tower 1
       objectReference: {fileID: 0}
     - target: {fileID: 2432366265923635597, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: Data.Height

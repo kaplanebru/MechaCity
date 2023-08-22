@@ -35,7 +35,10 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
     {
         for (int i = 0; i < SlotAmount; i++)
         {
-            Slots[i] = new Slot();
+            Slots[i] = new Slot
+            {
+                HasTower = true
+            };
         }
     }
     

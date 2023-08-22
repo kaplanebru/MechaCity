@@ -12,7 +12,7 @@ public class FireData : BaseTurnData
     public List<TowerGridRelationModel> DeadTowers = new();
 }
 
-public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
+public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
 {
     public FireData Data { get; private set; }
 
@@ -46,6 +46,7 @@ public class CombatPairHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     void Fire()
     {
         Data.CombatPairs.ForEach(p => p.Combat());
+        CompleteAction();
 
         //bullet anim.OnComplete:
         //Heighte göre Dotween eklenir

@@ -42,6 +42,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     void RemoveLink(Tower tower1, Tower tower2)
     {
         tower1.Data.LinkedTowers.Remove(tower2);
+        tower2.Data.LinkedTowers.Remove(tower1);
     }
     
     int CheckSlot(int number, GameGrid grid, Tower detachedTower)
@@ -62,7 +63,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     {
         int deadTowerId = deadTowerGridModel.Tower.Data.Id;
 
-        for (int i = 0; i < GameGrid.SlotAmount - 1; i++)
+        for (int i = 1; i < GameGrid.SlotAmount - 1; i++) //todo: BURDA DA SORUN OLABİLİR
         {
             int counter = 0;
             
@@ -79,8 +80,8 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
             var deadTower = deadTowerGridModel.Tower;
             for (var i = deadTower.Data.LinkedTowers.Count - 1; i >= 0; i--)
             {
-                RemoveLink(deadTower, deadTower.Data.LinkedTowers[i]);
                 RestoreDetachedTowersOfDeadTower(deadTowerGridModel, deadTower.Data.LinkedTowers[i]);
+                RemoveLink(deadTower, deadTower.Data.LinkedTowers[i]);
             }
         }
     }
