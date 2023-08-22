@@ -31,7 +31,7 @@ public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour w
         for (int i = 0; i < Data.Towers.Count; i++)
         {
             Data.Towers[i].Data.Id = i;
-            Data.Towers[i].Setup(this);
+            Data.Towers[i].Setup(Data.TeamData);
         }
     }
 

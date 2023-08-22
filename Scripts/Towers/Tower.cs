@@ -20,14 +20,15 @@ public class Tower : MonoBehaviour
         Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
     }
     
-    public void Setup(BasePlayer player)
+    public void Setup(TeamData teamData)
     {
         Data.Height = ConstantData.StartHeight;
         Data.Health = ConstantData.StartHealth;
         var towerModel = Instantiate(ConstantData.Model, transform);
         mesh = towerModel.GetComponentInChildren<MeshRenderer>();
+        Data.TeamType = teamData.Team;
+        SetColor(teamData.DefaultMaterial);
         StartRise();
-        SetColor(player.Data.TeamData.DefaultMaterial);
     }
 
     void StartRise()

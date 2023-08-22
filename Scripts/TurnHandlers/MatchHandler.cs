@@ -30,22 +30,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 
     public override void Setup()
     {
-        //ConstantData.DeadTowerGridPairs.ForEach();
-        //TODO: dead tower'a linked olanları bul, othergrid 2 taraftan da biri olabilir, yani dead tower kimlerden bilmemiz lazım
-    }
-
-    public void RestoreDetachedTowersOfDeadTowers()
-    {
-        foreach (var deadTowerGridModel in Data.DeadTowerGridPairs)
-        {
-            for (var i = deadTowerGridModel.Tower.Data.LinkedTowers.Count - 1; i >= 0; i--)
-            {
-                var linkedTower = deadTowerGridModel.Tower.Data.LinkedTowers[i];
-                
-                RemoveLink(linkedTower, deadTowerGridModel.Tower);
-                RestoreDetachedTowers(deadTowerGridModel, linkedTower);
-            }
-        }
+        RestoreDetachedTowersOfDeadTowers();
     }
 
     void LinkTowers(Tower tower1, Tower tower2)
@@ -56,9 +41,23 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 
     void RemoveLink(Tower tower1, Tower tower2)
     {
-        tower1.Data.LinkedTowers.Remove(tower2);//bulletin vurulduğu yerden de gelebilir
+        tower1.Data.LinkedTowers.Remove(tower2);
     }
-
+    
+    int CheckSlot(int number, GameGrid grid, Tower detachedTower)
+    {
+        if (number is >= 0 and < GameGrid.SlotAmount)
+        {
+            var slot = grid.Slots[number];
+            if (slot.HasTower)
+            {
+                LinkTowers(slot.Tower, detachedTower);
+                return 1;
+            }
+        }
+        return 0;
+    }
+    
     void RestoreDetachedTowers(TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
     {
         int deadTowerId = deadTowerGridModel.Tower.Data.Id;
@@ -67,39 +66,26 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         {
             int counter = 0;
             
-            counter += CheckLinkPossibility(deadTowerId - i, deadTowerGridModel, detachedTower);
-            counter += CheckLinkPossibility(deadTowerId + i, deadTowerGridModel, detachedTower);
+            counter += CheckSlot(deadTowerId - i, deadTowerGridModel.Grid, detachedTower);
+            counter += CheckSlot(deadTowerId + i, deadTowerGridModel.Grid, detachedTower);
 
             if (counter > 0) break;
         }
     }
-
-    int CheckLinkPossibility(int number, TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
+    void RestoreDetachedTowersOfDeadTowers()
     {
-        if (number >= 0 && number < GameGrid.SlotAmount)
+        foreach (var deadTowerGridModel in Data.DeadTowerGridPairs)
         {
-            if (deadTowerGridModel.Grid.Slots[number].HasTower) //bu koşulu kontrol etmeye gerek olmayabilir
+            var deadTower = deadTowerGridModel.Tower;
+            for (var i = deadTower.Data.LinkedTowers.Count - 1; i >= 0; i--)
             {
-                LinkTowers(detachedTower, deadTowerGridModel.Grid.Slots[number].Tower);
-                return 1;
+                RemoveLink(deadTower, deadTower.Data.LinkedTowers[i]);
+                RestoreDetachedTowers(deadTowerGridModel, deadTower.Data.LinkedTowers[i]);
             }
         }
-        return 0;
     }
 
     public override void Unsubscribe()
     {
     }
-}
-
-public class TowerGridRelationModel
-{
-    public GameGrid Grid { get; }
-    public Tower Tower { get; }
-    public TowerGridRelationModel(GameGrid grid, Tower tower)
-    {
-        Grid = grid;
-        Tower = tower;
-    }
-
 }

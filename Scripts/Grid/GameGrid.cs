@@ -8,25 +8,27 @@ using UnityEngine;
 [Serializable]
 public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
 {
+    private Team TeamType;
     public const int SlotAmount = 3;
     [ReadOnly]public Slot[] Slots = new Slot[SlotAmount];
 
     public void Initialize(BasePlayer player)
     {
-        Eventbus.FireEvents.OnTowerKilled += FindKilledSlot;
+        Setup(player);
+        Eventbus.FireEvents.OnTowerKilled += SendGrid;
+    }
+
+    void Setup(BasePlayer player)
+    {
+        TeamType = player.Data.TeamData.Team;
         CreateSlots();
         SetSlots(player);
     }
 
-    private void FindKilledSlot(Tower deadTower)
+    private void SendGrid(Tower deadTower)
     {
-        foreach (var slot in Slots)
-        {
-            if(slot.Tower != deadTower) continue;
-
-            slot.HasTower = false;
-            Eventbus.FireEvents.OnTowerDied?.Invoke(new TowerGridRelationModel(this, deadTower));
-        }
+        if(deadTower.Data.TeamType != TeamType) return;
+        Eventbus.FireEvents.OnTowerDied?.Invoke(new TowerGridRelationModel(this, deadTower));
     }
 
     void CreateSlots()
@@ -41,7 +43,6 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
     {
         for (int i = 0; i < SlotAmount; i++)
         {
-            //Slots[i].OnSlotEnabled();
             Slots[i].Number = i;
             Slots[i].Tower = player.Data.Towers[i];
         }
@@ -49,11 +50,7 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
 
     public void DisableGrid()
     {
-        Eventbus.FireEvents.OnTowerKilled -= FindKilledSlot;
-        // foreach (var slot in Slots)
-        // {
-        //     slot.OnSlotDisabled();
-        // }
+        Eventbus.FireEvents.OnTowerKilled -= SendGrid;
     }
 
 
