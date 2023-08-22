@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b21e65fc3f6b854409936f0a3f63c62e, type: 3}
   m_Name: TowerData
   m_EditorClassIdentifier: 
-  Id: 0
   StartHeight: 2
   Model: {fileID: 127670967424323561, guid: 9e1ec6322cc547b45bc82e410218475d, type: 3}
-  LinkedTowers: []
-  Health: 5
+  StartHealth: 1
   DamagePower: 1
   MaxBullet: 1

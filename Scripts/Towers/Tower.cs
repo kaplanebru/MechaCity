@@ -26,8 +26,7 @@ public class Tower : MonoBehaviour
         Data.Health = ConstantData.StartHealth;
         var towerModel = Instantiate(ConstantData.Model, transform);
         mesh = towerModel.GetComponentInChildren<MeshRenderer>();
-        Data.TeamType = teamData.Team;
-        SetColor(teamData.DefaultMaterial);
+        SetTeam(teamData);
         StartRise();
     }
 
@@ -39,6 +38,12 @@ public class Tower : MonoBehaviour
     public void SetColor(Material mat)
     {
         mesh.material = mat;
+    }
+
+    public void SetTeam(TeamData teamData)
+    {
+        Data.TeamData = teamData;
+        SetColor(teamData.DefaultMaterial);
     }
 
     private void RestoreBullets()
@@ -66,6 +71,15 @@ public class Tower : MonoBehaviour
     private void Click()
     {
         Eventbus.TowerEvents.OnTowerClicked?.Invoke(this);
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        foreach (var linkedTower in Data.LinkedTowers)
+        {
+            Gizmos.DrawLine(transform.position, linkedTower.transform.position);
+        }
     }
 
     private void OnDisable()

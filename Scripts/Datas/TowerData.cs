@@ -11,7 +11,7 @@ namespace Datas
         public int Id { get; set; }
         public int Health;
         public float Height;
-        public Team TeamType;
+        public TeamData TeamData;
         public List<Tower> LinkedTowers;
         public bool CanShoot { get; private set; }
 

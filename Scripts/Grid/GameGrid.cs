@@ -27,7 +27,7 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
 
     private void SendGrid(Tower deadTower)
     {
-        if(deadTower.Data.TeamType != TeamType) return;
+        if(deadTower.Data.TeamData.Team != TeamType) return;
         Eventbus.FireEvents.OnTowerDied?.Invoke(new TowerGridRelationModel(this, deadTower));
     }
 
@@ -43,7 +43,7 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
     {
         for (int i = 0; i < SlotAmount; i++)
         {
-            Slots[i].Number = i;
+            Slots[i].Id = i;
             Slots[i].Tower = player.Data.Towers[i];
         }
     }

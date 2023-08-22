@@ -29,13 +29,12 @@ namespace Models
             Victim.Data.Health -= Perpetrator.ConstantData.DamagePower;
             if (Victim.Data.Health <= 0)
             {
-                //TODO: slot'a ulaşıp !hastower yapmak gerek
-                //TODO: Yani hangi grid'in slotu olduğunu bilmek için gride ulaşmak gerek
-                //team'i bulduran event atsın.
+                Victim.SetTeam(Perpetrator.Data.TeamData);
                 Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
             }
-            
         }
     }
+    
+    
 
 }

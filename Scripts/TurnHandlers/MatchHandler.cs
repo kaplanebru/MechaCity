@@ -30,7 +30,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 
     public override void Setup()
     {
-        RestoreDetachedTowersOfDeadTowers();
+        RematchTowers();
     }
 
     void LinkTowers(Tower tower1, Tower tower2)
@@ -58,7 +58,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         return 0;
     }
     
-    void RestoreDetachedTowers(TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
+    void RestoreDetachedTowersOfDeadTower(TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
     {
         int deadTowerId = deadTowerGridModel.Tower.Data.Id;
 
@@ -72,7 +72,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
             if (counter > 0) break;
         }
     }
-    void RestoreDetachedTowersOfDeadTowers()
+    void RematchTowers()
     {
         foreach (var deadTowerGridModel in Data.DeadTowerGridPairs)
         {
@@ -80,7 +80,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
             for (var i = deadTower.Data.LinkedTowers.Count - 1; i >= 0; i--)
             {
                 RemoveLink(deadTower, deadTower.Data.LinkedTowers[i]);
-                RestoreDetachedTowers(deadTowerGridModel, deadTower.Data.LinkedTowers[i]);
+                RestoreDetachedTowersOfDeadTower(deadTowerGridModel, deadTower.Data.LinkedTowers[i]);
             }
         }
     }

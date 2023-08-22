@@ -8,6 +8,6 @@ using UnityEngine;
 public class Slot
 {
     public bool HasTower;
-    public int Number;
+    public int Id;
     public Tower Tower;
 }
