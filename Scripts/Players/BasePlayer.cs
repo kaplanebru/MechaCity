@@ -17,7 +17,12 @@ public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour w
         SetGrid();
         SetAllTowers();
     }
-    
+
+    void TakeTower()
+    {
+        
+    }
+
     public void LinkFirstMatches(BasePlayer rivalPlayer) //Temporary
     {
         for (int i = 0; i < Data.Towers.Count; i++)

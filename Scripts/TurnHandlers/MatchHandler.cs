@@ -48,7 +48,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         otherTower.Data.LinkedTowers.Remove(deadTower);
     }
 
-    void SwitchSides(Tower deadTower, Tower otherTower)
+    void SwitchSides(Tower deadTower, Tower otherTower) //TODO: burda team kozmetiğini değiştirmesi yetmez, hakkaten rakibin teamine geçmeli
     {
         deadTower.SetTeam(otherTower.Data.TeamData);
     }
