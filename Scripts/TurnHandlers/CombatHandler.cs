@@ -89,10 +89,16 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         tower.Data.LinkedTowers =
             tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.Id - other.Data.Id)).ToList();
     }
+
+    void DeselectAlteredTowers() //TODO: At the end of animation
+    {
+        Data.AlteredTowers.ForEach(t=> t.SetColor(t.Data.TeamData.DefaultMaterial));
+    }
     
 
     public override void Unsubscribe()
     {
+        DeselectAlteredTowers();
         Eventbus.FireEvents.OnTowerDied -= AddToDeadTowers;
     }
 }

@@ -64,6 +64,7 @@ public class TurnManager : MonoBehaviour
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
         
+        Eventbus.TurnEvents.OnTurnCompleted?.Invoke();
         NewTurn();
     }
     

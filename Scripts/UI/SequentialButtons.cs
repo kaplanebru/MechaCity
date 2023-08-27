@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,9 +16,16 @@ public class SequentialButtons : MonoBehaviour
     {
         Buttons = GetComponentsInChildren<Button>();
         StartCoroutine(nameof(ButtonSequenceRoutine));
+        Eventbus.TurnEvents.OnTurnCompleted += RestartSequence;
         Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
     }
-    
+
+    private void RestartSequence()
+    {
+        StopCoroutine(nameof(ButtonSequenceRoutine));
+        StartCoroutine(nameof(ButtonSequenceRoutine));
+    }
+
 
     public IEnumerator ButtonSequenceRoutine()
     {
@@ -60,6 +68,7 @@ public class SequentialButtons : MonoBehaviour
     
     private void OnDisable()
     {
+        Eventbus.TurnEvents.OnTurnCompleted -= RestartSequence;
         Eventbus.UIEvents.OnButtonCall -= HandleSpecialCase;
     }
 }
