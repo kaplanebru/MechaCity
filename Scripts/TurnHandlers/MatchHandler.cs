@@ -30,6 +30,9 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 
     public override void Setup()
     {
+        if (Data.DeadTowerGridPairs.Count == 0)
+            CompleteAction();
+        
         RematchTowers();
     }
 
@@ -39,20 +42,25 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
             tower1.Data.LinkedTowers.Add(tower2);
     }
 
-    void RemoveLink(Tower tower1, Tower tower2)
+    void RemoveLink(Tower deadTower, Tower otherTower)
     {
-        tower1.Data.LinkedTowers.Remove(tower2);
-        tower2.Data.LinkedTowers.Remove(tower1);
+        deadTower.Data.LinkedTowers.Remove(otherTower);
+        otherTower.Data.LinkedTowers.Remove(deadTower);
+    }
+
+    void SwitchSides(Tower deadTower, TeamData otherTeam)
+    {
+        deadTower.SetTeam(otherTeam);
     }
     
-    int CheckSlot(int number, GameGrid grid, Tower detachedTower)
+    int CheckSlotForLink(int number, GameGrid grid, Tower towerToLink)
     {
         if (number is >= 0 and < GameGrid.SlotAmount)
         {
             var slot = grid.Slots[number];
             if (slot.HasTower)
             {
-                LinkTowers(slot.Tower, detachedTower);
+                LinkTowers(slot.Tower, towerToLink);
                 return 1;
             }
         }
@@ -63,12 +71,12 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     {
         int deadTowerId = deadTowerGridModel.Tower.Data.Id;
 
-        for (int i = 1; i < GameGrid.SlotAmount - 1; i++) //todo: BURDA DA SORUN OLABİLİR
+        for (int i = 1; i < GameGrid.SlotAmount - 1; i++)
         {
             int counter = 0;
             
-            counter += CheckSlot(deadTowerId - i, deadTowerGridModel.Grid, detachedTower);
-            counter += CheckSlot(deadTowerId + i, deadTowerGridModel.Grid, detachedTower);
+            counter += CheckSlotForLink(deadTowerId - i, deadTowerGridModel.Grid, detachedTower);
+            counter += CheckSlotForLink(deadTowerId + i, deadTowerGridModel.Grid, detachedTower);
 
             if (counter > 0) break;
         }
@@ -80,13 +88,13 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
             var deadTower = deadTowerGridModel.Tower;
             for (var i = deadTower.Data.LinkedTowers.Count - 1; i >= 0; i--)
             {
-                RestoreDetachedTowersOfDeadTower(deadTowerGridModel, deadTower.Data.LinkedTowers[i]);
-                RemoveLink(deadTower, deadTower.Data.LinkedTowers[i]);
+                var linkedTower = deadTower.Data.LinkedTowers[i];
+                RestoreDetachedTowersOfDeadTower(deadTowerGridModel, linkedTower);
+                RemoveLink(deadTower, linkedTower);
+                SwitchSides(deadTower, linkedTower.Data.TeamData);
             }
         }
     }
 
-    public override void Unsubscribe()
-    {
-    }
+    public override void Unsubscribe() {}
 }

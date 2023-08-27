@@ -29,8 +29,7 @@ namespace Models
             Victim.Data.Health -= Perpetrator.ConstantData.DamagePower;
             if (Victim.Data.Health <= 0)
             {
-                //Victim.SetTeam(Perpetrator.Data.TeamData); //TODO: bu kesinlikle eşleşmelerden sonra yapılmalı çünkü eşleşmeler team'e göre yapılıyor
-                Victim.SetColor(Victim.Data.TeamData.DeadMaterial); //temp
+                //Victim.SetColor(Victim.Data.TeamData.DeadMaterial); //temp
                 Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
             }
         }

@@ -15,7 +15,7 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
     public void Initialize(BasePlayer player)
     {
         Setup(player);
-        Eventbus.FireEvents.OnTowerKilled += SendGrid;
+        Eventbus.FireEvents.OnTowerKilled += SendGridInfo;
     }
 
     void Setup(BasePlayer player)
@@ -25,7 +25,7 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
         SetSlots(player);
     }
 
-    private void SendGrid(Tower deadTower)
+    private void SendGridInfo(Tower deadTower)
     {
         if(deadTower.Data.TeamData.Team != TeamType) return;
         Eventbus.FireEvents.OnTowerDied?.Invoke(new TowerGridRelationModel(this, deadTower));
@@ -53,7 +53,7 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
 
     public void DisableGrid()
     {
-        Eventbus.FireEvents.OnTowerKilled -= SendGrid;
+        Eventbus.FireEvents.OnTowerKilled -= SendGridInfo;
     }
 
 
