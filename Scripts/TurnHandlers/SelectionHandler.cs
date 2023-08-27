@@ -26,6 +26,8 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
 
     public override void Setup()
     {
+        players["currentPlayer"].SetClickability(true);
+        players["rivalPlayer"].SetClickability(false);
         ManageCompleteButton(false);
     }
 

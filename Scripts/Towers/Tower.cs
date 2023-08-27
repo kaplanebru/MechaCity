@@ -65,7 +65,8 @@ public class Tower : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Click();
+        if(Data.Clickable)
+            Click();
     }
 
     private void Click()

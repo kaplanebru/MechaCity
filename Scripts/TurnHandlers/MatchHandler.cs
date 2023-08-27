@@ -22,7 +22,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         Data = new();
     }
 
-    public override void ProcessTransferredData(BaseTurnData data)
+    public override void ProcessIncomingData(BaseTurnData data)
     {
         var incomingData = (FireData) data;
         Data.DeadTowerGridPairs = incomingData.DeadTowers;
@@ -30,10 +30,10 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 
     public override void Setup()
     {
-        if (Data.DeadTowerGridPairs.Count == 0)
-            CompleteAction();
+        if (Data.DeadTowerGridPairs.Count > 0)
+            RematchTowers();
         
-        RematchTowers();
+        CompleteAction();
     }
 
     void LinkTowers(Tower tower1, Tower tower2)

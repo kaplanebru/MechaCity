@@ -24,7 +24,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
     }
     
-    public override void ProcessTransferredData(BaseTurnData data) 
+    public override void ProcessIncomingData(BaseTurnData data) 
     {
         var incomingData = (TowerGroupData) data;
         Data.AlteredTowers = incomingData.TowerGroup;

@@ -27,9 +27,7 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
         Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
     }
 
-   
-
-    public override void ProcessTransferredData(BaseTurnData data) //(params object[] args)
+    public override void ProcessIncomingData(BaseTurnData data) //(params object[] args)
     {
         var incomingData = (SelectionData)data;
         Data.TowerGroup = incomingData.SelectionGroup;

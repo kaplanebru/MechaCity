@@ -19,6 +19,11 @@ public static class Eventbus
         public static Action<bool> OnButtonCall;
     }
 
+    public static class TurnCompleted
+    {
+        public static Action OnTurnCompleted;
+    }
+
     public static class FireEvents
     {
         public static Action OnFireEnabled;

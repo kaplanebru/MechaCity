@@ -45,7 +45,7 @@ public class TurnManager : MonoBehaviour
         {
             player.Value.Initialize();
         }
-
+        
         SetFirstMatches();
     }
     
@@ -58,38 +58,49 @@ public class TurnManager : MonoBehaviour
             
             currentTurnHandler.SetPlayers(players);
 
-            GetTransferredData(i, currentTurnHandler);
+            GetIncomingData(i, currentTurnHandler);
             currentTurnHandler.Setup();
 
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
+        
+        NewTurn();
     }
     
-    void GetTransferredData(int turnIndex, BaseTurnHandler currentTurnHandler)
+    void GetIncomingData(int turnIndex, BaseTurnHandler currentTurnHandler)
     {
         if (turnIndex <= 0) return;
         
         var transferData = ((ITurnActionHandler<BaseTurnData>)turnHandlers[turnIndex - 1]).Data;
-        currentTurnHandler.ProcessTransferredData(transferData);
-    }
-    
-    void SetFirstMatches() //Temporary
-    {
-        players[nameof(currentPlayer)].LinkFirstMatches(players[nameof(rivalPlayer)]);
-        players[nameof(rivalPlayer)].LinkFirstMatches(players[nameof(currentPlayer)]);
+        currentTurnHandler.ProcessIncomingData(transferData);
     }
 
+    void NewTurn()
+    {
+        StopCoroutine(nameof(TurnActionRoutine));
+        
+        SwitchPlayers();
+
+        StartCoroutine(nameof(TurnActionRoutine));
+    }
     void SwitchPlayers()
     {
         //(currentPlayer, rivalPlayer) = (rivalPlayer, currentPlayer);
 
         (players[nameof(currentPlayer)], players[nameof(rivalPlayer)]) =
             (players[nameof(rivalPlayer)], players[nameof(currentPlayer)]);
-        
 
         // var temp = currentPlayer;
         // currentPlayer = rivalPlayer;
         // rivalPlayer = temp;
     }
+    void SetFirstMatches() //Temporary
+    {
+        players[nameof(currentPlayer)].LinkFirstMatches(players[nameof(rivalPlayer)]);
+        players[nameof(rivalPlayer)].LinkFirstMatches(players[nameof(currentPlayer)]);
+    }
+
+  
+    
 }
     

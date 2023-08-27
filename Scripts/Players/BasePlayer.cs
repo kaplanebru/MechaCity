@@ -40,6 +40,11 @@ public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour w
         Data.Grid.Initialize(this);
     }
 
+    public void SetClickability(bool enable)
+    {
+        Data.Towers.ForEach(t=>t.Data.Clickable = enable);
+    }
+
     private void OnDisable()
     {
         Data.Grid.DisableGrid();

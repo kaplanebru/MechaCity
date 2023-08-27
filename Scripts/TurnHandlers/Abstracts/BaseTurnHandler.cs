@@ -20,14 +20,13 @@ public abstract class BaseTurnHandler : MonoBehaviour
         OnHandlerEnabled();
     }
     
-    public virtual void ProcessTransferredData(BaseTurnData data){}
+    public virtual void ProcessIncomingData(BaseTurnData data){}
     
     public abstract void Setup();
     
     public void CompleteAction()
     {
         turnAction = TurnAction.Completed;
-        //Eventbus.TurnEvents.OnTurnActionEnded?.Invoke(DataToTransfer);
         enabled = false;
     }
     public void SetPlayers(Dictionary<string, BasePlayer> _players)
