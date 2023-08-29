@@ -29,7 +29,7 @@ namespace Models
             Victim.Data.Health -= Perpetrator.ConstantData.DamagePower;
             if (Victim.Data.Health <= 0)
             {
-                //Victim.SetColor(Victim.Data.TeamData.DeadMaterial); //temp
+                //Victim.SetColor(Victim.Data.TeamCosmeticData.DeadMaterial); //temp
                 Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
             }
         }

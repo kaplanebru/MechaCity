@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fe8c36c6213cd34aadd74f5d453a03b, type: 3}
-  m_Name: EnemyTeam
+  m_Script: {fileID: 11500000, guid: 10306eb90e0873946b7f583983d504d9, type: 3}
+  m_Name: TeamAssetHolder 2
   m_EditorClassIdentifier: 
-  teamType: 1
+  Type: 1
   DefaultMaterial: {fileID: 2100000, guid: ff9e011226261cc48a802cd60972597f, type: 2}
   SelectedMaterial: {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
-  DeadMaterial: {fileID: 2100000, guid: 7ca87e03a1487454d8daf014f8bea09b, type: 2}
+  TowersPrefab: {fileID: 1247575438718957919, guid: 3c7ffae76fc75144fb2066bf0fa55c07, type: 3}

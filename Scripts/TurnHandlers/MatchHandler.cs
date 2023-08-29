@@ -48,9 +48,9 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         otherTower.Data.LinkedTowers.Remove(deadTower);
     }
 
-    void SwitchSides(Tower deadTower, Tower otherTower) //TODO: burda team kozmetiğini değiştirmesi yetmez, hakkaten rakibin teamine geçmeli
+    void SwitchSides(Tower deadTower)
     {
-        deadTower.SetTeam(otherTower.Data.TeamData);
+        Eventbus.TeamEvents.OnTeamChange?.Invoke(deadTower);
     }
     
     int CheckSlotForLink(int number, GameGrid grid, Tower towerToLink)
@@ -91,7 +91,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
                 var linkedTower = deadTower.Data.LinkedTowers[i];
                 RestoreDetachedTowersOfDeadTower(deadTowerGridModel, linkedTower);
                 RemoveLink(deadTower, linkedTower);
-                SwitchSides(deadTower, linkedTower);
+                SwitchSides(deadTower);
             }
         }
     }

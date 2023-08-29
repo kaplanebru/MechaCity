@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Datas;
 using Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,11 @@ public static class Eventbus
     public static class TowerEvents
     {
         public static Action<Tower> OnTowerClicked;
+    }
+
+    public static class TeamEvents
+    {
+        public static Action<Tower> OnTeamChange;
     }
 
     public static class UIEvents

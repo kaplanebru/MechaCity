@@ -1,9 +1,9 @@
 namespace Datas
 {
-    public enum Team
+    public enum TeamType
     {
-        Player1,
-        Player2
+        Team1,
+        Team2
     }
 
     public enum TurnState

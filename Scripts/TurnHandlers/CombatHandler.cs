@@ -92,7 +92,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
 
     void DeselectAlteredTowers() //TODO: At the end of animation
     {
-        Data.AlteredTowers.ForEach(t=> t.SetColor(t.Data.TeamData.DefaultMaterial));
+        Data.AlteredTowers.ForEach(t=> t.SetColor(t.Data.teamCosmeticData.DefaultMaterial));
     }
     
 

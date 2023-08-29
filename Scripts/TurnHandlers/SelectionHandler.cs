@@ -26,8 +26,8 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
 
     public override void Setup()
     {
-        players["currentPlayer"].SetClickability(true);
-        players["rivalPlayer"].SetClickability(false);
+        teams["currentTeam"].SetClickability(true);
+        teams["rivalTeam"].SetClickability(false);
         ManageCompleteButton(false);
     }
 
@@ -48,7 +48,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
 
     void AddToSelection(bool select, Tower newTower)
     {
-        newTower.SetColor(select ? players["currentPlayer"].Data.TeamData.SelectedMaterial : players["currentPlayer"].Data.TeamData.DefaultMaterial);
+        newTower.SetColor(select ? teams["currentTeam"].Data.teamCosmeticData.SelectedMaterial : teams["currentTeam"].Data.teamCosmeticData.DefaultMaterial);
 
         if (select)
             Data.SelectionGroup.Add(newTower);

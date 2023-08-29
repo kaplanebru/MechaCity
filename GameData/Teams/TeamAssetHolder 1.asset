@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10306eb90e0873946b7f583983d504d9, type: 3}
+  m_Name: TeamAssetHolder 1
+  m_EditorClassIdentifier: 
+  Type: 0
+  DefaultMaterial: {fileID: 2100000, guid: 4b78a4aacacdaee46927b88db70cc278, type: 2}
+  SelectedMaterial: {fileID: 2100000, guid: 56fccc219304f4345a43b6fff7e9b4b9, type: 2}
+  TowersPrefab: {fileID: 5579547957973982615, guid: 05c482badfba7d24eb2c1f172eafeadf, type: 3}

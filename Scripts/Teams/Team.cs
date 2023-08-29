@@ -7,27 +7,33 @@ using UnityEngine;
 
 
 
-public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : PlayerData
+public class Team: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : TeamData
 {
-    public PlayerData Data;
+    public TeamData Data;
     public void Initialize()
     {
-        var towersPb = Instantiate(Data.TowersPrefab);
+        var towersPb = Instantiate(Data.AssetHolder.TowersPrefab);
         Data.Towers = towersPb.GetComponentsInChildren<Tower>().ToList();
         SetGrid();
         SetAllTowers();
     }
+    
 
-    void TakeTower()
+    public void TakeTowerFromRival(Tower tower)
     {
-        
+        Data.Towers.Add(tower);
     }
 
-    public void LinkFirstMatches(BasePlayer rivalPlayer) //Temporary
+    public void RemoveTower(Tower tower)
+    {
+        Data.Towers.Remove(tower);
+    }
+
+    public void LinkFirstMatches(Team rivalTeam) //Temporary
     {
         for (int i = 0; i < Data.Towers.Count; i++)
         {
-            Data.Towers[i].Data.LinkedTowers.Add(rivalPlayer.Data.Towers[i]);
+            Data.Towers[i].Data.LinkedTowers.Add(rivalTeam.Data.Towers[i]);
         }
     }
 
@@ -36,7 +42,7 @@ public abstract class BasePlayer: MonoBehaviour //<TPlayerData>: MonoBehaviour w
         for (int i = 0; i < Data.Towers.Count; i++)
         {
             Data.Towers[i].Data.Id = i;
-            Data.Towers[i].Setup(Data.TeamData);
+            Data.Towers[i].Setup(Data.teamCosmeticData);
         }
     }
 

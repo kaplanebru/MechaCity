@@ -9,7 +9,7 @@ public abstract class BaseTurnHandler : MonoBehaviour
 {
     public TurnAction turnAction;
 
-    public Dictionary<string, BasePlayer> players;
+    public Dictionary<string, Team> teams;
    
    
     public abstract void OnHandlerEnabled();
@@ -29,9 +29,9 @@ public abstract class BaseTurnHandler : MonoBehaviour
         turnAction = TurnAction.Completed;
         enabled = false;
     }
-    public void SetPlayers(Dictionary<string, BasePlayer> _players)
+    public void SetTeams(Dictionary<string, Team> _teams)
     {
-        players = _players;
+        teams = _teams;
     }
     
     public abstract void Unsubscribe();

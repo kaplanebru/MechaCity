@@ -8,27 +8,27 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     BaseTurnHandler[] turnHandlers;
-    Dictionary<string, BasePlayer> players;
+    Dictionary<string, Team> teams;
 
     //aşağıdakileri asset holdera koy
-    [SerializeField]private BasePlayer currentPlayer;
-    [SerializeField]private BasePlayer rivalPlayer;
+    [SerializeField]private Team currentTeam;
+    [SerializeField]private Team rivalTeam;
     
     private void Start()
     {
-        SetPlayers();
+        SetTeams();
         turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
         DisableAllTurnHandlers();
-        InitializePlayers();
+        InitializeTeams();
         StartCoroutine(nameof(TurnActionRoutine));
     }
 
-    void SetPlayers()
+    void SetTeams()
     {
-        players = new Dictionary<string, BasePlayer>()
+        teams = new Dictionary<string, Team>()
         {
-            {"currentPlayer", currentPlayer},
-            {"rivalPlayer", rivalPlayer},
+            {"currentTeam", currentTeam},
+            {"rivalTeam", rivalTeam},
         };
     }
 
@@ -39,11 +39,11 @@ public class TurnManager : MonoBehaviour
             turnHandler.enabled = false;
         }
     }
-    void InitializePlayers()
+    void InitializeTeams()
     {
-        foreach (var player in players)
+        foreach (var team in teams)
         {
-            player.Value.Initialize();
+            team.Value.Initialize();
         }
         
         SetFirstMatches();
@@ -56,7 +56,7 @@ public class TurnManager : MonoBehaviour
             BaseTurnHandler currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
             
-            currentTurnHandler.SetPlayers(players);
+            currentTurnHandler.SetTeams(teams);
 
             GetIncomingData(i, currentTurnHandler);
             currentTurnHandler.Setup();
@@ -80,25 +80,25 @@ public class TurnManager : MonoBehaviour
     {
         StopCoroutine(nameof(TurnActionRoutine));
         
-        SwitchPlayers();
+        SwitchTeams();
 
         StartCoroutine(nameof(TurnActionRoutine));
     }
-    void SwitchPlayers()
+    void SwitchTeams()
     {
-        //(currentPlayer, rivalPlayer) = (rivalPlayer, currentPlayer);
+        //(currentTeam, rivalTeam) = (rivalTeam, currentTeam);
 
-        (players[nameof(currentPlayer)], players[nameof(rivalPlayer)]) =
-            (players[nameof(rivalPlayer)], players[nameof(currentPlayer)]);
+        (teams[nameof(currentTeam)], teams[nameof(rivalTeam)]) =
+            (teams[nameof(rivalTeam)], teams[nameof(currentTeam)]);
 
-        // var temp = currentPlayer;
-        // currentPlayer = rivalPlayer;
-        // rivalPlayer = temp;
+        // var temp = currentTeam;
+        // currentTeam = rivalTeam;
+        // rivalTeam = temp;
     }
     void SetFirstMatches() //Temporary
     {
-        players[nameof(currentPlayer)].LinkFirstMatches(players[nameof(rivalPlayer)]);
-        players[nameof(rivalPlayer)].LinkFirstMatches(players[nameof(currentPlayer)]);
+        teams[nameof(currentTeam)].LinkFirstMatches(teams[nameof(rivalTeam)]);
+        teams[nameof(rivalTeam)].LinkFirstMatches(teams[nameof(currentTeam)]);
     }
 
   

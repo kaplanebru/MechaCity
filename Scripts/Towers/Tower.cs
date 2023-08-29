@@ -20,13 +20,13 @@ public class Tower : MonoBehaviour
         Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
     }
     
-    public void Setup(TeamData teamData)
+    public void Setup(TeamCosmeticData teamCosmeticData)
     {
         Data.Height = ConstantData.StartHeight;
         Data.Health = ConstantData.StartHealth;
         var towerModel = Instantiate(ConstantData.Model, transform);
         mesh = towerModel.GetComponentInChildren<MeshRenderer>();
-        SetTeam(teamData);
+        SetTeam(teamCosmeticData);
         StartRise();
     }
 
@@ -40,10 +40,10 @@ public class Tower : MonoBehaviour
         mesh.material = mat;
     }
 
-    public void SetTeam(TeamData teamData)
+    public void SetTeam(TeamCosmeticData teamCosmeticData)
     {
-        Data.TeamData = teamData;
-        SetColor(teamData.DefaultMaterial);
+        Data.teamCosmeticData = teamCosmeticData;
+        SetColor(teamCosmeticData.DefaultMaterial);
     }
 
     private void RestoreBullets()

@@ -8,26 +8,26 @@ using UnityEngine;
 [Serializable]
 public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
 {
-    private Team TeamType;
+    [ReadOnly]public TeamType TeamType;
     public const int SlotAmount = 3;
     [ReadOnly]public Slot[] Slots = new Slot[SlotAmount];
 
-    public void Initialize(BasePlayer player)
+    public void Initialize(Team team)
     {
-        Setup(player);
+        Setup(team);
         Eventbus.FireEvents.OnTowerKilled += SendGridInfo;
     }
 
-    void Setup(BasePlayer player)
+    void Setup(Team team)
     {
-        TeamType = player.Data.TeamData.Team;
+        TeamType = team.Data.teamCosmeticData.teamType;
         CreateSlots();
-        SetSlots(player);
+        SetSlots(team);
     }
 
     private void SendGridInfo(Tower deadTower)
     {
-        if(deadTower.Data.TeamData.Team != TeamType) return;
+        if(deadTower.Data.teamCosmeticData.teamType != TeamType) return;
         Eventbus.FireEvents.OnTowerDied?.Invoke(new TowerGridRelationModel(this, deadTower));
     }
 
@@ -42,12 +42,12 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
         }
     }
     
-    void SetSlots(BasePlayer player)
+    void SetSlots(Team team)
     {
         for (int i = 0; i < SlotAmount; i++)
         {
             Slots[i].Id = i;
-            Slots[i].Tower = player.Data.Towers[i];
+            Slots[i].Tower = team.Data.Towers[i];
         }
     }
 
