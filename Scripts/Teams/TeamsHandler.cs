@@ -22,10 +22,10 @@ public class TeamsHandler : MonoBehaviour
         {
             if (teams[i].Data.TeamType == deadTower.Data.teamCosmeticData.teamType)
             {
-                teams[i].TakeTowerFromRival(deadTower);
+                teams[i].RemoveTower(deadTower);
 
                 var otherTeam = teams[teams.Length - 1 - i];
-                otherTeam.RemoveTower(deadTower);
+                otherTeam.TakeTowerFromRival(deadTower);
                 deadTower.SetTeam(otherTeam.Data.teamCosmeticData);
                 break;
             }
