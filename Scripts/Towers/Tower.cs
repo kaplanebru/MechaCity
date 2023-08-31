@@ -24,8 +24,14 @@ public class Tower : MonoBehaviour
     {
         Data.Height = ConstantData.StartHeight;
         Data.Health = ConstantData.StartHealth;
-        var towerModel = Instantiate(ConstantData.Model, transform);
+        
+        var towerModel = Instantiate(ConstantData.TowerAssetHolder.Model, transform);
         mesh = towerModel.GetComponentInChildren<MeshRenderer>();
+
+        var healthIndicator = Instantiate(ConstantData.TowerAssetHolder.HealthIndicator, transform.position,
+            Quaternion.identity);
+        
+        
         SetTeam(teamTowerData);
         StartRise();
     }

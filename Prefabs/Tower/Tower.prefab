@@ -68,7 +68,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fb19773540a98e48bc40ef9d2400a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heightSlot: {fileID: 0}
   heightText: {fileID: 7670471965800244591}
 --- !u!65 &7628743554477222171
 BoxCollider:

@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b21e65fc3f6b854409936f0a3f63c62e, type: 3}
-  m_Name: TowerData
+  m_Script: {fileID: 11500000, guid: 3124f7b07b019b94293f4f33c31370a7, type: 3}
+  m_Name: TowerAssetHolder
   m_EditorClassIdentifier: 
-  StartHeight: 2
   Model: {fileID: 127670967424323561, guid: 9e1ec6322cc547b45bc82e410218475d, type: 3}
-  StartHealth: 1
-  DamagePower: 1
-  MaxBullet: 1
+  HealthIndicator: {fileID: 1256720464846607769, guid: 2fdf8d2aad4557240878244222a25245, type: 3}
