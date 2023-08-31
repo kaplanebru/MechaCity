@@ -29,7 +29,7 @@ public class Tower : MonoBehaviour
         mesh = towerModel.GetComponentInChildren<MeshRenderer>();
 
         var healthIndicator = Instantiate(ConstantData.TowerAssetHolder.HealthIndicator, new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.7f),
-            Quaternion.Euler(90, 0, 0)); //TODO: temp
+            Quaternion.Euler(90, 0, 0)); //TODO: temp, bu kısım ui handlerda da yapılabilir
         
         
         SetTeam(teamTowerData);

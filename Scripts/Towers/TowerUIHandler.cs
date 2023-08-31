@@ -13,6 +13,11 @@ public class TowerUIHandler : MonoBehaviour
       Eventbus.UIEvents.OnTowerHeightChange += ChangeHeightUI;
    }
 
+   void CreateHealthIndicator()
+   {
+      
+   }
+
    void ChangeHeightUI(float height, Tower tower) //DoTween
    {
       if(tower.gameObject != gameObject) return;
