@@ -42,7 +42,7 @@ public class Team: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerDat
         for (int i = 0; i < Data.Towers.Count; i++)
         {
             Data.Towers[i].Data.Id = i;
-            Data.Towers[i].Setup(Data.teamCosmeticData);
+            Data.Towers[i].Setup(Data.TeamTowerData);
         }
     }
 

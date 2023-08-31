@@ -49,6 +49,7 @@ MonoBehaviour:
     TeamType: 0
     Towers: []
     Grid:
+      TeamType: 0
       Slots:
       - HasTower: 1
         Id: 0
@@ -59,5 +60,5 @@ MonoBehaviour:
       - HasTower: 1
         Id: 0
         Tower: {fileID: 0}
-    AssetHolder: {fileID: 0}
-    teamCosmeticData: {fileID: 0}
+    AssetHolder: {fileID: 11400000, guid: d7bdeda752b106941a87f5aedbff9785, type: 2}
+    TeamTowerData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}

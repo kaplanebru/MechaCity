@@ -48,7 +48,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
 
     void AddToSelection(bool select, Tower newTower)
     {
-        newTower.SetColor(select ? teams["currentTeam"].Data.teamCosmeticData.SelectedMaterial : teams["currentTeam"].Data.teamCosmeticData.DefaultMaterial);
+        newTower.SetColor(select ? teams["currentTeam"].Data.TeamTowerData.SelectedMaterial : teams["currentTeam"].Data.TeamTowerData.DefaultMaterial);
 
         if (select)
             Data.SelectionGroup.Add(newTower);

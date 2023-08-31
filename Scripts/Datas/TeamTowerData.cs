@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace Datas
 {
-    [CreateAssetMenu(fileName = nameof(TeamCosmeticData))]
-    public class TeamCosmeticData : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(TeamTowerData))]
+    public class TeamTowerData : ScriptableObject
     {
-        public TeamType teamType;
+        public TeamType TeamType;
         public Material DefaultMaterial;
         public Material SelectedMaterial;
         public Material DeadMaterial;

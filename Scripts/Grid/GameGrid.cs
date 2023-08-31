@@ -20,14 +20,14 @@ public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
 
     void Setup(Team team)
     {
-        TeamType = team.Data.teamCosmeticData.teamType;
+        TeamType = team.Data.TeamTowerData.TeamType;
         CreateSlots();
         SetSlots(team);
     }
 
     private void SendGridInfo(Tower deadTower)
     {
-        if(deadTower.Data.teamCosmeticData.teamType != TeamType) return;
+        if(deadTower.Data.TeamTowerData.TeamType != TeamType) return;
         Eventbus.FireEvents.OnTowerDied?.Invoke(new TowerGridRelationModel(this, deadTower));
     }
 

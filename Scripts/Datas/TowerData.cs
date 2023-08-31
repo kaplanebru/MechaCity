@@ -11,7 +11,7 @@ namespace Datas
         public int Id; //sonradan get set eklenebilir
         public int Health;
         public float Height;
-        public TeamCosmeticData teamCosmeticData;
+        public TeamTowerData TeamTowerData;
         public List<Tower> LinkedTowers;
         public bool CanShoot { get; private set; }
 

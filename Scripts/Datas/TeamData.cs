@@ -17,7 +17,7 @@ namespace Datas
         public GameGrid Grid;
         public TeamAssetHolder AssetHolder;
 
-        public TeamCosmeticData teamCosmeticData;
+        public TeamTowerData TeamTowerData;
     }
     
 }

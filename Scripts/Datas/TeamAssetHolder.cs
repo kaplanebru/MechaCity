@@ -8,8 +8,6 @@ namespace Datas
     public class TeamAssetHolder : ScriptableObject
     {
         public TeamType Type;
-        public Material DefaultMaterial;
-        public Material SelectedMaterial;
         public Transform TowersPrefab;
     }
 }

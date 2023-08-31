@@ -20,13 +20,13 @@ public class TeamsHandler : MonoBehaviour
         //var perpetratorTeam = teams.FirstOrDefault(t => t.Data.TeamType == type)?.Data; //todo: team classına da yazılabilir griddeki gibi
         for (int i = 0; i < teams.Length; i++)
         {
-            if (teams[i].Data.TeamType == deadTower.Data.teamCosmeticData.teamType)
+            if (teams[i].Data.TeamType == deadTower.Data.TeamTowerData.TeamType)
             {
                 teams[i].RemoveTower(deadTower);
 
                 var otherTeam = teams[teams.Length - 1 - i];
                 otherTeam.TakeTowerFromRival(deadTower);
-                deadTower.SetTeam(otherTeam.Data.teamCosmeticData);
+                deadTower.SetTeam(otherTeam.Data.TeamTowerData);
                 break;
             }
         }
