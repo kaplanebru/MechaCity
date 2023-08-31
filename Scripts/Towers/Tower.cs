@@ -32,7 +32,7 @@ public class Tower : MonoBehaviour
 
     void StartRise()
     {
-        transform.DOScaleY(Data.Height, 1);
+        ChangeHeight(Data.Height);
     }
 
     public void SetColor(Material mat)
@@ -45,22 +45,27 @@ public class Tower : MonoBehaviour
         Data.TeamTowerData = teamTowerData;
         SetColor(teamTowerData.DefaultMaterial);
     }
-
-    private void RestoreBullets()
+    
+    public void ChangeHeight(float newHeight)
     {
-        Data.BulletAmount = ConstantData.MaxBullet;
+        transform.DOScaleY(newHeight, 1).OnComplete(() =>
+        {
+            Eventbus.UIEvents.OnTowerHeightChange?.Invoke(newHeight, this);
+        });
     }
+    
 
     public void Descend(int amount)
     {
         Data.Height -= amount;
-        transform.DOScaleY(Data.Height, 1);
+        ChangeHeight(Data.Height);
+        
     }
 
     public void Ascend(int amount)
     {
         Data.Height += amount;
-        transform.DOScaleY(Data.Height, 1);
+        ChangeHeight(Data.Height);
     }
 
     private void OnMouseDown()
@@ -81,6 +86,11 @@ public class Tower : MonoBehaviour
         {
             Gizmos.DrawLine(transform.position, linkedTower.transform.position);
         }
+    }
+    
+    private void RestoreBullets() //Todo: name change: bullet hakkı
+    {
+        Data.BulletAmount = ConstantData.MaxBullet;
     }
 
     private void OnDisable()

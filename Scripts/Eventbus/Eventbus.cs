@@ -23,6 +23,7 @@ public static class Eventbus
     public static class UIEvents
     {
         public static Action<bool> OnButtonCall;
+        public static Action<float, Tower> OnTowerHeightChange;
     }
 
     public static class TurnEvents
@@ -36,11 +37,7 @@ public static class Eventbus
         public static Action<Tower> OnTowerKilled;
         public static Action<TowerGridRelationModel> OnTowerDied;
     }
-
-    public static class TowerGroupEvents
-    {
-        public static Action OnTowersAltered;
-    }
+    
     
     // public class SubscriptionModel
     // {
