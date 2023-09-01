@@ -17,24 +17,32 @@ namespace Models
             Victim = _victim;
             IsEven = isEven;
         }
-        
+
         public bool Contains(Tower newTower)
         {
             return Perpetrator == newTower || Victim == newTower;
         }
+
         public void Combat()
         {
             if (IsEven) return;
             //Victim.Descend(Perpetrator.ConstantData.DamagePower);
-            Victim.Data.Health -= Perpetrator.ConstantData.DamagePower;
+
+            ChangeVictimHealth();
+
             if (Victim.Data.Health <= 0)
             {
                 //Victim.SetColor(Victim.Data.TeamTowerData.DeadMaterial); //temp
                 Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
             }
         }
-    }
-    
-    
 
+        void ChangeVictimHealth()
+        {
+            if (Victim.Data.Health <= 0) return;
+
+            Victim.Data.Health -= Perpetrator.ConstantData.DamagePower;
+            Eventbus.UIEvents.OnHealthChange.Invoke(Victim.Data.Health, Victim);
+        }
+    }
 }

@@ -7,15 +7,19 @@ using UnityEngine;
 public class TowerUIHandler : MonoBehaviour
 {
    public TextMeshPro heightText;
+   public TextMeshPro healthIndicator;
 
    private void OnEnable() //TODO: Tower scriptinden yönet
    {
       Eventbus.UIEvents.OnTowerHeightChange += ChangeHeightUI;
+      Eventbus.UIEvents.OnHealthChange += AdjustHealthUI;
    }
 
-   void CreateHealthIndicator()
+   private void AdjustHealthUI(int health, Tower tower)
    {
+      if(tower.gameObject != gameObject) return;
       
+      healthIndicator.text = health.ToString();
    }
 
    void ChangeHeightUI(float height, Tower tower) //DoTween
@@ -29,6 +33,13 @@ public class TowerUIHandler : MonoBehaviour
    private void OnDisable()
    {
       Eventbus.UIEvents.OnTowerHeightChange -= ChangeHeightUI;
-
+      Eventbus.UIEvents.OnHealthChange -= AdjustHealthUI;
    }
+   
+   // void AdjustHealthIndicatorPosition(float height)
+   // {
+   //    var pos = healthIndicator.transform.localPosition;
+   //    pos.y = height;
+   //    healthIndicator.transform.localPosition = pos;
+   // }
 }

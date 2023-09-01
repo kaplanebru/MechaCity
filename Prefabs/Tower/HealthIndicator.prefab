@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 828534262326200197}
   - component: {fileID: 4431139208333399651}
   m_Layer: 0
-  m_Name: HealthUIUp 1
+  m_Name: HealthIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

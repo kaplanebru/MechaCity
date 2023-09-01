@@ -12,7 +12,11 @@ public class Tower : MonoBehaviour
     
     public TowerConstantData ConstantData;
     public TowerData Data;
+    public Transform modelHolder;
+
+    
     private MeshRenderer mesh;
+    
   
     
     private void OnEnable()
@@ -23,14 +27,15 @@ public class Tower : MonoBehaviour
     public void Setup(TeamTowerData teamTowerData)
     {
         Data.Height = ConstantData.StartHeight;
-        Data.Health = ConstantData.StartHealth;
         
-        var towerModel = Instantiate(ConstantData.TowerAssetHolder.Model, transform);
+        Data.Health = ConstantData.StartHealth;
+        Eventbus.UIEvents.OnHealthChange.Invoke(Data.Health, this);
+        
+        var towerModel = Instantiate(ConstantData.TowerAssetHolder.Model, modelHolder);
         mesh = towerModel.GetComponentInChildren<MeshRenderer>();
 
-        var healthIndicator = Instantiate(ConstantData.TowerAssetHolder.HealthIndicator, new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.7f),
-            Quaternion.Euler(90, 0, 0)); //TODO: temp, bu kısım ui handlerda da yapılabilir
-        
+        // var healthIndicator = Instantiate(ConstantData.TowerAssetHolder.HealthIndicator, new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.7f),
+        //     Quaternion.Euler(90, 0, 0)); //TODO: temp, bu kısım ui handlerda da yapılabilir
         
         SetTeam(teamTowerData);
         StartRise();
@@ -54,24 +59,10 @@ public class Tower : MonoBehaviour
     
     public void ChangeHeight(float newHeight)
     {
-        transform.DOScaleY(newHeight, 1).OnComplete(() =>
+        modelHolder.transform.DOScaleY(newHeight, 1).OnComplete(() =>
         {
             Eventbus.UIEvents.OnTowerHeightChange?.Invoke(newHeight, this);
         });
-    }
-    
-
-    public void Descend(int amount)
-    {
-        Data.Height -= amount;
-        ChangeHeight(Data.Height);
-        
-    }
-
-    public void Ascend(int amount)
-    {
-        Data.Height += amount;
-        ChangeHeight(Data.Height);
     }
 
     private void OnMouseDown()

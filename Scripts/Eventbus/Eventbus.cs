@@ -24,6 +24,7 @@ public static class Eventbus
     {
         public static Action<bool> OnButtonCall;
         public static Action<float, Tower> OnTowerHeightChange;
+        public static Action<int, Tower> OnHealthChange;
     }
 
     public static class TurnEvents
