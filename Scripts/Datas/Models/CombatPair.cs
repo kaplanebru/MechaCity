@@ -29,7 +29,7 @@ namespace Models
             //Victim.Descend(Perpetrator.ConstantData.DamagePower);
 
             var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = Perpetrator.transform.position);
-            projectile.ShootProjectile(Victim.transform.position, RemoveVictimHealth);
+            projectile.Move(Victim.transform.position, RemoveVictimHealth);
         }
 
         void RemoveVictimHealth()
