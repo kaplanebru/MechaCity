@@ -13,18 +13,21 @@ public class TeamsHandler : MonoBehaviour
     {
         teams = GetComponentsInChildren<Team>();
         Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
-        Eventbus.FireEvents.OnTowerKilled += SendGridInfoByTeam;
-    }
-    
-    private void SendGridInfoByTeam(Tower deadTower)
-    {
-         var deadTowerTeam = teams.First(te => te.Data.TeamType == deadTower.Data.TeamTowerData.TeamType);
-         Eventbus.FireEvents.OnTowerTeamDetection?.Invoke(new TowerGridRelationModel(deadTowerTeam.Data.Grid, deadTower));
+        Eventbus.FireEvents.OnTowerKilled += SendGridByTeam;
     }
 
-    public void ExchangeTower(Tower deadTower)
+    Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);
+    
+    private void SendGridByTeam(Tower deadTower)
+    {
+         var team = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
+         Eventbus.FireEvents.OnTowerTeamDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
+    }
+
+    private void ExchangeTower(Tower deadTower)
     {
         //var perpetratorTeam = teams.FirstOrDefault(t => t.Data.TeamType == type)?.Data; //todo: team classına da yazılabilir griddeki gibi
+        
         for (int i = 0; i < teams.Length; i++)
         {
             if (teams[i].Data.TeamType == deadTower.Data.TeamTowerData.TeamType)
@@ -42,6 +45,6 @@ public class TeamsHandler : MonoBehaviour
     private void OnDisable()
     {
         Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
-        Eventbus.FireEvents.OnTowerKilled -= SendGridInfoByTeam;
+        Eventbus.FireEvents.OnTowerKilled -= SendGridByTeam;
     }
 }
