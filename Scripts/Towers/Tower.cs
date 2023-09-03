@@ -16,9 +16,9 @@ public class Tower : MonoBehaviour
 
     
     private MeshRenderer mesh;
-    
-  
-    
+
+
+
     private void OnEnable()
     {
         Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
@@ -65,6 +65,12 @@ public class Tower : MonoBehaviour
         });
     }
 
+    public void ThrowProjectile(Vector3 targetPos, Action callback)
+    {
+        Projectile proj = Instantiate(ConstantData.TowerAssetHolder.ProjectileObject, transform);
+        proj.ShootProjectile(targetPos,callback);
+        //Eventbus.FireEvents.OnShooting?.Invoke(targetPos);
+    }
     private void OnMouseDown()
     {
         if(Data.Clickable)

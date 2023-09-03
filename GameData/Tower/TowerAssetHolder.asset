@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Model: {fileID: 127670967424323561, guid: 9e1ec6322cc547b45bc82e410218475d, type: 3}
   HealthIndicator: {fileID: 1256720464846607769, guid: 2fdf8d2aad4557240878244222a25245, type: 3}
+  ProjectileObject: {fileID: 4153317051268231772, guid: c18ff5e9a19f3b64291a6111b8758039, type: 3}

@@ -55,9 +55,4 @@ public class Team: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerDat
     {
         Data.Towers.ForEach(t=>t.Data.Clickable = enable);
     }
-
-    private void OnDisable()
-    {
-        Data.Grid.DisableGrid();
-    }
 }

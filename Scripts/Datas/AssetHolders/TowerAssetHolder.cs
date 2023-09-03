@@ -9,6 +9,7 @@ namespace Datas
     {
         public Transform Model;
         public Transform HealthIndicator;
+        public Projectile ProjectileObject; //temp
     }
 }
 

@@ -28,21 +28,29 @@ namespace Models
             if (IsEven) return;
             //Victim.Descend(Perpetrator.ConstantData.DamagePower);
 
-            ChangeVictimHealth();
-
-            if (Victim.Data.Health <= 0)
-            {
-                //Victim.SetColor(Victim.Data.TeamTowerData.DeadMaterial); //temp
-                Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
-            }
+            //TODO: pool'dan çekeceği için geçici olarak instantate proj yapılan kısım burada yapılacak
+            Perpetrator.ThrowProjectile(Victim.transform.position, RemoveVictimHealth);
+            //RemoveVictimHealth();
         }
 
-        void ChangeVictimHealth()
+        void RemoveVictimHealth()
         {
             if (Victim.Data.Health <= 0) return;
 
             Victim.Data.Health -= Perpetrator.ConstantData.DamagePower;
             Eventbus.UIEvents.OnHealthChange.Invoke(Victim.Data.Health, Victim);
+            CheckVictimLife();
+           
+        }
+
+        void CheckVictimLife()
+        {
+            if (Victim.Data.Health <= 0)
+            {
+                //Victim.SetColor(Victim.Data.TeamTowerData.DeadMaterial); //for debugging
+                Debug.Log("died");
+                Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
+            }
         }
     }
 }

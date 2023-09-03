@@ -13,6 +13,13 @@ public class TeamsHandler : MonoBehaviour
     {
         teams = GetComponentsInChildren<Team>();
         Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
+        Eventbus.FireEvents.OnTowerKilled += SendGridInfoByTeam;
+    }
+    
+    private void SendGridInfoByTeam(Tower deadTower)
+    {
+         var deadTowerTeam = teams.First(te => te.Data.TeamType == deadTower.Data.TeamTowerData.TeamType);
+         Eventbus.FireEvents.OnTowerTeamDetection?.Invoke(new TowerGridRelationModel(deadTowerTeam.Data.Grid, deadTower));
     }
 
     public void ExchangeTower(Tower deadTower)
@@ -35,5 +42,6 @@ public class TeamsHandler : MonoBehaviour
     private void OnDisable()
     {
         Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
+        Eventbus.FireEvents.OnTowerKilled -= SendGridInfoByTeam;
     }
 }

@@ -20,7 +20,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     {
         Data = new();
         Data.DeadTowers.Clear();
-        Eventbus.FireEvents.OnTowerDied += AddToDeadTowers;
+        Eventbus.FireEvents.OnTowerTeamDetection += AddToDeadTowers;
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
     }
     
@@ -45,8 +45,13 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     
     void Fire()
     {
-        Data.CombatPairs.ForEach(p => p.Combat());
-        CompleteAction();
+        Data.CombatPairs.ForEach(p =>
+        {
+            p.Combat();
+        });
+        
+        Invoke(nameof(CompleteAction), 4); //temp
+        
 
         //bullet anim.OnComplete:
         //Heighte göre Dotween eklenir
@@ -99,6 +104,6 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     public override void Unsubscribe()
     {
         DeselectAlteredTowers();
-        Eventbus.FireEvents.OnTowerDied -= AddToDeadTowers;
+        Eventbus.FireEvents.OnTowerTeamDetection -= AddToDeadTowers;
     }
 }

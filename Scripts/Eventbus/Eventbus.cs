@@ -35,8 +35,9 @@ public static class Eventbus
     public static class FireEvents
     {
         public static Action OnFireEnabled;
+        public static Action<Vector3> OnShooting;
         public static Action<Tower> OnTowerKilled;
-        public static Action<TowerGridRelationModel> OnTowerDied;
+        public static Action<TowerGridRelationModel> OnTowerTeamDetection;
     }
     
     
