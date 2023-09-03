@@ -12,7 +12,8 @@ public class Tower : MonoBehaviour
     
     public TowerConstantData ConstantData;
     public TowerData Data;
-    public Transform modelHolder;
+    public Transform middle;
+    public Transform top;
 
     
     private MeshRenderer mesh;
@@ -31,7 +32,7 @@ public class Tower : MonoBehaviour
         Data.Health = ConstantData.StartHealth;
         Eventbus.UIEvents.OnHealthChange.Invoke(Data.Health, this);
         
-        var towerModel = Instantiate(ConstantData.TowerAssetHolder.Model, modelHolder);
+        var towerModel = Instantiate(ConstantData.TowerAssetHolder.Model, middle);
         mesh = towerModel.GetComponentInChildren<MeshRenderer>();
 
         // var healthIndicator = Instantiate(ConstantData.TowerAssetHolder.HealthIndicator, new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.7f),
@@ -59,10 +60,12 @@ public class Tower : MonoBehaviour
     
     public void ChangeHeight(float newHeight)
     {
-        modelHolder.transform.DOScaleY(newHeight, 1).OnComplete(() =>
+        middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
         {
             Eventbus.UIEvents.OnTowerHeightChange?.Invoke(newHeight, this);
         });
+        top.transform.DOLocalMoveY(newHeight, 1);
+        //down rotate
     }
     
     private void OnMouseDown()
