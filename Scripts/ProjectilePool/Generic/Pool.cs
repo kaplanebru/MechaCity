@@ -6,53 +6,40 @@ using UnityEngine;
 public abstract class Pool<T> : MonoBehaviour where T : Component
 {
     public static Pool<T> Instance;
-    private Queue<T> _pool = new Queue<T>();
+    private Queue<T> pool = new Queue<T>();
 
-    public T GetItem()
+    public T GetItem(Action<T> callback = null)
     {
-        T itemFromPool = _pool.Dequeue(); //sıranın BAŞINDAN alma
+        T itemFromPool = pool.Dequeue(); //sıranın BAŞINDAN alma, sıradan çıkartma
+
+        callback?.Invoke(itemFromPool);
         
         itemFromPool.gameObject.SetActive(true);
-        
-        //_pool.Enqueue(itemFromPool); //sıranın SONUNA ekleme
-        return itemFromPool; 
+        return itemFromPool;
     }
     
     public void ReleaseItem(T item)
     {
-        if (_pool.Contains(item))
-        {
-            item.gameObject.SetActive(false); 
-            _pool.Enqueue(item);
-        }
+        item.gameObject.SetActive(false);
+        pool.Enqueue(item); //sıraya ekleme (SONDAN)
     }
-    
+
     public void CreatePool(int amount, Transform poolParent, T prefab)
     {
         for (int i = 0; i < amount; i++)
         {
             T item = Instantiate(prefab, poolParent);
             item.gameObject.SetActive(false);
-            _pool.Enqueue(item);
+            pool.Enqueue(item);
         }
     }
 
     public void DisableAll()
     {
-        for (int i = 0; i < _pool.Count; i++)
+        for (int i = 0; i < pool.Count; i++)
         {
-            T item= GetItem();
-            item.gameObject.SetActive(false);
-        }
-    }
-    
-    public void GetAll(float interval, int population, int startOffset)
-    {
-        for (int i = population - 1; i >= 0; i--)
-        {
-            T item= GetItem();
-            // var dist = Vector3.forward * (i * interval -interval*startOffset);  //startOffset pooldaki elementler yetmediği için
-            // item.transform.localPosition += dist;
+            T item = GetItem();
+            ReleaseItem(item);
         }
     }
 }

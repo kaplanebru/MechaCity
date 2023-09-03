@@ -18,7 +18,8 @@ public class Projectile : MonoBehaviour
         //TODO: projetile yuvası olmalı ya boydan hesaplanabilir (height - 0.5f)
         transform.DOMove(targetPos, 3).OnComplete(()=>
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            ProjectilePool.Instance.ReleaseItem(this);
             callback?.Invoke();
             //TODO REMOVE VİCTİM HEALTH HERE USING EVENT
         });

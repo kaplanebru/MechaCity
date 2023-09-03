@@ -64,13 +64,7 @@ public class Tower : MonoBehaviour
             Eventbus.UIEvents.OnTowerHeightChange?.Invoke(newHeight, this);
         });
     }
-
-    public void ThrowProjectile(Vector3 targetPos, Action callback)
-    {
-        Projectile proj = Instantiate(ConstantData.TowerAssetHolder.ProjectileObject, transform);
-        proj.ShootProjectile(targetPos,callback);
-        //Eventbus.FireEvents.OnShooting?.Invoke(targetPos);
-    }
+    
     private void OnMouseDown()
     {
         if(Data.Clickable)

@@ -28,9 +28,8 @@ namespace Models
             if (IsEven) return;
             //Victim.Descend(Perpetrator.ConstantData.DamagePower);
 
-            //TODO: pool'dan çekeceği için geçici olarak instantate proj yapılan kısım burada yapılacak
-            Perpetrator.ThrowProjectile(Victim.transform.position, RemoveVictimHealth);
-            //RemoveVictimHealth();
+            var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = Perpetrator.transform.position);
+            projectile.ShootProjectile(Victim.transform.position, RemoveVictimHealth);
         }
 
         void RemoveVictimHealth()
@@ -39,8 +38,8 @@ namespace Models
 
             Victim.Data.Health -= Perpetrator.ConstantData.DamagePower;
             Eventbus.UIEvents.OnHealthChange.Invoke(Victim.Data.Health, Victim);
+            
             CheckVictimLife();
-           
         }
 
         void CheckVictimLife()
@@ -48,7 +47,6 @@ namespace Models
             if (Victim.Data.Health <= 0)
             {
                 //Victim.SetColor(Victim.Data.TeamTowerData.DeadMaterial); //for debugging
-                Debug.Log("died");
                 Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
             }
         }
