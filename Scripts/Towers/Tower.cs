@@ -6,23 +6,19 @@ using UnityEngine;
 using DG.Tweening;
 using Models;
 
+[RequireComponent(typeof(TowerParts))]
 public class Tower : MonoBehaviour
 {
     //Shooter, RiserFall, Selectable Components diye 3'e ayrılabilir
     
     public TowerConstantData ConstantData;
     public TowerData Data;
-    public Transform middle;
-    public Transform top;
-
+    public TowerParts towerParts;
     
-    private MeshRenderer mesh;
-
-
-
     private void OnEnable()
     {
         Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
+        towerParts = GetComponent<TowerParts>();
     }
     
     public void Setup(TeamTowerData teamTowerData)
@@ -31,41 +27,16 @@ public class Tower : MonoBehaviour
         
         Data.Health = ConstantData.StartHealth;
         Eventbus.UIEvents.OnHealthChange.Invoke(Data.Health, this);
-        
-        var towerModel = Instantiate(ConstantData.TowerAssetHolder.Model, middle);
-        mesh = towerModel.GetComponentInChildren<MeshRenderer>();
 
-        // var healthIndicator = Instantiate(ConstantData.TowerAssetHolder.HealthIndicator, new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.7f),
-        //     Quaternion.Euler(90, 0, 0)); //TODO: temp, bu kısım ui handlerda da yapılabilir
-        
+        towerParts.Setup();
         SetTeam(teamTowerData);
-        StartRise();
-    }
-
-    void StartRise()
-    {
-        ChangeHeight(Data.Height);
-    }
-
-    public void SetColor(Material mat)
-    {
-        mesh.material = mat;
+        towerParts.ChangeHeight(Data.Height);
     }
 
     public void SetTeam(TeamTowerData teamTowerData)
     {
         Data.TeamTowerData = teamTowerData;
-        SetColor(teamTowerData.DefaultMaterial);
-    }
-    
-    public void ChangeHeight(float newHeight)
-    {
-        middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
-        {
-            Eventbus.UIEvents.OnTowerHeightChange?.Invoke(newHeight, this);
-        });
-        top.transform.DOLocalMoveY(newHeight, 1);
-        //down rotate
+        towerParts.SetColor(teamTowerData.DefaultMaterial);
     }
     
     private void OnMouseDown()

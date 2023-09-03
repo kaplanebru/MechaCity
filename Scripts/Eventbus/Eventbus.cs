@@ -23,7 +23,7 @@ public static class Eventbus
     public static class UIEvents
     {
         public static Action<bool> OnButtonCall;
-        public static Action<float, Tower> OnTowerHeightChange;
+        public static Action<float, GameObject> OnTowerHeightChange;
         public static Action<int, Tower> OnHealthChange;
     }
 

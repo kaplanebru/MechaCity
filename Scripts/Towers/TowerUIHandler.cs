@@ -22,9 +22,9 @@ public class TowerUIHandler : MonoBehaviour
       healthIndicator.text = health.ToString();
    }
 
-   void ChangeHeightUI(float height, Tower tower) //DoTween
+   void ChangeHeightUI(float height, GameObject obj) //DoTween
    {
-      if(tower.gameObject != gameObject) return;
+      if(obj != gameObject) return;
       
       int heightInt = Mathf.RoundToInt(height);
       heightText.text = heightInt.ToString();

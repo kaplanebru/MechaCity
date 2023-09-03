@@ -47,10 +47,10 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
         {
             if (tower == selectedTower)
                 //tower.transform.DOScaleY(tower.Data.Height += amount, 1);
-                tower.ChangeHeight(tower.Data.Height += amount);
+                tower.towerParts.ChangeHeight(tower.Data.Height += amount);
             else
                 //tower.transform.DOScaleY(tower.Data.Height -= amount/(Data.TowerGroup.Count-1), 1);
-                tower.ChangeHeight(tower.Data.Height -= amount/(Data.TowerGroup.Count-1));
+                tower.towerParts.ChangeHeight(tower.Data.Height -= amount/(Data.TowerGroup.Count-1));
         }
     }
 

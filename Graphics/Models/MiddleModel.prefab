@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5216921051135318435}
   - component: {fileID: 5462718353812933561}
   m_Layer: 0
-  m_Name: Middle
+  m_Name: MiddleModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
