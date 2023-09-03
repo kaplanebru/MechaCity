@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Datas;
 using UnityEngine;
+using Object = UnityEngine.Object;
+
 
 [Serializable]
 public class SelectionData : BaseTurnData
@@ -16,18 +18,33 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
 {
     //learn how to serialize interface
     public SelectionData Data { get; private set; }
-
+    
     public override void OnHandlerEnabled()
     {
         Data = new();
         Data.SelectionGroup.Clear();
-        Eventbus.TowerEvents.OnTowerClicked += TowerClicked;
+
+        Eventbus.InputEvents.OnTowerPartClicked += TowerPartClicked;
+    }
+
+    
+    private void TowerPartClicked(Tower tower)
+    {
+        if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
+        //if (teams["rivalTeam"].Data.Towers.Contains(tower)) return;
+        
+        print(tower.name);
+
+        if (SelectedTwice(tower)) return;
+        
+        if (Data.SelectionGroup.Count == Data.MaxTowersInGroup)
+            ResetSelectionGroup();
+        
+        AddToSelection(true, tower);
     }
 
     public override void Setup()
     {
-        teams["currentTeam"].SetClickability(true);
-        teams["rivalTeam"].SetClickability(false);
         ManageCompleteButton(false);
     }
 
@@ -88,6 +105,6 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
 
     public override void Unsubscribe()
     {
-        Eventbus.TowerEvents.OnTowerClicked -= TowerClicked;
+        Eventbus.InputEvents.OnTowerPartClicked -= TowerPartClicked;
     }
 }

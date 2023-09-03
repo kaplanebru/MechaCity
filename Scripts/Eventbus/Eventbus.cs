@@ -12,7 +12,7 @@ public static class Eventbus
 
     public static class TowerEvents
     {
-        public static Action<Tower> OnTowerClicked;
+        public static Action<Tower> OnTowerSetup;
     }
 
     public static class TeamEvents
@@ -26,6 +26,12 @@ public static class Eventbus
         public static Action<float, GameObject> OnTowerHeightChange;
         public static Action<int, Tower> OnHealthChange;
     }
+
+    public static class InputEvents //TODO: bu map node'da nasıl handle ediliyordu
+    {
+        public static Action<Tower> OnTowerPartClicked;
+    }
+    
 
     public static class TurnEvents
     {

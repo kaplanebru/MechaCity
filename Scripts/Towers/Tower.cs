@@ -6,7 +6,7 @@ using UnityEngine;
 using DG.Tweening;
 using Models;
 
-[RequireComponent(typeof(TowerParts))]
+//[RequireComponent(typeof(TowerParts))]
 public class Tower : MonoBehaviour
 {
     //Shooter, RiserFall, Selectable Components diye 3'e ayrılabilir
@@ -14,6 +14,7 @@ public class Tower : MonoBehaviour
     public TowerConstantData ConstantData;
     public TowerData Data;
     public TowerParts towerParts;
+   
     
     private void OnEnable()
     {
@@ -27,10 +28,12 @@ public class Tower : MonoBehaviour
         
         Data.Health = ConstantData.StartHealth;
         Eventbus.UIEvents.OnHealthChange.Invoke(Data.Health, this);
-
-        towerParts.Setup();
+        
         SetTeam(teamTowerData);
-        towerParts.ChangeHeight(Data.Height);
+
+        towerParts.ChangeHeight(Data.Height); //FirstRise
+        
+        Eventbus.TowerEvents.OnTowerSetup?.Invoke(this);
     }
 
     public void SetTeam(TeamTowerData teamTowerData)
@@ -39,16 +42,6 @@ public class Tower : MonoBehaviour
         towerParts.SetColor(teamTowerData.DefaultMaterial);
     }
     
-    private void OnMouseDown()
-    {
-        if(Data.Clickable)
-            Click();
-    }
-
-    private void Click()
-    {
-        Eventbus.TowerEvents.OnTowerClicked?.Invoke(this);
-    }
     
     private void OnDrawGizmos()
     {
@@ -68,4 +61,6 @@ public class Tower : MonoBehaviour
     {
         Eventbus.FireEvents.OnFireEnabled -= RestoreBullets;
     }
+
+    
 }

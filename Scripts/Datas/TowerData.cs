@@ -16,7 +16,6 @@ namespace Datas
         public bool CanShoot { get; private set; }
 
         private int bulletAmount;
-        public bool Clickable = true;
         public int BulletAmount
         {
             get => bulletAmount;

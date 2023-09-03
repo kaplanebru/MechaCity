@@ -24,7 +24,9 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
     public override void OnHandlerEnabled()
     {
         Data = new();
-        Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
+        //Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
+        Eventbus.InputEvents.OnTowerPartClicked += TowerSelected;
+
     }
 
     public override void ProcessIncomingData(BaseTurnData data) //(params object[] args)
@@ -61,7 +63,8 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
     
     public override void Unsubscribe()    
     {
-        Eventbus.TowerEvents.OnTowerClicked -= TowerSelected;
+        //.TowerEvents.OnTowerClicked -= TowerSelected;
+        Eventbus.InputEvents.OnTowerPartClicked -= TowerSelected;
     }
 
     void ResetGroups()

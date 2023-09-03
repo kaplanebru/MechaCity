@@ -20,6 +20,11 @@ public class TurnManager : MonoBehaviour
         turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
         DisableAllTurnHandlers();
         InitializeTeams();
+        
+    }
+
+    public void Play()
+    {
         StartCoroutine(nameof(TurnActionRoutine));
     }
 

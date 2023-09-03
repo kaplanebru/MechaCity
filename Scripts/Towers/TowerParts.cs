@@ -12,21 +12,16 @@ public class TowerPartsData
     public Transform Top;
     public Transform Middle;
     public Transform Down;
+    public MeshRenderer[] MiddleMeshes;
+    public MeshRenderer TopMesh;
 }
-
 public class TowerParts : MonoBehaviour
 {
-    private MeshRenderer[] meshes;
     public TowerPartsData Data;
-
-    public void Setup()
-    {
-        meshes = Data.Middle.GetComponentsInChildren<MeshRenderer>();
-    }
 
     public void SetColor(Material mat)
     {
-        foreach (var mesh in meshes)
+        foreach (var mesh in Data.MiddleMeshes)
         {
             mesh.material = mat;
         }
@@ -38,7 +33,10 @@ public class TowerParts : MonoBehaviour
         {
             Eventbus.UIEvents.OnTowerHeightChange?.Invoke(newHeight, gameObject);
         });
+        
         Data.Top.transform.DOLocalMoveY(newHeight, 1);
         //down rotate
     }
+
+   
 }

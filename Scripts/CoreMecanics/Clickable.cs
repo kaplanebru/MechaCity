@@ -1,13 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Clickable : MonoBehaviour, IPointerEnterHandler
+
+public class Clickable : MonoBehaviour
 {
-    public void OnPointerEnter(PointerEventData eventData)
+    public Tower _tower; //{ get; set; }
+
+    private void OnEnable()
     {
-        print(transform.name);
+        _tower = GetComponentInParent<Tower>();
     }
-    
+
+    void Setup(Tower tower)
+    {
+        _tower = tower;
+    }
+
+    private void OnMouseDown()
+    {
+        Eventbus.InputEvents.OnTowerPartClicked?.Invoke(_tower);
+    }
 }
