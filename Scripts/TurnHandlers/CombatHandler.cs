@@ -14,6 +14,7 @@ public class FireData : BaseTurnData
     
     [ReadOnly] public float projectileSpeed = 1; //bu belki design ile ilgili daha geniş bir class'a alınabilir
     public float ProjectileSpeed => projectileSpeed;
+    public float FireSpeedMultiplier = 0.7f;
 }
 
 public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
@@ -52,7 +53,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         foreach (var pair in Data.CombatPairs)
         {
             pair.Combat(Data.ProjectileSpeed);
-            yield return new WaitForSeconds(Data.ProjectileSpeed);
+            yield return new WaitForSeconds(Data.ProjectileSpeed * Data.FireSpeedMultiplier);
         }
         
         yield return new WaitForSeconds(0.1f);
