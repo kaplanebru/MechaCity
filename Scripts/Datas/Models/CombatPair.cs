@@ -28,8 +28,8 @@ namespace Models
             if (IsEven) return;
             //Victim.Descend(Perpetrator.ConstantData.DamagePower);
 
-            var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = Perpetrator.transform.position);
-            projectile.Move(Victim.transform.position, RemoveVictimHealth);
+            var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = Perpetrator.towerParts.Data.Top.transform.position);
+            projectile.Move(Victim.towerParts.Data.Top.transform.position-Vector3.up, RemoveVictimHealth);
         }
 
         void RemoveVictimHealth()
