@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Models
@@ -23,13 +24,14 @@ namespace Models
             return Perpetrator == newTower || Victim == newTower;
         }
 
-        public void Combat()
+        public void Combat(float speed)
         {
             if (IsEven) return;
             //Victim.Descend(Perpetrator.ConstantData.DamagePower);
 
             var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = Perpetrator.towerParts.Data.Top.transform.position);
-            projectile.Move(Victim.towerParts.Data.Top.transform.position-Vector3.up, RemoveVictimHealth);
+            projectile.Setup(speed, Victim.towerParts.Data.Top.transform.position-Vector3.up);
+            projectile.Move(RemoveVictimHealth);
         }
 
         void RemoveVictimHealth()

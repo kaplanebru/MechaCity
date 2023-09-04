@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Models;
+using Unity.Collections;
 using UnityEngine;
 
 public class FireData : BaseTurnData
@@ -10,6 +11,9 @@ public class FireData : BaseTurnData
     public List<CombatPair> CombatPairs = new();
     public List<Tower> AlteredTowers = new();
     public List<TowerGridRelationModel> DeadTowers = new();
+    
+    [ReadOnly] public float projectileSpeed = 1; //bu belki design ile ilgili daha geniş bir class'a alınabilir
+    public float ProjectileSpeed => projectileSpeed;
 }
 
 public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
@@ -33,8 +37,8 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
     {
          RemoveAlteredCombatPairs();
          Data.AlteredTowers.ForEach(CreateCombatPairByHeight);
-        
-         Fire();
+         
+         StartCoroutine(nameof(FireRoutine));
     }
     
     
@@ -43,16 +47,17 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         Data.DeadTowers.Add(towerGridRelationModel);
     }
     
-    void Fire()
+    IEnumerator FireRoutine()
     {
-        Data.CombatPairs.ForEach(p =>
+        foreach (var pair in Data.CombatPairs)
         {
-            p.Combat();
-        });
+            pair.Combat(Data.ProjectileSpeed);
+            yield return new WaitForSeconds(Data.ProjectileSpeed);
+        }
         
-        Invoke(nameof(CompleteAction), 4); //temp
+        yield return new WaitForSeconds(0.1f);
+        CompleteAction();
         
-
         //bullet anim.OnComplete:
         //Heighte göre Dotween eklenir
     }
