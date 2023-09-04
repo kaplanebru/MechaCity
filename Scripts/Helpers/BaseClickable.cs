@@ -1,0 +1,27 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using JetBrains.Annotations;
+using UnityEngine;
+
+public abstract class BaseClickable <T> : MonoBehaviour
+{
+   public T clickableObject; // { get; set; }
+
+   private void OnMouseDown()
+   {
+      Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {clickableObject});
+   }
+
+   private void OnEnable()
+   {
+      Setup();
+   }
+   
+   protected virtual void Setup() {}
+
+   protected virtual void Setup([CanBeNull]T obj)
+   {
+      clickableObject = obj;
+   }
+}

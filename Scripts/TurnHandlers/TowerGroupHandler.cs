@@ -12,7 +12,7 @@ using Object = UnityEngine.Object;
 public class TowerGroupData : BaseTurnData
 {
     public List<Tower> TowerGroup = new();
-    
+
     //pairi tutalım towerda
     //tower id listesi de olabilir slotları yollamak için
 }
@@ -20,27 +20,29 @@ public class TowerGroupData : BaseTurnData
 public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupData>
 {
     public TowerGroupData Data { get; private set; }
-    
+
     public override void OnHandlerEnabled()
     {
         Data = new();
-        //Eventbus.TowerEvents.OnTowerClicked += TowerSelected;
-        Eventbus.InputEvents.OnTowerPartClicked += TowerSelected;
-
+        Eventbus.InputEvents.OnObjectClicked += TowerSelected;
     }
 
     public override void ProcessIncomingData(BaseTurnData data) //(params object[] args)
     {
-        var incomingData = (SelectionData)data;
+        var incomingData = (SelectionData) data;
         Data.TowerGroup = incomingData.SelectionGroup;
     }
-    
+
     public override void Setup() {}
-    private void TowerSelected(Tower tower)
+
+    private void TowerSelected(params object[] args)
     {
+        var tower = args[0] as Tower;
+        if (tower == null) return;
+
         if (!Data.TowerGroup.Contains(tower)) return;
         //check lean input for bool
-        RiseAndFall(tower, 1,true);
+        RiseAndFall(tower, 1, true);
     }
 
     void RiseAndFall(Tower selectedTower, float amount, bool rise)
@@ -52,7 +54,7 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
                 tower.towerParts.ChangeHeight(tower.Data.Height += amount);
             else
                 //tower.transform.DOScaleY(tower.Data.Height -= amount/(Data.TowerGroup.Count-1), 1);
-                tower.towerParts.ChangeHeight(tower.Data.Height -= amount/(Data.TowerGroup.Count-1));
+                tower.towerParts.ChangeHeight(tower.Data.Height -= amount / (Data.TowerGroup.Count - 1));
         }
     }
 
@@ -60,17 +62,14 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
     {
         CompleteAction();
     }
-    
-    public override void Unsubscribe()    
+
+    public override void Unsubscribe()
     {
-        //.TowerEvents.OnTowerClicked -= TowerSelected;
-        Eventbus.InputEvents.OnTowerPartClicked -= TowerSelected;
+        Eventbus.InputEvents.OnObjectClicked -= TowerSelected;
     }
 
     void ResetGroups()
     {
         Data.TowerGroup.Clear();
     }
-
-
 }

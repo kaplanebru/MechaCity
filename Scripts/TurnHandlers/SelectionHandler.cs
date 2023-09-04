@@ -23,13 +23,14 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
     {
         Data = new();
         Data.SelectionGroup.Clear();
-
-        Eventbus.InputEvents.OnTowerPartClicked += TowerPartClicked;
+        Eventbus.InputEvents.OnObjectClicked += TowerPartClicked;
     }
-
     
-    private void TowerPartClicked(Tower tower)
+    private void TowerPartClicked(params object[] args)
     {
+        var tower = args[0] as Tower;
+        if (tower == null) return;
+        
         if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
         //if (teams["rivalTeam"].Data.Towers.Contains(tower)) return;
         
@@ -41,26 +42,13 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
             ResetSelectionGroup();
         
         AddToSelection(true, tower);
+        //chain position will be on selectionGroup[0]
+        //if more towers in the group, stretch chain
     }
 
     public override void Setup()
     {
         ManageCompleteButton(false);
-    }
-
-    private void TowerClicked(Tower newTower)
-    {
-        //if not shown, show chain
-        if (SelectedTwice(newTower)) return;
-
-        if (Data.SelectionGroup.Count == Data.MaxTowersInGroup)
-            ResetSelectionGroup();
-
-        AddToSelection(true, newTower);
-
-
-        //chain position will be on selectionGroup[0]
-        //if more towers in the group, stretch chain
     }
 
     void AddToSelection(bool select, Tower newTower)
@@ -105,6 +93,6 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
 
     public override void Unsubscribe()
     {
-        Eventbus.InputEvents.OnTowerPartClicked -= TowerPartClicked;
+        Eventbus.InputEvents.OnObjectClicked -= TowerPartClicked;
     }
 }

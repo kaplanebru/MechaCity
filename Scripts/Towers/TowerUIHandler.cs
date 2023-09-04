@@ -9,7 +9,7 @@ public class TowerUIHandler : MonoBehaviour
    public TextMeshPro heightText;
    public TextMeshPro healthIndicator;
 
-   private void OnEnable() //TODO: _tower scriptinden yönet
+   private void OnEnable() //TODO: tower scriptinden yönet
    {
       Eventbus.UIEvents.OnTowerHeightChange += ChangeHeightUI;
       Eventbus.UIEvents.OnHealthChange += AdjustHealthUI;

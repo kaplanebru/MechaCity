@@ -29,7 +29,7 @@ public static class Eventbus
 
     public static class InputEvents //TODO: bu map node'da nasıl handle ediliyordu
     {
-        public static Action<Tower> OnTowerPartClicked;
+        public static Action<object[]> OnObjectClicked;
     }
     
 
