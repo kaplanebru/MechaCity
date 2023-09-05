@@ -6,21 +6,20 @@ using Models;
 using Unity.Collections;
 using UnityEngine;
 
-public class FireData : BaseTurnData
+public class CombatData : BaseTurnData
 {
     public List<CombatPair> CombatPairs = new();
     public List<Tower> AlteredTowers = new();
     public List<TowerGridRelationModel> DeadTowers = new();
     
-    [ReadOnly] public float projectileSpeed = 1; //bu belki design ile ilgili daha geniş bir class'a alınabilir
+    [ReadOnly] public float projectileSpeed = 1;
     public float ProjectileSpeed => projectileSpeed;
     public float FireSpeedMultiplier = 0.7f;
 }
 
-public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
+public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
 {
-    public FireData Data { get; private set; }
-
+    public CombatData Data { get; private set; }
     public override void OnHandlerEnabled()
     {
         Data = new();
@@ -58,9 +57,6 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
         
         yield return new WaitForSeconds(0.1f);
         CompleteAction();
-        
-        //bullet anim.OnComplete:
-        //Heighte göre Dotween eklenir
     }
 
     void CreateCombatPairByHeight(Tower tower)
@@ -72,18 +68,23 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
             if (tower.Data.Height > linkedTower.Data.Height)
             {
                 if(!tower.Data.CanShoot) continue;
-                Data.CombatPairs.Add(new CombatPair(tower, linkedTower));
-                tower.Data.BulletAmount--;
+                AddToPairs(tower, linkedTower);
             }
             else if (linkedTower.Data.Height > tower.Data.Height)
             {
                 if(!linkedTower.Data.CanShoot) continue;
-                Data.CombatPairs.Add(new CombatPair(linkedTower, tower));
-                linkedTower.Data.BulletAmount--;
+                AddToPairs(linkedTower, tower);
             }
             else
-                Data.CombatPairs.Add(new CombatPair(linkedTower, tower, true));
+                AddToPairs(linkedTower, tower, true);
         }
+    }
+
+    void AddToPairs(Tower tower1, Tower tower2, bool isEven=false)
+    {
+        Data.CombatPairs.Add(new CombatPair(tower1, tower2, isEven));
+        if (!isEven) 
+            tower1.Data.BulletAmount--;
     }
     
     void RemoveAlteredCombatPairs()
@@ -96,7 +97,6 @@ public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
 
     void OrderLinkedTowersByDistance(Tower tower)
     {
-        //slot id'ye göre de dizilebilir.
         tower.Data.LinkedTowers =
             tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.Id - other.Data.Id)).ToList();
     }

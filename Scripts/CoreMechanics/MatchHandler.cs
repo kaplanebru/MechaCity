@@ -24,7 +24,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 
     public override void ProcessIncomingData(BaseTurnData data)
     {
-        var incomingData = (FireData) data;
+        var incomingData = (CombatData) data;
         Data.DeadTowerGridPairs = incomingData.DeadTowers;
     }
 
