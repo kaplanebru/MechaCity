@@ -12,9 +12,6 @@ using Object = UnityEngine.Object;
 public class TowerGroupData : BaseTurnData
 {
     public List<Tower> TowerGroup = new();
-
-    //pairi tutalım towerda
-    //tower id listesi de olabilir slotları yollamak için
 }
 
 public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupData>
@@ -41,7 +38,6 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
         if (tower == null) return;
 
         if (!Data.TowerGroup.Contains(tower)) return;
-        //check lean input for bool
         RiseAndFall(tower, 1, true);
     }
 
@@ -50,10 +46,8 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
         foreach (var tower in Data.TowerGroup)
         {
             if (tower == selectedTower)
-                //tower.transform.DOScaleY(tower.Data.Height += amount, 1);
                 tower.towerParts.ChangeHeight(tower.Data.Height += amount);
             else
-                //tower.transform.DOScaleY(tower.Data.Height -= amount/(Data.TowerGroup.Count-1), 1);
                 tower.towerParts.ChangeHeight(tower.Data.Height -= amount / (Data.TowerGroup.Count - 1));
         }
     }

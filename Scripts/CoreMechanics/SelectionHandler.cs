@@ -16,7 +16,6 @@ public class SelectionData : BaseTurnData
 
 public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionData>
 {
-    //learn how to serialize interface
     public SelectionData Data { get; private set; }
     
     public override void OnHandlerEnabled()
@@ -32,18 +31,12 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
         if (tower == null) return;
         
         if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
-        //if (teams["rivalTeam"].Data.Towers.Contains(tower)) return;
-        
-        print(tower.name);
-
         if (SelectedTwice(tower)) return;
         
         if (Data.SelectionGroup.Count == Data.MaxTowersInGroup)
             ResetSelectionGroup();
         
         AddToSelection(true, tower);
-        //chain position will be on selectionGroup[0]
-        //if more towers in the group, stretch chain
     }
 
     public override void Setup()

@@ -17,7 +17,7 @@ public class FireData : BaseTurnData
     public float FireSpeedMultiplier = 0.7f;
 }
 
-public class CombatHandler : BaseTurnHandler, ITurnActionHandler<FireData>
+public class FireHandler : BaseTurnHandler, ITurnActionHandler<FireData>
 {
     public FireData Data { get; private set; }
 
