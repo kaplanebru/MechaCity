@@ -1972,6 +1972,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chain
       objectReference: {fileID: 0}
+    - target: {fileID: 5844671697847803072, guid: d7b5075c5262a934ba9c25501e10553b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5844671697847803079, guid: d7b5075c5262a934ba9c25501e10553b, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2016,7 +2020,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5844671697847803075, guid: d7b5075c5262a934ba9c25501e10553b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d7b5075c5262a934ba9c25501e10553b, type: 3}
 --- !u!1001 &7282852308812153618
 PrefabInstance:
