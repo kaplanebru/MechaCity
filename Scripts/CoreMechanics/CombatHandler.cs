@@ -52,7 +52,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
         foreach (var pair in Data.CombatPairs)
         {
             pair.Combat(Data.ProjectileSpeed);
-            yield return new WaitForSeconds(Data.ProjectileSpeed * Data.FireSpeedMultiplier);
+            yield return new WaitForSeconds(Data.ProjectileSpeed); // * Data.FireSpeedMultiplier);
         }
         
         yield return new WaitForSeconds(0.1f);
