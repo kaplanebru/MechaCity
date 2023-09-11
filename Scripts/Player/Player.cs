@@ -42,10 +42,10 @@ public class Player : NetworkBehaviour
             {
                 if (hit.collider.TryGetComponent(out Clickable clickable))
                 {
-                    SendTowerIdToServerRpc(clickable.Id);
+                    if(clickable.teamType != Data.TeamType) return;
+                    SendTowerIdToServerRpc(clickable.id);
+                    //team de tutulabilir
                 }
-                // if (hit.collider.GetComponentInParent<Tower>() == null) return;
-                // SendTowerIdToServerRpc(hit.collider.GetComponentInParent<Tower>().Data.Id);
             }
            
         }

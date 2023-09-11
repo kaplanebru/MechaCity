@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Datas;
 using DG.Tweening;
 using UnityEngine;
 
@@ -38,12 +39,13 @@ public class TowerParts : MonoBehaviour
         //down rotate
     }
 
-    public void SetClickableIds(int id)
+    public void SetClickableIds(int id, TeamType teamType)
     {
         var clickables = GetComponentsInChildren<Clickable>();
         foreach (var clickable in clickables)
         {
-            clickable.Id = id;
+            clickable.id = id;
+            clickable.teamType = teamType;
         }
     }
 

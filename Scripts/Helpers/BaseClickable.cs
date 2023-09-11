@@ -7,9 +7,9 @@ using UnityEngine;
 public abstract class BaseClickable <T> : MonoBehaviour
 {
    public T clickableObject; // { get; set; }
-   public int Id; //for multiplayer
+   
 
-   private void OnMouseDown()
+   private void OnMouseDown() //disabled for MP
    {
       //Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {clickableObject});
    }
