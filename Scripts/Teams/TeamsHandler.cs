@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Datas;
 using UnityEngine;
 using System.Linq;
+using Unity.Netcode;
 
 public class TeamsHandler : MonoBehaviour
 {
@@ -14,6 +15,28 @@ public class TeamsHandler : MonoBehaviour
         teams = GetComponentsInChildren<Team>();
         Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
         Eventbus.FireEvents.OnTowerKilled += SendGridByTeam;
+
+        //Eventbus.NetworkEvents.OnPlayerSpawned += SetPlayerForTeam;
+        Eventbus.NetworkEvents.OnAllPlayersSpawned += SetPlayersForTeams;
+    }
+
+    private void SetPlayersForTeams(IReadOnlyDictionary<ulong, NetworkClient> connectedClients)
+    {
+        foreach (var client in connectedClients)
+        {
+            teams[(int) client.Key].Data.Player = client.Value.PlayerObject.GetComponent<Player>();
+        }
+    }
+
+    private void SetPlayerForTeam(Player player, int id)
+    {
+        teams[id-1].Data.Player = player;
+        // foreach (var team in teams)
+        // {
+        //     if (team.Data.Player != null) continue;
+        //     team.Data.Player = player;
+        //     break;
+        // }
     }
 
     Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);
@@ -46,5 +69,8 @@ public class TeamsHandler : MonoBehaviour
     {
         Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
         Eventbus.FireEvents.OnTowerKilled -= SendGridByTeam;
+        
+        //Eventbus.NetworkEvents.OnPlayerSpawned -= SetPlayerForTeam;
+        Eventbus.NetworkEvents.OnAllPlayersSpawned -= SetPlayersForTeams;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Datas;
 using Models;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -30,6 +31,12 @@ public static class Eventbus
     public static class InputEvents //TODO: bu map node'da nasıl handle ediliyordu
     {
         public static Action<object[]> OnObjectClicked;
+    }
+
+    public static class NetworkEvents
+    {
+        public static Action<Player, int> OnPlayerSpawned;
+        public static Action<IReadOnlyDictionary<ulong, NetworkClient>> OnAllPlayersSpawned;
     }
     
 

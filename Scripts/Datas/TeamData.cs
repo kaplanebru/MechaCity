@@ -12,7 +12,7 @@ namespace Datas
     {
         public string Name;
         public TeamType TeamType;
-        //public Player Player;
+        public Player Player;
         public List<Tower> Towers = new();
         public GameGrid Grid;
         public TeamAssetHolder AssetHolder;

@@ -7,6 +7,27 @@ public class Player : NetworkBehaviour
 {
     public override void OnNetworkSpawn()
     {
-        base.OnNetworkSpawn();
+        if (IsOwner && NetworkObjectId == 2) //temp
+        {
+            SendToServerRpc();
+        }
     }
+
+    [ServerRpc]
+    void SendToServerRpc()
+    {
+        print("message received by server");
+        SetClientsAsPlayersClientRpc();
+    }
+
+    [ClientRpc]
+    void SetClientsAsPlayersClientRpc()
+    {
+        print("message sent to all clients by server");
+        Eventbus.NetworkEvents.OnAllPlayersSpawned?.Invoke(NetworkManager.Singleton.ConnectedClients); //only accessible on server
+    }
+    
+
+
+   
 }
