@@ -34,20 +34,26 @@ public class Player : NetworkBehaviour
         Data.Team = team;
     }
 
+    Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
+   
+
     private void Update()
     {
         if (IsOwner && Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
+            if (Physics.Raycast(RayFromMouse(), out RaycastHit hit))
             {
-                if (hit.collider.TryGetComponent(out Clickable clickable))
-                {
-                    if(clickable.teamType != Data.TeamType) return;
-                    SendTowerIdToServerRpc(clickable.id);
-                    //team de tutulabilir
-                }
+                ClickOnTower(hit);
             }
-           
+        }
+    }
+
+    void ClickOnTower(RaycastHit hit)
+    {
+        if (hit.collider.TryGetComponent(out Clickable clickable))
+        {
+            if(clickable.teamType != Data.TeamType) return;
+            SendTowerIdToServerRpc(clickable.id);
         }
     }
 
