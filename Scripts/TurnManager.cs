@@ -23,7 +23,7 @@ public class TurnManager : MonoBehaviour
         
     }
 
-    public void Play()
+    public void Play() //UI kısmına taşı
     {
         StartCoroutine(nameof(TurnActionRoutine));
     }

@@ -11,6 +11,7 @@ using UnityEngine;
 public class PlayerData
 {
     public TeamType TeamType;
+    public Team Team;
 }
 public class Player : NetworkBehaviour
 {
@@ -27,7 +28,41 @@ public class Player : NetworkBehaviour
         SetNetworkTowers();
     }
     
-    
+    public void Setup(TeamType teamType, Team team)
+    {
+        Data.TeamType = teamType;
+        Data.Team = team;
+    }
+
+    private void Update()
+    {
+        if (IsOwner && Input.GetMouseButtonDown(0))
+        {
+            Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+            if (hit.collider.GetComponentInParent<Tower>() == null) return;
+            
+            SendTowerIdToServerRpc(hit.collider.GetComponentInParent<Tower>().Data.Id);
+            
+            // if (hit.collider.TryGetComponent(out Clickable clickable))
+            // {
+            //     SendTowerIdToServerRpc();
+            // }
+        }
+    }
+
+    [ServerRpc]
+    void SendTowerIdToServerRpc(int towerId)
+    {
+        AdjustTowerClientRpc(towerId);
+    }
+
+    [ClientRpc]
+    void AdjustTowerClientRpc(int towerId)
+    {
+        Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {Data.Team.Data.Towers[towerId]});
+    }
+
+
     void SetNetworkTowers()
     {
         //towers = new NetworkList<int> {} ;
@@ -42,12 +77,15 @@ public class Player : NetworkBehaviour
 
     void SubscribeOnValueChangedEvent(bool enable)
     {
-        //networkTowers.ForEach(t=>t.OnValueChanged += );
+        networkTowers.ForEach(t=>t.OnValueChanged += SendTeamEvent);
     }
-    public void Setup(TeamType teamType)
+
+    private void SendTeamEvent(int previousvalue, int newvalue) //id'yi bilmiyoruz bu durumda
     {
-        Data.TeamType = teamType;
+        throw new NotImplementedException();
     }
+
+    
 }
 
 public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkData>

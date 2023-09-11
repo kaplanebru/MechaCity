@@ -22,7 +22,7 @@ public class TeamsHandler : MonoBehaviour
     private void SetPlayerForTeam(Player player, ulong id)
     {
         teams[id].Data.Player = player;
-        player.Setup(teams[id].Data.TeamTowerData.TeamType);
+        player.Setup(teams[id].Data.TeamTowerData.TeamType, teams[id]);
     }
 
     Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);
