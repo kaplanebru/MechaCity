@@ -35,7 +35,7 @@ public static class Eventbus
 
     public static class NetworkEvents
     {
-        public static Action<Player, int> OnPlayerSpawned;
+        public static Action<Player, ulong> OnPlayerSpawned;
         public static Action<IReadOnlyDictionary<ulong, NetworkClient>> OnAllPlayersSpawned;
     }
     

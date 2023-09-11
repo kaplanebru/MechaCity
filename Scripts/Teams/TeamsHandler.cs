@@ -16,27 +16,15 @@ public class TeamsHandler : MonoBehaviour
         Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
         Eventbus.FireEvents.OnTowerKilled += SendGridByTeam;
 
-        //Eventbus.NetworkEvents.OnPlayerSpawned += SetPlayerForTeam;
-        Eventbus.NetworkEvents.OnAllPlayersSpawned += SetPlayersForTeams;
+        Eventbus.NetworkEvents.OnPlayerSpawned += SetPlayerForTeam;
     }
 
-    private void SetPlayersForTeams(IReadOnlyDictionary<ulong, NetworkClient> connectedClients)
-    {
-        foreach (var client in connectedClients)
-        {
-            teams[(int) client.Key].Data.Player = client.Value.PlayerObject.GetComponent<Player>();
-        }
-    }
+   
 
-    private void SetPlayerForTeam(Player player, int id)
+    private void SetPlayerForTeam(Player player, ulong id)
     {
-        teams[id-1].Data.Player = player;
-        // foreach (var team in teams)
-        // {
-        //     if (team.Data.Player != null) continue;
-        //     team.Data.Player = player;
-        //     break;
-        // }
+        teams[id].Data.Player = player;
+        player.Setup();
     }
 
     Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);
@@ -70,7 +58,6 @@ public class TeamsHandler : MonoBehaviour
         Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
         Eventbus.FireEvents.OnTowerKilled -= SendGridByTeam;
         
-        //Eventbus.NetworkEvents.OnPlayerSpawned -= SetPlayerForTeam;
-        Eventbus.NetworkEvents.OnAllPlayersSpawned -= SetPlayersForTeams;
+        Eventbus.NetworkEvents.OnPlayerSpawned -= SetPlayerForTeam;
     }
 }
