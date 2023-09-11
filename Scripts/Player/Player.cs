@@ -5,5 +5,8 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour
 {
-    
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+    }
 }
