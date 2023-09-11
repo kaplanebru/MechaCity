@@ -19,12 +19,10 @@ public class TeamsHandler : MonoBehaviour
         Eventbus.NetworkEvents.OnPlayerSpawned += SetPlayerForTeam;
     }
 
-   
-
     private void SetPlayerForTeam(Player player, ulong id)
     {
         teams[id].Data.Player = player;
-        player.Setup();
+        player.Setup(teams[id].Data.TeamTowerData.TeamType);
     }
 
     Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);
