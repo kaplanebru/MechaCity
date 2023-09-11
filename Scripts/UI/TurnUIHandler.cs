@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SequentialButtons : MonoBehaviour
+public class TurnUIHandler : MonoBehaviour
 {
     [SerializeField] private Button[] Buttons;
     private Button currentButton;

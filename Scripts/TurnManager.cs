@@ -20,7 +20,7 @@ public class TurnManager : MonoBehaviour
         turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
         DisableAllTurnHandlers();
         InitializeTeams();
-        
+        Play();
     }
 
     public void Play() //UI kısmına taşı

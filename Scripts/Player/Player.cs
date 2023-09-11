@@ -38,15 +38,16 @@ public class Player : NetworkBehaviour
     {
         if (IsOwner && Input.GetMouseButtonDown(0))
         {
-            Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
-            if (hit.collider.GetComponentInParent<Tower>() == null) return;
-            
-            SendTowerIdToServerRpc(hit.collider.GetComponentInParent<Tower>().Data.Id);
-            
-            // if (hit.collider.TryGetComponent(out Clickable clickable))
-            // {
-            //     SendTowerIdToServerRpc();
-            // }
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
+            {
+                if (hit.collider.TryGetComponent(out Clickable clickable))
+                {
+                    SendTowerIdToServerRpc(clickable.Id);
+                }
+                // if (hit.collider.GetComponentInParent<Tower>() == null) return;
+                // SendTowerIdToServerRpc(hit.collider.GetComponentInParent<Tower>().Data.Id);
+            }
+           
         }
     }
 

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2432366265923635597}
   - component: {fileID: 7676847151417115740}
   - component: {fileID: 7245258543351846034}
-  - component: {fileID: 7628743554477222171}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Untagged
@@ -93,19 +92,6 @@ MonoBehaviour:
     - {fileID: 8813387237234399871}
     - {fileID: 2833042357563619058}
     TopMesh: {fileID: 0}
---- !u!65 &7628743554477222171
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 836925315153596545}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1001 &2528494836489941299
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -221,7 +207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1983849059872204137, guid: 3155f4b6e7ff0854f8cefd9951ddafd3, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4512509338218337579, guid: 3155f4b6e7ff0854f8cefd9951ddafd3, type: 3}
       propertyPath: m_Name
@@ -257,7 +243,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3607079715100848630, guid: 5210c397a42478c468c7b8bba704de01, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3648800998034988838, guid: 5210c397a42478c468c7b8bba704de01, type: 3}
       propertyPath: m_RootOrder

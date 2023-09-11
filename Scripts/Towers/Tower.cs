@@ -32,6 +32,7 @@ public class Tower : MonoBehaviour
         SetTeam(teamTowerData);
 
         towerParts.ChangeHeight(Data.Height); //FirstRise
+        towerParts.SetClickableIds(Data.Id);
         
         Eventbus.TowerEvents.OnTowerSetup?.Invoke(this);
     }

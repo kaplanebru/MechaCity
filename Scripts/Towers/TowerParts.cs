@@ -38,5 +38,14 @@ public class TowerParts : MonoBehaviour
         //down rotate
     }
 
+    public void SetClickableIds(int id)
+    {
+        var clickables = GetComponentsInChildren<Clickable>();
+        foreach (var clickable in clickables)
+        {
+            clickable.Id = id;
+        }
+    }
+
    
 }
