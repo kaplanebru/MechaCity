@@ -23,14 +23,16 @@ public class Player : NetworkBehaviour
     {
         Eventbus.NetworkEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
         
-        Eventbus.NetworkEvents.OnTurnHandlerEnding += ChangeHandlerValue;
+        if (IsServer) //burda server rpc'ya mesaj gitmeli
+            Eventbus.NetworkEvents.OnTurnHandlerEnding += ChangeHandlerValue;
+        
         turnHandlerType.OnValueChanged += CompleteTurnHandler;
        
     }
 
     private void ChangeHandlerValue(TurnHandlerType handlerType)
     {
-        if (!IsServer) return;
+        if (!IsOwner) return;
         print("change handler value: " + handlerType);
         turnHandlerType.Value = handlerType; //TODO:complete'te değil startında gelebilir turn'ün. bÖYLECE sonsuz döngüye girmez.
     }
@@ -38,6 +40,7 @@ public class Player : NetworkBehaviour
 
     private void CompleteTurnHandler(TurnHandlerType previousvalue, TurnHandlerType newvalue)
     {
+        print("complete");
         Eventbus.NetworkEvents.OnPlayerTurnHandleTypeChanged?.Invoke();
     }
 
