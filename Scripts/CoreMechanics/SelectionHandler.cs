@@ -17,7 +17,9 @@ public class SelectionData : BaseTurnData
 public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionData>
 {
     public SelectionData Data { get; private set; }
-    
+
+    public override TurnHandlerType HandlerType => TurnHandlerType.Selection;
+
     public override void OnHandlerEnabled()
     {
         Data = new();

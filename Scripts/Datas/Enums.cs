@@ -18,5 +18,13 @@ namespace Datas
         Completed
     }
 
+    public enum TurnHandlerType
+    {
+        Selection,
+        TowerGroup,
+        Combat,
+        Match
+    }
+
     
 }

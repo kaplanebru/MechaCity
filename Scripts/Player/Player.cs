@@ -11,23 +11,36 @@ using UnityEngine;
 public class PlayerData
 {
     public TeamType TeamType;
-    public Team Team;
+    public Team Team; //bunun yerine sadece Towerlar da tutulabilir
+    
 }
 public class Player : NetworkBehaviour
 {
-   
-    //public NetworkList<TowerNetworkData> NetworkTowers;
-    //NetworkList<int> towers;
-    //public NetworkVariable<TowerNetworkData> tower;
-    public List<NetworkVariable<int>> networkTowers;
     public PlayerData Data = new ();
+    public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
 
     public override void OnNetworkSpawn()
     {
         Eventbus.NetworkEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
-        SetNetworkTowers();
+        
+        Eventbus.NetworkEvents.OnTurnHandlerEnding += ChangeHandlerValue;
+        turnHandlerType.OnValueChanged += CompleteTurnHandler;
+       
     }
-    
+
+    private void ChangeHandlerValue(TurnHandlerType handlerType)
+    {
+        if (!IsServer) return;
+        print("change handler value: " + handlerType);
+        turnHandlerType.Value = handlerType; //TODO:complete'te değil startında gelebilir turn'ün. bÖYLECE sonsuz döngüye girmez.
+    }
+
+
+    private void CompleteTurnHandler(TurnHandlerType previousvalue, TurnHandlerType newvalue)
+    {
+        Eventbus.NetworkEvents.OnPlayerTurnHandleTypeChanged?.Invoke();
+    }
+
     public void Setup(TeamType teamType, Team team)
     {
         Data.TeamType = teamType;
@@ -35,7 +48,6 @@ public class Player : NetworkBehaviour
     }
 
     Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
-   
 
     private void Update()
     {
@@ -69,30 +81,11 @@ public class Player : NetworkBehaviour
         Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {Data.Team.Data.Towers[towerId]});
     }
 
-
-    void SetNetworkTowers()
+    public override void OnNetworkDespawn()
     {
-        //towers = new NetworkList<int> {} ;
-        networkTowers = new();
-        for (int i = 0; i < GameGrid.SlotAmount; i++)
-        {
-            var tower = new NetworkVariable<int>();
-            tower.Value = i;
-            networkTowers.Add(tower);
-        }
+        turnHandlerType.OnValueChanged -= CompleteTurnHandler;
+        Eventbus.NetworkEvents.OnTurnHandlerEnding -= ChangeHandlerValue;
     }
-
-    void SubscribeOnValueChangedEvent(bool enable)
-    {
-        networkTowers.ForEach(t=>t.OnValueChanged += SendTeamEvent);
-    }
-
-    private void SendTeamEvent(int previousvalue, int newvalue) //id'yi bilmiyoruz bu durumda
-    {
-        throw new NotImplementedException();
-    }
-
-    
 }
 
 public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkData>

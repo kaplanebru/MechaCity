@@ -17,11 +17,14 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 {
     public MatchData Data { get; private set; }
 
+    public override TurnHandlerType HandlerType => TurnHandlerType.Match;
+
     public override void OnHandlerEnabled()
     {
         Data = new();
+  
     }
-
+    
     public override void ProcessIncomingData(BaseTurnData data)
     {
         var incomingData = (CombatData) data;

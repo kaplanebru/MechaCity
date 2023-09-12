@@ -10,10 +10,12 @@ public abstract class BaseTurnHandler : MonoBehaviour
     public TurnAction turnAction;
 
     public Dictionary<string, Team> teams;
+
+    public abstract TurnHandlerType HandlerType { get; }
    
    
     public abstract void OnHandlerEnabled();
-    
+
     private void OnEnable()
     {
         turnAction = TurnAction.Started;
@@ -27,7 +29,7 @@ public abstract class BaseTurnHandler : MonoBehaviour
     public void CompleteAction()
     {
         turnAction = TurnAction.Completed;
-        enabled = false;
+        //enabled = false;
     }
     public void SetTeams(Dictionary<string, Team> _teams)
     {

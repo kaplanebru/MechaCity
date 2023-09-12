@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Datas;
 using Models;
 using Unity.Collections;
 using UnityEngine;
@@ -20,12 +21,15 @@ public class CombatData : BaseTurnData
 public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
 {
     public CombatData Data { get; private set; }
+    public override TurnHandlerType HandlerType => TurnHandlerType.Combat;
+
     public override void OnHandlerEnabled()
     {
         Data = new();
         Data.DeadTowers.Clear();
         Eventbus.FireEvents.OnTowerTeamDetection += AddToDeadTowers;
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
+        
     }
     
     public override void ProcessIncomingData(BaseTurnData data) 
