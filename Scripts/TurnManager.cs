@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Datas;
+using Unity.Netcode;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour ////NetworkBehaviour
@@ -13,6 +14,8 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     //aşağıdakileri asset holdera koy
     [SerializeField]private Team currentTeam;
     [SerializeField]private Team rivalTeam;
+    
+    public TurnNetworkObject turnNetworkObject;
     
     private void Start()
     {

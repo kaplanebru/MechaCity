@@ -12,7 +12,8 @@ public class PlayerData
 {
     public TeamType TeamType;
     public Team Team; //bunun yerine sadece Towerlar da tutulabilir
-    
+    public TurnNetworkObject TurnNetworkObject;
+
 }
 public class Player : NetworkBehaviour
 {
@@ -23,11 +24,54 @@ public class Player : NetworkBehaviour
     {
         Eventbus.NetworkEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
         
+        // if (IsClient)
+        // {
+        //     NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+        // }
+
+        SpawnTurnNetworkServerRpc();
+
+
         if (IsServer) //burda server rpc'ya mesaj gitmeli
             Eventbus.NetworkEvents.OnTurnHandlerEnding += ChangeHandlerValue;
         
         turnHandlerType.OnValueChanged += CompleteTurnHandler;
+    }
+    
+    private void OnClientConnected(ulong clientId)
+    {
        
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            //print("on connected client id: " + clientId);
+            SpawnTurnNetworkServerRpc();
+        }
+        
+        
+        
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
+    {
+        //print("x");
+        
+        if(!IsOwner) return;
+        var clientId = serverRpcParams.Receive.SenderClientId;
+        print("sender client id: " + clientId);
+        var turnNetwork = Instantiate(Data.TurnNetworkObject);
+        turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+       
+        
+        if (NetworkManager.Singleton.ConnectedClients.Count == 2)
+        {
+            // var clientId = serverRpcParams.Receive.SenderClientId;
+            // print(clientId);
+            // var turnNetwork = Instantiate(Data.TurnNetworkObject);
+            // turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId);
+        }
+        
+        
     }
 
     private void ChangeHandlerValue(TurnHandlerType handlerType)
