@@ -13,11 +13,11 @@ public class PlayerData
     public TeamType TeamType;
     public Team Team; //bunun yerine sadece Towerlar da tutulabilir
     public TurnNetworkObject TurnNetworkObject;
-
 }
+
 public class Player : NetworkBehaviour
 {
-    public PlayerData Data = new ();
+    public PlayerData Data = new();
     public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
 
     public override void OnNetworkSpawn()
@@ -25,32 +25,70 @@ public class Player : NetworkBehaviour
         Eventbus.NetworkEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
 
         //SpawnTurnNetworkServerRpc();
+        
 
 
         if (IsServer) //burda server rpc'ya mesaj gitmeli
             Eventbus.NetworkEvents.OnTurnHandlerEnding += ChangeHandlerValue;
-        
+
         turnHandlerType.OnValueChanged += CompleteTurnHandler;
+        
+        if(IsOwner)
+            TestServerRpc();
+        
+        
+        
+     
     }
-    
+
+    [ServerRpc(RequireOwnership = true)]
+    void TestServerRpc()
+    {
+       // if(IsOwner)
+            print(OwnerClientId);
+        //TestClientRpc();
+    }
+
+    [ClientRpc]
+    void TestClientRpc()
+    {
+       // print(OwnerClientId);
+        print(NetworkObjectId);
+    }
+
+
+  
+
+    [ServerRpc]
+    void ChangeColorServerRpc(ServerRpcParams serverRpcParams = default)
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+        
+        var clientId = serverRpcParams.Receive.SenderClientId;
+        if (NetworkManager.ConnectedClients.ContainsKey(clientId))
+        {
+            var client = NetworkManager.ConnectedClients[clientId];
+            //client.PlayerObject.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+        }
+    }
+
 
     [ServerRpc(RequireOwnership = false)]
     void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
     {
-       
-        if(!IsOwner) return;
+        if (!IsOwner) return;
         var clientId = serverRpcParams.Receive.SenderClientId;
-       // print("sender client id: " + clientId);
+        // print("sender client id: " + clientId);
         var turnNetwork = Instantiate(Data.TurnNetworkObject);
         turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-
     }
 
     private void ChangeHandlerValue(TurnHandlerType handlerType)
     {
         if (!IsOwner) return;
         print("change handler value: " + handlerType);
-        turnHandlerType.Value = handlerType; //TODO:complete'te değil startında gelebilir turn'ün. bÖYLECE sonsuz döngüye girmez.
+        turnHandlerType.Value =
+            handlerType; //TODO:complete'te değil startında gelebilir turn'ün. bÖYLECE sonsuz döngüye girmez.
     }
 
 
@@ -83,7 +121,7 @@ public class Player : NetworkBehaviour
     {
         if (hit.collider.TryGetComponent(out Clickable clickable))
         {
-            if(clickable.teamType != Data.TeamType) return;
+            if (clickable.teamType != Data.TeamType) return;
             SendTowerIdToServerRpc(clickable.id);
         }
     }
@@ -111,13 +149,13 @@ public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkDa
 {
     public int Id;
     public int Height;
-    
+
     public TowerNetworkData(int id, int height)
     {
         Id = id;
         Height = height;
     }
-    
+
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref Id);
