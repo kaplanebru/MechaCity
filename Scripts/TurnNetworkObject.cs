@@ -10,27 +10,30 @@ public class TurnNetworkObject : NetworkBehaviour
 {
     public override void OnNetworkSpawn()
     {
-        //print("client id: " + OwnerClientId);
-        if (IsClient)
-        {
-            //NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-        }
-
-
-        //client sayısının dolması gerekecek önce.
-
-
-        // GetToKnow();
+        //AskToChangeOwnershipServerRpc();
+        TestServerRpc();
     }
 
-    private void OnClientConnected(ulong clientId)
+    [ServerRpc(RequireOwnership = false)]
+    void TestServerRpc(ServerRpcParams serverRpcParams = default)
     {
-        //print("on connected client id: " + OwnerClientId);
-        if (clientId == NetworkManager.Singleton.LocalClientId)
+        var clientId = serverRpcParams.Receive.SenderClientId;
+
+        if (IsOwner)
         {
-            //Debug.Log("Client connected. You can now call ServerRpc methods.");
-            //AskToChangeOwnershipServerRpc();
+            print("isOwner");
         }
+        else
+        {
+            print("not owner");
+
+        }
+        if (NetworkManager.ConnectedClients.ContainsKey(clientId))
+        {
+            var client = NetworkManager.ConnectedClients[clientId];
+            client.OwnedObjects[1].ChangeOwnership(1);
+        }
+        print(clientId);
     }
 
 
@@ -38,30 +41,18 @@ public class TurnNetworkObject : NetworkBehaviour
     void AskToChangeOwnershipServerRpc(ServerRpcParams serverRpcParams = default)
     {
         var clientId = serverRpcParams.Receive.SenderClientId;
-        //if (NetworkManager.ConnectedClients.ContainsKey(1))
-
-        // print("sender client id: " + clientId);
-        // print("changing ownership");
-        if (NetworkManager.ConnectedClients.Count == 2)
-        {
-            var client = NetworkManager.ConnectedClients.Values.Last();
-            client.OwnedObjects[0].ChangeOwnership(1);
-        }
-        
-        
-        ChangeOwnershipClientRpc();
-    }
+        var client = NetworkManager.ConnectedClients[clientId];
+        //print( client.OwnedObjects[1].name);
+        print(client.OwnedObjects.Count);
 
 
-    [ClientRpc]
-    void ChangeOwnershipClientRpc()
-    {
-        if (IsServer) return;
-        
-        // if(!IsOwner)
-        //     GetComponent<NetworkObject>().ChangeOwnership(1); //NetworkManager.Singleton.ConnectedClients.Last().Value.ClientId
-        //
-        // print("ownership changed");
+        //if(IsOwner) return;
+
+        if (NetworkManager.ConnectedClients.Count < 2) return;
+
+        //  var client = NetworkManager.ConnectedClients.Values.Last();
+        // print( client.OwnedObjects[0].name);
+        //  client.OwnedObjects[0].ChangeOwnership(1);
     }
 
 
@@ -69,18 +60,15 @@ public class TurnNetworkObject : NetworkBehaviour
     {
         print("sa");
         if (IsOwner)
-        {
             print("owwner");
-        }
+        
 
         if (IsServer)
-        {
             print("server");
-        }
+        
 
         if (IsClient)
-        {
             print("client");
-        }
+        
     }
 }

@@ -23,13 +23,8 @@ public class Player : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         Eventbus.NetworkEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
-        
-        // if (IsClient)
-        // {
-        //     NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-        // }
 
-        SpawnTurnNetworkServerRpc();
+        //SpawnTurnNetworkServerRpc();
 
 
         if (IsServer) //burda server rpc'ya mesaj gitmeli
@@ -38,40 +33,17 @@ public class Player : NetworkBehaviour
         turnHandlerType.OnValueChanged += CompleteTurnHandler;
     }
     
-    private void OnClientConnected(ulong clientId)
-    {
-       
-        if (clientId == NetworkManager.Singleton.LocalClientId)
-        {
-            //print("on connected client id: " + clientId);
-            SpawnTurnNetworkServerRpc();
-        }
-        
-        
-        
-    }
 
     [ServerRpc(RequireOwnership = false)]
     void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
     {
-        //print("x");
-        
+       
         if(!IsOwner) return;
         var clientId = serverRpcParams.Receive.SenderClientId;
-        print("sender client id: " + clientId);
+       // print("sender client id: " + clientId);
         var turnNetwork = Instantiate(Data.TurnNetworkObject);
         turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-       
-        
-        if (NetworkManager.Singleton.ConnectedClients.Count == 2)
-        {
-            // var clientId = serverRpcParams.Receive.SenderClientId;
-            // print(clientId);
-            // var turnNetwork = Instantiate(Data.TurnNetworkObject);
-            // turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId);
-        }
-        
-        
+
     }
 
     private void ChangeHandlerValue(TurnHandlerType handlerType)
