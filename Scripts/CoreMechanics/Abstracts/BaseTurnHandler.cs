@@ -38,9 +38,7 @@ public abstract class BaseTurnHandler : MonoBehaviour
     
     public void ActionCompletedByUser()
     {
-        Eventbus.NetworkEvents.OnActionCompleteRequestByUser?.Invoke();
-        //Eventbus.NetworkEvents.OnActionCompletedByUser?.Invoke();
-        //CompleteAction();
+        Eventbus.NetworkEvents.OnActionCompleteRequestByUser?.Invoke(HandlerType);
     }
     
     public abstract void Unsubscribe();

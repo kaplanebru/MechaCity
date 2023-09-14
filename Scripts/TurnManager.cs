@@ -11,8 +11,9 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     BaseTurnHandler[] turnHandlers;
     Dictionary<string, Team> teams;
     [SerializeField] private TeamsHandler teamsHandler;
-
-
+    
+    private BaseTurnHandler currentTurnHandler;
+    
     private void Start()
     {
         SetTeams();
@@ -20,9 +21,9 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         DisableAllTurnHandlers();
         InitializeTeams();
 
-        Eventbus.NetworkEvents.OnActionCompletedByUser += CompleteActionForUser;
-        //Eventbus.NetworkEvents.OnTurnHandleTypeChanged += CompleteActionForUser;
+        Eventbus.NetworkEvents.OnActionCompletedByUser += CompleteActionByUser;
         Eventbus.NetworkEvents.OnNewTurn += NewTurn;
+        
         Play();
     }
 
@@ -57,23 +58,11 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
 
         SetFirstMatches();
     }
-
-    void CompleteActionForUser()
-    {
-        print("completed: " + currentTurnHandler.name);
-        currentTurnHandler.turnAction = TurnAction.Completed;
-        currentTurnHandler.enabled = false;
-    }
-
-    private BaseTurnHandler currentTurnHandler;
-
+    
     IEnumerator TurnActionRoutine()
     {
         for (var i = 0; i < turnHandlers.Length; i++)
         {
-            //print(currentTurnHandler.HandlerType);
-          
-
             currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
             currentTurnHandler.SetTeams(teams);
@@ -82,14 +71,9 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
             currentTurnHandler.Setup();
 
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
-
-            // if (i + 1 < turnHandlers.Length)
-            // {
-            //     Eventbus.NetworkEvents.OnTurnHandlerBegin?.Invoke(turnHandlers[i+1].HandlerType); //For MP
-            // }
         }
 
-        Eventbus.TurnEvents.OnTurnCompleted?.Invoke();
+        Eventbus.TurnEvents.OnTurnEnded?.Invoke();
     }
 
     void GetIncomingData(int turnIndex)
@@ -105,6 +89,12 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         StopCoroutine(nameof(TurnActionRoutine));
         SwitchTeams();
         StartCoroutine(nameof(TurnActionRoutine));
+    }
+    
+    void CompleteActionByUser()
+    {
+        print("completed: " + currentTurnHandler.name);
+        currentTurnHandler.CompleteAction();
     }
 
     void SwitchTeams()
@@ -126,7 +116,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
 
     private void OnDisable()
     {
-        //Eventbus.NetworkEvents.OnTurnHandleTypeChanged -= CompleteActionForUser;
-        Eventbus.NetworkEvents.OnActionCompletedByUser += CompleteActionForUser;
+        Eventbus.NetworkEvents.OnActionCompletedByUser -= CompleteActionByUser;
+        Eventbus.NetworkEvents.OnNewTurn -= NewTurn;
     }
 }

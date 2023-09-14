@@ -16,7 +16,7 @@ public class TurnUIHandler : MonoBehaviour
     {
         Buttons = GetComponentsInChildren<Button>();
         StartCoroutine(nameof(ButtonSequenceRoutine));
-        Eventbus.TurnEvents.OnTurnCompleted += RestartSequence;
+        Eventbus.TurnEvents.OnTurnEnded += RestartSequence;
         Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
     }
 
@@ -68,7 +68,7 @@ public class TurnUIHandler : MonoBehaviour
     
     private void OnDisable()
     {
-        Eventbus.TurnEvents.OnTurnCompleted -= RestartSequence;
+        Eventbus.TurnEvents.OnTurnEnded -= RestartSequence;
         Eventbus.UIEvents.OnButtonCall -= HandleSpecialCase;
     }
 }
