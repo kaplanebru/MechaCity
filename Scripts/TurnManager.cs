@@ -10,13 +10,9 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
 {
     BaseTurnHandler[] turnHandlers;
     Dictionary<string, Team> teams;
+    [SerializeField] private TeamsHandler teamsHandler;
 
-    //aşağıdakileri asset holdera koy
-    [SerializeField]private Team currentTeam;
-    [SerializeField]private Team rivalTeam;
-    
-    public TurnNetworkHandler turnNetworkHandler;
-    
+
     private void Start()
     {
         SetTeams();
@@ -37,8 +33,8 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         teams = new Dictionary<string, Team>()
         {
-            {"currentTeam", currentTeam},
-            {"rivalTeam", rivalTeam},
+            {"currentTeam", teamsHandler.teams[0]},
+            {"rivalTeam", teamsHandler.teams[1]},
         };
     }
 
@@ -49,13 +45,14 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
             turnHandler.enabled = false;
         }
     }
+
     void InitializeTeams()
     {
         foreach (var team in teams)
         {
             team.Value.Initialize();
         }
-        
+
         SetFirstMatches();
     }
 
@@ -66,62 +63,59 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     }
 
     private BaseTurnHandler currentTurnHandler;
+
     IEnumerator TurnActionRoutine()
     {
         for (var i = 0; i < turnHandlers.Length; i++)
         {
             Eventbus.NetworkEvents.OnTurnHandlerEnding?.Invoke(turnHandlers[i].HandlerType); //For MP
-            
+
             currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
-            
             currentTurnHandler.SetTeams(teams);
 
-            GetIncomingData(i, currentTurnHandler);
+            GetIncomingData(i);
             currentTurnHandler.Setup();
 
-            yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed); //TODO: bool Network variable yapılabilir. Tıklayınca complete oluyor.
-
-            // if (i + 1 < turnHandlers.Length)
-            //     Eventbus.NetworkEvents.OnTurnHandlerEnding?.Invoke(turnHandlers[i + 1].HandlerType);
-            
+            yield return
+                new WaitUntil(() =>
+                    currentTurnHandler.turnAction ==
+                    TurnAction.Completed); //TODO: bool Network variable yapılabilir. Tıklayınca complete oluyor.
         }
-        
+
         Eventbus.TurnEvents.OnTurnCompleted?.Invoke();
     }
-    
-    void GetIncomingData(int turnIndex, BaseTurnHandler currentTurnHandler)
+
+    void GetIncomingData(int turnIndex)
     {
         if (turnIndex <= 0) return;
-        
-        var transferData = ((ITurnActionHandler<BaseTurnData>)turnHandlers[turnIndex - 1]).Data;
+
+        var transferData = ((ITurnActionHandler<BaseTurnData>) turnHandlers[turnIndex - 1]).Data;
         currentTurnHandler.ProcessIncomingData(transferData);
     }
 
     void NewTurn()
     {
-        print("new turn");
         StopCoroutine(nameof(TurnActionRoutine));
-        
         SwitchTeams();
-
         StartCoroutine(nameof(TurnActionRoutine));
     }
+
     void SwitchTeams()
     {
-        //(currentTeam, rivalTeam) = (rivalTeam, currentTeam);
+        (teams["currentTeam"], teams["rivalTeam"]) = (teams["rivalTeam"], teams["currentTeam"]);
 
-        (teams[nameof(currentTeam)], teams[nameof(rivalTeam)]) =
-            (teams[nameof(rivalTeam)], teams[nameof(currentTeam)]);
+        //print("new: " + teams["currentTeam"].name);
 
         // var temp = currentTeam;
         // currentTeam = rivalTeam;
         // rivalTeam = temp;
     }
+
     void SetFirstMatches() //Temporary
     {
-        teams[nameof(currentTeam)].LinkFirstMatches(teams[nameof(rivalTeam)]);
-        teams[nameof(rivalTeam)].LinkFirstMatches(teams[nameof(currentTeam)]);
+        teams["currentTeam"].LinkFirstMatches(teams["rivalTeam"]);
+        teams["rivalTeam"].LinkFirstMatches(teams["currentTeam"]);
     }
 
     private void OnDisable()
@@ -129,4 +123,3 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         Eventbus.NetworkEvents.OnTurnHandleTypeChanged -= CompleteCurrentAction;
     }
 }
-    

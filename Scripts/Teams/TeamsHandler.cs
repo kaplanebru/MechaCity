@@ -9,16 +9,26 @@ using Unity.Netcode;
 public class TeamsHandler : MonoBehaviour
 {
     public Team[] teams;
+    public TeamsHolder assetHolder;
 
     private void OnEnable()
     {
-        teams = GetComponentsInChildren<Team>();
+        //teams = GetComponentsInChildren<Team>();
+        CreateTeams();
+        
         Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
         Eventbus.FireEvents.OnTowerKilled += SendGridByTeam;
-
         Eventbus.NetworkEvents.OnPlayerSpawned += SetPlayerForTeam;
     }
 
+    void CreateTeams()
+    {
+        teams = new Team[assetHolder.Teams.Length];
+        for (int i = 0; i < teams.Length; i++)
+        {
+            teams[i] = Instantiate(assetHolder.Teams[i], transform);
+        }
+    }
     private void SetPlayerForTeam(Player player, ulong id)
     {
         teams[id].Data.Player = player;
@@ -55,7 +65,6 @@ public class TeamsHandler : MonoBehaviour
     {
         Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
         Eventbus.FireEvents.OnTowerKilled -= SendGridByTeam;
-        
         Eventbus.NetworkEvents.OnPlayerSpawned -= SetPlayerForTeam;
     }
 }

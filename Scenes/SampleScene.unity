@@ -1630,9 +1630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b66e0b6380d6f843b1394f3d86d88d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTeam: {fileID: 1673392375}
-  rivalTeam: {fileID: 1994896114}
-  turnNetworkHandler: {fileID: 0}
+  teamsHandler: {fileID: 1031181236}
 --- !u!1 &1031181234
 GameObject:
   m_ObjectHideFlags: 0
@@ -1644,7 +1642,7 @@ GameObject:
   - component: {fileID: 1031181235}
   - component: {fileID: 1031181236}
   m_Layer: 0
-  m_Name: Teams
+  m_Name: TeamsHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1682,6 +1680,7 @@ MonoBehaviour:
   teams:
   - {fileID: 1673392375}
   - {fileID: 1994896114}
+  assetHolder: {fileID: 11400000, guid: a2d96ec40fc3ed3408057310e9159772, type: 2}
 --- !u!1 &1098476069
 GameObject:
   m_ObjectHideFlags: 0
@@ -2859,6 +2858,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Team2
       objectReference: {fileID: 0}
+    - target: {fileID: 212449957401445640, guid: 028ccac0c3fb02f4da5dbed8bfc4ae21, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 212449957401445641, guid: 028ccac0c3fb02f4da5dbed8bfc4ae21, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -2979,6 +2982,10 @@ PrefabInstance:
     - target: {fileID: 7282852308052051923, guid: 852222439092f474f81c2cea20fe75f9, type: 3}
       propertyPath: m_Name
       value: Team1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282852308052051923, guid: 852222439092f474f81c2cea20fe75f9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 852222439092f474f81c2cea20fe75f9, type: 3}
