@@ -8,49 +8,40 @@ using UnityEngine;
 
 public class TurnNetworkObject : NetworkBehaviour
 {
+    public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
+
     public override void OnNetworkSpawn()
     {
-       
+        if(IsOwner) Eventbus.NetworkEvents.OnTurnHandlerEnding += UpdateTurnValueServerRpc;
+        turnHandlerType.OnValueChanged += CompleteTurnHandler;
     }
     
-    
-
-    [ServerRpc(RequireOwnership = false)]
-    void TestServerRpc(ServerRpcParams serverRpcParams = default)
+    [ServerRpc(RequireOwnership = true)]
+    private void UpdateTurnValueServerRpc(TurnHandlerType handlerType)
     {
-        var clientId = serverRpcParams.Receive.SenderClientId;
-
-        // if (IsOwner)
-        //     print("isOwner");
-        // else
-        // {
-        //     print("not owner");
-        //     // if (NetworkManager.ConnectedClients.ContainsKey(clientId))
-        //     // {
-        //     //     var client = NetworkManager.ConnectedClients[clientId];
-        //     //     client.OwnedObjects[1].ChangeOwnership(1);
-        //     // }
-        // }
-       
-        print(clientId);
-        print(OwnerClientId);
+        print("change handler value: " + handlerType);
+        turnHandlerType.Value = handlerType; 
+        //CompleteTurnHandlerClientRpc();
     }
     
-
-
-    void GetToKnow()
+    private void CompleteTurnHandler(TurnHandlerType previousvalue, TurnHandlerType newvalue)
     {
-        print("sa");
-        if (IsOwner)
-            print("owwner");
-        
-
-        if (IsServer)
-            print("server");
-        
-
-        if (IsClient)
-            print("client");
-        
+        Eventbus.NetworkEvents.OnPlayerTurnHandleTypeChanged?.Invoke();
+        print("complete client on value change");
     }
+    
+    [ClientRpc]
+    void CompleteTurnHandlerClientRpc()
+    {
+        print("complete client");
+        Eventbus.NetworkEvents.OnPlayerTurnHandleTypeChanged?.Invoke();
+    }
+    
+    public override void OnNetworkDespawn()
+    {
+        turnHandlerType.OnValueChanged -= CompleteTurnHandler;
+        if(IsOwner) Eventbus.NetworkEvents.OnTurnHandlerEnding -= UpdateTurnValueServerRpc;
+    }
+
+    
 }

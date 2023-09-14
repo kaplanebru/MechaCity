@@ -28,50 +28,14 @@ public class Player : NetworkBehaviour
         
 
 
-        if (IsServer) //burda server rpc'ya mesaj gitmeli
-            Eventbus.NetworkEvents.OnTurnHandlerEnding += ChangeHandlerValue;
+        // if (IsServer) //burda server rpc'ya mesaj gitmeli
+        //     Eventbus.NetworkEvents.OnTurnHandlerEnding += ChangeHandlerValue;
+        //
+        // turnHandlerType.OnValueChanged += CompleteTurnHandler;
 
-        turnHandlerType.OnValueChanged += CompleteTurnHandler;
-        
-        if(IsOwner)
-            TestServerRpc();
-        
-        
-        
-     
     }
 
-    [ServerRpc(RequireOwnership = true)]
-    void TestServerRpc()
-    {
-       // if(IsOwner)
-            print(OwnerClientId);
-        //TestClientRpc();
-    }
-
-    [ClientRpc]
-    void TestClientRpc()
-    {
-       // print(OwnerClientId);
-        print(NetworkObjectId);
-    }
-
-
-  
-
-    [ServerRpc]
-    void ChangeColorServerRpc(ServerRpcParams serverRpcParams = default)
-    {
-        GetComponentInChildren<MeshRenderer>().material.color = Color.red;
-        
-        var clientId = serverRpcParams.Receive.SenderClientId;
-        if (NetworkManager.ConnectedClients.ContainsKey(clientId))
-        {
-            var client = NetworkManager.ConnectedClients[clientId];
-            //client.PlayerObject.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
-        }
-    }
-
+   
 
     [ServerRpc(RequireOwnership = false)]
     void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
@@ -138,11 +102,11 @@ public class Player : NetworkBehaviour
         Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {Data.Team.Data.Towers[towerId]});
     }
 
-    public override void OnNetworkDespawn()
-    {
-        turnHandlerType.OnValueChanged -= CompleteTurnHandler;
-        Eventbus.NetworkEvents.OnTurnHandlerEnding -= ChangeHandlerValue;
-    }
+    // public override void OnNetworkDespawn()
+    // {
+    //     turnHandlerType.OnValueChanged -= CompleteTurnHandler;
+    //     Eventbus.NetworkEvents.OnTurnHandlerEnding -= ChangeHandlerValue;
+    // }
 }
 
 public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkData>

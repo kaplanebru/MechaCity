@@ -60,7 +60,6 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
 
     void CompleteCurrentAction()
     {
-        print("complete action"); //owner falan kim diye bakıcaz
         currentTurnHandler.turnAction = TurnAction.Completed;
         currentTurnHandler.enabled = false;
     }
