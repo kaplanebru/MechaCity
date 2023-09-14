@@ -72,7 +72,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     
     void RestoreDetachedTowersOfDeadTower(TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
     {
-        int deadTowerId = deadTowerGridModel.Tower.Data.Id;
+        int deadTowerId = deadTowerGridModel.Tower.Data.SlotId;
 
         for (int i = 1; i < GameGrid.SlotAmount - 1; i++)
         {

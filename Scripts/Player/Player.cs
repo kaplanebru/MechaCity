@@ -11,8 +11,9 @@ using UnityEngine;
 public class PlayerData
 {
     public TeamType TeamType;
-    public Team Team; //bunun yerine sadece Towerlar da tutulabilir
-    public TurnNetworkHandler turnNetworkHandler;
+
+    public List<Tower> AllTowers = new();
+    //public TurnNetworkHandler turnNetworkHandler;
 }
 
 public class Player : NetworkBehaviour
@@ -25,10 +26,12 @@ public class Player : NetworkBehaviour
         //SpawnTurnNetworkServerRpc();
     }
 
-    public void Setup(TeamType teamType, Team team)
+    public void Setup(TeamType teamType, List<Tower> allTowers)
     {
         Data.TeamType = teamType;
-        Data.Team = team;
+        Data.AllTowers = allTowers;
+        print(Data.AllTowers.Count);
+
     }
 
     Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -62,7 +65,10 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     void AdjustTowerClientRpc(int towerId)
     {
-        var towerObj = Data.Team.Data.Towers.FirstOrDefault(t => t.Data.Id == towerId);
+        //var towerObj = Data.Team.Data.Towers.FirstOrDefault(t => t.Data.Id == towerId);
+       
+        print(towerId);
+        var towerObj = Data.AllTowers[towerId];
 
         Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerObj}); //Data.Team.Data.Towers[towerId]
     }

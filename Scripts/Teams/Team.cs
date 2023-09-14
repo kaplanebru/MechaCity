@@ -12,10 +12,10 @@ public class Team: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerDat
     public TeamData Data;
     public void Initialize()
     {
-        var towersPb = Instantiate(Data.AssetHolder.TowersPrefab);
+        var towersPb = Instantiate(Data.AssetHolder.TowersPrefab, transform);
         Data.Towers = towersPb.GetComponentsInChildren<Tower>().ToList();
         SetGrid();
-        SetAllTowers();
+        SetTowers();
     }
     
 
@@ -37,11 +37,11 @@ public class Team: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerDat
         }
     }
 
-    void SetAllTowers()
+    void SetTowers()
     {
         for (int i = 0; i < Data.Towers.Count; i++)
         {
-            Data.Towers[i].Data.Id = i;
+            Data.Towers[i].Data.SlotId = i;
             Data.Towers[i].Setup(Data.TeamTowerData);
         }
     }

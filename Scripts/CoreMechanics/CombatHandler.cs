@@ -102,7 +102,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
     void OrderLinkedTowersByDistance(Tower tower)
     {
         tower.Data.LinkedTowers =
-            tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.Id - other.Data.Id)).ToList();
+            tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.SlotId - other.Data.SlotId)).ToList();
     }
 
     void DeselectAlteredTowers() //TODO: At the end of animation

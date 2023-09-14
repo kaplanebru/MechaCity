@@ -8,7 +8,8 @@ namespace Datas
     [Serializable]
     public class TowerData
     {
-        public int Id; //sonradan get set eklenebilir
+        public int Id;
+        public int SlotId; //sonradan get set eklenebilir
         public int Health;
         public float Height;
         public TeamTowerData TeamTowerData;
