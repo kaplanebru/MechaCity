@@ -38,7 +38,7 @@ public static class Eventbus
     {
         public static Action<Player, ulong> OnPlayerSpawned;
         
-        public static Action<TurnHandlerType> OnTurnHandlerEnding;
+        public static Action<TurnHandlerType> OnTurnHandlerEnd;
         public static Action OnTurnHandleTypeChanged;
         
         public static Action OnTurnCompleted;

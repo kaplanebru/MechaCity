@@ -68,7 +68,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         for (var i = 0; i < turnHandlers.Length; i++)
         {
-            Eventbus.NetworkEvents.OnTurnHandlerEnding?.Invoke(turnHandlers[i].HandlerType); //For MP
+            //print(currentTurnHandler.HandlerType);
 
             currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
@@ -78,9 +78,12 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
             currentTurnHandler.Setup();
 
             yield return
-                new WaitUntil(() =>
-                    currentTurnHandler.turnAction ==
-                    TurnAction.Completed); //TODO: bool Network variable yapılabilir. Tıklayınca complete oluyor.
+                new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
+
+            if (i + 1 < turnHandlers.Length)
+            {
+                Eventbus.NetworkEvents.OnTurnHandlerEnd?.Invoke(turnHandlers[i+1].HandlerType); //For MP
+            }
         }
 
         Eventbus.TurnEvents.OnTurnCompleted?.Invoke();

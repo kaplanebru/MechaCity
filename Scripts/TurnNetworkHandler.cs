@@ -12,11 +12,11 @@ public class TurnNetworkHandler : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        turnHandlerType.OnValueChanged += CompleteTurnHandler;
+        //turnHandlerType.OnValueChanged += CompleteTurnHandlerClientRpc;
         
         if (IsOwner)
         {
-            Eventbus.NetworkEvents.OnTurnHandlerEnding += UpdateTurnValueServerRpc;
+            Eventbus.NetworkEvents.OnTurnHandlerEnd += UpdateTurnValueServerRpc;
             Eventbus.TurnEvents.OnTurnCompleted += RequestNewTurnServerRpc; //UI kısmı burdan çağrılabilir
         }
         
@@ -27,10 +27,13 @@ public class TurnNetworkHandler : NetworkBehaviour
     [ServerRpc(RequireOwnership = true)]
     private void UpdateTurnValueServerRpc(TurnHandlerType handlerType)
     {
-       // print( handlerType);
+        print( "update value");
         turnHandlerType.Value = handlerType;
+        CompleteTurnHandlerClientRpc();
     }
-    private void CompleteTurnHandler(TurnHandlerType previousvalue, TurnHandlerType newvalue)
+    
+    [ClientRpc]
+    private void CompleteTurnHandlerClientRpc() //(TurnHandlerType previousvalue, TurnHandlerType newvalue)
     {
         Eventbus.NetworkEvents.OnTurnHandleTypeChanged?.Invoke();
     }
@@ -47,6 +50,8 @@ public class TurnNetworkHandler : NetworkBehaviour
     [ClientRpc]
     void NewTurnClientRpc()
     {
+        if(IsServer)
+            turnHandlerType.Value = TurnHandlerType.Selection;
         Eventbus.NetworkEvents.OnNewTurn?.Invoke();
     }
     
@@ -56,8 +61,8 @@ public class TurnNetworkHandler : NetworkBehaviour
     
     public override void OnNetworkDespawn()
     {
-        turnHandlerType.OnValueChanged -= CompleteTurnHandler;
-        if(IsOwner) Eventbus.NetworkEvents.OnTurnHandlerEnding -= UpdateTurnValueServerRpc;
+        //turnHandlerType.OnValueChanged -= CompleteTurnHandlerClientRpc;
+        if(IsOwner) Eventbus.NetworkEvents.OnTurnHandlerEnd -= UpdateTurnValueServerRpc;
     }
 
     
