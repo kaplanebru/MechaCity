@@ -1632,7 +1632,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTeam: {fileID: 1673392375}
   rivalTeam: {fileID: 1994896114}
-  turnNetworkObject: {fileID: 8086289143307490011, guid: 9c5789954f1425140af6f45048b79766, type: 3}
+  turnNetworkHandler: {fileID: 0}
 --- !u!1 &1031181234
 GameObject:
   m_ObjectHideFlags: 0
@@ -2687,7 +2687,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8086289143307489989, guid: 9c5789954f1425140af6f45048b79766, type: 3}
       propertyPath: m_Name
-      value: TurnNetworkObject
+      value: TurnNetworkHandler
       objectReference: {fileID: 0}
     - target: {fileID: 8086289143307490010, guid: 9c5789954f1425140af6f45048b79766, type: 3}
       propertyPath: m_RootOrder

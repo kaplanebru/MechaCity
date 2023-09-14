@@ -12,54 +12,17 @@ public class PlayerData
 {
     public TeamType TeamType;
     public Team Team; //bunun yerine sadece Towerlar da tutulabilir
-    public TurnNetworkObject TurnNetworkObject;
+    public TurnNetworkHandler turnNetworkHandler;
 }
 
 public class Player : NetworkBehaviour
 {
     public PlayerData Data = new();
-    public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
 
     public override void OnNetworkSpawn()
     {
         Eventbus.NetworkEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
-
         //SpawnTurnNetworkServerRpc();
-        
-
-
-        // if (IsServer) //burda server rpc'ya mesaj gitmeli
-        //     Eventbus.NetworkEvents.OnTurnHandlerEnding += ChangeHandlerValue;
-        //
-        // turnHandlerType.OnValueChanged += CompleteTurnHandler;
-
-    }
-
-   
-
-    [ServerRpc(RequireOwnership = false)]
-    void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
-    {
-        if (!IsOwner) return;
-        var clientId = serverRpcParams.Receive.SenderClientId;
-        // print("sender client id: " + clientId);
-        var turnNetwork = Instantiate(Data.TurnNetworkObject);
-        turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-    }
-
-    private void ChangeHandlerValue(TurnHandlerType handlerType)
-    {
-        if (!IsOwner) return;
-        print("change handler value: " + handlerType);
-        turnHandlerType.Value =
-            handlerType; //TODO:complete'te değil startında gelebilir turn'ün. bÖYLECE sonsuz döngüye girmez.
-    }
-
-
-    private void CompleteTurnHandler(TurnHandlerType previousvalue, TurnHandlerType newvalue)
-    {
-        print("complete");
-        Eventbus.NetworkEvents.OnPlayerTurnHandleTypeChanged?.Invoke();
     }
 
     public void Setup(TeamType teamType, Team team)
@@ -101,13 +64,21 @@ public class Player : NetworkBehaviour
     {
         Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {Data.Team.Data.Towers[towerId]});
     }
-
-    // public override void OnNetworkDespawn()
-    // {
-    //     turnHandlerType.OnValueChanged -= CompleteTurnHandler;
-    //     Eventbus.NetworkEvents.OnTurnHandlerEnding -= ChangeHandlerValue;
-    // }
+    
+    [ServerRpc(RequireOwnership = false)]
+    void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
+    {
+        if (!IsOwner) return;
+        var clientId = serverRpcParams.Receive.SenderClientId;
+        // print("sender client id: " + clientId);
+        var turnNetwork = Instantiate(Data.turnNetworkHandler);
+        turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+    }
+    
 }
+
+
+
 
 public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkData>
 {

@@ -36,8 +36,12 @@ public static class Eventbus
     public static class NetworkEvents
     {
         public static Action<Player, ulong> OnPlayerSpawned;
+        
         public static Action<TurnHandlerType> OnTurnHandlerEnding;
-        public static Action OnPlayerTurnHandleTypeChanged;
+        public static Action OnTurnHandleTypeChanged;
+        
+        public static Action OnTurnCompleted;
+        public static Action OnNewTurn;
     }
     
 

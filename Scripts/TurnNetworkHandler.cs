@@ -6,36 +6,53 @@ using Datas;
 using Unity.Netcode;
 using UnityEngine;
 
-public class TurnNetworkObject : NetworkBehaviour
+public class TurnNetworkHandler : NetworkBehaviour
 {
     public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
 
     public override void OnNetworkSpawn()
     {
-        if(IsOwner) Eventbus.NetworkEvents.OnTurnHandlerEnding += UpdateTurnValueServerRpc;
         turnHandlerType.OnValueChanged += CompleteTurnHandler;
+        
+        if (IsOwner)
+        {
+            Eventbus.NetworkEvents.OnTurnHandlerEnding += UpdateTurnValueServerRpc;
+            Eventbus.TurnEvents.OnTurnCompleted += RequestNewTurnServerRpc; //UI kısmı burdan çağrılabilir
+        }
+        
     }
+    
+    //Change turn handle values
     
     [ServerRpc(RequireOwnership = true)]
     private void UpdateTurnValueServerRpc(TurnHandlerType handlerType)
     {
-        print("change handler value: " + handlerType);
-        turnHandlerType.Value = handlerType; 
-        //CompleteTurnHandlerClientRpc();
+        print( handlerType);
+        turnHandlerType.Value = handlerType;
     }
-    
     private void CompleteTurnHandler(TurnHandlerType previousvalue, TurnHandlerType newvalue)
     {
-        Eventbus.NetworkEvents.OnPlayerTurnHandleTypeChanged?.Invoke();
-        print("complete client on value change");
+        Eventbus.NetworkEvents.OnTurnHandleTypeChanged?.Invoke();
     }
     
-    [ClientRpc]
-    void CompleteTurnHandlerClientRpc()
+    
+    //Complete Turn
+
+    [ServerRpc]
+    void RequestNewTurnServerRpc()
     {
-        print("complete client");
-        Eventbus.NetworkEvents.OnPlayerTurnHandleTypeChanged?.Invoke();
+        NewTurnClientRpc();
     }
+
+    [ClientRpc]
+    void NewTurnClientRpc()
+    {
+        Eventbus.NetworkEvents.OnNewTurn?.Invoke();
+    }
+    
+  
+    
+   
     
     public override void OnNetworkDespawn()
     {

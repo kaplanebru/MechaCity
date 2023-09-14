@@ -15,7 +15,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     [SerializeField]private Team currentTeam;
     [SerializeField]private Team rivalTeam;
     
-    public TurnNetworkObject turnNetworkObject;
+    public TurnNetworkHandler turnNetworkHandler;
     
     private void Start()
     {
@@ -23,7 +23,8 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
         DisableAllTurnHandlers();
         InitializeTeams();
-        Eventbus.NetworkEvents.OnPlayerTurnHandleTypeChanged += CompleteCurrentAction;
+        Eventbus.NetworkEvents.OnTurnHandleTypeChanged += CompleteCurrentAction;
+        Eventbus.NetworkEvents.OnNewTurn += NewTurn;
         Play();
     }
 
@@ -69,7 +70,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         for (var i = 0; i < turnHandlers.Length; i++)
         {
-            //Eventbus.NetworkEvents.OnTurnHandlerEnding?.Invoke(turnHandlers[i].HandlerType); //For MP
+            Eventbus.NetworkEvents.OnTurnHandlerEnding?.Invoke(turnHandlers[i].HandlerType); //For MP
             
             currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
@@ -81,14 +82,12 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
 
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed); //TODO: bool Network variable yapılabilir. Tıklayınca complete oluyor.
 
-            if (i + 1 < turnHandlers.Length)
-                Eventbus.NetworkEvents.OnTurnHandlerEnding?.Invoke(turnHandlers[i + 1].HandlerType);
+            // if (i + 1 < turnHandlers.Length)
+            //     Eventbus.NetworkEvents.OnTurnHandlerEnding?.Invoke(turnHandlers[i + 1].HandlerType);
             
         }
         
-        //Eventbus.NetworkEvents?.OnTurnCompleted //+= newturn yapılır
         Eventbus.TurnEvents.OnTurnCompleted?.Invoke();
-        NewTurn();
     }
     
     void GetIncomingData(int turnIndex, BaseTurnHandler currentTurnHandler)
@@ -101,7 +100,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
 
     void NewTurn()
     {
-
+        print("new turn");
         StopCoroutine(nameof(TurnActionRoutine));
         
         SwitchTeams();
@@ -127,7 +126,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
 
     private void OnDisable()
     {
-        Eventbus.NetworkEvents.OnPlayerTurnHandleTypeChanged -= CompleteCurrentAction;
+        Eventbus.NetworkEvents.OnTurnHandleTypeChanged -= CompleteCurrentAction;
     }
 }
     
