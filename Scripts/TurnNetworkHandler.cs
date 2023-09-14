@@ -12,28 +12,38 @@ public class TurnNetworkHandler : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        //turnHandlerType.OnValueChanged += CompleteTurnHandlerClientRpc;
+        //turnHandlerType.OnValueChanged += ChangeTurnHandlerClientRpc;
         
         if (IsOwner)
         {
-            Eventbus.NetworkEvents.OnTurnHandlerEnd += UpdateTurnValueServerRpc;
+            Eventbus.NetworkEvents.OnTurnHandlerBegin += UpdateTurnValueServerRpc;
             Eventbus.TurnEvents.OnTurnCompleted += RequestNewTurnServerRpc; //UI kısmı burdan çağrılabilir
+            Eventbus.NetworkEvents.OnActionCompleteRequestByUser += CompleteActionRequestServerRpc;
         }
-        
     }
-    
-    //Change turn handle values
+
+    [ServerRpc]
+    void CompleteActionRequestServerRpc()
+    {
+        CompleteActionClientRpc();
+    }
+
+    [ClientRpc]
+    void CompleteActionClientRpc()
+    {
+        Eventbus.NetworkEvents.OnActionCompletedByUser?.Invoke();
+    }
     
     [ServerRpc(RequireOwnership = true)]
     private void UpdateTurnValueServerRpc(TurnHandlerType handlerType)
     {
         print( "update value");
         turnHandlerType.Value = handlerType;
-        CompleteTurnHandlerClientRpc();
+        ChangeTurnHandlerClientRpc();
     }
     
     [ClientRpc]
-    private void CompleteTurnHandlerClientRpc() //(TurnHandlerType previousvalue, TurnHandlerType newvalue)
+    private void ChangeTurnHandlerClientRpc()
     {
         Eventbus.NetworkEvents.OnTurnHandleTypeChanged?.Invoke();
     }
@@ -61,8 +71,13 @@ public class TurnNetworkHandler : NetworkBehaviour
     
     public override void OnNetworkDespawn()
     {
-        //turnHandlerType.OnValueChanged -= CompleteTurnHandlerClientRpc;
-        if(IsOwner) Eventbus.NetworkEvents.OnTurnHandlerEnd -= UpdateTurnValueServerRpc;
+        //turnHandlerType.OnValueChanged -= ChangeTurnHandlerClientRpc;
+        if (IsOwner)
+        {
+            Eventbus.NetworkEvents.OnTurnHandlerBegin -= UpdateTurnValueServerRpc;
+            Eventbus.NetworkEvents.OnActionCompleteRequestByUser -= CompleteActionRequestServerRpc;
+            Eventbus.TurnEvents.OnTurnCompleted -= RequestNewTurnServerRpc; 
+        }
     }
 
     

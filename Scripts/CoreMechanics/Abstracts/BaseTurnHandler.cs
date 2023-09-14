@@ -29,11 +29,18 @@ public abstract class BaseTurnHandler : MonoBehaviour
     public void CompleteAction()
     {
         turnAction = TurnAction.Completed;
-        //enabled = false;
+        enabled = false;
     }
     public void SetTeams(Dictionary<string, Team> _teams)
     {
         teams = _teams;
+    }
+    
+    public void ActionCompletedByUser()
+    {
+        Eventbus.NetworkEvents.OnActionCompleteRequestByUser?.Invoke();
+        //Eventbus.NetworkEvents.OnActionCompletedByUser?.Invoke();
+        //CompleteAction();
     }
     
     public abstract void Unsubscribe();

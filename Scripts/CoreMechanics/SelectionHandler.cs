@@ -66,11 +66,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
     {
         Eventbus.UIEvents.OnButtonCall?.Invoke(enable);
     }
-
-    public void SelectionCompleted()
-    {
-        CompleteAction();
-    }
+    
 
     bool SelectedTwice(Tower newTower)
     {

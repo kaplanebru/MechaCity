@@ -54,11 +54,6 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
         }
     }
 
-    public void ActionEnded()
-    {
-        CompleteAction();
-    }
-
     public override void Unsubscribe()
     {
         Eventbus.InputEvents.OnObjectClicked -= TowerSelected;

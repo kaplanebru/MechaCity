@@ -38,11 +38,14 @@ public static class Eventbus
     {
         public static Action<Player, ulong> OnPlayerSpawned;
         
-        public static Action<TurnHandlerType> OnTurnHandlerEnd;
+        public static Action<TurnHandlerType> OnTurnHandlerBegin;
         public static Action OnTurnHandleTypeChanged;
         
         public static Action OnTurnCompleted;
         public static Action OnNewTurn;
+
+        public static Action OnActionCompletedByUser;
+        public static Action OnActionCompleteRequestByUser;
     }
     
 
