@@ -48,7 +48,7 @@ public class Player : NetworkBehaviour
     {
         if (hit.collider.TryGetComponent(out Clickable clickable))
         {
-            if (clickable.teamType != Data.TeamType) return;
+            if (clickable.teamType != Data.TeamType) return; //if (clickable.clickableObject.Data.TeamTowerData.TeamType != Data.TeamType) return;
             SendTowerIdToServerRpc(clickable.id);
         }
     }
@@ -62,23 +62,28 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     void AdjustTowerClientRpc(int towerId)
     {
-        Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {Data.Team.Data.Towers[towerId]});
+        var towerObj = Data.Team.Data.Towers.FirstOrDefault(t => t.Data.Id == towerId);
+
+        Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerObj}); //Data.Team.Data.Towers[towerId]
     }
-    
-    [ServerRpc(RequireOwnership = false)]
-    void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
-    {
-        if (!IsOwner) return;
-        var clientId = serverRpcParams.Receive.SenderClientId;
-        // print("sender client id: " + clientId);
-        var turnNetwork = Instantiate(Data.turnNetworkHandler);
-        turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-    }
-    
+
+    #region SpawnTurnNetworkServerRpc
+
+    // [ServerRpc(RequireOwnership = false)]
+    // void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
+    // {
+    //     if (!IsOwner) return;
+    //     var clientId = serverRpcParams.Receive.SenderClientId;
+    //     // print("sender client id: " + clientId);
+    //     var turnNetwork = Instantiate(Data.turnNetworkHandler);
+    //     turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+    // }
+
+    #endregion
 }
 
 
-
+#region Serializing TowerNetworkData
 
 public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkData>
 {
@@ -112,3 +117,5 @@ public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkDa
         return HashCode.Combine(Id, Height);
     }
 }
+
+#endregion

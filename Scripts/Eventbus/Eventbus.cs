@@ -19,6 +19,7 @@ public static class Eventbus
     public static class TeamEvents
     {
         public static Action<Tower> OnTeamChange;
+        public static Action<TeamType, Tower> OnTeamSet;
     }
 
     public static class UIEvents

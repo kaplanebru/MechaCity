@@ -29,8 +29,11 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
     
     private void TowerPartClicked(params object[] args)
     {
+       
         var tower = args[0] as Tower;
         if (tower == null) return;
+        
+        print("tower selected: " + tower.name);
         
         if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
         if (SelectedTwice(tower)) return;

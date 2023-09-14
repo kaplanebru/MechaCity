@@ -14,6 +14,8 @@ public abstract class BaseClickable <T> : MonoBehaviour
       //Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {clickableObject});
    }
 
+   public abstract void UnsubscribeFromEvent();
+
    private void OnEnable()
    {
       Setup();
@@ -24,5 +26,10 @@ public abstract class BaseClickable <T> : MonoBehaviour
    protected virtual void Setup([CanBeNull]T obj)
    {
       clickableObject = obj;
+   }
+
+   private void OnDisable()
+   {
+      UnsubscribeFromEvent();
    }
 }

@@ -41,6 +41,7 @@ public class Tower : MonoBehaviour
     {
         Data.TeamTowerData = teamTowerData;
         towerParts.SetColor(teamTowerData.DefaultMaterial);
+        Eventbus.TeamEvents.OnTeamSet?.Invoke(teamTowerData.TeamType, this);
     }
     
     

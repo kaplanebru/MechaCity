@@ -27,7 +27,7 @@ public class TurnNetworkHandler : NetworkBehaviour
     [ServerRpc(RequireOwnership = true)]
     private void UpdateTurnValueServerRpc(TurnHandlerType handlerType)
     {
-        print( handlerType);
+       // print( handlerType);
         turnHandlerType.Value = handlerType;
     }
     private void CompleteTurnHandler(TurnHandlerType previousvalue, TurnHandlerType newvalue)
