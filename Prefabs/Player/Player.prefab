@@ -48,10 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     TeamType: 0
-    Team: {fileID: 0}
-    TurnNetworkObject: {fileID: 8086289143307490011, guid: 9c5789954f1425140af6f45048b79766, type: 3}
-  turnHandlerType:
-    m_InternalValue: 0
+    AllTowers: []
 --- !u!114 &4750990132970392541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,14 +76,13 @@ GameObject:
   - component: {fileID: 5852947255034476813}
   - component: {fileID: 6954683137187467388}
   - component: {fileID: 2456523030649697008}
-  - component: {fileID: 2303522825074808060}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5852947255034476813
 Transform:
   m_ObjectHideFlags: 0
@@ -152,16 +148,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2303522825074808060
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7549207681797423235}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

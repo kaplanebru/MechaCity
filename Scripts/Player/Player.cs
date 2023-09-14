@@ -23,15 +23,12 @@ public class Player : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         Eventbus.NetworkEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
-        //SpawnTurnNetworkServerRpc();
     }
 
     public void Setup(TeamType teamType, List<Tower> allTowers)
     {
         Data.TeamType = teamType;
         Data.AllTowers = allTowers;
-        print(Data.AllTowers.Count);
-
     }
 
     Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -65,11 +62,7 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     void AdjustTowerClientRpc(int towerId)
     {
-        //var towerObj = Data.Team.Data.Towers.FirstOrDefault(t => t.Data.Id == towerId);
-       
-        print(towerId);
         var towerObj = Data.AllTowers[towerId];
-
         Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerObj}); //Data.Team.Data.Towers[towerId]
     }
 
