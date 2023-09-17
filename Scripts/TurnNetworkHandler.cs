@@ -19,7 +19,7 @@ public class TurnNetworkHandler : NetworkBehaviour
             Eventbus.TurnEvents.OnTurnEnded += RequestNewTurnServerRpc;
             Eventbus.NetworkEvents.OnNewCurrentTeamSetup += CurrentTeamTypeUpdateServerRpc;
 
-            currentTeamType.OnValueChanged += RequestTeamSwitch; //is it going to work on both clients?
+            //currentTeamType.OnValueChanged += RequestTeamSwitch; //is it going to work on both clients?
         }
     }
 
@@ -29,9 +29,11 @@ public class TurnNetworkHandler : NetworkBehaviour
     private void CurrentTeamTypeUpdateServerRpc(TeamType newTeamType)
     {
         currentTeamType.Value = newTeamType;
+        RequestTeamSwitchClientRpc();
     }
     
-    private void RequestTeamSwitch(TeamType previousvalue, TeamType newvalue)
+    [ClientRpc]
+    private void RequestTeamSwitchClientRpc() //(TeamType previousvalue, TeamType newvalue)
     {
         Eventbus.NetworkEvents.RequestTeamSwitch?.Invoke();
     }
@@ -82,7 +84,7 @@ public class TurnNetworkHandler : NetworkBehaviour
             Eventbus.TurnEvents.OnTurnEnded -= RequestNewTurnServerRpc;
             
             Eventbus.NetworkEvents.OnNewCurrentTeamSetup -= CurrentTeamTypeUpdateServerRpc;
-            currentTeamType.OnValueChanged -= RequestTeamSwitch; 
+           // currentTeamType.OnValueChanged -= RequestTeamSwitch; 
         }
     }
 }

@@ -11,6 +11,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     BaseTurnHandler[] turnHandlers;
     Dictionary<string, Team> turnTeams;
     [SerializeField] private TeamsHandler teamsHandler;
+    public Team currentTEAM; //DEBUG
     
     private BaseTurnHandler currentTurnHandler;
     
@@ -36,6 +37,8 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
             {"currentTeam", teamsHandler.teams[0]},
             {"rivalTeam", teamsHandler.teams[1]},
         };
+        
+        currentTEAM = turnTeams["currentTeam"]; //DEBUG
     }
 
     void DisableAllTurnHandlers()
@@ -59,6 +62,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     public void FirstTurn()
     {
         StartCoroutine(nameof(TurnActionRoutine));
+        //Burda da currentTeam Network variable kullanılmalı
     }
     
     IEnumerator TurnActionRoutine()
@@ -104,6 +108,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         (turnTeams["currentTeam"], turnTeams["rivalTeam"]) = (turnTeams["rivalTeam"], turnTeams["currentTeam"]);
         print(turnTeams["currentTeam"].Data.TeamType);
+        currentTEAM = turnTeams["currentTeam"]; //DEBUG
 
         // var temp = currentTeam;
         // currentTeam = rivalTeam;
