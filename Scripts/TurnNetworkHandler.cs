@@ -15,33 +15,33 @@ public class TurnNetworkHandler : NetworkBehaviour
     {
         if (IsOwner)
         {
-           
             Eventbus.TurnEvents.OnTurnEnded += RequestNewTurnServerRpc;
             
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionRequestServerRpc;
-            Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup += CurrentTeamTypeUpdateServerRpc;
-
-            //currentTeamType.OnValueChanged += RequestTeamSwitch; //is it going to work on both clients?
+            Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup += TeamTypeUpdateServerRpc;
+            
         }
+        currentTeamType.OnValueChanged += RequestTeamSwitch; //INFO: for any client that's connected to
     }
-
     
+    #region Team Switch
 
     [ServerRpc]
-    private void CurrentTeamTypeUpdateServerRpc(TeamType newTeamType)
+    private void TeamTypeUpdateServerRpc(TeamType newTeamType)
     {
         currentTeamType.Value = newTeamType;
-        RequestTeamSwitchClientRpc();
     }
-    
-    [ClientRpc]
-    private void RequestTeamSwitchClientRpc() //(TeamType previousvalue, TeamType newvalue)
+    private void RequestTeamSwitch(TeamType previousvalue, TeamType newvalue)
     {
         Eventbus.NetworkRequestEvents.TeamSwitchRequest?.Invoke();
     }
 
+    #endregion
 
-    #region CompleteAction
+    
+
+
+    #region Complete Turn Handle
 
     [ServerRpc]
     void CompleteActionRequestServerRpc(TurnHandlerType lastType)
@@ -86,7 +86,7 @@ public class TurnNetworkHandler : NetworkBehaviour
             Eventbus.TurnEvents.OnTurnEnded -= RequestNewTurnServerRpc;
             
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser -= CompleteActionRequestServerRpc;
-            Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup -= CurrentTeamTypeUpdateServerRpc;
+            Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup -= TeamTypeUpdateServerRpc;
            // currentTeamType.OnValueChanged -= RequestTeamSwitch; 
         }
     }
