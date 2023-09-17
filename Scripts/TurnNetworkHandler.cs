@@ -13,15 +13,14 @@ public class TurnNetworkHandler : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        currentTeamType.OnValueChanged += RequestTeamSwitch; //INFO: for any client that's connected to
         if (IsOwner)
         {
             Eventbus.TurnEvents.OnTurnEnded += RequestNewTurnServerRpc;
             
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionRequestServerRpc;
             Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup += TeamTypeUpdateServerRpc;
-            
         }
-        currentTeamType.OnValueChanged += RequestTeamSwitch; //INFO: for any client that's connected to
     }
     
     #region Team Switch
@@ -37,10 +36,7 @@ public class TurnNetworkHandler : NetworkBehaviour
     }
 
     #endregion
-
     
-
-
     #region Complete Turn Handle
 
     [ServerRpc]
@@ -80,14 +76,13 @@ public class TurnNetworkHandler : NetworkBehaviour
     
     public override void OnNetworkDespawn()
     {
+        currentTeamType.OnValueChanged -= RequestTeamSwitch;
         if (IsOwner)
         {
-            
             Eventbus.TurnEvents.OnTurnEnded -= RequestNewTurnServerRpc;
             
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser -= CompleteActionRequestServerRpc;
             Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup -= TeamTypeUpdateServerRpc;
-           // currentTeamType.OnValueChanged -= RequestTeamSwitch; 
         }
     }
 }
