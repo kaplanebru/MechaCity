@@ -101,7 +101,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     
     void CompleteActionByUser()
     {
-        //print("completed: " + currentTurnHandler.name);
+        print("completed: " + currentTurnHandler.name);
         currentTurnHandler.CompleteAction();
     }
 

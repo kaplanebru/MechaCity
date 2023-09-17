@@ -14,15 +14,17 @@ public class TurnNetworkHandler : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         currentTeamType.OnValueChanged += RequestTeamSwitch; //INFO: for any client that's connected to
+        turnHandlerType.OnValueChanged += CompleteActionSetup;
         if (IsOwner)
         {
             Eventbus.TurnEvents.OnTurnEnded += RequestNewTurnServerRpc;
             
-            Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionRequestServerRpc;
+            Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionSetupServerRpc;
             Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup += TeamTypeUpdateServerRpc;
         }
     }
     
+
     #region Team Switch
 
     [ServerRpc]
@@ -40,20 +42,18 @@ public class TurnNetworkHandler : NetworkBehaviour
     #region Complete Turn Handle
 
     [ServerRpc]
-    void CompleteActionRequestServerRpc(TurnHandlerType lastType)
+    void CompleteActionSetupServerRpc(TurnHandlerType lastType)
     {
         int nextType = ((int)lastType + 1) % Enum.GetValues(typeof(TurnHandlerType)).Length;
         turnHandlerType.Value =  (TurnHandlerType) nextType;
-        
-        CompleteActionClientRpc();
     }
-
-    [ClientRpc]
-    void CompleteActionClientRpc()
+    
+    private void CompleteActionSetup(TurnHandlerType previousvalue, TurnHandlerType newvalue)
     {
+        if(newvalue == TurnHandlerType.Selection) return;
         Eventbus.NetworkRequestEvents.OnCompleteActionRequest?.Invoke();
     }
-
+    
     #endregion
 
 
@@ -77,11 +77,12 @@ public class TurnNetworkHandler : NetworkBehaviour
     public override void OnNetworkDespawn()
     {
         currentTeamType.OnValueChanged -= RequestTeamSwitch;
+        turnHandlerType.OnValueChanged -= CompleteActionSetup;
         if (IsOwner)
         {
             Eventbus.TurnEvents.OnTurnEnded -= RequestNewTurnServerRpc;
             
-            Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser -= CompleteActionRequestServerRpc;
+            Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser -= CompleteActionSetupServerRpc;
             Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup -= TeamTypeUpdateServerRpc;
         }
     }
