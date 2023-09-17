@@ -42,18 +42,26 @@ public static class Eventbus
         public static Action<TurnHandlerType> OnCompleteActionRequestByUser;
     }
     
+    public static class NetworkEvents
+    {
+        public static Action OnAllClientsSet; //Temp: later for both clients
+    }
     public static class NetworkRequestEvents
     {
         public static Action<Player, ulong> OnPlayerSpawned;
+        
         public static Action TeamSwitchRequest;
         public static Action OnCompleteActionRequest;
         public static Action OnNewTurnRequest;
+
+        public static Action OnTurnUIRequest;
     }
     
 
     public static class TurnEvents
     {
         public static Action OnTurnEnded;
+        public static Action<TeamType> OnTurnStarted;
         public static Action OnInitialize;
     }
 

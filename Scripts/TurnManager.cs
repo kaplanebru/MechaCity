@@ -17,20 +17,27 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     
     private void Start()
     {
-        SetTeams();
+        SetTurnTeams();
         turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
         DisableAllTurnHandlers();
         InitializeTeams();
+
+       
+        Eventbus.NetworkEvents.OnAllClientsSet += FirstTurn;
         
         Eventbus.NetworkRequestEvents.OnCompleteActionRequest += CompleteActionByUser;
         Eventbus.NetworkRequestEvents.OnNewTurnRequest += NewTurn;
         Eventbus.NetworkRequestEvents.TeamSwitchRequest += SwitchTeams;
         
-        FirstTurn();
         Eventbus.TurnEvents.OnInitialize?.Invoke();
+       
+       
+      
     }
-    
-    void SetTeams()
+
+  
+
+    void SetTurnTeams()
     {
         turnTeams = new Dictionary<string, Team>()
         {
@@ -67,6 +74,8 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     
     IEnumerator TurnActionRoutine()
     {
+        Eventbus.TurnEvents.OnTurnStarted?.Invoke(turnTeams["currentTeam"].Data.TeamType);
+        
         for (var i = 0; i < turnHandlers.Length; i++)
         {
             currentTurnHandler = turnHandlers[i];
@@ -127,6 +136,10 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         Eventbus.NetworkRequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
         Eventbus.NetworkRequestEvents.OnNewTurnRequest -= NewTurn;
         Eventbus.NetworkRequestEvents.TeamSwitchRequest -= SwitchTeams;
+        
+        //Eventbus.NetworkRequestEvents.OnPlayerSpawned -= StartTurn; //temp
+        Eventbus.NetworkEvents.OnAllClientsSet -= FirstTurn;
+
         
     }
 }

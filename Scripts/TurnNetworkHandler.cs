@@ -18,7 +18,7 @@ public class TurnNetworkHandler : NetworkBehaviour
         if (IsOwner)
         {
             Eventbus.TurnEvents.OnTurnEnded += RequestNewTurnServerRpc;
-            
+
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionSetupServerRpc;
             Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup += TeamTypeUpdateServerRpc;
         }

@@ -17,13 +17,14 @@ public class TeamsHandler : MonoBehaviour
         CreateTeams();
         Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
         Eventbus.FireEvents.OnTowerKilled += SendGridByTeam;
+        Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
         
     }
 
     private void Start()
     {
         SetAllTowers();
-        Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
+        //Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
     }
 
     void CreateTeams()
@@ -53,6 +54,14 @@ public class TeamsHandler : MonoBehaviour
     {
         teams[id].Data.Player = player;
         player.Setup(teams[id].Data.TeamTowerData.TeamType, allTowers);
+
+        foreach (var team in teams)
+        {
+            if (team.Data.Player == null)
+                return;
+        }
+        
+        Eventbus.NetworkEvents.OnAllClientsSet?.Invoke();
     }
 
     Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);

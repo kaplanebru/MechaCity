@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Datas;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,21 +15,24 @@ public class TurnUIHandler : MonoBehaviour
 
     private void OnEnable() //ui daha önce gelmeli turnden
     {
+      
         Eventbus.TurnEvents.OnInitialize += Initialize;
+        
     }
 
     private void Initialize()
     {
         Buttons = GetComponentsInChildren<Button>();
+        DisableAllButtons();
         
-        Eventbus.TurnEvents.OnTurnEnded += RestartSequence;
-        Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
-        
-        StartCoroutine(nameof(ButtonSequenceRoutine));
+        Eventbus.NetworkRequestEvents.OnTurnUIRequest += RestartSequence;
+        //Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
     }
+    
 
     private void RestartSequence()
     {
+        print("turn ui request");
         StopCoroutine(nameof(ButtonSequenceRoutine));
         StartCoroutine(nameof(ButtonSequenceRoutine));
     }
@@ -76,7 +80,9 @@ public class TurnUIHandler : MonoBehaviour
     private void OnDisable()
     {
         Eventbus.TurnEvents.OnInitialize -= Initialize;
-        Eventbus.TurnEvents.OnTurnEnded -= RestartSequence;
+        Eventbus.NetworkRequestEvents.OnTurnUIRequest -= RestartSequence;
+
+        //Eventbus.TurnEvents.OnTurnEnded -= RestartSequence;
         Eventbus.UIEvents.OnButtonCall -= HandleSpecialCase;
     }
 }

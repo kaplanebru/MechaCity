@@ -23,6 +23,18 @@ public class Player : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
+        
+        Eventbus.TurnEvents.OnTurnStarted += SendTurnUIRequest;
+           
+    }
+
+    private void SendTurnUIRequest(TeamType turnType)
+    {
+        print("send");
+        if(!IsOwner) return;
+        if(Data.TeamType == turnType)
+            Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
+            
     }
 
     public void Setup(TeamType teamType, List<Tower> allTowers)
@@ -64,6 +76,12 @@ public class Player : NetworkBehaviour
     {
         var towerObj = Data.AllTowers[towerId];
         Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerObj}); //Data.Team.Data.Towers[towerId]
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if(IsOwner)
+            Eventbus.TurnEvents.OnTurnStarted -= SendTurnUIRequest;
     }
 
     #region SpawnTurnNetworkServerRpc
