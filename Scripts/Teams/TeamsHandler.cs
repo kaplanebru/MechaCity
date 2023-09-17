@@ -23,7 +23,7 @@ public class TeamsHandler : MonoBehaviour
     private void Start()
     {
         SetAllTowers();
-        Eventbus.NetworkEvents.OnPlayerSpawned += SetPlayerForTeam;
+        Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
     }
 
     void CreateTeams()
@@ -85,6 +85,6 @@ public class TeamsHandler : MonoBehaviour
     {
         Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
         Eventbus.FireEvents.OnTowerKilled -= SendGridByTeam;
-        Eventbus.NetworkEvents.OnPlayerSpawned -= SetPlayerForTeam;
+        Eventbus.NetworkRequestEvents.OnPlayerSpawned -= SetPlayerForTeam;
     }
 }

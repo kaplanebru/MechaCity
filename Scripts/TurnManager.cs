@@ -22,9 +22,9 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         DisableAllTurnHandlers();
         InitializeTeams();
         
-        Eventbus.NetworkEvents.OnActionCompletedByUser += CompleteActionByUser;
-        Eventbus.NetworkEvents.OnNewTurn += NewTurn;
-        Eventbus.NetworkEvents.RequestTeamSwitch += SwitchTeams;
+        Eventbus.NetworkRequestEvents.OnCompleteActionRequest += CompleteActionByUser;
+        Eventbus.NetworkRequestEvents.OnNewTurnRequest += NewTurn;
+        Eventbus.NetworkRequestEvents.TeamSwitchRequest += SwitchTeams;
         
         FirstTurn();
         Eventbus.TurnEvents.OnInitialize?.Invoke();
@@ -93,8 +93,9 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     void NewTurn()
     {
         StopCoroutine(nameof(TurnActionRoutine));
-        Eventbus.NetworkEvents.OnNewCurrentTeamSetup?.Invoke(turnTeams["rivalTeam"].Data.TeamType); //new team
-        //SwitchTeams();
+        
+        Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup?.Invoke(turnTeams["rivalTeam"].Data.TeamType); //new team
+        
         StartCoroutine(nameof(TurnActionRoutine));
     }
     
@@ -123,8 +124,9 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
 
     private void OnDisable()
     {
-        Eventbus.NetworkEvents.OnActionCompletedByUser -= CompleteActionByUser;
-        Eventbus.NetworkEvents.OnNewTurn -= NewTurn;
-        Eventbus.NetworkEvents.RequestTeamSwitch -= SwitchTeams;
+        Eventbus.NetworkRequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
+        Eventbus.NetworkRequestEvents.OnNewTurnRequest -= NewTurn;
+        Eventbus.NetworkRequestEvents.TeamSwitchRequest -= SwitchTeams;
+        
     }
 }

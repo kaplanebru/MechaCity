@@ -22,7 +22,7 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        Eventbus.NetworkEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
+        Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
     }
 
     public void Setup(TeamType teamType, List<Tower> allTowers)

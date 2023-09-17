@@ -34,16 +34,20 @@ public static class Eventbus
         public static Action<object[]> OnObjectClicked;
     }
 
-    public static class NetworkEvents
+   
+
+    public static class NetworkTriggerEvents
+    {
+        public static Action<TeamType> OnTeamSwitchSetup;
+        public static Action<TurnHandlerType> OnCompleteActionRequestByUser;
+    }
+    
+    public static class NetworkRequestEvents
     {
         public static Action<Player, ulong> OnPlayerSpawned;
-        
-        public static Action OnNewTurn;
-        public static Action OnActionCompletedByUser;
-        public static Action<TurnHandlerType> OnActionCompleteRequestByUser;
-
-        public static Action<TeamType> OnNewCurrentTeamSetup;
-        public static Action RequestTeamSwitch;
+        public static Action TeamSwitchRequest;
+        public static Action OnCompleteActionRequest;
+        public static Action OnNewTurnRequest;
     }
     
 

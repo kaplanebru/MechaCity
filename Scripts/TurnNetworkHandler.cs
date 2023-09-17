@@ -15,9 +15,11 @@ public class TurnNetworkHandler : NetworkBehaviour
     {
         if (IsOwner)
         {
-            Eventbus.NetworkEvents.OnActionCompleteRequestByUser += CompleteActionRequestServerRpc;
+           
             Eventbus.TurnEvents.OnTurnEnded += RequestNewTurnServerRpc;
-            Eventbus.NetworkEvents.OnNewCurrentTeamSetup += CurrentTeamTypeUpdateServerRpc;
+            
+            Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionRequestServerRpc;
+            Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup += CurrentTeamTypeUpdateServerRpc;
 
             //currentTeamType.OnValueChanged += RequestTeamSwitch; //is it going to work on both clients?
         }
@@ -35,7 +37,7 @@ public class TurnNetworkHandler : NetworkBehaviour
     [ClientRpc]
     private void RequestTeamSwitchClientRpc() //(TeamType previousvalue, TeamType newvalue)
     {
-        Eventbus.NetworkEvents.RequestTeamSwitch?.Invoke();
+        Eventbus.NetworkRequestEvents.TeamSwitchRequest?.Invoke();
     }
 
 
@@ -53,7 +55,7 @@ public class TurnNetworkHandler : NetworkBehaviour
     [ClientRpc]
     void CompleteActionClientRpc()
     {
-        Eventbus.NetworkEvents.OnActionCompletedByUser?.Invoke();
+        Eventbus.NetworkRequestEvents.OnCompleteActionRequest?.Invoke();
     }
 
     #endregion
@@ -71,7 +73,7 @@ public class TurnNetworkHandler : NetworkBehaviour
     [ClientRpc]
     void NewTurnClientRpc()
     {
-        Eventbus.NetworkEvents.OnNewTurn?.Invoke();
+        Eventbus.NetworkRequestEvents.OnNewTurnRequest?.Invoke();
     }
 
     #endregion
@@ -80,10 +82,11 @@ public class TurnNetworkHandler : NetworkBehaviour
     {
         if (IsOwner)
         {
-            Eventbus.NetworkEvents.OnActionCompleteRequestByUser -= CompleteActionRequestServerRpc;
+            
             Eventbus.TurnEvents.OnTurnEnded -= RequestNewTurnServerRpc;
             
-            Eventbus.NetworkEvents.OnNewCurrentTeamSetup -= CurrentTeamTypeUpdateServerRpc;
+            Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser -= CompleteActionRequestServerRpc;
+            Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup -= CurrentTeamTypeUpdateServerRpc;
            // currentTeamType.OnValueChanged -= RequestTeamSwitch; 
         }
     }
