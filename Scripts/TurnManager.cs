@@ -9,7 +9,7 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour ////NetworkBehaviour
 {
     BaseTurnHandler[] turnHandlers;
-    Dictionary<string, Team> teams;
+    Dictionary<string, Team> turnTeams;
     [SerializeField] private TeamsHandler teamsHandler;
     
     private BaseTurnHandler currentTurnHandler;
@@ -20,21 +20,18 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
         DisableAllTurnHandlers();
         InitializeTeams();
-
+        
         Eventbus.NetworkEvents.OnActionCompletedByUser += CompleteActionByUser;
         Eventbus.NetworkEvents.OnNewTurn += NewTurn;
+        Eventbus.NetworkEvents.RequestTeamSwitch += SwitchTeams;
         
-        Play();
+        FirstTurn();
+        Eventbus.TurnEvents.OnInitialize?.Invoke();
     }
-
-    public void Play() //UI kısmına taşı
-    {
-        StartCoroutine(nameof(TurnActionRoutine));
-    }
-
+    
     void SetTeams()
     {
-        teams = new Dictionary<string, Team>()
+        turnTeams = new Dictionary<string, Team>()
         {
             {"currentTeam", teamsHandler.teams[0]},
             {"rivalTeam", teamsHandler.teams[1]},
@@ -51,12 +48,17 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
 
     void InitializeTeams()
     {
-        foreach (var team in teams)
+        foreach (var team in turnTeams)
         {
             team.Value.Initialize();
         }
 
         SetFirstMatches();
+    }
+    
+    public void FirstTurn()
+    {
+        StartCoroutine(nameof(TurnActionRoutine));
     }
     
     IEnumerator TurnActionRoutine()
@@ -65,7 +67,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         {
             currentTurnHandler = turnHandlers[i];
             currentTurnHandler.enabled = true;
-            currentTurnHandler.SetTeams(teams);
+            currentTurnHandler.SetTeams(turnTeams);
 
             GetIncomingData(i);
             currentTurnHandler.Setup();
@@ -87,21 +89,21 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     void NewTurn()
     {
         StopCoroutine(nameof(TurnActionRoutine));
-        SwitchTeams();
+        Eventbus.NetworkEvents.OnNewCurrentTeamSetup?.Invoke(turnTeams["rivalTeam"].Data.TeamType); //new team
+        //SwitchTeams();
         StartCoroutine(nameof(TurnActionRoutine));
     }
     
     void CompleteActionByUser()
     {
-        print("completed: " + currentTurnHandler.name);
+        //print("completed: " + currentTurnHandler.name);
         currentTurnHandler.CompleteAction();
     }
 
     void SwitchTeams()
     {
-        (teams["currentTeam"], teams["rivalTeam"]) = (teams["rivalTeam"], teams["currentTeam"]);
-
-        //print("new: " + teams["currentTeam"].name);
+        (turnTeams["currentTeam"], turnTeams["rivalTeam"]) = (turnTeams["rivalTeam"], turnTeams["currentTeam"]);
+        print(turnTeams["currentTeam"].Data.TeamType);
 
         // var temp = currentTeam;
         // currentTeam = rivalTeam;
@@ -110,13 +112,14 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
 
     void SetFirstMatches() //Temporary
     {
-        teams["currentTeam"].LinkFirstMatches(teams["rivalTeam"]);
-        teams["rivalTeam"].LinkFirstMatches(teams["currentTeam"]);
+        turnTeams["currentTeam"].LinkFirstMatches(turnTeams["rivalTeam"]);
+        turnTeams["rivalTeam"].LinkFirstMatches(turnTeams["currentTeam"]);
     }
 
     private void OnDisable()
     {
         Eventbus.NetworkEvents.OnActionCompletedByUser -= CompleteActionByUser;
         Eventbus.NetworkEvents.OnNewTurn -= NewTurn;
+        Eventbus.NetworkEvents.RequestTeamSwitch -= SwitchTeams;
     }
 }

@@ -2228,7 +2228,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 973694561}
         m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
-        m_MethodName: Play
+        m_MethodName: FirstTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

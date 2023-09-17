@@ -33,9 +33,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
         var tower = args[0] as Tower;
         if (tower == null) return;
         
-       // tower.transform.localScale = new Vector3(2, tower.transform.localScale.y, tower.transform.localScale.z);
-
-        
+     
         if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
         if (SelectedTwice(tower)) return;
         

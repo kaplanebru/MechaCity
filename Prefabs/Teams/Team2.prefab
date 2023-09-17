@@ -46,7 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     Name: Player 2
+    Id: 1
     TeamType: 1
+    Player: {fileID: 0}
     Towers: []
     Grid:
       TeamType: 1

@@ -9,6 +9,7 @@ using UnityEngine;
 public class TurnNetworkHandler : NetworkBehaviour
 {
     public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
+    public NetworkVariable<TeamType> currentTeamType = new NetworkVariable<TeamType>(TeamType.Team1);
 
     public override void OnNetworkSpawn()
     {
@@ -16,9 +17,26 @@ public class TurnNetworkHandler : NetworkBehaviour
         {
             Eventbus.NetworkEvents.OnActionCompleteRequestByUser += CompleteActionRequestServerRpc;
             Eventbus.TurnEvents.OnTurnEnded += RequestNewTurnServerRpc;
+            Eventbus.NetworkEvents.OnNewCurrentTeamSetup += CurrentTeamTypeUpdateServerRpc;
+
+            currentTeamType.OnValueChanged += RequestTeamSwitch; //is it going to work on both clients?
         }
     }
+
     
+
+    [ServerRpc]
+    private void CurrentTeamTypeUpdateServerRpc(TeamType newTeamType)
+    {
+        currentTeamType.Value = newTeamType;
+    }
+    
+    private void RequestTeamSwitch(TeamType previousvalue, TeamType newvalue)
+    {
+        Eventbus.NetworkEvents.RequestTeamSwitch?.Invoke();
+    }
+
+
     #region CompleteAction
 
     [ServerRpc]
@@ -62,6 +80,9 @@ public class TurnNetworkHandler : NetworkBehaviour
         {
             Eventbus.NetworkEvents.OnActionCompleteRequestByUser -= CompleteActionRequestServerRpc;
             Eventbus.TurnEvents.OnTurnEnded -= RequestNewTurnServerRpc;
+            
+            Eventbus.NetworkEvents.OnNewCurrentTeamSetup -= CurrentTeamTypeUpdateServerRpc;
+            currentTeamType.OnValueChanged -= RequestTeamSwitch; 
         }
     }
 }

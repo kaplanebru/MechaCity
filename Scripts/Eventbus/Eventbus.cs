@@ -38,17 +38,19 @@ public static class Eventbus
     {
         public static Action<Player, ulong> OnPlayerSpawned;
         
-        
-
         public static Action OnNewTurn;
         public static Action OnActionCompletedByUser;
         public static Action<TurnHandlerType> OnActionCompleteRequestByUser;
+
+        public static Action<TeamType> OnNewCurrentTeamSetup;
+        public static Action RequestTeamSwitch;
     }
     
 
     public static class TurnEvents
     {
         public static Action OnTurnEnded;
+        public static Action OnInitialize;
     }
 
     public static class FireEvents

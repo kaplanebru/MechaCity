@@ -14,10 +14,17 @@ public class TurnUIHandler : MonoBehaviour
 
     private void OnEnable() //ui daha önce gelmeli turnden
     {
+        Eventbus.TurnEvents.OnInitialize += Initialize;
+    }
+
+    private void Initialize()
+    {
         Buttons = GetComponentsInChildren<Button>();
-        StartCoroutine(nameof(ButtonSequenceRoutine));
+        
         Eventbus.TurnEvents.OnTurnEnded += RestartSequence;
         Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
+        
+        StartCoroutine(nameof(ButtonSequenceRoutine));
     }
 
     private void RestartSequence()
@@ -68,6 +75,7 @@ public class TurnUIHandler : MonoBehaviour
     
     private void OnDisable()
     {
+        Eventbus.TurnEvents.OnInitialize -= Initialize;
         Eventbus.TurnEvents.OnTurnEnded -= RestartSequence;
         Eventbus.UIEvents.OnButtonCall -= HandleSpecialCase;
     }
