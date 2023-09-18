@@ -26,13 +26,13 @@ public class TurnUIHandler : MonoBehaviour
         DisableAllButtons();
         
         Eventbus.NetworkRequestEvents.OnTurnUIRequest += RestartSequence;
-        //Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
+        Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
     }
     
 
     private void RestartSequence()
     {
-        print("turn ui request");
+        print("ui sequence started");
         StopCoroutine(nameof(ButtonSequenceRoutine));
         StartCoroutine(nameof(ButtonSequenceRoutine));
     }
@@ -49,13 +49,14 @@ public class TurnUIHandler : MonoBehaviour
                 button.gameObject.SetActive(true);
             
             yield return new WaitUntil(() => buttonFunctionCompleted);
-
             CompleteAndResetSequence();
         }
     }
 
     void HandleSpecialCase(bool enable)
     {
+        if(currentButton == null) return;
+        
         hasSpecialCase = true;
         currentButton.gameObject.SetActive(enable);
     }
@@ -65,6 +66,7 @@ public class TurnUIHandler : MonoBehaviour
         currentButton.gameObject.SetActive(false);
         buttonFunctionCompleted = false;
         hasSpecialCase = false;
+        currentButton = null;
     }
 
     public void ButtonDisabled() => buttonFunctionCompleted = true;

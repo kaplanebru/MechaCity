@@ -74,7 +74,9 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     
     IEnumerator TurnActionRoutine()
     {
+        print("turn started");
         Eventbus.TurnEvents.OnTurnStarted?.Invoke(turnTeams["currentTeam"].Data.TeamType);
+        
         
         for (var i = 0; i < turnHandlers.Length; i++)
         {
@@ -110,7 +112,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     
     void CompleteActionByUser()
     {
-        print("completed: " + currentTurnHandler.name);
+        //print("completed: " + currentTurnHandler.name);
         currentTurnHandler.CompleteAction();
     }
 

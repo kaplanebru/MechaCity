@@ -13,6 +13,7 @@ public class TurnNetworkHandler : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        print("spawn turn network manager");
         currentTeamType.OnValueChanged += RequestTeamSwitch; //INFO: for any client that's connected to
         turnHandlerType.OnValueChanged += CompleteActionSetup;
         if (IsOwner)
@@ -50,8 +51,12 @@ public class TurnNetworkHandler : NetworkBehaviour
     
     private void CompleteActionSetup(TurnHandlerType previousvalue, TurnHandlerType newvalue)
     {
-        if(newvalue == TurnHandlerType.Selection) return;
-        Eventbus.NetworkRequestEvents.OnCompleteActionRequest?.Invoke();
+        print("complete action 2 : " + newvalue);
+
+        if(newvalue != TurnHandlerType.Selection)
+            Eventbus.NetworkRequestEvents.OnCompleteActionRequest?.Invoke();
+        else
+            Eventbus.NetworkRequestEvents.OnNewTurnRequest?.Invoke();
     }
     
     #endregion
@@ -63,14 +68,9 @@ public class TurnNetworkHandler : NetworkBehaviour
     void RequestNewTurnServerRpc()
     {
         turnHandlerType.Value = TurnHandlerType.Selection;
-        NewTurnClientRpc();
     }
 
-    [ClientRpc]
-    void NewTurnClientRpc()
-    {
-        Eventbus.NetworkRequestEvents.OnNewTurnRequest?.Invoke();
-    }
+    
 
     #endregion
     

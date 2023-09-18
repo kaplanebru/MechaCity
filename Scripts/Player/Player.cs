@@ -13,7 +13,7 @@ public class PlayerData
     public TeamType TeamType;
 
     public List<Tower> AllTowers = new();
-    //public TurnNetworkHandler turnNetworkHandler;
+    public TurnNetworkHandler turnNetworkHandler;
 }
 
 public class Player : NetworkBehaviour
@@ -22,20 +22,45 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        SpawnTurnNetworkServerRpc();
         Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
-        
-        Eventbus.TurnEvents.OnTurnStarted += SendTurnUIRequest;
-           
+
+        Eventbus.TurnEvents.OnTurnStarted += TurnUISetupClientRpc; //SendTurnUISetup;
+
     }
 
-    private void SendTurnUIRequest(TeamType turnType)
+    [ServerRpc]
+    void TurnUISetupServerRpc(TeamType turnType)
     {
-        print("send");
-        if(!IsOwner) return;
-        if(Data.TeamType == turnType)
-            Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
-            
+        if (!IsOwner) return;
+        TurnUISetupClientRpc(turnType);
     }
+
+    [ClientRpc]
+    void TurnUISetupClientRpc(TeamType turnType)
+    {
+        if (Data.TeamType == turnType)
+        {
+            print("get ui request");
+            Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
+
+        }
+    }
+
+    // private void SendTurnUISetup(TeamType turnType)
+    // {
+    //     print(OwnerClientId);
+    //     print("send ui request");
+    //     if(!IsOwner) return;
+    //     
+    //     print("turn type: " + turnType + " team type: " + Data.TeamType);
+    //     if (Data.TeamType == turnType)
+    //     {
+    //         print("get ui request");
+    //         Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
+    //
+    //     }
+    // }
 
     public void Setup(TeamType teamType, List<Tower> allTowers)
     {
@@ -80,21 +105,21 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        if(IsOwner)
-            Eventbus.TurnEvents.OnTurnStarted -= SendTurnUIRequest;
+        if (IsOwner)
+            Eventbus.TurnEvents.OnTurnStarted -= TurnUISetupClientRpc; //SendTurnUISetup;
     }
 
     #region SpawnTurnNetworkServerRpc
 
-    // [ServerRpc(RequireOwnership = false)]
-    // void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
-    // {
-    //     if (!IsOwner) return;
-    //     var clientId = serverRpcParams.Receive.SenderClientId;
-    //     // print("sender client id: " + clientId);
-    //     var turnNetwork = Instantiate(Data.turnNetworkHandler);
-    //     turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-    // }
+    [ServerRpc(RequireOwnership = false)]
+    void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
+    {
+        if (!IsOwner) return;
+        var clientId = serverRpcParams.Receive.SenderClientId;
+        // print("sender client id: " + clientId);
+        var turnNetwork = Instantiate(Data.turnNetworkHandler);
+        turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+    }
 
     #endregion
 }
