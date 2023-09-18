@@ -24,27 +24,9 @@ public class Player : NetworkBehaviour
     {
         SpawnTurnNetworkServerRpc();
         Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
-
-        
-
     }
 
    
-
-    // private void SendTurnUISetup(TeamType turnType)
-    // {
-    //     print(OwnerClientId);
-    //     print("send ui request");
-    //     if(!IsOwner) return;
-    //     
-    //     print("turn type: " + turnType + " team type: " + Data.TeamType);
-    //     if (Data.TeamType == turnType)
-    //     {
-    //         print("get ui request");
-    //         Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
-    //
-    //     }
-    // }
 
     public void Setup(TeamType teamType, List<Tower> allTowers)
     {

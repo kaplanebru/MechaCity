@@ -32,7 +32,6 @@ public class TurnUIHandler : MonoBehaviour
 
     private void RestartSequence()
     {
-        print("ui sequence started");
         StopCoroutine(nameof(ButtonSequenceRoutine));
         StartCoroutine(nameof(ButtonSequenceRoutine));
     }

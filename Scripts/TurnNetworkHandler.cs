@@ -14,9 +14,10 @@ public class TurnNetworkHandler : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        print("spawn turn network manager");
-        currentTeamType.OnValueChanged += RequestTeamSwitch; //INFO: for any client that's connected to
-        turnHandlerType.OnValueChanged += CompleteActionSetup; //bunlar her clientta çalışıyor mu yani? ownera alınabilir
+       
+        currentTeamType.OnValueChanged += RequestTeamSwitch; //INFO: for any client that's connected to. Any owner mı yani?
+        turnHandlerType.OnValueChanged += CompleteActionSetup;
+        
         if (IsOwner)
         {
             Eventbus.TurnEvents.OnTurnEnded += RequestNewTurnServerRpc;
@@ -30,30 +31,8 @@ public class TurnNetworkHandler : NetworkBehaviour
     
     private void SendTurnUISetup()
     {
-
         if (currentTeamType.Value == ownerTeamType)
-        {
-            print("get ui request");
             Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
-        }
-    }
-    
-    [ServerRpc]
-    void TurnUISetupServerRpc()
-    {
-        TurnUISetupClientRpc();
-    }
-
-    [ClientRpc]
-    void TurnUISetupClientRpc()
-    {
-
-        if (ownerTeamType == currentTeamType.Value)  //bütün clientlara mı gönderiyor?
-        {
-            print("get ui request");
-            Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
-
-        }
     }
     
 
@@ -66,6 +45,7 @@ public class TurnNetworkHandler : NetworkBehaviour
     }
     private void RequestTeamSwitch(TeamType previousvalue, TeamType newvalue)
     {
+        print("request team switch");
         Eventbus.NetworkRequestEvents.TeamSwitchRequest?.Invoke();
     }
 
@@ -80,9 +60,15 @@ public class TurnNetworkHandler : NetworkBehaviour
         turnHandlerType.Value =  (TurnHandlerType) nextType;
     }
     
+    [ServerRpc]
+    void RequestNewTurnServerRpc()
+    {
+        turnHandlerType.Value = TurnHandlerType.Selection;
+    }
+    
     private void CompleteActionSetup(TurnHandlerType previousvalue, TurnHandlerType newvalue)
     {
-        print("complete action 2 : " + newvalue);
+        //print("complete action 2 : " + newvalue);
 
         if(newvalue != TurnHandlerType.Selection)
             Eventbus.NetworkRequestEvents.OnCompleteActionRequest?.Invoke();
@@ -90,20 +76,9 @@ public class TurnNetworkHandler : NetworkBehaviour
             Eventbus.NetworkRequestEvents.OnNewTurnRequest?.Invoke();
     }
     
-    #endregion
-
-
-    #region CompleteTurn
-
-    [ServerRpc]
-    void RequestNewTurnServerRpc()
-    {
-        turnHandlerType.Value = TurnHandlerType.Selection;
-    }
-
     
-
     #endregion
+    
     
     public override void OnNetworkDespawn()
     {

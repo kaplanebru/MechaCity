@@ -74,7 +74,6 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     
     IEnumerator TurnActionRoutine()
     {
-        print("turn started");
         Eventbus.TurnEvents.OnTurnStarted?.Invoke();
         
         
@@ -119,7 +118,6 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     void SwitchTeams()
     {
         (turnTeams["currentTeam"], turnTeams["rivalTeam"]) = (turnTeams["rivalTeam"], turnTeams["currentTeam"]);
-        print(turnTeams["currentTeam"].Data.TeamType);
         currentTEAM = turnTeams["currentTeam"]; //DEBUG
 
         // var temp = currentTeam;
