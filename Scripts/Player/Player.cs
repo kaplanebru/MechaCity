@@ -25,27 +25,11 @@ public class Player : NetworkBehaviour
         SpawnTurnNetworkServerRpc();
         Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
 
-        Eventbus.TurnEvents.OnTurnStarted += TurnUISetupClientRpc; //SendTurnUISetup;
+        
 
     }
 
-    [ServerRpc]
-    void TurnUISetupServerRpc(TeamType turnType)
-    {
-        if (!IsOwner) return;
-        TurnUISetupClientRpc(turnType);
-    }
-
-    [ClientRpc]
-    void TurnUISetupClientRpc(TeamType turnType)
-    {
-        if (Data.TeamType == turnType)
-        {
-            print("get ui request");
-            Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
-
-        }
-    }
+   
 
     // private void SendTurnUISetup(TeamType turnType)
     // {
@@ -105,8 +89,7 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        if (IsOwner)
-            Eventbus.TurnEvents.OnTurnStarted -= TurnUISetupClientRpc; //SendTurnUISetup;
+        
     }
 
     #region SpawnTurnNetworkServerRpc
@@ -119,6 +102,7 @@ public class Player : NetworkBehaviour
         // print("sender client id: " + clientId);
         var turnNetwork = Instantiate(Data.turnNetworkHandler);
         turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+        turnNetwork.ownerTeamType = Data.TeamType; //Temp
     }
 
     #endregion

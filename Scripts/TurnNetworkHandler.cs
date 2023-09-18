@@ -10,18 +10,49 @@ public class TurnNetworkHandler : NetworkBehaviour
 {
     public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
     public NetworkVariable<TeamType> currentTeamType = new NetworkVariable<TeamType>(TeamType.Team1);
+    public TeamType ownerTeamType;
 
     public override void OnNetworkSpawn()
     {
         print("spawn turn network manager");
         currentTeamType.OnValueChanged += RequestTeamSwitch; //INFO: for any client that's connected to
-        turnHandlerType.OnValueChanged += CompleteActionSetup;
+        turnHandlerType.OnValueChanged += CompleteActionSetup; //bunlar her clientta çalışıyor mu yani? ownera alınabilir
         if (IsOwner)
         {
             Eventbus.TurnEvents.OnTurnEnded += RequestNewTurnServerRpc;
 
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionSetupServerRpc;
             Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup += TeamTypeUpdateServerRpc;
+            Eventbus.TurnEvents.OnTurnStarted += SendTurnUISetup; //TurnUISetupServerRpc; //TurnUISetupClientRpc; 
+        }
+
+    }
+    
+    private void SendTurnUISetup()
+    {
+
+        if (currentTeamType.Value == ownerTeamType)
+        {
+            print("get ui request");
+            Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
+        }
+    }
+    
+    [ServerRpc]
+    void TurnUISetupServerRpc()
+    {
+        TurnUISetupClientRpc();
+    }
+
+    [ClientRpc]
+    void TurnUISetupClientRpc()
+    {
+
+        if (ownerTeamType == currentTeamType.Value)  //bütün clientlara mı gönderiyor?
+        {
+            print("get ui request");
+            Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
+
         }
     }
     
@@ -84,6 +115,9 @@ public class TurnNetworkHandler : NetworkBehaviour
             
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser -= CompleteActionSetupServerRpc;
             Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup -= TeamTypeUpdateServerRpc;
+            Eventbus.TurnEvents.OnTurnStarted -= SendTurnUISetup;
+
         }
+        
     }
 }

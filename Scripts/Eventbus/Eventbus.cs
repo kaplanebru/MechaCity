@@ -61,7 +61,7 @@ public static class Eventbus
     public static class TurnEvents
     {
         public static Action OnTurnEnded;
-        public static Action<TeamType> OnTurnStarted;
+        public static Action OnTurnStarted;
         public static Action OnInitialize;
     }
 
