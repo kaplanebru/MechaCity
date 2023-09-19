@@ -58,7 +58,10 @@ public class TeamsHandler : MonoBehaviour
         foreach (var team in teams)
         {
             if (team.Data.Player == null)
+            {
+                print("Waiting for other players to join...");
                 return;
+            }
         }
         
         Eventbus.NetworkEvents.OnAllClientsSet?.Invoke();
