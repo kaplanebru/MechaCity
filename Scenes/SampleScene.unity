@@ -1735,8 +1735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e420d9e4173d543a0c47e4ebd2b8cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnInfoParent: {fileID: 1982669216}
-  turnInfo: {fileID: 1394026992}
+  playerTurnText: {fileID: 1982669217}
 --- !u!1 &1106138182
 GameObject:
   m_ObjectHideFlags: 0
@@ -2704,8 +2703,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1982669216}
+  - component: {fileID: 1982669217}
   m_Layer: 5
-  m_Name: TurnInfo
+  m_Name: PlayerTurnText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2732,6 +2732,18 @@ RectTransform:
   m_AnchoredPosition: {x: 12, y: -21}
   m_SizeDelta: {x: 240.6531, y: 50}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1982669217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982669215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b56c7cc1d9aed5f43b85687915e55558, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1994896113 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 212449957401445641, guid: 028ccac0c3fb02f4da5dbed8bfc4ae21, type: 3}

@@ -21,21 +21,15 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
         DisableAllTurnHandlers();
         InitializeTeams();
-
-       
-        Eventbus.NetworkEvents.OnAllClientsSet += FirstTurn;
         
+        Eventbus.NetworkEvents.OnAllClientsSet += FirstTurn;
         Eventbus.NetworkRequestEvents.OnCompleteActionRequest += CompleteActionByUser;
         Eventbus.NetworkRequestEvents.OnNewTurnRequest += NewTurn;
         Eventbus.NetworkRequestEvents.TeamSwitchRequest += SwitchTeams;
         
         Eventbus.TurnEvents.OnInitialize?.Invoke();
-       
-       
-      
     }
-
-  
+    
 
     void SetTurnTeams()
     {
@@ -75,7 +69,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     IEnumerator TurnActionRoutine()
     {
         Eventbus.TurnEvents.OnTurnStarted?.Invoke();
-        print(currentTEAM.name);
+        //print(currentTEAM.name); burda 2 tarafta da coroutine oynadığı için sorun oluyor galiba
         
         for (var i = 0; i < turnHandlers.Length; i++)
         {
@@ -119,7 +113,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         (turnTeams["currentTeam"], turnTeams["rivalTeam"]) = (turnTeams["rivalTeam"], turnTeams["currentTeam"]);
         currentTEAM = turnTeams["currentTeam"]; //DEBUG
-
+        
         // var temp = currentTeam;
         // currentTeam = rivalTeam;
         // rivalTeam = temp;
@@ -136,10 +130,6 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         Eventbus.NetworkRequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
         Eventbus.NetworkRequestEvents.OnNewTurnRequest -= NewTurn;
         Eventbus.NetworkRequestEvents.TeamSwitchRequest -= SwitchTeams;
-        
-        //Eventbus.NetworkRequestEvents.OnPlayerSpawned -= StartTurn; //temp
         Eventbus.NetworkEvents.OnAllClientsSet -= FirstTurn;
-
-        
     }
 }
