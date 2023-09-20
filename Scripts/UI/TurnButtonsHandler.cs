@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TurnUIHandler : MonoBehaviour
+public class TurnButtonsHandler : MonoBehaviour
 {
     [SerializeField] private Button[] Buttons;
     private Button currentButton;
@@ -25,7 +25,7 @@ public class TurnUIHandler : MonoBehaviour
         Buttons = GetComponentsInChildren<Button>();
         DisableAllButtons();
         
-        Eventbus.NetworkRequestEvents.OnTurnUIRequest += RestartSequence;
+        Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest += RestartSequence;
         Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
     }
     
@@ -81,7 +81,7 @@ public class TurnUIHandler : MonoBehaviour
     private void OnDisable()
     {
         Eventbus.TurnEvents.OnInitialize -= Initialize;
-        Eventbus.NetworkRequestEvents.OnTurnUIRequest -= RestartSequence;
+        Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest -= RestartSequence;
 
         //Eventbus.TurnEvents.OnTurnEnded -= RestartSequence;
         Eventbus.UIEvents.OnButtonCall -= HandleSpecialCase;

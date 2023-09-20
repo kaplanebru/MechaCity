@@ -44,17 +44,17 @@ public static class Eventbus
     
     public static class NetworkEvents
     {
-        public static Action OnAllClientsSet; //Temp: later for both clients
+        public static Action <Team[]>OnAllClientsSet; //Temp: later for both clients
     }
     public static class NetworkRequestEvents
     {
         public static Action<Player, ulong> OnPlayerSpawned;
         
-        public static Action TeamSwitchRequest;
+        public static Action<TeamType> TeamSwitchRequest;
         public static Action OnCompleteActionRequest;
         public static Action OnNewTurnRequest;
 
-        public static Action OnTurnUIRequest;
+        public static Action OnTurnButtonsShiftRequest;
     }
     
 

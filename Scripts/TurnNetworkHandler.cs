@@ -24,15 +24,15 @@ public class TurnNetworkHandler : NetworkBehaviour
 
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionSetupServerRpc;
             Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup += TeamTypeUpdateServerRpc;
-            Eventbus.TurnEvents.OnTurnStarted += SendTurnUISetup; //TurnUISetupServerRpc; //TurnUISetupClientRpc; 
+            Eventbus.TurnEvents.OnTurnStarted += SendTurnButtonsSetup; //TurnUISetupServerRpc; //TurnUISetupClientRpc; 
         }
 
     }
     
-    private void SendTurnUISetup()
+    private void SendTurnButtonsSetup()
     {
         if (currentTeamType.Value == ownerTeamType)
-            Eventbus.NetworkRequestEvents.OnTurnUIRequest?.Invoke();
+            Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest?.Invoke();
     }
     
 
@@ -45,8 +45,7 @@ public class TurnNetworkHandler : NetworkBehaviour
     }
     private void RequestTeamSwitch(TeamType previousvalue, TeamType newvalue)
     {
-        print("request team switch");
-        Eventbus.NetworkRequestEvents.TeamSwitchRequest?.Invoke();
+        Eventbus.NetworkRequestEvents.TeamSwitchRequest?.Invoke(newvalue);
     }
 
     #endregion
@@ -90,7 +89,7 @@ public class TurnNetworkHandler : NetworkBehaviour
             
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser -= CompleteActionSetupServerRpc;
             Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup -= TeamTypeUpdateServerRpc;
-            Eventbus.TurnEvents.OnTurnStarted -= SendTurnUISetup;
+            Eventbus.TurnEvents.OnTurnStarted -= SendTurnButtonsSetup;
 
         }
         

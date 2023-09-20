@@ -66,7 +66,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         SetFirstMatches();
     }
     
-    public void FirstTurn()
+    public void FirstTurn(Team[] teams)
     {
         StartCoroutine(nameof(TurnActionRoutine));
         //Burda da currentTeam Network variable kullanılmalı
@@ -75,7 +75,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     IEnumerator TurnActionRoutine()
     {
         Eventbus.TurnEvents.OnTurnStarted?.Invoke();
-        
+        print(currentTEAM.name);
         
         for (var i = 0; i < turnHandlers.Length; i++)
         {
@@ -115,7 +115,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         currentTurnHandler.CompleteAction();
     }
 
-    void SwitchTeams()
+    void SwitchTeams(TeamType newTeamType)
     {
         (turnTeams["currentTeam"], turnTeams["rivalTeam"]) = (turnTeams["rivalTeam"], turnTeams["currentTeam"]);
         currentTEAM = turnTeams["currentTeam"]; //DEBUG

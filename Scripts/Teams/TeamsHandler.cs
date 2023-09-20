@@ -59,12 +59,13 @@ public class TeamsHandler : MonoBehaviour
         {
             if (team.Data.Player == null)
             {
-                print("Waiting for other players to join...");
+                print("Waiting for other players to join..."); //sadece client1'de görünmeli
                 return;
             }
         }
         
-        Eventbus.NetworkEvents.OnAllClientsSet?.Invoke();
+        Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
+        print("Game Started");
     }
 
     Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);
