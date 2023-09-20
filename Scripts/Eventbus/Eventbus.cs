@@ -38,7 +38,6 @@ public static class Eventbus
 
     public static class NetworkTriggerEvents
     {
-        public static Action<TeamType> OnTeamSwitchSetup;
         public static Action<TurnHandlerType> OnCompleteActionRequestByUser;
     }
     
@@ -49,19 +48,16 @@ public static class Eventbus
     public static class NetworkRequestEvents
     {
         public static Action<Player, ulong> OnPlayerSpawned;
-        
-        public static Action<TeamType> TeamSwitchRequest;
         public static Action OnCompleteActionRequest;
         public static Action OnNewTurnRequest;
-
         public static Action OnTurnButtonsShiftRequest;
     }
     
 
     public static class TurnEvents
     {
-        public static Action OnTurnEnded;
-        public static Action OnTurnStarted;
+        public static Action OnTurnEnding;
+        public static Action<TeamType> OnTurnStarted;
         public static Action OnInitialize;
     }
 

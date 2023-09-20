@@ -9,46 +9,38 @@ using UnityEngine;
 public class TurnNetworkHandler : NetworkBehaviour
 {
     public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
-    public NetworkVariable<TeamType> currentTeamType = new NetworkVariable<TeamType>(TeamType.Team1);
+    //public NetworkVariable<TeamType> currentTeamType = new NetworkVariable<TeamType>(TeamType.Team1);
     public TeamType ownerTeamType;
+    
 
     public override void OnNetworkSpawn()
     {
        
-        currentTeamType.OnValueChanged += RequestTeamSwitch; //INFO: for any client that's connected to. Any owner mı yani?
         turnHandlerType.OnValueChanged += CompleteActionSetup;
         
         if (IsOwner)
         {
-            Eventbus.TurnEvents.OnTurnEnded += RequestNewTurnServerRpc;
+            Eventbus.TurnEvents.OnTurnEnding += RequestNewTurnServerRpc;
 
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionSetupServerRpc;
-            Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup += TeamTypeUpdateServerRpc;
-            Eventbus.TurnEvents.OnTurnStarted += SendTurnButtonsSetup; //TurnUISetupServerRpc; //TurnUISetupClientRpc; 
+            Eventbus.TurnEvents.OnTurnStarted += TurnButtonsSetup;
         }
 
     }
     
-    private void SendTurnButtonsSetup()
+    private void Start()
     {
-        if (currentTeamType.Value == ownerTeamType)
+        ownerTeamType = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>().Data.TeamType;
+    }
+
+    void TurnButtonsSetup(TeamType currentTeamType)
+    {
+        print("owner team type: " + ownerTeamType + " currentTeamType: " + currentTeamType);
+        if (currentTeamType == ownerTeamType)
             Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest?.Invoke();
     }
     
-
-    #region Team Switch
-
-    [ServerRpc]
-    private void TeamTypeUpdateServerRpc(TeamType newTeamType)
-    {
-        currentTeamType.Value = newTeamType;
-    }
-    private void RequestTeamSwitch(TeamType previousvalue, TeamType newvalue)
-    {
-        Eventbus.NetworkRequestEvents.TeamSwitchRequest?.Invoke(newvalue);
-    }
-
-    #endregion
+    
     
     #region Complete Turn Handle
 
@@ -81,15 +73,12 @@ public class TurnNetworkHandler : NetworkBehaviour
     
     public override void OnNetworkDespawn()
     {
-        currentTeamType.OnValueChanged -= RequestTeamSwitch;
         turnHandlerType.OnValueChanged -= CompleteActionSetup;
         if (IsOwner)
         {
-            Eventbus.TurnEvents.OnTurnEnded -= RequestNewTurnServerRpc;
-            
+            Eventbus.TurnEvents.OnTurnEnding -= RequestNewTurnServerRpc;
             Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser -= CompleteActionSetupServerRpc;
-            Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup -= TeamTypeUpdateServerRpc;
-            Eventbus.TurnEvents.OnTurnStarted -= SendTurnButtonsSetup;
+            Eventbus.TurnEvents.OnTurnStarted -= TurnButtonsSetup;
 
         }
         

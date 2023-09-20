@@ -8,10 +8,12 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour ////NetworkBehaviour
 {
+    public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
     BaseTurnHandler[] turnHandlers;
     Dictionary<string, Team> turnTeams;
     [SerializeField] private TeamsHandler teamsHandler;
-    public Team currentTEAM; //DEBUG
+    public Team currentTEAM;//DEBUG
+    public TeamType currentTeamType = TeamType.Team1;
     
     private BaseTurnHandler currentTurnHandler;
     
@@ -25,8 +27,6 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         Eventbus.NetworkEvents.OnAllClientsSet += FirstTurn;
         Eventbus.NetworkRequestEvents.OnCompleteActionRequest += CompleteActionByUser;
         Eventbus.NetworkRequestEvents.OnNewTurnRequest += NewTurn;
-        Eventbus.NetworkRequestEvents.TeamSwitchRequest += SwitchTeams;
-        
         Eventbus.TurnEvents.OnInitialize?.Invoke();
     }
     
@@ -63,13 +63,11 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     public void FirstTurn(Team[] teams)
     {
         StartCoroutine(nameof(TurnActionRoutine));
-        //Burda da currentTeam Network variable kullanılmalı
     }
     
     IEnumerator TurnActionRoutine()
     {
-        Eventbus.TurnEvents.OnTurnStarted?.Invoke();
-        //print(currentTEAM.name); burda 2 tarafta da coroutine oynadığı için sorun oluyor galiba
+        Eventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
         
         for (var i = 0; i < turnHandlers.Length; i++)
         {
@@ -83,7 +81,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
 
-        Eventbus.TurnEvents.OnTurnEnded?.Invoke();
+        Eventbus.TurnEvents.OnTurnEnding?.Invoke();
     }
 
     void GetIncomingData(int turnIndex)
@@ -97,9 +95,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     void NewTurn()
     {
         StopCoroutine(nameof(TurnActionRoutine));
-        
-        Eventbus.NetworkTriggerEvents.OnTeamSwitchSetup?.Invoke(turnTeams["rivalTeam"].Data.TeamType); //new team
-        
+        SwitchTeams();
         StartCoroutine(nameof(TurnActionRoutine));
     }
     
@@ -109,10 +105,12 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         currentTurnHandler.CompleteAction();
     }
 
-    void SwitchTeams(TeamType newTeamType)
+    void SwitchTeams()
     {
+        currentTeamType = turnTeams["rivalTeam"].Data.TeamType;
         (turnTeams["currentTeam"], turnTeams["rivalTeam"]) = (turnTeams["rivalTeam"], turnTeams["currentTeam"]);
         currentTEAM = turnTeams["currentTeam"]; //DEBUG
+        
         
         // var temp = currentTeam;
         // currentTeam = rivalTeam;
@@ -129,7 +127,6 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         Eventbus.NetworkRequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
         Eventbus.NetworkRequestEvents.OnNewTurnRequest -= NewTurn;
-        Eventbus.NetworkRequestEvents.TeamSwitchRequest -= SwitchTeams;
         Eventbus.NetworkEvents.OnAllClientsSet -= FirstTurn;
     }
 }

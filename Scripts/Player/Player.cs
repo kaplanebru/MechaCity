@@ -76,6 +76,8 @@ public class Player : NetworkBehaviour
 
     #region SpawnTurnNetworkServerRpc
 
+    [SerializeField] private TurnNetworkHandler[] turnNetworkHandlers = new TurnNetworkHandler[2];
+
     [ServerRpc(RequireOwnership = false)]
     void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
     {
@@ -83,9 +85,26 @@ public class Player : NetworkBehaviour
         var clientId = serverRpcParams.Receive.SenderClientId;
         // print("sender client id: " + clientId);
         var turnNetwork = Instantiate(Data.turnNetworkHandler);
+        turnNetworkHandlers[clientId] = turnNetwork;          //bunlar da sadece serverda oluyor
         turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-        turnNetwork.ownerTeamType = Data.TeamType; //Temp
+
+
+        //turnNetwork.ownerTeamType = Data.TeamType;
+        //only sets things on server!!!
+
+        //turnNetwork.ownerPlayer = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<Player>();
+        //turnNetwork.ownerTeamType = NetworkManager.Singleton.ConnectedClients[clientId].OwnedObjects[0].GetComponent<Player>().Data.TeamType;
+        //SetOwnerTeamTypeClientRpc((int)clientId);
+
     }
+
+    // [ClientRpc]
+    // void SetOwnerTeamTypeClientRpc(int clientId)
+    // {
+    //    turnNetworkHandlers[clientId].ownerTeamType = Data.TeamType; //Temp
+    //     print( turnNetworkHandlers[clientId].ownerTeamType);
+    // }
+    
 
     #endregion
 }

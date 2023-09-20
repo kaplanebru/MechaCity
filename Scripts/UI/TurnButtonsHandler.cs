@@ -83,7 +83,7 @@ public class TurnButtonsHandler : MonoBehaviour
         Eventbus.TurnEvents.OnInitialize -= Initialize;
         Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest -= RestartSequence;
 
-        //Eventbus.TurnEvents.OnTurnEnded -= RestartSequence;
+        //Eventbus.TurnEvents.OnTurnEnding -= RestartSequence;
         Eventbus.UIEvents.OnButtonCall -= HandleSpecialCase;
     }
 }
