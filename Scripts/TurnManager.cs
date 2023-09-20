@@ -12,7 +12,6 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     BaseTurnHandler[] turnHandlers;
     Dictionary<string, Team> turnTeams;
     [SerializeField] private TeamsHandler teamsHandler;
-    public Team currentTEAM;//DEBUG
     public TeamType currentTeamType = TeamType.Team1;
     
     private BaseTurnHandler currentTurnHandler;
@@ -38,8 +37,6 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
             {"currentTeam", teamsHandler.teams[0]},
             {"rivalTeam", teamsHandler.teams[1]},
         };
-        
-        currentTEAM = turnTeams["currentTeam"]; //DEBUG
     }
 
     void DisableAllTurnHandlers()
@@ -109,8 +106,8 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         currentTeamType = turnTeams["rivalTeam"].Data.TeamType;
         (turnTeams["currentTeam"], turnTeams["rivalTeam"]) = (turnTeams["rivalTeam"], turnTeams["currentTeam"]);
-        currentTEAM = turnTeams["currentTeam"]; //DEBUG
-        
+
+        Eventbus.UIEvents.OnTeamSwitch?.Invoke(currentTeamType);
         
         // var temp = currentTeam;
         // currentTeam = rivalTeam;

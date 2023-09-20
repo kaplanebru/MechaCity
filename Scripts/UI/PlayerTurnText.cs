@@ -13,7 +13,7 @@ public class PlayerTurnText : MonoBehaviour
     private void OnEnable()
     {
         infoText = GetComponentInChildren<TextMeshProUGUI>();
-        Eventbus.NetworkRequestEvents.TeamSwitchRequest += UpdateInfoText;
+        Eventbus.UIEvents.OnTeamSwitch += UpdateInfoText;
     }
 
     public void Setup(Team[] teams)
@@ -33,6 +33,6 @@ public class PlayerTurnText : MonoBehaviour
 
     private void OnDisable()
     {
-        Eventbus.NetworkRequestEvents.TeamSwitchRequest -= UpdateInfoText;
+        Eventbus.UIEvents.OnTeamSwitch -= UpdateInfoText;
     }
 }

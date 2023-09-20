@@ -27,6 +27,7 @@ public static class Eventbus
         public static Action<bool> OnButtonCall;
         public static Action<float, GameObject> OnTowerHeightChange;
         public static Action<int, Tower> OnHealthChange;
+        public static Action<TeamType> OnTeamSwitch;
     }
 
     public static class InputEvents //TODO: bu map node'da nasıl handle ediliyordu
