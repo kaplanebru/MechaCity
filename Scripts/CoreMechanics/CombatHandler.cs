@@ -12,7 +12,7 @@ public class CombatData : BaseTurnData
     public List<CombatPair> CombatPairs = new();
     public List<Tower> AlteredTowers = new();
     public List<TowerGridRelationModel> DeadTowers = new();
-    
+
     [ReadOnly] public float projectileSpeed = 1;
     public float ProjectileSpeed => projectileSpeed;
     public float FireSpeedMultiplier = 0.7f;
@@ -29,36 +29,39 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
         Data.DeadTowers.Clear();
         Eventbus.FireEvents.OnTowerTeamDetection += AddToDeadTowers;
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
-        
     }
-    
-    public override void ProcessIncomingData(BaseTurnData data) 
+
+    public override void ProcessIncomingData(BaseTurnData data)
     {
         var incomingData = (TowerGroupData) data;
         Data.AlteredTowers = incomingData.TowerGroup;
     }
+
     public override void Setup()
     {
-         RemoveAlteredCombatPairs();
-         Data.AlteredTowers.ForEach(CreateCombatPairByHeight);
-         
-         StartCoroutine(nameof(FireRoutine));
+        RemoveAlteredCombatPairs();
+        Data.AlteredTowers.ForEach(CreateCombatPairByHeight);
+
+        StartCoroutine(nameof(FireRoutine));
     }
-    
-    
+
+
     private void AddToDeadTowers(TowerGridRelationModel towerGridRelationModel)
     {
         Data.DeadTowers.Add(towerGridRelationModel);
     }
-    
+
+    private float _combatSpeed;
     IEnumerator FireRoutine()
     {
         foreach (var pair in Data.CombatPairs)
         {
-            pair.Combat(Data.ProjectileSpeed);
-            yield return new WaitForSeconds(Data.ProjectileSpeed); // * Data.FireSpeedMultiplier);
+            _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
+
+            pair.Combat(_combatSpeed);
+            yield return new WaitForSeconds(_combatSpeed); // * Data.FireSpeedMultiplier);
         }
-        
+
         yield return new WaitForSeconds(0.1f);
         CompleteAction();
     }
@@ -71,12 +74,12 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
         {
             if (tower.Data.Height > linkedTower.Data.Height)
             {
-                if(!tower.Data.CanShoot) continue;
+                if (!tower.Data.CanShoot) continue;
                 AddToPairs(tower, linkedTower);
             }
             else if (linkedTower.Data.Height > tower.Data.Height)
             {
-                if(!linkedTower.Data.CanShoot) continue;
+                if (!linkedTower.Data.CanShoot) continue;
                 AddToPairs(linkedTower, tower);
             }
             else
@@ -84,13 +87,13 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
         }
     }
 
-    void AddToPairs(Tower tower1, Tower tower2, bool isEven=false)
+    void AddToPairs(Tower tower1, Tower tower2, bool isEven = false)
     {
         Data.CombatPairs.Add(new CombatPair(tower1, tower2, isEven));
-        if (!isEven) 
+        if (!isEven)
             tower1.Data.BulletAmount--;
     }
-    
+
     void RemoveAlteredCombatPairs()
     {
         foreach (var alteredTower in Data.AlteredTowers)
@@ -107,9 +110,9 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
 
     void DeselectAlteredTowers() //TODO: At the end of animation
     {
-        Data.AlteredTowers.ForEach(t=> t.towerParts.SetColor(t.Data.TeamTowerData.DefaultMaterial));
+        Data.AlteredTowers.ForEach(t => t.towerParts.SetColor(t.Data.TeamTowerData.DefaultMaterial));
     }
-    
+
 
     public override void Unsubscribe()
     {
