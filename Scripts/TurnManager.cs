@@ -117,11 +117,10 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         {
             if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Data.Health == 0))
             {
+                Eventbus.NetworkTriggerEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
                 print("game ends");
                 return true;
             }
-
-           
         }
         return false;
     }

@@ -11,7 +11,7 @@ using UnityEngine;
 public class PlayerData
 {
     public TeamType TeamType;
-
+    public GameEndState GameEndState = GameEndState.GameStarted;
     public List<Tower> AllTowers = new();
     public TurnNetworkHandler turnNetworkHandler;
 }
@@ -23,10 +23,46 @@ public class Player : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         SpawnTurnNetworkServerRpc();
+        if(IsOwner) Eventbus.NetworkTriggerEvents.OnGameEnds += GameEndServerRpc;
         Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
     }
 
-   
+    [ServerRpc]
+    private void GameEndServerRpc(TeamType loserTeamType)
+    {
+        ClientRpcParams clientRpcParams = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new ulong[] {OwnerClientId}
+            }
+        };
+        
+        if (loserTeamType == Data.TeamType)
+            LoseClientRpc(clientRpcParams);
+        else
+            WinClientRpc(clientRpcParams);
+        
+    }
+
+    [ClientRpc]
+    void WinClientRpc(ClientRpcParams clientRpcParams)
+    {
+        if (!IsOwner) return;
+        Data.GameEndState = GameEndState.Win;
+        Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+        print("winn");
+    }
+
+    [ClientRpc]
+    void LoseClientRpc(ClientRpcParams clientRpcParams)
+    {
+        if (!IsOwner) return;
+        Data.GameEndState = GameEndState.Lose;
+        Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+        print("loseee");
+    }
+
 
     public void Setup(TeamType teamType, List<Tower> allTowers)
     {
@@ -71,7 +107,8 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        
+        if(IsOwner)
+            Eventbus.NetworkTriggerEvents.OnGameEnds -= GameEndServerRpc;
     }
 
     #region SpawnTurnNetworkServerRpc

@@ -26,5 +26,12 @@ namespace Datas
         Match
     }
 
+    public enum GameEndState
+    {
+        GameStarted,
+        Win,
+        Lose
+    }
+
     
 }

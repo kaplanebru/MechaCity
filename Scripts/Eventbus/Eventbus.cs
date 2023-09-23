@@ -11,6 +11,10 @@ using Object = UnityEngine.Object;
 public static class Eventbus
 {
 
+    // public static class GameEvents
+    // {
+    //     public static Action<Team> OnGameEnds;
+    // }
     public static class TowerEvents
     {
         public static Action<Tower> OnTowerSetup;
@@ -41,6 +45,7 @@ public static class Eventbus
     public static class NetworkTriggerEvents
     {
         public static Action<TurnHandlerType> OnCompleteActionRequestByUser;
+        public static Action<TeamType> OnGameEnds;
     }
     
     public static class NetworkEvents
@@ -53,6 +58,9 @@ public static class Eventbus
         public static Action OnCompleteActionRequest;
         public static Action OnNewTurnRequest;
         public static Action OnTurnButtonsShiftRequest;
+
+        public static Action<GameEndState> OnGameEndScreenRequest;
+        public static Action OnLosePanelRequest;
     }
     
 
