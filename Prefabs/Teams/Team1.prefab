@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: ad79e5d9b1d96584e88989bed0822846, type: 2}
+  ConstructorData:
+    TowersPrefab: {fileID: 5579547957973982615, guid: 05c482badfba7d24eb2c1f172eafeadf, type: 3}
 --- !u!1001 &8666850477283579152
 PrefabInstance:
   m_ObjectHideFlags: 0

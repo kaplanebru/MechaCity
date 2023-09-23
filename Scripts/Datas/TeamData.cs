@@ -15,8 +15,7 @@ namespace Datas
         public Player Player;
         public List<Tower> Towers = new();
         public GameGrid Grid;
-        //public TeamAssetHolder AssetHolder;
-        public Transform TowersPrefab;
+
 
         public TeamTowerData TeamTowerData;
     }

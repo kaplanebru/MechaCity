@@ -6,19 +6,41 @@ using Datas;
 using UnityEngine;
 
 
+[Serializable]
+public class TeamConstructorData
+{
+    public Transform TowersPrefab;
+}
 
 public class Team: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : TeamData
 {
     public TeamData Data;
+    [SerializeField] TeamConstructorData ConstructorData;
     public void Initialize()
     {
-        var towersPb = Instantiate(Data.TowersPrefab, transform);
-        Data.Towers = towersPb.GetComponentsInChildren<Tower>().ToList();
+        AssignTowers();
         SetGrid();
         SetTowers();
-        
+    }
+
+    void AssignTowers()
+    {
+        var towersPb = Instantiate(ConstructorData.TowersPrefab, transform);
+        Data.Towers = towersPb.GetComponentsInChildren<Tower>().ToList();
     }
     
+    void SetGrid()
+    {
+        Data.Grid.Initialize(this);
+    }
+    void SetTowers()
+    {
+        for (int i = 0; i < Data.Towers.Count; i++)
+        {
+            Data.Towers[i].Data.SlotId = i;
+            Data.Towers[i].Setup(Data.TeamTowerData);
+        }
+    }
 
     public void TakeTowerFromRival(Tower tower)
     {
@@ -38,18 +60,6 @@ public class Team: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerDat
         }
     }
 
-    void SetTowers()
-    {
-        for (int i = 0; i < Data.Towers.Count; i++)
-        {
-            Data.Towers[i].Data.SlotId = i;
-            Data.Towers[i].Setup(Data.TeamTowerData);
-        }
-    }
 
-    void SetGrid()
-    {
-        Data.Grid.Initialize(this);
-    }
     
 }
