@@ -75,7 +75,8 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
             yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
         }
 
-        Eventbus.TurnEvents.OnTurnEnding?.Invoke();
+        if(!GameEnding())
+            Eventbus.TurnEvents.OnTurnEnding?.Invoke();
     }
 
     void GetIncomingData(int turnIndex)
@@ -95,7 +96,6 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     
     void CompleteActionByUser()
     {
-        //print("completed: " + currentTurnHandler.name);
         currentTurnHandler.CompleteAction();
     }
 
@@ -109,6 +109,19 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         // var temp = currentTeam;
         // currentTeam = rivalTeam;
         // rivalTeam = temp;
+    }
+
+    bool GameEnding()
+    {
+        foreach (var team in turnTeams)
+        {
+            if (team.Value.Data.Towers.Count < 2) //TODO: Veya bütün charları ölmüşse. Ama zaten ölen karşı takıma geçiyor bunu check etmeye gerek yok
+            {
+                print("game ends");
+                return true;
+            }
+        }
+        return false;
     }
     
     private void OnDisable()

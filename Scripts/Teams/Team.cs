@@ -45,6 +45,7 @@ public class Team: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerDat
     public void TakeTowerFromRival(Tower tower)
     {
         Data.Towers.Add(tower);
+        tower.SetTeam(Data.TeamTowerData);
     }
 
     public void RemoveTower(Tower tower)

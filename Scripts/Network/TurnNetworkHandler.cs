@@ -35,7 +35,7 @@ public class TurnNetworkHandler : NetworkBehaviour
 
     void TurnButtonsSetup(TeamType currentTeamType)
     {
-        print("owner team type: " + ownerTeamType + " currentTeamType: " + currentTeamType);
+        //print("owner team type: " + ownerTeamType + " currentTeamType: " + currentTeamType);
         if (currentTeamType == ownerTeamType)
             Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest?.Invoke();
     }
@@ -59,7 +59,7 @@ public class TurnNetworkHandler : NetworkBehaviour
     
     private void CompleteActionSetup(TurnHandlerType previousvalue, TurnHandlerType newvalue)
     {
-        print("complete action : " + newvalue);
+        //print("complete action : " + newvalue);
 
         if(newvalue != TurnHandlerType.Selection)
             Eventbus.NetworkRequestEvents.OnCompleteActionRequest?.Invoke();

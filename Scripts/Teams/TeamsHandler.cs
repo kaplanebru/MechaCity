@@ -84,20 +84,26 @@ public class TeamsHandler : MonoBehaviour
 
     private void ExchangeTower(Tower deadTower)
     {
-        //var perpetratorTeam = teams.FirstOrDefault(t => t.Data.TeamType == type)?.Data; //todo: team classına da yazılabilir griddeki gibi
+        Team oldTeam = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
+        Team newTeam = teams.FirstOrDefault(t => t != oldTeam);
+        
+        oldTeam.RemoveTower(deadTower);
+        newTeam.TakeTowerFromRival(deadTower);
+        print("old team: " + oldTeam + " newTeam: " + newTeam);
+        //deadTower.SetTeam(newTeam.Data.TeamTowerData);
 
-        for (int i = 0; i < teams.Length; i++)
-        {
-            if (teams[i].Data.TeamType == deadTower.Data.TeamTowerData.TeamType)
-            {
-                teams[i].RemoveTower(deadTower);
-
-                var otherTeam = teams[teams.Length - 1 - i];
-                otherTeam.TakeTowerFromRival(deadTower);
-                deadTower.SetTeam(otherTeam.Data.TeamTowerData);
-                break;
-            }
-        }
+        // for (int i = 0; i < teams.Length; i++)
+        // {
+        //     if (teams[i].Data.TeamType == deadTower.Data.TeamTowerData.TeamType)
+        //     {
+        //         teams[i].RemoveTower(deadTower);
+        //
+        //         var otherTeam = teams[teams.Length - 1 - i];
+        //         otherTeam.TakeTowerFromRival(deadTower);
+        //         deadTower.SetTeam(otherTeam.Data.TeamTowerData);
+        //         break;
+        //     }
+        // }
     }
 
     private void OnDisable()
