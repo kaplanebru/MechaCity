@@ -5,17 +5,18 @@ using UnityEngine;
 
 namespace Datas
 {
-    //[CreateAssetMenu(fileName = nameof(TeamData))]
+    [CreateAssetMenu(fileName = nameof(TeamData))]
 
     [Serializable]
-    public class TeamData //: ScriptableObject
+    public class TeamData: ScriptableObject
     {
         public string Name;
         public TeamType TeamType;
         public Player Player;
         public List<Tower> Towers = new();
         public GameGrid Grid;
-        public TeamAssetHolder AssetHolder;
+        //public TeamAssetHolder AssetHolder;
+        public Transform TowersPrefab;
 
         public TeamTowerData TeamTowerData;
     }

@@ -12,10 +12,11 @@ public class Team: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerDat
     public TeamData Data;
     public void Initialize()
     {
-        var towersPb = Instantiate(Data.AssetHolder.TowersPrefab, transform);
+        var towersPb = Instantiate(Data.TowersPrefab, transform);
         Data.Towers = towersPb.GetComponentsInChildren<Tower>().ToList();
         SetGrid();
         SetTowers();
+        
     }
     
 

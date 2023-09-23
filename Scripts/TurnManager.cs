@@ -15,17 +15,21 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     public TeamType currentTeamType = TeamType.Team1;
     
     private BaseTurnHandler currentTurnHandler;
-    
-    private void Start()
+
+
+    private void OnEnable()
     {
-        SetTurnTeams();
-        turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
-        DisableAllTurnHandlers();
-        InitializeTeams();
-        
         Eventbus.NetworkEvents.OnAllClientsSet += FirstTurn;
         Eventbus.NetworkRequestEvents.OnCompleteActionRequest += CompleteActionByUser;
         Eventbus.NetworkRequestEvents.OnNewTurnRequest += NewTurn;
+        
+        turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
+        DisableAllTurnHandlers();
+    }
+
+    private void Initialize()
+    {
+        SetTurnTeams();
         Eventbus.TurnEvents.OnInitialize?.Invoke();
     }
     
@@ -46,25 +50,18 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
             turnHandler.enabled = false;
         }
     }
-
-    void InitializeTeams()
-    {
-        foreach (var team in turnTeams)
-        {
-            team.Value.Initialize();
-        }
-
-        SetFirstMatches();
-    }
+    
     
     public void FirstTurn(Team[] teams)
     {
+        Initialize();
         StartCoroutine(nameof(TurnActionRoutine));
     }
     
     IEnumerator TurnActionRoutine()
     {
         Eventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
+        
         
         for (var i = 0; i < turnHandlers.Length; i++)
         {
@@ -113,13 +110,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
         // currentTeam = rivalTeam;
         // rivalTeam = temp;
     }
-
-    void SetFirstMatches() //Temporary
-    {
-        turnTeams["currentTeam"].LinkFirstMatches(turnTeams["rivalTeam"]);
-        turnTeams["rivalTeam"].LinkFirstMatches(turnTeams["currentTeam"]);
-    }
-
+    
     private void OnDisable()
     {
         Eventbus.NetworkRequestEvents.OnCompleteActionRequest -= CompleteActionByUser;

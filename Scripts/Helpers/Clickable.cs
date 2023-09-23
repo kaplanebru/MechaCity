@@ -15,7 +15,7 @@ public class Clickable : BaseClickable<Tower>
     protected override void Setup()
     {
         clickableObject = GetComponentInParent<Tower>();
-        Eventbus.TeamEvents.OnTeamSet += SetTeam;
+        Eventbus.TeamEvents.OnTowerTeamSet += SetTeam;
     }
 
     private void SetTeam(TeamType _teamType, Tower tower)
@@ -26,6 +26,6 @@ public class Clickable : BaseClickable<Tower>
     
     public override void UnsubscribeFromEvent()
     {
-        Eventbus.TeamEvents.OnTeamSet -= SetTeam;
+        Eventbus.TeamEvents.OnTowerTeamSet -= SetTeam;
     }
 }

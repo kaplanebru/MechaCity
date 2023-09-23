@@ -14,18 +14,15 @@ public class TeamsHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        CreateTeams();
         Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
         Eventbus.FireEvents.OnTowerKilled += SendGridByTeam;
         Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
         
-    }
-
-    private void Start()
-    {
+        CreateTeams();
         SetAllTowers();
-        //Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
     }
+    
+    
 
     void CreateTeams()
     {
@@ -33,7 +30,16 @@ public class TeamsHandler : MonoBehaviour
         for (int i = 0; i < teams.Length; i++)
         {
             teams[i] = Instantiate(assetHolder.Teams[i], transform);
+            teams[i].Initialize();
         }
+        
+        SetFirstMatches();
+    }
+    
+    void SetFirstMatches() //Temporary
+    {
+        teams[0].LinkFirstMatches(teams[1]);
+        teams[1].LinkFirstMatches(teams[0]);
     }
 
     void SetAllTowers()
@@ -63,7 +69,7 @@ public class TeamsHandler : MonoBehaviour
                 return;
             }
         }
-        
+
         Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
         print("Game Started");
     }

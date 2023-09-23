@@ -1698,7 +1698,7 @@ MonoBehaviour:
   turnHandlerType:
     m_InternalValue: 0
   teamsHandler: {fileID: 1031181236}
-  currentTEAM: {fileID: 0}
+  currentTeamType: 0
 --- !u!1 &1031181234
 GameObject:
   m_ObjectHideFlags: 0
