@@ -115,11 +115,13 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         foreach (var team in turnTeams)
         {
-            if (team.Value.Data.Towers.Count < 2) //TODO: Veya bütün charları ölmüşse. Ama zaten ölen karşı takıma geçiyor bunu check etmeye gerek yok
+            if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Data.Health == 0))
             {
                 print("game ends");
                 return true;
             }
+
+           
         }
         return false;
     }
