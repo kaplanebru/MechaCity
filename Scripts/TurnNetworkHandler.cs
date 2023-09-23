@@ -16,7 +16,7 @@ public class TurnNetworkHandler : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
        
-        turnHandlerType.OnValueChanged += CompleteActionSetup;
+        turnHandlerType.OnValueChanged += CompleteActionSetup;  //owner ve clone'u değişir
         
         if (IsOwner)
         {
@@ -59,7 +59,7 @@ public class TurnNetworkHandler : NetworkBehaviour
     
     private void CompleteActionSetup(TurnHandlerType previousvalue, TurnHandlerType newvalue)
     {
-        //print("complete action 2 : " + newvalue);
+        print("complete action : " + newvalue);
 
         if(newvalue != TurnHandlerType.Selection)
             Eventbus.NetworkRequestEvents.OnCompleteActionRequest?.Invoke();

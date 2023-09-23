@@ -63,7 +63,7 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
-    void AdjustTowerClientRpc(int towerId)
+    void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
     {
         var towerObj = Data.AllTowers[towerId];
         Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerObj}); //Data.Team.Data.Towers[towerId]
@@ -87,24 +87,7 @@ public class Player : NetworkBehaviour
         var turnNetwork = Instantiate(Data.turnNetworkHandler);
         turnNetworkHandlers[clientId] = turnNetwork;          //bunlar da sadece serverda oluyor
         turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-
-
-        //turnNetwork.ownerTeamType = Data.TeamType;
-        //only sets things on server!!!
-
-        //turnNetwork.ownerPlayer = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject.GetComponent<Player>();
-        //turnNetwork.ownerTeamType = NetworkManager.Singleton.ConnectedClients[clientId].OwnedObjects[0].GetComponent<Player>().Data.TeamType;
-        //SetOwnerTeamTypeClientRpc((int)clientId);
-
     }
-
-    // [ClientRpc]
-    // void SetOwnerTeamTypeClientRpc(int clientId)
-    // {
-    //    turnNetworkHandlers[clientId].ownerTeamType = Data.TeamType; //Temp
-    //     print( turnNetworkHandlers[clientId].ownerTeamType);
-    // }
-    
 
     #endregion
 }
