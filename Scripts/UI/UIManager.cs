@@ -10,18 +10,27 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     //public Button playButton;
-    public PlayerTurnText playerTurnText;
+    public BaseInfoText turnInfoPopupText;
+    public BaseInfoText turnInfoText;
     private Team[] _teams;
     private void OnEnable()
     {
         Eventbus.NetworkEvents.OnAllClientsSet += ShowInfoText;
-        playerTurnText.gameObject.SetActive(false);
+        DisableUIs();
+    }
+
+    void DisableUIs()
+    {
+        turnInfoText.gameObject.SetActive(false);
+        turnInfoPopupText.gameObject.SetActive(false);
     }
 
     private void ShowInfoText(Team[] teams)
     {
-        playerTurnText.gameObject.SetActive(true);
-        playerTurnText.Setup(teams);
+        turnInfoText.gameObject.SetActive(true);
+        turnInfoPopupText.gameObject.SetActive(true);
+        turnInfoText.Setup(teams);
+        turnInfoPopupText.Setup(teams);
     }
 
     private void OnDisable()
