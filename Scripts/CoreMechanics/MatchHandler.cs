@@ -56,14 +56,17 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
         Eventbus.TeamEvents.OnTeamChange?.Invoke(deadTower);
     }
     
-    int CheckSlotForLink(int number, GameGrid grid, Tower towerToLink)
+    int CheckSlotForLink(int number, GameGrid grid, Tower detachedTower)
     {
         if (number is >= 0 and < GameGrid.SlotAmount)
         {
             var slot = grid.Slots[number];
             if (slot.HasTower)
             {
-                LinkTowers(slot.Tower, towerToLink);
+                if (slot.Tower.Data.TeamTowerData.TeamType == detachedTower.Data.TeamTowerData.TeamType) //bug fix
+                    return 0;
+                
+                LinkTowers(slot.Tower, detachedTower);
                 return 1;
             }
         }
