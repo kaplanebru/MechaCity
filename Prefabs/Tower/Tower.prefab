@@ -53,10 +53,12 @@ MonoBehaviour:
   ConstantData: {fileID: 11400000, guid: 24382b7643f9bbb4d826eaf0d7c75384, type: 2}
   Data:
     Id: 0
-    Health: 0
+    SlotId: 0
     Height: 0
     TeamTowerData: {fileID: 0}
     LinkedTowers: []
+    _bulletAmount: 1
+    _health: 1
   towerParts: {fileID: 0}
 --- !u!114 &7676847151417115740
 MonoBehaviour:

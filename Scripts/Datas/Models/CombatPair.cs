@@ -27,6 +27,8 @@ namespace Models
         public void Combat(float speed)
         {
             if (IsEven) return;
+            if (Perpetrator.Data.Health <= 0) return; //INFO: runtime esnasında ölmüş olabilir //Canshoout blulletler bitince yani matchten sonra sıfırlanır
+           
             //Victim.Descend(Perpetrator.ConstantData.DamagePower);
 
             var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = Perpetrator.towerParts.Data.Top.transform.position);

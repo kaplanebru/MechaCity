@@ -10,23 +10,33 @@ namespace Datas
     {
         public int Id;
         public int SlotId; //sonradan get set eklenebilir
-        public int Health;
         public float Height;
         public TeamTowerData TeamTowerData;
         public List<Tower> LinkedTowers;
         public bool CanShoot { get; private set; }
 
-        private int bulletAmount;
+
+        [SerializeField] private int _bulletAmount = 1;
         public int BulletAmount
         {
-            get => bulletAmount;
+            get => _bulletAmount;
             set
             {
-                bulletAmount = value;
+                _bulletAmount = value;
                 CanShoot = value > 0;
             }
         }
 
+        [SerializeField] int _health = 1;
+
+        public int Health
+        {
+            get => _health;
+            set => _health = value;
+            //CanShoot = value > 0;
+        }
         
+
+
     }
 }
