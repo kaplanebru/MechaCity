@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 
 [Serializable]
-public class SelectionData : BaseTurnData
+public class SelectionData : BaseTurTransferData
 {
     public List<Tower> SelectionGroup = new();
     public int MaxTowersInGroup = 2;
@@ -16,14 +16,14 @@ public class SelectionData : BaseTurnData
 
 public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionData>
 {
-    public SelectionData Data { get; private set; }
+    public SelectionData TransferData { get; private set; }
 
     public override TurnHandlerType HandlerType => TurnHandlerType.Selection;
 
     public override void OnHandlerEnabled()
     {
-        Data = new();
-        Data.SelectionGroup.Clear();
+        TransferData = new();
+        TransferData.SelectionGroup.Clear();
         Eventbus.InputEvents.OnObjectClicked += TowerPartClicked;
     }
     
@@ -37,7 +37,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
         if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
         if (SelectedTwice(tower)) return;
         
-        if (Data.SelectionGroup.Count == Data.MaxTowersInGroup)
+        if (TransferData.SelectionGroup.Count == TransferData.MaxTowersInGroup)
             ResetSelectionGroup();
         
         AddToSelection(true, tower);
@@ -53,11 +53,11 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
         newTower.towerParts.SetColor(select ? teams["currentTeam"].Data.TeamTowerData.SelectedMaterial : teams["currentTeam"].Data.TeamTowerData.DefaultMaterial);
 
         if (select)
-            Data.SelectionGroup.Add(newTower);
+            TransferData.SelectionGroup.Add(newTower);
         else
-            Data.SelectionGroup.Remove(newTower);
+            TransferData.SelectionGroup.Remove(newTower);
 
-        ManageCompleteButton(Data.SelectionGroup.Count == Data.MaxTowersInGroup);
+        ManageCompleteButton(TransferData.SelectionGroup.Count == TransferData.MaxTowersInGroup);
     }
 
     void ManageCompleteButton(bool enable)
@@ -68,7 +68,7 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
 
     bool SelectedTwice(Tower newTower)
     {
-        if (Data.SelectionGroup.Contains(newTower))
+        if (TransferData.SelectionGroup.Contains(newTower))
         {
             AddToSelection(false, newTower);
             return true;
@@ -78,9 +78,9 @@ public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionDat
 
     void ResetSelectionGroup()
     {
-        for (int i = 0; i < Data.MaxTowersInGroup; i++)
+        for (int i = 0; i < TransferData.MaxTowersInGroup; i++)
         {
-            AddToSelection(false, Data.SelectionGroup[0]);
+            AddToSelection(false, TransferData.SelectionGroup[0]);
         }
     }
 

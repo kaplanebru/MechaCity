@@ -22,7 +22,7 @@ public abstract class BaseTurnHandler : MonoBehaviour
         OnHandlerEnabled();
     }
     
-    public virtual void ProcessIncomingData(BaseTurnData data){}
+    public virtual void ProcessIncomingData(BaseTurTransferData data){}
     
     public abstract void Setup();
     

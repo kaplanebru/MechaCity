@@ -8,32 +8,32 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class MatchData : BaseTurnData //bizim sonrakine göndereceğimiz
+public class MatchData : BaseTurTransferData //bizim sonrakine göndereceğimiz
 {
     public List<TowerGridRelationModel> DeadTowerGridPairs = new();
 }
 
 public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 {
-    public MatchData Data { get; private set; }
+    public MatchData TransferData { get; private set; }
 
     public override TurnHandlerType HandlerType => TurnHandlerType.Match;
 
     public override void OnHandlerEnabled()
     {
-        Data = new();
+        TransferData = new();
   
     }
     
-    public override void ProcessIncomingData(BaseTurnData data)
+    public override void ProcessIncomingData(BaseTurTransferData data)
     {
-        var incomingData = (CombatData) data;
-        Data.DeadTowerGridPairs = incomingData.DeadTowers;
+        var incomingData = (CombatTransferData) data;
+        TransferData.DeadTowerGridPairs = incomingData.DeadTowers;
     }
 
     public override void Setup()
     {
-        // if (Data.DeadTowerGridPairs.Count > 0)
+        // if (TransferData.DeadTowerGridPairs.Count > 0)
         //     RematchTowers();
         
         CompleteAction();
@@ -93,7 +93,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
     }
     void RematchTowers()
     {
-        foreach (var deadTowerGridModel in Data.DeadTowerGridPairs)
+        foreach (var deadTowerGridModel in TransferData.DeadTowerGridPairs)
         {
             var deadTower = deadTowerGridModel.Tower;
             for (var i = deadTower.Data.LinkedTowers.Count - 1; i >= 0; i--)

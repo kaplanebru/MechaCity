@@ -4,6 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public abstract class BaseTurnData
+public abstract class BaseTurTransferData
 {
 }

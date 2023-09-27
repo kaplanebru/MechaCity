@@ -50,7 +50,7 @@ namespace Models
         {
             if (Victim.Data.Health <= 0)
             {
-                //Victim.SetColor(Victim.Data.TeamTowerData.DeadMaterial); //for debugging
+                //Victim.SetColor(Victim.TransferData.TeamTowerData.DeadMaterial); //for debugging
                 Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
             }
         }

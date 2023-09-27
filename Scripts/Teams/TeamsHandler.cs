@@ -52,7 +52,7 @@ public class TeamsHandler : MonoBehaviour
         for (int i = 0; i < allTowers.Count; i++)
         {
             allTowers[i].Data.Id = i;
-            allTowers[i].towerParts.SetClickableIds(i); //, Data.TeamTowerData.TeamType); //for MP
+            allTowers[i].towerParts.SetClickableIds(i); //, TransferData.TeamTowerData.TeamType); //for MP
         }
     }
 
@@ -89,17 +89,17 @@ public class TeamsHandler : MonoBehaviour
         
         oldTeam.RemoveTower(deadTower);
         newTeam.TakeTowerFromRival(deadTower);
-        //deadTower.SetTeam(newTeam.Data.TeamTowerData);
+        //deadTower.SetTeam(newTeam.TransferData.TeamTowerData);
 
         // for (int i = 0; i < teams.Length; i++)
         // {
-        //     if (teams[i].Data.TeamType == deadTower.Data.TeamTowerData.TeamType)
+        //     if (teams[i].TransferData.TeamType == deadTower.TransferData.TeamTowerData.TeamType)
         //     {
         //         teams[i].RemoveTower(deadTower);
         //
         //         var otherTeam = teams[teams.Length - 1 - i];
         //         otherTeam.TakeTowerFromRival(deadTower);
-        //         deadTower.SetTeam(otherTeam.Data.TeamTowerData);
+        //         deadTower.SetTeam(otherTeam.TransferData.TeamTowerData);
         //         break;
         //     }
         // }

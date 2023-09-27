@@ -85,7 +85,7 @@ public class Player : NetworkBehaviour
     {
         if (hit.collider.TryGetComponent(out Clickable clickable))
         {
-            if (clickable.teamType != Data.TeamType) return; //if (clickable.clickableObject.Data.TeamTowerData.TeamType != Data.TeamType) return;
+            if (clickable.teamType != Data.TeamType) return; //if (clickable.clickableObject.TransferData.TeamTowerData.TeamType != TransferData.TeamType) return;
             SendTowerIdToServerRpc(clickable.id);
         }
     }
@@ -100,7 +100,7 @@ public class Player : NetworkBehaviour
     void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
     {
         var towerObj = Data.AllTowers[towerId];
-        Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerObj}); //Data.Team.Data.Towers[towerId]
+        Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerObj}); //TransferData.Team.TransferData.Towers[towerId]
     }
 
     public override void OnNetworkDespawn()

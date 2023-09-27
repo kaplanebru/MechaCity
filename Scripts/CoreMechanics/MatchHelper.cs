@@ -14,18 +14,23 @@ public class MatchHelper : MonoBehaviour
 
     private void HandleDeadTower(TowerGridRelationModel deadTowerGridModel)
     {
+        
         var deadTower = deadTowerGridModel.Tower;
+        //var linkedTowers = deadTower.TransferData.LinkedTowers;
+        // SwitchSides(deadTower);
+
+       
         for (var i = deadTower.Data.LinkedTowers.Count - 1; i >= 0; i--)
         {
             var linkedTower = deadTower.Data.LinkedTowers[i];
-
             RemoveLink(deadTower, linkedTower); //önce de gelebilir
             RematchDetachedTowers(deadTowerGridModel, linkedTower);
-            
-
-            if (deadTower.Data.TeamTowerData.TeamType != linkedTower.Data.TeamTowerData.TeamType) //bug fix: birden fazla vurulmuşsa gerek yok
-                SwitchSides(deadTower);
+            // if (deadTower.TransferData.TeamTowerData.TeamType != linkedTowers[i].TransferData.TeamTowerData.TeamType) //bug fix: birden fazla vurulmuşsa gerek yok //Zaten 1den fazla vurulmayı önlemeye çalışıyoruz
+            //     SwitchSides(deadTower);
         }
+        
+        SwitchSides(deadTower);
+        
     }
 
     void RematchDetachedTowers(TowerGridRelationModel deadTowerGridModel, Tower detachedTower)

@@ -7,110 +7,95 @@ using Models;
 using Unity.Collections;
 using UnityEngine;
 
-public class CombatData : BaseTurnData
+public class CombatTransferData : BaseTurTransferData // = sıfırlanacak data
 {
-    public List<CombatPair> CombatPairs = new();
     public List<Tower> AlteredTowers = new();
     public List<TowerGridRelationModel> DeadTowers = new();
-
-    [ReadOnly] public float projectileSpeed = 1;
-    public float ProjectileSpeed => projectileSpeed;
-    public float FireSpeedMultiplier = 0.7f;
 }
 
-public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
+public class CombatData
 {
-    public CombatData Data { get; private set; }
+    public List<CombatPair> CombatPairs = new();
+    [ReadOnly] public float projectileSpeed = 1;
+    public float ProjectileSpeed => projectileSpeed;
+}
+
+public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferData>
+{
+    public CombatTransferData TransferData { get; private set; }
     public override TurnHandlerType HandlerType => TurnHandlerType.Combat;
+    private readonly CombatData Data = new();
+    private float _combatSpeed;
+    private Tower deadTower;
+
 
     public override void OnHandlerEnabled()
     {
-        Data = new(); //bug: sıfırlanmış oluyor, eski tower listesi uçuyor. Transfer Data ve normal Data diye ayırmak gerekebilir
-        Data.DeadTowers.Clear();
-        Eventbus.FireEvents.OnTowerKilled += LatestDeadTower;
-        //Eventbus.FireEvents.OnTowerGridDetection += AddToDeadTowers;
+        TransferData = new(); //bug: sıfırlanmış oluyor, eski tower listesi uçuyor. Transfer TransferData ve normal TransferData diye ayırmak gerekebilir
+        Eventbus.FireEvents.OnTowerGridDetection += LatestDeadTower;
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
     }
 
-    private Tower deadTower;
-    private void LatestDeadTower(Tower obj)
+    private void LatestDeadTower(TowerGridRelationModel obj)
     {
-        deadTower = obj;
+        deadTower = obj.Tower;
+        Data.CombatPairs.RemoveAll(p => p.Contains(deadTower));
     }
 
-    public override void ProcessIncomingData(BaseTurnData data)
+    // private void LatestDeadTower(Tower obj)
+    // {
+    //     deadTower = obj;
+    //     Data.CombatPairs.RemoveAll(p => p.Contains(deadTower));
+    // }
+
+    public override void ProcessIncomingData(BaseTurTransferData data)
     {
         var incomingData = (TowerGroupData) data;
-        Data.AlteredTowers = incomingData.TowerGroup;  //bug: sıfırlanmış oluyor, eski tower listesi uçuyor
+        TransferData.AlteredTowers = incomingData.TowerGroup; //bug: sıfırlanmış oluyor, eski tower listesi uçuyor
     }
 
     public override void Setup()
     {
         RemoveAlteredCombatPairs();
-        Data.AlteredTowers.ForEach(CreateCombatPairByTower);
+        //++ RemoveDeadPairs
+        TransferData.AlteredTowers.ForEach(CreateCombatPairByTower);
 
         StartCoroutine(nameof(FireRoutine));
     }
+    
 
-
-    private void AddToDeadTowers(TowerGridRelationModel towerGridRelationModel)
-    {
-        Data.DeadTowers.Add(towerGridRelationModel);
-    }
-
-    private float _combatSpeed;
+   
     IEnumerator FireRoutine()
     {
-        print(teams["currentTeam"].Data.Towers.Count);
-        for (int i = 0; i < teams["currentTeam"].Data.Towers.Count; i++) //teamden çıkan olabiliyor o yüzden sürekli check
+        Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.Perpetrator.Data.SlotId).ToList();
+
+        int j = 0;  //önceki pairler de gidiyor ve mevcut j gerilemiş oluyor
+        while (true)
         {
-            Data.CombatPairs.Clear();
-            CreateCombatPairByTower(teams["currentTeam"].Data.Towers[i]);
+            var pair = Data.CombatPairs[j];
+            _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
             
+            pair.Combat(_combatSpeed);
             
-            
-            foreach (var pair in Data.CombatPairs)
-            {
-                
-                _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
-            
-                pair.Combat(_combatSpeed);
-                yield return new WaitForSeconds(_combatSpeed); // * Data.FireSpeedMultiplier);
-                //Data.CombatPairs.RemoveAt(0); //test
-                //yield return new WaitForSeconds(1);
-            }
-            yield return new WaitForSeconds(1);
            
+            yield return new WaitForSeconds(_combatSpeed + 0.5f);
+
+            j = pair.Perpetrator.Data.SlotId; //mevcut pair de siliniyor aslında, o yüzden yerine geçiyor
+            print(j + " pairs: " + Data.CombatPairs.Count);
+            //j++;
+            if(j >= Data.CombatPairs.Count)
+                break;
         }
-
-
-        // foreach (var pair in Data.CombatPairs)
+        
+        // for (var j = Data.CombatPairs.Count - 1; j >= 0; j--)
         // {
+        //     var pair = Data.CombatPairs[j];
+        //     if(pair == null) continue;
         //     _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
         //
         //     pair.Combat(_combatSpeed);
-        //     yield return new WaitForSeconds(_combatSpeed); // * Data.FireSpeedMultiplier);
-        //     //Data.CombatPairs.RemoveAt(0); //test
-        // }
-        
-        
-
-        // for (int i = Data.CombatPairs.Count - 1; i >= 0; i--)
-        // {
-        //     var pair = Data.CombatPairs[i];
-        //     _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
-        //
-        //     //dead tower rematch olduktan sonra yapılmalı, rematchsiz haliyle eski linklere göre çalışır
-        //     if (pair.Contains(deadTower))
-        //     {
-        //         Data.CombatPairs.Remove(pair);
-        //         CreateCombatPairByTower(deadTower);
-        //         continue;
-        //     }
+        //     yield return new WaitForSeconds(_combatSpeed + 0.5f);
         //     
-        //     //on death: remove related pairs, add new pairs
-        //     pair.Combat(_combatSpeed);
-        //     yield return new WaitForSeconds(_combatSpeed); 
         // }
 
         yield return new WaitForSeconds(0.1f);
@@ -139,7 +124,8 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
         }
     }
 
-    void AddToPairs(Tower tower1, Tower tower2, bool isEven = false) //TODO: bunun yerine slot id'ye göre insert yapabiliriz
+    void AddToPairs(Tower tower1, Tower tower2,
+        bool isEven = false) //TODO: bunun yerine slot id'ye göre insert yapabiliriz
     {
         Data.CombatPairs.Add(new CombatPair(tower1, tower2, isEven));
         if (!isEven)
@@ -148,13 +134,13 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
 
     void RemoveAlteredCombatPairs()
     {
-        foreach (var alteredTower in Data.AlteredTowers)
+        foreach (var alteredTower in TransferData.AlteredTowers)
         {
             Data.CombatPairs.RemoveAll(pair => pair.Contains(alteredTower));
         }
     }
 
-    void OrderLinkedTowersByDistance(Tower tower) 
+    void OrderLinkedTowersByDistance(Tower tower)
     {
         tower.Data.LinkedTowers =
             tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.SlotId - other.Data.SlotId)).ToList();
@@ -162,15 +148,13 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
 
     void DeselectAlteredTowers() //TODO: At the end of animation
     {
-        Data.AlteredTowers.ForEach(t => t.towerParts.SetColor(t.Data.TeamTowerData.DefaultMaterial));
+        TransferData.AlteredTowers.ForEach(t => t.towerParts.SetColor(t.Data.TeamTowerData.DefaultMaterial));
     }
 
 
     public override void Unsubscribe()
     {
         DeselectAlteredTowers();
-        //Eventbus.FireEvents.OnTowerGridDetection -= AddToDeadTowers;
-        Eventbus.FireEvents.OnTowerKilled -= LatestDeadTower;
-
+        Eventbus.FireEvents.OnTowerGridDetection -= LatestDeadTower;
     }
 }

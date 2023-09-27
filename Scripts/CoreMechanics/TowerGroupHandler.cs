@@ -9,27 +9,27 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 [Serializable]
-public class TowerGroupData : BaseTurnData
+public class TowerGroupData : BaseTurTransferData
 {
     public List<Tower> TowerGroup = new();
 }
 
 public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupData>
 {
-    public TowerGroupData Data { get; private set; }
+    public TowerGroupData TransferData { get; private set; }
 
     public override TurnHandlerType HandlerType => TurnHandlerType.TowerGroup;
 
     public override void OnHandlerEnabled()
     {
-        Data = new();
+        TransferData = new();
         Eventbus.InputEvents.OnObjectClicked += TowerSelected;
     }
     
-    public override void ProcessIncomingData(BaseTurnData data) //(params object[] args)
+    public override void ProcessIncomingData(BaseTurTransferData data) //(params object[] args)
     {
         var incomingData = (SelectionData) data;
-        Data.TowerGroup = incomingData.SelectionGroup;
+        TransferData.TowerGroup = incomingData.SelectionGroup;
     }
 
     public override void Setup() {}
@@ -39,18 +39,18 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
         var tower = args[0] as Tower;
         if (tower == null) return;
 
-        if (!Data.TowerGroup.Contains(tower)) return;
+        if (!TransferData.TowerGroup.Contains(tower)) return;
         RiseAndFall(tower, 1, true);
     }
 
     void RiseAndFall(Tower selectedTower, float amount, bool rise)
     {
-        foreach (var tower in Data.TowerGroup)
+        foreach (var tower in TransferData.TowerGroup)
         {
             if (tower == selectedTower)
                 tower.towerParts.ChangeHeight(tower.Data.Height += amount);
             else
-                tower.towerParts.ChangeHeight(tower.Data.Height -= amount / (Data.TowerGroup.Count - 1));
+                tower.towerParts.ChangeHeight(tower.Data.Height -= amount / (TransferData.TowerGroup.Count - 1));
         }
     }
 
@@ -61,6 +61,6 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
 
     void ResetGroups()
     {
-        Data.TowerGroup.Clear();
+        TransferData.TowerGroup.Clear();
     }
 }
