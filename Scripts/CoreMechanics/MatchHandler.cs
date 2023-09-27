@@ -33,8 +33,8 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
 
     public override void Setup()
     {
-        if (Data.DeadTowerGridPairs.Count > 0)
-            RematchTowers();
+        // if (Data.DeadTowerGridPairs.Count > 0)
+        //     RematchTowers();
         
         CompleteAction();
     }

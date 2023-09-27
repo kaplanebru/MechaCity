@@ -27,7 +27,7 @@ namespace Models
         public void Combat(float speed)
         {
             if (IsEven) return;
-            if (Perpetrator.Data.Health <= 0) return; //INFO: runtime esnasında ölmüş olabilir //Canshoout blulletler bitince yani matchten sonra sıfırlanır
+            if (Perpetrator.Data.Health <= 0) return; //INFO: runtime esnasında ölmüş olabilir //match runtime'a alındığı için buna gerek olmayabilir
            
             //Victim.Descend(Perpetrator.ConstantData.DamagePower);
 

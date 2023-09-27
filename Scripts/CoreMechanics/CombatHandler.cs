@@ -25,7 +25,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
 
     public override void OnHandlerEnabled()
     {
-        Data = new();
+        Data = new(); //bug: sıfırlanmış oluyor, eski tower listesi uçuyor. Transfer Data ve normal Data diye ayırmak gerekebilir
         Data.DeadTowers.Clear();
         //Eventbus.FireEvents.OnTowerGridDetection += AddToDeadTowers;
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
@@ -34,13 +34,13 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
     public override void ProcessIncomingData(BaseTurnData data)
     {
         var incomingData = (TowerGroupData) data;
-        Data.AlteredTowers = incomingData.TowerGroup;
+        Data.AlteredTowers = incomingData.TowerGroup;  //bug: sıfırlanmış oluyor, eski tower listesi uçuyor
     }
 
     public override void Setup()
     {
         RemoveAlteredCombatPairs();
-        Data.AlteredTowers.ForEach(CreateCombatPairByHeight);
+        Data.AlteredTowers.ForEach(CreateCombatPairByTower);
 
         StartCoroutine(nameof(FireRoutine));
     }
@@ -54,19 +54,55 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
     private float _combatSpeed;
     IEnumerator FireRoutine()
     {
-        foreach (var pair in Data.CombatPairs)
+        for (int i = teams["currentTeam"].Data.Towers.Count  - 1; i >= 0; i--) //teamden çıkan olabiliyor o yüzden sürekli check
         {
-            _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
-
-            pair.Combat(_combatSpeed);
-            yield return new WaitForSeconds(_combatSpeed); // * Data.FireSpeedMultiplier);
+            CreateCombatPairByTower(teams["currentTeam"].Data.Towers[i]);
+            foreach (var pair in Data.CombatPairs)
+            {
+                _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
+            
+                pair.Combat(_combatSpeed);
+                yield return new WaitForSeconds(_combatSpeed); // * Data.FireSpeedMultiplier);
+                //Data.CombatPairs.RemoveAt(0); //test
+            }
+            Data.CombatPairs.Clear();
         }
+
+
+        // foreach (var pair in Data.CombatPairs)
+        // {
+        //     _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
+        //
+        //     pair.Combat(_combatSpeed);
+        //     yield return new WaitForSeconds(_combatSpeed); // * Data.FireSpeedMultiplier);
+        //     //Data.CombatPairs.RemoveAt(0); //test
+        // }
+        
+        
+
+        // for (int i = Data.CombatPairs.Count - 1; i >= 0; i--)
+        // {
+        //     var pair = Data.CombatPairs[i];
+        //     _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
+        //
+        //     //dead tower rematch olduktan sonra yapılmalı, rematchsiz haliyle eski linklere göre çalışır
+        //     if (pair.Contains(deadTower))
+        //     {
+        //         Data.CombatPairs.Remove(pair);
+        //         CreateCombatPairByTower(deadTower);
+        //         continue;
+        //     }
+        //     
+        //     //on death: remove related pairs, add new pairs
+        //     pair.Combat(_combatSpeed);
+        //     yield return new WaitForSeconds(_combatSpeed); 
+        // }
 
         yield return new WaitForSeconds(0.1f);
         CompleteAction();
     }
 
-    void CreateCombatPairByHeight(Tower tower)
+    void CreateCombatPairByTower(Tower tower)
     {
         OrderLinkedTowersByDistance(tower);
 
@@ -87,7 +123,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
         }
     }
 
-    void AddToPairs(Tower tower1, Tower tower2, bool isEven = false)
+    void AddToPairs(Tower tower1, Tower tower2, bool isEven = false) //TODO: bunun yerine slot id'ye göre insert yapabiliriz
     {
         Data.CombatPairs.Add(new CombatPair(tower1, tower2, isEven));
         if (!isEven)
@@ -102,7 +138,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
         }
     }
 
-    void OrderLinkedTowersByDistance(Tower tower)
+    void OrderLinkedTowersByDistance(Tower tower) 
     {
         tower.Data.LinkedTowers =
             tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.SlotId - other.Data.SlotId)).ToList();

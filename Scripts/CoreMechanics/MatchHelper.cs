@@ -19,8 +19,9 @@ public class MatchHelper : MonoBehaviour
         {
             var linkedTower = deadTower.Data.LinkedTowers[i];
 
-            RematchDetachedTowers(deadTowerGridModel, linkedTower);
             RemoveLink(deadTower, linkedTower); //önce de gelebilir
+            RematchDetachedTowers(deadTowerGridModel, linkedTower);
+            
 
             if (deadTower.Data.TeamTowerData.TeamType != linkedTower.Data.TeamTowerData.TeamType) //bug fix: birden fazla vurulmuşsa gerek yok
                 SwitchSides(deadTower);
