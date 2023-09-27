@@ -27,8 +27,15 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
     {
         Data = new(); //bug: sıfırlanmış oluyor, eski tower listesi uçuyor. Transfer Data ve normal Data diye ayırmak gerekebilir
         Data.DeadTowers.Clear();
+        Eventbus.FireEvents.OnTowerKilled += LatestDeadTower;
         //Eventbus.FireEvents.OnTowerGridDetection += AddToDeadTowers;
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
+    }
+
+    private Tower deadTower;
+    private void LatestDeadTower(Tower obj)
+    {
+        deadTower = obj;
     }
 
     public override void ProcessIncomingData(BaseTurnData data)
@@ -54,18 +61,26 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
     private float _combatSpeed;
     IEnumerator FireRoutine()
     {
-        for (int i = teams["currentTeam"].Data.Towers.Count  - 1; i >= 0; i--) //teamden çıkan olabiliyor o yüzden sürekli check
+        print(teams["currentTeam"].Data.Towers.Count);
+        for (int i = 0; i < teams["currentTeam"].Data.Towers.Count; i++) //teamden çıkan olabiliyor o yüzden sürekli check
         {
+            Data.CombatPairs.Clear();
             CreateCombatPairByTower(teams["currentTeam"].Data.Towers[i]);
+            
+            
+            
             foreach (var pair in Data.CombatPairs)
             {
+                
                 _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
             
                 pair.Combat(_combatSpeed);
                 yield return new WaitForSeconds(_combatSpeed); // * Data.FireSpeedMultiplier);
                 //Data.CombatPairs.RemoveAt(0); //test
+                //yield return new WaitForSeconds(1);
             }
-            Data.CombatPairs.Clear();
+            yield return new WaitForSeconds(1);
+           
         }
 
 
@@ -106,8 +121,9 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
     {
         OrderLinkedTowersByDistance(tower);
 
-        foreach (var linkedTower in tower.Data.LinkedTowers)
+        for (var i = 0; i < tower.Data.LinkedTowers.Count; i++)
         {
+            var linkedTower = tower.Data.LinkedTowers[i];
             if (tower.Data.Height > linkedTower.Data.Height)
             {
                 if (!tower.Data.CanShoot) continue;
@@ -154,5 +170,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
     {
         DeselectAlteredTowers();
         //Eventbus.FireEvents.OnTowerGridDetection -= AddToDeadTowers;
+        Eventbus.FireEvents.OnTowerKilled -= LatestDeadTower;
+
     }
 }
