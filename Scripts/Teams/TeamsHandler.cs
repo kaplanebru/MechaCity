@@ -15,7 +15,7 @@ public class TeamsHandler : MonoBehaviour
     private void OnEnable()
     {
         Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
-        Eventbus.FireEvents.OnTowerKilled += SendGridByTeam;
+        Eventbus.FireEvents.OnTowerKilled += GetGridByTeam;
         Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
         
         CreateTeams();
@@ -76,10 +76,10 @@ public class TeamsHandler : MonoBehaviour
 
     Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);
 
-    private void SendGridByTeam(Tower deadTower)
+    private void GetGridByTeam(Tower deadTower)
     {
         var team = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
-        Eventbus.FireEvents.OnTowerTeamDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
+        Eventbus.FireEvents.OnTowerGridDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
     }
 
     private void ExchangeTower(Tower deadTower)
@@ -89,7 +89,6 @@ public class TeamsHandler : MonoBehaviour
         
         oldTeam.RemoveTower(deadTower);
         newTeam.TakeTowerFromRival(deadTower);
-        print("old team: " + oldTeam + " newTeam: " + newTeam);
         //deadTower.SetTeam(newTeam.Data.TeamTowerData);
 
         // for (int i = 0; i < teams.Length; i++)
@@ -109,7 +108,7 @@ public class TeamsHandler : MonoBehaviour
     private void OnDisable()
     {
         Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
-        Eventbus.FireEvents.OnTowerKilled -= SendGridByTeam;
+        Eventbus.FireEvents.OnTowerKilled -= GetGridByTeam;
         Eventbus.NetworkRequestEvents.OnPlayerSpawned -= SetPlayerForTeam;
     }
 }

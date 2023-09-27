@@ -27,7 +27,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
     {
         Data = new();
         Data.DeadTowers.Clear();
-        Eventbus.FireEvents.OnTowerTeamDetection += AddToDeadTowers;
+        //Eventbus.FireEvents.OnTowerGridDetection += AddToDeadTowers;
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
     }
 
@@ -117,6 +117,6 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatData>
     public override void Unsubscribe()
     {
         DeselectAlteredTowers();
-        Eventbus.FireEvents.OnTowerTeamDetection -= AddToDeadTowers;
+        //Eventbus.FireEvents.OnTowerGridDetection -= AddToDeadTowers;
     }
 }

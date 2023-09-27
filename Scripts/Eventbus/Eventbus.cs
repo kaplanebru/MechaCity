@@ -76,7 +76,7 @@ public static class Eventbus
         public static Action OnFireEnabled;
         public static Action<Vector3> OnShooting;
         public static Action<Tower> OnTowerKilled;
-        public static Action<TowerGridRelationModel> OnTowerTeamDetection;
+        public static Action<TowerGridRelationModel> OnTowerGridDetection;
     }
     
     

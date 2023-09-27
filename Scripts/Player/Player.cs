@@ -51,7 +51,6 @@ public class Player : NetworkBehaviour
         if (!IsOwner) return;
         Data.GameEndState = GameEndState.Win;
         Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
-        print("winn");
     }
 
     [ClientRpc]
@@ -60,7 +59,6 @@ public class Player : NetworkBehaviour
         if (!IsOwner) return;
         Data.GameEndState = GameEndState.Lose;
         Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
-        print("loseee");
     }
 
 
