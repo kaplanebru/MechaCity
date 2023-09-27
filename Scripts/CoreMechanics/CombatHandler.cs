@@ -41,12 +41,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
         deadTower = obj.Tower;
         Data.CombatPairs.RemoveAll(p => p.Contains(deadTower));
     }
-
-    // private void LatestDeadTower(Tower obj)
-    // {
-    //     deadTower = obj;
-    //     Data.CombatPairs.RemoveAll(p => p.Contains(deadTower));
-    // }
+    
 
     public override void ProcessIncomingData(BaseTurTransferData data)
     {
@@ -57,7 +52,6 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
     public override void Setup()
     {
         RemoveAlteredCombatPairs();
-        //++ RemoveDeadPairs
         TransferData.AlteredTowers.ForEach(CreateCombatPairByTower);
 
         StartCoroutine(nameof(FireRoutine));
@@ -79,10 +73,20 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
             
            
             yield return new WaitForSeconds(_combatSpeed + 0.5f);
-
-            j = pair.Perpetrator.Data.SlotId; //mevcut pair de siliniyor aslında, o yüzden yerine geçiyor
+            
+            j = pair.Dead ? pair.Perpetrator.Data.SlotId : j + 1;
+            
+            // if (pair.Dead)
+            // {
+            //     j = pair.Perpetrator.Data.SlotId; //mevcut pair de siliniyor aslında, o yüzden yerine geçiyor
+            //     pair = null;
+            // }
+            // else
+            //     j++;
+            
+            
             print(j + " pairs: " + Data.CombatPairs.Count);
-            //j++;
+            
             if(j >= Data.CombatPairs.Count)
                 break;
         }
