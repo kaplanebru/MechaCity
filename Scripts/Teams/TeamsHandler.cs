@@ -11,6 +11,7 @@ public class TeamsHandler : MonoBehaviour
     public Team[] teams;
     public TeamsHolder assetHolder;
     public List<Tower> allTowers = new();
+    public bool isMultiplayerOn = true; //for testing
 
     private void OnEnable()
     {
@@ -61,6 +62,13 @@ public class TeamsHandler : MonoBehaviour
         teams[id].Data.Player = player;
         player.Setup(teams[id].Data.TeamTowerData.TeamType, allTowers);
 
+        if (!isMultiplayerOn)
+        {
+            print("Multiplayer features are off");
+            Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
+            return;
+        }
+
         foreach (var team in teams)
         {
             if (team.Data.Player == null)
@@ -89,20 +97,6 @@ public class TeamsHandler : MonoBehaviour
         
         oldTeam.RemoveTower(deadTower);
         newTeam.TakeTowerFromRival(deadTower);
-        //deadTower.SetTeam(newTeam.TransferData.TeamTowerData);
-
-        // for (int i = 0; i < teams.Length; i++)
-        // {
-        //     if (teams[i].TransferData.TeamType == deadTower.TransferData.TeamTowerData.TeamType)
-        //     {
-        //         teams[i].RemoveTower(deadTower);
-        //
-        //         var otherTeam = teams[teams.Length - 1 - i];
-        //         otherTeam.TakeTowerFromRival(deadTower);
-        //         deadTower.SetTeam(otherTeam.TransferData.TeamTowerData);
-        //         break;
-        //     }
-        // }
     }
 
     private void OnDisable()

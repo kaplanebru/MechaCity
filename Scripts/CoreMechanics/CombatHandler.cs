@@ -21,6 +21,7 @@ public class CombatData
     public Tower latestDeadTower;
     [ReadOnly] public float projectileSpeed = 1;
     [ReadOnly] public bool pairsRestored = false;
+    [ReadOnly] public float fireDelay = 0.5f;
 }
 
 public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferData>
@@ -66,6 +67,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
 
             pair.Combat(Data.projectileSpeed);
             yield return new WaitUntil(() => pair.CombatCompleted);
+            yield return new WaitForSeconds(Data.fireDelay);
 
             if (pair.Victim == Data.latestDeadTower)
             {
