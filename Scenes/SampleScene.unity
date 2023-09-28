@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 99857714}
   - component: {fileID: 99857715}
   m_Layer: 0
-  m_Name: DeathHelper
+  m_Name: MatchHelper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -284,56 +284,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 99857713}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 793d2be57d0dc0040a5f15b3d74cfd92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &134973630
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 134973631}
-  - component: {fileID: 134973632}
-  m_Layer: 0
-  m_Name: MatchHandler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &134973631
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 134973630}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 973694560}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &134973632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 134973630}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3874690cda3027741a3c48ea213cb534, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnAction: 0
 --- !u!1 &324423657
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,6 +1144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnAction: 0
+  TurnHelpers: []
 --- !u!4 &758528872
 Transform:
   m_ObjectHideFlags: 0
@@ -1385,6 +1341,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnAction: 0
+  TurnHelpers:
+  - {fileID: 99857715}
 --- !u!1 &917562591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1876,7 +1834,6 @@ Transform:
   - {fileID: 2143476197}
   - {fileID: 758528872}
   - {fileID: 819990865}
-  - {fileID: 134973631}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4142,6 +4099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnAction: 0
+  TurnHelpers: []
 --- !u!4 &2143476197
 Transform:
   m_ObjectHideFlags: 0

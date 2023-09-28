@@ -10,19 +10,18 @@ public abstract class BaseTurnHandler : MonoBehaviour
     public TurnAction turnAction;
 
     public Dictionary<string, Team> teams;
-
     public abstract TurnHandlerType HandlerType { get; }
-   
-   
     public abstract void OnHandlerEnabled();
+    public List<BaseTurnHelper> TurnHelpers = new();
 
     private void OnEnable()
     {
+        TurnHelpers.ForEach(h=>h.enabled=true);
         turnAction = TurnAction.Started;
         OnHandlerEnabled();
     }
     
-    public virtual void ProcessIncomingData(BaseTurTransferData data){}
+    public virtual void ProcessIncomingData(BaseTurnTransferData data){}
     
     public abstract void Setup();
     
@@ -44,6 +43,7 @@ public abstract class BaseTurnHandler : MonoBehaviour
     public abstract void Unsubscribe();
     private void OnDisable()
     {
+        TurnHelpers.ForEach(h=>h.enabled=false);
         Unsubscribe();
     }
 

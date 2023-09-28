@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 
 [Serializable]
-public class SelectionData : BaseTurTransferData
+public class SelectionData : BaseTurnTransferData
 {
     public List<Tower> SelectionGroup = new();
     public int MaxTowersInGroup = 2;

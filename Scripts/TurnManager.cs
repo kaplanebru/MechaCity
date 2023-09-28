@@ -83,7 +83,7 @@ public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         if (turnIndex <= 0) return;
 
-        var transferData = ((ITurnActionHandler<BaseTurTransferData>) turnHandlers[turnIndex - 1]).TransferData;
+        var transferData = ((ITurnActionHandler<BaseTurnTransferData>) turnHandlers[turnIndex - 1]).TransferData;
         currentTurnHandler.ProcessIncomingData(transferData);
     }
 

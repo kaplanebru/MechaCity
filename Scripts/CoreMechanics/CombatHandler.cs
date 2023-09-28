@@ -7,7 +7,7 @@ using Models;
 using Unity.Collections;
 using UnityEngine;
 
-public class CombatTransferData : BaseTurTransferData // = sıfırlanacak data
+public class CombatTransferData : BaseTurnTransferData // = sıfırlanacak data
 {
     public List<Tower> AlteredTowers = new();
     public List<TowerGridRelationModel> DeadTowers = new();
@@ -40,7 +40,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
     }
 
-    public override void ProcessIncomingData(BaseTurTransferData data)
+    public override void ProcessIncomingData(BaseTurnTransferData data)
     {
         var incomingData = (TowerGroupData) data;
         TransferData.AlteredTowers = incomingData.TowerGroup;

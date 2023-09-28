@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MatchHelper : MonoBehaviour
+public class MatchHelper : BaseTurnHelper
 {
     //relate to combat handler
 

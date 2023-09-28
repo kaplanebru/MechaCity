@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class MatchData : BaseTurTransferData //bizim sonrakine göndereceğimiz
+public class MatchData : BaseTurnTransferData //bizim sonrakine göndereceğimiz
 {
     public List<TowerGridRelationModel> DeadTowerGridPairs = new();
 }
@@ -25,7 +25,7 @@ public class MatchHandler : BaseTurnHandler, ITurnActionHandler<MatchData>
   
     }
     
-    public override void ProcessIncomingData(BaseTurTransferData data)
+    public override void ProcessIncomingData(BaseTurnTransferData data)
     {
         var incomingData = (CombatTransferData) data;
         TransferData.DeadTowerGridPairs = incomingData.DeadTowers;

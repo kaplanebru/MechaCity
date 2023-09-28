@@ -9,7 +9,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 [Serializable]
-public class TowerGroupData : BaseTurTransferData
+public class TowerGroupData : BaseTurnTransferData
 {
     public List<Tower> TowerGroup = new();
 }
@@ -26,7 +26,7 @@ public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupD
         Eventbus.InputEvents.OnObjectClicked += TowerSelected;
     }
     
-    public override void ProcessIncomingData(BaseTurTransferData data) //(params object[] args)
+    public override void ProcessIncomingData(BaseTurnTransferData data) //(params object[] args)
     {
         var incomingData = (SelectionData) data;
         TransferData.TowerGroup = incomingData.SelectionGroup;
