@@ -21,8 +21,19 @@ public class TeamsHandler : MonoBehaviour
         
         CreateTeams();
         SetAllTowers();
+        
+        TurnOffMultiplayer();
     }
-    
+
+    void TurnOffMultiplayer()
+    {
+        if (!isMultiplayerOn)
+        {
+            print("Multiplayer features are off");
+            Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
+            return;
+        }
+    }
     
 
     void CreateTeams()
@@ -61,13 +72,6 @@ public class TeamsHandler : MonoBehaviour
     {
         teams[id].Data.Player = player;
         player.Setup(teams[id].Data.TeamTowerData.TeamType, allTowers);
-
-        if (!isMultiplayerOn)
-        {
-            print("Multiplayer features are off");
-            Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
-            return;
-        }
 
         foreach (var team in teams)
         {
