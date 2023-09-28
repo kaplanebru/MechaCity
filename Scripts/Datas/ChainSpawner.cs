@@ -18,7 +18,7 @@ public class ChainSpawner : MonoBehaviour
     
 
     public Transform[] curveEdges;
-    public Transform lineEdge;
+    public Transform[] lineEdge;
 
     [ReadOnly] public List<Vector3> chainPoints = new();
    
@@ -36,7 +36,7 @@ public class ChainSpawner : MonoBehaviour
 
     void DrawChain()
     {
-        lr.positionCount = curveAmount * 2-2;
+        lr.positionCount = curveAmount * 3 -offset*2;
         lr.SetPositions(chainPoints.ToArray());
     }
     
@@ -47,11 +47,17 @@ public class ChainSpawner : MonoBehaviour
         return Vector3.Lerp(AB, BC, t);
     }
 
-    Vector3 StraightPoint(float t)
+    Vector3 StraightPoint(float t, bool first)
     {
-        return Vector3.Lerp(lineEdge.position, curveEdges[0].position, t);
+        
+        if(first)
+            return Vector3.Lerp(lineEdge[0].position, curveEdges[0].position, t);
+        else
+            return Vector3.Lerp(curveEdges[2].position,lineEdge[1].position, t);
+        
     }
 
+    public int offset = 1;
     void GeneratePoints(int _amount)
     {
         float ratio = 1f / _amount;
@@ -59,19 +65,21 @@ public class ChainSpawner : MonoBehaviour
 
 
         int counter = 0;
-        while (t < 1)
+        while (t < 1) //line'ın sonu alınmadı
         {
             counter++;
-            if(counter == _amount-1) break;
+           
             t = Mathf.MoveTowards(t, 1, ratio);
-            chainPoints.Add(StraightPoint(t));
+            chainPoints.Add(StraightPoint(t, true));
+            if(counter == _amount-offset) break;
            
         }
 
+        counter = 0;
         t = 0;
-        
         while (t < 1)
         {
+            counter++;
             t = Mathf.MoveTowards(t, 1, ratio);
 
             // if (counter < 5)
@@ -80,7 +88,15 @@ public class ChainSpawner : MonoBehaviour
             //     continue;
             // }
             chainPoints.Add(CurvePoint(t));
+            if(counter == _amount-offset) break;
            // counter++;
+        }
+
+        t = 0;
+        while (t < 1)
+        {
+            t = Mathf.MoveTowards(t, 1, ratio);
+            chainPoints.Add(StraightPoint(t, false));
         }
     }
 
