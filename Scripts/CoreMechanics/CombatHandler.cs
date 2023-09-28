@@ -13,11 +13,14 @@ public class CombatTransferData : BaseTurTransferData // = sıfırlanacak data
     public List<TowerGridRelationModel> DeadTowers = new();
 }
 
+
+[Serializable]
 public class CombatData
 {
     public List<CombatPair> CombatPairs = new();
+    public Tower latestDeadTower;
     [ReadOnly] public float projectileSpeed = 1;
-    public float ProjectileSpeed => projectileSpeed;
+    [ReadOnly] public bool pairsRestored = false;
 }
 
 public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferData>
@@ -25,28 +28,22 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
     public CombatTransferData TransferData { get; private set; }
     public override TurnHandlerType HandlerType => TurnHandlerType.Combat;
     private readonly CombatData Data = new();
-    private float _combatSpeed;
-    private Tower latestDeadTower;
 
 
     public override void OnHandlerEnabled()
     {
-        TransferData = new(); //bug: sıfırlanmış oluyor, eski tower listesi uçuyor. Transfer TransferData ve normal TransferData diye ayırmak gerekebilir
-        Eventbus.FireEvents.OnTowerGridDetection += LatestDeadTower;
+        TransferData = new();
+
+        Eventbus.FireEvents.OnTowerKilled += LatestDeadTower;
+        Eventbus.FireEvents.OnMatchesRestored += SetDetachedPairsRestored;
+
         Eventbus.FireEvents.OnFireEnabled?.Invoke();
     }
-
-    private void LatestDeadTower(TowerGridRelationModel towerGridModel)
-    {
-        latestDeadTower = towerGridModel.Tower;
-        Data.CombatPairs.RemoveAll(p => p.Contains(latestDeadTower));
-    }
-    
 
     public override void ProcessIncomingData(BaseTurTransferData data)
     {
         var incomingData = (TowerGroupData) data;
-        TransferData.AlteredTowers = incomingData.TowerGroup; 
+        TransferData.AlteredTowers = incomingData.TowerGroup;
     }
 
     public override void Setup()
@@ -56,7 +53,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
 
         StartCoroutine(nameof(FireRoutine));
     }
-    
+
     IEnumerator FireRoutine()
     {
         Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.Perpetrator.Data.SlotId).ToList();
@@ -64,27 +61,24 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
         int j = 0;
         while (true)
         {
+            if (j >= Data.CombatPairs.Count) break;
             var pair = Data.CombatPairs[j];
-            _combatSpeed = pair.IsEven ? 0.1f : Data.ProjectileSpeed;
-            
-            pair.Combat(_combatSpeed);
-            yield return new WaitForSeconds(_combatSpeed + 0.5f);
-            
-            //yield return new WaitUntil() restoring the detached towers
 
-            if (pair.Victim == latestDeadTower)
+            pair.Combat(Data.projectileSpeed);
+            yield return new WaitUntil(() => pair.CombatCompleted);
+
+            if (pair.Victim == Data.latestDeadTower)
             {
-                latestDeadTower = null;
-                j = pair.Perpetrator.Data.SlotId; //mevcut pair de siliniyor aslında, o yüzden yerine geçiyor
+                yield return new WaitUntil(() => Data.pairsRestored);
+                Data.pairsRestored = false;
+                Data.latestDeadTower = null;
+
+                j = pair.Perpetrator.Data.SlotId;
             }
             else
                 j++;
-
-            //print(j + " pairs: " + Data.CombatPairs.Count);
-            if(j >= Data.CombatPairs.Count)
-                break;
         }
-        
+
         yield return new WaitForSeconds(0.1f);
         CompleteAction();
     }
@@ -111,8 +105,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
         }
     }
 
-    void AddToPairs(Tower tower1, Tower tower2,
-        bool isEven = false) //TODO: bunun yerine slot id'ye göre insert yapabiliriz
+    void AddToPairs(Tower tower1, Tower tower2, bool isEven = false)
     {
         Data.CombatPairs.Add(new CombatPair(tower1, tower2, isEven));
         if (!isEven)
@@ -138,10 +131,21 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
         TransferData.AlteredTowers.ForEach(t => t.towerParts.SetColor(t.Data.TeamTowerData.DefaultMaterial));
     }
 
+    private void SetDetachedPairsRestored()
+    {
+        Data.pairsRestored = true;
+    }
+
+    private void LatestDeadTower(Tower tower)
+    {
+        Data.latestDeadTower = tower;
+        Data.CombatPairs.RemoveAll(p => p.Contains(Data.latestDeadTower));
+    }
 
     public override void Unsubscribe()
     {
         DeselectAlteredTowers();
-        Eventbus.FireEvents.OnTowerGridDetection -= LatestDeadTower;
+        Eventbus.FireEvents.OnTowerKilled -= LatestDeadTower;
+        Eventbus.FireEvents.OnMatchesRestored -= SetDetachedPairsRestored;
     }
 }

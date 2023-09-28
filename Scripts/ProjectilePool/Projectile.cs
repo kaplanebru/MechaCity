@@ -10,12 +10,12 @@ public class Projectile : MonoBehaviour
     //tower sayısı kadar projectile olur, ana towerda doğar, targeta ulaşınca deactive edilip poola geri döner
 
 
-    private float speed;
+    private float duration;
     private Vector3 targetPos;
 
-    public void Setup(float _speed, Vector3 _targetPos)
+    public void Setup(float _duration, Vector3 _targetPos)
     {
-        speed = _speed;
+        duration = _duration;
         targetPos = _targetPos;
     }
     
@@ -24,7 +24,7 @@ public class Projectile : MonoBehaviour
         var projectileLookRotation = Quaternion.LookRotation(new Vector3(targetPos.x, 0, targetPos.z)-transform.position);
         transform.rotation = projectileLookRotation;
         
-        transform.DOMove(targetPos, speed).OnComplete(()=>
+        transform.DOMove(targetPos, duration).OnComplete(()=>
         {
             //Destroy(gameObject);
             ProjectilePool.Instance.ReleaseItem(this);

@@ -14,23 +14,17 @@ public class MatchHelper : MonoBehaviour
 
     private void HandleDeadTower(TowerGridRelationModel deadTowerGridModel)
     {
-        
         var deadTower = deadTowerGridModel.Tower;
-        //var linkedTowers = deadTower.TransferData.LinkedTowers;
-        // SwitchSides(deadTower);
-
-       
-        for (var i = deadTower.Data.LinkedTowers.Count - 1; i >= 0; i--)
+        var linkedTowers = deadTower.Data.LinkedTowers;
+        
+        for (var i = linkedTowers.Count - 1; i >= 0; i--)
         {
-            var linkedTower = deadTower.Data.LinkedTowers[i];
-            RemoveLink(deadTower, linkedTower); //önce de gelebilir
-            RematchDetachedTowers(deadTowerGridModel, linkedTower);
-            // if (deadTower.TransferData.TeamTowerData.TeamType != linkedTowers[i].TransferData.TeamTowerData.TeamType) //bug fix: birden fazla vurulmuşsa gerek yok //Zaten 1den fazla vurulmayı önlemeye çalışıyoruz
-            //     SwitchSides(deadTower);
+            RematchDetachedTowers(deadTowerGridModel, linkedTowers[i]);
+            RemoveLink(deadTower, linkedTowers[i]);
         }
         
         SwitchSides(deadTower);
-        
+        Eventbus.FireEvents.OnMatchesRestored?.Invoke();
     }
 
     void RematchDetachedTowers(TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
@@ -47,7 +41,7 @@ public class MatchHelper : MonoBehaviour
             if (linkCounter > 0) break;
         }
     }
-    
+
     int CheckSlotForLink(int number, GameGrid grid, Tower detachedTower)
     {
         if (number is >= 0 and < GameGrid.SlotAmount)
@@ -55,13 +49,15 @@ public class MatchHelper : MonoBehaviour
             var slot = grid.Slots[number];
             if (slot.HasTower)
             {
-                if (slot.Tower.Data.TeamTowerData.TeamType == detachedTower.Data.TeamTowerData.TeamType) //bug fix: karşıdaki tower aynı team'dense pas
+                if (slot.Tower.Data.TeamTowerData.TeamType ==
+                    detachedTower.Data.TeamTowerData.TeamType) //bug fix: karşıdaki tower aynı team'dense pas
                     return 0;
-                
+
                 LinkTowers(slot.Tower, detachedTower);
                 return 1;
             }
         }
+
         return 0;
     }
 

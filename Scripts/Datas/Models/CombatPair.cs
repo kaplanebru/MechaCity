@@ -10,6 +10,7 @@ namespace Models
         public Tower Perpetrator { get; }
         public Tower Victim { get; }
         public bool IsEven { get; }
+        public bool CombatCompleted { get; private set; } = false;
         
 
         public CombatPair(Tower _perpetrator, Tower _victim, bool isEven = false)
@@ -24,35 +25,35 @@ namespace Models
             return Perpetrator == newTower || Victim == newTower;
         }
 
-        public void Combat(float speed)
+        public void Combat(float duration)
         {
-            if (IsEven) return;
+            if (IsEven)
+            {
+                CombatCompleted = true;
+                return;
+            }
+            
             if (Perpetrator.Data.Health <= 0) return; //INFO: runtime esnasında ölmüş olabilir //match runtime'a alındığı için buna gerek olmayabilir
-           
-            //Victim.Descend(Perpetrator.ConstantData.DamagePower);
-
-            var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = Perpetrator.towerParts.Data.Top.transform.position);
-            projectile.Setup(speed, Victim.towerParts.Data.Top.transform.position-Vector3.up);
-            projectile.Move(RemoveVictimHealth);
+            SendProjectile(duration);
         }
 
-        void RemoveVictimHealth()
+        void SendProjectile(float duration)
         {
-            if (Victim.Data.Health <= 0) return;
+            var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = Perpetrator.towerParts.Data.Top.transform.position);
+            projectile.Setup(duration, Victim.towerParts.Data.Top.transform.position-Vector3.up);
+            projectile.Move(OnComplete);
+        }
 
+        void OnComplete()
+        {
             Victim.Data.Health -= Perpetrator.ConstantData.DamagePower;
             Eventbus.UIEvents.OnHealthChange.Invoke(Victim.Data.Health, Victim);
             
-            CheckVictimLife();
-        }
-
-        void CheckVictimLife()
-        {
             if (Victim.Data.Health <= 0)
-            {
-                //Victim.SetColor(Victim.TransferData.TeamTowerData.DeadMaterial); //for debugging
                 Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
-            }
+
+            CombatCompleted = true;
         }
+        
     }
 }
