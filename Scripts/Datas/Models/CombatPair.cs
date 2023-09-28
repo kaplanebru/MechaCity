@@ -9,14 +9,11 @@ namespace Models
     {
         public Tower Perpetrator { get; }
         public Tower Victim { get; }
-
         public bool IsEven { get; }
         
-        public bool Dead { get; private set; }
 
         public CombatPair(Tower _perpetrator, Tower _victim, bool isEven = false)
         {
-            Dead = false;
             Perpetrator = _perpetrator;
             Victim = _victim;
             IsEven = isEven;
@@ -54,7 +51,6 @@ namespace Models
             if (Victim.Data.Health <= 0)
             {
                 //Victim.SetColor(Victim.TransferData.TeamTowerData.DeadMaterial); //for debugging
-                Dead = true;
                 Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
             }
         }
