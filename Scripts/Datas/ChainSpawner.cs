@@ -15,72 +15,80 @@ public class ChainSpawner : MonoBehaviour
     public LineRenderer lr;
 
     public int curveAmount = 15;
-    public int straightAmount = 15;
+    
 
-    public Vector3[] curveEdges;
-    public Vector3 lineEdge;
+    public Transform[] curveEdges;
+    public Transform lineEdge;
 
-    [ReadOnly] public List<Vector3> chainCurvePoints = new();
-    //[ReadOnly] public List<Vector3> chainStraightPoints = new();
+    [ReadOnly] public List<Vector3> chainPoints = new();
+   
 
     private void Start()
     {
-        chainCurvePoints.Clear();
+        chainPoints.Clear();
         lr.positionCount = 0;
-        GeneratePoints(curveAmount+straightAmount);
+        GeneratePoints(curveAmount);
         
-        lr.positionCount = curveAmount * 4;
-        lr.SetPositions(chainCurvePoints.ToArray());
-        //DrawStraightLine();
-        DrawChain();
+       DrawChain();
+       CloseEdges();
+        
     }
 
     void DrawChain()
     {
-        // for (int i = straightAmount; i < lr.positionCount; i++)
-        // {
-        //     lr.SetPosition(i, chainCurvePoints[i]);
-        // }
-        
+        lr.positionCount = curveAmount * 2-2;
+        lr.SetPositions(chainPoints.ToArray());
     }
-
-    // void DrawStraightLine()
-    // {
-    //     for (int i = 0; i < lr.positionCount; i++) //straightCount
-    //     {
-    //         lr.SetPosition(i, chainStraightPoints[i]);
-    //     }
-    // }
-
+    
     Vector3 CurvePoint(float t)
     {
-        Vector3 AB = Vector3.Lerp(curveEdges[0], curveEdges[1], t);
-        Vector3 BC = Vector3.Lerp(curveEdges[1], curveEdges[2], t);
+        Vector3 AB = Vector3.Lerp(curveEdges[0].position, curveEdges[1].position, t);
+        Vector3 BC = Vector3.Lerp(curveEdges[1].position, curveEdges[2].position, t);
         return Vector3.Lerp(AB, BC, t);
     }
 
     Vector3 StraightPoint(float t)
     {
-        return Vector3.Lerp(lineEdge, curveEdges[0], t);
+        return Vector3.Lerp(lineEdge.position, curveEdges[0].position, t);
     }
 
-    void GeneratePoints(float _amount)
+    void GeneratePoints(int _amount)
     {
         float ratio = 1f / _amount;
         float t = 0;
 
 
+        int counter = 0;
         while (t < 1)
         {
+            counter++;
+            if(counter == _amount-1) break;
             t = Mathf.MoveTowards(t, 1, ratio);
-            chainCurvePoints.Add(StraightPoint(t));
+            chainPoints.Add(StraightPoint(t));
+           
         }
 
         t = 0;
+        
         while (t < 1)
         {
             t = Mathf.MoveTowards(t, 1, ratio);
-            chainCurvePoints.Add(CurvePoint(t));
+
+            // if (counter < 5)
+            // {
+            //     counter++;
+            //     continue;
+            // }
+            chainPoints.Add(CurvePoint(t));
+           // counter++;
+        }
+    }
+
+    void CloseEdges()
+    {
+        foreach (var curveEdge in curveEdges)
+        {
+            curveEdge.gameObject.SetActive(false);
         }
     }
 }

@@ -672,14 +672,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lr: {fileID: 68324621}
   curveAmount: 15
-  straightAmount: 15
   curveEdges:
-  - {x: -5, y: 0, z: -2}
-  - {x: 0, y: 0, z: 2}
-  - {x: 5, y: 0, z: -2}
-  lineEdge: {x: -5, y: 0, z: -8}
+  - {fileID: 772749262}
+  - {fileID: 2098440097}
+  - {fileID: 471423057}
+  lineEdge: {fileID: 2063670772}
   chainCurvePoints: []
-  chainStraightPoints: []
 --- !u!1 &2063670768
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,7 +865,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2098440093}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 5.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
