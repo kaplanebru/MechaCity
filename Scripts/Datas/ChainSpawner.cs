@@ -13,33 +13,48 @@ public enum LineType
 public class ChainSpawner : MonoBehaviour
 {
     public LineRenderer lr;
+    Material lrMat;
 
     public int curveAmount = 15;
-    
+
 
     public Transform[] curveEdges;
     public Transform[] lineEdge;
 
     [ReadOnly] public List<Vector3> chainPoints = new();
-   
+
 
     private void Start()
     {
         chainPoints.Clear();
         lr.positionCount = 0;
         GeneratePoints(curveAmount);
-        
-       DrawChain();
-       CloseEdges();
-        
+
+        DrawChain();
+        CloseEdges();
+
+        StartCoroutine(nameof(MoveRoutine));
+    }
+
+    IEnumerator MoveRoutine()
+    {
+        lrMat = lr.material;
+        for (int i = 0; i < 100; i++)
+        {
+            var tex = lrMat.mainTextureOffset;
+            tex.x = i/50f;
+            lrMat.mainTextureOffset = tex;
+            print("y");
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     void DrawChain()
     {
-        lr.positionCount = curveAmount * 3 -offset*2;
+        lr.positionCount = curveAmount * 3 - offset * 2;
         lr.SetPositions(chainPoints.ToArray());
     }
-    
+
     Vector3 CurvePoint(float t)
     {
         Vector3 AB = Vector3.Lerp(curveEdges[0].position, curveEdges[1].position, t);
@@ -49,15 +64,14 @@ public class ChainSpawner : MonoBehaviour
 
     Vector3 StraightPoint(float t, bool first)
     {
-        
-        if(first)
+        if (first)
             return Vector3.Lerp(lineEdge[0].position, curveEdges[0].position, t);
         else
-            return Vector3.Lerp(curveEdges[2].position,lineEdge[1].position, t);
-        
+            return Vector3.Lerp(curveEdges[2].position, lineEdge[1].position, t);
     }
 
     public int offset = 1;
+
     void GeneratePoints(int _amount)
     {
         float ratio = 1f / _amount;
@@ -68,11 +82,10 @@ public class ChainSpawner : MonoBehaviour
         while (t < 1) //line'ın sonu alınmadı
         {
             counter++;
-           
+
             t = Mathf.MoveTowards(t, 1, ratio);
             chainPoints.Add(StraightPoint(t, true));
-            if(counter == _amount-offset) break;
-           
+            if (counter == _amount - offset) break;
         }
 
         counter = 0;
@@ -88,8 +101,8 @@ public class ChainSpawner : MonoBehaviour
             //     continue;
             // }
             chainPoints.Add(CurvePoint(t));
-            if(counter == _amount-offset) break;
-           // counter++;
+            if (counter == _amount - offset) break;
+            // counter++;
         }
 
         t = 0;
@@ -108,4 +121,3 @@ public class ChainSpawner : MonoBehaviour
         }
     }
 }
-
