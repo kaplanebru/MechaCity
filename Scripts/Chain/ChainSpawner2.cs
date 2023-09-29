@@ -34,18 +34,20 @@ public class ChainSpawner2 : MonoBehaviour
 
     void SplitCircle()
     {
-        for (int i = amount/2+1; i < amount; i++)
+        for (int i = Amount/2+1; i < Amount; i++)
         {
-            chainPoints.RemoveAt(i);
+            var pos = chainPoints[i];
+            pos.z -= 10;
+            chainPoints[i] = pos;
         }
     }
 
     void DrawLines()
     {
-        // lr.positionCount = Amount/2 + 1;
-        // chainPoints.Add(chainPoints[0]);
+         lr.positionCount = Amount + 1;
+         chainPoints.Add(chainPoints[0]);
 
-        lr.positionCount = Amount / 2+1;
+        //lr.positionCount = Amount / 2+1;
         lr.SetPositions(chainPoints.ToArray());
     }
 
