@@ -11,7 +11,7 @@ public class ChainSpawner2 : MonoBehaviour
     public float radius = 1;
 
     public int amount;
-    public int _amountCheck;
+    private int _amountCheck;
     private int Amount => amount - amount % 6;
 
     public Transform cube;
@@ -23,6 +23,7 @@ public class ChainSpawner2 : MonoBehaviour
     private void Start()
     {
         GetCirclePoints();
+        SplitCircle();
         DrawLines();
     }
 
@@ -31,22 +32,20 @@ public class ChainSpawner2 : MonoBehaviour
         _amountCheck = amount;
     }
 
-    private void OnValidate()
+    void SplitCircle()
     {
-        if (_amountCheck != amount)
+        for (int i = amount/2+1; i < amount; i++)
         {
-            _amountCheck = amount;
-            lr.positionCount = 0;
-            chainPoints.Clear();
-            GetCirclePoints();
-            DrawLines();
+            chainPoints.RemoveAt(i);
         }
     }
 
     void DrawLines()
     {
-        lr.positionCount = Amount + 1;
-        chainPoints.Add(chainPoints[0]);
+        // lr.positionCount = Amount/2 + 1;
+        // chainPoints.Add(chainPoints[0]);
+
+        lr.positionCount = Amount / 2+1;
         lr.SetPositions(chainPoints.ToArray());
     }
 
@@ -73,6 +72,18 @@ public class ChainSpawner2 : MonoBehaviour
         for (int i = 0; i < Amount; i++)
         {
             Instantiate(cube, chainPoints[i], Quaternion.identity);
+        }
+    }
+    
+    private void OnValidate()
+    {
+        if (_amountCheck != amount)
+        {
+            _amountCheck = amount;
+            lr.positionCount = 0;
+            chainPoints.Clear();
+            GetCirclePoints();
+            DrawLines();
         }
     }
 }
