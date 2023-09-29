@@ -10,7 +10,9 @@ public class ChainSpawner2 : MonoBehaviour
     public LineRenderer lr;
     Material lrMat;
     public float radius = 1;
+
     private float directionAngle;
+    private Vector3 direction;
 
 
     public int amount;
@@ -26,10 +28,11 @@ public class ChainSpawner2 : MonoBehaviour
     private void Start()
     {
         ResetValues();
-        
-        GetCirclePoints();
-        DrawLines();
 
+        GetCirclePoints();
+        SplitCircle();
+        //InstaintiateCubes();
+        DrawLines();
     }
 
     void ResetValues()
@@ -37,22 +40,19 @@ public class ChainSpawner2 : MonoBehaviour
         chainPoints.Clear();
         lr.positionCount = 0;
     }
-
-    private Vector3 direction;
-
+    
     void SetDirectionAngle()
     {
         direction = (destination.transform.position - transform.position).normalized;
         directionAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-        print(directionAngle);
     }
 
     void SplitCircle()
     {
-        for (int i = Amount / 2 + 1; i < Amount; i++)
+        for (int i = Amount / 2 +1; i < Amount; i++) //+1
         {
             var pos = chainPoints[i];
-            //pos.z -= 10;
+            pos.z -= 10;
             //pos.z += destination.transform.position.z;
             //pos.x += destination.transform.position.x;
             //pos += direction;
@@ -69,14 +69,16 @@ public class ChainSpawner2 : MonoBehaviour
     void GetCirclePoints()
     {
         SetDirectionAngle();
-        float baseAngle = 360f / Amount; //Mathf.RoundToInt(directionAngle);
+        float baseAngle = 360f / Amount;
 
-        for (int i = 1; i <= Amount; i++)
+        directionAngle = 0;
+        for (int i = 0; i <= Amount; i++)
         {
             var newAngle = (baseAngle * i + directionAngle) % 360;
+            print(newAngle);
             chainPoints.Add(CirclePoint(newAngle));
         }
-        
+
 
         chainPoints.Add(chainPoints[0]);
     }
