@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Unity.Collections;
 using UnityEngine;
 
@@ -9,55 +10,70 @@ public class ChainSpawner2 : MonoBehaviour
     public LineRenderer lr;
     Material lrMat;
     public float radius = 1;
+    private float directionAngle;
+
 
     public int amount;
-    private int _amountCheck;
     private int Amount => amount - amount % 6;
 
     public Transform cube;
     public Transform center;
+    public Transform destination;
 
     [ReadOnly] public List<Vector3> chainPoints = new();
 
 
     private void Start()
     {
+        chainPoints.Clear();
+        lr.positionCount = 0;
         GetCirclePoints();
-        SplitCircle();
         DrawLines();
+        InstaintiateCubes();
+        
     }
 
-    private void OnEnable()
+    private Vector3 direction;
+
+    void SetDirectionAngle()
     {
-        _amountCheck = amount;
+        direction = (destination.transform.position - transform.position).normalized;
+        directionAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
     }
 
     void SplitCircle()
     {
-        for (int i = Amount/2+1; i < Amount; i++)
+        for (int i = Amount / 2 + 1; i < Amount; i++)
         {
             var pos = chainPoints[i];
-            pos.z -= 10;
+            //pos.z -= 10;
+            //pos.z += destination.transform.position.z;
+            //pos.x += destination.transform.position.x;
+            //pos += direction;
             chainPoints[i] = pos;
         }
     }
 
     void DrawLines()
     {
-         lr.positionCount = Amount + 1;
-         chainPoints.Add(chainPoints[0]);
-
-        //lr.positionCount = Amount / 2+1;
+        lr.positionCount = Amount + 1;
         lr.SetPositions(chainPoints.ToArray());
     }
 
     void GetCirclePoints()
     {
-        float baseAngle = 360f / Amount;
-        for (int i = 0; i < Amount; i++)
+        SetDirectionAngle();
+        float baseAngle = 360f / Amount; // + 45; // Mathf.RoundToInt(directionAngle);
+        for (int i = 1; i <= Amount; i++)
         {
-            chainPoints.Add(CirclePoint(baseAngle * i));
+            //print(baseAngle * i);
+            print("y");
+            chainPoints.Add(CirclePoint(baseAngle * i)); //Mathf.RoundToInt(directionAngle)
         }
+        
+        print(Amount);
+
+        chainPoints.Add(chainPoints[0]);
     }
 
     Vector3 CirclePoint(float angle)
@@ -66,26 +82,14 @@ public class ChainSpawner2 : MonoBehaviour
         float x = Mathf.Cos(radians);
         float y = Mathf.Sin(radians);
 
-        return new Vector3(x, 0, y) * radius;
+        return new Vector3(x, 0, y) * radius; // + transform.position;
     }
-    
+
     void InstaintiateCubes()
     {
         for (int i = 0; i < Amount; i++)
         {
             Instantiate(cube, chainPoints[i], Quaternion.identity);
-        }
-    }
-    
-    private void OnValidate()
-    {
-        if (_amountCheck != amount)
-        {
-            _amountCheck = amount;
-            lr.positionCount = 0;
-            chainPoints.Clear();
-            GetCirclePoints();
-            DrawLines();
         }
     }
 }
