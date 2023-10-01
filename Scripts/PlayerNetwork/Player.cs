@@ -28,7 +28,6 @@ namespace PlayerNetwork
         {
             if (IsOwner) Eventbus.NetworkTriggerEvents.OnGameEnds += GameEndServerRpc;
             Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
-            //if(IsOwner) SpawnTurnNetworkServerRpc(Data.TeamType); //önce team belirlensin
         }
 
         
@@ -37,18 +36,13 @@ namespace PlayerNetwork
         [SerializeField] private TurnNetworkHandler _turnNetworkHandler; // = new TurnNetworkHandler[2];
 
         [ServerRpc(RequireOwnership = false)]
-        void SpawnTurnNetworkServerRpc(TeamType teamType, ServerRpcParams serverRpcParams = default)
+        void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
         {
             var clientId = serverRpcParams.Receive.SenderClientId;
-            
             // print("sender client id: " + clientId);
             TurnNetworkHandler turnNetworkHandler = Instantiate(Data.turnNetworkHandlerPrefab);
             turnNetworkHandler.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
             
-           //turnNetworkHandler.ownerTeamtType = teamType;
-           //_turnNetworkHandler = turnNetworkHandler; //bu setup da sadece serverda kalıyor
-
-
             // ClientRpcParams clientRpcParams = new ClientRpcParams
             // {
             //     Send = new ClientRpcSendParams
@@ -61,16 +55,9 @@ namespace PlayerNetwork
 
 
         [ClientRpc]
-        void SetTurnNetworkHandlerToSpecificClientRpc(TeamType teamType, ulong clientId, ClientRpcParams clientRpcParams = default)
+        void SetTurnNetworkHandlerToSpecificClientRpc(ulong clientId, ClientRpcParams clientRpcParams = default)
         {
-            
             // print(clientId);
-            // _turnNetworkHandler.ownerTeamtType = teamType;
-
-            //int index = (int) clientRpcParams.Send.TargetClientIds.First();
-            // turnNetworkHandlers[index].ownerTeamtType = Data.TeamType;
-            // print(turnNetworkHandlers[index].ownerTeamtType);
-            // print(turnNetworkHandlers[index].name);
         }
         
         #endregion
@@ -80,7 +67,7 @@ namespace PlayerNetwork
         {
             Data.TeamType = teamType;
             Data.AllTowers = allTowers;
-            if(IsOwner) SpawnTurnNetworkServerRpc(teamType); //önce team belirlensin
+            if(IsOwner) SpawnTurnNetworkServerRpc(); //önce team belirlensin
         }
 
         Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);

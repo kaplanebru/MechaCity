@@ -13,8 +13,6 @@ namespace Network
     public class TurnNetworkHandler : NetworkBehaviour
     {
         public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
-
-        //public NetworkVariable<TeamType> currentTeamType = new NetworkVariable<TeamType>(TeamType.Team1);
         public TeamType ownerTeamtType;
 
 
