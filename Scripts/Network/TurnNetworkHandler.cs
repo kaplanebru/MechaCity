@@ -15,31 +15,32 @@ namespace Network
         public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
 
         //public NetworkVariable<TeamType> currentTeamType = new NetworkVariable<TeamType>(TeamType.Team1);
-        public TeamType ownerTeamType;
+        public TeamType ownerTeamtType;
 
 
         public override void OnNetworkSpawn()
         {
             turnHandlerType.OnValueChanged += CompleteActionSetup; //owner ve clone'u değişir
-
+            
             if (IsOwner)
             {
                 Eventbus.TurnEvents.OnTurnEnding += RequestNewTurnServerRpc;
-
                 Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionSetupServerRpc;
-                Eventbus.TurnEvents.OnTurnStarted += TurnButtonsSetup;
+                Eventbus.TurnEvents.OnTurnStarted += TurnButtonsSetup;  //not: player 1'e mi bakıyor 2 pcde de
             }
         }
+        
 
         private void Start()
         {
-            ownerTeamType = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>().Data.TeamType;
+            if(IsOwner)
+                ownerTeamtType = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>().Data.TeamType;
         }
 
         void TurnButtonsSetup(TeamType currentTeamType)
         {
-            //print("owner team type: " + ownerTeamType + " currentTeamType: " + currentTeamType);
-            if (currentTeamType == ownerTeamType)
+            print("owner team type: " + ownerTeamtType + " currentTeamType: " + currentTeamType);
+            if (currentTeamType == ownerTeamtType)
                 Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest?.Invoke();
         }
 

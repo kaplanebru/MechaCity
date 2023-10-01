@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Data;
 using Unity.Netcode;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace PlayerNetwork
         public TeamType TeamType;
         public GameEndState GameEndState = GameEndState.GameStarted;
         public List<Tower> AllTowers = new();
-        public TurnNetworkHandler turnNetworkHandler;
+        public TurnNetworkHandler turnNetworkHandlerPrefab;
     }
 
     public class Player : NetworkBehaviour
@@ -25,49 +26,61 @@ namespace PlayerNetwork
 
         public override void OnNetworkSpawn()
         {
-            SpawnTurnNetworkServerRpc();
             if (IsOwner) Eventbus.NetworkTriggerEvents.OnGameEnds += GameEndServerRpc;
             Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
+            //if(IsOwner) SpawnTurnNetworkServerRpc(Data.TeamType); //önce team belirlensin
         }
 
-        [ServerRpc]
-        private void GameEndServerRpc(TeamType loserTeamType)
+        
+        #region SpawnTurnNetworkServerRpc
+
+        [SerializeField] private TurnNetworkHandler _turnNetworkHandler; // = new TurnNetworkHandler[2];
+
+        [ServerRpc(RequireOwnership = false)]
+        void SpawnTurnNetworkServerRpc(TeamType teamType, ServerRpcParams serverRpcParams = default)
         {
-            ClientRpcParams clientRpcParams = new ClientRpcParams
-            {
-                Send = new ClientRpcSendParams
-                {
-                    TargetClientIds = new ulong[] {OwnerClientId}
-                }
-            };
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            
+            // print("sender client id: " + clientId);
+            TurnNetworkHandler turnNetworkHandler = Instantiate(Data.turnNetworkHandlerPrefab);
+            turnNetworkHandler.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+            
+           //turnNetworkHandler.ownerTeamtType = teamType;
+           //_turnNetworkHandler = turnNetworkHandler; //bu setup da sadece serverda kalıyor
 
-            if (loserTeamType == Data.TeamType)
-                LoseClientRpc(clientRpcParams);
-            else
-                WinClientRpc(clientRpcParams);
+
+            // ClientRpcParams clientRpcParams = new ClientRpcParams
+            // {
+            //     Send = new ClientRpcSendParams
+            //     {
+            //         TargetClientIds = new ulong[] {clientId}
+            //     }
+            // };
+            // SetTurnNetworkHandlerToSpecificClientRpc(teamType, clientId, clientRpcParams);
         }
+
 
         [ClientRpc]
-        void WinClientRpc(ClientRpcParams clientRpcParams)
+        void SetTurnNetworkHandlerToSpecificClientRpc(TeamType teamType, ulong clientId, ClientRpcParams clientRpcParams = default)
         {
-            if (!IsOwner) return;
-            Data.GameEndState = GameEndState.Win;
-            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
-        }
+            
+            // print(clientId);
+            // _turnNetworkHandler.ownerTeamtType = teamType;
 
-        [ClientRpc]
-        void LoseClientRpc(ClientRpcParams clientRpcParams)
-        {
-            if (!IsOwner) return;
-            Data.GameEndState = GameEndState.Lose;
-            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+            //int index = (int) clientRpcParams.Send.TargetClientIds.First();
+            // turnNetworkHandlers[index].ownerTeamtType = Data.TeamType;
+            // print(turnNetworkHandlers[index].ownerTeamtType);
+            // print(turnNetworkHandlers[index].name);
         }
+        
+        #endregion
 
 
         public void Setup(TeamType teamType, List<Tower> allTowers)
         {
             Data.TeamType = teamType;
             Data.AllTowers = allTowers;
+            if(IsOwner) SpawnTurnNetworkServerRpc(teamType); //önce team belirlensin
         }
 
         Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -106,6 +119,44 @@ namespace PlayerNetwork
             Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[]
                 {towerObj}); //TransferData.Team.TransferData.Towers[towerId]
         }
+        
+        #region WinFailConditions
+
+        [ServerRpc]
+        private void GameEndServerRpc(TeamType loserTeamType)
+        {
+            ClientRpcParams clientRpcParams = new ClientRpcParams
+            {
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = new ulong[] {OwnerClientId}
+                }
+            };
+
+            if (loserTeamType == Data.TeamType)
+                LoseClientRpc(clientRpcParams);
+            else
+                WinClientRpc(clientRpcParams);
+        }
+
+        [ClientRpc]
+        void WinClientRpc(ClientRpcParams clientRpcParams)
+        {
+            if (!IsOwner) return;
+            Data.GameEndState = GameEndState.Win;
+            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+        }
+
+        [ClientRpc]
+        void LoseClientRpc(ClientRpcParams clientRpcParams)
+        {
+            if (!IsOwner) return;
+            Data.GameEndState = GameEndState.Lose;
+            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+        }
+
+        #endregion
+
 
         public override void OnNetworkDespawn()
         {
@@ -113,23 +164,27 @@ namespace PlayerNetwork
                 Eventbus.NetworkTriggerEvents.OnGameEnds -= GameEndServerRpc;
         }
 
-        #region SpawnTurnNetworkServerRpc
-
-        [SerializeField] private TurnNetworkHandler[] turnNetworkHandlers = new TurnNetworkHandler[2];
-
-        [ServerRpc(RequireOwnership = false)]
-        void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
-        {
-            if (!IsOwner) return;
-            var clientId = serverRpcParams.Receive.SenderClientId;
-            // print("sender client id: " + clientId);
-            var turnNetwork = Instantiate(Data.turnNetworkHandler);
-            turnNetworkHandlers[clientId] = turnNetwork; //bunlar da sadece serverda oluyor
-            turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-        }
-
-        #endregion
+        
     }
+
+    // #region Serializing TurnNetworkHandler
+    //
+    // public struct TurnNetworkHandlerStruct : INetworkSerializable
+    // {
+    //     public TurnNetworkHandler _TurnNetworkHandler;
+    //     public int x;
+    //
+    //     public TurnNetworkHandlerStruct(TurnNetworkHandler turnNetworkHandlerPrefab)
+    //     {
+    //         _TurnNetworkHandler = turnNetworkHandlerPrefab;
+    //     }
+    //     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    //     {
+    //         serializer.SerializeNetworkSerializable(ref _TurnNetworkHandler);
+    //         serializer.SerializeValue(ref x);
+    //     }
+    // }
+    // #endregion
 
 
     #region Serializing TowerNetworkData

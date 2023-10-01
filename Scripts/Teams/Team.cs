@@ -25,7 +25,6 @@ namespace Teams
             AssignTowers();
             SetGrid();
             SetTowers();
-            print("test 2");
         }
 
         void AssignTowers()
