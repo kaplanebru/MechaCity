@@ -39,7 +39,9 @@ namespace Core
     
         private void TowerSelected(params object[] args)
         {
-            var tower = args[0] as Tower;
+            int selectedTowerUniqID = (int)args[0];
+            var tower = TransferData.TowerGroup.FirstOrDefault(t => t.Data.UniqID == selectedTowerUniqID);
+            //var tower = args[0] as Tower;
             if (tower == null) return;
     
             if (!TransferData.TowerGroup.Contains(tower)) return;

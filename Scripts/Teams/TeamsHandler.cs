@@ -14,7 +14,6 @@ namespace Teams
     {
         public Team[] teams;
         public TeamsHolder assetHolder;
-        public List<Tower> allTowers = new();
         public bool isMultiplayerOn = true; //for testing
 
         private void OnEnable()
@@ -24,7 +23,6 @@ namespace Teams
             Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
 
             CreateTeams();
-            SetAllTowers();
 
             TurnOffMultiplayer();
         }
@@ -57,25 +55,12 @@ namespace Teams
             teams[0].LinkFirstMatches(teams[1]);
             teams[1].LinkFirstMatches(teams[0]);
         }
-
-        void SetAllTowers()
-        {
-            foreach (var team in teams)
-            {
-                allTowers.AddRange(team.Data.Towers);
-            }
-
-            for (int i = 0; i < allTowers.Count; i++)
-            {
-                allTowers[i].Data.Id = i;
-                allTowers[i].towerParts.SetClickableIds(i); //, TransferData.TeamTowerData.TeamType); //for MP
-            }
-        }
+        
 
         private void SetPlayerForTeam(Player player, ulong id)
         {
             teams[id].Data.Player = player;
-            player.Setup(teams[id].Data.TeamTowerData.TeamType, allTowers);
+            player.Setup(teams[id].Data.TeamTowerData.TeamType);
 
             foreach (var team in teams)
             {

@@ -9,7 +9,9 @@ namespace Data
     [Serializable]
     public class TowerData
     {
-        public int Id;
+        public int UniqID;
+        //public string uniqueID = Guid.NewGuid().ToString();
+        
         public int SlotId; //sonradan get set eklenebilir
         public float Height;
         public TeamTowerData TeamTowerData;

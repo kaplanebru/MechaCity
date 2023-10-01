@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Data;
 using Unity.Netcode;
 using UnityEngine;
 using ClickHandler;
 using Network;
-using Towers;
-
 
 namespace PlayerNetwork
 {
@@ -16,7 +12,6 @@ namespace PlayerNetwork
     {
         public TeamType TeamType;
         public GameEndState GameEndState = GameEndState.GameStarted;
-        public List<Tower> AllTowers = new();
         public TurnNetworkHandler turnNetworkHandlerPrefab;
     }
 
@@ -42,10 +37,9 @@ namespace PlayerNetwork
         }
         #endregion
         
-        public void Setup(TeamType teamType, List<Tower> allTowers)
+        public void Setup(TeamType teamType)
         {
             Data.TeamType = teamType;
-            Data.AllTowers = allTowers;
             if(IsOwner) SpawnTurnNetworkServerRpc(); //önce team belirlensin
         }
 
@@ -81,9 +75,9 @@ namespace PlayerNetwork
         [ClientRpc]
         void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
         {
-            var towerObj = Data.AllTowers[towerId];
-            Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[]
-                {towerObj}); //TransferData.Team.TransferData.Towers[towerId]
+            //var towerObj = Data.AllTowers[towerId];
+            Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId}); //
+            print(towerId);
         }
         
         #region WinFailConditions

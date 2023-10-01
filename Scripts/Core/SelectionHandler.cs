@@ -31,11 +31,14 @@ namespace Core
 
         private void TowerPartClicked(params object[] args)
         {
-            var tower = args[0] as Tower;
+            //var tower = args[0] as Tower;
+            int selectedTowerUniqID = (int) args[0];
+
+            var tower = teams["currentTeam"].Data.Towers.FirstOrDefault(t => t.Data.UniqID == selectedTowerUniqID); //uniq id ile dictionary tutulabilir
             if (tower == null) return;
 
 
-            if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
+            //if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
             if (SelectedTwice(tower)) return;
 
             if (TransferData.SelectionGroup.Count == TransferData.MaxTowersInGroup)

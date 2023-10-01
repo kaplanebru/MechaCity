@@ -42,8 +42,13 @@ namespace Teams
         {
             for (int i = 0; i < Data.Towers.Count; i++)
             {
-                Data.Towers[i].Data.SlotId = i;
-                Data.Towers[i].Setup(Data.TeamTowerData);
+                int uniqIdAdditive = Data.TeamType == TeamType.Team1 ? 0 : Data.Towers.Count;
+                var tower = Data.Towers[i];
+                tower.Data.UniqID = i + uniqIdAdditive;
+                tower.towerParts.SetClickableIds(tower.Data.UniqID);
+
+                tower.Data.SlotId = i;
+                tower.Setup(Data.TeamTowerData);
             }
         }
 
