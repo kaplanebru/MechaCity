@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Datas;
-using Models;
+using Data;
+using DataModels;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
+using PlayerNetwork;
+using Teams;
+using Towers;
 
 public static class Eventbus
 {

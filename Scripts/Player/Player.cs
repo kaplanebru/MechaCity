@@ -1,166 +1,171 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Datas;
+using Data;
 using Unity.Netcode;
 using UnityEngine;
+using ClickHandler;
+using Network;
+using Towers;
 
 
-[Serializable]
-public class PlayerData
+namespace PlayerNetwork
 {
-    public TeamType TeamType;
-    public GameEndState GameEndState = GameEndState.GameStarted;
-    public List<Tower> AllTowers = new();
-    public TurnNetworkHandler turnNetworkHandler;
-}
-
-public class Player : NetworkBehaviour
-{
-    public PlayerData Data = new();
-
-    public override void OnNetworkSpawn()
+    [Serializable]
+    public class PlayerData
     {
-        SpawnTurnNetworkServerRpc();
-        if(IsOwner) Eventbus.NetworkTriggerEvents.OnGameEnds += GameEndServerRpc;
-        Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
+        public TeamType TeamType;
+        public GameEndState GameEndState = GameEndState.GameStarted;
+        public List<Tower> AllTowers = new();
+        public TurnNetworkHandler turnNetworkHandler;
     }
 
-    [ServerRpc]
-    private void GameEndServerRpc(TeamType loserTeamType)
+    public class Player : NetworkBehaviour
     {
-        ClientRpcParams clientRpcParams = new ClientRpcParams
+        public PlayerData Data = new();
+
+        public override void OnNetworkSpawn()
         {
-            Send = new ClientRpcSendParams
-            {
-                TargetClientIds = new ulong[] {OwnerClientId}
-            }
-        };
-        
-        if (loserTeamType == Data.TeamType)
-            LoseClientRpc(clientRpcParams);
-        else
-            WinClientRpc(clientRpcParams);
-        
-    }
+            SpawnTurnNetworkServerRpc();
+            if (IsOwner) Eventbus.NetworkTriggerEvents.OnGameEnds += GameEndServerRpc;
+            Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
+        }
 
-    [ClientRpc]
-    void WinClientRpc(ClientRpcParams clientRpcParams)
-    {
-        if (!IsOwner) return;
-        Data.GameEndState = GameEndState.Win;
-        Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
-    }
-
-    [ClientRpc]
-    void LoseClientRpc(ClientRpcParams clientRpcParams)
-    {
-        if (!IsOwner) return;
-        Data.GameEndState = GameEndState.Lose;
-        Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
-    }
-
-
-    public void Setup(TeamType teamType, List<Tower> allTowers)
-    {
-        Data.TeamType = teamType;
-        Data.AllTowers = allTowers;
-    }
-
-    Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
-
-    private void Update()
-    {
-        if (IsOwner && Input.GetMouseButtonDown(0))
+        [ServerRpc]
+        private void GameEndServerRpc(TeamType loserTeamType)
         {
-            if (Physics.Raycast(RayFromMouse(), out RaycastHit hit))
+            ClientRpcParams clientRpcParams = new ClientRpcParams
             {
-                ClickOnTower(hit);
+                Send = new ClientRpcSendParams
+                {
+                    TargetClientIds = new ulong[] {OwnerClientId}
+                }
+            };
+
+            if (loserTeamType == Data.TeamType)
+                LoseClientRpc(clientRpcParams);
+            else
+                WinClientRpc(clientRpcParams);
+        }
+
+        [ClientRpc]
+        void WinClientRpc(ClientRpcParams clientRpcParams)
+        {
+            if (!IsOwner) return;
+            Data.GameEndState = GameEndState.Win;
+            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+        }
+
+        [ClientRpc]
+        void LoseClientRpc(ClientRpcParams clientRpcParams)
+        {
+            if (!IsOwner) return;
+            Data.GameEndState = GameEndState.Lose;
+            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+        }
+
+
+        public void Setup(TeamType teamType, List<Tower> allTowers)
+        {
+            Data.TeamType = teamType;
+            Data.AllTowers = allTowers;
+        }
+
+        Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        private void Update()
+        {
+            if (IsOwner && Input.GetMouseButtonDown(0))
+            {
+                if (Physics.Raycast(RayFromMouse(), out RaycastHit hit))
+                {
+                    ClickOnTower(hit);
+                }
             }
         }
-    }
 
-    void ClickOnTower(RaycastHit hit)
-    {
-        if (hit.collider.TryGetComponent(out Clickable clickable))
+        void ClickOnTower(RaycastHit hit)
         {
-            if (clickable.teamType != Data.TeamType) return; //if (clickable.clickableObject.TransferData.TeamTowerData.TeamType != TransferData.TeamType) return;
-            SendTowerIdToServerRpc(clickable.id);
+            if (hit.collider.TryGetComponent(out Clickable clickable))
+            {
+                if (clickable.teamType != Data.TeamType)
+                    return; //if (clickable.clickableObject.TransferData.TeamTowerData.TeamType != TransferData.TeamType) return;
+                SendTowerIdToServerRpc(clickable.id);
+            }
         }
+
+        [ServerRpc]
+        void SendTowerIdToServerRpc(int towerId)
+        {
+            AdjustTowerClientRpc(towerId);
+        }
+
+        [ClientRpc]
+        void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
+        {
+            var towerObj = Data.AllTowers[towerId];
+            Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[]
+                {towerObj}); //TransferData.Team.TransferData.Towers[towerId]
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            if (IsOwner)
+                Eventbus.NetworkTriggerEvents.OnGameEnds -= GameEndServerRpc;
+        }
+
+        #region SpawnTurnNetworkServerRpc
+
+        [SerializeField] private TurnNetworkHandler[] turnNetworkHandlers = new TurnNetworkHandler[2];
+
+        [ServerRpc(RequireOwnership = false)]
+        void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
+        {
+            if (!IsOwner) return;
+            var clientId = serverRpcParams.Receive.SenderClientId;
+            // print("sender client id: " + clientId);
+            var turnNetwork = Instantiate(Data.turnNetworkHandler);
+            turnNetworkHandlers[clientId] = turnNetwork; //bunlar da sadece serverda oluyor
+            turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+        }
+
+        #endregion
     }
 
-    [ServerRpc]
-    void SendTowerIdToServerRpc(int towerId)
+
+    #region Serializing TowerNetworkData
+
+    public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkData>
     {
-        AdjustTowerClientRpc(towerId);
-    }
+        public int Id;
+        public int Height;
 
-    [ClientRpc]
-    void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
-    {
-        var towerObj = Data.AllTowers[towerId];
-        Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerObj}); //TransferData.Team.TransferData.Towers[towerId]
-    }
+        public TowerNetworkData(int id, int height)
+        {
+            Id = id;
+            Height = height;
+        }
 
-    public override void OnNetworkDespawn()
-    {
-        if(IsOwner)
-            Eventbus.NetworkTriggerEvents.OnGameEnds -= GameEndServerRpc;
-    }
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref Id);
+            serializer.SerializeValue(ref Height);
+        }
 
-    #region SpawnTurnNetworkServerRpc
+        public bool Equals(TowerNetworkData other)
+        {
+            return Id == other.Id && Height == other.Height;
+        }
 
-    [SerializeField] private TurnNetworkHandler[] turnNetworkHandlers = new TurnNetworkHandler[2];
+        public override bool Equals(object obj)
+        {
+            return obj is TowerNetworkData other && Equals(other);
+        }
 
-    [ServerRpc(RequireOwnership = false)]
-    void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
-    {
-        if (!IsOwner) return;
-        var clientId = serverRpcParams.Receive.SenderClientId;
-        // print("sender client id: " + clientId);
-        var turnNetwork = Instantiate(Data.turnNetworkHandler);
-        turnNetworkHandlers[clientId] = turnNetwork;          //bunlar da sadece serverda oluyor
-        turnNetwork.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Height);
+        }
     }
 
     #endregion
 }
-
-
-#region Serializing TowerNetworkData
-
-public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkData>
-{
-    public int Id;
-    public int Height;
-
-    public TowerNetworkData(int id, int height)
-    {
-        Id = id;
-        Height = height;
-    }
-
-    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-    {
-        serializer.SerializeValue(ref Id);
-        serializer.SerializeValue(ref Height);
-    }
-
-    public bool Equals(TowerNetworkData other)
-    {
-        return Id == other.Id && Height == other.Height;
-    }
-
-    public override bool Equals(object obj)
-    {
-        return obj is TowerNetworkData other && Equals(other);
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Id, Height);
-    }
-}
-
-#endregion

@@ -1,26 +1,30 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Datas;
+using Data;
 using UnityEngine;
 
-public class PlayerTurnPopup : MonoBehaviour
+namespace UI
 {
-    public BaseInfoText popupText;
-    private void OnEnable()
+    public class PlayerTurnPopup : MonoBehaviour
     {
-        Eventbus.UIEvents.OnTeamSwitch += ShowPopup;
-    }
+        public BaseInfoText popupText;
+        private void OnEnable()
+        {
+            Eventbus.UIEvents.OnTeamSwitch += ShowPopup;
+        }
 
-    private void ShowPopup(TeamType currentTeamType)
-    {
-        popupText.gameObject.SetActive(true);
-        popupText.UpdateInfoText(currentTeamType);
-    }
+        private void ShowPopup(TeamType currentTeamType)
+        {
+            popupText.gameObject.SetActive(true);
+            popupText.UpdateInfoText(currentTeamType);
+        }
     
 
-    private void OnDisable()
-    {
-        Eventbus.UIEvents.OnTeamSwitch -= ShowPopup;
+        private void OnDisable()
+        {
+            Eventbus.UIEvents.OnTeamSwitch -= ShowPopup;
+        }
     }
+
 }

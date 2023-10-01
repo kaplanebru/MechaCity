@@ -2,8 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Grid;
+using PlayerNetwork;
+using Towers;
 
-namespace Datas
+namespace Data
 {
     [CreateAssetMenu(fileName = nameof(TeamData))]
 

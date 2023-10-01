@@ -10,114 +10,117 @@ public enum LineType
     Curved
 }
 
-public class ChainSpawner : MonoBehaviour
+namespace Chain
 {
-    public LineRenderer lr;
-    Material lrMat;
-
-    public int curveAmount = 15;
-
-
-    public Transform[] curveEdges;
-    public Transform[] lineEdge;
-
-    [ReadOnly] public List<Vector3> chainPoints = new();
-
-
-    private void Start()
+    public class ChainSpawner : MonoBehaviour
     {
-        chainPoints.Clear();
-        lr.positionCount = 0;
-        GeneratePoints(curveAmount);
+        public LineRenderer lr;
+        Material lrMat;
 
-        DrawChain();
-        CloseEdges();
+        public int curveAmount = 15;
 
-        StartCoroutine(nameof(MoveRoutine));
-    }
 
-    IEnumerator MoveRoutine()
-    {
-        lrMat = lr.material;
-        for (int i = 0; i < 100; i++)
+        public Transform[] curveEdges;
+        public Transform[] lineEdge;
+
+        [ReadOnly] public List<Vector3> chainPoints = new();
+
+
+        private void Start()
         {
-            var tex = lrMat.mainTextureOffset;
-            tex.x = i/50f;
-            lrMat.mainTextureOffset = tex;
-            print("y");
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
+            chainPoints.Clear();
+            lr.positionCount = 0;
+            GeneratePoints(curveAmount);
 
-    void DrawChain()
-    {
-        lr.positionCount = curveAmount * 3 - offset * 2;
-        lr.SetPositions(chainPoints.ToArray());
-    }
+            DrawChain();
+            CloseEdges();
 
-    Vector3 CurvePoint(float t)
-    {
-        Vector3 AB = Vector3.Lerp(curveEdges[0].position, curveEdges[1].position, t);
-        Vector3 BC = Vector3.Lerp(curveEdges[1].position, curveEdges[2].position, t);
-        return Vector3.Lerp(AB, BC, t);
-    }
-
-    Vector3 StraightPoint(float t, bool first)
-    {
-        if (first)
-            return Vector3.Lerp(lineEdge[0].position, curveEdges[0].position, t);
-        else
-            return Vector3.Lerp(curveEdges[2].position, lineEdge[1].position, t);
-    }
-
-    public int offset = 1;
-
-    void GeneratePoints(int _amount)
-    {
-        float ratio = 1f / _amount;
-        float t = 0;
-
-
-        int counter = 0;
-        while (t < 1) //line'ın sonu alınmadı
-        {
-            counter++;
-
-            t = Mathf.MoveTowards(t, 1, ratio);
-            chainPoints.Add(StraightPoint(t, true));
-            if (counter == _amount - offset) break;
+            StartCoroutine(nameof(MoveRoutine));
         }
 
-        counter = 0;
-        t = 0;
-        while (t < 1)
+        IEnumerator MoveRoutine()
         {
-            counter++;
-            t = Mathf.MoveTowards(t, 1, ratio);
-
-            // if (counter < 5)
-            // {
-            //     counter++;
-            //     continue;
-            // }
-            chainPoints.Add(CurvePoint(t));
-            if (counter == _amount - offset) break;
-            // counter++;
+            lrMat = lr.material;
+            for (int i = 0; i < 100; i++)
+            {
+                var tex = lrMat.mainTextureOffset;
+                tex.x = i / 50f;
+                lrMat.mainTextureOffset = tex;
+                print("y");
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
-        t = 0;
-        while (t < 1)
+        void DrawChain()
         {
-            t = Mathf.MoveTowards(t, 1, ratio);
-            chainPoints.Add(StraightPoint(t, false));
+            lr.positionCount = curveAmount * 3 - offset * 2;
+            lr.SetPositions(chainPoints.ToArray());
         }
-    }
 
-    void CloseEdges()
-    {
-        foreach (var curveEdge in curveEdges)
+        Vector3 CurvePoint(float t)
         {
-            curveEdge.gameObject.SetActive(false);
+            Vector3 AB = Vector3.Lerp(curveEdges[0].position, curveEdges[1].position, t);
+            Vector3 BC = Vector3.Lerp(curveEdges[1].position, curveEdges[2].position, t);
+            return Vector3.Lerp(AB, BC, t);
+        }
+
+        Vector3 StraightPoint(float t, bool first)
+        {
+            if (first)
+                return Vector3.Lerp(lineEdge[0].position, curveEdges[0].position, t);
+            else
+                return Vector3.Lerp(curveEdges[2].position, lineEdge[1].position, t);
+        }
+
+        public int offset = 1;
+
+        void GeneratePoints(int _amount)
+        {
+            float ratio = 1f / _amount;
+            float t = 0;
+
+
+            int counter = 0;
+            while (t < 1) //line'ın sonu alınmadı
+            {
+                counter++;
+
+                t = Mathf.MoveTowards(t, 1, ratio);
+                chainPoints.Add(StraightPoint(t, true));
+                if (counter == _amount - offset) break;
+            }
+
+            counter = 0;
+            t = 0;
+            while (t < 1)
+            {
+                counter++;
+                t = Mathf.MoveTowards(t, 1, ratio);
+
+                // if (counter < 5)
+                // {
+                //     counter++;
+                //     continue;
+                // }
+                chainPoints.Add(CurvePoint(t));
+                if (counter == _amount - offset) break;
+                // counter++;
+            }
+
+            t = 0;
+            while (t < 1)
+            {
+                t = Mathf.MoveTowards(t, 1, ratio);
+                chainPoints.Add(StraightPoint(t, false));
+            }
+        }
+
+        void CloseEdges()
+        {
+            foreach (var curveEdge in curveEdges)
+            {
+                curveEdge.gameObject.SetActive(false);
+            }
         }
     }
 }

@@ -1,6 +1,9 @@
-public interface ITurnActionHandler<out TTurnData>
-{
-    public TTurnData TransferData { get; }
-    
 
+
+namespace Core
+{
+    public interface ITurnActionHandler<out TTurnData>
+    {
+        public TTurnData TransferData { get; }
+    }
 }

@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Datas;
-using Models;
+using Data;
+using DataModels;
+using Towers;
 using Unity.Collections;
 using UnityEngine;
 
-public class CombatTransferData : BaseTurnTransferData // = sıfırlanacak data
+namespace Core
+{
+    public class CombatTransferData : BaseTurnTransferData // = sıfırlanacak data
 {
     public List<Tower> AlteredTowers = new();
     public List<TowerGridRelationModel> DeadTowers = new();
@@ -151,3 +154,5 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
         Eventbus.FireEvents.OnMatchesRestored -= SetDetachedPairsRestored;
     }
 }
+}
+

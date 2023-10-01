@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ProjectileHandler;
 
-namespace Datas
+namespace Data
 {
     [CreateAssetMenu(fileName = nameof(TowerAssetHolder))]
     public class TowerAssetHolder : ScriptableObject

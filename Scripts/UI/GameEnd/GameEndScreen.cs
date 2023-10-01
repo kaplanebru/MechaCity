@@ -1,44 +1,47 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Datas;
+using Data;
 using UnityEngine;
 
-public class GameEndScreen : MonoBehaviour
+
+namespace UI
 {
-    public Transform[] panels;
-
-    private void OnEnable()
+    public class GameEndScreen : MonoBehaviour
     {
-        Eventbus.NetworkRequestEvents.OnGameEndScreenRequest += ShowPanel;
-        DisableAll();
-    }
+        public Transform[] panels;
 
-    private void ShowPanel(GameEndState state)
-    {
-        switch (state)
+        private void OnEnable()
         {
-            case GameEndState.Win:
-                panels[0].gameObject.SetActive(true);
-                break;
-            case GameEndState.Lose:
-                panels[1].gameObject.SetActive(true);
-                break;
+            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest += ShowPanel;
+            DisableAll();
         }
-    }
-    
 
-    void DisableAll()
-    {
-        foreach (var panel in panels)
+        private void ShowPanel(GameEndState state)
         {
-            panel.gameObject.SetActive(false);
+            switch (state)
+            {
+                case GameEndState.Win:
+                    panels[0].gameObject.SetActive(true);
+                    break;
+                case GameEndState.Lose:
+                    panels[1].gameObject.SetActive(true);
+                    break;
+            }
         }
-    }
 
-    private void OnDisable()
-    {
-        Eventbus.NetworkRequestEvents.OnGameEndScreenRequest -= ShowPanel;
 
+        void DisableAll()
+        {
+            foreach (var panel in panels)
+            {
+                panel.gameObject.SetActive(false);
+            }
+        }
+
+        private void OnDisable()
+        {
+            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest -= ShowPanel;
+        }
     }
 }

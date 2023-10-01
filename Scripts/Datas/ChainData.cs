@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-namespace Datas
+namespace Data
 {
     [Serializable]
     public class ChainData

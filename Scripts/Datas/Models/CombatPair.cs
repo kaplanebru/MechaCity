@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using ProjectileHandler;
+using Towers;
 
-namespace Models
+namespace DataModels
 {
     public class CombatPair
     {

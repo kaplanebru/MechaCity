@@ -1,4 +1,4 @@
-namespace Datas
+namespace Data
 {
     public enum TeamType
     {

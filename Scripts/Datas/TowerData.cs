@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Towers;
 using UnityEngine;
 
-namespace Datas
+namespace Data
 {
     [Serializable]
     public class TowerData

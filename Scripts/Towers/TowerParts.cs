@@ -1,52 +1,53 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Datas;
+using Data;
 using DG.Tweening;
 using UnityEngine;
+using ClickHandler;
 
-
-
-[Serializable]
-public class TowerPartsData
+namespace Towers
 {
-    public Transform Top;
-    public Transform Middle;
-    public Transform Down;
-    public MeshRenderer[] MiddleMeshes;
-    public MeshRenderer TopMesh;
-}
-public class TowerParts : MonoBehaviour
-{
-    public TowerPartsData Data;
-
-    public void SetColor(Material mat)
+    [Serializable]
+    public class TowerPartsData
     {
-        foreach (var mesh in Data.MiddleMeshes)
+        public Transform Top;
+        public Transform Middle;
+        public Transform Down;
+        public MeshRenderer[] MiddleMeshes;
+        public MeshRenderer TopMesh;
+    }
+
+    public class TowerParts : MonoBehaviour
+    {
+        public TowerPartsData Data;
+
+        public void SetColor(Material mat)
         {
-            mesh.material = mat;
+            foreach (var mesh in Data.MiddleMeshes)
+            {
+                mesh.material = mat;
+            }
+        }
+
+        public void ChangeHeight(float newHeight)
+        {
+            Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
+            {
+                Eventbus.UIEvents.OnTowerHeightChange?.Invoke(newHeight, gameObject);
+            });
+
+            Data.Top.transform.DOLocalMoveY(newHeight, 1);
+            //down rotate
+        }
+
+        public void SetClickableIds(int id)
+        {
+            var clickables = GetComponentsInChildren<Clickable>();
+            foreach (var clickable in clickables)
+            {
+                clickable.id = id;
+            }
         }
     }
-    
-    public void ChangeHeight(float newHeight)
-    {
-        Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
-        {
-            Eventbus.UIEvents.OnTowerHeightChange?.Invoke(newHeight, gameObject);
-        });
-        
-        Data.Top.transform.DOLocalMoveY(newHeight, 1);
-        //down rotate
-    }
-
-    public void SetClickableIds(int id)
-    {
-        var clickables = GetComponentsInChildren<Clickable>();
-        foreach (var clickable in clickables)
-        {
-            clickable.id = id;
-        }
-    }
-
-   
 }

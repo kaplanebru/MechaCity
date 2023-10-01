@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Models;
+using DataModels;
 using UnityEngine;
 
 
-namespace Datas
+namespace Data
 {
     [Serializable]
     [CreateAssetMenu(fileName = nameof(TowerConstantData))]

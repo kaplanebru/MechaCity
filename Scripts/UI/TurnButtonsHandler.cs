@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
-using Datas;
+using Data;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TurnButtonsHandler : MonoBehaviour
+namespace UI
+{
+    public class TurnButtonsHandler : MonoBehaviour
 {
     [SerializeField] private Button[] Buttons;
     private Button currentButton;
@@ -86,4 +88,5 @@ public class TurnButtonsHandler : MonoBehaviour
         //Eventbus.TurnEvents.OnTurnEnding -= RestartSequence;
         Eventbus.UIEvents.OnButtonCall -= HandleSpecialCase;
     }
+}
 }

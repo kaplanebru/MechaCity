@@ -1,24 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Datas;
+using Data;
 using UnityEngine;
 
-public class PlayerTurnText : BaseInfoText
+namespace UI
 {
-    protected override void SubscribeEvents()
+    public class PlayerTurnText : BaseInfoText
     {
-        Eventbus.UIEvents.OnTeamSwitch += UpdateInfoText;
-    }
-    
+        protected override void SubscribeEvents()
+        {
+            Eventbus.UIEvents.OnTeamSwitch += UpdateInfoText;
+        }
 
-    protected override void SetInfoText(string teamName)
-    {
-        infoText.text = "Turn: " + teamName; 
-    }
 
-    protected override void Unsubscribe()
-    {
-        Eventbus.UIEvents.OnTeamSwitch -= UpdateInfoText;
+        protected override void SetInfoText(string teamName)
+        {
+            infoText.text = "Turn: " + teamName;
+        }
+
+        protected override void Unsubscribe()
+        {
+            Eventbus.UIEvents.OnTeamSwitch -= UpdateInfoText;
+        }
     }
 }

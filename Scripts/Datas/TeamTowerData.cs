@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Datas
+namespace Data
 {
     [CreateAssetMenu(fileName = nameof(TeamTowerData))]
     public class TeamTowerData : ScriptableObject

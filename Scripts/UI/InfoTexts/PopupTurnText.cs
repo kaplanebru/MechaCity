@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using Datas;
+using Data;
 using UnityEngine;
 
-public class PopupTurnText : BaseInfoText
+namespace UI
 {
-    protected override void SetInfoText(string teamName)
+    public class PopupTurnText : BaseInfoText
     {
-        infoText.text = teamName + "'s Turn"; 
+        protected override void SetInfoText(string teamName)
+        {
+            infoText.text = teamName + "'s Turn"; 
+        }
     }
+
 }

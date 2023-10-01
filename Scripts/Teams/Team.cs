@@ -2,65 +2,69 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Datas;
+using Data;
+using Towers;
 using UnityEngine;
 
 
-[Serializable]
-public class TeamConstructorData
+namespace Teams
 {
-    public Transform TowersPrefab;
-}
-
-public class Team: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : TeamData
-{
-    public TeamData Data;
-    [SerializeField] TeamConstructorData ConstructorData;
-    public void Initialize()
+    [Serializable]
+    public class TeamConstructorData
     {
-        AssignTowers();
-        SetGrid();
-        SetTowers();
+        public Transform TowersPrefab;
     }
 
-    void AssignTowers()
+    public class Team : MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : TeamData
     {
-        var towersPb = Instantiate(ConstructorData.TowersPrefab, transform);
-        Data.Towers = towersPb.GetComponentsInChildren<Tower>().ToList();
-    }
-    
-    void SetGrid()
-    {
-        Data.Grid.Initialize(this);
-    }
-    void SetTowers()
-    {
-        for (int i = 0; i < Data.Towers.Count; i++)
+        public TeamData Data;
+        [SerializeField] TeamConstructorData ConstructorData;
+
+        public void Initialize()
         {
-            Data.Towers[i].Data.SlotId = i;
-            Data.Towers[i].Setup(Data.TeamTowerData);
+            AssignTowers();
+            SetGrid();
+            SetTowers();
+            print("test 2");
+        }
+
+        void AssignTowers()
+        {
+            var towersPb = Instantiate(ConstructorData.TowersPrefab, transform);
+            Data.Towers = towersPb.GetComponentsInChildren<Tower>().ToList();
+        }
+
+        void SetGrid()
+        {
+            Data.Grid.Initialize(this);
+        }
+
+        void SetTowers()
+        {
+            for (int i = 0; i < Data.Towers.Count; i++)
+            {
+                Data.Towers[i].Data.SlotId = i;
+                Data.Towers[i].Setup(Data.TeamTowerData);
+            }
+        }
+
+        public void TakeTowerFromRival(Tower tower)
+        {
+            Data.Towers.Add(tower);
+            tower.SetTeam(Data.TeamTowerData);
+        }
+
+        public void RemoveTower(Tower tower)
+        {
+            Data.Towers.Remove(tower);
+        }
+
+        public void LinkFirstMatches(Team rivalTeam) //Temporary
+        {
+            for (int i = 0; i < Data.Towers.Count; i++)
+            {
+                Data.Towers[i].Data.LinkedTowers.Add(rivalTeam.Data.Towers[i]);
+            }
         }
     }
-
-    public void TakeTowerFromRival(Tower tower)
-    {
-        Data.Towers.Add(tower);
-        tower.SetTeam(Data.TeamTowerData);
-    }
-
-    public void RemoveTower(Tower tower)
-    {
-        Data.Towers.Remove(tower);
-    }
-
-    public void LinkFirstMatches(Team rivalTeam) //Temporary
-    {
-        for (int i = 0; i < Data.Towers.Count; i++)
-        {
-            Data.Towers[i].Data.LinkedTowers.Add(rivalTeam.Data.Towers[i]);
-        }
-    }
-
-
-    
 }

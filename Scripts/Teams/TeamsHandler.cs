@@ -1,112 +1,117 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Datas;
+using Data;
 using UnityEngine;
 using System.Linq;
-using Unity.Netcode;
+using DataModels;
+using PlayerNetwork;
+using Towers;
 
-public class TeamsHandler : MonoBehaviour
+namespace Teams
 {
-    public Team[] teams;
-    public TeamsHolder assetHolder;
-    public List<Tower> allTowers = new();
-    public bool isMultiplayerOn = true; //for testing
-
-    private void OnEnable()
+    public class TeamsHandler : MonoBehaviour
     {
-        Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
-        Eventbus.FireEvents.OnTowerKilled += GetGridByTeam;
-        Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
-        
-        CreateTeams();
-        SetAllTowers();
-        
-        TurnOffMultiplayer();
-    }
+        public Team[] teams;
+        public TeamsHolder assetHolder;
+        public List<Tower> allTowers = new();
+        public bool isMultiplayerOn = true; //for testing
 
-    void TurnOffMultiplayer()
-    {
-        if (!isMultiplayerOn)
+        private void OnEnable()
         {
-            print("Multiplayer features are off");
-            Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
-            return;
-        }
-    }
-    
+            Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
+            Eventbus.FireEvents.OnTowerKilled += GetGridByTeam;
+            Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
 
-    void CreateTeams()
-    {
-        teams = new Team[assetHolder.Teams.Length];
-        for (int i = 0; i < teams.Length; i++)
-        {
-            teams[i] = Instantiate(assetHolder.Teams[i], transform);
-            teams[i].Initialize();
-        }
-        
-        SetFirstMatches();
-    }
-    
-    void SetFirstMatches() //Temporary
-    {
-        teams[0].LinkFirstMatches(teams[1]);
-        teams[1].LinkFirstMatches(teams[0]);
-    }
+            CreateTeams();
+            SetAllTowers();
 
-    void SetAllTowers()
-    {
-        foreach (var team in teams)
-        {
-            allTowers.AddRange(team.Data.Towers);
+            TurnOffMultiplayer();
         }
 
-        for (int i = 0; i < allTowers.Count; i++)
+        void TurnOffMultiplayer()
         {
-            allTowers[i].Data.Id = i;
-            allTowers[i].towerParts.SetClickableIds(i); //, TransferData.TeamTowerData.TeamType); //for MP
-        }
-    }
-
-    private void SetPlayerForTeam(Player player, ulong id)
-    {
-        teams[id].Data.Player = player;
-        player.Setup(teams[id].Data.TeamTowerData.TeamType, allTowers);
-
-        foreach (var team in teams)
-        {
-            if (team.Data.Player == null)
+            if (!isMultiplayerOn)
             {
-                print("Waiting for other players to join..."); //sadece client1'de görünmeli
+                print("Multiplayer features are off");
+                Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
                 return;
             }
         }
 
-        Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
-        print("Game Started");
-    }
 
-    Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);
+        void CreateTeams()
+        {
+            teams = new Team[assetHolder.Teams.Length];
+            for (int i = 0; i < teams.Length; i++)
+            {
+                teams[i] = Instantiate(assetHolder.Teams[i], transform);
+                teams[i].Initialize();
+            }
 
-    private void GetGridByTeam(Tower deadTower)
-    {
-        var team = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
-        Eventbus.FireEvents.OnTowerGridDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
-    }
+            SetFirstMatches();
+        }
 
-    private void ExchangeTower(Tower deadTower)
-    {
-        Team oldTeam = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
-        Team newTeam = teams.FirstOrDefault(t => t != oldTeam);
-        
-        oldTeam.RemoveTower(deadTower);
-        newTeam.TakeTowerFromRival(deadTower);
-    }
+        void SetFirstMatches() //Temporary
+        {
+            teams[0].LinkFirstMatches(teams[1]);
+            teams[1].LinkFirstMatches(teams[0]);
+        }
 
-    private void OnDisable()
-    {
-        Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
-        Eventbus.FireEvents.OnTowerKilled -= GetGridByTeam;
-        Eventbus.NetworkRequestEvents.OnPlayerSpawned -= SetPlayerForTeam;
+        void SetAllTowers()
+        {
+            foreach (var team in teams)
+            {
+                allTowers.AddRange(team.Data.Towers);
+            }
+
+            for (int i = 0; i < allTowers.Count; i++)
+            {
+                allTowers[i].Data.Id = i;
+                allTowers[i].towerParts.SetClickableIds(i); //, TransferData.TeamTowerData.TeamType); //for MP
+            }
+        }
+
+        private void SetPlayerForTeam(Player player, ulong id)
+        {
+            teams[id].Data.Player = player;
+            player.Setup(teams[id].Data.TeamTowerData.TeamType, allTowers);
+
+            foreach (var team in teams)
+            {
+                if (team.Data.Player == null)
+                {
+                    print("Waiting for other players to join..."); //sadece client1'de görünmeli
+                    return;
+                }
+            }
+
+            Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
+            print("Game Started");
+        }
+
+        Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);
+
+        private void GetGridByTeam(Tower deadTower)
+        {
+            var team = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
+            Eventbus.FireEvents.OnTowerGridDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
+        }
+
+        private void ExchangeTower(Tower deadTower)
+        {
+            Team oldTeam = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
+            Team newTeam = teams.FirstOrDefault(t => t != oldTeam);
+
+            oldTeam.RemoveTower(deadTower);
+            newTeam.TakeTowerFromRival(deadTower);
+        }
+
+        private void OnDisable()
+        {
+            Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
+            Eventbus.FireEvents.OnTowerKilled -= GetGridByTeam;
+            Eventbus.NetworkRequestEvents.OnPlayerSpawned -= SetPlayerForTeam;
+        }
     }
 }
