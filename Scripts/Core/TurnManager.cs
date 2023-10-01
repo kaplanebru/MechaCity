@@ -14,6 +14,7 @@ namespace Core
         public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
         BaseTurnHandler[] turnHandlers;
         Dictionary<string, Team> turnTeams;
+        
         [SerializeField] private TeamsHandler teamsHandler;
         public TeamType currentTeamType = TeamType.Team1;
 
@@ -58,11 +59,20 @@ namespace Core
         public void FirstTurn(Team[] teams)
         {
             Initialize();
+            var combatHandler = turnHandlers.Last() as CombatHandler;
+            foreach (var tower in turnTeams["currentTeam"].Data.Towers)
+            {
+                combatHandler.CreateCombatPairByTower(tower);
+            }
+            combatHandler.CompleteAction();
+            
             StartCoroutine(nameof(TurnActionRoutine));
         }
 
         IEnumerator TurnActionRoutine()
         {
+            
+            
             Eventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
 
 

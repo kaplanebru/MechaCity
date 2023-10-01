@@ -10,15 +10,16 @@ using Object = UnityEngine.Object;
 namespace Core
 {
     [Serializable]
-    public class SelectionData : BaseTurnTransferData
+    public class SelectionTransferData : BaseTurnTransferData
     {
         public List<Tower> SelectionGroup = new();
-        public int MaxTowersInGroup = 2;
+        
     }
 
-    public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionData>
+    public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionTransferData>
     {
-        public SelectionData TransferData { get; private set; }
+        public SelectionTransferData TransferData { get; private set; }
+        public int maxTowersInGroup = 2;
 
         public override TurnHandlerType HandlerType => TurnHandlerType.Selection;
 
@@ -41,7 +42,7 @@ namespace Core
             //if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
             if (SelectedTwice(tower)) return;
 
-            if (TransferData.SelectionGroup.Count == TransferData.MaxTowersInGroup)
+            if (TransferData.SelectionGroup.Count == maxTowersInGroup)
                 ResetSelectionGroup();
 
             AddToSelection(true, tower);
@@ -63,7 +64,7 @@ namespace Core
             else
                 TransferData.SelectionGroup.Remove(newTower);
 
-            ManageCompleteButton(TransferData.SelectionGroup.Count == TransferData.MaxTowersInGroup);
+            ManageCompleteButton(TransferData.SelectionGroup.Count == maxTowersInGroup);
         }
 
         void ManageCompleteButton(bool enable)
@@ -85,7 +86,7 @@ namespace Core
 
         void ResetSelectionGroup()
         {
-            for (int i = 0; i < TransferData.MaxTowersInGroup; i++)
+            for (int i = 0; i < maxTowersInGroup; i++)
             {
                 AddToSelection(false, TransferData.SelectionGroup[0]);
             }

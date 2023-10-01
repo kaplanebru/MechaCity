@@ -75,9 +75,7 @@ namespace PlayerNetwork
         [ClientRpc]
         void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
         {
-            //var towerObj = Data.AllTowers[towerId];
             Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId}); //
-            print(towerId);
         }
         
         #region WinFailConditions

@@ -12,14 +12,14 @@ using Object = UnityEngine.Object;
 namespace Core
 {
     [Serializable]
-    public class TowerGroupData : BaseTurnTransferData
+    public class TowerGroupTransferData : BaseTurnTransferData
     {
         public List<Tower> TowerGroup = new();
     }
     
-    public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupData>
+    public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupTransferData>
     {
-        public TowerGroupData TransferData { get; private set; }
+        public TowerGroupTransferData TransferData { get; private set; }
     
         public override TurnHandlerType HandlerType => TurnHandlerType.TowerGroup;
     
@@ -31,7 +31,7 @@ namespace Core
         
         public override void ProcessIncomingData(BaseTurnTransferData data) //(params object[] args)
         {
-            var incomingData = (SelectionData) data;
+            var incomingData = (SelectionTransferData) data;
             TransferData.TowerGroup = incomingData.SelectionGroup;
         }
     

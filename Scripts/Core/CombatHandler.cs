@@ -46,7 +46,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
 
     public override void ProcessIncomingData(BaseTurnTransferData data)
     {
-        var incomingData = (TowerGroupData) data;
+        var incomingData = (TowerGroupTransferData) data;
         TransferData.AlteredTowers = incomingData.TowerGroup;
     }
 
@@ -88,7 +88,7 @@ public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferD
         CompleteAction();
     }
 
-    void CreateCombatPairByTower(Tower tower)
+    public void CreateCombatPairByTower(Tower tower)
     {
         OrderLinkedTowersByDistance(tower);
 
