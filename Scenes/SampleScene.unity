@@ -2055,7 +2055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a4abaeca3759bc4491ded7654be297d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  population: 0
+  population: 3
   projectilePrefab: {fileID: 4153317051268231772, guid: c18ff5e9a19f3b64291a6111b8758039, type: 3}
 --- !u!1 &1132370527
 GameObject:
