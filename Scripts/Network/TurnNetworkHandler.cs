@@ -13,7 +13,7 @@ namespace Network
     public class TurnNetworkHandler : NetworkBehaviour
     {
         public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
-        public TeamType ownerTeamtType;
+        public TeamType ownerTeamType;
 
 
         public override void OnNetworkSpawn()
@@ -32,13 +32,13 @@ namespace Network
         private void Start()
         {
             if(IsOwner)
-                ownerTeamtType = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>().Data.TeamType;
+                ownerTeamType = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>().Data.TeamType;
         }
 
         void TurnButtonsSetup(TeamType currentTeamType)
         {
-            print("owner team type: " + ownerTeamtType + " currentTeamType: " + currentTeamType);
-            if (currentTeamType == ownerTeamtType)
+            print("owner team type: " + ownerTeamType + " currentTeamType: " + currentTeamType);
+            if (currentTeamType == ownerTeamType)
                 Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest?.Invoke();
         }
 

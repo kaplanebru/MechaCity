@@ -29,40 +29,19 @@ namespace PlayerNetwork
             if (IsOwner) Eventbus.NetworkTriggerEvents.OnGameEnds += GameEndServerRpc;
             Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
         }
-
         
         #region SpawnTurnNetworkServerRpc
-
-        [SerializeField] private TurnNetworkHandler _turnNetworkHandler; // = new TurnNetworkHandler[2];
-
+        
         [ServerRpc(RequireOwnership = false)]
         void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
         {
             var clientId = serverRpcParams.Receive.SenderClientId;
             // print("sender client id: " + clientId);
-            TurnNetworkHandler turnNetworkHandler = Instantiate(Data.turnNetworkHandlerPrefab);
+            var turnNetworkHandler = Instantiate(Data.turnNetworkHandlerPrefab);
             turnNetworkHandler.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-            
-            // ClientRpcParams clientRpcParams = new ClientRpcParams
-            // {
-            //     Send = new ClientRpcSendParams
-            //     {
-            //         TargetClientIds = new ulong[] {clientId}
-            //     }
-            // };
-            // SetTurnNetworkHandlerToSpecificClientRpc(teamType, clientId, clientRpcParams);
         }
-
-
-        [ClientRpc]
-        void SetTurnNetworkHandlerToSpecificClientRpc(ulong clientId, ClientRpcParams clientRpcParams = default)
-        {
-            // print(clientId);
-        }
-        
         #endregion
-
-
+        
         public void Setup(TeamType teamType, List<Tower> allTowers)
         {
             Data.TeamType = teamType;
@@ -150,29 +129,8 @@ namespace PlayerNetwork
             if (IsOwner)
                 Eventbus.NetworkTriggerEvents.OnGameEnds -= GameEndServerRpc;
         }
-
-        
     }
-
-    // #region Serializing TurnNetworkHandler
-    //
-    // public struct TurnNetworkHandlerStruct : INetworkSerializable
-    // {
-    //     public TurnNetworkHandler _TurnNetworkHandler;
-    //     public int x;
-    //
-    //     public TurnNetworkHandlerStruct(TurnNetworkHandler turnNetworkHandlerPrefab)
-    //     {
-    //         _TurnNetworkHandler = turnNetworkHandlerPrefab;
-    //     }
-    //     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-    //     {
-    //         serializer.SerializeNetworkSerializable(ref _TurnNetworkHandler);
-    //         serializer.SerializeValue(ref x);
-    //     }
-    // }
-    // #endregion
-
+    
 
     #region Serializing TowerNetworkData
 
