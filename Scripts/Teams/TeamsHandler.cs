@@ -32,7 +32,7 @@ namespace Teams
             if (!isMultiplayerOn)
             {
                 print("Multiplayer features are off");
-                Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(null);
+                NetworkEventbus.OnAllClientsSet?.Invoke(null);
                 return;
             }
         }
@@ -71,7 +71,7 @@ namespace Teams
                 }
             }
 
-            Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(new object[]
+            NetworkEventbus.OnAllClientsSet?.Invoke(new object[]
                 {
                     new Dictionary<TeamType, string>
                     {

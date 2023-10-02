@@ -1,5 +1,6 @@
 using Clicks;
 using Data;
+using UI;
 using UnityEngine;
 
 namespace Towers
@@ -27,7 +28,7 @@ namespace Towers
             Data.Height = ConstantData.StartHeight;
 
             Data.Health = ConstantData.StartHealth;
-            Eventbus.UIEvents.OnHealthChange.Invoke(Data.Health, this);
+            UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
 
             SetTeam(teamTowerData);
 

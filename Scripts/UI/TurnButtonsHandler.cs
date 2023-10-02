@@ -16,7 +16,7 @@ namespace UI
     private void OnEnable() //ui daha önce gelmeli turnden
     {
       
-        Eventbus.TurnEvents.OnInitialize += Initialize;
+        UIEventbus.TurnEvents.OnInitialize += Initialize;
         
     }
 
@@ -26,7 +26,7 @@ namespace UI
         DisableAllButtons();
         
         NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest += RestartSequence;
-        Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
+        UIEventbus.OnButtonCall += HandleSpecialCase;
     }
     
 
@@ -80,11 +80,11 @@ namespace UI
     
     private void OnDisable()
     {
-        Eventbus.TurnEvents.OnInitialize -= Initialize;
+        UIEventbus.TurnEvents.OnInitialize -= Initialize;
         NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest -= RestartSequence;
 
         //Eventbus.TurnEvents.OnTurnEnding -= RestartSequence;
-        Eventbus.UIEvents.OnButtonCall -= HandleSpecialCase;
+        UIEventbus.OnButtonCall -= HandleSpecialCase;
     }
 }
 }

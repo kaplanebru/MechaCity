@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Enums;
+using Network;
 using UnityEngine;
 
 namespace UI
@@ -12,7 +13,7 @@ namespace UI
         public BaseInfoText turnInfoText;
         private void OnEnable()
         {
-            Eventbus.NetworkEvents.OnAllClientsSet += ShowInfoText;
+            NetworkEventbus.OnAllClientsSet += ShowInfoText;
             DisableUIs();
         }
     
@@ -33,7 +34,7 @@ namespace UI
     
         private void OnDisable()
         {
-            Eventbus.NetworkEvents.OnAllClientsSet -= ShowInfoText;
+            NetworkEventbus.OnAllClientsSet -= ShowInfoText;
     
         }
     

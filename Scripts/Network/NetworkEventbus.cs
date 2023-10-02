@@ -9,6 +9,7 @@ namespace Network
 {
     public class NetworkEventbus
     {
+        public static Action<object[]> OnAllClientsSet;
         public static class RequestEvents
         {
             public static Action<Player, ulong> OnPlayerSpawned;

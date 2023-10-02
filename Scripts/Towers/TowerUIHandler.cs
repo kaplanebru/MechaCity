@@ -1,4 +1,5 @@
 using TMPro;
+using UI;
 using UnityEngine;
 
 namespace Towers
@@ -10,13 +11,13 @@ namespace Towers
 
         private void OnEnable() //TODO: tower scriptinden yönet
         {
-            Eventbus.UIEvents.OnTowerHeightChange += ChangeHeightUI;
-            Eventbus.UIEvents.OnHealthChange += AdjustHealthUI;
+            UIEventbus.OnTowerHeightChange += ChangeHeightUI;
+            UIEventbus.OnHealthChange += AdjustHealthUI;
         }
 
-        private void AdjustHealthUI(int health, Tower tower)
+        private void AdjustHealthUI(int health, GameObject towerGameObject)
         {
-            if (tower.gameObject != gameObject) return;
+            if (towerGameObject != gameObject) return;
 
             healthIndicator.text = health.ToString();
         }
@@ -31,8 +32,8 @@ namespace Towers
 
         private void OnDisable()
         {
-            Eventbus.UIEvents.OnTowerHeightChange -= ChangeHeightUI;
-            Eventbus.UIEvents.OnHealthChange -= AdjustHealthUI;
+            UIEventbus.OnTowerHeightChange -= ChangeHeightUI;
+            UIEventbus.OnHealthChange -= AdjustHealthUI;
         }
 
         // void AdjustHealthIndicatorPosition(float height)

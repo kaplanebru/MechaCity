@@ -4,6 +4,7 @@ using System.Linq;
 using Enums;
 using Network;
 using Towers;
+using UI;
 
 namespace Core
 {
@@ -67,7 +68,7 @@ namespace Core
 
         void ManageCompleteButton(bool enable)
         {
-            Eventbus.UIEvents.OnButtonCall?.Invoke(enable);
+            UIEventbus.OnButtonCall?.Invoke(enable);
         }
 
 

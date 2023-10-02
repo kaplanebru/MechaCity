@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using UI;
 using UnityEngine;
 
 namespace Towers
@@ -31,7 +32,7 @@ namespace Towers
         {
             Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
             {
-                Eventbus.UIEvents.OnTowerHeightChange?.Invoke(newHeight, gameObject);
+                UIEventbus.OnTowerHeightChange?.Invoke(newHeight, gameObject);
             });
 
             Data.Top.transform.DOLocalMoveY(newHeight, 1);

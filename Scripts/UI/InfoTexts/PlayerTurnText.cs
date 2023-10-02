@@ -4,7 +4,7 @@ namespace UI
     {
         protected override void SubscribeEvents()
         {
-            Eventbus.UIEvents.OnTeamSwitch += UpdateInfoText;
+            UIEventbus.OnTeamSwitch += UpdateInfoText;
         }
 
 
@@ -15,7 +15,7 @@ namespace UI
 
         protected override void Unsubscribe()
         {
-            Eventbus.UIEvents.OnTeamSwitch -= UpdateInfoText;
+            UIEventbus.OnTeamSwitch -= UpdateInfoText;
         }
     }
 }

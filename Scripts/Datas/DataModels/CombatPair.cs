@@ -1,6 +1,7 @@
 using UnityEngine;
 using ProjectileHandler;
 using Towers;
+using UI;
 
 namespace DataModels
 {
@@ -46,7 +47,7 @@ namespace DataModels
         void OnComplete()
         {
             Victim.Data.Health -= Perpetrator.ConstantData.DamagePower;
-            Eventbus.UIEvents.OnHealthChange.Invoke(Victim.Data.Health, Victim);
+            UIEventbus.OnHealthChange.Invoke(Victim.Data.Health, Victim.gameObject);
             
             if (Victim.Data.Health <= 0)
                 Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);

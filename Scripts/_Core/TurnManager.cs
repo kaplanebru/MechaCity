@@ -6,6 +6,7 @@ using Network;
 using Unity.Netcode;
 using UnityEngine;
 using Teams;
+using UI;
 
 namespace Core
 {
@@ -23,7 +24,7 @@ namespace Core
 
         private void OnEnable()
         {
-            Eventbus.NetworkEvents.OnAllClientsSet += FirstTurn;
+            NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteActionRequest += CompleteActionByUser;
             NetworkEventbus.RequestEvents.OnNewTurnRequest += NewTurn;
 
@@ -34,7 +35,7 @@ namespace Core
         private void Initialize()
         {
             SetTurnTeams();
-            Eventbus.TurnEvents.OnInitialize?.Invoke();
+            UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
 
 
@@ -117,7 +118,7 @@ namespace Core
             currentTeamType = turnTeams["rivalTeam"].Data.TeamType;
             (turnTeams["currentTeam"], turnTeams["rivalTeam"]) = (turnTeams["rivalTeam"], turnTeams["currentTeam"]);
 
-            Eventbus.UIEvents.OnTeamSwitch?.Invoke(currentTeamType);
+            UIEventbus.OnTeamSwitch?.Invoke(currentTeamType);
 
             // var temp = currentTeam;
             // currentTeam = rivalTeam;
@@ -143,7 +144,7 @@ namespace Core
         {
             NetworkEventbus.RequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
             NetworkEventbus.RequestEvents.OnNewTurnRequest -= NewTurn;
-            Eventbus.NetworkEvents.OnAllClientsSet -= FirstTurn;
+            NetworkEventbus.OnAllClientsSet -= FirstTurn;
         }
     }
 }
