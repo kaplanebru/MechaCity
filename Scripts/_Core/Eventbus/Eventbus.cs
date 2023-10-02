@@ -14,29 +14,11 @@ public static class Eventbus
     public static class TeamEvents
     {
         public static Action<Tower> OnTeamChange;
-        public static Action<TeamType, Tower> OnTowerTeamSet;
     }
-
-    // public static class UIEvents
-    // {
-    //     public static Action<bool> OnButtonCall;
-    //     public static Action<float, GameObject> OnTowerHeightChange;
-    //     public static Action<int, Tower> OnHealthChange;
-    //     public static Action<TeamType> OnTeamSwitch;
-    // }
-
-    public static class NetworkEvents
-    {
-        // public static Action<object[]> OnAllClientsSet; //Temp: later for both clients
-    }
-
-
-   
 
     public static class FireEvents
     {
         public static Action OnFireEnabled;
-        public static Action<Vector3> OnShooting;
         public static Action<Tower> OnTowerKilled;
         public static Action<TowerGridRelationModel> OnTowerGridDetection;
         public static Action OnMatchesRestored;
