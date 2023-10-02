@@ -6,7 +6,7 @@ namespace Clicks
 {
     public class Clickable : BaseClickable<int> //uniqID
     {
-        public int id; //for multiplayer
+        public int id;
         public TeamType teamType;
    
 
