@@ -8,24 +8,26 @@ using Towers;
 namespace Grid
 {
     [Serializable]
-    public class GameGrid  //TODO: SO yapılabilir : 2 tane türetirilir
+    public class GameGrid //TODO: SO yapılabilir : 2 tane türetirilir
     {
-        [ReadOnly]public TeamType TeamType;
+        [ReadOnly] public TeamType TeamType; //gerek olmayabilir, sonuçta tarafsız
         public const int SlotAmount = 3;
-        [ReadOnly]public Slot[] Slots = new Slot[SlotAmount];
+        [ReadOnly] public Slot[] Slots = new Slot[SlotAmount];
+        private List<Tower> _towers = new();
 
         public void Initialize(TeamType teamType, List<Tower> towers)
         {
-            Setup(teamType, towers);
+            _towers = towers;
+            Setup(teamType);
         }
 
-        void Setup(TeamType teamType, List<Tower> towers)
+        void Setup(TeamType teamType)
         {
             TeamType = teamType;
             CreateSlots();
-            SetSlots(towers);
+            SetSlots();
         }
-    
+
 
         void CreateSlots()
         {
@@ -37,15 +39,14 @@ namespace Grid
                 };
             }
         }
-    
-        void SetSlots(List<Tower> towers)
+
+        void SetSlots()
         {
             for (int i = 0; i < SlotAmount; i++)
             {
                 Slots[i].Id = i;
-                Slots[i].Tower = towers[i];
+                Slots[i].Tower = _towers[i];
             }
         }
     }
-
 }
