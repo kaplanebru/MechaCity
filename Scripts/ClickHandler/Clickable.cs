@@ -7,7 +7,7 @@ using Towers;
 
 namespace Clicks
 {
-    public class Clickable : BaseClickable<Tower>
+    public class Clickable : BaseClickable<int> //uniqID
     {
         public int id; //for multiplayer
         public TeamType teamType;
