@@ -10,20 +10,19 @@ namespace Grid
     [Serializable]
     public class GameGrid //TODO: SO yapılabilir : 2 tane türetirilir
     {
-        [ReadOnly] public TeamType TeamType; //gerek olmayabilir, sonuçta tarafsız
+        
         public const int SlotAmount = 3;
         [ReadOnly] public Slot[] Slots = new Slot[SlotAmount];
         private List<Tower> _towers = new();
 
-        public void Initialize(TeamType teamType, List<Tower> towers)
+        public void Initialize(List<Tower> towers)
         {
             _towers = towers;
-            Setup(teamType);
+            Setup();
         }
 
-        void Setup(TeamType teamType)
+        void Setup()
         {
-            TeamType = teamType;
             CreateSlots();
             SetSlots();
         }
