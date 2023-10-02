@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Enums;
 using UnityEngine;
-using Teams;
 
 namespace UI
 {
