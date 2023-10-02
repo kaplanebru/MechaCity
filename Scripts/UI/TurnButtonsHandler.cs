@@ -1,4 +1,5 @@
 using System.Collections;
+using Network;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +25,7 @@ namespace UI
         Buttons = GetComponentsInChildren<Button>();
         DisableAllButtons();
         
-        Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest += RestartSequence;
+        NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest += RestartSequence;
         Eventbus.UIEvents.OnButtonCall += HandleSpecialCase;
     }
     
@@ -80,7 +81,7 @@ namespace UI
     private void OnDisable()
     {
         Eventbus.TurnEvents.OnInitialize -= Initialize;
-        Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest -= RestartSequence;
+        NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest -= RestartSequence;
 
         //Eventbus.TurnEvents.OnTurnEnding -= RestartSequence;
         Eventbus.UIEvents.OnButtonCall -= HandleSpecialCase;

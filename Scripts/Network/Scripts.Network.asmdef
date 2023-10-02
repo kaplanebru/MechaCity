@@ -1,0 +1,19 @@
+{
+    "name": "Scripts.Network",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8bb426bd7b6f04b41bd053132e8170af",
+        "GUID:98c54840f4466044e85e3737e6aaf330",
+        "GUID:3b8ed52f1b5c64994af4c4e0aa4b6c4b",
+        "GUID:1491147abca9d7d4bb7105af628b223e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

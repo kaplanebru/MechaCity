@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Enums;
+using Network;
 using Towers;
 
 namespace Core
@@ -21,7 +22,7 @@ namespace Core
         public override void OnHandlerEnabled()
         {
             TransferData = new();
-            Eventbus.InputEvents.OnObjectClicked += TowerSelected;
+            NetworkEventbus.InputEvents.OnObjectClicked += TowerSelected;
         }
         
         public override void ProcessIncomingData(BaseTurnTransferData data) //(params object[] args)
@@ -56,7 +57,7 @@ namespace Core
     
         public override void Unsubscribe()
         {
-            Eventbus.InputEvents.OnObjectClicked -= TowerSelected;
+            NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
         }
     
         void ResetGroups()

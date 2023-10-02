@@ -18,9 +18,9 @@ namespace Network
             
             if (IsOwner)
             {
-                Eventbus.TurnEvents.OnTurnEnding += RequestNewTurnServerRpc;
-                Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser += CompleteActionSetupServerRpc;
-                Eventbus.TurnEvents.OnTurnStarted += TurnButtonsSetup;  //not: player 1'e mi bakıyor 2 pcde de
+                NetworkEventbus.TurnEvents.OnTurnEnding += RequestNewTurnServerRpc;
+                NetworkEventbus.TriggerEvents.OnCompleteActionRequestByUser += CompleteActionSetupServerRpc;
+                NetworkEventbus.TurnEvents.OnTurnStarted += TurnButtonsSetup;  //not: player 1'e mi bakıyor 2 pcde de
             }
         }
         
@@ -35,7 +35,7 @@ namespace Network
         {
             print("owner team type: " + ownerTeamType + " currentTeamType: " + currentTeamType);
             if (currentTeamType == ownerTeamType)
-                Eventbus.NetworkRequestEvents.OnTurnButtonsShiftRequest?.Invoke();
+                NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest?.Invoke();
         }
 
 
@@ -59,9 +59,9 @@ namespace Network
             //print("complete action : " + newvalue);
 
             if (newvalue != TurnHandlerType.Selection)
-                Eventbus.NetworkRequestEvents.OnCompleteActionRequest?.Invoke();
+                NetworkEventbus.RequestEvents.OnCompleteActionRequest?.Invoke();
             else
-                Eventbus.NetworkRequestEvents.OnNewTurnRequest?.Invoke();
+                NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
         }
 
         #endregion
@@ -72,9 +72,9 @@ namespace Network
             turnHandlerType.OnValueChanged -= CompleteActionSetup;
             if (IsOwner)
             {
-                Eventbus.TurnEvents.OnTurnEnding -= RequestNewTurnServerRpc;
-                Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser -= CompleteActionSetupServerRpc;
-                Eventbus.TurnEvents.OnTurnStarted -= TurnButtonsSetup;
+                NetworkEventbus.TurnEvents.OnTurnEnding -= RequestNewTurnServerRpc;
+                NetworkEventbus.TriggerEvents.OnCompleteActionRequestByUser -= CompleteActionSetupServerRpc;
+                NetworkEventbus.TurnEvents.OnTurnStarted -= TurnButtonsSetup;
             }
         }
     }

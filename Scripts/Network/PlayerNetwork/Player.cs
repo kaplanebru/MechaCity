@@ -21,8 +21,8 @@ namespace PlayerNetwork
 
         public override void OnNetworkSpawn()
         {
-            if (IsOwner) Eventbus.NetworkTriggerEvents.OnGameEnds += GameEndServerRpc;
-            Eventbus.NetworkRequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
+            if (IsOwner) NetworkEventbus.TriggerEvents.OnGameEnds += GameEndServerRpc;
+            NetworkEventbus.RequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
         }
         
         #region SpawnTurnNetworkServerRpc
@@ -74,7 +74,7 @@ namespace PlayerNetwork
         [ClientRpc]
         void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
         {
-            Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId}); //
+            NetworkEventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId}); //
         }
         
         #region WinFailConditions
@@ -101,7 +101,7 @@ namespace PlayerNetwork
         {
             if (!IsOwner) return;
             Data.GameEndState = GameEndState.Win;
-            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+            NetworkEventbus.RequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
         }
 
         [ClientRpc]
@@ -109,7 +109,7 @@ namespace PlayerNetwork
         {
             if (!IsOwner) return;
             Data.GameEndState = GameEndState.Lose;
-            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+            NetworkEventbus.RequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
         }
 
         #endregion
@@ -118,7 +118,7 @@ namespace PlayerNetwork
         public override void OnNetworkDespawn()
         {
             if (IsOwner)
-                Eventbus.NetworkTriggerEvents.OnGameEnds -= GameEndServerRpc;
+                NetworkEventbus.TriggerEvents.OnGameEnds -= GameEndServerRpc;
         }
     }
     

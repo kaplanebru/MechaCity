@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Enums;
+using Network;
 using UnityEngine;
 using Teams;
 
@@ -37,7 +38,7 @@ namespace Core
     
         public void ActionCompletedByUser()
         {
-            Eventbus.NetworkTriggerEvents.OnCompleteActionRequestByUser?.Invoke(HandlerType);
+            NetworkEventbus.TriggerEvents.OnCompleteActionRequestByUser?.Invoke(HandlerType);
         }
     
         public abstract void Unsubscribe();

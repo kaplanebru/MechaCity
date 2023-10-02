@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using DataModels;
 using Enums;
+using Network;
 using PlayerNetwork;
 using Towers;
 
@@ -18,7 +19,7 @@ namespace Teams
         {
             Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
             Eventbus.FireEvents.OnTowerKilled += GetGridByTeam;
-            Eventbus.NetworkRequestEvents.OnPlayerSpawned += SetPlayerForTeam;
+            NetworkEventbus.RequestEvents.OnPlayerSpawned += SetPlayerForTeam;
 
             CreateTeams();
 
@@ -94,7 +95,7 @@ namespace Teams
         {
             Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
             Eventbus.FireEvents.OnTowerKilled -= GetGridByTeam;
-            Eventbus.NetworkRequestEvents.OnPlayerSpawned -= SetPlayerForTeam;
+            NetworkEventbus.RequestEvents.OnPlayerSpawned -= SetPlayerForTeam;
         }
     }
 }

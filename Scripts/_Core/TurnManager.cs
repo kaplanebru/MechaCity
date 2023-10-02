@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Enums;
+using Network;
 using Unity.Netcode;
 using UnityEngine;
 using Teams;
@@ -23,8 +24,8 @@ namespace Core
         private void OnEnable()
         {
             Eventbus.NetworkEvents.OnAllClientsSet += FirstTurn;
-            Eventbus.NetworkRequestEvents.OnCompleteActionRequest += CompleteActionByUser;
-            Eventbus.NetworkRequestEvents.OnNewTurnRequest += NewTurn;
+            NetworkEventbus.RequestEvents.OnCompleteActionRequest += CompleteActionByUser;
+            NetworkEventbus.RequestEvents.OnNewTurnRequest += NewTurn;
 
             turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
             DisableAllTurnHandlers();
@@ -72,7 +73,7 @@ namespace Core
         {
             
             
-            Eventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
+            NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
 
 
             for (var i = 0; i < turnHandlers.Length; i++)
@@ -88,7 +89,7 @@ namespace Core
             }
 
             if (!GameEnding())
-                Eventbus.TurnEvents.OnTurnEnding?.Invoke();
+                NetworkEventbus.TurnEvents.OnTurnEnding?.Invoke();
         }
 
         void GetIncomingData(int turnIndex)
@@ -129,7 +130,7 @@ namespace Core
             {
                 if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Data.Health == 0))
                 {
-                    Eventbus.NetworkTriggerEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
+                    NetworkEventbus.TriggerEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
                     print("game ends");
                     return true;
                 }
@@ -140,8 +141,8 @@ namespace Core
 
         private void OnDisable()
         {
-            Eventbus.NetworkRequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
-            Eventbus.NetworkRequestEvents.OnNewTurnRequest -= NewTurn;
+            NetworkEventbus.RequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
+            NetworkEventbus.RequestEvents.OnNewTurnRequest -= NewTurn;
             Eventbus.NetworkEvents.OnAllClientsSet -= FirstTurn;
         }
     }

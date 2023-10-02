@@ -1,4 +1,5 @@
 using Enums;
+using Network;
 using UnityEngine;
 
 
@@ -10,7 +11,7 @@ namespace UI
 
         private void OnEnable()
         {
-            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest += ShowPanel;
+            NetworkEventbus.RequestEvents.OnGameEndScreenRequest += ShowPanel;
             DisableAll();
         }
 
@@ -38,7 +39,7 @@ namespace UI
 
         private void OnDisable()
         {
-            Eventbus.NetworkRequestEvents.OnGameEndScreenRequest -= ShowPanel;
+            NetworkEventbus.RequestEvents.OnGameEndScreenRequest -= ShowPanel;
         }
     }
 }
