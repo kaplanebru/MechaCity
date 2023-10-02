@@ -1,8 +1,7 @@
 using TMPro;
-using UI;
 using UnityEngine;
 
-namespace Towers
+namespace UI
 {
     public class TowerUIHandler : MonoBehaviour
     {

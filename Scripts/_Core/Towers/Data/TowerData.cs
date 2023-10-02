@@ -18,13 +18,13 @@ namespace Data
         public bool CanShoot { get; private set; }
 
 
-        [SerializeField] private int _bulletAmount = 1;
+        [SerializeField] private int _bulletAmountt = 1;
         public int BulletAmount
         {
-            get => _bulletAmount;
+            get => _bulletAmountt;
             set
             {
-                _bulletAmount = value;
+                _bulletAmountt = value;
                 CanShoot = value > 0;
             }
         }

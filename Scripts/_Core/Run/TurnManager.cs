@@ -65,6 +65,7 @@ namespace Core
             {
                 combatHandler.CreateCombatPairByTower(tower);
             }
+            //combatHandler.RestoreBullets();
             combatHandler.CompleteAction();
             
             StartCoroutine(nameof(TurnActionRoutine));

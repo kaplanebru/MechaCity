@@ -1,5 +1,4 @@
 using UnityEngine;
-using ProjectileHandler;
 
 namespace Data
 {
@@ -8,7 +7,7 @@ namespace Data
     {
         //public Transform Model;
         public Transform HealthIndicator;
-        public Projectile ProjectileObject; //temp
+        public Transform ProjectileObject; //temp
     }
 }
 

@@ -48,6 +48,7 @@ namespace Teams
                 
                 tower.Data.SlotId = i;
                 tower.Setup(Data.TeamTowerData);
+                Eventbus.TowerEvents.OnTowerSetup?.Invoke(tower);
             }
         }
 

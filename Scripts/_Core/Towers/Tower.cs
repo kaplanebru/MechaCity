@@ -3,6 +3,7 @@ using Data;
 using UI;
 using UnityEngine;
 
+
 namespace Towers
 {
     //[RequireComponent(typeof(TowerParts))]
@@ -18,7 +19,7 @@ namespace Towers
 
         private void OnEnable()
         {
-            Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
+            //Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
             towerParts = GetComponent<TowerParts>();
             clickHandler = GetComponent<ClickHandler>();
         }
@@ -33,15 +34,15 @@ namespace Towers
             SetTeam(teamTowerData);
 
             towerParts.ChangeHeight(Data.Height); //FirstRise
+            RestoreBullets();
 
-            Eventbus.TowerEvents.OnTowerSetup?.Invoke(this);
+            //Eventbus.TowerEvents.OnTowerSetup?.Invoke(this);
         }
 
         public void SetTeam(TeamTowerData teamTowerData)
         {
             Data.TeamTowerData = teamTowerData;
             towerParts.SetColor(teamTowerData.DefaultMaterial);
-            //Eventbus.TeamEvents.OnTowerTeamSet?.Invoke(teamTowerData.TeamType, this);
             clickHandler.SetClickableTeams(teamTowerData.TeamType);
         }
 
@@ -55,14 +56,14 @@ namespace Towers
             }
         }
 
-        private void RestoreBullets() //Todo: name change: bullet hakkı
+        public void RestoreBullets() //Todo: name change: bullet hakkı
         {
             Data.BulletAmount = ConstantData.MaxBullet;
         }
 
         private void OnDisable()
         {
-            Eventbus.FireEvents.OnFireEnabled -= RestoreBullets;
+            //Eventbus.FireEvents.OnFireEnabled -= RestoreBullets;
         }
     }
 }
