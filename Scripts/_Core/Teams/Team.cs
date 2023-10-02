@@ -34,7 +34,7 @@ namespace Teams
 
         void SetGrid()
         {
-            Data.Grid.Initialize(this);
+            Data.Grid.Initialize(Data.TeamType, Data.Towers);
         }
 
         void SetTowers()

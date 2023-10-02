@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Unity.Collections;
-using Teams;
 using Enums;
+using Towers;
 
 
 namespace Grid
@@ -13,16 +14,16 @@ namespace Grid
         public const int SlotAmount = 3;
         [ReadOnly]public Slot[] Slots = new Slot[SlotAmount];
 
-        public void Initialize(Team team)
+        public void Initialize(TeamType teamType, List<Tower> towers)
         {
-            Setup(team);
+            Setup(teamType, towers);
         }
 
-        void Setup(Team team)
+        void Setup(TeamType teamType, List<Tower> towers)
         {
-            TeamType = team.Data.TeamTowerData.TeamType;
+            TeamType = teamType;
             CreateSlots();
-            SetSlots(team);
+            SetSlots(towers);
         }
     
 
@@ -37,12 +38,12 @@ namespace Grid
             }
         }
     
-        void SetSlots(Team team)
+        void SetSlots(List<Tower> towers)
         {
             for (int i = 0; i < SlotAmount; i++)
             {
                 Slots[i].Id = i;
-                Slots[i].Tower = team.Data.Towers[i];
+                Slots[i].Tower = towers[i];
             }
         }
     }
