@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Data;
 using UnityEngine;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace Teams
             if (!isMultiplayerOn)
             {
                 print("Multiplayer features are off");
-                Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
+                Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(null);
                 return;
             }
         }
@@ -54,7 +55,7 @@ namespace Teams
             teams[0].LinkFirstMatches(teams[1]);
             teams[1].LinkFirstMatches(teams[0]);
         }
-        
+
 
         private void SetPlayerForTeam(Player player, ulong id)
         {
@@ -70,7 +71,15 @@ namespace Teams
                 }
             }
 
-            Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(teams);
+            Eventbus.NetworkEvents.OnAllClientsSet?.Invoke(new object[]
+                {
+                    new Dictionary<TeamType, string>
+                    {
+                        {teams[0].Data.TeamType, teams[0].Data.Name},
+                        {teams[1].Data.TeamType, teams[1].Data.Name},
+                    }
+                }
+            );
             print("Game Started");
         }
 

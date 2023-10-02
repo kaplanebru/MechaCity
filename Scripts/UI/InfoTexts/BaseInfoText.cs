@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -8,12 +9,13 @@ namespace UI
 {
     public abstract class BaseInfoText : MonoBehaviour
     {
-        protected Team[] _teams;
-        protected TextMeshProUGUI infoText;
+        
+        protected Dictionary<TeamType, string> TeamNamesByType = new();
+        protected TextMeshProUGUI InfoText;
 
         private void OnEnable()
         {
-            infoText = GetComponentInChildren<TextMeshProUGUI>();
+            InfoText = GetComponentInChildren<TextMeshProUGUI>();
             SubscribeEvents();
         }
 
@@ -21,15 +23,16 @@ namespace UI
         {
         }
 
-        public void Setup(Team[] teams)
+        public void Setup(Dictionary<TeamType, string> teamNamesByType)
         {
-            _teams = teams;
-            SetInfoText(_teams[0].Data.Name);
+            TeamNamesByType = teamNamesByType;
+            SetInfoText(TeamNamesByType[0]);
         }
 
         public void UpdateInfoText(TeamType currentTeamType)
         {
-            SetInfoText(_teams.FirstOrDefault(t => t.Data.TeamType == currentTeamType).Data.Name);
+            SetInfoText(
+                TeamNamesByType[currentTeamType]); //(_teams.FirstOrDefault(t => t.Data.TeamType == currentTeamType).Data.Name);
         }
 
         protected abstract void SetInfoText(string teamName);

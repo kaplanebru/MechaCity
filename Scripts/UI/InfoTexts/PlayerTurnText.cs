@@ -10,7 +10,7 @@ namespace UI
 
         protected override void SetInfoText(string teamName)
         {
-            infoText.text = "Turn: " + teamName;
+            InfoText.text = "Turn: " + teamName;
         }
 
         protected override void Unsubscribe()

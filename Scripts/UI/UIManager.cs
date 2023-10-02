@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Enums;
 using UnityEngine;
 using Teams;
 
@@ -6,9 +8,9 @@ namespace UI
     public class UIManager : MonoBehaviour
     {
         //public Button playButton;
+       
         public BaseInfoText turnInfoPopupText;
         public BaseInfoText turnInfoText;
-        private Team[] _teams;
         private void OnEnable()
         {
             Eventbus.NetworkEvents.OnAllClientsSet += ShowInfoText;
@@ -21,12 +23,13 @@ namespace UI
             turnInfoPopupText.gameObject.SetActive(false);
         }
     
-        private void ShowInfoText(Team[] teams)
+        private void ShowInfoText(params object[] args)
         {
+            var teamNamesByType = args[0] as Dictionary<TeamType, string>;
             turnInfoText.gameObject.SetActive(true);
             turnInfoPopupText.gameObject.SetActive(true);
-            turnInfoText.Setup(teams);
-            turnInfoPopupText.Setup(teams);
+            turnInfoText.Setup(teamNamesByType);
+            turnInfoPopupText.Setup(teamNamesByType);
         }
     
         private void OnDisable()

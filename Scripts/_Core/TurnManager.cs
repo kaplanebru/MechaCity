@@ -56,7 +56,7 @@ namespace Core
         }
 
 
-        public void FirstTurn(Team[] teams)
+        public void FirstTurn(params object[] args)
         {
             Initialize();
             var combatHandler = turnHandlers.Last() as CombatHandler;

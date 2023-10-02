@@ -4,7 +4,7 @@ namespace UI
     {
         protected override void SetInfoText(string teamName)
         {
-            infoText.text = teamName + "'s Turn"; 
+            InfoText.text = teamName + "'s Turn"; 
         }
     }
 

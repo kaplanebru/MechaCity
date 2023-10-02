@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DataModels;
 using UnityEngine;
 using PlayerNetwork;
@@ -29,7 +30,7 @@ public static class Eventbus
 
     public static class NetworkEvents
     {
-        public static Action<Team[]> OnAllClientsSet; //Temp: later for both clients
+        public static Action<object[]> OnAllClientsSet; //Temp: later for both clients
     }
 
 
