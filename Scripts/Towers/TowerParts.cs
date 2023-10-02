@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Data;
 using DG.Tweening;
 using UnityEngine;
-using Clicks;
 
 namespace Towers
 {

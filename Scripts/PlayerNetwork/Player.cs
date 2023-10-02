@@ -1,9 +1,9 @@
 using System;
-using Data;
 using Unity.Netcode;
 using UnityEngine;
 using Clicks;
 using Network;
+using Enums;
 
 namespace PlayerNetwork
 {
@@ -75,7 +75,6 @@ namespace PlayerNetwork
         void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
         {
             Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId}); //
-            print(towerId);
         }
         
         #region WinFailConditions

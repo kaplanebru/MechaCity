@@ -1,12 +1,11 @@
-using UnityEngine;
-using System;
 
-namespace Data
-{
-    [Serializable]
-    public class ChainData
-    {
-        public int Size;
-        public TeamType teamType;
-    }
-}
+
+// namespace Data
+// {
+//     [Serializable]
+//     public class ChainData
+//     {
+//         public int Size;
+//         public TeamType teamType;
+//     }
+// }

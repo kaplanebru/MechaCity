@@ -1,13 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using Data;
-using DG.Tweening;
+using Enums;
 using Towers;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Core
 {
