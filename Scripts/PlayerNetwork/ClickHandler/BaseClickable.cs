@@ -9,12 +9,12 @@ namespace ClickHandler
 {
     public abstract class BaseClickable <T> : MonoBehaviour
     {
-        public T clickableObject; // { get; set; }
+        public T clickableParent; // { get; set; }
    
 
         private void OnMouseDown() //disabled for MP
         {
-            //Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {clickableObject});
+            //Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {clickableParent});
         }
 
         public abstract void UnsubscribeFromEvent();
@@ -28,7 +28,7 @@ namespace ClickHandler
 
         protected virtual void Setup([CanBeNull]T obj)
         {
-            clickableObject = obj;
+            clickableParent = obj;
         }
 
         private void OnDisable()

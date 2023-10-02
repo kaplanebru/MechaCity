@@ -40,7 +40,8 @@ namespace Towers
         {
             Data.TeamTowerData = teamTowerData;
             towerParts.SetColor(teamTowerData.DefaultMaterial);
-            Eventbus.TeamEvents.OnTowerTeamSet?.Invoke(teamTowerData.TeamType, this);
+            //Eventbus.TeamEvents.OnTowerTeamSet?.Invoke(teamTowerData.TeamType, this);
+            towerParts.SetClickableTeams(teamTowerData.TeamType);
         }
 
 

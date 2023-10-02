@@ -60,8 +60,8 @@ namespace PlayerNetwork
         {
             if (hit.collider.TryGetComponent(out Clickable clickable))
             {
-                if (clickable.teamType != Data.TeamType)
-                    return; //if (clickable.clickableObject.TransferData.TeamTowerData.TeamType != TransferData.TeamType) return;
+                if (clickable.teamType != Data.TeamType) return; 
+                print("clickable teamtype: " + clickable.teamType + "player team: " + Data.TeamType);
                 SendTowerIdToServerRpc(clickable.id);
             }
         }
@@ -76,6 +76,7 @@ namespace PlayerNetwork
         void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
         {
             Eventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId}); //
+            print(towerId);
         }
         
         #region WinFailConditions
@@ -126,38 +127,38 @@ namespace PlayerNetwork
 
     #region Serializing TowerNetworkData
 
-    public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkData>
-    {
-        public int Id;
-        public int Height;
-
-        public TowerNetworkData(int id, int height)
-        {
-            Id = id;
-            Height = height;
-        }
-
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-        {
-            serializer.SerializeValue(ref Id);
-            serializer.SerializeValue(ref Height);
-        }
-
-        public bool Equals(TowerNetworkData other)
-        {
-            return Id == other.Id && Height == other.Height;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is TowerNetworkData other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id, Height);
-        }
-    }
+    // public struct TowerNetworkData : INetworkSerializable, IEquatable<TowerNetworkData>
+    // {
+    //     public int Id;
+    //     public int Height;
+    //
+    //     public TowerNetworkData(int id, int height)
+    //     {
+    //         Id = id;
+    //         Height = height;
+    //     }
+    //
+    //     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    //     {
+    //         serializer.SerializeValue(ref Id);
+    //         serializer.SerializeValue(ref Height);
+    //     }
+    //
+    //     public bool Equals(TowerNetworkData other)
+    //     {
+    //         return Id == other.Id && Height == other.Height;
+    //     }
+    //
+    //     public override bool Equals(object obj)
+    //     {
+    //         return obj is TowerNetworkData other && Equals(other);
+    //     }
+    //
+    //     public override int GetHashCode()
+    //     {
+    //         return HashCode.Combine(Id, Height);
+    //     }
+    // }
 
     #endregion
 }

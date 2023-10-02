@@ -22,6 +22,7 @@ namespace Towers
     {
         public TowerPartsData Data;
 
+
         public void SetColor(Material mat)
         {
             foreach (var mesh in Data.MiddleMeshes)
@@ -41,12 +42,27 @@ namespace Towers
             //down rotate
         }
 
-        public void SetClickableIds(int id)
+        private Clickable[] _clickables;
+
+        public void SetClickables(int id)
         {
-            var clickables = GetComponentsInChildren<Clickable>();
-            foreach (var clickable in clickables)
+            _clickables = GetComponentsInChildren<Clickable>();
+            SetClickableIds(id);
+        }
+
+        void SetClickableIds(int id)
+        {
+            foreach (var clickable in _clickables)
             {
                 clickable.id = id;
+            }
+        }
+
+        public void SetClickableTeams(TeamType teamType)
+        {
+            foreach (var clickable in _clickables)
+            {
+                clickable.teamType = teamType;
             }
         }
     }
