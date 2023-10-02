@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 
 
-namespace ClickHandler
+namespace Clicks
 {
     public abstract class BaseClickable <T> : MonoBehaviour
     {

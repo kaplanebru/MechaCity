@@ -5,7 +5,7 @@ using Data;
 using Towers;
 
 
-namespace ClickHandler
+namespace Clicks
 {
     public class Clickable : BaseClickable<Tower>
     {
@@ -19,7 +19,7 @@ namespace ClickHandler
             // Eventbus.TeamEvents.OnTowerTeamSet += SetTeam;
         }
 
-        // private void SetTeam(TeamType _teamType, Tower tower)
+        // private void SetTeam(TeamType _teamType, Tower tower) //id de karşılaştırılabilir
         // {
         //     if(clickableParent !=  tower) return; //diğer teamdekiler etkilenir
         //     teamType = _teamType;

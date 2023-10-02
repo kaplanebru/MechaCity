@@ -2,7 +2,7 @@ using System;
 using Data;
 using Unity.Netcode;
 using UnityEngine;
-using ClickHandler;
+using Clicks;
 using Network;
 
 namespace PlayerNetwork
@@ -60,8 +60,7 @@ namespace PlayerNetwork
         {
             if (hit.collider.TryGetComponent(out Clickable clickable))
             {
-                if (clickable.teamType != Data.TeamType) return; 
-                print("clickable teamtype: " + clickable.teamType + "player team: " + Data.TeamType);
+                if (clickable.teamType != Data.TeamType) return;
                 SendTowerIdToServerRpc(clickable.id);
             }
         }

@@ -45,7 +45,7 @@ namespace Teams
                 int uniqIdAdditive = Data.TeamType == TeamType.Team1 ? 0 : Data.Towers.Count;
                 var tower = Data.Towers[i];
                 tower.Data.UniqID = i + uniqIdAdditive;
-                tower.towerParts.SetClickables(tower.Data.UniqID);
+                tower.clickHandler.SetClickables(tower.Data.UniqID);
                 
                 tower.Data.SlotId = i;
                 tower.Setup(Data.TeamTowerData);

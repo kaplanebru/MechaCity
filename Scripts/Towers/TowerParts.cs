@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Data;
 using DG.Tweening;
 using UnityEngine;
-using ClickHandler;
+using Clicks;
 
 namespace Towers
 {
@@ -40,30 +40,6 @@ namespace Towers
 
             Data.Top.transform.DOLocalMoveY(newHeight, 1);
             //down rotate
-        }
-
-        private Clickable[] _clickables;
-
-        public void SetClickables(int id)
-        {
-            _clickables = GetComponentsInChildren<Clickable>();
-            SetClickableIds(id);
-        }
-
-        void SetClickableIds(int id)
-        {
-            foreach (var clickable in _clickables)
-            {
-                clickable.id = id;
-            }
-        }
-
-        public void SetClickableTeams(TeamType teamType)
-        {
-            foreach (var clickable in _clickables)
-            {
-                clickable.teamType = teamType;
-            }
         }
     }
 }

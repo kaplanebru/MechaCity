@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Clicks;
 using Data;
 using UnityEngine;
 
@@ -14,12 +15,14 @@ namespace Towers
         public TowerConstantData ConstantData;
         public TowerData Data;
         public TowerParts towerParts;
+        public ClickHandler clickHandler;
 
 
         private void OnEnable()
         {
             Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
             towerParts = GetComponent<TowerParts>();
+            clickHandler = GetComponent<ClickHandler>();
         }
 
         public void Setup(TeamTowerData teamTowerData)
@@ -41,7 +44,7 @@ namespace Towers
             Data.TeamTowerData = teamTowerData;
             towerParts.SetColor(teamTowerData.DefaultMaterial);
             //Eventbus.TeamEvents.OnTowerTeamSet?.Invoke(teamTowerData.TeamType, this);
-            towerParts.SetClickableTeams(teamTowerData.TeamType);
+            clickHandler.SetClickableTeams(teamTowerData.TeamType);
         }
 
 
