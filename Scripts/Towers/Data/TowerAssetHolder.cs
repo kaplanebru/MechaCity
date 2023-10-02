@@ -7,7 +7,6 @@ namespace Data
     {
         //public Transform Model;
         public Transform HealthIndicator;
-        public Transform ProjectileObject; //temp
     }
 }
 

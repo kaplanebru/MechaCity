@@ -38,27 +38,10 @@ namespace Core
         {
             TransferData = new();
 
-            Eventbus.FireEvents.OnTowerKilled += LatestDeadTower;
-            Eventbus.FireEvents.OnMatchesRestored += SetDetachedPairsRestored;
-            
-            //Eventbus.FireEvents.OnFireEnabled?.Invoke();
-            
+            Eventbus.CombatEvents.OnTowerKilled += LatestDeadTower;
+            Eventbus.CombatEvents.OnMatchesRestored += SetDetachedPairsRestored;
         }
-
-        public void RestoreBullets()
-        {
-            
-            foreach (var team in teams)
-            {
-                team.Value.Data.Towers.ForEach(t => t.RestoreBullets());
-            }
-            // foreach (var pair in Data.CombatPairs)
-            // {
-            //     pair.Perpetrator.RestoreBullets();
-            //     pair.Victim.RestoreBullets();
-            // }
-        }
-
+        
         public override void ProcessIncomingData(BaseTurnTransferData data)
         {
             var incomingData = (TowerGroupTransferData) data;
@@ -146,6 +129,14 @@ namespace Core
             tower.Data.LinkedTowers =
                 tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.SlotId - other.Data.SlotId)).ToList();
         }
+        
+        void RestoreBullets()
+        {
+            foreach (var team in teams)
+            {
+                team.Value.Data.Towers.ForEach(t => t.RestoreBullets());
+            }
+        }
 
         void DeselectAlteredTowers() //TODO: At the end of animation
         {
@@ -166,8 +157,8 @@ namespace Core
         public override void Unsubscribe()
         {
             DeselectAlteredTowers();
-            Eventbus.FireEvents.OnTowerKilled -= LatestDeadTower;
-            Eventbus.FireEvents.OnMatchesRestored -= SetDetachedPairsRestored;
+            Eventbus.CombatEvents.OnTowerKilled -= LatestDeadTower;
+            Eventbus.CombatEvents.OnMatchesRestored -= SetDetachedPairsRestored;
         }
     }
 }

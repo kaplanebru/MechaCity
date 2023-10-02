@@ -50,7 +50,7 @@ namespace DataModels
             UIEventbus.OnHealthChange.Invoke(Victim.Data.Health, Victim.gameObject);
             
             if (Victim.Data.Health <= 0)
-                Eventbus.FireEvents.OnTowerKilled?.Invoke(Victim);
+                Eventbus.CombatEvents.OnTowerKilled?.Invoke(Victim);
 
             CombatCompleted = true;
         }

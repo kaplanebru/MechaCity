@@ -1,8 +1,6 @@
 using System;
 using DataModels;
-using UnityEngine;
 using Towers;
-using Enums;
 
 public static class Eventbus
 {
@@ -16,9 +14,8 @@ public static class Eventbus
         public static Action<Tower> OnTeamChange;
     }
 
-    public static class FireEvents
+    public static class CombatEvents
     {
-        public static Action OnFireEnabled;
         public static Action<Tower> OnTowerKilled;
         public static Action<TowerGridRelationModel> OnTowerGridDetection;
         public static Action OnMatchesRestored;

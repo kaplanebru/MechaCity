@@ -19,7 +19,7 @@ namespace Teams
         private void OnEnable()
         {
             Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
-            Eventbus.FireEvents.OnTowerKilled += GetGridByTeam;
+            Eventbus.CombatEvents.OnTowerKilled += GetGridByTeam;
             NetworkEventbus.RequestEvents.OnPlayerSpawned += SetPlayerForTeam;
 
             CreateTeams();
@@ -88,7 +88,7 @@ namespace Teams
         private void GetGridByTeam(Tower deadTower)
         {
             var team = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
-            Eventbus.FireEvents.OnTowerGridDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
+            Eventbus.CombatEvents.OnTowerGridDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
         }
 
         private void ExchangeTower(Tower deadTower)
@@ -103,7 +103,7 @@ namespace Teams
         private void OnDisable()
         {
             Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
-            Eventbus.FireEvents.OnTowerKilled -= GetGridByTeam;
+            Eventbus.CombatEvents.OnTowerKilled -= GetGridByTeam;
             NetworkEventbus.RequestEvents.OnPlayerSpawned -= SetPlayerForTeam;
         }
     }

@@ -19,7 +19,6 @@ namespace Towers
 
         private void OnEnable()
         {
-            //Eventbus.FireEvents.OnFireEnabled += RestoreBullets;
             towerParts = GetComponent<TowerParts>();
             clickHandler = GetComponent<ClickHandler>();
         }
@@ -59,11 +58,6 @@ namespace Towers
         public void RestoreBullets() //Todo: name change: bullet hakkı
         {
             Data.BulletAmount = ConstantData.MaxBullet;
-        }
-
-        private void OnDisable()
-        {
-            //Eventbus.FireEvents.OnFireEnabled -= RestoreBullets;
         }
     }
 }

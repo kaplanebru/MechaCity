@@ -10,7 +10,7 @@ namespace Core
 
         private void OnEnable()
         {
-            Eventbus.FireEvents.OnTowerGridDetection += HandleDeadTower;
+            Eventbus.CombatEvents.OnTowerGridDetection += HandleDeadTower;
         }
 
         private void HandleDeadTower(TowerGridRelationModel deadTowerGridModel)
@@ -25,7 +25,7 @@ namespace Core
             }
 
             SwitchSides(deadTower);
-            Eventbus.FireEvents.OnMatchesRestored?.Invoke();
+            Eventbus.CombatEvents.OnMatchesRestored?.Invoke();
         }
 
         void RematchDetachedTowers(TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
@@ -84,7 +84,7 @@ namespace Core
 
         private void OnDisable()
         {
-            Eventbus.FireEvents.OnTowerGridDetection -= HandleDeadTower;
+            Eventbus.CombatEvents.OnTowerGridDetection -= HandleDeadTower;
         }
 
         //TODO: STAR VE ONDİSABLE'a event listener eklenmişse düzelt. Unsubscireda da olabilir
