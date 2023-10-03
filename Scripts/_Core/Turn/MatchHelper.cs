@@ -7,7 +7,6 @@ namespace Turn
     public class MatchHelper : BaseTurnHelper
     {
         //relate to combat handler
-        public AllTowers allTowers;
 
         private void OnEnable()
         {
@@ -22,8 +21,8 @@ namespace Turn
 
             for (var i = linkedTowers.Count - 1; i >= 0; i--)
             {
-                RematchDetachedTowers(deadTowerGridModel, allTowers.GetTowerByUniqID(linkedTowers[i]));
-                RemoveLink(deadTower, allTowers.GetTowerByUniqID(linkedTowers[i]));
+                RematchDetachedTowers(deadTowerGridModel, AllTowers.GetTowerByID(linkedTowers[i]));
+                RemoveLink(deadTower, AllTowers.GetTowerByID(linkedTowers[i]));
             }
 
             SwitchSides(deadTower);

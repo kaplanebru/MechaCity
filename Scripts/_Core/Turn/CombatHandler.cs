@@ -33,7 +33,6 @@ namespace Turn
         public CombatTransferData TransferData { get; private set; }
         public override TurnHandlerType HandlerType => TurnHandlerType.Combat;
         private readonly CombatData Data = new();
-        public AllTowers allTowers;
 
 
         public override void OnHandlerEnabled()
@@ -96,7 +95,7 @@ namespace Turn
             for (var i = 0; i < tower.Data.LinkedTowerIDs.Count; i++)
             {
                 //var linkedTower = tower.Data.LinkedTowerIDs[i];
-                var linkedTower = allTowers.GetTowerByUniqID(tower.Data.LinkedTowerIDs[i]);
+                var linkedTower = AllTowers.GetTowerByID(tower.Data.LinkedTowerIDs[i]);
                 if (tower.Data.Height > linkedTower.Data.Height)
                 {
                     if (!tower.Data.CanShoot) continue;
@@ -130,7 +129,7 @@ namespace Turn
         void OrderLinkedTowersByDistance(Tower tower)
         {
             tower.Data.LinkedTowerIDs =
-                tower.Data.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.Data.SlotId - allTowers.GetTowerByUniqID(other).Data.SlotId)).ToList();
+                tower.Data.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.Data.SlotId - AllTowers.GetTowerByID(other).Data.SlotId)).ToList();
         }
         
         void RestoreBullets()
