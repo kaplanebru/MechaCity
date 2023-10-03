@@ -32,10 +32,7 @@ namespace Grid
         {
             for (int i = 0; i < SlotAmount; i++)
             {
-                Slots[i] = new Slot
-                {
-                    HasTower = true
-                };
+                Slots[i] = new Slot {};
             }
         }
 

@@ -6,8 +6,6 @@ namespace Turn
 {
     public class MatchHelper : BaseTurnHelper
     {
-        //relate to combat handler
-
         private void OnEnable()
         {
             Eventbus.CombatEvents.OnTowerGridDetection += HandleDeadTower;
@@ -17,7 +15,7 @@ namespace Turn
         {
             var deadTower = deadTowerGridModel.Tower;
             var linkedTowers = deadTower.Data.LinkedTowerIDs;
-           
+
 
             for (var i = linkedTowers.Count - 1; i >= 0; i--)
             {
@@ -49,15 +47,13 @@ namespace Turn
             if (number is >= 0 and < GameGrid.SlotAmount)
             {
                 var slot = grid.Slots[number];
-                if (slot.HasTower)
-                {
-                    if (slot.Tower.Data.TeamTowerData.TeamType ==
-                        detachedTower.Data.TeamTowerData.TeamType) //bug fix: karşıdaki tower aynı team'dense pas
-                        return 0;
+                
+                if (slot.Tower.Data.TeamTowerData.TeamType ==
+                    detachedTower.Data.TeamTowerData.TeamType) //bug fix: karşıdaki tower aynı team'dense pas
+                    return 0;
 
-                    LinkTowers(slot.Tower, detachedTower);
-                    return 1;
-                }
+                LinkTowers(slot.Tower, detachedTower);
+                return 1;
             }
 
             return 0;

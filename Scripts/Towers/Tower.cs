@@ -38,8 +38,6 @@ namespace Towers
             towerParts.ChangeHeight(Data.Height); //FirstRise
             
             RestoreBullets();
-
-            //Eventbus.TowerEvents.OnTowerSetup?.Invoke(this);
         }
 
         public void SetTeamForTowerAndClickables(TeamTowerData teamTowerData)
@@ -47,17 +45,6 @@ namespace Towers
             Data.TeamTowerData = teamTowerData;
             towerParts.SetColor(teamTowerData.DefaultMaterial);
             clickHandler.SetClickableTeams(teamTowerData.TeamType);
-        }
-
-
-        private void OnDrawGizmos() //TODO: 2 kez çizilmiş oluyor, tek kez yapılması lazım. Hem Adan Bye hem Bden Aya olmamalı
-        {
-            Gizmos.color = Color.yellow;
-            foreach (var linkedTowerID in Data.LinkedTowerIDs)
-            {
-                
-                //Gizmos.DrawLine(transform.position, linkedTowerID.transform.position);
-            }
         }
 
         public void RestoreBullets() //Todo: name change: bullet hakkı
