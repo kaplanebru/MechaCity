@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Towers
 {
-    public class TowersHolder : MonoBehaviour
+    public class AllTowers : MonoBehaviour
     {
         public List<Tower> allTowers;
         
@@ -16,7 +16,7 @@ namespace Towers
 
         private void OnEnable()
         {
-            Eventbus.TowerEvents.OnTowerRequestByID += GetTowerByUniqID;
+            //Eventbus.TowerEvents.OnTowerRequestByID += GetTowerByUniqID;
             Eventbus.TeamEvents.OnTeamsSet += GetTowers;
         }
 
@@ -30,7 +30,7 @@ namespace Towers
 
         private void OnDisable()
         {
-            Eventbus.TowerEvents.OnTowerRequestByID -= GetTowerByUniqID;
+            //Eventbus.TowerEvents.OnTowerRequestByID -= GetTowerByUniqID;
             Eventbus.TeamEvents.OnTeamsSet -= GetTowers;
         }
     }

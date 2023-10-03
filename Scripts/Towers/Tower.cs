@@ -53,9 +53,10 @@ namespace Towers
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
-            foreach (var linkedTower in Data.LinkedTowers)
+            foreach (var linkedTowerID in Data.LinkedTowerIDs)
             {
-                Gizmos.DrawLine(transform.position, linkedTower.transform.position);
+                
+                //Gizmos.DrawLine(transform.position, linkedTowerID.transform.position);
             }
         }
 
@@ -66,7 +67,7 @@ namespace Towers
 
         private void OnDisable()
         {
-            Data.LinkedTowers.Clear();
+            Data.LinkedTowerIDs.Clear();
         }
     }
 }

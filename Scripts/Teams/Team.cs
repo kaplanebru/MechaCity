@@ -71,7 +71,7 @@ namespace Teams
         {
             for (int i = 0; i < Data.Towers.Count; i++)
             {
-                Data.Towers[i].Data.LinkedTowers.Add(rivalTeam.Data.Towers[i]);
+                Data.Towers[i].Data.LinkedTowerIDs.Add(rivalTeam.Data.Towers[i].Data.UniqID);
             }
         }
     }

@@ -16,7 +16,7 @@ namespace Data
         public int SlotId; //sonradan get set eklenebilir
         public float Height;
         public TeamTowerData TeamTowerData;
-        public List<Tower> LinkedTowers;
+        public List<int> LinkedTowerIDs;
         public bool CanShoot { get; private set; }
 
 

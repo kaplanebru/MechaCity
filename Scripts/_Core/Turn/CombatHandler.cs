@@ -20,6 +20,7 @@ namespace Turn
     [Serializable]
     public class CombatData
     {
+        
         public List<CombatPair> CombatPairs = new();
         public Tower latestDeadTower;
         [ReadOnly] public float projectileSpeed = 1;
@@ -32,6 +33,7 @@ namespace Turn
         public CombatTransferData TransferData { get; private set; }
         public override TurnHandlerType HandlerType => TurnHandlerType.Combat;
         private readonly CombatData Data = new();
+        public AllTowers allTowers;
 
 
         public override void OnHandlerEnabled()
@@ -91,9 +93,10 @@ namespace Turn
         {
             OrderLinkedTowersByDistance(tower);
 
-            for (var i = 0; i < tower.Data.LinkedTowers.Count; i++)
+            for (var i = 0; i < tower.Data.LinkedTowerIDs.Count; i++)
             {
-                var linkedTower = tower.Data.LinkedTowers[i];
+                //var linkedTower = tower.Data.LinkedTowerIDs[i];
+                var linkedTower = allTowers.GetTowerByUniqID(tower.Data.LinkedTowerIDs[i]);
                 if (tower.Data.Height > linkedTower.Data.Height)
                 {
                     if (!tower.Data.CanShoot) continue;
@@ -126,8 +129,8 @@ namespace Turn
 
         void OrderLinkedTowersByDistance(Tower tower)
         {
-            tower.Data.LinkedTowers =
-                tower.Data.LinkedTowers.OrderBy(other => Mathf.Abs(tower.Data.SlotId - other.Data.SlotId)).ToList();
+            tower.Data.LinkedTowerIDs =
+                tower.Data.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.Data.SlotId - allTowers.GetTowerByUniqID(other).Data.SlotId)).ToList();
         }
         
         void RestoreBullets()

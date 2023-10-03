@@ -7,6 +7,7 @@ namespace Turn
     public class MatchHelper : BaseTurnHelper
     {
         //relate to combat handler
+        public AllTowers allTowers;
 
         private void OnEnable()
         {
@@ -16,12 +17,13 @@ namespace Turn
         private void HandleDeadTower(TowerGridRelationModel deadTowerGridModel)
         {
             var deadTower = deadTowerGridModel.Tower;
-            var linkedTowers = deadTower.Data.LinkedTowers;
+            var linkedTowers = deadTower.Data.LinkedTowerIDs;
+           
 
             for (var i = linkedTowers.Count - 1; i >= 0; i--)
             {
-                RematchDetachedTowers(deadTowerGridModel, linkedTowers[i]);
-                RemoveLink(deadTower, linkedTowers[i]);
+                RematchDetachedTowers(deadTowerGridModel, allTowers.GetTowerByUniqID(linkedTowers[i]));
+                RemoveLink(deadTower, allTowers.GetTowerByUniqID(linkedTowers[i]));
             }
 
             SwitchSides(deadTower);
@@ -64,17 +66,17 @@ namespace Turn
 
         void LinkTowers(Tower tower1, Tower tower2)
         {
-            if (!tower1.Data.LinkedTowers.Contains(tower2))
-                tower1.Data.LinkedTowers.Add(tower2);
+            if (!tower1.Data.LinkedTowerIDs.Contains(tower2.Data.UniqID))
+                tower1.Data.LinkedTowerIDs.Add(tower2.Data.UniqID);
 
-            if (!tower2.Data.LinkedTowers.Contains(tower1)) //bug fix: hem sağı gem solu alsın diye deneme
-                tower2.Data.LinkedTowers.Add(tower1);
+            if (!tower2.Data.LinkedTowerIDs.Contains(tower1.Data.UniqID)) //bug fix: hem sağı gem solu alsın diye deneme
+                tower2.Data.LinkedTowerIDs.Add(tower1.Data.UniqID);
         }
 
         void RemoveLink(Tower deadTower, Tower otherTower)
         {
-            deadTower.Data.LinkedTowers.Remove(otherTower);
-            otherTower.Data.LinkedTowers.Remove(deadTower);
+            deadTower.Data.LinkedTowerIDs.Remove(otherTower.Data.UniqID);
+            otherTower.Data.LinkedTowerIDs.Remove(deadTower.Data.UniqID);
         }
 
         void SwitchSides(Tower deadTower)
