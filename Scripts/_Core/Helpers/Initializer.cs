@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Data;
 using UnityEngine;
@@ -18,21 +19,8 @@ namespace Core
         {
             NetworkEventbus.RequestEvents.OnPlayerSpawned += SetPlayerForTeam;
             CreateTeams();
-            TurnOffMultiplayer();
-            
         }
 
-        void TurnOffMultiplayer()
-        {
-            if (!isMultiplayerOn)
-            {
-                print("Multiplayer features are off");
-                Eventbus.TeamEvents.OnTeamsSet?.Invoke(teams);
-                NetworkEventbus.OnAllClientsSet?.Invoke(null);
-                return;
-            }
-        }
-        
         void CreateTeams()
         {
             teams = new Team[assetHolder.Teams.Length];
@@ -58,6 +46,10 @@ namespace Core
             teams[id].Data.Player = player;
             player.Setup(teams[id].Data.TeamTowerData.TeamType);
 
+            if (!isMultiplayerOn)
+                goto startGame;
+            
+                
             foreach (var team in teams)
             {
                 if (team.Data.Player == null)
@@ -67,6 +59,7 @@ namespace Core
                 }
             }
 
+            startGame:
             Eventbus.TeamEvents.OnTeamsSet?.Invoke(teams);
             NetworkEventbus.OnAllClientsSet?.Invoke(new object[]
                 {

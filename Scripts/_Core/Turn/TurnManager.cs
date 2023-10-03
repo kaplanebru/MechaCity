@@ -47,6 +47,7 @@ namespace Turn
                 {"currentTeam", teams[0]},
                 {"rivalTeam", teams[1]},
             };
+            print("teams set");
         }
 
         void DisableAllTurnHandlers()
@@ -58,7 +59,7 @@ namespace Turn
         }
 
 
-        public void FirstTurn(params object[] args)
+        void FirstTurn(params object[] args)
         {
             // var x = args[0] as Team[];
             // foreach (var team in x)
@@ -66,6 +67,7 @@ namespace Turn
             //     print(team.name);
             // }
             // SetTurnTeams(args[0] as Team[]);
+            print("firstTurn");
             Initialize();
             SetFirstCombatElements();
 
