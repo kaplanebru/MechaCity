@@ -6,7 +6,7 @@ using Network;
 using Towers;
 using UI;
 
-namespace Core
+namespace Turn
 {
     [Serializable]
     public class SelectionTransferData : BaseTurnTransferData

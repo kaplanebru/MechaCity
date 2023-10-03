@@ -4,7 +4,7 @@ using Network;
 using UnityEngine;
 using Teams;
 
-namespace Core
+namespace Turn
 {
     public abstract class BaseTurnHandler : MonoBehaviour
     {

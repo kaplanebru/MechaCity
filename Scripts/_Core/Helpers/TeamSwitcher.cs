@@ -8,7 +8,7 @@ using Teams;
 using Towers;
 using UnityEngine;
 
-namespace Core
+namespace Turn
 {
     public class TeamSwitcher : BaseTurnHelper
     {

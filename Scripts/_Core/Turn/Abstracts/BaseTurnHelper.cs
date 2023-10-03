@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Core
+namespace Turn
 {
     public abstract class BaseTurnHelper : MonoBehaviour
     {

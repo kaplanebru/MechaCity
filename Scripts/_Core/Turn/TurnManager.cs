@@ -8,7 +8,7 @@ using UnityEngine;
 using Teams;
 using UI;
 
-namespace Core
+namespace Turn
 {
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {

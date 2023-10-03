@@ -5,7 +5,7 @@ using Enums;
 using Network;
 using Towers;
 
-namespace Core
+namespace Turn
 {
     [Serializable]
     public class TowerGroupTransferData : BaseTurnTransferData

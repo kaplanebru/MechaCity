@@ -8,7 +8,7 @@ using Towers;
 using Unity.Collections;
 using UnityEngine;
 
-namespace Core
+namespace Turn
 {
     public class CombatTransferData : BaseTurnTransferData // = sıfırlanacak data
     {

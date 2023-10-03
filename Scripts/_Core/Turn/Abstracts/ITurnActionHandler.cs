@@ -1,6 +1,6 @@
 
 
-namespace Core
+namespace Turn
 {
     public interface ITurnActionHandler<out TTurnData>
     {

@@ -2,7 +2,7 @@ using DataModels;
 using Grid;
 using Towers;
 
-namespace Core
+namespace Turn
 {
     public class MatchHelper : BaseTurnHelper
     {

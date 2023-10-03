@@ -1,7 +1,7 @@
 using System;
 
 
-namespace Core
+namespace Turn
 {
     [Serializable]
     public abstract class BaseTurnTransferData
