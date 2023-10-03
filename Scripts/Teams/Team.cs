@@ -33,8 +33,8 @@ namespace Teams
             for (var i = 0; i < Data.Towers.Count; i++)
             {
                 Data.Towers[i].Data = Data.TowerDatas[i];
-
             }
+            
         }
 
         void SetGrid()

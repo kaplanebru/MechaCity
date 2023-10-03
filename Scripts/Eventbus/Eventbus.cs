@@ -1,11 +1,15 @@
 using System;
+using System.Collections.Generic;
 using DataModels;
 using Teams;
 using Towers;
 
 public static class Eventbus
 {
-    
+    public static class TowerEvents
+    {
+        public static Func<int, Tower> OnTowerRequestByID;
+    }
     public static class TeamEvents
     {
         public static Action<Team[]> OnTeamsSet;
