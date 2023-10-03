@@ -4,11 +4,7 @@ using Towers;
 
 public static class Eventbus
 {
-    public static class TowerEvents
-    {
-        public static Action<Tower> OnTowerSetup;
-    }
-
+    
     public static class TeamEvents
     {
         public static Action<Tower> OnTeamChange;

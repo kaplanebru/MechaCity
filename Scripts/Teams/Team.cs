@@ -44,18 +44,17 @@ namespace Teams
                 int uniqIdAdditive = Data.TeamType == TeamType.Team1 ? 0 : Data.Towers.Count;
                 var tower = Data.Towers[i];
                 tower.Data.UniqID = i + uniqIdAdditive;
-                tower.clickHandler.SetClickables(tower.Data.UniqID);
+                //tower.clickHandler.SetClickables(tower.Data.UniqID);
                 
                 tower.Data.SlotId = i;
                 tower.Setup(Data.TeamTowerData);
-                Eventbus.TowerEvents.OnTowerSetup?.Invoke(tower);
             }
         }
 
         public void TakeTowerFromRival(Tower tower)
         {
             Data.Towers.Add(tower);
-            tower.SetTeam(Data.TeamTowerData);
+            tower.SetTeamForTowerAndClickables(Data.TeamTowerData);
         }
 
         public void RemoveTower(Tower tower)

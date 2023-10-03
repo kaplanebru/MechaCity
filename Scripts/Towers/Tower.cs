@@ -29,16 +29,19 @@ namespace Towers
 
             Data.Health = ConstantData.StartHealth;
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
-
-            SetTeam(teamTowerData);
+            
+            
+            clickHandler.SetClickables(Data.UniqID);
+            SetTeamForTowerAndClickables(teamTowerData);
 
             towerParts.ChangeHeight(Data.Height); //FirstRise
+            
             RestoreBullets();
 
             //Eventbus.TowerEvents.OnTowerSetup?.Invoke(this);
         }
 
-        public void SetTeam(TeamTowerData teamTowerData)
+        public void SetTeamForTowerAndClickables(TeamTowerData teamTowerData)
         {
             Data.TeamTowerData = teamTowerData;
             towerParts.SetColor(teamTowerData.DefaultMaterial);
