@@ -50,7 +50,7 @@ namespace Towers
         }
 
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmos() //TODO: 2 kez çizilmiş oluyor, tek kez yapılması lazım. Hem Adan Bye hem Bden Aya olmamalı
         {
             Gizmos.color = Color.yellow;
             foreach (var linkedTowerID in Data.LinkedTowerIDs)

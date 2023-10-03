@@ -18,7 +18,6 @@ namespace Towers
 
         private void OnEnable()
         {
-            //Eventbus.TowerEvents.OnTowerRequestByID += GetTowerByID;
             Eventbus.TeamEvents.OnTeamsSet += GetTowers;
         }
 
@@ -34,8 +33,19 @@ namespace Towers
 
         private void OnDisable()
         {
-            //Eventbus.TowerEvents.OnTowerRequestByID -= GetTowerByID;
             Eventbus.TeamEvents.OnTeamsSet -= GetTowers;
+        }
+        
+        private void OnDrawGizmos() //TODO: 2 kez çizilmiş oluyor, tek kez yapılması lazım. Hem Adan Bye hem Bden Aya olmamalı
+        {
+            Gizmos.color = Color.yellow;
+            for (int i = 0; i < _allTowers.Count/2; i++)
+            {
+                foreach (var linkedTowerID in _allTowers[i].Data.LinkedTowerIDs)
+                {
+                    Gizmos.DrawLine(_allTowers[i].transform.position, GetTowerByID(linkedTowerID).transform.position);
+                }
+            }
         }
     }
 
