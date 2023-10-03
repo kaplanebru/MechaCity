@@ -15,8 +15,8 @@ namespace Core
         public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
         BaseTurnHandler[] turnHandlers;
         Dictionary<string, Team> turnTeams;
+
         
-        [SerializeField] private TeamsHandler teamsHandler;
         public TeamType currentTeamType = TeamType.Team1;
 
         private BaseTurnHandler currentTurnHandler;
@@ -24,6 +24,8 @@ namespace Core
 
         private void OnEnable()
         {
+             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
+            
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteActionRequest += CompleteActionByUser;
             NetworkEventbus.RequestEvents.OnNewTurnRequest += NewTurn;
@@ -34,17 +36,16 @@ namespace Core
 
         private void Initialize()
         {
-            SetTurnTeams();
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
 
 
-        void SetTurnTeams()
+        void SetTurnTeams(Team[] teams)
         {
             turnTeams = new Dictionary<string, Team>()
             {
-                {"currentTeam", teamsHandler.teams[0]},
-                {"rivalTeam", teamsHandler.teams[1]},
+                {"currentTeam", teams[0]},
+                {"rivalTeam", teams[1]},
             };
         }
 
@@ -59,25 +60,37 @@ namespace Core
 
         public void FirstTurn(params object[] args)
         {
+            // var x = args[0] as Team[];
+            // foreach (var team in x)
+            // {
+            //     print(team.name);
+            // }
+            // SetTurnTeams(args[0] as Team[]);
             Initialize();
-            var combatHandler = turnHandlers.Last() as CombatHandler;
+            SetFirstCombatElements();
+
+            StartCoroutine(nameof(TurnActionRoutine));
+        }
+
+        void SetFirstCombatElements()
+        {
+            var combatHandler = turnHandlers.FirstOrDefault(i =>
+                    i as CombatHandler != null) as CombatHandler;
+            combatHandler.enabled = true;
             foreach (var tower in turnTeams["currentTeam"].Data.Towers)
             {
                 combatHandler.CreateCombatPairByTower(tower);
             }
-            //combatHandler.RestoreBullets();
+
+            // var teamSwitcher = combatHandler.TurnHelpers.FirstOrDefault(h => h as TeamSwitcher != null) as TeamSwitcher;
+            // teamSwitcher.GetTeams(initializer.teams);
             combatHandler.CompleteAction();
-            
-            StartCoroutine(nameof(TurnActionRoutine));
         }
 
         IEnumerator TurnActionRoutine()
         {
-            
-            
             NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
-
-
+            
             for (var i = 0; i < turnHandlers.Length; i++)
             {
                 currentTurnHandler = turnHandlers[i];
@@ -143,6 +156,8 @@ namespace Core
 
         private void OnDisable()
         {
+            Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
+            
             NetworkEventbus.RequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
             NetworkEventbus.RequestEvents.OnNewTurnRequest -= NewTurn;
             NetworkEventbus.OnAllClientsSet -= FirstTurn;

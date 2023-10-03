@@ -1,16 +1,14 @@
 using System.Collections.Generic;
 using Data;
 using UnityEngine;
-using System.Linq;
-using DataModels;
 using Enums;
 using Network;
 using PlayerNetwork;
-using Towers;
+using Teams;
 
-namespace Teams
+namespace Core
 {
-    public class TeamsHandler : MonoBehaviour
+    public class Initializer : MonoBehaviour
     {
         public Team[] teams;
         public TeamsHolder assetHolder;
@@ -18,13 +16,10 @@ namespace Teams
 
         private void OnEnable()
         {
-            Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
-            Eventbus.CombatEvents.OnTowerKilled += GetGridByTeam;
             NetworkEventbus.RequestEvents.OnPlayerSpawned += SetPlayerForTeam;
-
             CreateTeams();
-
             TurnOffMultiplayer();
+            
         }
 
         void TurnOffMultiplayer()
@@ -32,12 +27,12 @@ namespace Teams
             if (!isMultiplayerOn)
             {
                 print("Multiplayer features are off");
+                Eventbus.TeamEvents.OnTeamsSet?.Invoke(teams);
                 NetworkEventbus.OnAllClientsSet?.Invoke(null);
                 return;
             }
         }
-
-
+        
         void CreateTeams()
         {
             teams = new Team[assetHolder.Teams.Length];
@@ -54,6 +49,7 @@ namespace Teams
         {
             teams[0].LinkFirstMatches(teams[1]);
             teams[1].LinkFirstMatches(teams[0]);
+           
         }
 
 
@@ -71,6 +67,7 @@ namespace Teams
                 }
             }
 
+            Eventbus.TeamEvents.OnTeamsSet?.Invoke(teams);
             NetworkEventbus.OnAllClientsSet?.Invoke(new object[]
                 {
                     new Dictionary<TeamType, string>
@@ -83,27 +80,8 @@ namespace Teams
             print("Game Started");
         }
 
-        Team GetTeamDataByTeamType(TeamType type) => teams.First(team => team.Data.TeamType == type);
-
-        private void GetGridByTeam(Tower deadTower)
-        {
-            var team = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
-            Eventbus.CombatEvents.OnTowerGridDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
-        }
-
-        private void ExchangeTower(Tower deadTower)
-        {
-            Team oldTeam = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
-            Team newTeam = teams.FirstOrDefault(t => t != oldTeam);
-
-            oldTeam.RemoveTower(deadTower);
-            newTeam.TakeTowerFromRival(deadTower);
-        }
-
         private void OnDisable()
         {
-            Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
-            Eventbus.CombatEvents.OnTowerKilled -= GetGridByTeam;
             NetworkEventbus.RequestEvents.OnPlayerSpawned -= SetPlayerForTeam;
         }
     }

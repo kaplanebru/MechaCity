@@ -1,5 +1,6 @@
 using System;
 using DataModels;
+using Teams;
 using Towers;
 
 public static class Eventbus
@@ -7,6 +8,7 @@ public static class Eventbus
     
     public static class TeamEvents
     {
+        public static Action<Team[]> OnTeamsSet;
         public static Action<Tower> OnTeamChange;
     }
 
