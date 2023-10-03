@@ -21,6 +21,7 @@ namespace Data
 
 
         public TeamTowerData TeamTowerData;
+        public List<TowerData> TowerDatas;
     }
     
 }

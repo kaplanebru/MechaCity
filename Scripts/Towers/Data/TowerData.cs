@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using Towers;
 using UnityEngine;
 
+
 namespace Data
 {
+    [CreateAssetMenu(fileName = nameof(TowerData))]
     [Serializable]
-    public class TowerData
+    public class TowerData : ScriptableObject
     {
         public int UniqID;
         //public string uniqueID = Guid.NewGuid().ToString();

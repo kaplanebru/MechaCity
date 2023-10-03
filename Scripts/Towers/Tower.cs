@@ -1,3 +1,4 @@
+using System;
 using Clicks;
 using Data;
 using UI;
@@ -61,6 +62,11 @@ namespace Towers
         public void RestoreBullets() //Todo: name change: bullet hakkı
         {
             Data.BulletAmount = ConstantData.MaxBullet;
+        }
+
+        private void OnDisable()
+        {
+            Data.LinkedTowers.Clear();
         }
     }
 }

@@ -30,6 +30,11 @@ namespace Teams
         {
             var towersPb = Instantiate(ConstructorData.TowersPrefab, transform);
             Data.Towers = towersPb.GetComponentsInChildren<Tower>().ToList();
+            for (var i = 0; i < Data.Towers.Count; i++)
+            {
+                Data.Towers[i].Data = Data.TowerDatas[i];
+
+            }
         }
 
         void SetGrid()
