@@ -1,7 +1,6 @@
 using UnityEngine;
-using Teams;
 
-namespace Data
+namespace Teams
 {
     [CreateAssetMenu(fileName = nameof(TeamsHolder))]
     public class TeamsHolder : ScriptableObject

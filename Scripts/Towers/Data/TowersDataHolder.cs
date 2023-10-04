@@ -1,4 +1,3 @@
-using Data;
 using UnityEngine;
 
 namespace Towers

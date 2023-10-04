@@ -3,7 +3,7 @@ using Enums;
 using UnityEngine;
 
 
-namespace Data
+namespace Towers
 {
     [Serializable]
     [CreateAssetMenu(fileName = nameof(TowerConstantData))]

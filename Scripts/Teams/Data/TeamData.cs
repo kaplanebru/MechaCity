@@ -4,8 +4,9 @@ using Enums;
 using UnityEngine;
 using Grid;
 using PlayerNetwork;
+using Towers;
 
-namespace Data
+namespace Teams
 {
     [CreateAssetMenu(fileName = nameof(TeamData))]
 

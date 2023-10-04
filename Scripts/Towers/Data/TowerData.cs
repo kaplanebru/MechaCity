@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Data
+namespace Towers
 {
     // [CreateAssetMenu(fileName = nameof(TowerData))]
     [Serializable]

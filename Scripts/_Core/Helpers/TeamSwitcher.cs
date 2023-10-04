@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Data;
-using DataModels;
 using Enums;
 using Teams;
 using Towers;
@@ -27,13 +22,8 @@ namespace Turn
         }
     
          Team GetTeamDataByTeamType(TeamType type) => _teams.First(team => team.Data.TeamType == type);
-        // private void GetGridByTeam(TowerData deadTower)
-        // {
-        //     var team = GetTeamDataByTeamType(deadTower.TeamTowerData.TeamType);
-        //     Eventbus.CombatEvents.OnTowerGridDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
-        // }
 
-        private void ExchangeTower(TowerData deadTower)
+         private void ExchangeTower(TowerData deadTower)
         {
             Team oldTeam = GetTeamDataByTeamType(deadTower.TeamTowerData.TeamType);
             Team newTeam = _teams.FirstOrDefault(t => t != oldTeam);
