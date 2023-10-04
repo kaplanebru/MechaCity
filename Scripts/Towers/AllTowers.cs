@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Data;
-using Enums;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public static class TowerEvents
@@ -19,20 +16,14 @@ namespace Towers
         public static int TowersCount;
         public static List<Tower> Towers = new();
         public static List<TowerData> Datas = new();
-        
-        [SerializeField] List<Tower> towers = new(); //for debug
-       
-        
-        public Transform[] TowersPrefab;
+
+        [SerializeField] Transform[] TowersPrefab;
         [SerializeField] TowersDataHolder constantDatas;
         
 
 
         public static Tower GetTower(int id) => Towers[id]; //Towers.FirstOrDefault(t => t.Data.UniqID == id);
         public static TowerData GetData(int id) => Datas[id]; //Towers[id].Data;//Datas[i];
-        
-        
-        
         
 
         private void OnEnable()
@@ -53,17 +44,14 @@ namespace Towers
             foreach (var prefab in TowersPrefab)
             {
                 var towersPb = Instantiate(prefab, transform);
-                towers.AddRange(towersPb.GetComponentsInChildren<Tower>().ToList());
+                Towers.AddRange(towersPb.GetComponentsInChildren<Tower>().ToList());
             }
-
-            Towers = towers;
+            
             TowersCount = Towers.Count;
         }
 
         void CreateDatas()
         {
-            //Datas = new TowerData [TowersCount];
-            
             for (int i = 0; i < TowersCount; i++)
             {
                 Datas.Add(new TowerData(i));
@@ -80,9 +68,7 @@ namespace Towers
             }
             SetFirstMatches();
         }
-
         
-
         void SetFirstMatches()
         {
             int teamTowerAmount = TowersCount / 2;
@@ -100,7 +86,7 @@ namespace Towers
         }
 
 
-        private void OnDrawGizmos() //TODO: 2 kez çizilmiş oluyor, tek kez yapılması lazım. Hem Adan Bye hem Bden Aya olmamalı
+        private void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
             for (int i = 0; i < Towers.Count / 2; i++)
@@ -112,26 +98,5 @@ namespace Towers
             }
         }
     }
-
-    // private void OnDisable()
-    // {
-    //     //Eventbus.TeamEvents.OnTeamsSet -= GetTowers;
-    //     //TowerEvents.OnInitialize -= GetTowers;
-    // }
-
-    // void GetTowers(Towers<Tower> towers)
-    // {
-    //     _towers.AddRange(towers);
-    //     Towers = _towers;
-    // }
-
-    // void GetTowers(Team[] teams)
-    // {
-    //     foreach (var team in teams)
-    //     {
-    //        // _towers.AddRange(team.Data.TowerIds);
-    //     }
-    //
-    //     Towers = _towers;
-    // }
+    
 }

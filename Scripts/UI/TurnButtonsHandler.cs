@@ -3,7 +3,7 @@ using Network;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace GameUI
 {
     public class TurnButtonsHandler : MonoBehaviour
 {

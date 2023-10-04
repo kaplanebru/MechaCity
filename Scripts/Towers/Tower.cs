@@ -1,7 +1,6 @@
-using System;
 using Clicks;
 using Data;
-using UI;
+using GameUI;
 using UnityEngine;
 
 

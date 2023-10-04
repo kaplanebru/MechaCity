@@ -4,7 +4,7 @@ using System.Linq;
 using Enums;
 using Network;
 using Towers;
-using UI;
+using GameUI;
 
 namespace Turn
 {

@@ -7,7 +7,7 @@ using Unity.Netcode;
 using UnityEngine;
 using Teams;
 using Towers;
-using UI;
+using GameUI;
 
 namespace Turn
 {

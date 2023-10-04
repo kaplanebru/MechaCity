@@ -3,7 +3,7 @@ using Enums;
 using Network;
 using UnityEngine;
 
-namespace UI
+namespace GameUI
 {
     public class UIManager : MonoBehaviour
     {

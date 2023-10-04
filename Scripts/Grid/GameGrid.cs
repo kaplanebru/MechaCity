@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Data;
 using Unity.Collections;
-using Enums;
-using Towers;
 
 
 namespace Grid

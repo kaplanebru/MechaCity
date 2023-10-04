@@ -1,6 +1,6 @@
 using System;
 using DG.Tweening;
-using UI;
+using GameUI;
 using UnityEngine;
 
 namespace Towers
