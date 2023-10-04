@@ -11,7 +11,7 @@ namespace Turn
     [Serializable]
     public class SelectionTransferData : BaseTurnTransferData
     {
-        public List<Tower> SelectionGroup = new();
+        public List<int> SelectionGroup = new();
         
     }
 
@@ -34,7 +34,7 @@ namespace Turn
             //var tower = args[0] as Tower;
             int selectedTowerUniqID = (int) args[0];
 
-            var tower = teams["currentTeam"].Data.Towers.FirstOrDefault(t => t.Data.UniqID == selectedTowerUniqID); //uniq id ile dictionary tutulabilir
+            var tower = teams["currentTeam"].Data.TowerIds.FirstOrDefault(t => t == selectedTowerUniqID); //uniq id ile dictionary tutulabilir
             if (tower == null) return;
 
 
@@ -52,9 +52,9 @@ namespace Turn
             ManageCompleteButton(false);
         }
 
-        void AddToSelection(bool select, Tower newTower)
+        void AddToSelection(bool select, int newTower)
         {
-            newTower.towerParts.SetColor(select
+            AllTowers.GetTower(newTower).towerParts.SetColor(select
                 ? teams["currentTeam"].Data.TeamTowerData.SelectedMaterial
                 : teams["currentTeam"].Data.TeamTowerData.DefaultMaterial);
 
@@ -72,7 +72,7 @@ namespace Turn
         }
 
 
-        bool SelectedTwice(Tower newTower)
+        bool SelectedTwice(int newTower)
         {
             if (TransferData.SelectionGroup.Contains(newTower))
             {

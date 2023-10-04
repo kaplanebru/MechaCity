@@ -1,3 +1,4 @@
+using Data;
 using DataModels;
 using Grid;
 using Towers;
@@ -6,6 +7,7 @@ namespace Turn
 {
     public class MatchHelper : BaseTurnHelper
     {
+        public TowersDataHolder towerDatas;
         private void OnEnable()
         {
             Eventbus.CombatEvents.OnTowerGridDetection += HandleDeadTower;
@@ -19,8 +21,8 @@ namespace Turn
 
             for (var i = linkedTowers.Count - 1; i >= 0; i--)
             {
-                RematchDetachedTowers(deadTowerGridModel, AllTowers.GetTowerByID(linkedTowers[i]));
-                RemoveLink(deadTower, AllTowers.GetTowerByID(linkedTowers[i]));
+                RematchDetachedTowers(deadTowerGridModel, AllTowers.GetTower(linkedTowers[i]));
+                RemoveLink(deadTower, AllTowers.GetTower(linkedTowers[i]));
             }
 
             SwitchSides(deadTower);
@@ -48,24 +50,24 @@ namespace Turn
             {
                 var slot = grid.Slots[number];
                 
-                if (slot.Tower.Data.TeamTowerData.TeamType ==
+                if (towerDatas.GetTowerData(slot.TowerID).TeamTowerData.TeamType ==
                     detachedTower.Data.TeamTowerData.TeamType) //bug fix: karşıdaki tower aynı team'dense pas
                     return 0;
 
-                LinkTowers(slot.Tower, detachedTower);
+                LinkTowers(towerDatas.GetTowerData(slot.TowerID), detachedTower.Data);
                 return 1;
             }
 
             return 0;
         }
 
-        void LinkTowers(Tower tower1, Tower tower2)
+        void LinkTowers(TowerData tower1, TowerData tower2)
         {
-            if (!tower1.Data.LinkedTowerIDs.Contains(tower2.Data.UniqID))
-                tower1.Data.LinkedTowerIDs.Add(tower2.Data.UniqID);
+            if (!tower1.LinkedTowerIDs.Contains(tower2.UniqID))
+                tower1.LinkedTowerIDs.Add(tower2.UniqID);
 
-            if (!tower2.Data.LinkedTowerIDs.Contains(tower1.Data.UniqID)) //bug fix: hem sağı gem solu alsın diye deneme
-                tower2.Data.LinkedTowerIDs.Add(tower1.Data.UniqID);
+            if (!tower2.LinkedTowerIDs.Contains(tower1.UniqID)) //bug fix: hem sağı gem solu alsın diye deneme
+                tower2.LinkedTowerIDs.Add(tower1.UniqID);
         }
 
         void RemoveLink(Tower deadTower, Tower otherTower)

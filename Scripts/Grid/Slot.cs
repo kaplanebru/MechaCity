@@ -9,7 +9,7 @@ namespace Grid
     {
        
         public int Id;
-        public Tower Tower;
+        public int TowerID;
     }
 
 }

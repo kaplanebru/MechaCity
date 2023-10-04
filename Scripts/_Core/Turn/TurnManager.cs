@@ -6,6 +6,7 @@ using Network;
 using Unity.Netcode;
 using UnityEngine;
 using Teams;
+using Towers;
 using UI;
 
 namespace Turn
@@ -47,7 +48,6 @@ namespace Turn
                 {"currentTeam", teams[0]},
                 {"rivalTeam", teams[1]},
             };
-            print("teams set");
         }
 
         void DisableAllTurnHandlers()
@@ -67,7 +67,7 @@ namespace Turn
             //     print(team.name);
             // }
             // SetTurnTeams(args[0] as Team[]);
-            print("firstTurn");
+           
             Initialize();
             SetFirstCombatElements();
 
@@ -79,9 +79,9 @@ namespace Turn
             var combatHandler = turnHandlers.FirstOrDefault(i =>
                     i as CombatHandler != null) as CombatHandler;
             combatHandler.enabled = true;
-            foreach (var tower in turnTeams["currentTeam"].Data.Towers)
+            foreach (var tower in turnTeams["currentTeam"].Data.TowerIds)
             {
-                combatHandler.CreateCombatPairByTower(tower);
+                combatHandler.CreateCombatPairByTower(AllTowers.GetTower(tower));
             }
 
             // var teamSwitcher = combatHandler.TurnHelpers.FirstOrDefault(h => h as TeamSwitcher != null) as TeamSwitcher;
@@ -145,7 +145,7 @@ namespace Turn
         {
             foreach (var team in turnTeams)
             {
-                if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Data.Health == 0))
+                if (team.Value.Data.TowerIds.Count < 2 || team.Value.Data.TowerIds.All(t => AllTowers.GetTower(t).Data.Health == 0))
                 {
                     NetworkEventbus.TriggerEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
                     print("game ends");

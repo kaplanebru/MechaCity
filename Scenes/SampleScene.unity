@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 793d2be57d0dc0040a5f15b3d74cfd92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allTowers: {fileID: 1484794543}
+  towerDatas: {fileID: 11400000, guid: 59b44fa1b60a2e24fb78ab3cfc8fef0c, type: 2}
 --- !u!1 &324423657
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,9 +629,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b9819e6945ca8b43aaf53d61fbaf72f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TowersPrefab: []
+  NetworkUIController: {fileID: 923155417}
   teams: []
   assetHolder: {fileID: 11400000, guid: a2d96ec40fc3ed3408057310e9159772, type: 2}
-  isMultiplayerOn: 1
+  isMultiplayerOn: 0
+  towerDatas: {fileID: 11400000, guid: 59b44fa1b60a2e24fb78ab3cfc8fef0c, type: 2}
+  players:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &560683655
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1436,7 +1442,6 @@ MonoBehaviour:
   turnAction: 0
   TurnHelpers:
   - {fileID: 99857715}
-  allTowers: {fileID: 1484794543}
 --- !u!1 &917562591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1588,7 +1593,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &923155417
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2768,7 +2773,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e552255b8bdb5a4b81903949028a60a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allTowers: []
+  _towers: []
+  TowersPrefab:
+  - {fileID: 5579547957973982615, guid: 05c482badfba7d24eb2c1f172eafeadf, type: 3}
+  - {fileID: 1247575438718957919, guid: 3c7ffae76fc75144fb2066bf0fa55c07, type: 3}
+  towerDatas: {fileID: 11400000, guid: 59b44fa1b60a2e24fb78ab3cfc8fef0c, type: 2}
 --- !u!4 &1484794544
 Transform:
   m_ObjectHideFlags: 0

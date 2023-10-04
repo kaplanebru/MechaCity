@@ -12,8 +12,7 @@ namespace Turn
 {
     public class CombatTransferData : BaseTurnTransferData // = sıfırlanacak data
     {
-        public List<Tower> AlteredTowers = new();
-        public List<TowerGridRelationModel> DeadTowers = new();
+        public List<int> AlteredTowers = new();
     }
 
 
@@ -52,7 +51,7 @@ namespace Turn
         public override void Setup()
         {
             RemoveAlteredCombatPairs();
-            TransferData.AlteredTowers.ForEach(CreateCombatPairByTower);
+            TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetTower(t)));
             //RestoreBullets();
             StartCoroutine(nameof(FireRoutine));
         }
@@ -84,18 +83,19 @@ namespace Turn
             }
 
             yield return new WaitForSeconds(0.1f);
-            RestoreBullets();
+            AllTowers.RestoreBullets();
+            //RestoreBullets();
             CompleteAction();
         }
 
         public void CreateCombatPairByTower(Tower tower)
         {
-            OrderLinkedTowersByDistance(tower);
+            //OrderLinkedTowersByDistance(tower);
 
             for (var i = 0; i < tower.Data.LinkedTowerIDs.Count; i++)
             {
                 //var linkedTower = tower.Data.LinkedTowerIDs[i];
-                var linkedTower = AllTowers.GetTowerByID(tower.Data.LinkedTowerIDs[i]);
+                var linkedTower = AllTowers.GetTower(tower.Data.LinkedTowerIDs[i]);
                 if (tower.Data.Height > linkedTower.Data.Height)
                 {
                     if (!tower.Data.CanShoot) continue;
@@ -129,20 +129,20 @@ namespace Turn
         void OrderLinkedTowersByDistance(Tower tower)
         {
             tower.Data.LinkedTowerIDs =
-                tower.Data.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.Data.SlotId - AllTowers.GetTowerByID(other).Data.SlotId)).ToList();
+                tower.Data.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.Data.SlotId - AllTowers.GetTower(other).Data.SlotId)).ToList();
         }
         
-        void RestoreBullets()
-        {
-            foreach (var team in teams)
-            {
-                team.Value.Data.Towers.ForEach(t => t.RestoreBullets());
-            }
-        }
+        // void RestoreBullets()
+        // {
+        //     foreach (var team in teams)
+        //     {
+        //         team.Value.Data.TowerIds.ForEach(t => t.RestoreBullets());
+        //     }
+        // }
 
         void DeselectAlteredTowers() //TODO: At the end of animation
         {
-            TransferData.AlteredTowers.ForEach(t => t.towerParts.SetColor(t.Data.TeamTowerData.DefaultMaterial));
+            TransferData.AlteredTowers.ForEach(t => AllTowers.GetTower(t).towerParts.SetColor( AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
         }
 
         private void SetDetachedPairsRestored()
@@ -153,7 +153,7 @@ namespace Turn
         private void LatestDeadTower(Tower tower)
         {
             Data.latestDeadTower = tower;
-            Data.CombatPairs.RemoveAll(p => p.Contains(Data.latestDeadTower));
+            Data.CombatPairs.RemoveAll(p => p.Contains(Data.latestDeadTower.Data.UniqID));
         }
 
         public override void Unsubscribe()

@@ -20,9 +20,9 @@ namespace DataModels
             IsEven = isEven;
         }
 
-        public bool Contains(Tower newTower)
+        public bool Contains(int newTower)
         {
-            return Perpetrator == newTower || Victim == newTower;
+            return Perpetrator.Data.UniqID == newTower || Victim.Data.UniqID == newTower;
         }
 
         public void Combat(float duration)

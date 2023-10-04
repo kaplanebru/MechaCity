@@ -10,7 +10,7 @@ namespace Turn
     [Serializable]
     public class TowerGroupTransferData : BaseTurnTransferData
     {
-        public List<Tower> TowerGroup = new();
+        public List<int> TowerGroup = new();
     }
     
     public class TowerGroupHandler : BaseTurnHandler, ITurnActionHandler<TowerGroupTransferData>
@@ -36,33 +36,32 @@ namespace Turn
         private void TowerSelected(params object[] args)
         {
             int selectedTowerUniqID = (int)args[0];
-            var tower = TransferData.TowerGroup.FirstOrDefault(t => t.Data.UniqID == selectedTowerUniqID);
-            //var tower = args[0] as Tower;
-            if (tower == null) return;
-    
-            if (!TransferData.TowerGroup.Contains(tower)) return;
-            RiseAndFall(tower, 1, true);
+            var towerID = TransferData.TowerGroup.FirstOrDefault(t => t == selectedTowerUniqID);
+
+            if (!TransferData.TowerGroup.Contains(towerID)) return;
+            RiseAndFall(AllTowers.GetTower(towerID), 1, true);
         }
     
         void RiseAndFall(Tower selectedTower, float amount, bool rise)
         {
-            foreach (var tower in TransferData.TowerGroup)
+            foreach (var towerID in TransferData.TowerGroup)
             {
-                if (tower == selectedTower)
-                    tower.towerParts.ChangeHeight(tower.Data.Height += amount);
+                if (towerID == selectedTower.Data.UniqID)
+                {
+                    selectedTower.towerParts.ChangeHeight(selectedTower.Data.Height += amount);
+                }
                 else
-                    tower.towerParts.ChangeHeight(tower.Data.Height -= amount / (TransferData.TowerGroup.Count - 1));
+                {
+                    var otherTower = AllTowers.GetTower(towerID);
+                    otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= amount / (TransferData.TowerGroup.Count - 1));
+                }
             }
+            
         }
     
         public override void Unsubscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
-        }
-    
-        void ResetGroups()
-        {
-            TransferData.TowerGroup.Clear();
         }
     }
 }

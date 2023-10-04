@@ -13,11 +13,11 @@ namespace Grid
         
         public const int SlotAmount = 3;
         [ReadOnly] public Slot[] Slots = new Slot[SlotAmount];
-        private List<Tower> _towers = new();
+        private List<int> _towerIDs = new();
 
-        public void Initialize(List<Tower> towers)
+        public void Initialize(List<int> towerIDs)
         {
-            _towers = towers;
+            _towerIDs = towerIDs;
             Setup();
         }
 
@@ -41,7 +41,7 @@ namespace Grid
             for (int i = 0; i < SlotAmount; i++)
             {
                 Slots[i].Id = i;
-                Slots[i].Tower = _towers[i];
+                Slots[i].TowerID = _towerIDs[i];
             }
         }
     }

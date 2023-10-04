@@ -16,12 +16,13 @@ namespace Data
         public string Name;
         public TeamType TeamType;
         public Player Player;
-        public List<Tower> Towers = new();
+        public List<int> TowerIds = new();
         public GameGrid Grid;
+        public TowersDataHolder towerDatas;
 
 
         public TeamTowerData TeamTowerData;
-        public List<TowerData> TowerDatas;
+        //public Towers<TowerData> TowerDatas;
     }
     
 }

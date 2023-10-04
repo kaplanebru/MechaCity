@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Enums;
@@ -6,8 +7,14 @@ using Towers;
 using UnityEngine;
 
 
+
 namespace Teams
 {
+    public static class TowerEvents
+    {
+        public static Action<List<Tower>> OnTowersCreated;
+    }
+
     [Serializable]
     public class TeamConstructorData
     {
@@ -18,60 +25,63 @@ namespace Teams
     {
         public TeamData Data;
         [SerializeField] TeamConstructorData ConstructorData;
+        
+        //private Towers<Tower> _towers = new();
 
         public void Initialize()
         {
-            AssignTowers();
+            //AssignTowers();
             SetGrid();
             SetTowers();
         }
+        
 
-        void AssignTowers()
-        {
-            var towersPb = Instantiate(ConstructorData.TowersPrefab, transform);
-            Data.Towers = towersPb.GetComponentsInChildren<Tower>().ToList();
-            for (var i = 0; i < Data.Towers.Count; i++)
-            {
-                Data.Towers[i].Data = Data.TowerDatas[i];
-            }
-            
-        }
+       
+        // void AssignTowers()
+        // {
+        //     foreach (var towerID in Data.TowerIds)
+        //     {
+        //         _towers[towerID].Data = Data.TowerDatas[towerID];
+        //     }
+        // }
 
         void SetGrid()
         {
-            Data.Grid.Initialize(Data.Towers);
+            Data.Grid.Initialize(Data.TowerIds);
         }
 
         void SetTowers()
         {
-            for (int i = 0; i < Data.Towers.Count; i++)
+            
+            for (int i = 0; i < Data.TowerIds.Count; i++)
             {
-                int uniqIdAdditive = Data.TeamType == TeamType.Team1 ? 0 : Data.Towers.Count;
-                var tower = Data.Towers[i];
-                tower.Data.UniqID = i + uniqIdAdditive;
-                //tower.clickHandler.SetClickables(tower.Data.UniqID);
+                // int uniqIdAdditive = Data.TeamType == TeamType.Team1 ? 0 : _towers.Count;
+                // var tower = _towers[i];
+                // tower.Data.UniqID = i + uniqIdAdditive;
+                //Data.TowerIds.Add(tower.Data.UniqID);
                 
+                var tower = AllTowers.Towers[Data.TowerIds[i]];
                 tower.Data.SlotId = i;
                 tower.Setup(Data.TeamTowerData);
             }
         }
 
-        public void TakeTowerFromRival(Tower tower)
+        public void TakeTowerFromRival(int towerID)
         {
-            Data.Towers.Add(tower);
-            tower.SetTeamForTowerAndClickables(Data.TeamTowerData);
+            Data.TowerIds.Add(towerID);
+            AllTowers.Towers[towerID].SetTeam(Data.TeamTowerData);
         }
 
-        public void RemoveTower(Tower tower)
+        public void RemoveTower(int towerID)
         {
-            Data.Towers.Remove(tower);
+            Data.TowerIds.Remove(towerID);
         }
 
         public void LinkFirstMatches(Team rivalTeam) //Temporary
         {
-            for (int i = 0; i < Data.Towers.Count; i++)
+            for (int i = 0; i < Data.TowerIds.Count; i++)
             {
-                Data.Towers[i].Data.LinkedTowerIDs.Add(rivalTeam.Data.Towers[i].Data.UniqID);
+                Data.towerDatas.GetTowerData(Data.TowerIds[i]).LinkedTowerIDs.Add(rivalTeam.Data.TowerIds[i]);
             }
         }
     }
