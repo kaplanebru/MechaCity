@@ -4,7 +4,6 @@ using Enums;
 using UnityEngine;
 using Grid;
 using PlayerNetwork;
-using Towers;
 
 namespace Data
 {
@@ -19,11 +18,8 @@ namespace Data
         public List<TowerData> Towers = new();
         public GameGrid Grid;
         
-        
-
-
         public TeamTowerData TeamTowerData;
-        //public Towers<TowerData> TowerDatas;
+       
     }
     
 }

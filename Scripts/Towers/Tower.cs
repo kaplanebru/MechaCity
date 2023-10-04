@@ -28,14 +28,11 @@ namespace Towers
             Data.Height = ConstantData.StartHeight;
             Data.Health = ConstantData.StartHealth;
             Data.DamagePower = ConstantData.DamagePower;
-            //Data.TeamTowerData.TeamType = ConstantData.StartTeam;
             RestoreBullets();
             
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
             clickHandler.SetClickables(Data.UniqID);
             SetTeam(teamTowerData);//for tower and clickables
-
-            //towerParts.ChangeHeight(Data.Height); //FirstRise
         }
 
         public void SetTeam(TeamTowerData teamTowerData)
