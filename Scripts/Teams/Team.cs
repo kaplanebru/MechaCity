@@ -30,20 +30,23 @@ namespace Teams
 
         public void Initialize()
         {
-            //AssignTowers();
+            AssignTowerIDs(AllTowers.Towers.Count/2);
             SetGrid();
             SetTowers();
         }
-        
 
-       
-        // void AssignTowers()
-        // {
-        //     foreach (var towerID in Data.TowerIds)
-        //     {
-        //         _towers[towerID].Data = Data.TowerDatas[towerID];
-        //     }
-        // }
+
+        void AssignTowerIDs(int towerCount)
+        {
+            Data.TowerIds.Clear();
+            
+            int uniqIdAdditive = Data.TeamType == TeamType.Team1 ? 0 : towerCount;
+            for (int i = 0; i < towerCount; i++)
+            {
+                Data.TowerIds.Add(i + uniqIdAdditive);
+            }
+        }
+        
 
         void SetGrid()
         {
@@ -52,14 +55,8 @@ namespace Teams
 
         void SetTowers()
         {
-            
             for (int i = 0; i < Data.TowerIds.Count; i++)
             {
-                // int uniqIdAdditive = Data.TeamType == TeamType.Team1 ? 0 : _towers.Count;
-                // var tower = _towers[i];
-                // tower.Data.UniqID = i + uniqIdAdditive;
-                //Data.TowerIds.Add(tower.Data.UniqID);
-                
                 var tower = AllTowers.Towers[Data.TowerIds[i]];
                 tower.Data.SlotId = i;
                 tower.Setup(Data.TeamTowerData);
