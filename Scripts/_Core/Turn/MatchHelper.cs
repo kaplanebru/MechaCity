@@ -10,24 +10,36 @@ namespace Turn
 {
     public class MatchHelper : BaseTurnHelper
     {
+        private TowerData _deadTower;
+        private List<int> _linkedTowers = new();
+        private GameGrid _grid;
+        
         private Dictionary<TeamType, GameGrid> _grids = new();
         private void OnEnable()
         {
             Eventbus.CombatEvents.OnTowerKilled += HandleDeadTower;
         }
-
+        
         private void HandleDeadTower(TowerData deadTower)
         {
-            var linkedTowers = deadTower.LinkedTowerIDs;
+            SetValues(deadTower, deadTower.LinkedTowerIDs, _grids[deadTower.TeamTowerData.TeamType]);
             
-            for (var i = linkedTowers.Count - 1; i >= 0; i--)
+            for (var i = _linkedTowers.Count - 1; i >= 0; i--)
             {
-                RematchDetachedTowers(new TowerGridRelationModel(_grids[deadTower.TeamTowerData.TeamType], deadTower), AllTowers.GetData(linkedTowers[i]));
-                RemoveLink(deadTower, AllTowers.GetData(linkedTowers[i]));
+                var linkedTower = AllTowers.GetData(_linkedTowers[i]);
+                RematchDetachedTowers(linkedTower);
+                RemoveLink(linkedTower);
             }
             
-            SwitchSides(deadTower);
+            SwitchSides();
             Eventbus.CombatEvents.OnMatchesRestored?.Invoke();
+        }
+
+        void SetValues(TowerData deadTower,List<int> linkedTowerIDs, GameGrid grid)
+        {
+            _deadTower = deadTower;
+            _linkedTowers = linkedTowerIDs;
+            _grid = grid;
         }
 
         public void SetGrids(Team[] teams)
@@ -40,26 +52,26 @@ namespace Turn
         }
         
 
-        void RematchDetachedTowers(TowerGridRelationModel deadTowerGridModel, TowerData detachedTower)
+        void RematchDetachedTowers(TowerData detachedTower)
         {
-            int deadTowerSlotId = deadTowerGridModel.Tower.SlotId;
+            int deadTowerSlotId = _deadTower.SlotId;
 
             for (int i = 1; i < GameGrid.SlotAmount - 1; i++)
             {
                 int linkCounter = 0;
 
-                linkCounter += CheckSlotForLink(deadTowerSlotId - i, deadTowerGridModel.Grid, detachedTower);
-                linkCounter += CheckSlotForLink(deadTowerSlotId + i, deadTowerGridModel.Grid, detachedTower);
+                linkCounter += CheckSlotForLink(deadTowerSlotId - i, detachedTower);
+                linkCounter += CheckSlotForLink(deadTowerSlotId + i, detachedTower);
 
                 if (linkCounter > 0) break;
             }
         }
 
-        int CheckSlotForLink(int number, GameGrid grid, TowerData detachedTower)
+        int CheckSlotForLink(int number, TowerData detachedTower)
         {
             if (number is >= 0 and < GameGrid.SlotAmount)
             {
-                var slot = grid.Slots[number];
+                var slot = _grid.Slots[number];
                 
                 if (slot.Tower.TeamTowerData.TeamType ==
                     detachedTower.TeamTowerData.TeamType) //bug fix: karşıdaki tower aynı team'dense pas
@@ -81,20 +93,21 @@ namespace Turn
                 tower2.LinkedTowerIDs.Add(tower1.UniqID);
         }
 
-        void RemoveLink(TowerData deadTower, TowerData otherTower)
+        void RemoveLink(TowerData otherTower)
         {
-            deadTower.LinkedTowerIDs.Remove(otherTower.UniqID);
-            otherTower.LinkedTowerIDs.Remove(deadTower.UniqID);
+            _deadTower.LinkedTowerIDs.Remove(otherTower.UniqID);
+            otherTower.LinkedTowerIDs.Remove(_deadTower.UniqID);
         }
 
-        void SwitchSides(TowerData deadTower)
+        void SwitchSides()
         {
-            Eventbus.TeamEvents.OnTeamChange?.Invoke(deadTower);
+            Eventbus.TeamEvents.OnTeamChange?.Invoke(_deadTower);
         }
 
         private void OnDisable()
         {
             Eventbus.CombatEvents.OnTowerKilled -= HandleDeadTower;
+            SetValues(null, null, null);
         }
 
         //TODO: STAR VE ONDİSABLE'a event listener eklenmişse düzelt. Unsubscireda da olabilir
