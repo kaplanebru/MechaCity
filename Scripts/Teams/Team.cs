@@ -10,11 +10,6 @@ using UnityEngine;
 
 namespace Teams
 {
-    public static class TowerEvents
-    {
-        public static Action<List<Tower>> OnTowersCreated;
-    }
-
     [Serializable]
     public class TeamConstructorData
     {
@@ -30,7 +25,7 @@ namespace Teams
 
         public void Initialize()
         {
-            AssignTowerIDs(AllTowers.Towers.Count/2);
+            AssignTowerIDs(AllTowers.TowersCount/2);
             SetGrid();
             SetTowers();
         }
@@ -47,7 +42,6 @@ namespace Teams
             }
         }
         
-
         void SetGrid()
         {
             Data.Grid.Initialize(Data.TowerIds);
@@ -57,7 +51,7 @@ namespace Teams
         {
             for (int i = 0; i < Data.TowerIds.Count; i++)
             {
-                var tower = AllTowers.Towers[Data.TowerIds[i]];
+                var tower = AllTowers.GetTower(Data.TowerIds[i]);
                 tower.Data.SlotId = i;
                 tower.Setup(Data.TeamTowerData);
             }
@@ -66,20 +60,12 @@ namespace Teams
         public void TakeTowerFromRival(int towerID)
         {
             Data.TowerIds.Add(towerID);
-            AllTowers.Towers[towerID].SetTeam(Data.TeamTowerData);
+            AllTowers.GetTower(towerID).SetTeam(Data.TeamTowerData);
         }
 
         public void RemoveTower(int towerID)
         {
             Data.TowerIds.Remove(towerID);
-        }
-
-        public void LinkFirstMatches(Team rivalTeam) //Temporary
-        {
-            for (int i = 0; i < Data.TowerIds.Count; i++)
-            {
-                Data.towerDatas.GetTowerData(Data.TowerIds[i]).LinkedTowerIDs.Add(rivalTeam.Data.TowerIds[i]);
-            }
         }
     }
 }

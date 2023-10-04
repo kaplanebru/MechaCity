@@ -8,9 +8,8 @@ namespace Towers
     [CreateAssetMenu(fileName = nameof(TowersDataHolder))]
     public class TowersDataHolder : ScriptableObject
     {
-        [SerializeField]TowerData[] Datas;
-
-        public TowerData GetTowerData(int id) => Datas[id];
+        public TowerConstantData[] Datas;
+        
     }
 }
 

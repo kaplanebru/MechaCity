@@ -15,14 +15,19 @@ namespace Towers
 {
     public class AllTowers : MonoBehaviour
     {
+        public static int TowersCount;
         public static List<Tower> Towers = new();
-
-        [SerializeField] List<Tower> _towers = new();
+        [SerializeField] List<Tower> towers = new();
+        [SerializeField] TowerData[] datas;
+        
         public Transform[] TowersPrefab;
-        [SerializeField] TowersDataHolder towerDatas;
+        [SerializeField] TowersDataHolder constantDatas;
+        
 
 
         public static Tower GetTower(int id) => Towers[id]; //Towers.FirstOrDefault(t => t.Data.UniqID == id);
+        public static TowerData GetData(int id) => Towers[id].Data;//datas[i];
+        
 
         private void OnEnable()
         {
@@ -32,7 +37,8 @@ namespace Towers
         void CreateTowers()
         {
             InstantiateTowers();
-            AssignTowers();
+            CreateDatas();
+            AssignDatasToTowers();
             TowerEvents.OnTowersCreated?.Invoke();
         }
 
@@ -41,23 +47,45 @@ namespace Towers
             foreach (var prefab in TowersPrefab)
             {
                 var towersPb = Instantiate(prefab, transform);
-                _towers.AddRange(towersPb.GetComponentsInChildren<Tower>().ToList());
+                towers.AddRange(towersPb.GetComponentsInChildren<Tower>().ToList());
             }
 
-            Towers = _towers;
+            Towers = towers;
+            TowersCount = Towers.Count;
         }
 
-        void AssignTowers()
+        void CreateDatas()
         {
-            for (int i = 0; i < Towers.Count; i++)
+            datas = new TowerData [TowersCount];
+            
+            for (int i = 0; i < datas.Length; i++)
+            {
+                datas[i] = new TowerData(i);
+            }
+        }
+
+        void AssignDatasToTowers()
+        {
+            for (int i = 0; i < TowersCount; i++)
             {
                 var tower = Towers[i];
-                tower.Data = towerDatas.GetTowerData(i);
-                tower.Data.UniqID = i;
+                tower.Data = datas[i];
+                tower.ConstantData = constantDatas.Datas[i];
             }
+            SetFirstMatches();
         }
 
-
+        void SetFirstMatches()
+        {
+            int teamTowerAmount = TowersCount / 2;
+            for (var i = 0; i < teamTowerAmount; i++)
+            {
+                datas[i].LinkedTowerIDs.Add(datas[i + teamTowerAmount].UniqID);
+                datas[i + teamTowerAmount].LinkedTowerIDs.Add(datas[i].UniqID);
+            }
+           
+        }
+        
         public static void RestoreBullets()
         {
             Towers.ForEach(t => t.RestoreBullets());

@@ -61,16 +61,8 @@ namespace Turn
 
         void FirstTurn(params object[] args)
         {
-            // var x = args[0] as Team[];
-            // foreach (var team in x)
-            // {
-            //     print(team.name);
-            // }
-            // SetTurnTeams(args[0] as Team[]);
-           
             Initialize();
             SetFirstCombatElements();
-
             StartCoroutine(nameof(TurnActionRoutine));
         }
 

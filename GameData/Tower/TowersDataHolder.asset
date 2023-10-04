@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: TowersDataHolder
   m_EditorClassIdentifier: 
   Datas:
-  - {fileID: 11400000, guid: 97b8a623a9318ee4c921710f89c08d46, type: 2}
-  - {fileID: 11400000, guid: 4ab1f7490415f47449e7acc196777aa5, type: 2}
-  - {fileID: 11400000, guid: 269c6647357233748a8408f06eca55bd, type: 2}
-  - {fileID: 11400000, guid: ea13f16597780884a91b734ed3a3f482, type: 2}
-  - {fileID: 11400000, guid: 7e775ce3ba6085044a56c8a40e33e05c, type: 2}
-  - {fileID: 11400000, guid: 02834e1a49c51334da8a7fa97252c645, type: 2}
+  - {fileID: 11400000, guid: 58d111080c828c34e87547dccd2a75c1, type: 2}
+  - {fileID: 11400000, guid: 746e9716a910d8b42af39dc540b04282, type: 2}
+  - {fileID: 11400000, guid: 0a42bf8daf256c640a18a5ac66d817fb, type: 2}
+  - {fileID: 11400000, guid: 428157305f952a54ea751213e058ac97, type: 2}
+  - {fileID: 11400000, guid: 20cd0f37ac5cf8a4995931c0d6409697, type: 2}
+  - {fileID: 11400000, guid: 33060a198cc40bc4c998a53f5dc87cda, type: 2}

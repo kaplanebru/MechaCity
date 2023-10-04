@@ -34,18 +34,11 @@ namespace Core
                 teams[i] = Instantiate(assetHolder.Teams[i], transform);
                 teams[i].Initialize();
             }
-
-            SetFirstMatches();
+            
             NetworkUIController.gameObject.SetActive(true);
             Eventbus.TeamEvents.OnTeamsSet?.Invoke(teams);
-            
         }
-
-        void SetFirstMatches() //Temporary
-        {
-            teams[0].LinkFirstMatches(teams[1]);
-            teams[1].LinkFirstMatches(teams[0]);
-        }
+        
         
         private void AssignPlayers(Player newPlayer, ulong id)
         {
@@ -75,6 +68,9 @@ namespace Core
                     }
                 }
             );
+            
+            AllTowers.Towers.ForEach(t=>t.towerParts.ChangeHeight(t.Data.Height));
+            
             print("Game Started");
         }
         
