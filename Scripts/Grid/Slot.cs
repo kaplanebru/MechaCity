@@ -1,4 +1,5 @@
 using System;
+using Data;
 using Towers;
 
 
@@ -9,7 +10,7 @@ namespace Grid
     {
        
         public int Id;
-        public Tower Tower;
+        public TowerData Tower;
     }
 
 }

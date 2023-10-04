@@ -16,7 +16,7 @@ namespace Data
         public string Name;
         public TeamType TeamType;
         public Player Player;
-        public List<Tower> Towers = new();
+        public List<TowerData> Towers = new();
         public GameGrid Grid;
         
         

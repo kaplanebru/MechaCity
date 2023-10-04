@@ -34,17 +34,17 @@ namespace Turn
             //var tower = args[0] as Tower;
             int selectedTowerUniqID = (int) args[0];
 
-            var tower = teams["currentTeam"].Data.Towers.FirstOrDefault(t => t.Data.UniqID == selectedTowerUniqID);
+            var tower = teams["currentTeam"].Data.Towers.FirstOrDefault(t => t.UniqID == selectedTowerUniqID);
             if (tower == null) return;
 
 
             //if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
-            if (SelectedTwice(tower.Data.UniqID)) return;
+            if (SelectedTwice(tower.UniqID)) return;
 
             if (TransferData.SelectionGroup.Count == maxTowersInGroup)
                 ResetSelectionGroup();
 
-            AddToSelection(true, tower.Data.UniqID);
+            AddToSelection(true, tower.UniqID);
         }
 
         public override void Setup()

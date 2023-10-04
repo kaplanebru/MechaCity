@@ -18,8 +18,10 @@ namespace Towers
     {
         public static int TowersCount;
         public static List<Tower> Towers = new();
-        [SerializeField] List<Tower> towers = new();
-        [SerializeField] TowerData[] datas;
+        public static List<TowerData> Datas = new();
+        
+        [SerializeField] List<Tower> towers = new(); //for debug
+       
         
         public Transform[] TowersPrefab;
         [SerializeField] TowersDataHolder constantDatas;
@@ -27,7 +29,10 @@ namespace Towers
 
 
         public static Tower GetTower(int id) => Towers[id]; //Towers.FirstOrDefault(t => t.Data.UniqID == id);
-        public static TowerData GetData(int id) => Towers[id].Data;//datas[i];
+        public static TowerData GetData(int id) => Datas[id]; //Towers[id].Data;//Datas[i];
+        
+        
+        
         
 
         private void OnEnable()
@@ -57,11 +62,11 @@ namespace Towers
 
         void CreateDatas()
         {
-            datas = new TowerData [TowersCount];
+            //Datas = new TowerData [TowersCount];
             
-            for (int i = 0; i < datas.Length; i++)
+            for (int i = 0; i < TowersCount; i++)
             {
-                datas[i] = new TowerData(i);
+                Datas.Add(new TowerData(i));
             }
         }
 
@@ -70,31 +75,21 @@ namespace Towers
             for (int i = 0; i < TowersCount; i++)
             {
                 var tower = Towers[i];
-                tower.Data = datas[i];
+                tower.Data = Datas[i];
                 tower.ConstantData = constantDatas.Datas[i];
             }
             SetFirstMatches();
         }
 
-
-        private Dictionary<TeamType, Tower[]> teamTowerPair = new();
         
-        public IEnumerator SplitTowersToTeams(TeamType teamType)
-        {
-            for (var i = 0; i < constantDatas.Datas.Length; i++)
-            {
-                if (constantDatas.Datas[i].StartTeam == teamType)
-                    yield return Towers[i];
-            }
-        }
 
         void SetFirstMatches()
         {
             int teamTowerAmount = TowersCount / 2;
             for (var i = 0; i < teamTowerAmount; i++)
             {
-                datas[i].LinkedTowerIDs.Add(datas[i + teamTowerAmount].UniqID);
-                datas[i + teamTowerAmount].LinkedTowerIDs.Add(datas[i].UniqID);
+                Datas[i].LinkedTowerIDs.Add(Datas[i + teamTowerAmount].UniqID);
+                Datas[i + teamTowerAmount].LinkedTowerIDs.Add(Datas[i].UniqID);
             }
            
         }

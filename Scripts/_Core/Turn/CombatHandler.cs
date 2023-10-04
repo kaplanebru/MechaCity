@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using DataModels;
 using Enums;
 using Towers;
@@ -21,7 +22,7 @@ namespace Turn
     {
         
         public List<CombatPair> CombatPairs = new();
-        public Tower latestDeadTower;
+        public TowerData latestDeadTower;
         [ReadOnly] public float projectileSpeed = 1;
         [ReadOnly] public bool pairsRestored = false;
         [ReadOnly] public float fireDelay = 0.5f;
@@ -51,14 +52,14 @@ namespace Turn
         public override void Setup()
         {
             RemoveAlteredCombatPairs();
-            TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetTower(t)));
+            TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t)));
             //RestoreBullets();
             StartCoroutine(nameof(FireRoutine));
         }
 
         IEnumerator FireRoutine()
         {
-            Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.Perpetrator.Data.SlotId).ToList();
+            Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.Perpetrator.SlotId).ToList();
 
             int j = 0;
             while (true)
@@ -76,7 +77,7 @@ namespace Turn
                     Data.pairsRestored = false;
                     Data.latestDeadTower = null;
 
-                    j = pair.Perpetrator.Data.SlotId;
+                    j = pair.Perpetrator.SlotId;
                 }
                 else
                     j++;
@@ -88,22 +89,22 @@ namespace Turn
             CompleteAction();
         }
 
-        public void CreateCombatPairByTower(Tower tower)
+        public void CreateCombatPairByTower(TowerData tower)
         {
-            //OrderLinkedTowersByDistance(tower);
+            OrderLinkedTowersByDistance(tower);
 
-            for (var i = 0; i < tower.Data.LinkedTowerIDs.Count; i++)
+            for (var i = 0; i < tower.LinkedTowerIDs.Count; i++)
             {
                 //var linkedTower = tower.Data.LinkedTowerIDs[i];
-                var linkedTower = AllTowers.GetTower(tower.Data.LinkedTowerIDs[i]);
-                if (tower.Data.Height > linkedTower.Data.Height)
+                var linkedTower = AllTowers.GetData(tower.LinkedTowerIDs[i]);
+                if (tower.Height > linkedTower.Height)
                 {
-                    if (!tower.Data.CanShoot) continue;
+                    if (!tower.CanShoot) continue;
                     AddToPairs(tower, linkedTower);
                 }
-                else if (linkedTower.Data.Height > tower.Data.Height)
+                else if (linkedTower.Height > tower.Height)
                 {
-                    if (!linkedTower.Data.CanShoot) continue;
+                    if (!linkedTower.CanShoot) continue;
                     AddToPairs(linkedTower, tower);
                 }
                 else
@@ -111,11 +112,11 @@ namespace Turn
             }
         }
 
-        void AddToPairs(Tower tower1, Tower tower2, bool isEven = false)
+        void AddToPairs(TowerData tower1, TowerData tower2, bool isEven = false)
         {
             Data.CombatPairs.Add(new CombatPair(tower1, tower2, isEven));
             if (!isEven)
-                tower1.Data.BulletAmount--;
+                tower1.BulletAmount--;
         }
 
         void RemoveAlteredCombatPairs()
@@ -126,10 +127,10 @@ namespace Turn
             }
         }
 
-        void OrderLinkedTowersByDistance(Tower tower)
+        void OrderLinkedTowersByDistance(TowerData tower)
         {
-            tower.Data.LinkedTowerIDs =
-                tower.Data.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.Data.SlotId - AllTowers.GetTower(other).Data.SlotId)).ToList();
+            tower.LinkedTowerIDs =
+                tower.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.SlotId - AllTowers.GetData(other).SlotId)).ToList();
         }
         
         // void RestoreBullets()
@@ -150,10 +151,10 @@ namespace Turn
             Data.pairsRestored = true;
         }
 
-        private void LatestDeadTower(Tower tower)
+        private void LatestDeadTower(TowerData tower)
         {
             Data.latestDeadTower = tower;
-            Data.CombatPairs.RemoveAll(p => p.Contains(Data.latestDeadTower.Data.UniqID));
+            Data.CombatPairs.RemoveAll(p => p.Contains(Data.latestDeadTower.UniqID));
         }
 
         public override void Unsubscribe()

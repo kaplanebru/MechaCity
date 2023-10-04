@@ -7,7 +7,6 @@ namespace Turn
 {
     public class MatchHelper : BaseTurnHelper
     {
-        public TowersDataHolder towerDatas;
         private void OnEnable()
         {
             Eventbus.CombatEvents.OnTowerGridDetection += HandleDeadTower;
@@ -16,13 +15,13 @@ namespace Turn
         private void HandleDeadTower(TowerGridRelationModel deadTowerGridModel)
         {
             var deadTower = deadTowerGridModel.Tower;
-            var linkedTowers = deadTower.Data.LinkedTowerIDs;
+            var linkedTowers = deadTower.LinkedTowerIDs;
 
 
             for (var i = linkedTowers.Count - 1; i >= 0; i--)
             {
                 RematchDetachedTowers(deadTowerGridModel, AllTowers.GetTower(linkedTowers[i]));
-                RemoveLink(deadTower, AllTowers.GetTower(linkedTowers[i]));
+                RemoveLink(deadTower, AllTowers.GetData(linkedTowers[i]));
             }
 
             SwitchSides(deadTower);
@@ -31,7 +30,7 @@ namespace Turn
 
         void RematchDetachedTowers(TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
         {
-            int deadTowerSlotId = deadTowerGridModel.Tower.Data.SlotId;
+            int deadTowerSlotId = deadTowerGridModel.Tower.SlotId;
 
             for (int i = 1; i < GameGrid.SlotAmount - 1; i++)
             {
@@ -50,11 +49,11 @@ namespace Turn
             {
                 var slot = grid.Slots[number];
                 
-                if (slot.Tower.Data.TeamTowerData.TeamType ==
+                if (slot.Tower.TeamTowerData.TeamType ==
                     detachedTower.Data.TeamTowerData.TeamType) //bug fix: karşıdaki tower aynı team'dense pas
                     return 0;
 
-                LinkTowers(slot.Tower.Data, detachedTower.Data);
+                LinkTowers(slot.Tower, detachedTower.Data);
                 return 1;
             }
 
@@ -70,13 +69,13 @@ namespace Turn
                 tower2.LinkedTowerIDs.Add(tower1.UniqID);
         }
 
-        void RemoveLink(Tower deadTower, Tower otherTower)
+        void RemoveLink(TowerData deadTower, TowerData otherTower)
         {
-            deadTower.Data.LinkedTowerIDs.Remove(otherTower.Data.UniqID);
-            otherTower.Data.LinkedTowerIDs.Remove(deadTower.Data.UniqID);
+            deadTower.LinkedTowerIDs.Remove(otherTower.UniqID);
+            otherTower.LinkedTowerIDs.Remove(deadTower.UniqID);
         }
 
-        void SwitchSides(Tower deadTower)
+        void SwitchSides(TowerData deadTower)
         {
             Eventbus.TeamEvents.OnTeamChange?.Invoke(deadTower);
         }

@@ -137,7 +137,7 @@ namespace Turn
         {
             foreach (var team in turnTeams)
             {
-                if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Data.Health == 0))
+                if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Health == 0))
                 {
                     NetworkEventbus.TriggerEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
                     print("game ends");

@@ -36,7 +36,7 @@ namespace Teams
             AllTowers.Towers.ForEach(t =>
             {
                 if(t.ConstantData.StartTeam == Data.TeamType)
-                    Data.Towers.Add(t);
+                    Data.Towers.Add(t.Data);
             });
         }
 
@@ -50,18 +50,20 @@ namespace Teams
             for (int i = 0; i < Data.Towers.Count; i++)
             {
                 var tower = Data.Towers[i];
-                tower.Data.SlotId = i;
-                tower.Setup(Data.TeamTowerData);
+                tower.SlotId = i;
+                AllTowers.GetTower(tower.UniqID).Setup(Data.TeamTowerData);
+                //tower.Setup(Data.TeamTowerData);TODO!!! SETUP
             }
         }
 
-        public void TakeTowerFromRival(Tower tower)
+        public void TakeTowerFromRival(TowerData tower)
         {
             Data.Towers.Add(tower);
-            tower.SetTeam(Data.TeamTowerData);
+            AllTowers.GetTower(tower.UniqID).SetTeam(Data.TeamTowerData);
+            //tower.SetTeam(Data.TeamTowerData); TODO!!! SET TEAM
         }
 
-        public void RemoveTower(Tower tower)
+        public void RemoveTower(TowerData tower)
         {
             Data.Towers.Remove(tower);
         }
