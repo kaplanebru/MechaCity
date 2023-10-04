@@ -17,7 +17,6 @@ public static class Eventbus
     public static class CombatEvents
     {
         public static Action<TowerData> OnTowerKilled;
-        public static Action<TowerGridRelationModel> OnTowerGridDetection;
         public static Action OnMatchesRestored;
     }
 
