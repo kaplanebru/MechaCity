@@ -1,4 +1,5 @@
 using System;
+using Enums;
 using UnityEngine;
 
 
@@ -14,5 +15,6 @@ namespace Data
         public int StartHealth = 1;
         public int DamagePower = 1;
         public int MaxBullet = 1;
+        public TeamType StartTeam;
     }
 }

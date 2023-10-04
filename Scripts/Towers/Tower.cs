@@ -29,6 +29,7 @@ namespace Towers
             Data.Height = ConstantData.StartHeight;
             Data.Health = ConstantData.StartHealth;
             Data.DamagePower = ConstantData.DamagePower;
+            //Data.TeamTowerData.TeamType = ConstantData.StartTeam;
             RestoreBullets();
             
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);

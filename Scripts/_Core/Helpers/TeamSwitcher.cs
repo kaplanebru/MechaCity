@@ -38,8 +38,8 @@ namespace Turn
             Team oldTeam = GetTeamDataByTeamType(deadTower.Data.TeamTowerData.TeamType);
             Team newTeam = _teams.FirstOrDefault(t => t != oldTeam);
 
-            oldTeam.RemoveTower(deadTower.Data.UniqID);
-            newTeam.TakeTowerFromRival(deadTower.Data.UniqID);
+            oldTeam.RemoveTower(deadTower);
+            newTeam.TakeTowerFromRival(deadTower);
         }
 
         private void OnDisable()

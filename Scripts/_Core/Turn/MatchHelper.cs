@@ -50,11 +50,11 @@ namespace Turn
             {
                 var slot = grid.Slots[number];
                 
-                if (AllTowers.GetData(slot.TowerID).TeamTowerData.TeamType ==
+                if (slot.Tower.Data.TeamTowerData.TeamType ==
                     detachedTower.Data.TeamTowerData.TeamType) //bug fix: karşıdaki tower aynı team'dense pas
                     return 0;
 
-                LinkTowers(AllTowers.GetData(slot.TowerID), detachedTower.Data);
+                LinkTowers(slot.Tower.Data, detachedTower.Data);
                 return 1;
             }
 

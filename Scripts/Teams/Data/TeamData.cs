@@ -16,9 +16,10 @@ namespace Data
         public string Name;
         public TeamType TeamType;
         public Player Player;
-        public List<int> TowerIds = new();
+        public List<Tower> Towers = new();
         public GameGrid Grid;
-        public TowersDataHolder towerDatas;
+        
+        
 
 
         public TeamTowerData TeamTowerData;

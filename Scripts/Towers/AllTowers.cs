@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Data;
+using Enums;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -73,6 +74,18 @@ namespace Towers
                 tower.ConstantData = constantDatas.Datas[i];
             }
             SetFirstMatches();
+        }
+
+
+        private Dictionary<TeamType, Tower[]> teamTowerPair = new();
+        
+        public IEnumerator SplitTowersToTeams(TeamType teamType)
+        {
+            for (var i = 0; i < constantDatas.Datas.Length; i++)
+            {
+                if (constantDatas.Datas[i].StartTeam == teamType)
+                    yield return Towers[i];
+            }
         }
 
         void SetFirstMatches()

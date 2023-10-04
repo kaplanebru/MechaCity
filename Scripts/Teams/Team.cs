@@ -25,47 +25,45 @@ namespace Teams
 
         public void Initialize()
         {
-            AssignTowerIDs(AllTowers.TowersCount/2);
+            GetTeamTowers();
             SetGrid();
             SetTowers();
         }
 
-
-        void AssignTowerIDs(int towerCount)
+        void GetTeamTowers()
         {
-            Data.TowerIds.Clear();
-            
-            int uniqIdAdditive = Data.TeamType == TeamType.Team1 ? 0 : towerCount;
-            for (int i = 0; i < towerCount; i++)
+            Data.Towers.Clear(); //TODO: team so olmayabilir
+            AllTowers.Towers.ForEach(t =>
             {
-                Data.TowerIds.Add(i + uniqIdAdditive);
-            }
+                if(t.ConstantData.StartTeam == Data.TeamType)
+                    Data.Towers.Add(t);
+            });
         }
-        
+
         void SetGrid()
         {
-            Data.Grid.Initialize(Data.TowerIds);
+            Data.Grid.Initialize(Data.Towers);
         }
 
         void SetTowers()
         {
-            for (int i = 0; i < Data.TowerIds.Count; i++)
+            for (int i = 0; i < Data.Towers.Count; i++)
             {
-                var tower = AllTowers.GetTower(Data.TowerIds[i]);
+                var tower = Data.Towers[i];
                 tower.Data.SlotId = i;
                 tower.Setup(Data.TeamTowerData);
             }
         }
 
-        public void TakeTowerFromRival(int towerID)
+        public void TakeTowerFromRival(Tower tower)
         {
-            Data.TowerIds.Add(towerID);
-            AllTowers.GetTower(towerID).SetTeam(Data.TeamTowerData);
+            Data.Towers.Add(tower);
+            tower.SetTeam(Data.TeamTowerData);
         }
 
-        public void RemoveTower(int towerID)
+        public void RemoveTower(Tower tower)
         {
-            Data.TowerIds.Remove(towerID);
+            Data.Towers.Remove(tower);
         }
     }
 }
