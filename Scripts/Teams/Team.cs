@@ -26,34 +26,35 @@ namespace Teams
         public void Initialize()
         {
             GetTeamTowers();
+            SetSlotIDs();
             SetGrid();
-            SetTowers();
         }
 
         void GetTeamTowers()
         {
             Data.Towers.Clear(); //TODO: team so olmayabilir
+            
             AllTowers.Towers.ForEach(t =>
             {
-                if(t.ConstantData.StartTeam == Data.TeamType)
+                if (t.ConstantData.StartTeam == Data.TeamType)
+                {
                     Data.Towers.Add(t.Data);
+                    t.Setup(Data.TeamTowerData);
+                }
             });
         }
 
-        void SetGrid()
-        {
-            Data.Grid.Initialize(Data.Towers);
-        }
-
-        void SetTowers()
+        void SetSlotIDs()
         {
             for (int i = 0; i < Data.Towers.Count; i++)
             {
-                var tower = Data.Towers[i];
-                tower.SlotId = i;
-                AllTowers.GetTower(tower.UniqID).Setup(Data.TeamTowerData);
-                //tower.Setup(Data.TeamTowerData);TODO!!! SETUP
+                Data.Towers[i].SlotId = i; //AllTowers.GetTower(tower.UniqID).Setup(Data.TeamTowerData);
             }
+        }
+        
+        void SetGrid()
+        {
+            Data.Grid.Initialize(Data.Towers);
         }
 
         public void TakeTowerFromRival(TowerData tower)
