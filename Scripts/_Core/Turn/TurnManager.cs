@@ -8,6 +8,7 @@ using UnityEngine;
 using Teams;
 using Towers;
 using GameUI;
+using Grid;
 
 namespace Turn
 {
@@ -17,7 +18,7 @@ namespace Turn
         BaseTurnHandler[] turnHandlers;
         Dictionary<string, Team> turnTeams;
 
-        
+
         public TeamType currentTeamType = TeamType.Team1;
 
         private BaseTurnHandler currentTurnHandler;
@@ -25,7 +26,7 @@ namespace Turn
 
         private void OnEnable()
         {
-             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
+            Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
             
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteActionRequest += CompleteActionByUser;
@@ -68,16 +69,15 @@ namespace Turn
 
         void SetFirstCombatElements()
         {
-            var combatHandler = turnHandlers.FirstOrDefault(i =>
-                    i as CombatHandler != null) as CombatHandler;
+            var combatHandler = turnHandlers.FirstOrDefault(i => i as CombatHandler != null) as CombatHandler;
             combatHandler.enabled = true;
+            
             foreach (var tower in turnTeams["currentTeam"].Data.Towers)
             {
                 combatHandler.CreateCombatPairByTower(tower);
+                var matchHelper = (MatchHelper) combatHandler.TurnHelpers[0];
+                matchHelper.SetGrids(turnTeams.Values.ToArray());
             }
-
-            // var teamSwitcher = combatHandler.TurnHelpers.FirstOrDefault(h => h as TeamSwitcher != null) as TeamSwitcher;
-            // teamSwitcher.GetTeams(initializer.teams);
             combatHandler.CompleteAction();
         }
 

@@ -34,7 +34,7 @@ namespace Turn
             //var tower = args[0] as Tower;
             int selectedTowerUniqID = (int) args[0];
 
-            var tower = teams["currentTeam"].Data.Towers.FirstOrDefault(t => t.UniqID == selectedTowerUniqID);
+            var tower = Teams["currentTeam"].Data.Towers.FirstOrDefault(t => t.UniqID == selectedTowerUniqID);
             if (tower == null) return;
 
 
@@ -55,8 +55,8 @@ namespace Turn
         void AddToSelection(bool select, int newTower)
         {
             AllTowers.GetTower(newTower).towerParts.SetColor(select
-                ? teams["currentTeam"].Data.TeamTowerData.SelectedMaterial
-                : teams["currentTeam"].Data.TeamTowerData.DefaultMaterial);
+                ? Teams["currentTeam"].Data.TeamTowerData.SelectedMaterial
+                : Teams["currentTeam"].Data.TeamTowerData.DefaultMaterial);
 
             if (select)
                 TransferData.SelectionGroup.Add(newTower);

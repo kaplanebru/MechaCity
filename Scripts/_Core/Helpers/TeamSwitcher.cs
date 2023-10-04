@@ -19,7 +19,6 @@ namespace Turn
         {
             Eventbus.TeamEvents.OnTeamsSet += GetTeams;
             Eventbus.TeamEvents.OnTeamChange += ExchangeTower;
-            Eventbus.CombatEvents.OnTowerKilled += GetGridByTeam;
         }
 
         public void GetTeams(Team[] teams)
@@ -27,12 +26,12 @@ namespace Turn
             _teams = teams;
         }
     
-        Team GetTeamDataByTeamType(TeamType type) => _teams.First(team => team.Data.TeamType == type);
-        private void GetGridByTeam(TowerData deadTower)
-        {
-            var team = GetTeamDataByTeamType(deadTower.TeamTowerData.TeamType);
-            Eventbus.CombatEvents.OnTowerGridDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
-        }
+         Team GetTeamDataByTeamType(TeamType type) => _teams.First(team => team.Data.TeamType == type);
+        // private void GetGridByTeam(TowerData deadTower)
+        // {
+        //     var team = GetTeamDataByTeamType(deadTower.TeamTowerData.TeamType);
+        //     Eventbus.CombatEvents.OnTowerGridDetection?.Invoke(new TowerGridRelationModel(team.Data.Grid, deadTower));
+        // }
 
         private void ExchangeTower(TowerData deadTower)
         {
@@ -47,7 +46,6 @@ namespace Turn
         {
             Eventbus.TeamEvents.OnTeamsSet -= GetTeams;
             Eventbus.TeamEvents.OnTeamChange -= ExchangeTower;
-            Eventbus.CombatEvents.OnTowerKilled -= GetGridByTeam;
         }
     }
 }

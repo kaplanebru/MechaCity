@@ -1,34 +1,46 @@
+using System.Collections.Generic;
 using Data;
 using DataModels;
+using Enums;
 using Grid;
+using Teams;
 using Towers;
 
 namespace Turn
 {
     public class MatchHelper : BaseTurnHelper
     {
+        private Dictionary<TeamType, GameGrid> _grids = new();
         private void OnEnable()
         {
-            Eventbus.CombatEvents.OnTowerGridDetection += HandleDeadTower;
+            Eventbus.CombatEvents.OnTowerKilled += HandleDeadTower;
         }
 
-        private void HandleDeadTower(TowerGridRelationModel deadTowerGridModel)
+        private void HandleDeadTower(TowerData deadTower)
         {
-            var deadTower = deadTowerGridModel.Tower;
             var linkedTowers = deadTower.LinkedTowerIDs;
-
-
+            
             for (var i = linkedTowers.Count - 1; i >= 0; i--)
             {
-                RematchDetachedTowers(deadTowerGridModel, AllTowers.GetTower(linkedTowers[i]));
+                RematchDetachedTowers(new TowerGridRelationModel(_grids[deadTower.TeamTowerData.TeamType], deadTower), AllTowers.GetData(linkedTowers[i]));
                 RemoveLink(deadTower, AllTowers.GetData(linkedTowers[i]));
             }
-
+            
             SwitchSides(deadTower);
             Eventbus.CombatEvents.OnMatchesRestored?.Invoke();
         }
 
-        void RematchDetachedTowers(TowerGridRelationModel deadTowerGridModel, Tower detachedTower)
+        public void SetGrids(Team[] teams)
+        {
+            _grids.Clear();
+            foreach (var team in teams)
+            {
+                _grids.Add(team.Data.TeamType, team.Data.Grid);
+            }
+        }
+        
+
+        void RematchDetachedTowers(TowerGridRelationModel deadTowerGridModel, TowerData detachedTower)
         {
             int deadTowerSlotId = deadTowerGridModel.Tower.SlotId;
 
@@ -43,17 +55,17 @@ namespace Turn
             }
         }
 
-        int CheckSlotForLink(int number, GameGrid grid, Tower detachedTower)
+        int CheckSlotForLink(int number, GameGrid grid, TowerData detachedTower)
         {
             if (number is >= 0 and < GameGrid.SlotAmount)
             {
                 var slot = grid.Slots[number];
                 
                 if (slot.Tower.TeamTowerData.TeamType ==
-                    detachedTower.Data.TeamTowerData.TeamType) //bug fix: karşıdaki tower aynı team'dense pas
+                    detachedTower.TeamTowerData.TeamType) //bug fix: karşıdaki tower aynı team'dense pas
                     return 0;
 
-                LinkTowers(slot.Tower, detachedTower.Data);
+                LinkTowers(slot.Tower, detachedTower);
                 return 1;
             }
 
@@ -82,7 +94,7 @@ namespace Turn
 
         private void OnDisable()
         {
-            Eventbus.CombatEvents.OnTowerGridDetection -= HandleDeadTower;
+            Eventbus.CombatEvents.OnTowerKilled -= HandleDeadTower;
         }
 
         //TODO: STAR VE ONDİSABLE'a event listener eklenmişse düzelt. Unsubscireda da olabilir

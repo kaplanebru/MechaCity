@@ -20,7 +20,6 @@ namespace Turn
     [Serializable]
     public class CombatData
     {
-        
         public List<CombatPair> CombatPairs = new();
         public TowerData latestDeadTower;
         [ReadOnly] public float projectileSpeed = 1;
@@ -91,7 +90,10 @@ namespace Turn
 
         public void CreateCombatPairByTower(TowerData tower)
         {
+            //for (int i = 0; i < Grids[tower.TeamTowerData.TeamType].Slots[tower.SlotId].LinkedSlotIDs.Count; i++)
+            
             OrderLinkedTowersByDistance(tower);
+            
 
             for (var i = 0; i < tower.LinkedTowerIDs.Count; i++)
             {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Enums;
+using Grid;
 using Network;
 using UnityEngine;
 using Teams;
@@ -10,7 +11,8 @@ namespace Turn
     {
         public TurnAction turnAction;
 
-        public Dictionary<string, Team> teams;
+        public Dictionary<string, Team> Teams;
+        public Dictionary<TeamType, GameGrid> Grids;
         public abstract TurnHandlerType HandlerType { get; }
         public abstract void OnHandlerEnabled();
         public List<BaseTurnHelper> TurnHelpers = new();
@@ -31,9 +33,9 @@ namespace Turn
             turnAction = TurnAction.Completed;
             enabled = false;
         }
-        public void SetTeams(Dictionary<string, Team> _teams)
+        public void SetTeams(Dictionary<string, Team> teams)
         {
-            teams = _teams;
+            Teams = teams;
         }
     
         public void ActionCompletedByUser()

@@ -289,7 +289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 793d2be57d0dc0040a5f15b3d74cfd92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerDatas: {fileID: 11400000, guid: 59b44fa1b60a2e24fb78ab3cfc8fef0c, type: 2}
 --- !u!1 &324423657
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,56 +2767,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e552255b8bdb5a4b81903949028a60a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towers: []
-  datas:
-  - UniqID: 0
-    Height: 0
-    SlotId: 0
-    TeamTowerData: {fileID: 0}
-    LinkedTowerIDs: 
-    _bulletAmountt: 0
-    _health: 0
-    DamagePower: 0
-  - UniqID: 0
-    Height: 0
-    SlotId: 0
-    TeamTowerData: {fileID: 0}
-    LinkedTowerIDs: 
-    _bulletAmountt: 0
-    _health: 0
-    DamagePower: 0
-  - UniqID: 0
-    Height: 0
-    SlotId: 0
-    TeamTowerData: {fileID: 0}
-    LinkedTowerIDs: 
-    _bulletAmountt: 0
-    _health: 0
-    DamagePower: 0
-  - UniqID: 0
-    Height: 0
-    SlotId: 0
-    TeamTowerData: {fileID: 0}
-    LinkedTowerIDs: 
-    _bulletAmountt: 0
-    _health: 0
-    DamagePower: 0
-  - UniqID: 0
-    Height: 0
-    SlotId: 0
-    TeamTowerData: {fileID: 0}
-    LinkedTowerIDs: 
-    _bulletAmountt: 0
-    _health: 0
-    DamagePower: 0
-  - UniqID: 0
-    Height: 0
-    SlotId: 0
-    TeamTowerData: {fileID: 0}
-    LinkedTowerIDs: 
-    _bulletAmountt: 0
-    _health: 0
-    DamagePower: 0
   TowersPrefab:
   - {fileID: 5579547957973982615, guid: 05c482badfba7d24eb2c1f172eafeadf, type: 3}
   - {fileID: 1247575438718957919, guid: 3c7ffae76fc75144fb2066bf0fa55c07, type: 3}

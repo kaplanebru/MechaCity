@@ -46,10 +46,5 @@ namespace Towers
         {
             Data.BulletAmount = ConstantData.MaxBullet;
         }
-
-        private void OnDisable()
-        {
-            Data.LinkedTowerIDs.Clear();
-        }
     }
 }
