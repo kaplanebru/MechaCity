@@ -10,23 +10,14 @@ using UnityEngine;
 
 namespace Teams
 {
-    [Serializable]
-    public class TeamConstructorData
-    {
-        public Transform TowersPrefab;
-    }
-
     public class Team : MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : TeamData
     {
         public TeamData Data;
-        [SerializeField] TeamConstructorData ConstructorData;
         
-        //private Towers<Tower> _towers = new();
 
         public void Initialize()
         {
             GetTeamTowers();
-            SetSlotIDs();
             SetGrid();
         }
 
@@ -43,14 +34,7 @@ namespace Teams
                 }
             });
         }
-
-        void SetSlotIDs()
-        {
-            for (int i = 0; i < Data.Towers.Count; i++)
-            {
-                Data.Towers[i].SlotId = i; //AllTowers.GetTower(tower.UniqID).Setup(Data.TeamTowerData);
-            }
-        }
+        
         
         void SetGrid()
         {
@@ -61,7 +45,6 @@ namespace Teams
         {
             Data.Towers.Add(tower);
             AllTowers.GetTower(tower.UniqID).SetTeam(Data.TeamTowerData);
-            //tower.SetTeam(Data.TeamTowerData); TODO!!! SET TEAM
         }
 
         public void RemoveTower(TowerData tower)

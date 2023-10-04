@@ -36,6 +36,7 @@ namespace Core
             }
             
             NetworkUIController.gameObject.SetActive(true);
+            
             Eventbus.TeamEvents.OnTeamsSet?.Invoke(teams);
         }
         

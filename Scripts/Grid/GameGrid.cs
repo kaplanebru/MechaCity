@@ -40,6 +40,7 @@ namespace Grid
             for (int i = 0; i < SlotAmount; i++)
             {
                 Slots[i].Id = i;
+                _towers[i].SlotId = i;
                 Slots[i].Tower = _towers[i];
             }
         }
