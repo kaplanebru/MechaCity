@@ -35,11 +35,12 @@ namespace Chain
         private void Start()
         {
             ResetValues();
-            LinearPointAmountByDistance();
-
+            
             AngleByDistance();
             CirclePointsByAngle();
+            
             AdaptUnitToCircle();
+            LinearPointAmountByDistance();
             
             SplitCircle();
             InsertLinearPoints();
@@ -51,7 +52,8 @@ namespace Chain
         void LinearPointAmountByDistance()
         {
             var distance = Vector3.Distance(center.position, destination.position);
-            linearPointAmount = Mathf.RoundToInt((distance - radius/2) / unit);
+            //linearPointAmount = Mathf.RoundToInt((distance - radius/2) / unit);
+            linearPointAmount = Mathf.RoundToInt(distance / unit) - 1;
             print("point amount: " + linearPointAmount);
         }
 
