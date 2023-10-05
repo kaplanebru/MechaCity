@@ -111,24 +111,13 @@ namespace Chain
                 multiplier++;
                 chainPoints.Insert(i, lastPoint - unitDistance * multiplier);
             }
-
-            totalAmount += linearPointAmount;
-
-
-            start = chainPoints.Count - 1;
-            end = start + linearPointAmount;
-            multiplier = 0;
-            lastPoint = chainPoints[start -1];
             
-
-            for (int i = start; i < end; i++)
+            for (int i = 0; i < linearPointAmount; i++)
             {
-                multiplier++;
                 chainPoints.Add(chainPoints.Last() + unitDistance);
-                //chainPoints.Insert(i, lastPoint + unitDistance * multiplier);
             }
             
-            totalAmount += linearPointAmount;
+            totalAmount += linearPointAmount * 2;
         }
         
         Vector3 CirclePoint(float angle)
