@@ -58,10 +58,10 @@ namespace Chain
         }
         void GetCirclePoints()
         {
-            SetDirectionAngle();
+            //SetDirectionAngle();
             float baseAngle = 360f / CircleAmount;
 
-            directionAngle = 0;
+            
             for (int i = 0; i <= CircleAmount; i++)
             {
                 var newAngle = (baseAngle * i + directionAngle) % 360; //print(newAngle);
@@ -69,8 +69,6 @@ namespace Chain
             }
             
             InsertIntersectionPoints();
-            
-            //chainPoints.Add(chainPoints[0]);
         }
 
         void InsertIntersectionPoints()
