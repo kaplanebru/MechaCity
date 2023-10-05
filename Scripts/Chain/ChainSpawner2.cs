@@ -13,40 +13,32 @@ namespace Chain
     {
         public LineRenderer lr;
         Material lrMat;
+        public Material firstCubeMaterial;
+        
         public float radius = 1;
         public float unit = 1;
 
         public Transform sphere;
         public Transform spheres;
+        
         public Transform center;
         public Transform destination;
-        public Material firstCubeMaterial;
-
-
-        public int circleAmount = 6;
-
-        private int CircleAmount
-        {
-            get => circleAmount - circleAmount % 6;
-            set { }
-        }
 
         public int linearPointAmount = 1;
         
         private int totalAmount;
         private float baseAngle;
         private Vector3 unitDistance;
-
-
         [ReadOnly] public List<Vector3> chainPoints = new();
 
 
         private void Start()
         {
             ResetValues();
+            LinearPointAmountByDistance();
 
-            SetAngleByDistance();
-            GetCirclePointsByAngle();
+            AngleByDistance();
+            CirclePointsByAngle();
             AdaptUnitToCircle();
             
             SplitCircle();
@@ -56,7 +48,14 @@ namespace Chain
             DrawLines();
         }
 
-        void SetAngleByDistance()
+        void LinearPointAmountByDistance()
+        {
+            var distance = Vector3.Distance(center.position, destination.position);
+            linearPointAmount = Mathf.RoundToInt((distance - radius/2) / unit);
+            print("point amount: " + linearPointAmount);
+        }
+
+        void AngleByDistance()
         {
             baseAngle = Mathf.Asin(unit / radius) * Mathf.Rad2Deg;
 
@@ -65,7 +64,7 @@ namespace Chain
             baseAngle = rest / 2 < 2 ? intAngle - rest : intAngle + 6 - rest;
         }
 
-        void GetCirclePointsByAngle()
+        void CirclePointsByAngle()
         {
             for (float i = 0; i < 360; i += baseAngle)
             {
