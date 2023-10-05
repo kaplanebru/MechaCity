@@ -5,17 +5,17 @@ using DG.Tweening;
 using Unity.Collections;
 using UnityEngine;
 
-//DISTANCE BASED
+
 namespace Chain
 {
-    public class ChainSpawner2 : MonoBehaviour
+    public class ChainSpawner3 : MonoBehaviour
     {
         public LineRenderer lr;
         Material lrMat;
         public float radius = 1;
-        public float unit = 1;
 
         public Material firstCubeMaterial;
+        public Material linearPointMaterial;
         private float directionAngle;
         private Vector3 direction;
 
@@ -41,19 +41,13 @@ namespace Chain
         {
             ResetValues();
 
-            GetCirclePointsByDistance();
+            GetCirclePoints();
+            GetDistanceBetweenPoints();
+            SplitCircle();
+            InsertLinearPoints();
             InstaintiateCubes();
-            // GetCirclePointsByAmount();
-            // GetDistanceBetweenPoints();
-            // SplitCircle();
-            // InsertLinearPoints();
-            // InstaintiateCubes();
-            // DrawLines();
+            DrawLines();
         }
-
-        private float baseAngle;
-        
-       
         
         void InstaintiateCubes()
         {
@@ -65,37 +59,11 @@ namespace Chain
 
             }
         }
-
-        void GetCirclePointsByDistance()
+        void GetCirclePoints()
         {
-            baseAngle = Mathf.Asin(unit/radius) * Mathf.Rad2Deg;
-            var intAngle = Mathf.FloorToInt(baseAngle);
-            print(intAngle);
+            //SetDirectionAngle();
+            float baseAngle = 360f / CircleAmount;
 
-            //circleAmount = Mathf.RoundToInt(360 / baseAngle);
-            var rest = intAngle % 6;
-            int angle;
-            baseAngle = (rest / 2) < 2 ? Mathf.RoundToInt(intAngle - rest) : Mathf.RoundToInt(intAngle + 6-rest);
-                
-
-            
-            print(rest/2);
-            
-            print("baseAngle "+baseAngle);
-
-            for (float i = 0; i < 360; i+= baseAngle)
-            {
-                totalAmount++;
-                var newAngle = i;
-                chainPoints.Add(CirclePoint(newAngle));
-            }
-            
-            print("total: " + totalAmount);
-        }
-        void GetCirclePointsByAmount()
-        {
-            //baseAngle = 360f / CircleAmount;
-            
             
             for (int i = 0; i <= CircleAmount; i++)
             {
