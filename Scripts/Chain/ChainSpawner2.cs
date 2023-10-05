@@ -112,10 +112,12 @@ namespace Chain
         {
             int start = totalAmount / 2;
             int end = start + linearPointAmount;
+            int multiplier = 0;
             
-            for (int i = totalAmount / 2; i < linearPointAmount + totalAmount/2; i++)
+            for (int i = start; i < end; i++)
             {
-                chainPoints.Insert(i, chainPoints[i] + pointDistance);
+                multiplier++;
+                chainPoints.Insert(i, chainPoints[i] + pointDistance * multiplier);
             }
 
             totalAmount += linearPointAmount;
@@ -123,10 +125,12 @@ namespace Chain
 
             start = chainPoints.Count-1;
             end = start + linearPointAmount;
-                
+            multiplier = 0;
+
             for (int i = start; i < end; i++)
             {
-                chainPoints.Insert(i, chainPoints[i] - pointDistance);
+                multiplier++;
+                chainPoints.Insert(i, chainPoints[i] - pointDistance * multiplier);
             }
            
             totalAmount += linearPointAmount;
