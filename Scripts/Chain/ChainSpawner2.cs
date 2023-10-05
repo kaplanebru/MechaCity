@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Unity.Collections;
 using UnityEngine;
@@ -15,9 +16,11 @@ namespace Chain
         public float radius = 1;
         public float unit = 1;
 
+        public Transform sphere;
+        public Transform spheres;
+        public Transform center;
+        public Transform destination;
         public Material firstCubeMaterial;
-        private float directionAngle;
-        private Vector3 direction;
 
 
         public int circleAmount = 6;
@@ -25,14 +28,15 @@ namespace Chain
         private int CircleAmount
         {
             get => circleAmount - circleAmount % 6;
-            set {}
+            set { }
         }
 
+        public int linearPointAmount = 1;
+        
         private int totalAmount;
+        private float baseAngle;
+        private Vector3 unitDistance;
 
-        public Transform sphere;
-        public Transform center;
-        public Transform destination;
 
         [ReadOnly] public List<Vector3> chainPoints = new();
 
@@ -41,76 +45,90 @@ namespace Chain
         {
             ResetValues();
 
-            GetCirclePointsByDistance();
+            SetAngleByDistance();
+            GetCirclePointsByAngle();
+            AdaptUnitToCircle();
+            
+            SplitCircle();
+            InsertLinearPoints();
+            
             InstaintiateCubes();
-            // GetCirclePointsByAmount();
-            // GetDistanceBetweenPoints();
-            // SplitCircle();
-            // InsertLinearPoints();
-            // InstaintiateCubes();
-            // DrawLines();
+            DrawLines();
         }
 
-        private float baseAngle;
-        
-       
-        
-        void InstaintiateCubes()
+        void SetAngleByDistance()
         {
-            for (int i = 0; i < totalAmount; i++)
-            {
-                var newCube = Instantiate(sphere, chainPoints[i], Quaternion.identity);
-                if (i == 0)
-                    newCube.GetComponent<MeshRenderer>().material = firstCubeMaterial;
+            baseAngle = Mathf.Asin(unit / radius) * Mathf.Rad2Deg;
 
-            }
-        }
-
-        void GetCirclePointsByDistance()
-        {
-            baseAngle = Mathf.Asin(unit/radius) * Mathf.Rad2Deg;
             var intAngle = Mathf.FloorToInt(baseAngle);
-            print(intAngle);
+            int rest = intAngle % 6;
+            baseAngle = rest / 2 < 2 ? intAngle - rest : intAngle + 6 - rest;
+        }
 
-            //circleAmount = Mathf.RoundToInt(360 / baseAngle);
-            var rest = intAngle % 6;
-            int angle;
-            baseAngle = (rest / 2) < 2 ? Mathf.RoundToInt(intAngle - rest) : Mathf.RoundToInt(intAngle + 6-rest);
-                
-
-            
-            print(rest/2);
-            
-            print("baseAngle "+baseAngle);
-
-            for (float i = 0; i < 360; i+= baseAngle)
+        void GetCirclePointsByAngle()
+        {
+            for (float i = 0; i < 360; i += baseAngle)
             {
                 totalAmount++;
                 var newAngle = i;
                 chainPoints.Add(CirclePoint(newAngle));
             }
-            
-            print("total: " + totalAmount);
         }
-        void GetCirclePointsByAmount()
+        
+        void AdaptUnitToCircle()
         {
-            //baseAngle = 360f / CircleAmount;
-            
-            
-            for (int i = 0; i <= CircleAmount; i++)
-            {
-                var newAngle = (baseAngle * i + directionAngle) % 360; //print(newAngle);
-                chainPoints.Add(CirclePoint(newAngle));
-            }
-            
-            InsertIntersectionPoints();
+            unit = Vector3.Distance(chainPoints[0], chainPoints[1]); //print(chainPoints[1].z);
+            //unit = chainPoints[0].z;
         }
 
         void InsertIntersectionPoints()
         {
-            chainPoints.Insert(chainPoints.Count/2, chainPoints[chainPoints.Count/2]);
-            chainPoints.Insert(chainPoints.Count-1, chainPoints[0]);
-            totalAmount = CircleAmount + 2;
+            chainPoints.Insert(totalAmount / 2 , chainPoints[totalAmount / 2 ]);
+            totalAmount+=2;
+            chainPoints.Add(chainPoints[0]);
+        }
+        void SplitCircle()
+        {
+            InsertIntersectionPoints();
+            for (int i = totalAmount / 2; i < totalAmount; i++)
+            {
+                var pos = chainPoints[i];
+                pos.z -= (linearPointAmount + 1) * unit;
+                chainPoints[i] = pos;
+            }
+        }
+        void InsertLinearPoints()
+        {
+            unitDistance = Vector3.forward * unit;
+            
+            int start = totalAmount / 2;
+            int end = start + linearPointAmount;
+            int multiplier = 0;
+
+            var lastPoint = chainPoints[start - 1];
+            for (int i = start; i < end; i++)
+            {
+                multiplier++;
+                chainPoints.Insert(i, lastPoint - unitDistance * multiplier);
+            }
+
+            totalAmount += linearPointAmount;
+
+
+            start = chainPoints.Count - 1;
+            end = start + linearPointAmount;
+            multiplier = 0;
+            lastPoint = chainPoints[start -1];
+            
+
+            for (int i = start; i < end; i++)
+            {
+                multiplier++;
+                chainPoints.Add(chainPoints.Last() + unitDistance);
+                //chainPoints.Insert(i, lastPoint + unitDistance * multiplier);
+            }
+            
+            totalAmount += linearPointAmount;
         }
         
         Vector3 CirclePoint(float angle)
@@ -122,59 +140,17 @@ namespace Chain
             return new Vector3(x, 0, y) * radius; // + transform.position;
         }
 
-        private Vector3 pointDistance;
-        public int linearPointAmount = 1;
-        void GetDistanceBetweenPoints()
+        void InstaintiateCubes()
         {
-            pointDistance = Vector3.Distance(chainPoints[0], chainPoints[1]) * Vector3.forward;
-            print(pointDistance.z);
-        }
-
-
-        void SplitCircle()
-        {
-            for (int i = totalAmount / 2; i < totalAmount; i++)
+            for (int i = 0; i < totalAmount; i++)
             {
-                var pos = chainPoints[i];
-                pos.z -= (linearPointAmount+1) * pointDistance.z;
-                chainPoints[i] = pos;
+                var newCube = Instantiate(sphere, chainPoints[i], Quaternion.identity);
+                newCube.SetParent(spheres);
+                if (i == 0)
+                    newCube.GetComponent<MeshRenderer>().material = firstCubeMaterial;
             }
-        }
-
-        void InsertLinearPoints()
-        {
-            int start = totalAmount / 2;
-            int end = start + linearPointAmount;
-            int multiplier = 0;
-            
-            var lastPoint = chainPoints[start-1];
-            for (int i = start; i < end; i++)
-            {
-                multiplier++;
-                
-                
-                chainPoints.Insert(i, lastPoint - pointDistance * multiplier);
-            }
-
-            totalAmount += linearPointAmount;
-            
-
-            start = chainPoints.Count-1;
-            end = start + linearPointAmount;
-            multiplier = 0;
-            lastPoint = chainPoints[start - 1];
-            print(lastPoint.z);
-
-            for (int i = start; i < end; i++)
-            {
-                multiplier++;
-                chainPoints.Insert(i, lastPoint + pointDistance * multiplier);
-            }
-
-            totalAmount += linearPointAmount;
         }
         
-
         void AddBindingPoint()
         {
             chainPoints.Add(chainPoints[0]);
@@ -184,24 +160,15 @@ namespace Chain
         void DrawLines()
         {
             AddBindingPoint();
-            lr.positionCount = totalAmount;//CircleAmount + 1;
+            lr.positionCount = totalAmount; //CircleAmount + 1;
             lr.SetPositions(chainPoints.ToArray());
         }
 
-        
+
         void ResetValues()
         {
             chainPoints.Clear();
             lr.positionCount = 0;
         }
-
-        void SetDirectionAngle()
-        {
-            direction = (destination.transform.position - transform.position).normalized;
-            directionAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-        }
-    
-
-        
     }
 }
