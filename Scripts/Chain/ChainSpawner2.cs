@@ -19,7 +19,7 @@ namespace Chain
         private Vector3 direction;
 
 
-        public int circleAmount;
+        public int circleAmount = 6;
 
         private int CircleAmount
         {
@@ -29,7 +29,7 @@ namespace Chain
 
         private int totalAmount;
 
-        public Transform cube;
+        public Transform sphere;
         public Transform center;
         public Transform destination;
 
@@ -43,14 +43,14 @@ namespace Chain
             GetCirclePoints();
             SplitCircle();
             InstaintiateCubes();
-            //DrawLines();
+            DrawLines();
         }
         
         void InstaintiateCubes()
         {
             for (int i = 0; i < totalAmount; i++)
             {
-                var newCube = Instantiate(cube, chainPoints[i], Quaternion.identity);
+                var newCube = Instantiate(sphere, chainPoints[i], Quaternion.identity);
                 if (i == 0)
                     newCube.GetComponent<MeshRenderer>().material = firstCubeMaterial;
 
@@ -103,7 +103,7 @@ namespace Chain
 
         void SplitCircle()
         {
-            for (int i = totalAmount / 2; i < totalAmount; i++) //+1
+            for (int i = totalAmount / 2; i < totalAmount; i++)
             {
                 var pos = chainPoints[i];
                 pos.z -= 10;
@@ -114,9 +114,16 @@ namespace Chain
             }
         }
 
+        void AddBindingPoint()
+        {
+            chainPoints.Add(chainPoints[0]);
+            totalAmount++;
+        }
+
         void DrawLines()
         {
-            lr.positionCount = CircleAmount + 1;
+            AddBindingPoint();
+            lr.positionCount = totalAmount;//CircleAmount + 1;
             lr.SetPositions(chainPoints.ToArray());
         }
 
