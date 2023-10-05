@@ -14,12 +14,20 @@ namespace Chain
         Material lrMat;
         public float radius = 1;
 
+        public Material firstCubeMaterial;
         private float directionAngle;
         private Vector3 direction;
 
 
-        public int amount;
-        private int Amount => amount - amount % 6;
+        public int circleAmount;
+
+        private int CircleAmount
+        {
+            get => circleAmount - circleAmount % 6;
+            set {}
+        }
+
+        private int totalAmount;
 
         public Transform cube;
         public Transform center;
@@ -34,8 +42,51 @@ namespace Chain
 
             GetCirclePoints();
             SplitCircle();
-            //InstaintiateCubes();
-            DrawLines();
+            InstaintiateCubes();
+            //DrawLines();
+        }
+        
+        void InstaintiateCubes()
+        {
+            for (int i = 0; i < totalAmount; i++)
+            {
+                var newCube = Instantiate(cube, chainPoints[i], Quaternion.identity);
+                if (i == 0)
+                    newCube.GetComponent<MeshRenderer>().material = firstCubeMaterial;
+
+            }
+        }
+        void GetCirclePoints()
+        {
+            SetDirectionAngle();
+            float baseAngle = 360f / CircleAmount;
+
+            directionAngle = 0;
+            for (int i = 0; i <= CircleAmount; i++)
+            {
+                var newAngle = (baseAngle * i + directionAngle) % 360; //print(newAngle);
+                chainPoints.Add(CirclePoint(newAngle));
+            }
+            
+            InsertIntersectionPoints();
+            
+            //chainPoints.Add(chainPoints[0]);
+        }
+
+        void InsertIntersectionPoints()
+        {
+            chainPoints.Insert(chainPoints.Count/2, chainPoints[chainPoints.Count/2]);
+            chainPoints.Insert(chainPoints.Count-1, chainPoints[0]);
+            totalAmount = CircleAmount + 2;
+        }
+
+        Vector3 CirclePoint(float angle)
+        {
+            float radians = angle * Mathf.Deg2Rad;
+            float x = Mathf.Cos(radians);
+            float y = Mathf.Sin(radians);
+
+            return new Vector3(x, 0, y) * radius; // + transform.position;
         }
 
         void ResetValues()
@@ -52,7 +103,7 @@ namespace Chain
 
         void SplitCircle()
         {
-            for (int i = Amount / 2 + 1; i < Amount; i++) //+1
+            for (int i = totalAmount / 2; i < totalAmount; i++) //+1
             {
                 var pos = chainPoints[i];
                 pos.z -= 10;
@@ -65,42 +116,12 @@ namespace Chain
 
         void DrawLines()
         {
-            lr.positionCount = Amount + 1;
+            lr.positionCount = CircleAmount + 1;
             lr.SetPositions(chainPoints.ToArray());
         }
 
-        void GetCirclePoints()
-        {
-            SetDirectionAngle();
-            float baseAngle = 360f / Amount;
+    
 
-            directionAngle = 0;
-            for (int i = 0; i <= Amount; i++)
-            {
-                var newAngle = (baseAngle * i + directionAngle) % 360;
-                print(newAngle);
-                chainPoints.Add(CirclePoint(newAngle));
-            }
-
-
-            chainPoints.Add(chainPoints[0]);
-        }
-
-        Vector3 CirclePoint(float angle)
-        {
-            float radians = angle * Mathf.Deg2Rad;
-            float x = Mathf.Cos(radians);
-            float y = Mathf.Sin(radians);
-
-            return new Vector3(x, 0, y) * radius; // + transform.position;
-        }
-
-        void InstaintiateCubes()
-        {
-            for (int i = 0; i < Amount; i++)
-            {
-                Instantiate(cube, chainPoints[i], Quaternion.identity);
-            }
-        }
+        
     }
 }
