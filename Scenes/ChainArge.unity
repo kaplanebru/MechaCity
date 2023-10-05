@@ -1001,7 +1001,8 @@ MonoBehaviour:
   lr: {fileID: 68324621}
   radius: 5
   firstCubeMaterial: {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
-  circleAmount: 12
+  linearPointMaterial: {fileID: 0}
+  circleAmount: 18
   sphere: {fileID: 7579307728742912882, guid: ed90a94f17653744396d6bf7f947d158, type: 3}
   center: {fileID: 1263741520}
   destination: {fileID: 1671505464}
@@ -1018,7 +1019,7 @@ MonoBehaviour:
   - {x: 0.000000059624405, y: 0, z: -5}
   - {x: 2.4999995, y: 0, z: -4.3301272}
   - {x: 4.330127, y: 0, z: -2.500001}
-  linearPointAmount: 3
+  linearPointAmount: 4
 --- !u!1 &1868143869
 GameObject:
   m_ObjectHideFlags: 0
