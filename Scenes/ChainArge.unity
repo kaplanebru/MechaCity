@@ -218,20 +218,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions:
-  - {x: 5, y: 0, z: 0}
-  - {x: 4.330127, y: 0, z: 2.5}
-  - {x: 2.4999998, y: 0, z: 4.3301272}
-  - {x: -0.00000021855695, y: 0, z: 5}
-  - {x: -2.5000002, y: 0, z: 4.330127}
-  - {x: -4.330127, y: 0, z: 2.5000002}
-  - {x: -5, y: 0, z: -0.0000004371139}
-  - {x: -4.330127, y: 0, z: -2.4999998}
-  - {x: -2.4999995, y: 0, z: -4.3301272}
-  - {x: 0.000000059624405, y: 0, z: -5}
-  - {x: 2.4999995, y: 0, z: -4.3301272}
-  - {x: 4.330127, y: 0, z: -2.500001}
-  - {x: 0, y: 0, z: 0}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -516,14 +503,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 369180997}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1671505464}
+  - {fileID: 1263741520}
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!1 &471423053
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,8 +736,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 90830150}
-  m_Father: {fileID: 2140233374}
-  m_RootOrder: 2
+  m_Father: {fileID: 369180998}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1280201379
 GameObject:
@@ -920,8 +909,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2140233374}
-  m_RootOrder: 1
+  m_Father: {fileID: 369180998}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1671505465
 BoxCollider:
@@ -1372,8 +1361,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1852331329}
-  - {fileID: 1671505464}
-  - {fileID: 1263741520}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

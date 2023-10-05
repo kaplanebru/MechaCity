@@ -45,16 +45,26 @@ namespace Chain
             SplitCircle();
             InsertLinearPoints();
             
+            RotatePoints();
+            
             InstaintiateCubes();
             DrawLines();
+            print(totalAmount);
+        }
+
+        void RotatePoints()
+        {
+            for (var i = 0; i < chainPoints.Count; i++)
+            {
+                var point = chainPoints[i];
+                chainPoints[i] = spheres.position + spheres.rotation * point;
+            }
         }
 
         void LinearPointAmountByDistance()
         {
             var distance = Vector3.Distance(center.position, destination.position);
-            //linearPointAmount = Mathf.RoundToInt((distance - radius/2) / unit);
             linearPointAmount = Mathf.RoundToInt(distance / unit) - 1;
-            print("point amount: " + linearPointAmount);
         }
 
         void AngleByDistance()
