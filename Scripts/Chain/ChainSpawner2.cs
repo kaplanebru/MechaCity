@@ -15,6 +15,7 @@ namespace Chain
         public float radius = 1;
 
         public Material firstCubeMaterial;
+        public Material linearPointMaterial;
         private float directionAngle;
         private Vector3 direction;
 
@@ -45,7 +46,7 @@ namespace Chain
             SplitCircle();
             InsertLinearPoints();
             InstaintiateCubes();
-            //DrawLines();
+            DrawLines();
         }
         
         void InstaintiateCubes()
@@ -114,10 +115,13 @@ namespace Chain
             int end = start + linearPointAmount;
             int multiplier = 0;
             
+            var lastPoint = chainPoints[start-1];
             for (int i = start; i < end; i++)
             {
                 multiplier++;
-                chainPoints.Insert(i, chainPoints[i] + pointDistance * multiplier);
+                
+                
+                chainPoints.Insert(i, lastPoint - pointDistance * multiplier);
             }
 
             totalAmount += linearPointAmount;
@@ -126,31 +130,18 @@ namespace Chain
             start = chainPoints.Count-1;
             end = start + linearPointAmount;
             multiplier = 0;
+            lastPoint = chainPoints[start - 1];
+            print(lastPoint.z);
 
             for (int i = start; i < end; i++)
             {
                 multiplier++;
-                chainPoints.Insert(i, chainPoints[i] - pointDistance * multiplier);
+                chainPoints.Insert(i, lastPoint + pointDistance * multiplier);
             }
-           
+
             totalAmount += linearPointAmount;
         }
         
-
-        
-
-        // void SplitCircle()
-        // {
-        //     for (int i = totalAmount / 2; i < totalAmount; i++)
-        //     {
-        //         var pos = chainPoints[i];
-        //         pos.z -= 10;
-        //         //pos.z += destination.transform.position.z;
-        //         //pos.x += destination.transform.position.x;
-        //         //pos += direction;
-        //         chainPoints[i] = pos;
-        //     }
-        // }
 
         void AddBindingPoint()
         {
