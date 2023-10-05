@@ -41,9 +41,11 @@ namespace Chain
             ResetValues();
 
             GetCirclePoints();
+            GetDistanceBetweenPoints();
             SplitCircle();
+            InsertLinearPoints();
             InstaintiateCubes();
-            DrawLines();
+            //DrawLines();
         }
         
         void InstaintiateCubes()
@@ -77,7 +79,7 @@ namespace Chain
             chainPoints.Insert(chainPoints.Count-1, chainPoints[0]);
             totalAmount = CircleAmount + 2;
         }
-
+        
         Vector3 CirclePoint(float angle)
         {
             float radians = angle * Mathf.Deg2Rad;
@@ -87,30 +89,64 @@ namespace Chain
             return new Vector3(x, 0, y) * radius; // + transform.position;
         }
 
-        void ResetValues()
+        private Vector3 pointDistance;
+        public int linearPointAmount = 1;
+        void GetDistanceBetweenPoints()
         {
-            chainPoints.Clear();
-            lr.positionCount = 0;
+            pointDistance = Vector3.Distance(chainPoints[0], chainPoints[1]) * Vector3.forward;
+            print(pointDistance.z);
         }
 
-        void SetDirectionAngle()
-        {
-            direction = (destination.transform.position - transform.position).normalized;
-            directionAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-        }
 
         void SplitCircle()
         {
             for (int i = totalAmount / 2; i < totalAmount; i++)
             {
                 var pos = chainPoints[i];
-                pos.z -= 10;
-                //pos.z += destination.transform.position.z;
-                //pos.x += destination.transform.position.x;
-                //pos += direction;
+                pos.z -= (linearPointAmount+1) * pointDistance.z;
                 chainPoints[i] = pos;
             }
         }
+
+        void InsertLinearPoints()
+        {
+            int start = totalAmount / 2;
+            int end = start + linearPointAmount;
+            
+            for (int i = totalAmount / 2; i < linearPointAmount + totalAmount/2; i++)
+            {
+                chainPoints.Insert(i, chainPoints[i] + pointDistance);
+            }
+
+            totalAmount += linearPointAmount;
+            
+
+            start = chainPoints.Count-1;
+            end = start + linearPointAmount;
+                
+            for (int i = start; i < end; i++)
+            {
+                chainPoints.Insert(i, chainPoints[i] - pointDistance);
+            }
+           
+            totalAmount += linearPointAmount;
+        }
+        
+
+        
+
+        // void SplitCircle()
+        // {
+        //     for (int i = totalAmount / 2; i < totalAmount; i++)
+        //     {
+        //         var pos = chainPoints[i];
+        //         pos.z -= 10;
+        //         //pos.z += destination.transform.position.z;
+        //         //pos.x += destination.transform.position.x;
+        //         //pos += direction;
+        //         chainPoints[i] = pos;
+        //     }
+        // }
 
         void AddBindingPoint()
         {
@@ -125,6 +161,18 @@ namespace Chain
             lr.SetPositions(chainPoints.ToArray());
         }
 
+        
+        void ResetValues()
+        {
+            chainPoints.Clear();
+            lr.positionCount = 0;
+        }
+
+        void SetDirectionAngle()
+        {
+            direction = (destination.transform.position - transform.position).normalized;
+            directionAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+        }
     
 
         
