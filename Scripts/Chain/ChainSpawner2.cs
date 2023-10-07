@@ -16,11 +16,8 @@ namespace Chain
         public float radius;
         public Transform gear;
         public int relatedArcId;
-        
-        public List<Vector3> arcPoints = new();
 
-        // public bool smaller;
-        // public bool first;
+        public List<Vector3> arcPoints = new();
     }
 
     public class ChainSpawner2 : MonoBehaviour
@@ -29,30 +26,35 @@ namespace Chain
         public LineRenderer lr;
         Material lrMat;
         public Material firstCubeMaterial;
-        
+
         public float unit = 1;
         public int linearPointAmount = 1;
 
         public Transform sphere;
         public Transform objs;
-        
-        
+
+
         private Vector3 unitDistance;
         [ReadOnly] public List<Vector3> chainPoints = new();
-        
+
         private void Start()
         {
             ResetValues();
             SetCircularPoints();
             SetLinearPoints();
-            
+
+
+            BindPoints();
+            InstantiateObjs();
+            DrawLines();
+        }
+
+        void BindPoints()
+        {
             foreach (var arcPart in arcParts)
             {
                 chainPoints.AddRange(arcPart.arcPoints);
             }
-
-            InstantiateObjs();
-            DrawLines();
         }
 
         void SetCircularPoints()
@@ -71,12 +73,13 @@ namespace Chain
             {
                 LinearPointAmountByDistance(i);
             }
+
             for (int i = 0; i < arcParts.Length; i++)
             {
                 AddLinearPoints(i);
             }
         }
-        
+
 
         void SetArcRotation(int i)
         {
@@ -91,7 +94,7 @@ namespace Chain
         {
             var arcPoints = arcParts[i].arcPoints;
             var gear = arcParts[i].gear;
-            
+
             for (var j = 0; j < arcPoints.Count; j++)
             {
                 var point = arcPoints[j];
@@ -104,7 +107,7 @@ namespace Chain
             var distance = Vector3.Distance(
                 arcParts[i].arcPoints.First(),
                 arcParts[arcParts[i].relatedArcId].arcPoints.Last());
-            
+
             linearPointAmount = Mathf.RoundToInt(distance / unit) - 1;
         }
 
@@ -131,21 +134,24 @@ namespace Chain
         {
             var baseAngle = AngleByDistance(i);
             int start, max;
-            start = 0;
-            max = 180;
 
+            var mainRadius = arcParts[i].radius;
+            float arcDifferance = mainRadius - arcParts[arcParts[i].relatedArcId].radius;
+            if (arcDifferance > 0 && Mathf.Abs(arcDifferance) > 3)
+            {
+                start = -baseAngle;
+                max = 180 + baseAngle;
+            }
+            else
+            {
+                start = 0;
+                max = 180;
+            }
 
-            // if (Mathf.Abs(lesRadius[0] - lesRadius[1]) > 3 && i == 1)
-            // {
-            //     start = -baseAngle;
-            //     max = 180 + baseAngle;
-            // }
-
-            var radius = arcParts[i].radius;
             for (float j = start; j <= max; j += baseAngle)
             {
                 var newAngle = j;
-                arcParts[i].arcPoints.Add(CirclePoint(newAngle, radius));
+                arcParts[i].arcPoints.Add(CirclePoint(newAngle, mainRadius));
             }
         }
 
@@ -158,9 +164,9 @@ namespace Chain
         {
             var relatedArc = arcParts[arcParts[i].relatedArcId];
             Vector3 edgeDirection = (arcParts[i].arcPoints.Last() - relatedArc.arcPoints.First()).normalized;
-            
+
             unitDistance = edgeDirection * unit;
-            
+
             var arcPoints = arcParts[i].arcPoints;
             for (int j = 0; j < linearPointAmount; j++)
             {

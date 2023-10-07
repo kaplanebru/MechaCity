@@ -1017,7 +1017,7 @@ GameObject:
   - component: {fileID: 1852331329}
   - component: {fileID: 1852331330}
   m_Layer: 0
-  m_Name: ChainSpawner2
+  m_Name: ChainSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1052,12 +1052,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arcParts:
   - id: 0
-    radius: 4
+    radius: 5
     gear: {fileID: 1263741520}
     relatedArcId: 1
     arcPoints: []
   - id: 1
-    radius: 5
+    radius: 4
     gear: {fileID: 1671505464}
     relatedArcId: 0
     arcPoints: []
