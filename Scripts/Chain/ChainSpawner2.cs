@@ -14,6 +14,7 @@ namespace Chain
     {
         public List<Vector3> arcPoints = new();
     }
+
     public class ChainSpawner2 : MonoBehaviour
     {
         public LineRenderer lr;
@@ -36,6 +37,7 @@ namespace Chain
 
 
         public ArcParts[] arcParts;
+        private Vector3 _direction;
 
 
         private void OnEnable()
@@ -49,46 +51,47 @@ namespace Chain
 
         private void Start()
         {
-           
-            ResetValues();
             SetArcRotation(0);
+            ResetValues();
+            LinearPointAmountByDistance();
+
             for (int i = 0; i < arcs.Length; i++)
             {
                 CreateHalfCircleByAngle(i);
                 RotatePoints(i);
+                
+            }
+
+            for (int i = 0; i <  arcs.Length; i++)
+            {
+                AddLinearPoints(i);
             }
 
 
-           // LinearPointAmountByDistance();
-
             // AdaptUnitToCircle();
 
-            //
-            //SplitCircle();
-            //InsertLinearPoints();
-            //
 
 
             for (int i = 0; i < arcParts.Length; i++)
             {
                 chainPoints.AddRange(arcParts[i].arcPoints);
             }
-            
+
             InstaintiateCubes();
-            //DrawLines();
-//            print(totalAmount);
+            DrawLines();
+
         }
 
         void SetArcRotation(int firstArc)
         {
-            var direction = (arcs[1].position - arcs[0].position).normalized;
-            arcs[firstArc].rotation = Quaternion.LookRotation(-direction);
-            arcs[firstArc + 1].rotation = Quaternion.LookRotation(direction);
+            _direction = (arcs[1].position - arcs[0].position).normalized;
+            arcs[firstArc].rotation = Quaternion.LookRotation(-_direction);
+            arcs[firstArc + 1].rotation = Quaternion.LookRotation(_direction);
         }
 
         void RotatePoints(int arcIndex)
         {
-            var arcPoints = arcParts[arcIndex].arcPoints; 
+            var arcPoints = arcParts[arcIndex].arcPoints;
             for (var i = 0; i < arcPoints.Count; i++)
             {
                 var point = arcPoints[i];
@@ -127,8 +130,6 @@ namespace Chain
             {
                 totalAmount++;
                 var newAngle = i;
-                if (newAngle > 180 - baseAngle && newAngle < 180) //Todo: temporary
-                    newAngle = 180;
                 arcParts[arcIndex].arcPoints.Add(CirclePoint(newAngle, arcIndex));
             }
         }
@@ -137,47 +138,33 @@ namespace Chain
         {
             unit = Vector3.Distance(chainPoints[0], chainPoints[1]); //print(chainPoints[1].z);
         }
+        
+        
 
-        void InsertIntersectionPoints()
+        Vector3 _edgeDirection;
+        void AddLinearPoints(int arcIndex)
         {
-            chainPoints.Insert(totalAmount / 2, chainPoints[totalAmount / 2]);
-            totalAmount += 2;
-            chainPoints.Add(chainPoints[0]);
-        }
+            
+            if (arcIndex == 0)
+                _edgeDirection = (arcParts[0].arcPoints.Last() - arcParts[1].arcPoints.First()).normalized;
+            else
+                _edgeDirection = (arcParts[1].arcPoints.Last() - arcParts[0].arcPoints.First()).normalized;
+            
 
-        void SplitCircle()
-        {
-            InsertIntersectionPoints();
-            for (int i = totalAmount / 2; i < totalAmount; i++)
-            {
-                var pos = chainPoints[i];
-                pos.z -= (linearPointAmount + 1) * unit;
-                chainPoints[i] = pos;
-            }
-        }
+            unitDistance = _edgeDirection * unit;
 
-        void InsertLinearPoints()
-        {
-            unitDistance = Vector3.forward * unit;
 
-            int start = totalAmount / 2;
-            int end = start + linearPointAmount;
-            int multiplier = 0;
-
-            var lastPoint = chainPoints[start - 1];
-            for (int i = start; i < end; i++)
-            {
-                multiplier++;
-                chainPoints.Insert(i, lastPoint - unitDistance * multiplier);
-            }
+            var arcPoints = arcParts[arcIndex].arcPoints;
 
             for (int i = 0; i < linearPointAmount; i++)
             {
-                chainPoints.Add(chainPoints.Last() + unitDistance);
+                arcPoints.Add(arcPoints.Last() - unitDistance);
             }
 
-            totalAmount += linearPointAmount * 2;
+            totalAmount += linearPointAmount;
         }
+
+        
 
 
         void InstaintiateCubes()
