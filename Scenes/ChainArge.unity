@@ -587,7 +587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 677874777}
   m_Layer: 0
-  m_Name: Spheres
+  m_Name: Objs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -715,7 +715,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1263741520}
   m_Layer: 0
-  m_Name: Arc
+  m_Name: Gear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -922,7 +922,7 @@ GameObject:
   - component: {fileID: 1671505466}
   - component: {fileID: 1671505465}
   m_Layer: 0
-  m_Name: Arc 1
+  m_Name: Gear 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1050,18 +1050,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2134aa162e8659743a3a44a598fd7df7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arcParts:
+  - id: 0
+    radius: 4
+    gear: {fileID: 1263741520}
+    relatedArcId: 1
+    arcPoints: []
+  - id: 1
+    radius: 5
+    gear: {fileID: 1671505464}
+    relatedArcId: 0
+    arcPoints: []
   lr: {fileID: 68324621}
   firstCubeMaterial: {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
-  lesRadius:
-  - 4
-  - 5
   unit: 2
-  sphere: {fileID: 7579307728742912882, guid: ed90a94f17653744396d6bf7f947d158, type: 3}
-  arcs:
-  - {fileID: 1263741520}
-  - {fileID: 1671505464}
-  spheres: {fileID: 677874777}
   linearPointAmount: 4
+  sphere: {fileID: 7579307728742912882, guid: ed90a94f17653744396d6bf7f947d158, type: 3}
+  objs: {fileID: 677874777}
   chainPoints:
   - {x: 5, y: 0, z: 0}
   - {x: 4.330127, y: 0, z: 2.5}
@@ -1075,7 +1080,6 @@ MonoBehaviour:
   - {x: 0.000000059624405, y: 0, z: -5}
   - {x: 2.4999995, y: 0, z: -4.3301272}
   - {x: 4.330127, y: 0, z: -2.500001}
-  arcParts: []
 --- !u!1 &1868143869
 GameObject:
   m_ObjectHideFlags: 0
