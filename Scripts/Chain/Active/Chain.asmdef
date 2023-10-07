@@ -1,3 +1,4 @@
 {
-	"name": "Chain"
+	"name": "Chain",
+	"references":[ "GUID:8bb426bd7b6f04b41bd053132e8170af" ]
 }
