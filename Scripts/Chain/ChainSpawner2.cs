@@ -13,6 +13,8 @@ namespace Chain
     public class ArcParts
     {
         public List<Vector3> arcPoints = new();
+        public bool smaller;
+        public bool first;
     }
 
     public class ChainSpawner2 : MonoBehaviour
@@ -26,6 +28,7 @@ namespace Chain
 
         public Transform sphere;
         public Transform[] arcs;
+        public Transform spheres;
 
 
         public int linearPointAmount = 1;
@@ -53,23 +56,19 @@ namespace Chain
         {
             SetArcRotation(0);
             ResetValues();
-            LinearPointAmountByDistance();
+            //LinearPointAmountByDistance();
 
             for (int i = 0; i < arcs.Length; i++)
             {
                 CreateHalfCircleByAngle(i);
                 RotatePoints(i);
-                
             }
 
-            for (int i = 0; i <  arcs.Length; i++)
+            LinearPointAmountByDistance();
+            for (int i = 0; i < arcs.Length; i++)
             {
                 AddLinearPoints(i);
             }
-
-
-            // AdaptUnitToCircle();
-
 
 
             for (int i = 0; i < arcParts.Length; i++)
@@ -79,7 +78,6 @@ namespace Chain
 
             InstaintiateCubes();
             DrawLines();
-
         }
 
         void SetArcRotation(int firstArc)
@@ -101,7 +99,7 @@ namespace Chain
 
         void LinearPointAmountByDistance()
         {
-            var distance = Vector3.Distance(arcs[0].position, arcs[1].position);
+            var distance = Vector3.Distance(arcParts[1].arcPoints.Last(), arcParts[0].arcPoints.First());
             linearPointAmount = Mathf.RoundToInt(distance / unit) - 1;
         }
 
@@ -121,12 +119,24 @@ namespace Chain
             var intAngle = Mathf.RoundToInt(baseAngle);
             int rest = intAngle % 6;
             return rest / 2 < 2 ? intAngle - rest : intAngle + 6 - rest;
+            //return intAngle;
         }
 
         void CreateHalfCircleByAngle(int arcIndex)
         {
             var baseAngle = AngleByDistance(arcIndex);
-            for (float i = 0; i <= 180; i += baseAngle)
+            int start, max;
+            start = 0;
+            max = 180;
+            
+            
+            if(Mathf.Abs(lesRadius[0]-lesRadius[1]) > 3 && arcIndex == 1)
+            {
+                start = -baseAngle;
+                max = 180 + baseAngle;
+            }
+
+            for (float i = start; i <= max; i += baseAngle)
             {
                 totalAmount++;
                 var newAngle = i;
@@ -138,18 +148,17 @@ namespace Chain
         {
             unit = Vector3.Distance(chainPoints[0], chainPoints[1]); //print(chainPoints[1].z);
         }
-        
-        
+
 
         Vector3 _edgeDirection;
+
         void AddLinearPoints(int arcIndex)
         {
-            
             if (arcIndex == 0)
                 _edgeDirection = (arcParts[0].arcPoints.Last() - arcParts[1].arcPoints.First()).normalized;
             else
                 _edgeDirection = (arcParts[1].arcPoints.Last() - arcParts[0].arcPoints.First()).normalized;
-            
+
 
             unitDistance = _edgeDirection * unit;
 
@@ -164,15 +173,13 @@ namespace Chain
             totalAmount += linearPointAmount;
         }
 
-        
-
 
         void InstaintiateCubes()
         {
             for (int i = 0; i < totalAmount; i++)
             {
                 var newCube = Instantiate(sphere, chainPoints[i], Quaternion.identity);
-                //newCube.SetParent(spheres);
+                newCube.SetParent(spheres);
                 if (i == 0)
                     newCube.GetComponent<MeshRenderer>().material = firstCubeMaterial;
             }
