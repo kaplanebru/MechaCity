@@ -19,7 +19,7 @@ namespace Chain
         public int linearPointAmount = 1;
 
         private Vector3 unitDistance;
-         ChainState state;
+        ChainState state;
         [ReadOnly] public List<Vector3> chainPoints = new();
 
         private void Start()
@@ -27,20 +27,10 @@ namespace Chain
             chainPoints.Clear();
             state = arcParts.Length % 2 == 0 ? ChainState.Even : ChainState.Odd;
 
-            if (state == ChainState.Odd)
-            {
-                SetCircularPoints2();
-                SetLinearPoints();
-                BindPoints();
 
-            }
-            else if(state == ChainState.Even)
-            {
-                SetCircularPoints();
-                SetLinearPoints();
-                BindPoints();
-            }
-           
+            SetCircularPoints();
+            SetLinearPoints();
+            BindPoints();
         }
 
         private Vector3 center;
@@ -48,17 +38,6 @@ namespace Chain
         void GetCenter()
         {
             center = ChainHelper.CenterDirection(arcParts);
-        }
-        void SetCircularPoints2()
-        {
-            GetCenter();
-
-            for (var i = 0; i < arcParts.Length; i++)
-            {
-                SetArcRotation(i);
-                CreateHalfCircleByAngle(i);
-                RotatePoints(i);
-            }
         }
 
         void SetCircularPoints()
@@ -78,24 +57,34 @@ namespace Chain
             var direction = (mainArc.gear.position - center).normalized;
             mainArc.gear.rotation = Quaternion.LookRotation(direction);
         }
-        
+
         void CreateHalfCircleByAngle(int i)
         {
             var baseAngle = ChainHelper.AngleByDistance(unit, arcParts[i].radius);
             int start, max;
 
-            var mainRadius = arcParts[i].radius;
-            float arcDifferance = mainRadius - arcParts[arcParts[i].relatedArcId].radius;
-            if (arcDifferance > 0 && Mathf.Abs(arcDifferance) > 3)
-            {
-                start = -baseAngle;
-                max = 180 + baseAngle;
-            }
-            else
+            if (state == ChainState.Even)
             {
                 start = 0;
                 max = 180;
             }
+            else
+            {
+                start = baseAngle;
+                max = 180 - baseAngle;
+            }
+            var mainRadius = arcParts[i].radius;
+            // float arcDifferance = mainRadius - arcParts[arcParts[i].relatedArcId].radius;
+            // if (arcDifferance > 0 && Mathf.Abs(arcDifferance) > 3)
+            // {
+            //     start = -baseAngle;
+            //     max = 180 + baseAngle;
+            // }
+            // else
+            // {
+            //     start = 0;
+            //     max = 180;
+            // }
 
             for (float j = start; j <= max; j += baseAngle)
             {
@@ -115,7 +104,7 @@ namespace Chain
                 arcPoints[j] = gear.position + gear.rotation * point;
             }
         }
-        
+
         void SetLinearPoints()
         {
             SetRelatedArcs();
@@ -136,6 +125,7 @@ namespace Chain
                     arcParts[i].relatedArcId = arcParts.Length - 1;
                     continue;
                 }
+
                 arcParts[i].relatedArcId = i - 1;
             }
         }
@@ -151,16 +141,17 @@ namespace Chain
             var distance = Vector3.Distance(
                 arcParts[i].arcPoints.Last(),
                 arcParts[i].connectionPoint);
-                //arcParts[arcParts[i].relatedArcId].arcPoints.Last());
+            //arcParts[arcParts[i].relatedArcId].arcPoints.Last());
 
             linearPointAmount = Mathf.RoundToInt(distance / unit) - 1; //TODO: bug: bu da sondaki neyse öyle kalıyordur
         }
+
         void AddLinearPoints(int i)
         {
-           // var relatedArc = arcParts[arcParts[i].relatedArcId];
-           Vector3 edgeDirection = (arcParts[i].connectionPoint - arcParts[i].arcPoints.Last()).normalized;
-               //(arcParts[i].connectionPoint - arcParts[i].arcPoints.First()).normalized;
-                //(relatedArc.arcPoints.Last() - arcParts[i].arcPoints.First()).normalized;//(arcParts[i].arcPoints.Last() - relatedArc.arcPoints.First()).normalized;
+            // var relatedArc = arcParts[arcParts[i].relatedArcId];
+            Vector3 edgeDirection = (arcParts[i].connectionPoint - arcParts[i].arcPoints.Last()).normalized;
+            //(arcParts[i].connectionPoint - arcParts[i].arcPoints.First()).normalized;
+            //(relatedArc.arcPoints.Last() - arcParts[i].arcPoints.First()).normalized;//(arcParts[i].arcPoints.Last() - relatedArc.arcPoints.First()).normalized;
 
             unitDistance = edgeDirection * unit;
 
@@ -177,13 +168,13 @@ namespace Chain
             {
                 chainPoints.AddRange(arcPart.arcPoints);
             }
+
             chainDrawer.DrawChain(chainPoints);
         }
-        
+
         void AdaptUnitToCircle()
         {
             unit = Vector3.Distance(chainPoints[0], chainPoints[1]); //print(chainPoints[1].z);
         }
-        
     }
 }
