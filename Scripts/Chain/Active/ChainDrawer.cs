@@ -41,7 +41,6 @@ namespace Chain
 
         void DrawLines()
         {
-            _chainPoints.Add(_chainPoints[0]);
             lr.positionCount = _chainPoints.Count;
             lr.SetPositions(_chainPoints.ToArray());
         }
