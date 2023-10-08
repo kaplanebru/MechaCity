@@ -28,7 +28,7 @@ namespace Chain
             DrawLines();
         }
 
-        void InstantiateObjs()
+        public void InstantiateObjs()
         {
             for (int i = 0; i < _chainPoints.Count; i++)
             {

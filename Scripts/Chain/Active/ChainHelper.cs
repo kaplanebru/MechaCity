@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Chain;
 using UnityEngine;
 
 public static class ChainHelper
@@ -23,14 +24,14 @@ public static class ChainHelper
         //return intAngle;
     }
     
-    
-    public static Vector3 CenterDirection(List<Vector3> positions, Vector3 pos)
+    public static Vector3 CenterDirection(ArcPart[] arcParts)
     {
-        foreach (var position in positions)
+        Vector3 pos = Vector3.zero;
+        foreach (var arcPart in arcParts)
         {
-            pos += position;
+            pos += arcPart.gear.position;
         }
 
-        return pos / positions.Count;
+        return pos / arcParts.Length;
     }
 }

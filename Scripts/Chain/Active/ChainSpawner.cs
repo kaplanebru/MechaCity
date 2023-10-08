@@ -19,21 +19,54 @@ namespace Chain
         public int linearPointAmount = 1;
 
         private Vector3 unitDistance;
-        [ReadOnly]public ChainState state;
+         ChainState state;
         [ReadOnly] public List<Vector3> chainPoints = new();
 
         private void Start()
         {
             chainPoints.Clear();
             state = arcParts.Length % 2 == 0 ? ChainState.Even : ChainState.Odd;
-            
-            SetCircularPoints();
-            SetLinearPoints();
-            BindPoints();
+
+            if (state == ChainState.Odd)
+            {
+                SetCircularPoints2();
+               
+                BindPoints();
+                chainDrawer.InstantiateObjs();
+
+            }
+            else if(state == ChainState.Even)
+            {
+                SetCircularPoints();
+                SetLinearPoints();
+                BindPoints();
+            }
+           
+        }
+
+        private Vector3 center;
+
+        void GetCenter()
+        {
+            center = ChainHelper.CenterDirection(arcParts);
+        }
+        void SetCircularPoints2()
+        {
+            GetCenter();
+
+            for (var i = 0; i < arcParts.Length; i++)
+            {
+                var arcPart = arcParts[i];
+                var direction = (arcPart.gear.position - center).normalized;
+                arcPart.gear.rotation = Quaternion.LookRotation(direction);
+                CreateHalfCircleByAngle(i);
+                RotatePoints(i);
+            }
         }
 
         void SetCircularPoints()
         {
+            GetCenter();
             for (int i = 0; i < arcParts.Length; i++)
             {
                 SetArcRotation(i);
@@ -45,9 +78,11 @@ namespace Chain
         void SetArcRotation(int i)
         {
             var mainArc = arcParts[i];
-            var relatedArc = arcParts[mainArc.relatedArcId];
-            var direction = (mainArc.gear.position - relatedArc.gear.position).normalized;
-
+            
+            // var relatedArc = arcParts[mainArc.relatedArcId];
+            // var direction = (mainArc.gear.position - relatedArc.gear.position).normalized;
+            
+            var direction = (mainArc.gear.position - center).normalized;
             mainArc.gear.rotation = Quaternion.LookRotation(direction);
         }
         
