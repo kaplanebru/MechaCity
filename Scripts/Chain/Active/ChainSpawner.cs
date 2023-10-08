@@ -30,9 +30,8 @@ namespace Chain
             if (state == ChainState.Odd)
             {
                 SetCircularPoints2();
-               
+                SetLinearPoints();
                 BindPoints();
-                chainDrawer.InstantiateObjs();
 
             }
             else if(state == ChainState.Even)
@@ -56,9 +55,7 @@ namespace Chain
 
             for (var i = 0; i < arcParts.Length; i++)
             {
-                var arcPart = arcParts[i];
-                var direction = (arcPart.gear.position - center).normalized;
-                arcPart.gear.rotation = Quaternion.LookRotation(direction);
+                SetArcRotation(i);
                 CreateHalfCircleByAngle(i);
                 RotatePoints(i);
             }
@@ -78,10 +75,6 @@ namespace Chain
         void SetArcRotation(int i)
         {
             var mainArc = arcParts[i];
-            
-            // var relatedArc = arcParts[mainArc.relatedArcId];
-            // var direction = (mainArc.gear.position - relatedArc.gear.position).normalized;
-            
             var direction = (mainArc.gear.position - center).normalized;
             mainArc.gear.rotation = Quaternion.LookRotation(direction);
         }
@@ -125,35 +118,56 @@ namespace Chain
         
         void SetLinearPoints()
         {
+            SetRelatedArcs();
             for (int i = 0; i < arcParts.Length; i++)
             {
+                SetConnectionPoints(i);
                 LinearPointAmountByDistance(i);
-            }
-            for (int i = 0; i < arcParts.Length; i++)
-            {
                 AddLinearPoints(i);
             }
+        }
+
+        void SetRelatedArcs()
+        {
+            for (int i = 0; i < arcParts.Length; i++)
+            {
+                if (i == 0)
+                {
+                    arcParts[i].relatedArcId = arcParts.Length - 1;
+                    continue;
+                }
+                arcParts[i].relatedArcId = i - 1;
+            }
+        }
+
+        void SetConnectionPoints(int i)
+        {
+            var relatedArc = arcParts[arcParts[i].relatedArcId];
+            arcParts[i].connectionPoint = relatedArc.arcPoints.First();
         }
 
         void LinearPointAmountByDistance(int i)
         {
             var distance = Vector3.Distance(
-                arcParts[i].arcPoints.First(),
-                arcParts[arcParts[i].relatedArcId].arcPoints.Last());
+                arcParts[i].arcPoints.Last(),
+                arcParts[i].connectionPoint);
+                //arcParts[arcParts[i].relatedArcId].arcPoints.Last());
 
-            linearPointAmount = Mathf.RoundToInt(distance / unit) - 1;
+            linearPointAmount = Mathf.RoundToInt(distance / unit) - 1; //TODO: bug: bu da sondaki neyse öyle kalıyordur
         }
         void AddLinearPoints(int i)
         {
-            var relatedArc = arcParts[arcParts[i].relatedArcId];
-            Vector3 edgeDirection = (arcParts[i].arcPoints.Last() - relatedArc.arcPoints.First()).normalized;
+           // var relatedArc = arcParts[arcParts[i].relatedArcId];
+           Vector3 edgeDirection = (arcParts[i].connectionPoint - arcParts[i].arcPoints.Last()).normalized;
+               //(arcParts[i].connectionPoint - arcParts[i].arcPoints.First()).normalized;
+                //(relatedArc.arcPoints.Last() - arcParts[i].arcPoints.First()).normalized;//(arcParts[i].arcPoints.Last() - relatedArc.arcPoints.First()).normalized;
 
             unitDistance = edgeDirection * unit;
 
             var arcPoints = arcParts[i].arcPoints;
             for (int j = 0; j < linearPointAmount; j++)
             {
-                arcPoints.Add(arcPoints.Last() - unitDistance);
+                arcPoints.Add(arcPoints.Last() + unitDistance);
             }
         }
 

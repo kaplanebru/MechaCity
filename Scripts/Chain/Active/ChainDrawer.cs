@@ -25,7 +25,7 @@ namespace Chain
         {
             _chainPoints = points;
             InstantiateObjs();
-            DrawLines();
+            //DrawLines();
         }
 
         public void InstantiateObjs()

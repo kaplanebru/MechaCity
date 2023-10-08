@@ -12,6 +12,7 @@ namespace Chain
         public float radius;
         public Transform gear;
         public int relatedArcId;
+        public Vector3 connectionPoint;
 
         public List<Vector3> arcPoints = new();
     }
