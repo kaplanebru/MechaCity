@@ -15,6 +15,8 @@ namespace Chain
         public Transform objs;
 
         private List<Vector3> _chainPoints = new();
+        private List<Transform> _chains = new();
+        public ChainMover chainMover;
 
         private void OnEnable()
         {
@@ -32,18 +34,21 @@ namespace Chain
         {
             for (int i = 0; i < _chainPoints.Count; i++)
             {
-                var newCube = Instantiate(obj, _chainPoints[i], Quaternion.identity);
+                var newObj = Instantiate(obj, _chainPoints[i], Quaternion.identity);
                 if(i < _chainPoints.Count-1)
-                    newCube.transform.rotation = Quaternion.LookRotation(_chainPoints[i + 1] - _chainPoints[i]);
-                var rot = newCube.transform.rotation;
+                    newObj.transform.rotation = Quaternion.LookRotation(_chainPoints[i + 1] - _chainPoints[i]);
+                var rot = newObj.transform.rotation;
                 if (i % 2 == 0)
-                    newCube.transform.rotation =
+                    newObj.transform.rotation =
                         Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y, rot.eulerAngles.z - 90);
-                                                 //Quaternion.AngleAxis(90 + rot.eulerAngles.z, Vector3.forward);
-                newCube.SetParent(objs);
+                                                 
+                newObj.SetParent(objs);
                 if (i == 0)
-                    newCube.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial;
+                    newObj.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial;
+                
+                _chains.Add(newObj);
             }
+            chainMover.Setup(_chains);
         }
 
         void DrawLines()

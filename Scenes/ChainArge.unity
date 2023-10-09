@@ -832,6 +832,7 @@ GameObject:
   - component: {fileID: 1852331329}
   - component: {fileID: 1852331330}
   - component: {fileID: 1852331331}
+  - component: {fileID: 1852331332}
   m_Layer: 0
   m_Name: ChainSpawner
   m_TagString: Untagged
@@ -915,6 +916,21 @@ MonoBehaviour:
   firstCubeMaterial: {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
   obj: {fileID: 2702581619815824759, guid: d7b5075c5262a934ba9c25501e10553b, type: 3}
   objs: {fileID: 677874777}
+  chainMover: {fileID: 1852331332}
+--- !u!114 &1852331332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1852331328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af9f1f797f6e090438c36d0d119acf80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _chains: []
+  speed: 0.1
 --- !u!1 &2005433255
 GameObject:
   m_ObjectHideFlags: 0
