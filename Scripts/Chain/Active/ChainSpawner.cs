@@ -103,6 +103,10 @@ namespace Chain
                 LinearPointAmountByDistance(i);
                 AddLinearPoints(i);
             }
+            
+            //AddLinearPoints(0);
+
+            
         }
 
         void SetRelatedArcs()
@@ -149,13 +153,26 @@ namespace Chain
             {
                 arcPoints.Add(arcPoints.Last() + unitDistance);
             }
+            
+            // print(arcParts[i].relatedArcId);
+            // if(arcParts[i].relatedArcId == 0) return;
+            // AddLinearPoints(arcParts[i].relatedArcId);
         }
 
         void BindPoints()
         {
-            foreach (var arcPart in arcParts)
+            
+            // foreach (var arcPart in arcParts)
+            // {
+            //     chainPoints.AddRange(arcPart.arcPoints);
+            // }
+            
+            int i = 0;
+            while (true)
             {
-                chainPoints.AddRange(arcPart.arcPoints);
+                chainPoints.AddRange(arcParts[i].arcPoints);
+                i = arcParts[i].relatedArcId;
+                if (i == 0) break;
             }
 
             chainDrawer.DrawChain(chainPoints);
