@@ -28,22 +28,34 @@ public class ChainMover : MonoBehaviour
     IEnumerator MoveRoutine()
     {
         yield return new WaitWhile(() => _points.Count == 0);
+
         for (int i = 0; i < _objs.Count; i++)
         {
-            if (i == _objs.Count - 1)
+            for (int j = i; j < _points.Count; j++)
             {
-                _objs[i].transform.position = Vector3.Lerp(_objs[i].transform.position, _points[0], speed);
-                // _chains[i].transform.rotation = Quaternion.Lerp(_chains[i].transform.rotation, _chains[0].transform.rotation, speed);
-
-                i = 0;
-                yield return new WaitForFixedUpdate();
-                //continue;
+                j %=_points.Count;
+                _objs[i].transform.position = Vector3.Lerp(_objs[i].transform.position, _points[i], speed);
+                yield return null;
             }
-
-            _objs[i].transform.position = Vector3.Lerp(_objs[i].transform.position, _points[i + 1], speed);
-            // _chains[i].transform.rotation = Quaternion.Lerp(_chains[i].transform.rotation, _chains[i + 1].transform.rotation, speed);
-            yield return new WaitForFixedUpdate();
+           
         }
+        
+        // for (int i = 0; i < _points.Count; i++)
+        // {
+        //     if (i == _objs.Count - 1)
+        //     {
+        //         _objs[i].transform.position = Vector3.Lerp(_objs[i].transform.position, _points[0], speed);
+        //         // _chains[i].transform.rotation = Quaternion.Lerp(_chains[i].transform.rotation, _chains[0].transform.rotation, speed);
+        //
+        //         i = 0;
+        //         yield return new WaitForFixedUpdate();
+        //         //continue;
+        //     }
+        //
+        //     _objs[i].transform.position = Vector3.Lerp(_objs[i].transform.position, _points[i + 1], speed);
+        //     // _chains[i].transform.rotation = Quaternion.Lerp(_chains[i].transform.rotation, _chains[i + 1].transform.rotation, speed);
+        //     yield return new WaitForFixedUpdate();
+        // }
     }
 
     private void OnDisable()
