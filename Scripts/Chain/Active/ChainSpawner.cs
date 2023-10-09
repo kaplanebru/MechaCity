@@ -19,13 +19,13 @@ namespace Chain
         public int linearPointAmount = 1;
 
         private Vector3 unitDistance;
-        ChainState state;
+       
         [ReadOnly] public List<Vector3> chainPoints = new();
 
         private void Start()
         {
             chainPoints.Clear();
-            state = arcParts.Length % 2 == 0 ? ChainState.Even : ChainState.Odd;
+            Setup();
             
             SetCircularPoints();
             SetLinearPoints();
@@ -34,20 +34,39 @@ namespace Chain
 
         private Vector3 _center;
 
+        void Setup()
+        {
+            GetCenter();
+            SetIDs();
+            RelateArcs();
+        }
         void GetCenter()
         {
             _center = ChainHelper.CenterDirection(arcParts);
         }
 
-        void SetCircularPoints()
+        void SetIDs()
         {
-            GetCenter();
             for (int i = 0; i < arcParts.Length; i++)
             {
-                SetArcRotation(i);
-                CreateHalfCircleByAngle(i);
-                RotatePoints(i);
+                arcParts[i].id = i;
             }
+        }
+        void RelateArcs()
+        {
+            for (int i = 0; i < arcParts.Length; i++)
+            {
+                var id = i - 1;
+                if (id < 0) id += arcParts.Length;
+                arcParts[i].relatedArcId = id;
+            }
+        }
+
+        void SetCircularPoints()
+        {
+            SetArcRotation(0);
+            CreateHalfCircleByAngle(0);
+            RotatePoints(0);
         }
 
         void SetArcRotation(int i)
@@ -55,6 +74,9 @@ namespace Chain
             var mainArc = arcParts[i];
             var direction = (mainArc.gear.position - _center).normalized;
             mainArc.gear.rotation = Quaternion.LookRotation(direction);
+
+            if (mainArc.relatedArcId == 0) return;
+            SetArcRotation(mainArc.relatedArcId);
         }
 
         void CreateHalfCircleByAngle(int i)
@@ -79,6 +101,9 @@ namespace Chain
                 var newAngle = j;
                 arcParts[i].arcPoints.Add(ChainHelper.CirclePoint(newAngle, mainRadius));
             }
+            
+            if(arcParts[i].relatedArcId == 0) return;
+            CreateHalfCircleByAngle(arcParts[i].relatedArcId);
         }
 
         void RotatePoints(int i)
@@ -91,30 +116,17 @@ namespace Chain
                 var point = arcPoints[j];
                 arcPoints[j] = gear.position + gear.rotation * point;
             }
+            
+            if(arcParts[i].relatedArcId == 0) return;
+            RotatePoints(arcParts[i].relatedArcId);
         }
 
         void SetLinearPoints()
         {
-            RelateArcs();
             SetConnectionPoints(0);
             AddLinearPoints(0);
-
-            
         }
-
-        void RelateArcs()
-        {
-            for (int i = 0; i < arcParts.Length; i++)
-            {
-                if (i == 0)
-                {
-                    arcParts[i].relatedArcId = arcParts.Length - 1;
-                    continue;
-                }
-
-                arcParts[i].relatedArcId = i - 1;
-            }
-        }
+        
 
         void SetConnectionPoints(int i)
         {
@@ -124,8 +136,7 @@ namespace Chain
             if(relatedArc.id == 0) return;
             SetConnectionPoints(relatedArc.id);
         }
-
-     
+        
 
         void AddLinearPoints(int i)
         {
@@ -147,8 +158,6 @@ namespace Chain
 
         void BindPoints()
         {
-            
-            
             int i = 0;
             while (true)
             {
