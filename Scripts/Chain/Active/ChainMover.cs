@@ -7,6 +7,7 @@ public class ChainMover : MonoBehaviour
 {
     [SerializeField] private List<Transform> _objs = new();
     [SerializeField] private List<Vector3> _points = new();
+    private List<Quaternion> _rotations = new();
     public float speed = 0.1f;
 
     private void OnEnable()
@@ -25,9 +26,21 @@ public class ChainMover : MonoBehaviour
         StartCoroutine(nameof(MoveRoutine));
     }
 
+    void RotatePointsByObj()
+    {
+        // for (int i = 0; i < _points.Count; i++)
+        // {
+        //     _points[i] = _objs[i].transform.position + _objs[i].transform.rotation * _points[i];//_objs.position + gear.rotation * point;
+        // }
+        for (int i = 0; i < _objs.Count; i++)
+        {
+            _rotations.Add(_objs[i].transform.rotation);
+        }
+    }
     IEnumerator MoveRoutine()
     {
         yield return new WaitWhile(() => _points.Count == 0);
+        RotatePointsByObj();
 
         for (int i = 0; i < _objs.Count; i++)
         {
@@ -46,6 +59,8 @@ public class ChainMover : MonoBehaviour
             while (Vector3.Distance(_objs[startIndex].transform.position, _points[j]) > 0.1f)
             {
                 _objs[startIndex].transform.position = Vector3.Lerp(_objs[startIndex].transform.position, _points[j], speed);
+                _objs[startIndex].transform.rotation =
+                    Quaternion.Lerp(_objs[startIndex].transform.rotation, _rotations[j], speed);
                 yield return null; //new WaitForSeconds(speed);
             }
             

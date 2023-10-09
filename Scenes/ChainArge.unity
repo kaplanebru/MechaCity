@@ -929,7 +929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objs: []
   _points: []
-  speed: 0.1
+  speed: 0.15
 --- !u!1 &2005433255
 GameObject:
   m_ObjectHideFlags: 0
