@@ -16,21 +16,21 @@ namespace Chain
 
         private List<Vector3> _chainPoints = new();
         private List<Transform> _chains = new();
-        public ChainMover chainMover;
 
         private void OnEnable()
         {
+            ChainEvents.OnPointsCreated += DrawChain;
             ResetValues();
         }
 
-        public void DrawChain(List<Vector3> points)
+        void DrawChain(List<Vector3> points)
         {
             _chainPoints = points;
             InstantiateObjs();
             //DrawLines();
         }
 
-        public void InstantiateObjs()
+        void InstantiateObjs()
         {
             for (int i = 0; i < _chainPoints.Count; i++)
             {
@@ -48,7 +48,8 @@ namespace Chain
                 
                 _chains.Add(newObj);
             }
-            chainMover.Setup(_chains);
+            
+            ChainEvents.OnObjsCreated?.Invoke(_chains);
         }
 
         void DrawLines()
@@ -62,6 +63,11 @@ namespace Chain
         {
             _chainPoints.Clear();
             lr.positionCount = 0;
+        }
+
+        private void OnDisable()
+        {
+            ChainEvents.OnPointsCreated -= DrawChain;
         }
     }
 }

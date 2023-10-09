@@ -13,7 +13,6 @@ namespace Chain
     [RequireComponent(typeof(ChainDrawer))]
     public class ChainSpawner : MonoBehaviour
     {
-        public ChainDrawer chainDrawer;
         public ArcPart[] arcParts;
         public float unit = 1;
         public int linearPointAmount = 1;
@@ -166,7 +165,7 @@ namespace Chain
                 if (i == 0) break;
             }
 
-            chainDrawer.DrawChain(chainPoints);
+            ChainEvents.OnPointsCreated?.Invoke(chainPoints);
         }
 
         void AdaptUnitToCircle()
