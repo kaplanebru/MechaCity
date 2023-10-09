@@ -10,10 +10,12 @@ namespace Chain
     {
         public int id;
         public float radius;
+        public int edgeSmoother = 1;
         public Transform gear;
+        
+        [Header("Not for user input")]
         public int relatedArcId;
         public Vector3 connectionPoint;
-
         public List<Vector3> arcPoints = new();
     }
 

@@ -57,21 +57,21 @@ namespace Chain
             var direction = (mainArc.gear.position - center).normalized;
             mainArc.gear.rotation = Quaternion.LookRotation(direction);
         }
-
+        
         void CreateHalfCircleByAngle(int i)
         {
             var baseAngle = ChainHelper.AngleByDistance(unit, arcParts[i].radius);
             int start, max;
 
-            if (state == ChainState.Even)
+            if (arcParts.Length <= 2)
             {
                 start = 0;
                 max = 180;
             }
             else
             {
-                start = baseAngle;
-                max = 180 - baseAngle;
+                start = baseAngle * arcParts[i].edgeSmoother;
+                max = 180 - baseAngle * arcParts[i].edgeSmoother;
             }
             var mainRadius = arcParts[i].radius;
             // float arcDifferance = mainRadius - arcParts[arcParts[i].relatedArcId].radius;
