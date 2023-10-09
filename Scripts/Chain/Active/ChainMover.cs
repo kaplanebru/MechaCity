@@ -31,31 +31,25 @@ public class ChainMover : MonoBehaviour
 
         for (int i = 0; i < _objs.Count; i++)
         {
-            for (int j = i; j < _points.Count; j++)
-            {
-                j %=_points.Count;
-                _objs[i].transform.position = Vector3.Lerp(_objs[i].transform.position, _points[i], speed);
-                yield return null;
-            }
-           
+            StartCoroutine(SingleChainRoutine(i));
         }
-        
-        // for (int i = 0; i < _points.Count; i++)
-        // {
-        //     if (i == _objs.Count - 1)
-        //     {
-        //         _objs[i].transform.position = Vector3.Lerp(_objs[i].transform.position, _points[0], speed);
-        //         // _chains[i].transform.rotation = Quaternion.Lerp(_chains[i].transform.rotation, _chains[0].transform.rotation, speed);
-        //
-        //         i = 0;
-        //         yield return new WaitForFixedUpdate();
-        //         //continue;
-        //     }
-        //
-        //     _objs[i].transform.position = Vector3.Lerp(_objs[i].transform.position, _points[i + 1], speed);
-        //     // _chains[i].transform.rotation = Quaternion.Lerp(_chains[i].transform.rotation, _chains[i + 1].transform.rotation, speed);
-        //     yield return new WaitForFixedUpdate();
-        // }
+    }
+
+    IEnumerator SingleChainRoutine(int startIndex)
+    {
+        int j = startIndex;
+        while (true)
+        {
+            j++;
+            j %=_points.Count;
+
+            while (Vector3.Distance(_objs[startIndex].transform.position, _points[j]) > 0.1f)
+            {
+                _objs[startIndex].transform.position = Vector3.Lerp(_objs[startIndex].transform.position, _points[j], speed);
+                yield return null; //new WaitForSeconds(speed);
+            }
+            
+        }
     }
 
     private void OnDisable()

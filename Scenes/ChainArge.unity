@@ -867,7 +867,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2134aa162e8659743a3a44a598fd7df7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chainDrawer: {fileID: 1852331331}
   arcParts:
   - id: 0
     radius: 3
@@ -916,7 +915,6 @@ MonoBehaviour:
   firstCubeMaterial: {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
   obj: {fileID: 2702581619815824759, guid: d7b5075c5262a934ba9c25501e10553b, type: 3}
   objs: {fileID: 677874777}
-  chainMover: {fileID: 1852331332}
 --- !u!114 &1852331332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -929,7 +927,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9f1f797f6e090438c36d0d119acf80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chains: []
+  _objs: []
+  _points: []
   speed: 0.1
 --- !u!1 &2005433255
 GameObject:
