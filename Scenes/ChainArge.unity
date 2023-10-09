@@ -877,26 +877,26 @@ MonoBehaviour:
     arcPoints: []
   - id: 1
     radius: 4
-    edgeSmoother: 2
+    edgeSmoother: 3
     gear: {fileID: 1671505464}
     relatedArcId: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - id: 2
     radius: 4
-    edgeSmoother: 2
+    edgeSmoother: 3
     gear: {fileID: 141705200}
     relatedArcId: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - id: 3
     radius: 5
-    edgeSmoother: 1
+    edgeSmoother: 2
     gear: {fileID: 2005433256}
     relatedArcId: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
-  unit: 2
+  unit: 1.3
   linearPointAmount: 4
   chainPoints: []
 --- !u!114 &1852331331
@@ -913,7 +913,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lr: {fileID: 68324623}
   firstCubeMaterial: {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
-  obj: {fileID: 7579307728742912882, guid: ed90a94f17653744396d6bf7f947d158, type: 3}
+  obj: {fileID: 2702581619815824759, guid: d7b5075c5262a934ba9c25501e10553b, type: 3}
   objs: {fileID: 677874777}
 --- !u!1 &2005433255
 GameObject:
@@ -942,7 +942,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005433255}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 33.55, y: 0, z: -10.4}
+  m_LocalPosition: {x: 28.4, y: 0, z: -17.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

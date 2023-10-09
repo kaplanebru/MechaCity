@@ -25,7 +25,7 @@ namespace Chain
         {
             _chainPoints = points;
             InstantiateObjs();
-            DrawLines();
+            //DrawLines();
         }
 
         public void InstantiateObjs()
@@ -33,9 +33,16 @@ namespace Chain
             for (int i = 0; i < _chainPoints.Count; i++)
             {
                 var newCube = Instantiate(obj, _chainPoints[i], Quaternion.identity);
+                if(i < _chainPoints.Count-1)
+                    newCube.transform.rotation = Quaternion.LookRotation(_chainPoints[i + 1] - _chainPoints[i]);
+                var rot = newCube.transform.rotation;
+                if (i % 2 == 0)
+                    newCube.transform.rotation =
+                        Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y, rot.eulerAngles.z - 90);
+                                                 //Quaternion.AngleAxis(90 + rot.eulerAngles.z, Vector3.forward);
                 newCube.SetParent(objs);
                 if (i == 0)
-                    newCube.GetComponent<MeshRenderer>().material = firstCubeMaterial;
+                    newCube.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial;
             }
         }
 
