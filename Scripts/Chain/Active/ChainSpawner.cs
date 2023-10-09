@@ -57,36 +57,25 @@ namespace Chain
             var direction = (mainArc.gear.position - center).normalized;
             mainArc.gear.rotation = Quaternion.LookRotation(direction);
         }
-        
+
         void CreateHalfCircleByAngle(int i)
         {
             var baseAngle = ChainHelper.AngleByDistance(unit, arcParts[i].radius);
-            int start, max;
 
-            if (arcParts.Length <= 2)
-            {
-                start = 0;
-                max = 180;
-            }
-            else
-            {
-                start = baseAngle * arcParts[i].edgeSmoother;
-                max = 180 - baseAngle * arcParts[i].edgeSmoother;
-            }
+            EdgeAngles edgeAngles = arcParts.Length <= 2 ? 
+                new EdgeAngles(0, 180) : 
+                new EdgeAngles(baseAngle * arcParts[i].edgeSmoother, 180 - baseAngle * arcParts[i].edgeSmoother);
+
             var mainRadius = arcParts[i].radius;
             // float arcDifferance = mainRadius - arcParts[arcParts[i].relatedArcId].radius;
             // if (arcDifferance > 0 && Mathf.Abs(arcDifferance) > 3)
             // {
-            //     start = -baseAngle;
-            //     max = 180 + baseAngle;
-            // }
-            // else
-            // {
-            //     start = 0;
-            //     max = 180;
+            //     edgeAngles.Start = -baseAngle;
+            //     edgeAngles.End = 180 + baseAngle;
             // }
 
-            for (float j = start; j <= max; j += baseAngle)
+
+            for (float j = edgeAngles.Start; j <= edgeAngles.End; j += baseAngle)
             {
                 var newAngle = j;
                 arcParts[i].arcPoints.Add(ChainHelper.CirclePoint(newAngle, mainRadius));
@@ -175,6 +164,18 @@ namespace Chain
         void AdaptUnitToCircle()
         {
             unit = Vector3.Distance(chainPoints[0], chainPoints[1]); //print(chainPoints[1].z);
+        }
+    }
+
+    public class EdgeAngles
+    {
+        public float Start;
+        public float End;
+        
+        public EdgeAngles(float start, float end)
+        {
+            Start = start;
+            End = end;
         }
     }
 }
