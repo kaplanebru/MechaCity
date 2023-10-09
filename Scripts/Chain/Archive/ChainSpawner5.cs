@@ -12,7 +12,7 @@ public enum LineType
 
 namespace Chain
 {
-    public class ChainSpawner : MonoBehaviour
+    public class ChainSpawner5 : MonoBehaviour
     {
         public LineRenderer lr;
         Material lrMat;

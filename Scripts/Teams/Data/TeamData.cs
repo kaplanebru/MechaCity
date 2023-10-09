@@ -6,7 +6,7 @@ using Grid;
 using PlayerNetwork;
 using Towers;
 
-namespace Data
+namespace Teams
 {
     [CreateAssetMenu(fileName = nameof(TeamData))]
 
@@ -16,11 +16,11 @@ namespace Data
         public string Name;
         public TeamType TeamType;
         public Player Player;
-        public List<Tower> Towers = new();
+        public List<TowerData> Towers = new();
         public GameGrid Grid;
-
-
+        
         public TeamTowerData TeamTowerData;
+       
     }
     
 }

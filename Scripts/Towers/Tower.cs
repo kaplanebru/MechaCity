@@ -1,6 +1,5 @@
 using Clicks;
-using Data;
-using UI;
+using GameUI;
 using UnityEngine;
 
 
@@ -26,36 +25,20 @@ namespace Towers
         public void Setup(TeamTowerData teamTowerData)
         {
             Data.Height = ConstantData.StartHeight;
-
             Data.Health = ConstantData.StartHealth;
-            UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
-            
-            
-            clickHandler.SetClickables(Data.UniqID);
-            SetTeamForTowerAndClickables(teamTowerData);
-
-            towerParts.ChangeHeight(Data.Height); //FirstRise
-            
+            Data.DamagePower = ConstantData.DamagePower;
             RestoreBullets();
-
-            //Eventbus.TowerEvents.OnTowerSetup?.Invoke(this);
+            
+            UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
+            clickHandler.SetClickables(Data.UniqID);
+            SetTeam(teamTowerData);//for tower and clickables
         }
 
-        public void SetTeamForTowerAndClickables(TeamTowerData teamTowerData)
+        public void SetTeam(TeamTowerData teamTowerData)
         {
             Data.TeamTowerData = teamTowerData;
             towerParts.SetColor(teamTowerData.DefaultMaterial);
             clickHandler.SetClickableTeams(teamTowerData.TeamType);
-        }
-
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.yellow;
-            foreach (var linkedTower in Data.LinkedTowers)
-            {
-                Gizmos.DrawLine(transform.position, linkedTower.transform.position);
-            }
         }
 
         public void RestoreBullets() //Todo: name change: bullet hakkı

@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using Enums;
 
-namespace UI
+namespace GameUI
 {
     public abstract class BaseInfoText : MonoBehaviour
     {

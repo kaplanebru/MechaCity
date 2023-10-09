@@ -15,18 +15,14 @@ MonoBehaviour:
   Name: Player 1
   TeamType: 0
   Player: {fileID: 0}
-  Towers: []
+  TowerIds: 000000000100000002000000
   Grid:
-    TeamType: 0
     Slots:
-    - HasTower: 1
-      Id: 0
-      Tower: {fileID: 0}
-    - HasTower: 1
-      Id: 0
-      Tower: {fileID: 0}
-    - HasTower: 1
-      Id: 0
-      Tower: {fileID: 0}
-  TowersPrefab: {fileID: 1247575438718957919, guid: 3c7ffae76fc75144fb2066bf0fa55c07, type: 3}
+    - Id: 0
+      TowerID: 0
+    - Id: 1
+      TowerID: 1
+    - Id: 2
+      TowerID: 2
+  towerDatas: {fileID: 11400000, guid: 59b44fa1b60a2e24fb78ab3cfc8fef0c, type: 2}
   TeamTowerData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}

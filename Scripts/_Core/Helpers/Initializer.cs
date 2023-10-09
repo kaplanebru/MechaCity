@@ -1,26 +1,28 @@
-using System;
 using System.Collections.Generic;
-using Data;
 using UnityEngine;
 using Enums;
 using Network;
 using PlayerNetwork;
 using Teams;
+using Towers;
+
+
 
 namespace Core
 {
     public class Initializer : MonoBehaviour
     {
+        public Transform NetworkUIController;
         public Team[] teams;
         public TeamsHolder assetHolder;
         public bool isMultiplayerOn = true; //for testing
 
         private void OnEnable()
         {
-            NetworkEventbus.RequestEvents.OnPlayerSpawned += SetPlayerForTeam;
-            CreateTeams();
+            NetworkEventbus.RequestEvents.OnPlayerSpawned += AssignPlayers;
+            TowerEvents.OnTowersCreated += CreateTeams;
+            
         }
-
         void CreateTeams()
         {
             teams = new Team[assetHolder.Teams.Length];
@@ -29,27 +31,22 @@ namespace Core
                 teams[i] = Instantiate(assetHolder.Teams[i], transform);
                 teams[i].Initialize();
             }
-
-            SetFirstMatches();
+            
+            NetworkUIController.gameObject.SetActive(true);
+            
+            Eventbus.TeamEvents.OnTeamsSet?.Invoke(teams);
         }
-
-        void SetFirstMatches() //Temporary
+        
+        
+        private void AssignPlayers(Player newPlayer, ulong id)
         {
-            teams[0].LinkFirstMatches(teams[1]);
-            teams[1].LinkFirstMatches(teams[0]);
-           
-        }
-
-
-        private void SetPlayerForTeam(Player player, ulong id)
-        {
-            teams[id].Data.Player = player;
-            player.Setup(teams[id].Data.TeamTowerData.TeamType);
+            teams[id].Data.Player = newPlayer;
+            newPlayer.Setup(teams[id].Data.TeamTowerData.TeamType);
 
             if (!isMultiplayerOn)
                 goto startGame;
-            
-                
+
+
             foreach (var team in teams)
             {
                 if (team.Data.Player == null)
@@ -58,9 +55,8 @@ namespace Core
                     return;
                 }
             }
-
             startGame:
-            Eventbus.TeamEvents.OnTeamsSet?.Invoke(teams);
+            
             NetworkEventbus.OnAllClientsSet?.Invoke(new object[]
                 {
                     new Dictionary<TeamType, string>
@@ -70,12 +66,51 @@ namespace Core
                     }
                 }
             );
+            
+            AllTowers.Towers.ForEach(t=>t.towerParts.ChangeHeight(t.Data.Height));
+            
             print("Game Started");
         }
+        
 
         private void OnDisable()
         {
-            NetworkEventbus.RequestEvents.OnPlayerSpawned -= SetPlayerForTeam;
+            NetworkEventbus.RequestEvents.OnPlayerSpawned -= AssignPlayers;
+            TowerEvents.OnTowersCreated -= CreateTeams;
         }
     }
 }
+
+// void AssignPlayers()
+// {
+//     if(!isMultiplayerOn) return;
+//     for (var i = 0; i < teams.Length; i++)
+//     {
+//         teams[i].Data.Player = players[i];
+//         teams[i].Data.Player.Setup(teams[i].Data.TeamTowerData.TeamType);
+//     }
+// }
+
+
+// void InstantiateTowers()
+// {
+//     List<Tower> _towers = new();
+//     foreach (var prefab in TowersPrefab)
+//     {
+//         var towersPb = Instantiate(prefab, transform);
+//         _towers.AddRange(towersPb.GetComponentsInChildren<Tower>().ToList());
+//     }
+//     AllTowers.GetTowers(_towers);
+//     AssignTowers(_towers);
+// }
+//
+// void AssignTowers(List<Tower> _towers)
+// {
+//     for (int i = 0; i < _towers.Count; i++)
+//     {
+//         var tower = _towers[i];
+//         tower.Data = towerDatas.GetTowerData(i);
+//         tower.Data.UniqID = i;
+//     }
+//     CreateTeams();
+// }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Enums;
 using UnityEngine;
 
-namespace UI
+namespace GameUI
 {
     public class UIEventbus
     {

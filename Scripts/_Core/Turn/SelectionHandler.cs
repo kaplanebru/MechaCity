@@ -4,14 +4,14 @@ using System.Linq;
 using Enums;
 using Network;
 using Towers;
-using UI;
+using GameUI;
 
 namespace Turn
 {
     [Serializable]
     public class SelectionTransferData : BaseTurnTransferData
     {
-        public List<Tower> SelectionGroup = new();
+        public List<int> SelectionGroup = new();
         
     }
 
@@ -34,17 +34,17 @@ namespace Turn
             //var tower = args[0] as Tower;
             int selectedTowerUniqID = (int) args[0];
 
-            var tower = teams["currentTeam"].Data.Towers.FirstOrDefault(t => t.Data.UniqID == selectedTowerUniqID); //uniq id ile dictionary tutulabilir
+            var tower = Teams["currentTeam"].Data.Towers.FirstOrDefault(t => t.UniqID == selectedTowerUniqID);
             if (tower == null) return;
 
 
             //if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
-            if (SelectedTwice(tower)) return;
+            if (SelectedTwice(tower.UniqID)) return;
 
             if (TransferData.SelectionGroup.Count == maxTowersInGroup)
                 ResetSelectionGroup();
 
-            AddToSelection(true, tower);
+            AddToSelection(true, tower.UniqID);
         }
 
         public override void Setup()
@@ -52,11 +52,11 @@ namespace Turn
             ManageCompleteButton(false);
         }
 
-        void AddToSelection(bool select, Tower newTower)
+        void AddToSelection(bool select, int newTower)
         {
-            newTower.towerParts.SetColor(select
-                ? teams["currentTeam"].Data.TeamTowerData.SelectedMaterial
-                : teams["currentTeam"].Data.TeamTowerData.DefaultMaterial);
+            AllTowers.GetTower(newTower).towerParts.SetColor(select
+                ? Teams["currentTeam"].Data.TeamTowerData.SelectedMaterial
+                : Teams["currentTeam"].Data.TeamTowerData.DefaultMaterial);
 
             if (select)
                 TransferData.SelectionGroup.Add(newTower);
@@ -72,7 +72,7 @@ namespace Turn
         }
 
 
-        bool SelectedTwice(Tower newTower)
+        bool SelectedTwice(int newTower)
         {
             if (TransferData.SelectionGroup.Contains(newTower))
             {

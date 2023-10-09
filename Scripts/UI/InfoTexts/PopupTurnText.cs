@@ -1,4 +1,4 @@
-namespace UI
+namespace GameUI
 {
     public class PopupTurnText : BaseInfoText
     {

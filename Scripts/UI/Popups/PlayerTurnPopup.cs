@@ -2,7 +2,7 @@
 using Enums;
 using UnityEngine;
 
-namespace UI
+namespace GameUI
 {
     public class PlayerTurnPopup : MonoBehaviour
     {

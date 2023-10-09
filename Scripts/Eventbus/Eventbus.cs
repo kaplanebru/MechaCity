@@ -1,21 +1,19 @@
 using System;
-using DataModels;
 using Teams;
 using Towers;
 
 public static class Eventbus
 {
-    
+   
     public static class TeamEvents
     {
         public static Action<Team[]> OnTeamsSet;
-        public static Action<Tower> OnTeamChange;
+        public static Action<TowerData> OnTeamChange;
     }
 
     public static class CombatEvents
     {
-        public static Action<Tower> OnTowerKilled;
-        public static Action<TowerGridRelationModel> OnTowerGridDetection;
+        public static Action<TowerData> OnTowerKilled;
         public static Action OnMatchesRestored;
     }
 

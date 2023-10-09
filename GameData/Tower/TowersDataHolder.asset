@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3435b944971a03c44a39687ba3fcea39, type: 3}
+  m_Name: TowersDataHolder
+  m_EditorClassIdentifier: 
+  Datas:
+  - {fileID: 11400000, guid: 58d111080c828c34e87547dccd2a75c1, type: 2}
+  - {fileID: 11400000, guid: 746e9716a910d8b42af39dc540b04282, type: 2}
+  - {fileID: 11400000, guid: 0a42bf8daf256c640a18a5ac66d817fb, type: 2}
+  - {fileID: 11400000, guid: 428157305f952a54ea751213e058ac97, type: 2}
+  - {fileID: 11400000, guid: 20cd0f37ac5cf8a4995931c0d6409697, type: 2}
+  - {fileID: 11400000, guid: 33060a198cc40bc4c998a53f5dc87cda, type: 2}

@@ -1,0 +1,188 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using DG.Tweening;
+using Enums;
+using Unity.Collections;
+using UnityEngine;
+
+//DISTANCE BASED
+namespace Chain
+{
+    [RequireComponent(typeof(ChainDrawer))]
+    public class ChainSpawner : MonoBehaviour
+    {
+        public ArcPart[] arcParts;
+        public float unit = 1;
+        public int linearPointAmount = 1;
+
+        private Vector3 unitDistance;
+       
+        [ReadOnly] public List<Vector3> chainPoints = new();
+
+        private void Start()
+        {
+            chainPoints.Clear();
+            Setup();
+            
+            SetCircularPoints();
+            SetLinearPoints();
+            BindPoints();
+        }
+
+        private Vector3 _center;
+
+        void Setup()
+        {
+            GetCenter();
+            SetIDs();
+            RelateArcs();
+        }
+        void GetCenter()
+        {
+            _center = ChainHelper.CenterDirection(arcParts);
+        }
+
+        void SetIDs()
+        {
+            for (int i = 0; i < arcParts.Length; i++)
+            {
+                arcParts[i].id = i;
+            }
+        }
+        void RelateArcs()
+        {
+            for (int i = 0; i < arcParts.Length; i++)
+            {
+                var id = i - 1;
+                if (id < 0) id += arcParts.Length;
+                arcParts[i].relatedArcId = id;
+            }
+        }
+
+        void SetCircularPoints()
+        {
+            SetArcRotation(0);
+            CreateHalfCircleByAngle(0);
+            RotatePoints(0);
+        }
+
+        void SetArcRotation(int i)
+        {
+            var mainArc = arcParts[i];
+            var direction = (mainArc.gear.position - _center).normalized;
+            mainArc.gear.rotation = Quaternion.LookRotation(direction);
+
+            if (mainArc.relatedArcId == 0) return;
+            SetArcRotation(mainArc.relatedArcId);
+        }
+
+        void CreateHalfCircleByAngle(int i)
+        {
+            var baseAngle = ChainHelper.AngleByDistance(unit, arcParts[i].radius);
+
+            EdgeAngles edgeAngles = arcParts.Length <= 2 ? 
+                new EdgeAngles(0, 180) : 
+                new EdgeAngles(baseAngle * arcParts[i].edgeSmoother, 180 - baseAngle * arcParts[i].edgeSmoother);
+
+            var mainRadius = arcParts[i].radius;
+            // float arcDifferance = mainRadius - arcParts[arcParts[i].relatedArcId].radius;
+            // if (arcDifferance > 0 && Mathf.Abs(arcDifferance) > 3)
+            // {
+            //     edgeAngles.Start = -baseAngle;
+            //     edgeAngles.End = 180 + baseAngle;
+            // }
+
+
+            for (float j = edgeAngles.Start; j <= edgeAngles.End; j += baseAngle)
+            {
+                var newAngle = j;
+                arcParts[i].arcPoints.Add(ChainHelper.CirclePoint(newAngle, mainRadius));
+            }
+            
+            if(arcParts[i].relatedArcId == 0) return;
+            CreateHalfCircleByAngle(arcParts[i].relatedArcId);
+        }
+
+        void RotatePoints(int i)
+        {
+            var arcPoints = arcParts[i].arcPoints;
+            var gear = arcParts[i].gear;
+
+            for (var j = 0; j < arcPoints.Count; j++)
+            {
+                var point = arcPoints[j];
+                arcPoints[j] = gear.position + gear.rotation * point;
+            }
+            
+            if(arcParts[i].relatedArcId == 0) return;
+            RotatePoints(arcParts[i].relatedArcId);
+        }
+
+        void SetLinearPoints()
+        {
+            SetConnectionPoints(0);
+            AddLinearPoints(0);
+        }
+        
+
+        void SetConnectionPoints(int i)
+        {
+            var relatedArc = arcParts[arcParts[i].relatedArcId];
+            arcParts[i].connectionPoint = relatedArc.arcPoints.First();
+            
+            if(relatedArc.id == 0) return;
+            SetConnectionPoints(relatedArc.id);
+        }
+        
+
+        void AddLinearPoints(int i)
+        {
+            linearPointAmount = ChainHelper.LinearPointAmountByDistance(arcParts[i].connectionPoint, arcParts[i].arcPoints.Last(), unit);
+            Vector3 edgeDirection = (arcParts[i].connectionPoint - arcParts[i].arcPoints.Last()).normalized;
+            //(arcParts[i].connectionPoint - arcParts[i].arcPoints.First()).normalized;
+
+            unitDistance = edgeDirection * unit;
+
+            var arcPoints = arcParts[i].arcPoints;
+            for (int j = 0; j < linearPointAmount; j++)
+            {
+                arcPoints.Add(arcPoints.Last() + unitDistance);
+            }
+            
+            if(arcParts[i].relatedArcId == 0) return;
+            AddLinearPoints(arcParts[i].relatedArcId);
+        }
+
+        void BindPoints()
+        {
+            int i = 0;
+            while (true)
+            {
+                chainPoints.AddRange(arcParts[i].arcPoints);
+                i = arcParts[i].relatedArcId;
+                if (i == 0) break;
+            }
+
+            ChainEvents.OnPointsCreated?.Invoke(chainPoints);
+        }
+
+        void AdaptUnitToCircle()
+        {
+            unit = Vector3.Distance(chainPoints[0], chainPoints[1]); //print(chainPoints[1].z);
+        }
+    }
+
+    public class EdgeAngles
+    {
+        public float Start;
+        public float End;
+        
+        public EdgeAngles(float start, float end)
+        {
+            Start = start;
+            End = end;
+        }
+    }
+}

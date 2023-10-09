@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Unity.Collections;
-using Enums;
 using Towers;
+using Unity.Collections;
 
 
 namespace Grid
@@ -13,9 +12,9 @@ namespace Grid
         
         public const int SlotAmount = 3;
         [ReadOnly] public Slot[] Slots = new Slot[SlotAmount];
-        private List<Tower> _towers = new();
+        private List<TowerData> _towers = new();
 
-        public void Initialize(List<Tower> towers)
+        public void Initialize(List<TowerData> towers)
         {
             _towers = towers;
             Setup();
@@ -32,10 +31,7 @@ namespace Grid
         {
             for (int i = 0; i < SlotAmount; i++)
             {
-                Slots[i] = new Slot
-                {
-                    HasTower = true
-                };
+                Slots[i] = new Slot {};
             }
         }
 
@@ -44,6 +40,7 @@ namespace Grid
             for (int i = 0; i < SlotAmount; i++)
             {
                 Slots[i].Id = i;
+                _towers[i].SlotId = i;
                 Slots[i].Tower = _towers[i];
             }
         }

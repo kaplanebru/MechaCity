@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Data
+namespace Towers
 {
     [CreateAssetMenu(fileName = nameof(TowerAssetHolder))]
     public class TowerAssetHolder : ScriptableObject

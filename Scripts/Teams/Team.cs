@@ -1,73 +1,50 @@
-using System;
-using System.Linq;
-using Data;
-using Enums;
 using Towers;
 using UnityEngine;
 
 
+
 namespace Teams
 {
-    [Serializable]
-    public class TeamConstructorData
-    {
-        public Transform TowersPrefab;
-    }
-
     public class Team : MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : TeamData
     {
         public TeamData Data;
-        [SerializeField] TeamConstructorData ConstructorData;
+        
 
         public void Initialize()
         {
-            AssignTowers();
+            GetTeamTowers();
             SetGrid();
-            SetTowers();
         }
 
-        void AssignTowers()
+        void GetTeamTowers()
         {
-            var towersPb = Instantiate(ConstructorData.TowersPrefab, transform);
-            Data.Towers = towersPb.GetComponentsInChildren<Tower>().ToList();
+            Data.Towers.Clear(); //TODO: team so olmayabilir
+            
+            AllTowers.Towers.ForEach(t =>
+            {
+                if (t.ConstantData.StartTeam == Data.TeamType)
+                {
+                    Data.Towers.Add(t.Data);
+                    t.Setup(Data.TeamTowerData);
+                }
+            });
         }
-
+        
+        
         void SetGrid()
         {
             Data.Grid.Initialize(Data.Towers);
         }
 
-        void SetTowers()
-        {
-            for (int i = 0; i < Data.Towers.Count; i++)
-            {
-                int uniqIdAdditive = Data.TeamType == TeamType.Team1 ? 0 : Data.Towers.Count;
-                var tower = Data.Towers[i];
-                tower.Data.UniqID = i + uniqIdAdditive;
-                //tower.clickHandler.SetClickables(tower.Data.UniqID);
-                
-                tower.Data.SlotId = i;
-                tower.Setup(Data.TeamTowerData);
-            }
-        }
-
-        public void TakeTowerFromRival(Tower tower)
+        public void TakeTowerFromRival(TowerData tower)
         {
             Data.Towers.Add(tower);
-            tower.SetTeamForTowerAndClickables(Data.TeamTowerData);
+            AllTowers.GetTower(tower.UniqID).SetTeam(Data.TeamTowerData);
         }
 
-        public void RemoveTower(Tower tower)
+        public void RemoveTower(TowerData tower)
         {
             Data.Towers.Remove(tower);
-        }
-
-        public void LinkFirstMatches(Team rivalTeam) //Temporary
-        {
-            for (int i = 0; i < Data.Towers.Count; i++)
-            {
-                Data.Towers[i].Data.LinkedTowers.Add(rivalTeam.Data.Towers[i]);
-            }
         }
     }
 }

@@ -33,5 +33,11 @@ namespace Enums
         Lose
     }
 
+    public enum ChainState
+    {
+        Odd,
+        Even
+    }
+
     
 }
