@@ -48,7 +48,6 @@ namespace Chain
                     link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //Temp
             }
 
-            _links.ForEach(l=>LinkPool.Instance.ReleaseItem(l));
             ChainEvents.OnLinksCreated?.Invoke(_links);
         }
 
@@ -68,6 +67,11 @@ namespace Chain
                     Quaternion.Euler(rot.eulerAngles.x,
                         rot.eulerAngles.y,
                         rot.eulerAngles.z - 90);
+        }
+
+        public void ReleaseChain()
+        {
+            _links.ForEach(l=>LinkPool.Instance.ReleaseAndDeactivateItem(l));
         }
 
         void DrawLines()

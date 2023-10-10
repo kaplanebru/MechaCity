@@ -29,9 +29,9 @@ public class ChainMover : MonoBehaviour
 
     void RotatePointsByObj()
     {
-        foreach (var obj in _links)
+        foreach (var link in _links)
         {
-            _rotations.Add(obj.transform.rotation);
+            _rotations.Add(link.transform.rotation);
         }
     }
     IEnumerator MoveRoutine()
