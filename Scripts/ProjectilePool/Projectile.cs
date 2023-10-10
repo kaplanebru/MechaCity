@@ -31,7 +31,7 @@ namespace ProjectileHandler
             transform.DOMove(targetPos, duration).OnComplete(() =>
             {
                 //Destroy(gameObject);
-                ProjectilePool.Instance.ReleaseAndDeactivateItem(this);
+                ProjectilePool.Instance.ReleaseItem(this);
                 callback?.Invoke();
             });
         }

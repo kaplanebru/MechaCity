@@ -21,17 +21,12 @@ namespace GenericHelper
             return itemFromPool;
         }
     
-        public void ReleaseAndDeactivateItem(T item)
+        public void ReleaseItem(T item)
         {
             item.gameObject.SetActive(false);
             pool.Enqueue(item); //sıraya ekleme (SONDAN)
         }
-
-        public void ReleaseItem(T item)
-        {
-            pool.Enqueue(item);
-        }
-
+        
         public void CreatePool(int amount, Transform poolParent, T prefab)
         {
             for (int i = 0; i < amount; i++)
@@ -39,15 +34,6 @@ namespace GenericHelper
                 T item = Instantiate(prefab, poolParent);
                 item.gameObject.SetActive(false);
                 pool.Enqueue(item);
-            }
-        }
-
-        public void ReleaseAll()
-        {
-            for (int i = 0; i < pool.Count; i++)
-            {
-                T item = GetItem(); //possible bug: hatalı olabilir, tekrar get ediyor, başka objeyi get ediypr yani. ve pool count kadarını almamış da olabilir
-                ReleaseAndDeactivateItem(item);
             }
         }
     }

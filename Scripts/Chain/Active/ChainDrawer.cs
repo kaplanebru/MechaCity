@@ -71,7 +71,7 @@ namespace Chain
 
         public void ReleaseChain()
         {
-            _links.ForEach(l=>LinkPool.Instance.ReleaseAndDeactivateItem(l));
+            _links.ForEach(l=>LinkPool.Instance.ReleaseItem(l));
         }
 
         void DrawLines()
