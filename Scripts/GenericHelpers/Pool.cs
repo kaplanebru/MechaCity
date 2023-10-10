@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace ProjectileHandler
+namespace GenericHelper
 {
     public abstract class Pool<T> : MonoBehaviour where T : Component
     {
@@ -21,10 +21,15 @@ namespace ProjectileHandler
             return itemFromPool;
         }
     
-        public void ReleaseItem(T item)
+        public void ReleaseAndDeactivateItem(T item)
         {
             item.gameObject.SetActive(false);
             pool.Enqueue(item); //sıraya ekleme (SONDAN)
+        }
+
+        public void ReleaseItem(T item)
+        {
+            pool.Enqueue(item);
         }
 
         public void CreatePool(int amount, Transform poolParent, T prefab)
@@ -37,12 +42,12 @@ namespace ProjectileHandler
             }
         }
 
-        public void DisableAll()
+        public void ReleaseAll()
         {
             for (int i = 0; i < pool.Count; i++)
             {
-                T item = GetItem();
-                ReleaseItem(item);
+                T item = GetItem(); //possible bug: hatalı olabilir, tekrar get ediyor, başka objeyi get ediypr yani. ve pool count kadarını almamış da olabilir
+                ReleaseAndDeactivateItem(item);
             }
         }
     }

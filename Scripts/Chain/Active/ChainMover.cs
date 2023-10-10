@@ -14,14 +14,14 @@ public class ChainMover : MonoBehaviour
     {
         ChainEvents.OnMotionDecision += enable => enabled = enable;
         ChainEvents.OnPointsCreated += SetPoints;
-        ChainEvents.OnLinksCreated += SetObjs;
+        ChainEvents.OnLinksCreated += SetLinks;
     }
 
     void SetPoints(List<Vector3> points)
     {
         _points = points;
     }
-    void SetObjs(List<Transform> links)
+    void SetLinks(List<Transform> links)
     {
         _links = links;
         StartCoroutine(nameof(MoveRoutine));
@@ -41,11 +41,11 @@ public class ChainMover : MonoBehaviour
 
         for (int i = 0; i < _links.Count; i++)
         {
-            StartCoroutine(SingleChainRoutine(i));
+            StartCoroutine(LinkRoutine(i));
         }
     }
 
-    IEnumerator SingleChainRoutine(int startIndex)
+    IEnumerator LinkRoutine(int startIndex)
     {
         int j = startIndex;
         while (true)
@@ -70,6 +70,6 @@ public class ChainMover : MonoBehaviour
     {
         ChainEvents.OnMotionDecision -= enable => enabled = enable;
         ChainEvents.OnPointsCreated -= SetPoints;
-        ChainEvents.OnLinksCreated -= SetObjs;
+        ChainEvents.OnLinksCreated -= SetLinks;
     }
 }
