@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ChainMover : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _objs = new();
+    [SerializeField] private List<Transform> _links = new();
     [SerializeField] private List<Vector3> _points = new();
     private List<Quaternion> _rotations = new();
     public float speed = 0.1f;
@@ -14,22 +14,22 @@ public class ChainMover : MonoBehaviour
     {
         ChainEvents.OnMotionDecision += enable => enabled = enable;
         ChainEvents.OnPointsCreated += SetPoints;
-        ChainEvents.OnObjsCreated += SetObjs;
+        ChainEvents.OnLinksCreated += SetObjs;
     }
 
     void SetPoints(List<Vector3> points)
     {
         _points = points;
     }
-    void SetObjs(List<Transform> objs)
+    void SetObjs(List<Transform> links)
     {
-        _objs = objs;
+        _links = links;
         StartCoroutine(nameof(MoveRoutine));
     }
 
     void RotatePointsByObj()
     {
-        foreach (var obj in _objs)
+        foreach (var obj in _links)
         {
             _rotations.Add(obj.transform.rotation);
         }
@@ -39,7 +39,7 @@ public class ChainMover : MonoBehaviour
         yield return new WaitWhile(() => _points.Count == 0);
         RotatePointsByObj();
 
-        for (int i = 0; i < _objs.Count; i++)
+        for (int i = 0; i < _links.Count; i++)
         {
             StartCoroutine(SingleChainRoutine(i));
         }
@@ -53,11 +53,11 @@ public class ChainMover : MonoBehaviour
             j++;
             j %=_points.Count;
 
-            while (Vector3.Distance(_objs[startIndex].transform.position, _points[j]) > 0.1f)
+            while (Vector3.Distance(_links[startIndex].transform.position, _points[j]) > 0.1f)
             {
-                _objs[startIndex].transform.position = Vector3.Lerp(_objs[startIndex].transform.position, _points[j], speed);
-                _objs[startIndex].transform.rotation =
-                    Quaternion.Lerp(_objs[startIndex].transform.rotation,
+                _links[startIndex].transform.position = Vector3.Lerp(_links[startIndex].transform.position, _points[j], speed);
+                _links[startIndex].transform.rotation =
+                    Quaternion.Lerp(_links[startIndex].transform.rotation,
                         _rotations[j], speed);
                 
                 yield return new WaitForFixedUpdate();
@@ -70,6 +70,6 @@ public class ChainMover : MonoBehaviour
     {
         ChainEvents.OnMotionDecision -= enable => enabled = enable;
         ChainEvents.OnPointsCreated -= SetPoints;
-        ChainEvents.OnObjsCreated -= SetObjs;
+        ChainEvents.OnLinksCreated -= SetObjs;
     }
 }

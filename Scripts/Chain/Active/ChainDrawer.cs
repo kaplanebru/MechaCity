@@ -11,8 +11,8 @@ namespace Chain
         public LineRenderer lr;
         Material lrMat;
         public Material firstCubeMaterial;
-        public Transform obj;
-        public Transform objs;
+        public Transform linkPrefab;
+        public Transform links;
 
         private List<Vector3> _chainPoints = new();
         private List<Transform> _chains = new();
@@ -37,18 +37,18 @@ namespace Chain
         {
             for (int i = 0; i < _pointsCount; i++)
             {
-                var newObj = Instantiate(obj, _chainPoints[i], Quaternion.identity);
+                var link = Instantiate(linkPrefab, _chainPoints[i], Quaternion.identity);
 
-                RotateChains(i, newObj);
-                BindChains(i, newObj);
-                newObj.SetParent(objs);
-                _chains.Add(newObj);
+                RotateChains(i, link);
+                BindChains(i, link);
+                link.SetParent(links);
+                _chains.Add(link);
                 
                 if (i == 0)
-                    newObj.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //Temp
+                    link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //Temp
             }
 
-            ChainEvents.OnObjsCreated?.Invoke(_chains);
+            ChainEvents.OnLinksCreated?.Invoke(_chains);
         }
 
 

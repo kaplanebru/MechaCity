@@ -6,6 +6,6 @@ using UnityEngine;
 public class ChainEvents
 {
     public static Action<List<Vector3>> OnPointsCreated;
-    public static Action<List<Transform>> OnObjsCreated;
+    public static Action<List<Transform>> OnLinksCreated;
     public static Action<bool> OnMotionDecision;
 }

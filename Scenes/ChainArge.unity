@@ -552,7 +552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 677874777}
   m_Layer: 0
-  m_Name: Objs
+  m_Name: Links
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -914,8 +914,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lr: {fileID: 68324623}
   firstCubeMaterial: {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
-  obj: {fileID: 2702581619815824759, guid: d7b5075c5262a934ba9c25501e10553b, type: 3}
-  objs: {fileID: 677874777}
+  linkPrefab: {fileID: 2702581619815824759, guid: d7b5075c5262a934ba9c25501e10553b, type: 3}
+  links: {fileID: 677874777}
 --- !u!114 &1852331332
 MonoBehaviour:
   m_ObjectHideFlags: 0
