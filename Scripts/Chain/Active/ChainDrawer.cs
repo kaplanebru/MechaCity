@@ -26,34 +26,47 @@ namespace Chain
         void DrawChain(List<Vector3> points)
         {
             _chainPoints = points;
+            _pointsCount = _chainPoints.Count;
             InstantiateObjs();
             //DrawLines();
         }
 
+        private int _pointsCount;
+
         void InstantiateObjs()
         {
-            for (int i = 0; i < _chainPoints.Count; i++)
+            for (int i = 0; i < _pointsCount; i++)
             {
                 var newObj = Instantiate(obj, _chainPoints[i], Quaternion.identity);
 
-                int pointsCount = _chainPoints.Count;
-                if(i < pointsCount)
-                    newObj.transform.rotation = Quaternion.LookRotation(_chainPoints[(i + 1) % pointsCount] - _chainPoints[i]);
-                
-                var rot = newObj.transform.rotation;
-                
-                if (i % 2 == 0)
-                    newObj.transform.rotation = Quaternion.Euler(rot.eulerAngles.x, rot.eulerAngles.y, rot.eulerAngles.z - 90);
-                                                 
+                RotateChains(i, newObj);
+                BindChains(i, newObj);
                 newObj.SetParent(objs);
+                _chains.Add(newObj);
                 
                 if (i == 0)
-                    newObj.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial;
-                
-                _chains.Add(newObj);
+                    newObj.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //Temp
             }
-            
+
             ChainEvents.OnObjsCreated?.Invoke(_chains);
+        }
+
+
+        void RotateChains(int i, Transform newObj)
+        {
+            if (i < _pointsCount)
+                newObj.transform.rotation =
+                    Quaternion.LookRotation(_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]);
+        }
+
+        void BindChains(int i, Transform newObj)
+        {
+            var rot = newObj.transform.rotation;
+            if (i % 2 == 0)
+                newObj.transform.rotation =
+                    Quaternion.Euler(rot.eulerAngles.x,
+                        rot.eulerAngles.y,
+                        rot.eulerAngles.z - 90);
         }
 
         void DrawLines()
@@ -61,8 +74,7 @@ namespace Chain
             lr.positionCount = _chainPoints.Count;
             lr.SetPositions(_chainPoints.ToArray());
         }
-
-
+        
         void ResetValues()
         {
             _chainPoints.Clear();
@@ -75,4 +87,3 @@ namespace Chain
         }
     }
 }
-
