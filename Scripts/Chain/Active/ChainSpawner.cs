@@ -13,6 +13,7 @@ namespace Chain
     [RequireComponent(typeof(ChainDrawer))]
     public class ChainSpawner : MonoBehaviour
     {
+        public bool isMoving = true;
         public ArcPart[] arcParts;
         public float unit = 1;
         public int linearPointAmount = 1;
@@ -35,9 +36,11 @@ namespace Chain
 
         void Setup()
         {
+            ChainEvents.OnMotionDecision?.Invoke(isMoving);
             GetCenter();
             SetIDs();
             RelateArcs();
+
         }
         void GetCenter()
         {

@@ -35,8 +35,8 @@ namespace Enums
 
     public enum ChainState
     {
-        Odd,
-        Even
+        Double,
+        Multiple
     }
 
     

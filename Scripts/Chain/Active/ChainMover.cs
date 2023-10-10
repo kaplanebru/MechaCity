@@ -12,6 +12,7 @@ public class ChainMover : MonoBehaviour
 
     private void OnEnable()
     {
+        ChainEvents.OnMotionDecision += enable => enabled = enable;
         ChainEvents.OnPointsCreated += SetPoints;
         ChainEvents.OnObjsCreated += SetObjs;
     }
@@ -67,6 +68,7 @@ public class ChainMover : MonoBehaviour
 
     private void OnDisable()
     {
+        ChainEvents.OnMotionDecision -= enable => enabled = enable;
         ChainEvents.OnPointsCreated -= SetPoints;
         ChainEvents.OnObjsCreated -= SetObjs;
     }
