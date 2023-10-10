@@ -28,13 +28,9 @@ public class ChainMover : MonoBehaviour
 
     void RotatePointsByObj()
     {
-        // for (int i = 0; i < _points.Count; i++)
-        // {
-        //     _points[i] = _objs[i].transform.position + _objs[i].transform.rotation * _points[i];//_objs.position + gear.rotation * point;
-        // }
-        for (int i = 0; i < _objs.Count; i++)
+        foreach (var obj in _objs)
         {
-            _rotations.Add(_objs[i].transform.rotation);
+            _rotations.Add(obj.transform.rotation);
         }
     }
     IEnumerator MoveRoutine()
@@ -60,8 +56,10 @@ public class ChainMover : MonoBehaviour
             {
                 _objs[startIndex].transform.position = Vector3.Lerp(_objs[startIndex].transform.position, _points[j], speed);
                 _objs[startIndex].transform.rotation =
-                    Quaternion.Lerp(_objs[startIndex].transform.rotation, _rotations[j], speed);
-                yield return null; //new WaitForSeconds(speed);
+                    Quaternion.Lerp(_objs[startIndex].transform.rotation,
+                        _rotations[j], speed);
+                
+                yield return new WaitForFixedUpdate();
             }
             
         }

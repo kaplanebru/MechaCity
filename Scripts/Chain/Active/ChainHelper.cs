@@ -19,9 +19,9 @@ public static class ChainHelper
         var baseAngle = Mathf.Asin(unit / radius) * Mathf.Rad2Deg;
 
         var intAngle = Mathf.RoundToInt(baseAngle);
-        int rest = intAngle % 6;
-        return rest / 2 < 2 ? intAngle - rest : intAngle + 6 - rest;
-        //return intAngle;
+        // int rest = intAngle % 6;
+        // return rest / 2 < 2 ? intAngle - rest : intAngle + 6 - rest;
+        return intAngle;
     }
     
     public static Vector3 CenterDirection(ArcPart[] arcParts)
