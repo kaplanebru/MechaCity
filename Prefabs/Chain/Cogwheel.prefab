@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     Radius: 3
+    RadiusOffset: 0.5
     Speed: 1.7
     RotationDirection: {x: -0, y: -1, z: -0}
 --- !u!1001 &2216297432985857172
@@ -112,6 +113,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ff3078730fdda1b44abda006f7dd8f15, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 082b5b084e7168b43b1e2e1413dc664d, type: 2}
     - target: {fileID: 919132149155446097, guid: ff3078730fdda1b44abda006f7dd8f15, type: 3}
       propertyPath: m_Name
       value: cogwheel_gear
