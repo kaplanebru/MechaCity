@@ -16,6 +16,7 @@ namespace Chain
 
         private List<Vector3> _chainPoints = new();
         private List<Transform> _links = new();
+        private int _pointsCount;
 
         private void OnEnable()
         {
@@ -27,12 +28,12 @@ namespace Chain
         {
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
-            InstantiateObjs();
-            //DrawLines();
+            if(ChainSpawner.ChainType == ChainType.Line)
+                DrawLines();
+            else
+                InstantiateObjs();
         }
-
-        private int _pointsCount;
-
+        
         void InstantiateObjs()
         {
             for (int i = 0; i < _pointsCount; i++)

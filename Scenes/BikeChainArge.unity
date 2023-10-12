@@ -918,31 +918,31 @@ MonoBehaviour:
   chainType: 1
   isMoving: 1
   arcs:
-  - id: 0
-    radius: 4
+  - radius: 4
     edgeSmoother: 1
     gear: {fileID: 1263741520}
+    id: 0
     relatedArcId: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
-  - id: 1
-    radius: 4
+  - radius: 4
     edgeSmoother: 1
     gear: {fileID: 1671505464}
+    id: 1
     relatedArcId: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
-  - id: 2
-    radius: 5
-    edgeSmoother: 1
+  - radius: 4
+    edgeSmoother: 2
     gear: {fileID: 141705200}
+    id: 2
     relatedArcId: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
-  - id: 3
-    radius: 5
+  - radius: 5
     edgeSmoother: 1
     gear: {fileID: 2005433256}
+    id: 3
     relatedArcId: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
@@ -1001,7 +1001,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005433255}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 28.4, y: 0, z: -17.5}
+  m_LocalPosition: {x: 28.4, y: 0, z: -12.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

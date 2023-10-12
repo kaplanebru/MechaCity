@@ -12,19 +12,25 @@ namespace Chain
         public float RadiusOffset = .5f;
         public float Speed = 10; //Todo: according to radius yap
         public Vector3 RotationDirection = -Vector3.up;
-
-        //public Transform middle;
+        
     }
     
     public class Cogwheel : MonoBehaviour
     {
         public CogData Data;
 
-        private void Start()
+        private void OnEnable()
+        {
+            ChainEvents.OnStartAndMove += MoveCog;
+        }
+
+        private void MoveCog(bool isMoving)
         {
             Setup();
-            StartCoroutine(nameof(SpinRoutine));
+            if(isMoving)
+                StartCoroutine(nameof(SpinRoutine));
         }
+        
 
         void Setup()
         {
@@ -41,6 +47,11 @@ namespace Chain
                 transform.Rotate(Data.RotationDirection, Data.Speed);
                 yield return null;
             }
+        }
+
+        private void OnDisable()
+        {
+            ChainEvents.OnStartAndMove -= MoveCog;
         }
     }
 

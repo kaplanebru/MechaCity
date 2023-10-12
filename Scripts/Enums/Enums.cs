@@ -43,7 +43,7 @@ namespace Enums
     {
         StandardChain,
         BikeChain,
-        Rope
+        Line
     }
 
     

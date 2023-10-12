@@ -8,12 +8,12 @@ namespace Chain
     [Serializable]
     public class Arc
     {
-        public int id;
         public float radius;
         public float edgeSmoother = 1;
         public Transform gear;
         
         [Header("Not for user input")]
+        public int id;
         public int relatedArcId;
         public Vector3 connectionPoint;
         public List<Vector3> arcPoints = new();
