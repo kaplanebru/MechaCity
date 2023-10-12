@@ -39,5 +39,12 @@ namespace Enums
         Multiple
     }
 
+    public enum ChainType
+    {
+        StandardChain,
+        BikeChain,
+        Rope
+    }
+
     
 }

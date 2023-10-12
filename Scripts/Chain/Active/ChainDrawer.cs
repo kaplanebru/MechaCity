@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enums;
 using UnityEngine;
 
 
@@ -11,8 +12,7 @@ namespace Chain
         public LineRenderer lr;
         Material lrMat;
         public Material firstCubeMaterial;
-        public bool isChain;
-        
+
 
         private List<Vector3> _chainPoints = new();
         private List<Transform> _links = new();
@@ -40,7 +40,7 @@ namespace Chain
                 var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
 
                 SetLookRotations(i, link);
-                if(isChain)
+                if(ChainSpawner.ChainType == ChainType.StandardChain)
                     RotateLinks(i, link);
               
                 _links.Add(link);
@@ -58,7 +58,6 @@ namespace Chain
             if (i < _pointsCount)
             {
                 newObj.transform.rotation = Quaternion.LookRotation(_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]);
-                //newObj.transform.GetChild(0).transform.rotation = Quaternion.LookRotation(_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]);
             }
                
         }

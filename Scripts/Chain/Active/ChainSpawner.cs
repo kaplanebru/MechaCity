@@ -13,38 +13,36 @@ namespace Chain
     [RequireComponent(typeof(ChainDrawer))]
     public class ChainSpawner : MonoBehaviour
     {
+        [SerializeField] private ChainType chainType;
+        public static ChainType ChainType;
+
         public bool isMoving = true;
         public Arc[] arcs;
-        public float unit = 1;
-        public int linearPointAmount = 1;
 
+        public float unit = 2.2f;
+        private int linearPointAmount;
         private Vector3 unitDistance;
-       
+        private Vector3 _center;
+
         [ReadOnly] public List<Vector3> chainPoints = new();
 
         private void Start()
         {
             chainPoints.Clear();
             Setup();
-            
+
             SetCircularPoints();
             SetLinearPoints();
             BindPoints();
         }
 
-        private Vector3 _center;
-
         void Setup()
         {
+            ChainType = chainType;
             ChainEvents.OnMotionDecision?.Invoke(isMoving);
-            GetCenter();
+            _center = ChainHelper.CenterDirection(arcs);
             SetIDs();
             RelateArcs();
-
-        }
-        void GetCenter()
-        {
-            _center = ChainHelper.CenterDirection(arcs);
         }
 
         void SetIDs()
@@ -54,6 +52,7 @@ namespace Chain
                 arcs[i].id = i;
             }
         }
+
         void RelateArcs()
         {
             for (int i = 0; i < arcs.Length; i++)
@@ -85,9 +84,9 @@ namespace Chain
         {
             var baseAngle = ChainHelper.AngleByDistance(unit, arcs[i].radius);
 
-            EdgeAngles edgeAngles = arcs.Length <= 2 ? 
-                new EdgeAngles(0, 180) : 
-                new EdgeAngles(baseAngle * arcs[i].edgeSmoother, 180 - baseAngle * arcs[i].edgeSmoother);
+            EdgeAngles edgeAngles = arcs.Length <= 2
+                ? new EdgeAngles(0, 180)
+                : new EdgeAngles(baseAngle * arcs[i].edgeSmoother, 180 - baseAngle * arcs[i].edgeSmoother);
 
             var mainRadius = arcs[i].radius;
             // float arcDifferance = mainRadius - arcParts[arcParts[i].relatedArcId].radius;
@@ -103,8 +102,8 @@ namespace Chain
                 var newAngle = j;
                 arcs[i].arcPoints.Add(ChainHelper.CirclePoint(newAngle, mainRadius));
             }
-            
-            if(arcs[i].relatedArcId == 0) return;
+
+            if (arcs[i].relatedArcId == 0) return;
             CreateHalfCircleByAngle(arcs[i].relatedArcId);
         }
 
@@ -118,8 +117,8 @@ namespace Chain
                 var point = arcPoints[j];
                 arcPoints[j] = gear.position + gear.rotation * point;
             }
-            
-            if(arcs[i].relatedArcId == 0) return;
+
+            if (arcs[i].relatedArcId == 0) return;
             RotatePoints(arcs[i].relatedArcId);
         }
 
@@ -128,21 +127,22 @@ namespace Chain
             SetConnectionPoints(0);
             AddLinearPoints(0);
         }
-        
+
 
         void SetConnectionPoints(int i)
         {
             var relatedArc = arcs[arcs[i].relatedArcId];
             arcs[i].connectionPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
-            
-            if(relatedArc.id == 0) return;
+
+            if (relatedArc.id == 0) return;
             SetConnectionPoints(relatedArc.id);
         }
-        
+
 
         void AddLinearPoints(int i)
         {
-            linearPointAmount = ChainHelper.LinearPointAmountByDistance(arcs[i].connectionPoint, arcs[i].arcPoints.Last(), unit);
+            linearPointAmount =
+                ChainHelper.LinearPointAmountByDistance(arcs[i].connectionPoint, arcs[i].arcPoints.Last(), unit);
             Vector3 edgeDirection = (arcs[i].connectionPoint - arcs[i].arcPoints.Last()).normalized;
             //(arcParts[i].connectionPoint - arcParts[i].arcPoints.First()).normalized;
 
@@ -153,8 +153,8 @@ namespace Chain
             {
                 arcPoints.Add(arcPoints.Last() + unitDistance);
             }
-            
-            if(arcs[i].relatedArcId == 0) return;
+
+            if (arcs[i].relatedArcId == 0) return;
             AddLinearPoints(arcs[i].relatedArcId);
         }
 
@@ -181,7 +181,7 @@ namespace Chain
     {
         public float Start;
         public float End;
-        
+
         public EdgeAngles(float start, float end)
         {
             Start = start;

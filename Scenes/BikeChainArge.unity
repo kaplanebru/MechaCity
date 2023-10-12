@@ -915,7 +915,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2134aa162e8659743a3a44a598fd7df7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMoving: 0
+  chainType: 1
+  isMoving: 1
   arcs:
   - id: 0
     radius: 4
@@ -946,7 +947,6 @@ MonoBehaviour:
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   unit: 2.2
-  linearPointAmount: 4
   chainPoints: []
 --- !u!114 &1852331331
 MonoBehaviour:
@@ -962,7 +962,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lr: {fileID: 68324623}
   firstCubeMaterial: {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
-  isChain: 0
 --- !u!114 &1852331332
 MonoBehaviour:
   m_ObjectHideFlags: 0
