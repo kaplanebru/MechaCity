@@ -15,8 +15,8 @@ namespace Chain
     {
         [SerializeField] private ChainType chainType;
         public static ChainType ChainType;
-        public int realLinkLength = 3;
 
+        public bool setRadiusByObject = true;
         public bool isMoving = true;
         public Arc[] arcs;
 
@@ -42,15 +42,17 @@ namespace Chain
             ChainType = chainType;
             ChainEvents.OnStartAndMove?.Invoke(isMoving);
             _center = ChainHelper.CenterDirection(arcs);
-            SetIDs();
+            SetArcs();
             RelateArcs();
         }
 
-        void SetIDs()
+        void SetArcs()
         {
             for (int i = 0; i < arcs.Length; i++)
             {
                 arcs[i].id = i;
+                if(setRadiusByObject)
+                    arcs[i].SetRadiusByGear();
             }
         }
 
@@ -74,8 +76,8 @@ namespace Chain
         void SetArcRotation(int i)
         {
             var mainArc = arcs[i];
-            var direction = (mainArc.gear.position - _center).normalized;
-            mainArc.gear.rotation = Quaternion.LookRotation(direction);
+            var direction = (mainArc.gear.transform.position - _center).normalized;
+            mainArc.gear.transform.rotation = Quaternion.LookRotation(direction);
 
             if (mainArc.relatedArcId == 0) return;
             SetArcRotation(mainArc.relatedArcId);
@@ -116,7 +118,7 @@ namespace Chain
             for (var j = 0; j < arcPoints.Count; j++)
             {
                 var point = arcPoints[j];
-                arcPoints[j] = gear.position + gear.rotation * point;
+                arcPoints[j] = gear.transform.position + gear.transform.rotation * point;
             }
 
             if (arcs[i].relatedArcId == 0) return;

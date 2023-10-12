@@ -13,7 +13,6 @@ namespace Chain
         public LineRenderer lr;
         Material lrMat;
         public Material firstCubeMaterial;
-        public Transform lastLinkPrefab;
 
 
         private List<Vector3> _chainPoints = new();

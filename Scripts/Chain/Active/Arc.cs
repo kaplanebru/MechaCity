@@ -10,13 +10,18 @@ namespace Chain
     {
         public float radius;
         public float edgeSmoother = 1;
-        public Transform gear;
+        public Cogwheel gear;
         
         [Header("Not for user input")]
         public int id;
         public int relatedArcId;
         public Vector3 connectionPoint;
         public List<Vector3> arcPoints = new();
+
+        public void SetRadiusByGear()
+        {
+            radius = gear.Data.Radius;
+        }
     }
 
 }

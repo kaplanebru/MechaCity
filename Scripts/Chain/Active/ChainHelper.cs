@@ -29,7 +29,7 @@ public static class ChainHelper
         Vector3 pos = Vector3.zero;
         foreach (var arcPart in arcParts)
         {
-            pos += arcPart.gear.position;
+            pos += arcPart.gear.transform.position;
         }
 
         return pos / arcParts.Length;
