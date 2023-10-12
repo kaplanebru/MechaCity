@@ -167,9 +167,13 @@ namespace Chain
                 i = arcs[i].relatedArcId;
                 if (i == 0) break;
             }
-            
-            if(Vector3.Distance(chainPoints.First(), chainPoints.Last()) < unit)
-                chainPoints.RemoveAt(chainPoints.Count-1);
+
+            if (ChainType == ChainType.BikeChain)
+            {
+               //TODO: set unit accordingly
+                
+            }
+           
 
             ChainEvents.OnPointsCreated?.Invoke(chainPoints);
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Enums;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Chain
         public LineRenderer lr;
         Material lrMat;
         public Material firstCubeMaterial;
+        public Transform lastLinkPrefab;
 
 
         private List<Vector3> _chainPoints = new();
@@ -28,12 +30,12 @@ namespace Chain
         {
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
-            if(ChainSpawner.ChainType == ChainType.Line)
+            if (ChainSpawner.ChainType == ChainType.Line)
                 DrawLines();
             else
                 InstantiateObjs();
         }
-        
+
         void InstantiateObjs()
         {
             for (int i = 0; i < _pointsCount; i++)
@@ -41,14 +43,21 @@ namespace Chain
                 var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
 
                 SetLookRotations(i, link);
-                if(ChainSpawner.ChainType == ChainType.StandardChain)
+                if (ChainSpawner.ChainType == ChainType.StandardChain)
                     RotateLinks(i, link);
-              
+
                 _links.Add(link);
-                
+
                 if (i == 0)
                     link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //Temp
             }
+
+            //if(Vector3.Distance(chainPoints.First(), chainPoints.Last()) < unit)
+            // var lastLink = _links.Last();
+            // var newLastLink = Instantiate(lastLinkPrefab, lastLink.transform.position, lastLink.transform.rotation);
+            // _links.Remove(lastLink);
+            // LinkPool.Instance.ReleaseItem(lastLink);
+            //_links.Add(newLastLink);
 
             ChainEvents.OnLinksCreated?.Invoke(_links);
         }
@@ -58,9 +67,9 @@ namespace Chain
         {
             if (i < _pointsCount)
             {
-                newObj.transform.rotation = Quaternion.LookRotation(_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]);
+                newObj.transform.rotation =
+                    Quaternion.LookRotation(_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]);
             }
-               
         }
 
         void RotateLinks(int i, Transform newObj)
@@ -75,7 +84,7 @@ namespace Chain
 
         public void ReleaseChain()
         {
-            _links.ForEach(l=>LinkPool.Instance.ReleaseItem(l));
+            _links.ForEach(l => LinkPool.Instance.ReleaseItem(l));
         }
 
         void DrawLines()
@@ -83,7 +92,7 @@ namespace Chain
             lr.positionCount = _chainPoints.Count;
             lr.SetPositions(_chainPoints.ToArray());
         }
-        
+
         void ResetValues()
         {
             _chainPoints.Clear();
