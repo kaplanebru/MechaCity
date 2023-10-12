@@ -11,6 +11,7 @@ namespace Chain
         public LineRenderer lr;
         Material lrMat;
         public Material firstCubeMaterial;
+        public bool isChain;
         
 
         private List<Vector3> _chainPoints = new();
@@ -37,11 +38,11 @@ namespace Chain
             for (int i = 0; i < _pointsCount; i++)
             {
                 var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
-                //var link = Instantiate(linkPrefab, _chainPoints[i], Quaternion.identity);
 
-                RotateChains(i, link);
-                BindChains(i, link);
-               // link.SetParent(linksHolder);
+                SetLookRotations(i, link);
+                if(isChain)
+                    RotateLinks(i, link);
+              
                 _links.Add(link);
                 
                 if (i == 0)
@@ -52,14 +53,17 @@ namespace Chain
         }
 
 
-        void RotateChains(int i, Transform newObj)
+        void SetLookRotations(int i, Transform newObj)
         {
             if (i < _pointsCount)
-                newObj.transform.rotation =
-                    Quaternion.LookRotation(_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]);
+            {
+                newObj.transform.rotation = Quaternion.LookRotation(_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]);
+                //newObj.transform.GetChild(0).transform.rotation = Quaternion.LookRotation(_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]);
+            }
+               
         }
 
-        void BindChains(int i, Transform newObj)
+        void RotateLinks(int i, Transform newObj)
         {
             var rot = newObj.transform.rotation;
             if (i % 2 == 0)

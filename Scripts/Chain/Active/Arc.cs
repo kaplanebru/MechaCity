@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Chain
 {
     [Serializable]
-    public class ArcPart
+    public class Arc
     {
         public int id;
         public float radius;

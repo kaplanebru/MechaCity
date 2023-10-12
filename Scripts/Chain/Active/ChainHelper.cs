@@ -24,7 +24,7 @@ public static class ChainHelper
         return baseAngle;
     }
     
-    public static Vector3 CenterDirection(ArcPart[] arcParts)
+    public static Vector3 CenterDirection(Arc[] arcParts)
     {
         Vector3 pos = Vector3.zero;
         foreach (var arcPart in arcParts)
