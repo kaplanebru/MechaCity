@@ -13,6 +13,7 @@ namespace Chain
         public LineRenderer lr;
         Material lrMat;
         public Material firstCubeMaterial;
+        public Transform lastLinkPrefab;
 
 
         private List<Vector3> _chainPoints = new();
@@ -52,11 +53,11 @@ namespace Chain
             }
 
             //if(Vector3.Distance(chainPoints.First(), chainPoints.Last()) < unit)
-            // var lastLink = _links.Last();
-            // var newLastLink = Instantiate(lastLinkPrefab, lastLink.transform.position, lastLink.transform.rotation);
-            // _links.Remove(lastLink);
-            // LinkPool.Instance.ReleaseItem(lastLink);
-            //_links.Add(newLastLink);
+             var lastLink = _links.Last();
+             Vector3 dir = (_links.First().position - lastLink.transform.position).normalized;
+             var newLastLink = Instantiate(lastLinkPrefab, lastLink.transform.position + dir*2 , lastLink.transform.rotation);
+             _links.Add(newLastLink);
+             _chainPoints.Add(newLastLink.transform.position);
 
             ChainEvents.OnLinksCreated?.Invoke(_links);
         }

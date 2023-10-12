@@ -21,6 +21,7 @@ public class ChainMover : MonoBehaviour
     {
         _points = points;
     }
+
     void SetLinks(List<Transform> links)
     {
         _links = links;
@@ -34,6 +35,7 @@ public class ChainMover : MonoBehaviour
             _rotations.Add(link.transform.rotation);
         }
     }
+
     IEnumerator MoveRoutine()
     {
         yield return new WaitWhile(() => _points.Count == 0);
@@ -51,18 +53,21 @@ public class ChainMover : MonoBehaviour
         while (true)
         {
             j++;
-            j %=_points.Count;
+            j %= _points.Count;
 
-            while (Vector3.Distance(_links[startIndex].transform.position, _points[j]) > 0.1f)
+            while (Vector3.Distance(_links[startIndex].transform.position, _points[j]) > 0.05f) //0.1f
             {
-                _links[startIndex].transform.position = Vector3.Lerp(_links[startIndex].transform.position, _points[j], speed);
+                _links[startIndex].transform.position =
+                    Vector3.MoveTowards(_links[startIndex].transform.position, _points[j], speed);
                 _links[startIndex].transform.rotation =
-                    Quaternion.Lerp(_links[startIndex].transform.rotation,
+                    Quaternion.Slerp(_links[startIndex].transform.rotation,
                         _rotations[j], speed);
-                
+
                 yield return new WaitForFixedUpdate();
             }
-            
+
+            _links[startIndex].transform.position = _points[j];
+            //_links[startIndex].transform.rotation = _rotations[j];
         }
     }
 

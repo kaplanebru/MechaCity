@@ -176,7 +176,7 @@ namespace Chain
                 if (Vector3.Distance(chainPoints.Last(), chainPoints.First()) < unit)
                 {
                     var dir = (chainPoints[^2] - chainPoints.Last()).normalized;
-                    chainPoints[^1] = chainPoints.Last() + dir*unit*0.4f;
+                    chainPoints[^1] = chainPoints.Last() + dir; //TODO: * unit*0.4f;
                 }
             }
 

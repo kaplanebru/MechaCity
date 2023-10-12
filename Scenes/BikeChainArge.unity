@@ -952,7 +952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chainType: 1
   setRadiusByObject: 1
-  isMoving: 1
+  isMoving: 0
   arcs:
   - radius: 4
     edgeSmoother: 1
@@ -998,6 +998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lr: {fileID: 68324623}
   firstCubeMaterial: {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
+  lastLinkPrefab: {fileID: 7363811566510024203, guid: 5d3c3d6de6672d64299d1bc4891f9a05, type: 3}
 --- !u!114 &1852331332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,7 +1013,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _links: []
   _points: []
-  speed: 0.17
+  speed: 0.1
 --- !u!1 &2005433255
 GameObject:
   m_ObjectHideFlags: 0
