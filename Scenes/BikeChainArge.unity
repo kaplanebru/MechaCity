@@ -916,7 +916,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chainType: 1
-  isMoving: 1
+  isMoving: 0
   arcs:
   - radius: 4
     edgeSmoother: 1
