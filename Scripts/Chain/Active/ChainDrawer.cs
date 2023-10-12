@@ -52,12 +52,15 @@ namespace Chain
                     link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //Temp
             }
 
-            //if(Vector3.Distance(chainPoints.First(), chainPoints.Last()) < unit)
-             var lastLink = _links.Last();
-             Vector3 dir = (_links.First().position - lastLink.transform.position).normalized;
-             var newLastLink = Instantiate(lastLinkPrefab, lastLink.transform.position + dir*2 , lastLink.transform.rotation);
-             _links.Add(newLastLink);
-             _chainPoints.Add(newLastLink.transform.position);
+            if (Vector3.Distance(_chainPoints.First(), _chainPoints.Last()) < 2.3f) //TODO: temp
+            {
+                var lastLink = _links.Last();
+                Vector3 dir = (_links.First().position - lastLink.transform.position).normalized;
+                var newLastLink = Instantiate(lastLinkPrefab, lastLink.transform.position + dir , lastLink.transform.rotation);
+                _links.Add(newLastLink);
+                _chainPoints.Add(newLastLink.transform.position);
+            }
+             
 
             ChainEvents.OnLinksCreated?.Invoke(_links);
         }
