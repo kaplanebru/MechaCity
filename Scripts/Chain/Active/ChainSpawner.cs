@@ -15,6 +15,7 @@ namespace Chain
     {
         [SerializeField] private ChainType chainType;
         public static ChainType ChainType;
+        public int realLinkLength = 3;
 
         public bool isMoving = true;
         public Arc[] arcs;
@@ -167,13 +168,15 @@ namespace Chain
                 i = arcs[i].relatedArcId;
                 if (i == 0) break;
             }
-
+            
             if (ChainType == ChainType.BikeChain)
             {
-               //TODO: set unit accordingly
-                
+                if (Vector3.Distance(chainPoints.Last(), chainPoints.First()) < unit)
+                {
+                    var dir = (chainPoints[^2] - chainPoints.Last()).normalized;
+                    chainPoints[^1] = chainPoints.Last() + dir*unit*0.4f;
+                }
             }
-           
 
             ChainEvents.OnPointsCreated?.Invoke(chainPoints);
         }
