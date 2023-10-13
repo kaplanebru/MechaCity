@@ -24,6 +24,7 @@ public static class ChainHelper
         return baseAngle;
     }
     
+    
     public static Vector3 CenterDirection(Arc[] arcParts)
     {
         Vector3 pos = Vector3.zero;
@@ -34,6 +35,8 @@ public static class ChainHelper
 
         return pos / arcParts.Length;
     }
+    
+    
     
     public static int LinearPointAmountByDistance(Vector3 first, Vector3 last, float unit)
     {

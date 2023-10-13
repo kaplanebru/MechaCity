@@ -912,35 +912,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: cf41c1560fd13df4da97718c6fce6027, type: 2}
-  setRadiusByObject: 1
-  isMoving: 1
   arcs:
   - radius: 4
-    edgeSmoother: 1
+    edgeSmoother: 0
     gear: {fileID: 2128791191}
     id: 0
     relatedArcId: 0
+    baseAngle: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 4
-    edgeSmoother: 1
+    edgeSmoother: 0
     gear: {fileID: 1492620265}
     id: 1
     relatedArcId: 0
+    baseAngle: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 4
-    edgeSmoother: 1
+    edgeSmoother: 0
     gear: {fileID: 1780707737}
     id: 2
     relatedArcId: 0
+    baseAngle: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 5
-    edgeSmoother: 1
+    edgeSmoother: 0
     gear: {fileID: 1679024153}
     id: 3
     relatedArcId: 0
+    baseAngle: 0
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   chainPoints: []

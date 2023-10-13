@@ -15,6 +15,8 @@ namespace Chain
         [Header("Not for user input")]
         public int id;
         public int relatedArcId;
+        public EdgeAngles edgeAngles;
+        public float baseAngle;
         public Vector3 connectionPoint;
         public List<Vector3> arcPoints = new();
 
