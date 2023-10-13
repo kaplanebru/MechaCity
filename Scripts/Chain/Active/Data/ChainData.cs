@@ -11,6 +11,8 @@ namespace Chain
         public ChainType Type;
         public float Unit = 2.3f;
         public float MotionSpeed = 0.1f;
+        public bool SetRadiusByObject = true;
+        public bool IsMoving = true;
     }
 }
 

@@ -14,8 +14,7 @@ namespace Chain
     public class ChainSpawner : MonoBehaviour
     {
         public ChainData Data;
-        public bool setRadiusByObject = true;
-        public bool isMoving = true;
+
         public Arc[] arcs;
 
         
@@ -37,7 +36,7 @@ namespace Chain
 
         void Setup()
         {
-            ChainEvents.OnStartAndMove?.Invoke(isMoving);
+            ChainEvents.OnStartAndMove?.Invoke(Data.IsMoving);
             _center = ChainHelper.CenterDirection(arcs);
             SetArcs();
             RelateArcs();
@@ -48,7 +47,7 @@ namespace Chain
             for (int i = 0; i < arcs.Length; i++)
             {
                 arcs[i].id = i;
-                if(setRadiusByObject)
+                if(Data.SetRadiusByObject)
                     arcs[i].SetRadiusByGear();
             }
         }
