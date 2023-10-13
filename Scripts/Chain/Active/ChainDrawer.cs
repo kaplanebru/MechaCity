@@ -10,6 +10,7 @@ namespace Chain
 {
     public class ChainDrawer : MonoBehaviour
     {
+        public ChainData Data;
         public LineRenderer lr;
         Material lrMat;
         public Material firstCubeMaterial;
@@ -30,7 +31,7 @@ namespace Chain
         {
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
-            if (ChainSpawner.ChainType == ChainType.Line)
+            if (Data.Type == ChainType.Line)
                 DrawLines();
             else
                 InstantiateObjs();
@@ -43,16 +44,24 @@ namespace Chain
                 var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
 
                 SetLookRotations(i, link);
-                if (ChainSpawner.ChainType == ChainType.StandardChain)
+                if (Data.Type == ChainType.StandardChain)
                     RotateLinks(i, link);
 
                 _links.Add(link);
 
                 if (i == 0)
-                    link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //Temp
+                    link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //debug
             }
 
-            if (Vector3.Distance(_chainPoints.First(), _chainPoints.Last()) < 2.3f) //TODO: temp
+            if(Data.Type == ChainType.BikeChain)
+                RegulateLastLink();
+
+            ChainEvents.OnLinksCreated?.Invoke(_links);
+        }
+
+        void RegulateLastLink()
+        {
+            if (Vector3.Distance(_chainPoints.First(), _chainPoints.Last()) < Data.Unit)
             {
                 var lastLink = _links.Last();
                 Vector3 dir = (_links.First().position - lastLink.transform.position).normalized;
@@ -60,9 +69,6 @@ namespace Chain
                 _links.Add(newLastLink);
                 _chainPoints.Add(newLastLink.transform.position);
             }
-             
-
-            ChainEvents.OnLinksCreated?.Invoke(_links);
         }
 
 

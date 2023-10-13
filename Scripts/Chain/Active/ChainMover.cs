@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Chain;
 using UnityEngine;
 
 public class ChainMover : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _links = new();
-    [SerializeField] private List<Vector3> _points = new();
+    public ChainData Data;
+    private List<Transform> _links = new();
+    private List<Vector3> _points = new();
     private List<Quaternion> _rotations = new();
-    public float speed = 0.1f;
 
     private void OnEnable()
     {
@@ -58,10 +59,10 @@ public class ChainMover : MonoBehaviour
             while (Vector3.Distance(_links[startIndex].transform.position, _points[j]) > 0.05f) //0.1f
             {
                 _links[startIndex].transform.position =
-                    Vector3.MoveTowards(_links[startIndex].transform.position, _points[j], speed);
+                    Vector3.MoveTowards(_links[startIndex].transform.position, _points[j], Data.MotionSpeed);
                 _links[startIndex].transform.rotation =
                     Quaternion.Slerp(_links[startIndex].transform.rotation,
-                        _rotations[j], speed);
+                        _rotations[j], Data.MotionSpeed);
 
                 yield return new WaitForFixedUpdate();
             }

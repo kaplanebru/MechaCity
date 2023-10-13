@@ -13,14 +13,12 @@ namespace Chain
     [RequireComponent(typeof(ChainDrawer))]
     public class ChainSpawner : MonoBehaviour
     {
-        [SerializeField] private ChainType chainType;
-        public static ChainType ChainType;
-
+        public ChainData Data;
         public bool setRadiusByObject = true;
         public bool isMoving = true;
         public Arc[] arcs;
 
-        public float unit = 2.2f;
+        
         private int linearPointAmount;
         private Vector3 unitDistance;
         private Vector3 _center;
@@ -39,7 +37,6 @@ namespace Chain
 
         void Setup()
         {
-            ChainType = chainType;
             ChainEvents.OnStartAndMove?.Invoke(isMoving);
             _center = ChainHelper.CenterDirection(arcs);
             SetArcs();
@@ -85,7 +82,7 @@ namespace Chain
 
         void CreateHalfCircleByAngle(int i)
         {
-            var baseAngle = ChainHelper.AngleByDistance(unit, arcs[i].radius);
+            var baseAngle = ChainHelper.AngleByDistance(Data.Unit, arcs[i].radius);
 
             EdgeAngles edgeAngles = arcs.Length <= 2
                 ? new EdgeAngles(0, 180)
@@ -145,11 +142,11 @@ namespace Chain
         void AddLinearPoints(int i)
         {
             linearPointAmount =
-                ChainHelper.LinearPointAmountByDistance(arcs[i].connectionPoint, arcs[i].arcPoints.Last(), unit);
+                ChainHelper.LinearPointAmountByDistance(arcs[i].connectionPoint, arcs[i].arcPoints.Last(), Data.Unit);
             Vector3 edgeDirection = (arcs[i].connectionPoint - arcs[i].arcPoints.Last()).normalized;
             //(arcParts[i].connectionPoint - arcParts[i].arcPoints.First()).normalized;
 
-            unitDistance = edgeDirection * unit;
+            unitDistance = edgeDirection * Data.Unit;
 
             var arcPoints = arcs[i].arcPoints;
             for (int j = 0; j < linearPointAmount; j++)
@@ -171,9 +168,9 @@ namespace Chain
                 if (i == 0) break;
             }
             
-            if (ChainType == ChainType.BikeChain)
+            if (Data.Type == ChainType.BikeChain)
             {
-                if (Vector3.Distance(chainPoints.Last(), chainPoints.First()) < unit)
+                if (Vector3.Distance(chainPoints.Last(), chainPoints.First()) < Data.Unit)
                 {
                     var dir = (chainPoints[^2] - chainPoints.Last()).normalized;
                     chainPoints[^1] = chainPoints.Last() + dir; //TODO: * unit*0.4f;
@@ -185,7 +182,7 @@ namespace Chain
 
         void AdaptUnitToCircle()
         {
-            unit = Vector3.Distance(chainPoints[0], chainPoints[1]); //print(chainPoints[1].z);
+            Data.Unit = Vector3.Distance(chainPoints[0], chainPoints[1]); //print(chainPoints[1].z);
         }
     }
 
