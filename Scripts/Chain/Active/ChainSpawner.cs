@@ -156,6 +156,9 @@ namespace Chain
         {
             linearPointAmount =
                 ChainHelper.LinearPointAmountByDistance(arcs[i].connectionPoint, arcs[i].arcPoints.Last(), Data.Unit);
+
+            linearPointAmount++;
+            
             Vector3 edgeDirection = (arcs[i].connectionPoint - arcs[i].arcPoints.Last()).normalized;
 
             unitDistance = edgeDirection * Data.Unit;
@@ -168,11 +171,15 @@ namespace Chain
 
             var relatedArc = arcs[arcs[i].relatedArcId];
 
+            
+            
+            
+
             Vector3 dir = (arcPoints.Last() - relatedArc.gear.transform.position).normalized;
             print(-dir * relatedArc.radius);
             var extraAngle = Vector3.Angle(relatedArc.arcPoints[0], -dir * relatedArc.radius);
             print(extraAngle);
-            relatedArc.edgeAngles.Start -= extraAngle;
+            relatedArc.edgeAngles.Start = extraAngle;
             relatedArc.arcPoints.Clear();
             CreateArcPoints(relatedArc.id);
             PositionPoints(relatedArc.id); //not recursive, only for the first arc
