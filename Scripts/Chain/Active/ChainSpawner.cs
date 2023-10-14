@@ -152,11 +152,11 @@ namespace Chain
 
             
             if (arcs[i].relatedArcId == 0) return;
-            
             var relatedArc = arcs[arcs[i].relatedArcId];
-            var extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
             
+            var extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
             relatedArc.edgeAngles.Start -= extraAngle;
+            
             relatedArc.arcPoints.Clear();
 
             CreateArcPoints(relatedArc.id);
