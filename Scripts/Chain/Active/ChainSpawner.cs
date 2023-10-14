@@ -129,8 +129,8 @@ namespace Chain
             arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
 
             //print(arcs[i].gear.transform.position.z - relatedArc.gear.transform.position.z);
-            float differanceAngle = ChainHelper.AngleBySin(arcs[i].gear.transform.position.z - relatedArc.gear.transform.position.z,
-                Vector3.Distance(arcs[i].gear.transform.position, relatedArc.gear.transform.position));
+             var dir = (relatedArc.gear.transform.position - arcs[i].gear.transform.position).normalized;
+             var differanceAngle = ChainHelper.AngleBySin(dir.z, 1);
             
             print(differanceAngle);
         }
