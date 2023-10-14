@@ -41,10 +41,17 @@ public static class ChainHelper
     }
     
     
-    
     public static int LinearPointAmountByDistance(Vector3 first, Vector3 last, float unit)
     {
         var distance = Vector3.Distance(last, first);
         return Mathf.RoundToInt(distance / unit) - 1;
+    }
+
+    public static float GetAngleByAllLength(float a, float b, float c)
+    {
+        float cosA = (b * b + c * c - a * a) / (2 * b * c);
+        float angleA = Mathf.Acos(cosA) * Mathf.Rad2Deg;
+
+        return angleA;
     }
 }

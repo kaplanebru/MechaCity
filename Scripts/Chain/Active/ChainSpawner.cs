@@ -48,11 +48,11 @@ namespace Chain
         void CreateParts(int i)
         {
             CreateArcPoints(i);
-            PositionPoints(i); 
+            PositionPoints(i);
             SetNextPoint(i);
             AddLinearPoints(i);
         }
-        
+
         void SetArcs()
         {
             for (int i = 0; i < arcs.Length; i++)
@@ -72,7 +72,7 @@ namespace Chain
                 arcs[i].relatedArcId = id;
             }
         }
-        
+
 
         void RotateGearToCenter(int i)
         {
@@ -123,26 +123,30 @@ namespace Chain
                 arcs[i].nextPoint = relatedArc.arcPoints.First();
                 return;
             }
-            
+
             relatedArc.arcPoints.Add(ChainHelper.CirclePoint(relatedArc.edgeAngles.Start, relatedArc.radius));
             PositionPoints(relatedArc.id);
             arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
 
-            //print(arcs[i].gear.transform.position.z - relatedArc.gear.transform.position.z);
-             var dir = (relatedArc.gear.transform.position - arcs[i].gear.transform.position).normalized;
-             var differanceAngle = ChainHelper.AngleBySin(dir.z, 1);
-            
-            print(differanceAngle);
+            float lengthA = Vector3.Distance(_center, relatedArc.gear.transform.position);
+            float lengthB = Vector3.Distance(arcs[i].gear.transform.position, relatedArc.gear.transform.position);
+            float lengthC = Vector3.Distance(_center, arcs[i].gear.transform.position);
+
+            float distanceAngle1 = ChainHelper.GetAngleByAllLength(lengthA, lengthB, lengthC);
+            float distanceAngle2 = ChainHelper.GetAngleByAllLength(lengthC, lengthB, lengthB);
+
+            print(distanceAngle1 + " " +  distanceAngle2);
         }
 
 
         void AddLinearPoints(int i)
         {
-            linearPointAmount = ChainHelper.LinearPointAmountByDistance(arcs[i].nextPoint, arcs[i].arcPoints.Last(), Data.Unit);
-            
+            linearPointAmount =
+                ChainHelper.LinearPointAmountByDistance(arcs[i].nextPoint, arcs[i].arcPoints.Last(), Data.Unit);
+
             Vector3 edgeDirection = (arcs[i].nextPoint - arcs[i].arcPoints.Last()).normalized;
             Vector3 unitDistance = edgeDirection * Data.Unit;
-            
+
             var arcPoints = arcs[i].arcPoints;
             for (int j = 0; j < linearPointAmount; j++)
             {
@@ -151,10 +155,10 @@ namespace Chain
 
             if (arcs[i].relatedArcId == 0) return;
             Arc relatedArc = arcs[arcs[i].relatedArcId];
-            
+
             float extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
             relatedArc.edgeAngles.Start -= extraAngle;
-            
+
             relatedArc.arcPoints.Clear();
             CreateParts(relatedArc.id);
         }
@@ -187,17 +191,16 @@ namespace Chain
         }
     }
 
-    
+
     public class EdgeAngles
     {
         public float Start;
         public float End;
+
         public EdgeAngles(float baseAngle, Vector2 edgeSmoother)
         {
             Start = baseAngle * edgeSmoother[0];
             End = 180 - baseAngle * edgeSmoother[1];
         }
-        
     }
-    
 }
