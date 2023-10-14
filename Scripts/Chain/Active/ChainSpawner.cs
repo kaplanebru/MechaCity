@@ -88,10 +88,16 @@ namespace Chain
         {
             arcs[i].baseAngle = ChainHelper.AngleByDistance(Data.Unit, arcs[i].radius);
 
+            // if (arcs.Length <= 2)
+            //     arcs[i].edgeAngles = new EdgeAngles(0, 180);
+            // else
+            // {
+            //     
+            // }
+
             arcs[i].edgeAngles = arcs.Length <= 2
-                ? new EdgeAngles(0, 180)
-                : new EdgeAngles(arcs[i].baseAngle * arcs[i].edgeSmoother,
-                    180 - arcs[i].baseAngle * arcs[i].edgeSmoother);
+                ? new EdgeAngles(arcs[i].baseAngle, 0)
+                : new EdgeAngles(arcs[i].baseAngle, arcs[i].edgeSmoother);
         }
 
         void CreateArcPoints(int i)
@@ -133,30 +139,24 @@ namespace Chain
 
         void AddLinearPoints(int i)
         {
-            linearPointAmount =
-                ChainHelper.LinearPointAmountByDistance(arcs[i].nextPoint, arcs[i].arcPoints.Last(), Data.Unit);
-
-
+            linearPointAmount = ChainHelper.LinearPointAmountByDistance(arcs[i].nextPoint, arcs[i].arcPoints.Last(), Data.Unit);
+            
             Vector3 edgeDirection = (arcs[i].nextPoint - arcs[i].arcPoints.Last()).normalized;
-
-            var unitDistance = edgeDirection * Data.Unit;
-
-
+            Vector3 unitDistance = edgeDirection * Data.Unit;
+            
             var arcPoints = arcs[i].arcPoints;
             for (int j = 0; j < linearPointAmount; j++)
             {
                 arcPoints.Add(arcPoints.Last() + unitDistance);
             }
 
-            
             if (arcs[i].relatedArcId == 0) return;
-            var relatedArc = arcs[arcs[i].relatedArcId];
+            Arc relatedArc = arcs[arcs[i].relatedArcId];
             
-            var extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
+            float extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
             relatedArc.edgeAngles.Start -= extraAngle;
             
             relatedArc.arcPoints.Clear();
-
             CreateParts(relatedArc.id);
         }
 
@@ -188,16 +188,20 @@ namespace Chain
         }
     }
 
+    [Serializable]
     public class EdgeAngles
     {
         public float Start;
         public float End;
+        public float EdgeSmoother;
 
-        public EdgeAngles(float start, float end)
+        public EdgeAngles(float baseAngle, float edgeSmoother)
         {
-            Start = start;
-            End = end;
+            EdgeSmoother = edgeSmoother;
+            Start = baseAngle * edgeSmoother;
+            End = 180 - baseAngle * edgeSmoother;
         }
+        
     }
     
 }
