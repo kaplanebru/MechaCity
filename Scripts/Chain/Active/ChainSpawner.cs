@@ -113,28 +113,22 @@ namespace Chain
                 var point = arcPoints[j];
                 arcPoints[j] = gear.transform.position + gear.transform.rotation * point;
             }
-
-            // if (arcs[i].relatedArcId == 0) return;
-            // PointRotationAndPositions(arcs[i].relatedArcId);
         }
-
-        void SetLinearPoints()
-        {
-            //SetConnectionPoints(0);
-            AddLinearPoints(0);
-        }
+        
 
 
         void SetNextPoint(int i)
         {
             var relatedArc = arcs[arcs[i].relatedArcId];
-            if (relatedArc.id == 0) return;
 
-            SetAngles(relatedArc.id);
-           
+            if (relatedArc.id == 0)
+            {
+                arcs[i].nextPoint = relatedArc.arcPoints.First();
+                return;
+            }
+            
             relatedArc.arcPoints.Add(ChainHelper.CirclePoint(relatedArc.edgeAngles.Start, relatedArc.radius));
             PositionPoints(relatedArc.id);
-
             arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
         }
 
@@ -156,6 +150,7 @@ namespace Chain
                 arcPoints.Add(arcPoints.Last() + unitDistance);
             }
 
+            
             if (arcs[i].relatedArcId == 0) return;
             
             var relatedArc = arcs[arcs[i].relatedArcId];
