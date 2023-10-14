@@ -922,7 +922,7 @@ MonoBehaviour:
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 4
-    edgeSmoother: 0
+    edgeSmoother: 1
     gear: {fileID: 1492620265}
     id: 1
     relatedArcId: 0
@@ -930,7 +930,7 @@ MonoBehaviour:
     connectionPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 4
-    edgeSmoother: 0
+    edgeSmoother: 1
     gear: {fileID: 1780707737}
     id: 2
     relatedArcId: 0
