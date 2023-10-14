@@ -14,16 +14,20 @@ public static class ChainHelper
         return new Vector3(x, 0, y) * radius;
     }
 
-    public static float AngleByDistance(float unit, float radius)
+    public static float AngleBySin(float sin, float radius)
     {
-        var baseAngle = Mathf.Asin(unit / radius) * Mathf.Rad2Deg;
+        var baseAngle = Mathf.Asin(sin / radius) * Mathf.Rad2Deg;
 
         //var intAngle = Mathf.RoundToInt(baseAngle);
         // int rest = intAngle % 6;
         // return rest / 2 < 2 ? intAngle - rest : intAngle + 6 - rest;
         return baseAngle;
     }
-    
+
+    public static float AngleByCos(float cos, float radius)
+    {
+        return Mathf.Acos(cos / radius) * Mathf.Rad2Deg;
+    }
     
     public static Vector3 CenterDirection(Arc[] arcParts)
     {

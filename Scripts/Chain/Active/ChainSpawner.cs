@@ -86,14 +86,7 @@ namespace Chain
 
         void SetAngles(int i)
         {
-            arcs[i].baseAngle = ChainHelper.AngleByDistance(Data.Unit, arcs[i].radius);
-
-            // if (arcs.Length <= 2)
-            //     arcs[i].edgeAngles = new EdgeAngles(0, 180);
-            // else
-            // {
-            //     
-            // }
+            arcs[i].baseAngle = ChainHelper.AngleBySin(Data.Unit, arcs[i].radius);
 
             arcs[i].edgeAngles = arcs.Length <= 2
                 ? new EdgeAngles(arcs[i].baseAngle, Vector2.zero)
@@ -134,6 +127,12 @@ namespace Chain
             relatedArc.arcPoints.Add(ChainHelper.CirclePoint(relatedArc.edgeAngles.Start, relatedArc.radius));
             PositionPoints(relatedArc.id);
             arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
+
+            //print(arcs[i].gear.transform.position.z - relatedArc.gear.transform.position.z);
+            float differanceAngle = ChainHelper.AngleBySin(arcs[i].gear.transform.position.z - relatedArc.gear.transform.position.z,
+                Vector3.Distance(arcs[i].gear.transform.position, relatedArc.gear.transform.position));
+            
+            print(differanceAngle);
         }
 
 
