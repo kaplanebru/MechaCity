@@ -17,7 +17,7 @@ namespace Chain
         public int relatedArcId;
         public EdgeAngles edgeAngles;
         public float baseAngle;
-        public Vector3 connectionPoint;
+        public Vector3 nextPoint;
         public List<Vector3> arcPoints = new();
 
         public void SetRadiusByGear()

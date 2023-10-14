@@ -914,12 +914,12 @@ MonoBehaviour:
   Data: {fileID: 11400000, guid: cf41c1560fd13df4da97718c6fce6027, type: 2}
   arcs:
   - radius: 4
-    edgeSmoother: 0
+    edgeSmoother: 1
     gear: {fileID: 2128791191}
     id: 0
     relatedArcId: 0
     baseAngle: 0
-    connectionPoint: {x: 0, y: 0, z: 0}
+    nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 4
     edgeSmoother: 1
@@ -927,7 +927,7 @@ MonoBehaviour:
     id: 1
     relatedArcId: 0
     baseAngle: 0
-    connectionPoint: {x: 0, y: 0, z: 0}
+    nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 4
     edgeSmoother: 1
@@ -935,7 +935,7 @@ MonoBehaviour:
     id: 2
     relatedArcId: 0
     baseAngle: 0
-    connectionPoint: {x: 0, y: 0, z: 0}
+    nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 5
     edgeSmoother: 1
@@ -943,7 +943,7 @@ MonoBehaviour:
     id: 3
     relatedArcId: 0
     baseAngle: 0
-    connectionPoint: {x: 0, y: 0, z: 0}
+    nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   chainPoints: []
 --- !u!114 &1852331331

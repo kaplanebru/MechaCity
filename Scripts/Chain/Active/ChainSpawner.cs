@@ -49,7 +49,7 @@ namespace Chain
 
             CreateArcPoints(0);
             PositionPoints(0); //not recursive, only for the first arc
-            SetConnectionPoints(0);
+            SetNextPoint(0);
             AddLinearPoints(0);
         }
         
@@ -125,7 +125,7 @@ namespace Chain
         }
 
 
-        void SetConnectionPoints(int i)
+        void SetNextPoint(int i)
         {
             var relatedArc = arcs[arcs[i].relatedArcId];
             if (relatedArc.id == 0) return;
@@ -135,17 +135,17 @@ namespace Chain
             relatedArc.arcPoints.Add(ChainHelper.CirclePoint(relatedArc.edgeAngles.Start, relatedArc.radius));
             PositionPoints(relatedArc.id);
 
-            arcs[i].connectionPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
+            arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
         }
 
 
         void AddLinearPoints(int i)
         {
             linearPointAmount =
-                ChainHelper.LinearPointAmountByDistance(arcs[i].connectionPoint, arcs[i].arcPoints.Last(), Data.Unit);
+                ChainHelper.LinearPointAmountByDistance(arcs[i].nextPoint, arcs[i].arcPoints.Last(), Data.Unit);
 
 
-            Vector3 edgeDirection = (arcs[i].connectionPoint - arcs[i].arcPoints.Last()).normalized;
+            Vector3 edgeDirection = (arcs[i].nextPoint - arcs[i].arcPoints.Last()).normalized;
 
             var unitDistance = edgeDirection * Data.Unit;
 
@@ -163,15 +163,10 @@ namespace Chain
             
             relatedArc.edgeAngles.Start -= extraAngle;
             relatedArc.arcPoints.Clear();
-           
-            
-            
-           
-            
+
             CreateArcPoints(relatedArc.id);
             PositionPoints(relatedArc.id);
-            arcs[i].connectionPoint = relatedArc.arcPoints[0];
-            SetConnectionPoints(relatedArc.id);
+            SetNextPoint(relatedArc.id);
             AddLinearPoints(relatedArc.id);
         }
 
@@ -185,14 +180,14 @@ namespace Chain
                 if (i == 0) break;
             }
 
-            // if (Data.Type == ChainType.BikeChain)
-            // {
-            //     if (Vector3.Distance(chainPoints.Last(), chainPoints.First()) < Data.Unit)
-            //     {
-            //         var dir = (chainPoints[^2] - chainPoints.Last()).normalized;
-            //         chainPoints[^1] = chainPoints.Last() + dir; //TODO: * unit*0.4f;
-            //     }
-            // }
+            if (Data.Type == ChainType.BikeChain)
+            {
+                if (Vector3.Distance(chainPoints.Last(), chainPoints.First()) < Data.Unit)
+                {
+                    var dir = (chainPoints[^2] - chainPoints.Last()).normalized;
+                    chainPoints[^1] = chainPoints.Last() + dir; //TODO: * unit*0.4f;
+                }
+            }
 
             ChainEvents.OnPointsCreated?.Invoke(chainPoints);
         }
