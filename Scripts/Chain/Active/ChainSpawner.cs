@@ -154,22 +154,26 @@ namespace Chain
 
         void AddLinearPoints(int i)
         {
+           
             linearPointAmount =
                 ChainHelper.LinearPointAmountByDistance(arcs[i].connectionPoint, arcs[i].arcPoints.Last(), Data.Unit);
 
             linearPointAmount++;
-            
+           
             Vector3 edgeDirection = (arcs[i].connectionPoint - arcs[i].arcPoints.Last()).normalized;
 
             var unitDistance = edgeDirection * Data.Unit;
 
+            
             var arcPoints = arcs[i].arcPoints;
             for (int j = 0; j < linearPointAmount; j++)
             {
                 arcPoints.Add(arcPoints.Last() + unitDistance);
             }
 
+            if(arcs[i].relatedArcId == 0) return;
             var relatedArc = arcs[arcs[i].relatedArcId];
+            
 
             float sin = Vector3.Distance(relatedArc.arcPoints.First(), arcPoints.Last());
             float extraAngle = ChainHelper.AngleByDistance(sin, relatedArc.radius); // - relatedArc.edgeAngles.Start;
@@ -186,8 +190,17 @@ namespace Chain
             CreateArcPoints(relatedArc.id);
             PositionPoints(relatedArc.id); //not recursive, only for the first arc
             arcs[i].connectionPoint = relatedArc.arcPoints[0];
-            SetConnectionPoints(relatedArc.id);
-            // AddLinearPoints(0);
+            if (i == 1) //related arcı 0 olan yani
+            {
+                arcs[i].connectionPoint = relatedArc.arcPoints.First();
+            }
+            else
+            {
+                SetConnectionPoints(relatedArc.id);
+            }
+                
+            AddLinearPoints(relatedArc.id);
+           
         }
 
         void BindPoints()
