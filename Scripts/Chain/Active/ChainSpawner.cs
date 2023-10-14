@@ -96,7 +96,7 @@ namespace Chain
             // }
 
             arcs[i].edgeAngles = arcs.Length <= 2
-                ? new EdgeAngles(arcs[i].baseAngle, 0)
+                ? new EdgeAngles(arcs[i].baseAngle, Vector2.zero)
                 : new EdgeAngles(arcs[i].baseAngle, arcs[i].edgeSmoother);
         }
 
@@ -188,18 +188,15 @@ namespace Chain
         }
     }
 
-    [Serializable]
+    
     public class EdgeAngles
     {
         public float Start;
         public float End;
-        public float EdgeSmoother;
-
-        public EdgeAngles(float baseAngle, float edgeSmoother)
+        public EdgeAngles(float baseAngle, Vector2 edgeSmoother)
         {
-            EdgeSmoother = edgeSmoother;
-            Start = baseAngle * edgeSmoother;
-            End = 180 - baseAngle * edgeSmoother;
+            Start = baseAngle * edgeSmoother[0];
+            End = 180 - baseAngle * edgeSmoother[1];
         }
         
     }

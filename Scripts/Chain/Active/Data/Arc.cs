@@ -9,7 +9,7 @@ namespace Chain
     public class Arc
     {
         public float radius;
-        public float edgeSmoother = 1;
+        public Vector2 edgeSmoother = new Vector2(1 ,1);
         public Cogwheel gear;
         
         [Header("Not for user input")]
