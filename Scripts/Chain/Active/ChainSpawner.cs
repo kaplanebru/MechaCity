@@ -27,9 +27,7 @@ namespace Chain
         {
             chainPoints.Clear();
             Setup();
-
-            //SetCircularPoints();
-            //SetLinearPoints();
+            CreateParts(0);
             BindPoints();
         }
 
@@ -45,12 +43,14 @@ namespace Chain
             {
                 SetAngles(i);
             }
+        }
 
-
-            CreateArcPoints(0);
-            PositionPoints(0); //not recursive, only for the first arc
-            SetNextPoint(0);
-            AddLinearPoints(0);
+        void CreateParts(int i)
+        {
+            CreateArcPoints(i);
+            PositionPoints(i); 
+            SetNextPoint(i);
+            AddLinearPoints(i);
         }
         
         void SetArcs()
@@ -114,8 +114,6 @@ namespace Chain
                 arcPoints[j] = gear.transform.position + gear.transform.rotation * point;
             }
         }
-        
-
 
         void SetNextPoint(int i)
         {
@@ -159,10 +157,7 @@ namespace Chain
             
             relatedArc.arcPoints.Clear();
 
-            CreateArcPoints(relatedArc.id);
-            PositionPoints(relatedArc.id);
-            SetNextPoint(relatedArc.id);
-            AddLinearPoints(relatedArc.id);
+            CreateParts(relatedArc.id);
         }
 
         void BindPoints()
@@ -204,12 +199,5 @@ namespace Chain
             End = end;
         }
     }
-
-    //AutoSmoother
-    // float arcDifferance = mainRadius - arcParts[arcParts[i].relatedArcId].radius;
-    // if (arcDifferance > 0 && Mathf.Abs(arcDifferance) > 3)
-    // {
-    //     edgeAngles.Start = -baseAngle;
-    //     edgeAngles.End = 180 + baseAngle;
-    // }
+    
 }
