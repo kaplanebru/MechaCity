@@ -19,7 +19,6 @@ namespace Chain
 
         
         private int linearPointAmount;
-        private Vector3 unitDistance;
         private Vector3 _center;
 
         [ReadOnly] public List<Vector3> chainPoints = new();
@@ -143,6 +142,7 @@ namespace Chain
             var relatedArc = arcs[arcs[i].relatedArcId];
             
             SetAngles(relatedArc.id);
+            //CreateArcPoints(relatedArc.id);
             relatedArc.arcPoints.Add(ChainHelper.CirclePoint(relatedArc.edgeAngles.Start, relatedArc.radius));
             PositionPoints(relatedArc.id); 
             
@@ -161,7 +161,7 @@ namespace Chain
             
             Vector3 edgeDirection = (arcs[i].connectionPoint - arcs[i].arcPoints.Last()).normalized;
 
-            unitDistance = edgeDirection * Data.Unit;
+            var unitDistance = edgeDirection * Data.Unit;
 
             var arcPoints = arcs[i].arcPoints;
             for (int j = 0; j < linearPointAmount; j++)
@@ -171,19 +171,22 @@ namespace Chain
 
             var relatedArc = arcs[arcs[i].relatedArcId];
 
-            
-            
-            
+            float sin = Vector3.Distance(relatedArc.arcPoints.First(), arcPoints.Last());
+            float extraAngle = ChainHelper.AngleByDistance(sin, relatedArc.radius); // - relatedArc.edgeAngles.Start;
 
-            Vector3 dir = (arcPoints.Last() - relatedArc.gear.transform.position).normalized;
-            print(-dir * relatedArc.radius);
-            var extraAngle = Vector3.Angle(relatedArc.arcPoints[0], -dir * relatedArc.radius);
+            // Vector3 dir = (arcPoints.Last() - relatedArc.gear.transform.position).normalized;
+            // var extraAngle = Vector3.Angle(relatedArc.arcPoints[0], -dir * relatedArc.radius);
+
+           // float extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
+            
             print(extraAngle);
-            relatedArc.edgeAngles.Start = extraAngle;
+            relatedArc.edgeAngles.Start += extraAngle;
+            print(relatedArc.edgeAngles.Start);
             relatedArc.arcPoints.Clear();
             CreateArcPoints(relatedArc.id);
             PositionPoints(relatedArc.id); //not recursive, only for the first arc
-             SetConnectionPoints(relatedArc.id);
+            arcs[i].connectionPoint = relatedArc.arcPoints[0];
+            SetConnectionPoints(relatedArc.id);
             // AddLinearPoints(0);
         }
 
