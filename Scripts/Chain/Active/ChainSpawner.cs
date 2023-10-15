@@ -64,14 +64,14 @@ namespace Chain
             var p =  (posB - posA).normalized * (x + distance) + posA; //(posB - posA).normalized * x + posB;
 
             //var tangent2 = Mathf.Sqrt(Mathf.Pow(x, 2) - Mathf.Pow(radiusB, 2));
-            var angle = Mathf.Acos(radiusB / x);
-            var dir = Mathf.Sin(angle);
-            var tangent2 = dir *  Vector3.one + posB;
+            var angle = Mathf.Acos(radiusB / x) * Mathf.Rad2Deg;
+
+            print(angle);
+            var tangent2 = ChainHelper.CirclePoint(angle, radiusB) + posB;
+                //sin *  Vector3.one + posB;
             
             //var tangent1 = tangent2 + dir * Vector3.one
             
-            print(x);
-            print(p);
 
             Instantiate(testCubePb, p, Quaternion.identity);
             Instantiate(testCubePb, tangent2, Quaternion.identity);
