@@ -66,8 +66,8 @@ namespace Chain
             var distX = Mathf.Abs(posB.x - posA.x);
             var x = Mathf.Abs((distX * radiusB) / (radiusA - radiusB)); // + posB.x
             var angle = Mathf.Acos(radiusB / x) * Mathf.Rad2Deg; //use same angle since they are similar triangles
-            var tangent2 = ChainHelper.CirclePoint(angle, radiusB).normalized * radiusB + posB;
-            var tangent1 = ChainHelper.CirclePoint(angle, radiusA).normalized * radiusA + posA;
+            var tangent2 = ChainHelper.CirclePoint(angle, radiusB) + posB;
+            var tangent1 = ChainHelper.CirclePoint(angle, radiusA) + posA;
 
             //Instantiate(testCubePb, p, Quaternion.identity);
             Instantiate(testCubePb, tangent2, Quaternion.identity);
