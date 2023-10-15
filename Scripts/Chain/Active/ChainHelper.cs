@@ -14,6 +14,19 @@ public static class ChainHelper
         return new Vector3(x, 0, y) * radius;
     }
 
+    public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB, float unitOffset)
+    {
+        Vector3[] tangentPoints = new Vector3[2];
+        var distanceX = Mathf.Abs(posB.x - posA.x);
+        var theta = (distanceX * radiusB) / (radiusA - radiusB);
+
+
+        var angle = Mathf.Acos(radiusB / theta) * Mathf.Rad2Deg; //use same angle since they are similar triangles
+        tangentPoints[1] = CirclePoint(angle, radiusB + unitOffset) + posB;
+        tangentPoints[0] = CirclePoint(angle, radiusA + unitOffset) + posA;
+
+        return tangentPoints;
+    }
     public static float AngleBySin(float sin, float radius)
     {
         var baseAngle = Mathf.Asin(sin / radius) * Mathf.Rad2Deg;

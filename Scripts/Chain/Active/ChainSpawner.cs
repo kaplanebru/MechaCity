@@ -28,7 +28,7 @@ namespace Chain
         {
             chainPoints.Clear();
             Setup();
-           // CreateParts(0);
+            // CreateParts(0);
             //BindPoints();
         }
 
@@ -41,8 +41,8 @@ namespace Chain
             EbrusWay(0);
             //CommonTangentPoint(0);
             //CommonIntersectionPoint(0);
-            
-            
+
+
             /*RotateGearToCenter(0);
 
             for (var i = 0; i < arcs.Length; i++)
@@ -51,27 +51,36 @@ namespace Chain
             }*/
         }
 
+        private float unitOffset = 0.5f;
+
         void EbrusWay(int i)
         {
             Arc relatedArc = arcs[arcs[i].relatedArcId];
-            var posA = arcs[i].gear.transform.position;
-            var posB = relatedArc.gear.transform.position;
-            var radiusA = arcs[i].radius;
-            var radiusB = relatedArc.radius;
-            float distance = Vector3.Distance(posA, posB);
+            // Vector3 posA = new Vector3(), posB = new Vector3();
+            // float radiusA, radiusB;
 
-            //var x = (distance * radiusB) / (radiusA - radiusB); //- ile çarpmak gerekebilir
-            //Vector3 p =  (posB - posA).normalized * (x + distance) + posA; //(posB - posA).normalized * x + posB;
+            if (arcs[i].radius > relatedArc.radius)
+            {
+            }
 
-            var distX = Mathf.Abs(posB.x - posA.x);
-            var x = Mathf.Abs((distX * radiusB) / (radiusA - radiusB)); // + posB.x
-            var angle = Mathf.Acos(radiusB / x) * Mathf.Rad2Deg; //use same angle since they are similar triangles
-            var tangent2 = ChainHelper.CirclePoint(angle, radiusB) + posB;
-            var tangent1 = ChainHelper.CirclePoint(angle, radiusA) + posA;
+            var tangentPoints = ChainHelper.CommonTangentPoints(arcs[i].gear.transform.position, relatedArc.gear.transform.position,
+                arcs[i].radius, relatedArc.radius, unitOffset);
+            // posA = arcs[i].gear.transform.position;
+            // posB = relatedArc.gear.transform.position;
+            // radiusA = arcs[i].radius;
+            // radiusB = relatedArc.radius;
 
-            //Instantiate(testCubePb, p, Quaternion.identity);
-            Instantiate(testCubePb, tangent2, Quaternion.identity);
-            Instantiate(testCubePb, tangent1, Quaternion.identity);
+            // var distanceX = Mathf.Abs(posB.x - posA.x);
+            // var theta = (distanceX * radiusB) / (radiusA - radiusB);
+            //
+            //
+            // var angle = Mathf.Acos(radiusB / theta) * Mathf.Rad2Deg; //use same angle since they are similar triangles
+            // var tangent2 = ChainHelper.CirclePoint(angle, radiusB + unitOffset) + posB;
+            // var tangent1 = ChainHelper.CirclePoint(angle, radiusA + unitOffset) + posA;
+
+
+            Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
+            Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
         }
 
         void CommonTangentPoint(int i)
@@ -81,8 +90,8 @@ namespace Chain
             var posB = relatedArc.gear.transform.position;
             var radiusA = arcs[i].radius;
             var radiusB = relatedArc.radius;
-            
-           
+
+
             print(radiusB);
 
             // Vector3 InternalSection = new Vector3();
@@ -93,13 +102,9 @@ namespace Chain
 
 
             Vector3 ExternalSection = new Vector3();
-            
             ExternalSection.x = (radiusA * posB.x + radiusB * posA.x) / radiusA + radiusB;
             ExternalSection.z = (radiusA * posB.z + radiusB * posA.z) / radiusA + radiusB;
-
-            //ExternalSection.z = ExternalSection.z / 2 - 0.5f;
-            
-            Instantiate(testCubePb, ExternalSection,Quaternion.identity);
+            Instantiate(testCubePb, ExternalSection, Quaternion.identity);
         }
 
         void CommonIntersectionPoint(int i)
@@ -112,19 +117,19 @@ namespace Chain
             Vector3 pointA = new Vector3();
             pointA.x = posA.x + (arcs[i].radius * (posB.x - posA.x)) / distance;
             pointA.z = posA.z + (arcs[i].radius * (posB.z - posA.z)) / distance;
-            
+
 
             Vector3 pointB = new Vector3();
             pointB.x = posB.x + (relatedArc.radius * (posA.x - posB.x)) / distance;
             pointB.z = posB.z + (relatedArc.radius * (posA.z - posB.z)) / distance;
-            
-            
+
+
             Instantiate(testCubePb, pointB, Quaternion.identity);
             Instantiate(testCubePb, pointA, Quaternion.identity);
 
             // P1_x = A_x + (r1 * (B_x - A_x)) / d
             // P1_y = A_y + (r1 * (B_y - A_y)) / d
-            
+
             // P2_x = B_x + (r2 * (A_x - B_x)) / d
             // P2_y = B_y + (r2 * (A_y - B_y)) / d
         }
@@ -219,7 +224,7 @@ namespace Chain
             float distanceAngle1 = ChainHelper.GetAngleByAllLength(lengthA, lengthB, lengthC);
             float distanceAngle2 = ChainHelper.GetAngleByAllLength(lengthC, lengthB, lengthB);
 
-            print(distanceAngle1 + " " +  distanceAngle2);
+            print(distanceAngle1 + " " + distanceAngle2);
         }
 
 
