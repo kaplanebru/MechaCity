@@ -60,20 +60,19 @@ namespace Chain
             var radiusB = relatedArc.radius;
             float distance = Vector3.Distance(posA, posB);
 
-            var x = (distance * radiusB) / (radiusA - radiusB); //- ile çarpmak gerekebilir
-            var p =  (posB - posA).normalized * (x + distance) + posA; //(posB - posA).normalized * x + posB;
+            //var x = (distance * radiusB) / (radiusA - radiusB); //- ile çarpmak gerekebilir
+            //Vector3 p =  (posB - posA).normalized * (x + distance) + posA; //(posB - posA).normalized * x + posB;
 
-            //var tangent2 = Mathf.Sqrt(Mathf.Pow(x, 2) - Mathf.Pow(radiusB, 2));
+            var distX = Mathf.Abs(posB.x - posA.x);
+            var x = Mathf.Abs((distX * radiusB) / (radiusA - radiusB)); // + posB.x
+            
+           
+
             var angle = Mathf.Acos(radiusB / x) * Mathf.Rad2Deg;
 
-            print(angle);
-            var tangent2 = ChainHelper.CirclePoint(angle, radiusB) + posB;
-                //sin *  Vector3.one + posB;
-            
-            //var tangent1 = tangent2 + dir * Vector3.one
-            
+            var tangent2 = ChainHelper.CirclePoint(angle, radiusB).normalized * radiusB + posB;
 
-            Instantiate(testCubePb, p, Quaternion.identity);
+            //Instantiate(testCubePb, p, Quaternion.identity);
             Instantiate(testCubePb, tangent2, Quaternion.identity);
         }
 

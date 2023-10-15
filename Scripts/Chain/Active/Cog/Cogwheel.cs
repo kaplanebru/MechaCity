@@ -38,7 +38,7 @@ namespace Chain
             var scale = transform.localScale;
             scale.x = radius;
             scale.z = radius;
-            transform.localScale = scale; //Todo: offseti oran yap radius arttıkça oran büyüsün
+            transform.localScale = scale * 2; //Todo: offseti oran yap radius arttıkça oran büyüsün
         }
         IEnumerator SpinRoutine()
         {
