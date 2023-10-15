@@ -36,9 +36,9 @@ namespace Chain
         {
             var radius = Data.Radius; // + Data.RadiusOffset;
             var scale = transform.localScale;
-            scale.x = radius;
-            scale.z = radius;
-            transform.localScale = scale * 2; //Todo: offseti oran yap radius arttıkça oran büyüsün
+            scale.x = radius * 2;
+            scale.z = radius * 2;
+            transform.localScale = scale; //Todo: offseti oran yap radius arttıkça oran büyüsün
         }
         IEnumerator SpinRoutine()
         {
