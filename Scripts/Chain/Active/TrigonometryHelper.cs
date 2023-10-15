@@ -21,22 +21,22 @@ public static class TrigonometryHelper
         var distanceZ = Mathf.Abs(posA.z - posB.z);
         var distanceX = Mathf.Abs(posB.x - posA.x);
         var dir = (posB - posA).normalized;
-        var extraAngle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
+        var rotationAngle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
         
         //Debug.Log(distanceX);
         var distance = Vector3.Distance(posA, posB);
         //Debug.Log(distance);
 
         //var extraAngle = Mathf.Atan(distance) * Mathf.Rad2Deg;
-        Debug.Log(extraAngle);
+        Debug.Log(rotationAngle);
         
         
         var theta = (distance * radiusB) / (radiusA - radiusB);
 
 
         var angle = AngleByCos(radiusB, theta);//Mathf.Acos(radiusB / theta) * Mathf.Rad2Deg; //use same angle since they are similar triangles
-        tangentPoints[1] = CirclePoint(angle + extraAngle, radiusB + unitOffset) + posB;
-        tangentPoints[0] = CirclePoint(angle + extraAngle, radiusA + unitOffset) + posA;
+        tangentPoints[1] = CirclePoint(angle + rotationAngle, radiusB + unitOffset) + posB;
+        tangentPoints[0] = CirclePoint(angle + rotationAngle, radiusA + unitOffset) + posA;
 
         return tangentPoints;
     }
