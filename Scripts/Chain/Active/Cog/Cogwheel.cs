@@ -34,7 +34,7 @@ namespace Chain
 
         void Setup()
         {
-            var radius = Data.Radius + Data.RadiusOffset;
+            var radius = Data.Radius; // + Data.RadiusOffset;
             var scale = transform.localScale;
             scale.x = radius;
             scale.z = radius;
