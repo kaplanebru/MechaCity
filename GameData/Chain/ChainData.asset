@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   Unit: 2.3
-  MotionSpeed: 0.1
+  LinearSpeed: 0.1
+  LinkRotationExtent: 0.08
+  SetRadiusByObject: 1
+  IsMoving: 0

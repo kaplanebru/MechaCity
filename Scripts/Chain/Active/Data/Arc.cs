@@ -9,13 +9,15 @@ namespace Chain
     public class Arc
     {
         public float radius;
-        public float edgeSmoother = 1;
+        public Vector2 edgeSmoother = new Vector2(1 ,1);
         public Cogwheel gear;
         
         [Header("Not for user input")]
         public int id;
         public int relatedArcId;
-        public Vector3 connectionPoint;
+        public EdgeAngles edgeAngles;
+        public float baseAngle;
+        public Vector3 nextPoint;
         public List<Vector3> arcPoints = new();
 
         public void SetRadiusByGear()

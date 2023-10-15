@@ -53,15 +53,15 @@ namespace Chain
                     link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //debug
             }
 
-            if(Data.Type == ChainType.BikeChain)
-                RegulateLastLink();
+            // if(Data.Type == ChainType.BikeChain)
+            //     RegulateLastLink();
 
             ChainEvents.OnLinksCreated?.Invoke(_links);
         }
 
         void RegulateLastLink()
         {
-            if (Vector3.Distance(_chainPoints.First(), _chainPoints.Last()) < Data.Unit)
+            if (Vector3.Distance(_chainPoints.First(), _chainPoints.Last()) > Data.Unit)
             {
                 var lastLink = _links.Last();
                 Vector3 dir = (_links.First().position - lastLink.transform.position).normalized;

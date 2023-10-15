@@ -278,7 +278,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 141705199}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 34.9, y: 0, z: 8.3}
+  m_LocalPosition: {x: 42.3, y: 0, z: 3.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -343,11 +343,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.Radius
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.RadiusOffset
-      value: 1.3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36fa7461231191a488510332a5da0c18, type: 3}
@@ -658,7 +658,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263741519}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.7, y: 0, z: -9.1}
+  m_LocalPosition: {x: 16.7, y: 0, z: -8.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -825,7 +825,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1671505463}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.63, y: 0, z: 11.1}
+  m_LocalPosition: {x: 17.63, y: 0, z: 11.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -912,36 +912,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: cf41c1560fd13df4da97718c6fce6027, type: 2}
-  setRadiusByObject: 1
-  isMoving: 1
   arcs:
   - radius: 4
-    edgeSmoother: 1
+    edgeSmoother: {x: 1, y: 1}
     gear: {fileID: 2128791191}
     id: 0
     relatedArcId: 0
-    connectionPoint: {x: 0, y: 0, z: 0}
+    baseAngle: 0
+    nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 4
-    edgeSmoother: 1
+    edgeSmoother: {x: 1, y: 1}
     gear: {fileID: 1492620265}
     id: 1
     relatedArcId: 0
-    connectionPoint: {x: 0, y: 0, z: 0}
+    baseAngle: 0
+    nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 4
-    edgeSmoother: 1
+    edgeSmoother: {x: 1, y: 1}
     gear: {fileID: 1780707737}
     id: 2
     relatedArcId: 0
-    connectionPoint: {x: 0, y: 0, z: 0}
+    baseAngle: 0
+    nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 5
-    edgeSmoother: 1
+    edgeSmoother: {x: 1, y: 1}
     gear: {fileID: 1679024153}
     id: 3
     relatedArcId: 0
-    connectionPoint: {x: 0, y: 0, z: 0}
+    baseAngle: 0
+    nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   chainPoints: []
 --- !u!114 &1852331331
@@ -997,7 +999,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005433255}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 22.9, y: 0, z: -12.1}
+  m_LocalPosition: {x: 51.5, y: 0, z: -8.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1033,7 +1035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1041,7 +1043,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1049,15 +1051,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1073,7 +1075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.Radius
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.RadiusOffset

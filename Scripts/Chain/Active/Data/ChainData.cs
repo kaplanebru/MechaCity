@@ -10,7 +10,8 @@ namespace Chain
     {
         public ChainType Type;
         public float Unit = 2.3f;
-        public float MotionSpeed = 0.1f;
+        public float LinearSpeed = 0.1f;
+        public float LinkRotationExtent = 0.06f;
         public bool SetRadiusByObject = true;
         public bool IsMoving = true;
     }

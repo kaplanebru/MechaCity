@@ -59,10 +59,10 @@ public class ChainMover : MonoBehaviour
             while (Vector3.Distance(_links[startIndex].transform.position, _points[j]) > 0.05f) //0.1f
             {
                 _links[startIndex].transform.position =
-                    Vector3.MoveTowards(_links[startIndex].transform.position, _points[j], Data.MotionSpeed);
+                    Vector3.MoveTowards(_links[startIndex].transform.position, _points[j], Data.LinearSpeed);
                 _links[startIndex].transform.rotation =
                     Quaternion.Slerp(_links[startIndex].transform.rotation,
-                        _rotations[j], Data.MotionSpeed);
+                        _rotations[j], Data.LinkRotationExtent);
 
                 yield return new WaitForFixedUpdate();
             }

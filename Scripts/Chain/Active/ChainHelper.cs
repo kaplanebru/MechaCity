@@ -14,14 +14,19 @@ public static class ChainHelper
         return new Vector3(x, 0, y) * radius;
     }
 
-    public static float AngleByDistance(float unit, float radius)
+    public static float AngleBySin(float sin, float radius)
     {
-        var baseAngle = Mathf.Asin(unit / radius) * Mathf.Rad2Deg;
+        var baseAngle = Mathf.Asin(sin / radius) * Mathf.Rad2Deg;
 
         //var intAngle = Mathf.RoundToInt(baseAngle);
         // int rest = intAngle % 6;
         // return rest / 2 < 2 ? intAngle - rest : intAngle + 6 - rest;
         return baseAngle;
+    }
+
+    public static float AngleByCos(float cos, float radius)
+    {
+        return Mathf.Acos(cos / radius) * Mathf.Rad2Deg;
     }
     
     public static Vector3 CenterDirection(Arc[] arcParts)
@@ -35,9 +40,18 @@ public static class ChainHelper
         return pos / arcParts.Length;
     }
     
+    
     public static int LinearPointAmountByDistance(Vector3 first, Vector3 last, float unit)
     {
         var distance = Vector3.Distance(last, first);
         return Mathf.RoundToInt(distance / unit) - 1;
+    }
+
+    public static float GetAngleByAllLength(float a, float b, float c)
+    {
+        float cosA = (b * b + c * c - a * a) / (2 * b * c);
+        float angleA = Mathf.Acos(cosA) * Mathf.Rad2Deg;
+
+        return angleA;
     }
 }
