@@ -35,7 +35,7 @@ namespace Chain
         void Setup()
         {
             ChainEvents.OnStartAndMove?.Invoke(Data.IsMoving);
-            _center = ChainHelper.CenterDirection(arcs);
+            _center = TrigonometryHelper.CenterDirection(arcs);
             SetArcs();
             RelateArcs();
             EbrusWay(0);
@@ -63,7 +63,7 @@ namespace Chain
             {
             }
 
-            var tangentPoints = ChainHelper.CommonTangentPoints(arcs[i].gear.transform.position, relatedArc.gear.transform.position,
+            var tangentPoints = TrigonometryHelper.CommonTangentPoints(arcs[i].gear.transform.position, relatedArc.gear.transform.position,
                 arcs[i].radius, relatedArc.radius, unitOffset);
             // posA = arcs[i].gear.transform.position;
             // posB = relatedArc.gear.transform.position;
@@ -175,7 +175,7 @@ namespace Chain
 
         void SetAngles(int i)
         {
-            arcs[i].baseAngle = ChainHelper.AngleBySin(Data.Unit, arcs[i].radius);
+            arcs[i].baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
 
             arcs[i].edgeAngles = arcs.Length <= 2
                 ? new EdgeAngles(arcs[i].baseAngle, Vector2.zero)
@@ -187,7 +187,7 @@ namespace Chain
             for (float j = arcs[i].edgeAngles.Start; j <= arcs[i].edgeAngles.End; j += arcs[i].baseAngle)
             {
                 var newAngle = j;
-                arcs[i].arcPoints.Add(ChainHelper.CirclePoint(newAngle, arcs[i].radius));
+                arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
             }
         }
 
@@ -213,7 +213,7 @@ namespace Chain
                 return;
             }
 
-            relatedArc.arcPoints.Add(ChainHelper.CirclePoint(relatedArc.edgeAngles.Start, relatedArc.radius));
+            relatedArc.arcPoints.Add(TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start, relatedArc.radius));
             PositionPoints(relatedArc.id);
             arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
 
@@ -221,8 +221,8 @@ namespace Chain
             float lengthB = Vector3.Distance(arcs[i].gear.transform.position, relatedArc.gear.transform.position);
             float lengthC = Vector3.Distance(_center, arcs[i].gear.transform.position);
 
-            float distanceAngle1 = ChainHelper.GetAngleByAllLength(lengthA, lengthB, lengthC);
-            float distanceAngle2 = ChainHelper.GetAngleByAllLength(lengthC, lengthB, lengthB);
+            float distanceAngle1 = TrigonometryHelper.GetAngleByAllLength(lengthA, lengthB, lengthC);
+            float distanceAngle2 = TrigonometryHelper.GetAngleByAllLength(lengthC, lengthB, lengthB);
 
             print(distanceAngle1 + " " + distanceAngle2);
         }
@@ -231,7 +231,7 @@ namespace Chain
         void AddLinearPoints(int i)
         {
             linearPointAmount =
-                ChainHelper.LinearPointAmountByDistance(arcs[i].nextPoint, arcs[i].arcPoints.Last(), Data.Unit);
+                TrigonometryHelper.LinearPointAmountByDistance(arcs[i].nextPoint, arcs[i].arcPoints.Last(), Data.Unit);
 
             Vector3 edgeDirection = (arcs[i].nextPoint - arcs[i].arcPoints.Last()).normalized;
             Vector3 unitDistance = edgeDirection * Data.Unit;

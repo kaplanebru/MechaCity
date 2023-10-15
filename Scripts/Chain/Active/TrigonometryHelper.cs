@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Chain;
 using UnityEngine;
 
-public static class ChainHelper
+public static class TrigonometryHelper
 {
     public static Vector3 CirclePoint(float angle, float radius)
     {
@@ -17,13 +17,26 @@ public static class ChainHelper
     public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB, float unitOffset)
     {
         Vector3[] tangentPoints = new Vector3[2];
+
+        var distanceZ = Mathf.Abs(posA.z - posB.z);
         var distanceX = Mathf.Abs(posB.x - posA.x);
-        var theta = (distanceX * radiusB) / (radiusA - radiusB);
+        var dir = (posB - posA).normalized;
+        var extraAngle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
+        
+        //Debug.Log(distanceX);
+        var distance = Vector3.Distance(posA, posB);
+        //Debug.Log(distance);
+
+        //var extraAngle = Mathf.Atan(distance) * Mathf.Rad2Deg;
+        Debug.Log(extraAngle);
+        
+        
+        var theta = (distance * radiusB) / (radiusA - radiusB);
 
 
-        var angle = Mathf.Acos(radiusB / theta) * Mathf.Rad2Deg; //use same angle since they are similar triangles
-        tangentPoints[1] = CirclePoint(angle, radiusB + unitOffset) + posB;
-        tangentPoints[0] = CirclePoint(angle, radiusA + unitOffset) + posA;
+        var angle = AngleByCos(radiusB, theta);//Mathf.Acos(radiusB / theta) * Mathf.Rad2Deg; //use same angle since they are similar triangles
+        tangentPoints[1] = CirclePoint(angle + extraAngle, radiusB + unitOffset) + posB;
+        tangentPoints[0] = CirclePoint(angle + extraAngle, radiusA + unitOffset) + posA;
 
         return tangentPoints;
     }
