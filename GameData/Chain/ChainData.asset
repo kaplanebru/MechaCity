@@ -17,7 +17,7 @@ MonoBehaviour:
   LinearSpeed: 0.1
   LinkRotationExtent: 0.08
   SetRadiusByObject: 1
-  IsMoving: 0
+  IsMoving: 1
   motionDirection: 1
   RadiusOffset: 0.5
-  LinearOffset: 0.5
+  LinearOffset: 0

@@ -116,17 +116,8 @@ namespace Chain
                 if (a < 0)
                 {
                     a = (a + 360) % 360;
-                    if (a - angle < end) //temp
-                    {
-                        //print(j + " j - angle is smaller than end");
-                        arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
-                        return;
-                    }
-                   
                     break;
                 }
-
-                
             }
 
             while (a >= end)
@@ -134,40 +125,6 @@ namespace Chain
                 arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
                 a -= angle;
             }
-
-
-            // Calculation:
-            // if (start > end)
-            // {
-            //     for (float j = start; j >= end; j -= arcs[i].baseAngle) //% ekle
-            //     {
-            //         //if (i == 1) print(j);
-            //         var newAngle = j;
-            //         arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
-            //     }
-            // }
-            // else
-            // {
-            //     for (float j = start; j < end; j -= arcs[i].baseAngle)
-            //     {
-            //         var jBefore = j;
-            //         if (j < 0)
-            //         {
-            //             j = (j + 360) % 360;
-            //             if (j - arcs[i].baseAngle < end) //temp
-            //             {
-            //                 //print(j + " j - angle is smaller than end");
-            //                 arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
-            //                 return;
-            //             }
-            //             
-            //             //print("before: " + jBefore + " after: " + j);
-            //             start = j;
-            //             goto Calculation;
-            //         }
-            //         arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
-            //     }
-            // }
         }
 
         void PositionPoints(int i)
