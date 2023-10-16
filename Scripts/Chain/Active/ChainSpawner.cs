@@ -65,19 +65,7 @@ namespace Chain
 
             var tangentPoints = TrigonometryHelper.CommonTangentPoints(arcs[i].gear.transform.position, relatedArc.gear.transform.position,
                 arcs[i].radius, relatedArc.radius, unitOffset);
-            // posA = arcs[i].gear.transform.position;
-            // posB = relatedArc.gear.transform.position;
-            // radiusA = arcs[i].radius;
-            // radiusB = relatedArc.radius;
-
-            // var distanceX = Mathf.Abs(posB.x - posA.x);
-            // var theta = (distanceX * radiusB) / (radiusA - radiusB);
-            //
-            //
-            // var angle = Mathf.Acos(radiusB / theta) * Mathf.Rad2Deg; //use same angle since they are similar triangles
-            // var tangent2 = ChainHelper.CirclePoint(angle, radiusB + unitOffset) + posB;
-            // var tangent1 = ChainHelper.CirclePoint(angle, radiusA + unitOffset) + posA;
-
+           
 
             Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
             Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
