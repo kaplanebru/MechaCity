@@ -525,7 +525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.1
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalPosition.y
@@ -573,7 +573,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.Radius
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.RadiusOffset
@@ -876,6 +876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: cf41c1560fd13df4da97718c6fce6027, type: 2}
+  unitOffset: 0.5
   testCubePb: {fileID: 9112408327683927588, guid: b136ece2d9865d644944de074272c37e, type: 3}
   arcs:
   - radius: 4
@@ -984,7 +985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -4.5
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalPosition.y

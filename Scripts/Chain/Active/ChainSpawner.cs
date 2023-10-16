@@ -16,6 +16,7 @@ namespace Chain
     {
         public ChainData Data;
 
+       
         public Transform testCubePb;
         public Arc[] arcs;
 
@@ -48,7 +49,7 @@ namespace Chain
             }
         }
 
-        private float unitOffset = 0.5f;
+        
 
         void CommonTangentAngles(int i)
         {
@@ -60,7 +61,7 @@ namespace Chain
                 relatedArc.gear.transform.position,
                 arcs[i].radius,
                 relatedArc.radius,
-                unitOffset);
+                Data.Offset);
 
 
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
