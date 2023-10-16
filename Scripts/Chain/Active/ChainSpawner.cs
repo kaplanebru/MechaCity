@@ -90,6 +90,7 @@ namespace Chain
             for (int i = 0; i < arcs.Length; i++)
             {
                 arcs[i].id = i;
+                arcs[i].gear.Data.RotationDirection = Data.motionDirection == ChainDirection.Clockwise ? 1 : -1;
                 if (Data.SetRadiusByObject)
                     arcs[i].SetRadiusByGear();
             }

@@ -11,7 +11,7 @@ namespace Chain
         public float Radius = 3;
         public float RadiusOffset = .5f;
         public float Speed = 10; //Todo: according to radius yap
-        public Vector3 RotationDirection = -Vector3.up;
+        public int RotationDirection = 1;
         
     }
     
@@ -44,7 +44,7 @@ namespace Chain
         {
             while (true)
             {
-                transform.Rotate(Data.RotationDirection, Data.Speed);
+                transform.Rotate(Vector3.up * Data.RotationDirection, Data.Speed);
                 yield return null;
             }
         }
