@@ -14,23 +14,42 @@ public static class TrigonometryHelper
         return new Vector3(x, 0, y) * radius;
     }
 
+   
+    
     public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB, float offset)
     {
         Vector3 direction = (posB - posA).normalized;
-        float rotationAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-        Debug.Log(rotationAngle);
+        float rotationAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg + 360;
+        rotationAngle %= 360;
+       
+        Debug.Log(radiusA);
         
-        var distanceX = Mathf.Abs(posB.x - posA.x);
+        //x'i büyük olana göre yukarda ya da aşağıda çıkıyor
+       
+        if (radiusB > radiusA)
+        {
+            Debug.Log("swapped");
+            // (radiusA, radiusB) = (radiusB, radiusA);
+            // (posA, posB) = (posB, posA);
+            //rotationAngle = (rotationAngle + 180) % 360;
+           // rotationAngle *= -1;
+        }
+        //Debug.Log(rotationAngle);
+        Debug.Log(radiusA);
+        
         float distance = Vector3.Distance(posA, posB);
-        
         float similarHyp = (distance * radiusB) / (radiusA - radiusB);
         float angle = AngleByCos(radiusB, similarHyp); //use same angle since they are similar triangles
+        Debug.Log("first angle: " + angle);
+        angle = (angle + rotationAngle) % 360;
         
         Vector3[] tangentPoints = new Vector3[2];
-        tangentPoints[1] = CirclePoint(angle + rotationAngle, radiusB + offset) + posB;
-        tangentPoints[0] = CirclePoint(angle + rotationAngle, radiusA + offset) + posA;
+        tangentPoints[1] = CirclePoint(angle, radiusB + offset) + posB;
+        tangentPoints[0] = CirclePoint(angle, radiusA + offset) + posA;
         return tangentPoints;
     }
+    
+    //get common tangent for distance
     public static float AngleBySin(float sin, float radius)
     {
         var baseAngle = Mathf.Asin(sin / radius) * Mathf.Rad2Deg;

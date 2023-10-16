@@ -59,13 +59,13 @@ namespace Chain
             // Vector3 posA = new Vector3(), posB = new Vector3();
             // float radiusA, radiusB;
 
-            if (arcs[i].radius > relatedArc.radius)
-            {
-            }
-
-            var tangentPoints = TrigonometryHelper.CommonTangentPoints(arcs[i].gear.transform.position, relatedArc.gear.transform.position,
-                arcs[i].radius, relatedArc.radius, unitOffset);
-           
+            Vector3[] tangentPoints = TrigonometryHelper.CommonTangentPoints(
+                    arcs[i].gear.transform.position, 
+                    relatedArc.gear.transform.position,
+                    arcs[i].radius, 
+                    relatedArc.radius, 
+                    unitOffset);
+            
 
             Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
             Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
