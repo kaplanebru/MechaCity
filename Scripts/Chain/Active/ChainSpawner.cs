@@ -157,21 +157,20 @@ namespace Chain
                     if (j < 0)
                     {
                         j = (j + 360) % 360;
-                        if(j-arcs[i].baseAngle < end) return;
-                        if (j >= end)
+                        if (j - arcs[i].baseAngle < end)
                         {
-                        
-                            print(j + " j is larger than end");
-                            break;
+                            print(j + " j - angle is smaller than end");
+                            arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
+                            return;
                         }
-                        if(i == 1) print("before: " + jBefore + " after: " +j);
-                        if (j > start) // && j < end)
-                        {
                         
-                            //print("before: " + jBefore + " after: " +j);
+                        // if (j > start) // && j < end)
+                        // {
+                        
+                            print("before: " + jBefore + " after: " +j);
                             start = j;
                             goto Calculation;
-                        }
+                        // }
                     }
                     
                     arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
