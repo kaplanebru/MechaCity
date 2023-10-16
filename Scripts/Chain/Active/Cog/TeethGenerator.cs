@@ -11,7 +11,7 @@ namespace Chain
         public CogData Data;
         public Transform toothPb;
         public float intervalAngle = 60;
-        public float minIntervalLimit = 50;
+        public float minIntervalLimit = 6;
         public bool scale = false;
 
         private void OnEnable()

@@ -322,6 +322,10 @@ PrefabInstance:
       propertyPath: intervalAngle
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: minIntervalLimit
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -544,6 +548,10 @@ PrefabInstance:
       propertyPath: intervalAngle
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: minIntervalLimit
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -660,6 +668,10 @@ PrefabInstance:
     - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: intervalAngle
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: minIntervalLimit
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
@@ -1046,6 +1058,10 @@ PrefabInstance:
     - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: intervalAngle
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: minIntervalLimit
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
