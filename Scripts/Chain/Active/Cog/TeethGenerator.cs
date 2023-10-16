@@ -11,6 +11,7 @@ namespace Chain
         public CogData Data;
         public Transform toothPb;
         public float intervalAngle = 25;
+        public float minIntervalLimit = 6;
         public bool scale = false;
 
         private void OnEnable()
@@ -20,15 +21,20 @@ namespace Chain
 
         void SetIntAngle()
         {
-            intervalAngle = TrigonometryHelper.Angle360(intervalAngle, Data.Radius);
+            intervalAngle /= (Data.Radius * 0.2f);
+            intervalAngle = TrigonometryHelper.Angle360(intervalAngle);
+            if (intervalAngle < minIntervalLimit)
+                intervalAngle = minIntervalLimit;
         }
         
         void CreateTeethPoints(CogData data, Transform parent)
         {
             if (parent.position != transform.position) return;
             Data = data;
-            intervalAngle /= (Data.Radius * 0.1f);
+            
+            
             SetIntAngle();
+            print(intervalAngle);
             for (float i = 0; i < 360; i+=intervalAngle)
             {
                 Vector3 point = TrigonometryHelper.CirclePoint(i, Data.Radius);

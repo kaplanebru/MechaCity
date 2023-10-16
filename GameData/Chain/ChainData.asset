@@ -20,4 +20,4 @@ MonoBehaviour:
   IsMoving: 1
   motionDirection: 1
   RadiusOffset: 0.5
-  LinearOffset: -0.5
+  Tension: -0.5

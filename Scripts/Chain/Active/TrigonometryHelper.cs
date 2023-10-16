@@ -48,7 +48,7 @@ public static class TrigonometryHelper
     }
 
 
-    public static float Angle360(float baseAngle, float radius)
+    public static float Angle360(float baseAngle)
     {
         var intAngle = Mathf.RoundToInt(baseAngle);
         int rest = intAngle % 6;
