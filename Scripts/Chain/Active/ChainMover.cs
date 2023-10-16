@@ -72,8 +72,9 @@ public class ChainMover : MonoBehaviour
                         j = _points.Count-1;
                     break;
             }
-           
 
+            //Data.LinearSpeed = CogSpeed / _points.Count;
+            print("linear speed: " + Data.LinearSpeed );
             while (Vector3.Distance(_links[startIndex].transform.position, _points[j]) > 0.05f) //0.1f
             {
                 _links[startIndex].transform.position = Vector3.MoveTowards(

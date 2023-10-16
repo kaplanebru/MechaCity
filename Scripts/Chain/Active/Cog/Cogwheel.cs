@@ -69,6 +69,8 @@ namespace Chain
             while (true)
             {
                 transform.Rotate(direction, Data.Speed);
+                // transform.rotation =
+                //     Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(direction), Data.Speed);
                 yield return null;
             }
         }
