@@ -86,8 +86,11 @@ namespace Chain
             {
                 arcs[i].id = i;
                 arcs[i].gear.SetRotationDirection(Data.motionDirection);
+                
                 if (Data.SetRadiusByObject)
                     arcs[i].SetRadiusByGear(Data.RadiusOffset);
+                else
+                    arcs[i].radius += Data.RadiusOffset;
             }
         }
 
@@ -140,6 +143,7 @@ namespace Chain
             {
                 for (float j = start; j >= end; j -= arcs[i].baseAngle) //% ekle
                 {
+                    if(i == 1) print(j);
                     var newAngle = j;
                     arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
                 }
@@ -150,16 +154,26 @@ namespace Chain
                 {
                    
                     var jBefore = j;
-                        
-                    j = (j + 360) % 360;
-                    //print("before: " + jBefore + " after: " +j);
-                    if (j > start) // && j < end)
+                    if (j < 0)
                     {
-                        print(i);
-                        print(j);
-                        start = j;
-                        goto Calculation;
+                        j = (j + 360) % 360;
+                        if(j-arcs[i].baseAngle < end) return;
+                        if (j >= end)
+                        {
+                        
+                            print(j + " j is larger than end");
+                            break;
+                        }
+                        if(i == 1) print("before: " + jBefore + " after: " +j);
+                        if (j > start) // && j < end)
+                        {
+                        
+                            //print("before: " + jBefore + " after: " +j);
+                            start = j;
+                            goto Calculation;
+                        }
                     }
+                    
                     arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
                 }
             }
