@@ -13,6 +13,7 @@ namespace Chain
         public float intervalAngle = 60;
         public float minIntervalLimit = 6;
         public bool scale = false;
+        public bool equalize = false;
 
         private void OnEnable()
         {
@@ -23,7 +24,8 @@ namespace Chain
         {
             intervalAngle /= (Data.Radius);
             
-           // intervalAngle = TrigonometryHelper.Angle360(intervalAngle);
+            if(equalize)
+                intervalAngle = TrigonometryHelper.Angle360(intervalAngle);
             
             if (intervalAngle < minIntervalLimit)
                 intervalAngle = minIntervalLimit;
