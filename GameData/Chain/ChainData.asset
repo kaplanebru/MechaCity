@@ -18,3 +18,4 @@ MonoBehaviour:
   LinkRotationExtent: 0.08
   SetRadiusByObject: 1
   IsMoving: 1
+  motionDirection: 1
