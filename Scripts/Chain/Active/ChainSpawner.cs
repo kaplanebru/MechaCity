@@ -16,7 +16,7 @@ namespace Chain
     {
         public ChainData Data;
 
-       
+
         public Transform testCubePb;
         public Arc[] arcs;
 
@@ -60,14 +60,14 @@ namespace Chain
 
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
             arc.edgeAngles.End = TrigonometryHelper.AngleInPoint(
-                tangentPoints[0], 
+                tangentPoints[0],
                 arc.gear.transform.position);
 
             relatedArc.edgeAngles.Start =
                 TrigonometryHelper.AngleInPoint(
                     tangentPoints[1],
                     relatedArc.gear.transform.position);
-           
+
             Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
             Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
         }
@@ -86,7 +86,7 @@ namespace Chain
             {
                 arcs[i].id = i;
                 arcs[i].gear.SetRotationDirection(Data.motionDirection);
-                
+
                 if (Data.SetRadiusByObject)
                     arcs[i].SetRadiusByGear(Data.RadiusOffset);
                 else
@@ -101,81 +101,73 @@ namespace Chain
                 arcs[i].relatedArcId = (i + 1) % arcs.Length;
             }
         }
-        
+
         void CreateArcPoints(int i)
         {
             var start = arcs[i].edgeAngles.Start;
             var end = arcs[i].edgeAngles.End;
-
-
-            // float a = start;
-            // Calculation:
-            // while (a < end)
-            // {
-            //     
-            //     a -= arcs[i].baseAngle;
-            //     if (a >= 0)
-            //     {
-            //         arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
-            //     }
-            //     else
-            //     {
-            //         a = (a + 360) % 360;
-            //         break;
-            //     }
-            //     
-            // }
-            //
-            // while (a >= end)
-            // {
-            //     a -= arcs[i].baseAngle;
-            //     if (a < 0)
-            //     {
-            //         goto Calculation;
-            //     }
-            //         
-            //     arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
-            // }
+            float angle = arcs[i].baseAngle;
+            float a = start;
             
-
-            Calculation:
-            if (start > end)
+            while (a < end)
             {
-                for (float j = start; j >= end; j -= arcs[i].baseAngle) //% ekle
+                arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
+                a -= angle;
+                if (a < 0)
                 {
-                    if(i == 1) print(j);
-                    var newAngle = j;
-                    arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
-                }
-            }
-            else
-            {
-                for (float j = start; j < end; j -= arcs[i].baseAngle)
-                {
-                   
-                    var jBefore = j;
-                    if (j < 0)
+                    a = (a + 360) % 360;
+                    if (a - angle < end) //temp
                     {
-                        j = (j + 360) % 360;
-                        if (j - arcs[i].baseAngle < end)
-                        {
-                            print(j + " j - angle is smaller than end");
-                            arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
-                            return;
-                        }
-                        
-                        // if (j > start) // && j < end)
-                        // {
-                        
-                            print("before: " + jBefore + " after: " +j);
-                            start = j;
-                            goto Calculation;
-                        // }
+                        //print(j + " j - angle is smaller than end");
+                        arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
+                        return;
                     }
-                    
-                    arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
+                   
+                    break;
                 }
+
+                
             }
+
+            while (a >= end)
+            {
+                arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
+                a -= angle;
+            }
+
+
+            // Calculation:
+            // if (start > end)
+            // {
+            //     for (float j = start; j >= end; j -= arcs[i].baseAngle) //% ekle
+            //     {
+            //         //if (i == 1) print(j);
+            //         var newAngle = j;
+            //         arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
+            //     }
+            // }
+            // else
+            // {
+            //     for (float j = start; j < end; j -= arcs[i].baseAngle)
+            //     {
+            //         var jBefore = j;
+            //         if (j < 0)
+            //         {
+            //             j = (j + 360) % 360;
+            //             if (j - arcs[i].baseAngle < end) //temp
+            //             {
+            //                 //print(j + " j - angle is smaller than end");
+            //                 arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
+            //                 return;
+            //             }
+            //             
+            //             //print("before: " + jBefore + " after: " + j);
+            //             start = j;
+            //             goto Calculation;
+            //         }
+            //         arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
+            //     }
+            // }
         }
 
         void PositionPoints(int i)
@@ -200,7 +192,8 @@ namespace Chain
                 return;
             }
 
-            relatedArc.arcPoints.Add(TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start, relatedArc.radius + Data.LinearOffset));
+            relatedArc.arcPoints.Add(TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start,
+                relatedArc.radius + Data.LinearOffset));
             PositionPoints(relatedArc.id);
             arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
         }
@@ -224,10 +217,11 @@ namespace Chain
             Arc relatedArc = arcs[arcs[i].relatedArcId];
 
             float extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
-            relatedArc.edgeAngles.Start = (extraAngle + relatedArc.edgeAngles.Start) % 360; //potential bug: 0 da sorun olabilir
+            relatedArc.edgeAngles.Start =
+                (extraAngle + relatedArc.edgeAngles.Start) % 360; //potential bug: 0 da sorun olabilir
 
             relatedArc.arcPoints.Clear();
-           
+
             CreateParts(relatedArc.id);
         }
 
@@ -264,7 +258,7 @@ namespace Chain
     public class EdgeAngles
     {
         public Vector2 EdgeSmoother;
-        
+
 
         public float Start;
         // {
@@ -275,7 +269,6 @@ namespace Chain
         //     }
         // }
 
-        
 
         public float End;
         // {
@@ -287,7 +280,7 @@ namespace Chain
         //         end = value; // * (EdgeSmoother.y * baseAngle);
         //     }
         // }
-        
+
         // private float start;
         // private float end;
 
