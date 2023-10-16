@@ -1082,7 +1082,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263741519}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 14}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1339,34 +1339,46 @@ MonoBehaviour:
   testCubePb: {fileID: 9112408327683927588, guid: b136ece2d9865d644944de074272c37e, type: 3}
   arcs:
   - radius: 4
-    edgeSmoother: {x: 1, y: 1}
+    edgeSmoother: {x: 0, y: 0}
     gear: {fileID: 2128791191}
     id: 0
     relatedArcId: 0
+    edgeAngles:
+      Start: 0
+      End: 0
     baseAngle: 0
     nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 4
-    edgeSmoother: {x: 1, y: 1}
+    edgeSmoother: {x: 0, y: 0}
     gear: {fileID: 1492620265}
     id: 1
     relatedArcId: 0
+    edgeAngles:
+      Start: 0
+      End: 0
     baseAngle: 0
     nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 4
-    edgeSmoother: {x: 1, y: 1}
+    edgeSmoother: {x: 0, y: 0}
     gear: {fileID: 1780707737}
     id: 2
     relatedArcId: 0
+    edgeAngles:
+      Start: 0
+      End: 0
     baseAngle: 0
     nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []
   - radius: 5
-    edgeSmoother: {x: 1, y: 1}
+    edgeSmoother: {x: 0, y: 0}
     gear: {fileID: 1679024153}
     id: 3
     relatedArcId: 0
+    edgeAngles:
+      Start: 0
+      End: 0
     baseAngle: 0
     nextPoint: {x: 0, y: 0, z: 0}
     arcPoints: []

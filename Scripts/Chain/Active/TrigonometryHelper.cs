@@ -15,17 +15,24 @@ public static class TrigonometryHelper
     }
 
 
-    public static float RotationAngleInDirection(Vector3 posA, Vector3 posB)
+    public static float AngleInPoint(Vector3 point, Vector3 referencePoint)
     {
-        Vector3 direction = (posB - posA).normalized;
-        float rotationAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-        return rotationAngle;
+        float angle = Mathf.Atan2(point.z - referencePoint.z, point.x - referencePoint.x) * Mathf.Rad2Deg;
+        angle = (angle + 360) % 360;
+        return angle;
     }
-   
+    
+    public static float AngleInPoint2(Vector3 point)
+    {
+        float angle = Mathf.Atan2(point.z, point.x) * Mathf.Rad2Deg;
+        return angle;
+    }
+    
     
     public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB, float offset)
     {
-        float rotationAngle = RotationAngleInDirection(posA, posB);
+        Vector3 direction = (posB - posA).normalized;
+        float rotationAngle = AngleInPoint2(direction);//AngleInPoint(direction, Vector3.zero);
         if (posA.x > posB.x)
         {
             //rotationAngle -= 180;

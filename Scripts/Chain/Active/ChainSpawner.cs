@@ -28,8 +28,12 @@ namespace Chain
         {
             chainPoints.Clear();
             Setup();
-            // CreateParts(0);
-            //BindPoints();
+            for (var i = 0; i < arcs.Length; i++)
+            {
+                CreateParts(i);
+            }
+
+            BindPoints();
         }
 
         void Setup()
@@ -38,23 +42,18 @@ namespace Chain
             _center = TrigonometryHelper.CenterDirection(arcs);
             SetArcs();
             RelateArcs();
-            EbrusWay(0);
-            //CommonTangentPoint(0);
-            //CommonIntersectionPoint(0);
-
-
-            /*RotateGearToCenter(0);
-
-            for (var i = 0; i < arcs.Length; i++)
+            for (int i = 0; i < arcs.Length; i++)
             {
-                SetAngles(i);
-            }*/
+                CommonTangentAngles(i);
+            }
+
         }
 
         private float unitOffset = 0.5f;
 
-        void EbrusWay(int i)
+        void CommonTangentAngles(int i)
         {
+            Arc arc = arcs[i];
             Arc relatedArc = arcs[arcs[i].relatedArcId];
             // Vector3 posA = new Vector3(), posB = new Vector3();
             // float radiusA, radiusB;
@@ -66,24 +65,28 @@ namespace Chain
                     relatedArc.radius, 
                     unitOffset);
             
-
-            Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
-            Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
             
-            if(relatedArc.id != 0)
-                EbrusWay(relatedArc.id);
+            arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
+            arc.edgeAngles.End = TrigonometryHelper.AngleInPoint(tangentPoints[0], arc.gear.transform.position);
+
+            relatedArc.edgeAngles.Start = TrigonometryHelper.AngleInPoint(tangentPoints[1], relatedArc.gear.transform.position);
+            //SetEdgeAngles(i, tangentPoints);
+            //CreateArcPoints(i);
+            //PositionPoints(i);
+            //arcs[i].arcPoints.AddRange(tangentPoints);
+            Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
+            Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
+            
+            print("set common tangents");
         }
-
-       
-
-        
 
         void CreateParts(int i)
         {
             CreateArcPoints(i);
             PositionPoints(i);
-            SetNextPoint(i);
-            AddLinearPoints(i);
+            
+            //SetNextPoint(i);
+            //AddLinearPoints(i);
         }
 
         void SetArcs()
@@ -102,41 +105,48 @@ namespace Chain
             {
                 arcs[i].relatedArcId = (i + 1) % arcs.Length;
             }
-            // for (int i = 0; i < arcs.Length; i++)
-            // {
-            //     var id = i - 1;
-            //     if (id < 0) id += arcs.Length;
-            //     arcs[i].relatedArcId = id;
-            // }
         }
-
-
-        void RotateGearToCenter(int i)
+        
+        void SetEdgeAngles(int i, Vector3[] tangentPoints)
         {
-            var mainArc = arcs[i];
-            var direction = (mainArc.gear.transform.position - _center).normalized;
-            mainArc.gear.transform.rotation = Quaternion.LookRotation(direction);
+            Arc arc = arcs[i];
+            arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
 
-            if (mainArc.relatedArcId == 0) return;
-            RotateGearToCenter(mainArc.relatedArcId);
-        }
+            var angle1 = TrigonometryHelper.AngleInPoint(tangentPoints[0], arc.gear.transform.position);
+            angle1 = (angle1 + 360) % 360;
 
-        void SetAngles(int i)
-        {
-            arcs[i].baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
+            var angle2 = TrigonometryHelper.AngleInPoint(tangentPoints[1], arc.gear.transform.position);
+            angle2 = (angle2 + 360) % 360;
 
-            arcs[i].edgeAngles = arcs.Length <= 2
-                ? new EdgeAngles(arcs[i].baseAngle, Vector2.zero)
-                : new EdgeAngles(arcs[i].baseAngle, arcs[i].edgeSmoother);
+            arc.edgeAngles = new EdgeAngles(angle1, angle2, Vector2.zero);
+            
+            print("start angle: "+angle1);
+            print("end angle: "+ angle2);
         }
 
         void CreateArcPoints(int i)
         {
-            for (float j = arcs[i].edgeAngles.Start; j <= arcs[i].edgeAngles.End; j += arcs[i].baseAngle)
+            var start = arcs[i].edgeAngles.Start;
+            var end = arcs[i].edgeAngles.End;
+
+            if (start > end)
             {
-                var newAngle = j;
-                arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
+                for (float j = start; j >= end; j -= arcs[i].baseAngle) //% ekle
+                {
+                    var newAngle = j;
+                    arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
+                }
             }
+            //else
+            // {
+            //     for (float j = start; j < end; j += arcs[i].baseAngle)
+            //     {
+            //         var newAngle = j;
+            //         arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
+            //     }
+            // }
+            
+            
         }
 
         void PositionPoints(int i)
@@ -147,7 +157,7 @@ namespace Chain
             for (var j = 0; j < arcPoints.Count; j++)
             {
                 var point = arcPoints[j];
-                arcPoints[j] = gear.transform.position + gear.transform.rotation * point;
+                arcPoints[j] = gear.transform.position + point; //+ gear.transform.rotation * point;
             }
         }
 
@@ -165,14 +175,14 @@ namespace Chain
             PositionPoints(relatedArc.id);
             arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
 
-            float lengthA = Vector3.Distance(_center, relatedArc.gear.transform.position);
-            float lengthB = Vector3.Distance(arcs[i].gear.transform.position, relatedArc.gear.transform.position);
-            float lengthC = Vector3.Distance(_center, arcs[i].gear.transform.position);
-
-            float distanceAngle1 = TrigonometryHelper.GetAngleByAllLength(lengthA, lengthB, lengthC);
-            float distanceAngle2 = TrigonometryHelper.GetAngleByAllLength(lengthC, lengthB, lengthB);
-
-            print(distanceAngle1 + " " + distanceAngle2);
+            // float lengthA = Vector3.Distance(_center, relatedArc.gear.transform.position);
+            // float lengthB = Vector3.Distance(arcs[i].gear.transform.position, relatedArc.gear.transform.position);
+            // float lengthC = Vector3.Distance(_center, arcs[i].gear.transform.position);
+            //
+            // float distanceAngle1 = TrigonometryHelper.GetAngleByAllLength(lengthA, lengthB, lengthC);
+            // float distanceAngle2 = TrigonometryHelper.GetAngleByAllLength(lengthC, lengthB, lengthB);
+            //
+            // print(distanceAngle1 + " " + distanceAngle2);
         }
 
 
@@ -210,14 +220,14 @@ namespace Chain
                 if (i == 0) break;
             }
 
-            if (Data.Type == ChainType.BikeChain)
-            {
-                if (Vector3.Distance(chainPoints.Last(), chainPoints.First()) < Data.Unit)
-                {
-                    var dir = (chainPoints[^2] - chainPoints.Last()).normalized;
-                    chainPoints[^1] = chainPoints.Last() + dir; //TODO: * unit*0.4f;
-                }
-            }
+            // if (Data.Type == ChainType.BikeChain)
+            // {
+            //     if (Vector3.Distance(chainPoints.Last(), chainPoints.First()) < Data.Unit)
+            //     {
+            //         var dir = (chainPoints[^2] - chainPoints.Last()).normalized;
+            //         chainPoints[^1] = chainPoints.Last() + dir; //TODO: * unit*0.4f;
+            //     }
+            // }
 
             ChainEvents.OnPointsCreated?.Invoke(chainPoints);
         }
@@ -229,15 +239,16 @@ namespace Chain
     }
 
 
+    [Serializable]
     public class EdgeAngles
     {
         public float Start;
         public float End;
 
-        public EdgeAngles(float baseAngle, Vector2 edgeSmoother)
+        public EdgeAngles(float startAngle, float endAngle, Vector2 edgeSmoother)
         {
-            Start = baseAngle * edgeSmoother[0];
-            End = 180 - baseAngle * edgeSmoother[1];
+            Start = startAngle; //* edgeSmoother[0];
+            End = endAngle; //* edgeSmoother[1];
         }
     }
 }
