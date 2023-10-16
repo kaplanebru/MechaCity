@@ -6,6 +6,7 @@ using DG.Tweening;
 using Enums;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 //DISTANCE BASED
 namespace Chain
@@ -46,7 +47,6 @@ namespace Chain
             {
                 CommonTangentAngles(i);
             }
-
         }
 
         private float unitOffset = 0.5f;
@@ -59,24 +59,25 @@ namespace Chain
             // float radiusA, radiusB;
 
             Vector3[] tangentPoints = TrigonometryHelper.CommonTangentPoints(
-                    arcs[i].gear.transform.position, 
-                    relatedArc.gear.transform.position,
-                    arcs[i].radius, 
-                    relatedArc.radius, 
-                    unitOffset);
-            
-            
+                arcs[i].gear.transform.position,
+                relatedArc.gear.transform.position,
+                arcs[i].radius,
+                relatedArc.radius,
+                unitOffset);
+
+
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
             arc.edgeAngles.End = TrigonometryHelper.AngleInPoint(tangentPoints[0], arc.gear.transform.position);
 
-            relatedArc.edgeAngles.Start = TrigonometryHelper.AngleInPoint(tangentPoints[1], relatedArc.gear.transform.position);
+            relatedArc.edgeAngles.Start =
+                TrigonometryHelper.AngleInPoint(tangentPoints[1], relatedArc.gear.transform.position);
             //SetEdgeAngles(i, tangentPoints);
             //CreateArcPoints(i);
             //PositionPoints(i);
             //arcs[i].arcPoints.AddRange(tangentPoints);
             Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
             Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
-            
+
             print("set common tangents");
         }
 
@@ -84,7 +85,7 @@ namespace Chain
         {
             CreateArcPoints(i);
             PositionPoints(i);
-            
+
             //SetNextPoint(i);
             //AddLinearPoints(i);
         }
@@ -106,7 +107,7 @@ namespace Chain
                 arcs[i].relatedArcId = (i + 1) % arcs.Length;
             }
         }
-        
+
         void SetEdgeAngles(int i, Vector3[] tangentPoints)
         {
             Arc arc = arcs[i];
@@ -119,9 +120,9 @@ namespace Chain
             angle2 = (angle2 + 360) % 360;
 
             arc.edgeAngles = new EdgeAngles(angle1, angle2, Vector2.zero);
-            
-            print("start angle: "+angle1);
-            print("end angle: "+ angle2);
+
+            print("start angle: " + angle1);
+            print("end angle: " + angle2);
         }
 
         void CreateArcPoints(int i)
@@ -129,6 +130,8 @@ namespace Chain
             var start = arcs[i].edgeAngles.Start;
             var end = arcs[i].edgeAngles.End;
 
+
+            Calculation:
             if (start > end)
             {
                 for (float j = start; j >= end; j -= arcs[i].baseAngle) //% ekle
@@ -137,16 +140,20 @@ namespace Chain
                     arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
                 }
             }
-            //else
-            // {
-            //     for (float j = start; j < end; j += arcs[i].baseAngle)
-            //     {
-            //         var newAngle = j;
-            //         arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
-            //     }
-            // }
-            
-            
+            else
+            {
+                for (float j = start; j < end; j -= arcs[i].baseAngle)
+                {
+                    print(j);
+                    j = (j + 360) % 360;
+                    arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
+                    if (j > start)
+                    {
+                        start = j;
+                        goto Calculation;
+                    }
+                }
+            }
         }
 
         void PositionPoints(int i)
