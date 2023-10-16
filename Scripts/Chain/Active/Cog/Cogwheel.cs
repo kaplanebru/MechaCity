@@ -10,10 +10,11 @@ namespace Chain
     public class CogData
     {
         public float Radius = 3;
-        public float RadiusOffset = .5f;
         public float Speed = 10; //Todo: according to radius yap
         public int RotationDirection = 1;
-        
+        public Color Color = Color.cyan;
+        public Vector3 PositionOffset;
+
     }
     
     public class Cogwheel : MonoBehaviour
@@ -27,11 +28,14 @@ namespace Chain
 
         void Setup()
         {
-            var radius = Data.Radius; // + Data.RadiusOffset;
+            var radius = Data.Radius;
             var scale = transform.localScale;
             scale.x = radius * 2;
             scale.z = radius * 2;
-            transform.localScale = scale; //Todo: offseti oran yap radius arttıkça oran büyüsün
+            transform.localScale = scale;
+            transform.position += Data.PositionOffset;
+            
+            ChainEvents.OnCogSet?.Invoke(Data, transform);
         }
 
         public void SetRotationDirection(ChainDirection chainDirection)

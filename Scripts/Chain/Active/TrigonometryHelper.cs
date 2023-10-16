@@ -50,7 +50,14 @@ public static class TrigonometryHelper
         tangentPoints[0] = CirclePoint(angle, radiusA + offset) + posA;
         return tangentPoints;
     }
-    
+
+
+    public static float Angle360(float baseAngle, float radius)
+    {
+        var intAngle = Mathf.RoundToInt(baseAngle);
+        int rest = intAngle % 6;
+        return rest / 2 < 2 ? intAngle - rest : intAngle + 6 - rest;
+    }
    
     public static float AngleBySin(float sin, float radius)
     {
