@@ -58,16 +58,17 @@ namespace Chain
             ChainEvents.OnCogStart?.Invoke(Data, transform);
         }
 
-        public void SetRotationDirection(ChainDirection chainDirection)
+        public void SetSpinDirection(ChainDirection chainDirection)
         {
             Data.RotationDirection = chainDirection == ChainDirection.Clockwise ? 1 : -1;
         }
 
         IEnumerator SpinRoutine()
         {
+            var direction = Vector3.up * Data.RotationDirection;
             while (true)
             {
-                transform.Rotate(Vector3.up * Data.RotationDirection, Data.Speed);
+                transform.Rotate(direction, Data.Speed);
                 yield return null;
             }
         }

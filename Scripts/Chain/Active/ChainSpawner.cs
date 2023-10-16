@@ -36,7 +36,7 @@ namespace Chain
 
         void Setup()
         {
-            ChainEvents.OnMotionStateSet?.Invoke(Data.IsMoving);
+            
             _center = TrigonometryHelper.CenterDirection(arcs);
             SetArcs();
             RelateArcs();
@@ -44,6 +44,7 @@ namespace Chain
             {
                 CommonTangentAngles(i);
             }
+            ChainEvents.OnMotionStateSet?.Invoke(Data.IsMoving);
         }
 
         // private float cogSpeed;
@@ -102,7 +103,7 @@ namespace Chain
             for (int i = 0; i < arcs.Length; i++)
             {
                 arcs[i].id = i;
-                arcs[i].gear.SetRotationDirection(Data.motionDirection);
+                arcs[i].gear.SetSpinDirection(Data.motionDirection);
 
                 if (Data.SetRadiusByObject)
                     arcs[i].SetRadiusByGear(Data.RadiusOffset);
