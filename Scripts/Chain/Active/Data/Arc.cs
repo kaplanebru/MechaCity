@@ -20,9 +20,9 @@ namespace Chain
         public Vector3 nextPoint;
         public List<Vector3> arcPoints = new();
 
-        public void SetRadiusByGear()
+        public void SetRadiusByGear(float ArcOffset)
         {
-            radius = gear.Data.Radius;
+            radius = gear.Data.Radius + ArcOffset;
         }
     }
 

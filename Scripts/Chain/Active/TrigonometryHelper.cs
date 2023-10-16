@@ -29,7 +29,7 @@ public static class TrigonometryHelper
     }
     
     
-    public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB, float offset)
+    public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB) //, float offset)
     {
         Vector3 direction = (posB - posA).normalized;
         float rotationAngle = AngleInPoint2(direction);//AngleInPoint(direction, Vector3.zero);
@@ -42,8 +42,8 @@ public static class TrigonometryHelper
         angle = (angle + rotationAngle) % 360;
         
         Vector3[] tangentPoints = new Vector3[2];
-        tangentPoints[1] = CirclePoint(angle, radiusB + offset) + posB;
-        tangentPoints[0] = CirclePoint(angle, radiusA + offset) + posA;
+        tangentPoints[1] = CirclePoint(angle, radiusB) + posB; //CirclePoint(angle, radiusB + offset) + posB;
+        tangentPoints[0] = CirclePoint(angle, radiusA) + posA;//CirclePoint(angle, radiusA + offset) + posA;
         return tangentPoints;
     }
 

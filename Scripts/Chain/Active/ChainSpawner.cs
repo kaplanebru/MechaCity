@@ -30,10 +30,7 @@ namespace Chain
         {
             chainPoints.Clear();
             Setup();
-           
             CreateParts(0);
-            
-
             BindPoints();
         }
 
@@ -49,8 +46,6 @@ namespace Chain
             }
         }
 
-        
-
         void CommonTangentAngles(int i)
         {
             Arc arc = arcs[i];
@@ -60,8 +55,7 @@ namespace Chain
                 arcs[i].gear.transform.position,
                 relatedArc.gear.transform.position,
                 arcs[i].radius,
-                relatedArc.radius,
-                Data.ArcOffset);
+                relatedArc.radius);
 
 
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
@@ -93,7 +87,7 @@ namespace Chain
                 arcs[i].id = i;
                 arcs[i].gear.SetRotationDirection(Data.motionDirection);
                 if (Data.SetRadiusByObject)
-                    arcs[i].SetRadiusByGear();
+                    arcs[i].SetRadiusByGear(Data.RadiusOffset);
             }
         }
 
@@ -111,27 +105,62 @@ namespace Chain
             var end = arcs[i].edgeAngles.End;
 
 
+            // float a = start;
+            // Calculation:
+            // while (a < end)
+            // {
+            //     
+            //     a -= arcs[i].baseAngle;
+            //     if (a >= 0)
+            //     {
+            //         arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
+            //     }
+            //     else
+            //     {
+            //         a = (a + 360) % 360;
+            //         break;
+            //     }
+            //     
+            // }
+            //
+            // while (a >= end)
+            // {
+            //     a -= arcs[i].baseAngle;
+            //     if (a < 0)
+            //     {
+            //         goto Calculation;
+            //     }
+            //         
+            //     arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
+            // }
+            
+
             Calculation:
             if (start > end)
             {
                 for (float j = start; j >= end; j -= arcs[i].baseAngle) //% ekle
                 {
                     var newAngle = j;
-                    arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius + Data.ArcOffset));
+                    arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
                 }
             }
             else
             {
                 for (float j = start; j < end; j -= arcs[i].baseAngle)
                 {
+                   
+                    var jBefore = j;
+                        
                     j = (j + 360) % 360;
-                    if (j > start)
+                    //print("before: " + jBefore + " after: " +j);
+                    if (j > start) // && j < end)
                     {
+                        print(i);
+                        print(j);
                         start = j;
                         goto Calculation;
                     }
                     arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
-                   
                 }
             }
         }
@@ -222,27 +251,33 @@ namespace Chain
     public class EdgeAngles
     {
         public Vector2 EdgeSmoother;
-        private float start;
-        public float Start
-        {
-            get { return start; }
-            set
-            {
-                start = value; // * EdgeSmoother.x;
-            }
-        }
-
-        private float end;
-
-        public float End
-        {
-            get { return end; }
-            set
-            {
-                end = value; // * (EdgeSmoother.y * baseAngle);
-            }
-        }
         
+
+        public float Start;
+        // {
+        //     get { return start; }
+        //     set
+        //     {
+        //         start = value; // * EdgeSmoother.x;
+        //     }
+        // }
+
+        
+
+        public float End;
+        // {
+        //     get {
+        //         return end;
+        //     }
+        //     set
+        //     {
+        //         end = value; // * (EdgeSmoother.y * baseAngle);
+        //     }
+        // }
+        
+        // private float start;
+        // private float end;
+
 
         // public EdgeAngles(float startAngle, float endAngle, )
         // {
