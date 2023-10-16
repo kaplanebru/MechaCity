@@ -45,6 +45,12 @@ namespace Enums
         BikeChain,
         Line
     }
+    
+    public enum ChainDirection
+    {
+        Clockwise,
+        ReverseClock
+    }
 
     
 }

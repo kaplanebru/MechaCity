@@ -14,6 +14,7 @@ namespace Chain
         public float LinkRotationExtent = 0.06f;
         public bool SetRadiusByObject = true;
         public bool IsMoving = true;
+        public ChainDirection motionDirection = ChainDirection.Clockwise;
     }
 }
 

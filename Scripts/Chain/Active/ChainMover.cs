@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Chain;
+using Enums;
 using UnityEngine;
 
 public class ChainMover : MonoBehaviour
@@ -46,6 +47,7 @@ public class ChainMover : MonoBehaviour
         {
             StartCoroutine(LinkRoutine(i));
         }
+        
     }
 
     IEnumerator LinkRoutine(int startIndex)
@@ -53,16 +55,29 @@ public class ChainMover : MonoBehaviour
         int j = startIndex;
         while (true)
         {
-            j++;
-            j %= _points.Count;
+            switch (Data.motionDirection)
+            {
+                case ChainDirection.Clockwise:
+                    j++;
+                    j %= _points.Count;
+                    break;
+                case ChainDirection.ReverseClock:
+                    j--;
+                    if (j < 0)
+                        j = _points.Count-1;
+                    break;
+            }
+           
 
             while (Vector3.Distance(_links[startIndex].transform.position, _points[j]) > 0.05f) //0.1f
             {
-                _links[startIndex].transform.position =
-                    Vector3.MoveTowards(_links[startIndex].transform.position, _points[j], Data.LinearSpeed);
-                _links[startIndex].transform.rotation =
-                    Quaternion.Slerp(_links[startIndex].transform.rotation,
-                        _rotations[j], Data.LinkRotationExtent);
+                _links[startIndex].transform.position = Vector3.MoveTowards(
+                    _links[startIndex].transform.position,
+                    _points[j], Data.LinearSpeed);
+                
+                _links[startIndex].transform.rotation = Quaternion.Slerp(
+                    _links[startIndex].transform.rotation,
+                    _rotations[j], Data.LinkRotationExtent);
 
                 yield return new WaitForFixedUpdate();
             }
