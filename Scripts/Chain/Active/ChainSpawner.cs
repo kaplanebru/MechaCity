@@ -61,7 +61,7 @@ namespace Chain
                 relatedArc.gear.transform.position,
                 arcs[i].radius,
                 relatedArc.radius,
-                Data.Offset);
+                Data.ArcOffset);
 
 
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
@@ -117,7 +117,7 @@ namespace Chain
                 for (float j = start; j >= end; j -= arcs[i].baseAngle) //% ekle
                 {
                     var newAngle = j;
-                    arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius));
+                    arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(newAngle, arcs[i].radius + Data.ArcOffset));
                 }
             }
             else
@@ -158,7 +158,7 @@ namespace Chain
                 return;
             }
 
-            relatedArc.arcPoints.Add(TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start, relatedArc.radius));
+            relatedArc.arcPoints.Add(TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start, relatedArc.radius + Data.LinearOffset));
             PositionPoints(relatedArc.id);
             arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
         }

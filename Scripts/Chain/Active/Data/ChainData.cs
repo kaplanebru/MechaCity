@@ -15,7 +15,8 @@ namespace Chain
         public bool SetRadiusByObject = true;
         public bool IsMoving = true;
         public ChainDirection motionDirection = ChainDirection.Clockwise;
-        public float Offset = 0.5f;
+        public float ArcOffset = 0.5f;
+        public float LinearOffset = 0.5f;
     }
 }
 

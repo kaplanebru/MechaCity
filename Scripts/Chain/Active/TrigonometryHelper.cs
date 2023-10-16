@@ -33,11 +33,7 @@ public static class TrigonometryHelper
     {
         Vector3 direction = (posB - posA).normalized;
         float rotationAngle = AngleInPoint2(direction);//AngleInPoint(direction, Vector3.zero);
-        if (posA.x > posB.x)
-        {
-            //rotationAngle -= 180;
-        }
-        
+
         float distance = Vector3.Distance(posA, posB);
         float similarHyp = (distance * radiusB) / (radiusA - radiusB);
         
