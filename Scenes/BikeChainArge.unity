@@ -320,7 +320,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: intervalAngle
-      value: 15
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
@@ -542,7 +542,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: intervalAngle
-      value: 15
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
@@ -598,7 +598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -16.7
+      value: -11.7
       objectReference: {fileID: 0}
     - target: {fileID: 2216297433484720855, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -659,7 +659,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: intervalAngle
-      value: 15
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
@@ -1045,7 +1045,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: intervalAngle
-      value: 15
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder

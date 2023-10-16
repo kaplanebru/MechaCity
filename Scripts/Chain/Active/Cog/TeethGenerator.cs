@@ -10,8 +10,8 @@ namespace Chain
     {
         public CogData Data;
         public Transform toothPb;
-        public float intervalAngle = 25;
-        public float minIntervalLimit = 6;
+        public float intervalAngle = 60;
+        public float minIntervalLimit = 50;
         public bool scale = false;
 
         private void OnEnable()
@@ -21,8 +21,10 @@ namespace Chain
 
         void SetIntAngle()
         {
-            intervalAngle /= (Data.Radius * 0.2f);
-            intervalAngle = TrigonometryHelper.Angle360(intervalAngle);
+            intervalAngle /= (Data.Radius);
+            
+           // intervalAngle = TrigonometryHelper.Angle360(intervalAngle);
+            
             if (intervalAngle < minIntervalLimit)
                 intervalAngle = minIntervalLimit;
         }
