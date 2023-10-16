@@ -69,58 +69,14 @@ namespace Chain
 
             Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
             Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
+            
+            if(relatedArc.id != 0)
+                EbrusWay(relatedArc.id);
         }
 
-        void CommonTangentPoint(int i)
-        {
-            Arc relatedArc = arcs[arcs[i].relatedArcId];
-            var posA = arcs[i].gear.transform.position;
-            var posB = relatedArc.gear.transform.position;
-            var radiusA = arcs[i].radius;
-            var radiusB = relatedArc.radius;
+       
 
-
-            print(radiusB);
-
-            // Vector3 InternalSection = new Vector3();
-            //
-            // InternalSection.x = (radiusA * posB.x + radiusB * posA.x) / radiusA + radiusB;
-            // InternalSection.z = (radiusA * posB.z + radiusB * posA.z) / radiusA + radiusB;
-            //Instantiate(testCubePb, InternalSection, Quaternion.identity);
-
-
-            Vector3 ExternalSection = new Vector3();
-            ExternalSection.x = (radiusA * posB.x + radiusB * posA.x) / radiusA + radiusB;
-            ExternalSection.z = (radiusA * posB.z + radiusB * posA.z) / radiusA + radiusB;
-            Instantiate(testCubePb, ExternalSection, Quaternion.identity);
-        }
-
-        void CommonIntersectionPoint(int i)
-        {
-            Arc relatedArc = arcs[arcs[i].relatedArcId];
-            var posA = arcs[i].gear.transform.position;
-            var posB = relatedArc.gear.transform.position;
-            float distance = Vector3.Distance(posA, posB);
-
-            Vector3 pointA = new Vector3();
-            pointA.x = posA.x + (arcs[i].radius * (posB.x - posA.x)) / distance;
-            pointA.z = posA.z + (arcs[i].radius * (posB.z - posA.z)) / distance;
-
-
-            Vector3 pointB = new Vector3();
-            pointB.x = posB.x + (relatedArc.radius * (posA.x - posB.x)) / distance;
-            pointB.z = posB.z + (relatedArc.radius * (posA.z - posB.z)) / distance;
-
-
-            Instantiate(testCubePb, pointB, Quaternion.identity);
-            Instantiate(testCubePb, pointA, Quaternion.identity);
-
-            // P1_x = A_x + (r1 * (B_x - A_x)) / d
-            // P1_y = A_y + (r1 * (B_y - A_y)) / d
-
-            // P2_x = B_x + (r2 * (A_x - B_x)) / d
-            // P2_y = B_y + (r2 * (A_y - B_y)) / d
-        }
+        
 
         void CreateParts(int i)
         {
@@ -144,10 +100,14 @@ namespace Chain
         {
             for (int i = 0; i < arcs.Length; i++)
             {
-                var id = i - 1;
-                if (id < 0) id += arcs.Length;
-                arcs[i].relatedArcId = id;
+                arcs[i].relatedArcId = (i + 1) % arcs.Length;
             }
+            // for (int i = 0; i < arcs.Length; i++)
+            // {
+            //     var id = i - 1;
+            //     if (id < 0) id += arcs.Length;
+            //     arcs[i].relatedArcId = id;
+            // }
         }
 
 

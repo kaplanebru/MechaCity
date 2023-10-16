@@ -19,23 +19,21 @@ public static class TrigonometryHelper
     public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB, float offset)
     {
         Vector3 direction = (posB - posA).normalized;
-        float rotationAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg + 360;
-        rotationAngle %= 360;
+        float rotationAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+        
        
-        Debug.Log(radiusA);
+       
         
         //x'i büyük olana göre yukarda ya da aşağıda çıkıyor
        
-        if (radiusB > radiusA)
+        if (posA.x > posB.x)
         {
-            Debug.Log("swapped");
-            // (radiusA, radiusB) = (radiusB, radiusA);
-            // (posA, posB) = (posB, posA);
-            //rotationAngle = (rotationAngle + 180) % 360;
-           // rotationAngle *= -1;
+            Debug.Log("xs");
+            //rotationAngle -= 180;
+
         }
         //Debug.Log(rotationAngle);
-        Debug.Log(radiusA);
+        
         
         float distance = Vector3.Distance(posA, posB);
         float similarHyp = (distance * radiusB) / (radiusA - radiusB);
@@ -90,4 +88,31 @@ public static class TrigonometryHelper
 
         return angleA;
     }
+    
+    // public static void CommonIntersectionPoint(int i)
+    // {
+    //     Arc relatedArc = arcs[arcs[i].relatedArcId];
+    //     var posA = arcs[i].gear.transform.position;
+    //     var posB = relatedArc.gear.transform.position;
+    //     float distance = Vector3.Distance(posA, posB);
+    //
+    //     Vector3 pointA = new Vector3();
+    //     pointA.x = posA.x + (arcs[i].radius * (posB.x - posA.x)) / distance;
+    //     pointA.z = posA.z + (arcs[i].radius * (posB.z - posA.z)) / distance;
+    //
+    //
+    //     Vector3 pointB = new Vector3();
+    //     pointB.x = posB.x + (relatedArc.radius * (posA.x - posB.x)) / distance;
+    //     pointB.z = posB.z + (relatedArc.radius * (posA.z - posB.z)) / distance;
+    //
+    //
+    //     Instantiate(testCubePb, pointB, Quaternion.identity);
+    //     Instantiate(testCubePb, pointA, Quaternion.identity);
+    //
+    //     // P1_x = A_x + (r1 * (B_x - A_x)) / d
+    //     // P1_y = A_y + (r1 * (B_y - A_y)) / d
+    //
+    //     // P2_x = B_x + (r2 * (A_x - B_x)) / d
+    //     // P2_y = B_y + (r2 * (A_y - B_y)) / d
+    // }
 }
