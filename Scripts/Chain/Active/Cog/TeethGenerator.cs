@@ -15,12 +15,14 @@ namespace Chain
         public bool scale = false;
         public bool equalize = false;
 
+        private int teethCount;
+
         private void OnEnable()
         {
-            ChainEvents.OnCogSet += CreateTeethPoints;
+            ChainEvents.OnCogStart += CreateTeethPoints;
         }
 
-        void SetIntAngle()
+        void SetIntervalAngle()
         {
             intervalAngle /= (Data.Radius);
             
@@ -37,15 +39,17 @@ namespace Chain
             Data = data;
             
             
-            SetIntAngle();
-            print(intervalAngle);
+            SetIntervalAngle();
             for (float i = 0; i < 360; i+=intervalAngle)
             {
+                teethCount++;
                 Vector3 point = TrigonometryHelper.CirclePoint(i, Data.Radius);
                 Transform tooth = Instantiate(toothPb, point + transform.position, Quaternion.identity);
                 tooth.SetParent(parent);
                 SetTooth(tooth, point);
             }
+            
+            ChainEvents.OnTeethCreated?.Invoke(teethCount, transform);
         }
 
         void SetTooth(Transform tooth, Vector3 direction)
@@ -59,12 +63,14 @@ namespace Chain
                 scale.z *= Data.Radius;
                 tooth.transform.localScale = scale;
             }
+            
+            
            
         }
 
         private void OnDisable()
         {
-            ChainEvents.OnCogSet -= CreateTeethPoints;
+            ChainEvents.OnCogStart -= CreateTeethPoints;
         }
     }
 }

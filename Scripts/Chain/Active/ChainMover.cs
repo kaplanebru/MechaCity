@@ -11,10 +11,13 @@ public class ChainMover : MonoBehaviour
     private List<Transform> _links = new();
     private List<Vector3> _points = new();
     private List<Quaternion> _rotations = new();
+    public float cogSpeed = 30f;
+    public static float CogSpeed;
 
     private void OnEnable()
     {
-        ChainEvents.OnStartAndMove += enable => enabled = enable;
+        CogSpeed = cogSpeed;
+        ChainEvents.OnMotionStateSet += enable => enabled = enable;
         ChainEvents.OnPointsCreated += SetPoints;
         ChainEvents.OnLinksCreated += SetLinks;
     }
@@ -29,6 +32,8 @@ public class ChainMover : MonoBehaviour
         _links = links;
         StartCoroutine(nameof(MoveRoutine));
     }
+
+   
 
     void RotatePointsByObj()
     {
@@ -89,7 +94,7 @@ public class ChainMover : MonoBehaviour
 
     private void OnDisable()
     {
-        ChainEvents.OnStartAndMove -= enable => enabled = enable;
+        ChainEvents.OnMotionStateSet -= enable => enabled = enable;
         ChainEvents.OnPointsCreated -= SetPoints;
         ChainEvents.OnLinksCreated -= SetLinks;
     }

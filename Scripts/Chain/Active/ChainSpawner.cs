@@ -36,7 +36,7 @@ namespace Chain
 
         void Setup()
         {
-            ChainEvents.OnStartAndMove?.Invoke(Data.IsMoving);
+            ChainEvents.OnMotionStateSet?.Invoke(Data.IsMoving);
             _center = TrigonometryHelper.CenterDirection(arcs);
             SetArcs();
             RelateArcs();
@@ -45,6 +45,23 @@ namespace Chain
                 CommonTangentAngles(i);
             }
         }
+
+        // private float cogSpeed;
+        // public float cogSpeedMultiplier = 1;
+        // void SetCogSpeed(int i) //TODO: teethcountlar set edildikten sonra çalışmalı. Önce cog ve teethler yaratılabilir ya da.
+        // {
+        //     if (i == 0)
+        //     {
+        //         cogSpeed = arcs[i].gear.Data.TeethCount * cogSpeedMultiplier;
+        //     }
+        //         
+        //     else
+        //     {
+        //         var relatedArc = arcs[arcs[i].relatedArcId];
+        //         cogSpeed /= relatedArc.gear.Data.TeethCount;
+        //         relatedArc.gear.Data.Speed = cogSpeed;
+        //     }
+        // }
 
         void CommonTangentAngles(int i)
         {

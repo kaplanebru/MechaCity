@@ -14,6 +14,7 @@ namespace Chain
         public int RotationDirection = 1;
         public Color Color = Color.cyan;
         public Vector3 PositionOffset;
+        public bool IsMoving = true;
 
     }
     
@@ -23,8 +24,27 @@ namespace Chain
 
         private void OnEnable()
         {
-            ChainEvents.OnStartAndMove += MoveCog;
+            ChainEvents.OnTeethCreated += SetSpeedAndMove;
+            ChainEvents.OnMotionStateSet += Initialize;
+            //MoveCog; //TODO: bu kısım sadece moving statei set etsin. harekete başlatan başka bir etken olmalı
         }
+        
+        private void Initialize(bool isMoving)
+        {
+            Setup();
+            Data.IsMoving = isMoving;
+        }
+
+        private void SetSpeedAndMove(int teethCount, Transform _transform)
+        {
+            if(transform != _transform) return;
+            if(!Data.IsMoving) return;
+
+            Data.Speed = ChainMover.CogSpeed / teethCount;
+            print(Data.Speed);
+            StartCoroutine(nameof(SpinRoutine));
+        }
+        
 
         void Setup()
         {
@@ -35,20 +55,14 @@ namespace Chain
             transform.localScale = scale;
             transform.position += Data.PositionOffset;
             
-            ChainEvents.OnCogSet?.Invoke(Data, transform);
+            ChainEvents.OnCogStart?.Invoke(Data, transform);
         }
 
         public void SetRotationDirection(ChainDirection chainDirection)
         {
             Data.RotationDirection = chainDirection == ChainDirection.Clockwise ? 1 : -1;
         }
-        
-        private void MoveCog(bool isMoving)
-        {
-            Setup();
-            if(isMoving)
-                StartCoroutine(nameof(SpinRoutine));
-        }
+
         IEnumerator SpinRoutine()
         {
             while (true)
@@ -60,7 +74,8 @@ namespace Chain
 
         private void OnDisable()
         {
-            ChainEvents.OnStartAndMove -= MoveCog;
+            ChainEvents.OnTeethCreated -= SetSpeedAndMove;
+            ChainEvents.OnMotionStateSet -= Initialize;
         }
     }
 
