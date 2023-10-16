@@ -122,14 +122,14 @@ namespace Chain
             {
                 for (float j = start; j < end; j -= arcs[i].baseAngle)
                 {
-                    print(j);
                     j = (j + 360) % 360;
-                    arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
                     if (j > start)
                     {
                         start = j;
                         goto Calculation;
                     }
+                    arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(j, arcs[i].radius));
+                   
                 }
             }
         }
@@ -180,11 +180,11 @@ namespace Chain
             Arc relatedArc = arcs[arcs[i].relatedArcId];
 
             float extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
-            relatedArc.edgeAngles.Start -= extraAngle;
+            relatedArc.edgeAngles.Start = (extraAngle + relatedArc.edgeAngles.Start) % 360; //potential bug: 0 da sorun olabilir
 
             relatedArc.arcPoints.Clear();
-            if(relatedArc.id != 0)
-                CreateParts(relatedArc.id);
+           
+            CreateParts(relatedArc.id);
         }
 
         void BindPoints()
