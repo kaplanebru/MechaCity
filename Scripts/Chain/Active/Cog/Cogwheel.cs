@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enums;
 using UnityEngine;
 
 namespace Chain
@@ -24,14 +25,6 @@ namespace Chain
             ChainEvents.OnStartAndMove += MoveCog;
         }
 
-        private void MoveCog(bool isMoving)
-        {
-            Setup();
-            if(isMoving)
-                StartCoroutine(nameof(SpinRoutine));
-        }
-        
-
         void Setup()
         {
             var radius = Data.Radius; // + Data.RadiusOffset;
@@ -39,6 +32,18 @@ namespace Chain
             scale.x = radius * 2;
             scale.z = radius * 2;
             transform.localScale = scale; //Todo: offseti oran yap radius arttıkça oran büyüsün
+        }
+
+        public void SetRotationDirection(ChainDirection chainDirection)
+        {
+            Data.RotationDirection = chainDirection == ChainDirection.Clockwise ? 1 : -1;
+        }
+        
+        private void MoveCog(bool isMoving)
+        {
+            Setup();
+            if(isMoving)
+                StartCoroutine(nameof(SpinRoutine));
         }
         IEnumerator SpinRoutine()
         {
