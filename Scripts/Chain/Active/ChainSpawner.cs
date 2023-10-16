@@ -150,7 +150,7 @@ namespace Chain
             }
 
             relatedArc.arcPoints.Add(TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start,
-                relatedArc.radius + Data.LinearOffset));
+                relatedArc.radius + Data.Tension));
             PositionPoints(relatedArc.id);
             arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
         }
