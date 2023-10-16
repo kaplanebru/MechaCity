@@ -14,31 +14,27 @@ public static class TrigonometryHelper
         return new Vector3(x, 0, y) * radius;
     }
 
+
+    public static float RotationAngleInDirection(Vector3 posA, Vector3 posB)
+    {
+        Vector3 direction = (posB - posA).normalized;
+        float rotationAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+        return rotationAngle;
+    }
    
     
     public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB, float offset)
     {
-        Vector3 direction = (posB - posA).normalized;
-        float rotationAngle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-        
-       
-       
-        
-        //x'i büyük olana göre yukarda ya da aşağıda çıkıyor
-       
+        float rotationAngle = RotationAngleInDirection(posA, posB);
         if (posA.x > posB.x)
         {
-            Debug.Log("xs");
             //rotationAngle -= 180;
-
         }
-        //Debug.Log(rotationAngle);
-        
         
         float distance = Vector3.Distance(posA, posB);
         float similarHyp = (distance * radiusB) / (radiusA - radiusB);
+        
         float angle = AngleByCos(radiusB, similarHyp); //use same angle since they are similar triangles
-        Debug.Log("first angle: " + angle);
         angle = (angle + rotationAngle) % 360;
         
         Vector3[] tangentPoints = new Vector3[2];
@@ -47,7 +43,7 @@ public static class TrigonometryHelper
         return tangentPoints;
     }
     
-    //get common tangent for distance
+   
     public static float AngleBySin(float sin, float radius)
     {
         var baseAngle = Mathf.Asin(sin / radius) * Mathf.Rad2Deg;
