@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Chain;
+using Codice.CM.Common;
 using Enums;
 using UnityEngine;
 
@@ -20,6 +21,24 @@ public class ChainMover : MonoBehaviour
         ChainEvents.OnMotionStateSet += enable => enabled = enable;
         ChainEvents.OnPointsCreated += SetPoints;
         ChainEvents.OnLinksCreated += SetLinks;
+        ChainEvents.OnCogSpeedSet += GetTotalCogSpeed;
+    }
+
+
+    private float totalCogSpeed;
+    private int counter = 0;
+    private void GetTotalCogSpeed(float speed)
+    {
+        counter++;
+        totalCogSpeed += speed;
+        
+        if (counter == 4) //TODO : TEST
+        {
+            Data.LinearSpeed = totalCogSpeed / 4 / 15;
+            print("linear speed: " + Data.LinearSpeed );
+            StartCoroutine(nameof(MoveRoutine));
+        }
+           
     }
 
     void SetPoints(List<Vector3> points)
@@ -30,7 +49,7 @@ public class ChainMover : MonoBehaviour
     void SetLinks(List<Transform> links)
     {
         _links = links;
-        StartCoroutine(nameof(MoveRoutine));
+        //StartCoroutine(nameof(MoveRoutine));
     }
 
    
@@ -72,9 +91,8 @@ public class ChainMover : MonoBehaviour
                         j = _points.Count-1;
                     break;
             }
-
-            //Data.LinearSpeed = CogSpeed / _points.Count;
-            print("linear speed: " + Data.LinearSpeed );
+            
+           
             while (Vector3.Distance(_links[startIndex].transform.position, _points[j]) > 0.05f) //0.1f
             {
                 _links[startIndex].transform.position = Vector3.MoveTowards(
