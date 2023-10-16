@@ -254,6 +254,63 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 1
+--- !u!1001 &106062123
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7827882231684985032, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_Name
+      value: Tooth
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
 --- !u!1001 &230408364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -261,6 +318,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1579374167}
     m_Modifications:
+    - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: intervalAngle
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -479,6 +540,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1579374167}
     m_Modifications:
+    - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: intervalAngle
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -592,6 +657,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1579374167}
     m_Modifications:
+    - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: intervalAngle
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -974,6 +1043,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1579374167}
     m_Modifications:
+    - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: intervalAngle
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 1224851127473038532, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_RootOrder
       value: 2

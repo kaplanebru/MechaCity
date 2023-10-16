@@ -11,6 +11,7 @@ namespace Chain
         public CogData Data;
         public Transform toothPb;
         public float intervalAngle = 25;
+        public bool scale = false;
 
         private void OnEnable()
         {
@@ -26,6 +27,7 @@ namespace Chain
         {
             if (parent.position != transform.position) return;
             Data = data;
+            intervalAngle /= (Data.Radius * 0.1f);
             SetIntAngle();
             for (float i = 0; i < 360; i+=intervalAngle)
             {
@@ -39,10 +41,15 @@ namespace Chain
         void SetTooth(Transform tooth, Vector3 direction)
         {
             tooth.transform.rotation = Quaternion.LookRotation(direction);
-            Vector3 scale = tooth.transform.localScale;
-            scale.x *= Data.Radius;
-            scale.z *= Data.Radius;
-            tooth.transform.localScale = scale;
+
+            if (scale)
+            {
+                Vector3 scale = tooth.transform.localScale;
+                scale.x *= Data.Radius;
+                scale.z *= Data.Radius;
+                tooth.transform.localScale = scale;
+            }
+           
         }
 
         private void OnDisable()
