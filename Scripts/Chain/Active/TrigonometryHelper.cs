@@ -41,6 +41,7 @@ public static class TrigonometryHelper
         float distance = Vector3.Distance(posA, posB);
         float similarHyp = (distance * radiusB) / (radiusA - radiusB);
         
+        
         float angle = AngleByCos(radiusB, similarHyp); //use same angle since they are similar triangles
         angle = (angle + rotationAngle) % 360;
         
