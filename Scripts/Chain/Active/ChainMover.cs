@@ -25,18 +25,23 @@ public class ChainMover : MonoBehaviour
     }
 
 
-    private float totalCogSpeed;
+   
+    private int totalCogTeeth = 0;
     private int counter = 0;
-    private void GetTotalCogSpeed(float speed)
+    private void GetTotalCogSpeed(int teethAmount)
     {
         counter++;
-        totalCogSpeed += speed;
-        
-        if (counter == 4) //TODO : TEST
+        totalCogTeeth += teethAmount;
+      
+        if (counter == ChainSpawner.ArcCount) //TODO : TEST
         {
-            Data.LinearSpeed = totalCogSpeed / 4 / 15;
-            print("linear speed: " + Data.LinearSpeed );
+            Data.LinearSpeed = CogSpeed/totalCogTeeth/ChainSpawner.ArcCount;
+            Data.LinkRotationExtent = Data.LinearSpeed;
+            print("linear speed: " + Data.LinearSpeed);
             StartCoroutine(nameof(MoveRoutine));
+            
+            counter = 0;
+            totalCogTeeth = 0;
         }
            
     }

@@ -19,11 +19,10 @@ namespace Chain
 
         public Transform testCubePb;
         public Arc[] arcs;
+        public static int ArcCount;
 
 
         private int linearPointAmount;
-        private Vector3 _center;
-
         [ReadOnly] public List<Vector3> chainPoints = new();
 
         private void Start()
@@ -36,8 +35,7 @@ namespace Chain
 
         void Setup()
         {
-            
-            _center = TrigonometryHelper.CenterDirection(arcs);
+            ArcCount = arcs.Length;
             SetArcs();
             RelateArcs();
             for (int i = 0; i < arcs.Length; i++)
@@ -46,23 +44,6 @@ namespace Chain
             }
             ChainEvents.OnMotionStateSet?.Invoke(Data.IsMoving);
         }
-
-        // private float cogSpeed;
-        // public float cogSpeedMultiplier = 1;
-        // void SetCogSpeed(int i) //TODO: teethcountlar set edildikten sonra çalışmalı. Önce cog ve teethler yaratılabilir ya da.
-        // {
-        //     if (i == 0)
-        //     {
-        //         cogSpeed = arcs[i].gear.Data.TeethCount * cogSpeedMultiplier;
-        //     }
-        //         
-        //     else
-        //     {
-        //         var relatedArc = arcs[arcs[i].relatedArcId];
-        //         cogSpeed /= relatedArc.gear.Data.TeethCount;
-        //         relatedArc.gear.Data.Speed = cogSpeed;
-        //     }
-        // }
 
         void CommonTangentAngles(int i)
         {
