@@ -41,7 +41,7 @@ public class ChainMover : MonoBehaviour
         if (counter == ChainSpawner.ArcCount) 
         {
             LinearSpeed = CogSpeed / (totalCogTeeth * (Data.Unit / interval)); //sonuncusu çarpı da olabilir
-            print("linear speed: " + LinearSpeed);
+            //print("linear speed: " + LinearSpeed);
             StartCoroutine(nameof(MoveRoutine));
             
             counter = 0;

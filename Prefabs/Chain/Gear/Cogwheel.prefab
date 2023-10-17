@@ -55,6 +55,10 @@ MonoBehaviour:
     PositionOffset: {x: 0, y: 0, z: 0}
     IsMoving: 1
     toothScale: {x: 1, y: 1, z: 1}
+    circularThickness: 0.5
+    holes:
+    - {fileID: 7777657353413530157}
+    - {fileID: 1331057092917141988}
 --- !u!114 &-8651037349865285081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,6 +79,8 @@ MonoBehaviour:
     PositionOffset: {x: 0, y: 0, z: 0}
     IsMoving: 1
     toothScale: {x: 1, y: 1, z: 1}
+    circularThickness: 0.5
+    holes: []
   toothPb: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
   intervalAngle: 60
   minIntervalLimit: 6
@@ -222,8 +228,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 126ad635a18bbfb4f9a0cf21ee35cfb8, type: 3}
+--- !u!4 &1331057092917141988 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6808446589603024614, guid: 126ad635a18bbfb4f9a0cf21ee35cfb8, type: 3}
+  m_PrefabInstance: {fileID: 5477691364237192962}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5828559597742675881 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2082808538579630251, guid: 126ad635a18bbfb4f9a0cf21ee35cfb8, type: 3}
+  m_PrefabInstance: {fileID: 5477691364237192962}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7777657353413530157 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2876499859005652271, guid: 126ad635a18bbfb4f9a0cf21ee35cfb8, type: 3}
   m_PrefabInstance: {fileID: 5477691364237192962}
   m_PrefabAsset: {fileID: 0}

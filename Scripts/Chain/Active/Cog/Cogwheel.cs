@@ -15,9 +15,9 @@ namespace Chain
         public Color Color = Color.cyan;
         public Vector3 PositionOffset;
         public bool IsMoving = true;
-
         public Vector3 toothScale = Vector3.one;
-
+        public float circularThickness = 0.5f;
+        public Transform[] holes;
     }
     
     public class Cogwheel : MonoBehaviour
@@ -43,8 +43,6 @@ namespace Chain
             if(!Data.IsMoving) return;
 
             Data.Speed = ChainMover.CogSpeed / teethCount;
-            
-            print(Data.Speed);
             ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval);
             
             StartCoroutine(nameof(SpinRoutine));
@@ -59,6 +57,7 @@ namespace Chain
             scale.z = radius * 2;
             transform.localScale = scale;
             transform.position += Data.PositionOffset;
+            SetHoleSize();
             
             ChainEvents.OnCogStart?.Invoke(Data, transform);
         }
@@ -66,6 +65,26 @@ namespace Chain
         public void SetSpinDirection(ChainDirection chainDirection)
         {
             Data.RotationDirection = chainDirection == ChainDirection.Clockwise ? 1 : -1;
+        }
+
+        void SetHoleSize()
+        {
+            var holeSize = (Data.Radius - Data.circularThickness) *2;
+            foreach (var hole in Data.holes)
+            {
+                var inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y, 1f / transform.localScale.z);
+                hole.transform.SetParent(null);
+                Vector3 scale = hole.transform.localScale;
+                
+                scale.x = holeSize;
+                scale.z = holeSize;
+                hole.transform.localScale = scale;
+                
+                hole.SetParent(transform);
+                //hole.transform.localScale = Vector3.Scale(hole.transform.localScale, inverseParentScale);
+                if(Data.Radius == 5)
+                    print(holeSize);
+            }
         }
 
         IEnumerator SpinRoutine()

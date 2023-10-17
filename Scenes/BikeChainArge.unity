@@ -439,6 +439,10 @@ PrefabInstance:
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: Data.circularThickness
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.RotationDirection.y
       value: 1
       objectReference: {fileID: 0}
@@ -848,6 +852,10 @@ PrefabInstance:
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: Data.circularThickness
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.RotationDirection.y
       value: 1
       objectReference: {fileID: 0}
@@ -943,6 +951,10 @@ PrefabInstance:
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.toothScale.z
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: Data.circularThickness
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.RotationDirection.y
@@ -1523,6 +1535,10 @@ PrefabInstance:
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.toothScale.z
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: Data.circularThickness
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: Data.RotationDirection.y
