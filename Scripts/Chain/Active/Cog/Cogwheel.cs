@@ -72,18 +72,11 @@ namespace Chain
             var holeSize = (Data.Radius - Data.circularThickness) *2;
             foreach (var hole in Data.holes)
             {
-                var inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y, 1f / transform.localScale.z);
-                hole.transform.SetParent(null);
+                Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y, 1f / transform.localScale.z);
                 Vector3 scale = hole.transform.localScale;
-                
                 scale.x = holeSize;
                 scale.z = holeSize;
-                hole.transform.localScale = scale;
-                
-                hole.SetParent(transform);
-                //hole.transform.localScale = Vector3.Scale(hole.transform.localScale, inverseParentScale);
-                if(Data.Radius == 5)
-                    print(holeSize);
+                hole.transform.localScale = Vector3.Scale(scale, inverseParentScale);
             }
         }
 
