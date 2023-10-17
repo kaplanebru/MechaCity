@@ -34,14 +34,14 @@ public class ChainMover : MonoBehaviour
    
     private int totalCogTeeth = 0;
     private int counter = 0;
-    private void GetTotalCogSpeed(int teethAmount)
+    private void GetTotalCogSpeed(int teethAmount, float interval)
     {
         counter++;
         totalCogTeeth += teethAmount;
       
         if (counter == ChainSpawner.ArcCount) 
         {
-            LinearSpeed = CogSpeed / totalCogTeeth / Data.Unit; //TODO : Standardize Teeth size
+            LinearSpeed = (CogSpeed / totalCogTeeth) / (Data.Unit / interval); //sonuncusu çarpı da olabilir
             print("linear speed: " + LinearSpeed);
             StartCoroutine(nameof(MoveRoutine));
             

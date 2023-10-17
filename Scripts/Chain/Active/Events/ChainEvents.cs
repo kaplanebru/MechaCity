@@ -10,6 +10,6 @@ public class ChainEvents
     public static Action<List<Transform>> OnLinksCreated;
     public static Action<bool> OnMotionStateSet;
     public static Action<CogData, Transform> OnCogStart;
-    public static Action<int, Transform> OnTeethCreated;
-    public static Action<int> OnCogSpeedSet;
+    public static Action<int, Transform, float> OnTeethCreated;
+    public static Action<int, float> OnCogSpeedSet;
 }

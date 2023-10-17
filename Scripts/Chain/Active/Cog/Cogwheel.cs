@@ -16,6 +16,8 @@ namespace Chain
         public Vector3 PositionOffset;
         public bool IsMoving = true;
 
+        public Vector3 toothScale = Vector3.one;
+
     }
     
     public class Cogwheel : MonoBehaviour
@@ -35,13 +37,13 @@ namespace Chain
             Data.IsMoving = isMoving;
         }
 
-        private void SetSpeedAndMove(int teethCount, Transform _transform)
+        private void SetSpeedAndMove(int teethCount, Transform _transform, float interval)
         {
             if(transform != _transform) return;
             if(!Data.IsMoving) return;
 
             Data.Speed = ChainMover.CogSpeed / teethCount;
-            ChainEvents.OnCogSpeedSet?.Invoke(teethCount);
+            ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval);
             
             StartCoroutine(nameof(SpinRoutine));
         }
