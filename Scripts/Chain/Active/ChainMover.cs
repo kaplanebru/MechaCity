@@ -84,7 +84,7 @@ public class ChainMover : MonoBehaviour
 
     IEnumerator LinkMotionRoutine(int startIndex)
     {
-        float speed = Data.SetMotionByGear ? LinearSpeed * Data.SpeedMultiplier : Data.SpeedMultiplier;
+        float speed = Data.SetMotionByGear ? LinearSpeed : Data.Speed;
         _rotationExtentPerLink = speed * Data.LinkRotationMultiplier;
         int j = startIndex;
         

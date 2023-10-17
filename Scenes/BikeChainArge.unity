@@ -980,7 +980,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: cf41c1560fd13df4da97718c6fce6027, type: 2}
-  cogSpeed: 30
+  cogSpeed: 20
 --- !u!114 &2128791191 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}

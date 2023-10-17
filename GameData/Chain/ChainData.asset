@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   Unit: 2.3
-  LinearSpeed: 0.086111106
-  LinkRotationExtent: 0.07
-  SetRadiusByObject: 1
-  IsMoving: 1
-  motionDirection: 1
   RadiusOffset: 0.5
   Tension: -0.5
+  SpeedMultiplier: 1
+  LinkRotationMultiplier: 1
+  motionDirection: 1
+  SetRadiusByGear: 1
+  SetMotionByGear: 1
+  IsMoving: 1
