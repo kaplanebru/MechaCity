@@ -53,6 +53,8 @@ MonoBehaviour:
     RotationDirection: 1
     Color: {r: 0, g: 1, b: 1, a: 1}
     PositionOffset: {x: 0, y: 0, z: 0}
+    IsMoving: 1
+    toothScale: {x: 1, y: 1, z: 1}
 --- !u!114 &-8651037349865285081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,8 +73,12 @@ MonoBehaviour:
     RotationDirection: 1
     Color: {r: 0, g: 1, b: 1, a: 1}
     PositionOffset: {x: 0, y: 0, z: 0}
+    IsMoving: 1
+    toothScale: {x: 1, y: 1, z: 1}
   toothPb: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
-  interval: 25
+  intervalAngle: 60
+  minIntervalLimit: 6
+  equalize: 0
 --- !u!1001 &2216297432985857172
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -162,6 +168,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2216297433484720855}
     m_Modifications:
+    - target: {fileID: 803341631943705163, guid: 126ad635a18bbfb4f9a0cf21ee35cfb8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 247c4edea4f9f1d48b500ebdd3d274a0, type: 2}
     - target: {fileID: 2082808538579630248, guid: 126ad635a18bbfb4f9a0cf21ee35cfb8, type: 3}
       propertyPath: m_Name
       value: CogBodyStandard
