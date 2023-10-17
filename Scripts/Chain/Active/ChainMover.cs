@@ -9,11 +9,17 @@ using UnityEngine;
 public class ChainMover : MonoBehaviour
 {
     public ChainData Data;
+    
     private List<Transform> _links = new();
     private List<Vector3> _points = new();
     private List<Quaternion> _rotations = new();
+    
     public float cogSpeed = 30f;
     public static float CogSpeed;
+    public static float LinearSpeed;
+    
+    private float _rotationExtentPerLink;
+    
 
     private void OnEnable()
     {
@@ -33,11 +39,10 @@ public class ChainMover : MonoBehaviour
         counter++;
         totalCogTeeth += teethAmount;
       
-        if (counter == ChainSpawner.ArcCount) //TODO : TEST
+        if (counter == ChainSpawner.ArcCount) 
         {
-            Data.LinearSpeed = CogSpeed/totalCogTeeth/ChainSpawner.ArcCount;
-            Data.LinkRotationExtent = Data.LinearSpeed;
-            print("linear speed: " + Data.LinearSpeed);
+            LinearSpeed = CogSpeed / totalCogTeeth / Data.Unit; //TODO : Standardize Teeth size
+            print("linear speed: " + LinearSpeed);
             StartCoroutine(nameof(MoveRoutine));
             
             counter = 0;
@@ -72,14 +77,17 @@ public class ChainMover : MonoBehaviour
 
         for (int i = 0; i < _links.Count; i++)
         {
-            StartCoroutine(LinkRoutine(i));
+            StartCoroutine(LinkMotionRoutine(i));
         }
         
     }
 
-    IEnumerator LinkRoutine(int startIndex)
+    IEnumerator LinkMotionRoutine(int startIndex)
     {
+        float speed = Data.SetMotionByGear ? LinearSpeed * Data.SpeedMultiplier : Data.SpeedMultiplier;
+        _rotationExtentPerLink = speed * Data.LinkRotationMultiplier;
         int j = startIndex;
+        
         while (true)
         {
             switch (Data.motionDirection)
@@ -94,17 +102,16 @@ public class ChainMover : MonoBehaviour
                         j = _points.Count-1;
                     break;
             }
-            
-           
+
             while (Vector3.Distance(_links[startIndex].transform.position, _points[j]) > 0.05f) //0.1f
             {
                 _links[startIndex].transform.position = Vector3.MoveTowards(
                     _links[startIndex].transform.position,
-                    _points[j], Data.LinearSpeed);
+                    _points[j], speed);
                 
                 _links[startIndex].transform.rotation = Quaternion.Slerp(
                     _links[startIndex].transform.rotation,
-                    _rotations[j], Data.LinkRotationExtent);
+                    _rotations[j], _rotationExtentPerLink);
 
                 yield return new WaitForFixedUpdate();
             }

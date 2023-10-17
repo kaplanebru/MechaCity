@@ -86,7 +86,7 @@ namespace Chain
                 arcs[i].id = i;
                 arcs[i].gear.SetSpinDirection(Data.motionDirection);
 
-                if (Data.SetRadiusByObject)
+                if (Data.SetRadiusByGear)
                     arcs[i].SetRadiusByGear(Data.RadiusOffset);
                 else
                     arcs[i].radius += Data.RadiusOffset;
