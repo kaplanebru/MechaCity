@@ -38,7 +38,7 @@ namespace Chain
             ArcCount = arcs.Length;
             SetArcs();
             RelateArcs();
-            for (int i = 0; i < arcs.Length; i++)
+            for (int i = 0; i < ArcCount; i++)
             {
                 CommonTangentAngles(i);
             }
@@ -81,7 +81,7 @@ namespace Chain
 
         void SetArcs()
         {
-            for (int i = 0; i < arcs.Length; i++)
+            for (int i = 0; i < ArcCount; i++)
             {
                 arcs[i].id = i;
                 arcs[i].gear.SetSpinDirection(Data.motionDirection);
@@ -95,9 +95,9 @@ namespace Chain
 
         void RelateArcs()
         {
-            for (int i = 0; i < arcs.Length; i++)
+            for (int i = 0; i < ArcCount; i++)
             {
-                arcs[i].relatedArcId = (i + 1) % arcs.Length;
+                arcs[i].relatedArcId = (i + 1) % ArcCount;
             }
         }
 

@@ -43,7 +43,6 @@ public class ChainMover : MonoBehaviour
             counter = 0;
             totalCogTeeth = 0;
         }
-           
     }
 
     void SetPoints(List<Vector3> points)
@@ -54,7 +53,6 @@ public class ChainMover : MonoBehaviour
     void SetLinks(List<Transform> links)
     {
         _links = links;
-        //StartCoroutine(nameof(MoveRoutine));
     }
 
    
