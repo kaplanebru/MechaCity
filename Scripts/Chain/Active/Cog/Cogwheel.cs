@@ -43,6 +43,8 @@ namespace Chain
             if(!Data.IsMoving) return;
 
             Data.Speed = ChainMover.CogSpeed / teethCount;
+            
+            print(Data.Speed);
             ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval);
             
             StartCoroutine(nameof(SpinRoutine));

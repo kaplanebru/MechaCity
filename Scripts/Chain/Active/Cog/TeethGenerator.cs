@@ -16,6 +16,8 @@ namespace Chain
 
         private int teethCount;
 
+       
+
         private void OnEnable()
         {
             ChainEvents.OnCogStart += CreateTeethPoints;
@@ -43,16 +45,17 @@ namespace Chain
             {
                 teethCount++;
                 Vector3 point = TrigonometryHelper.CirclePoint(i, Data.Radius);
-                Transform tooth = Instantiate(toothPb, point + transform.position, Quaternion.identity);
+                //Transform tooth = Instantiate(toothPb, point + transform.position, Quaternion.identity);
+                Tooth tooth = ToothPool.Instance.GetItem(t => t.transform.position = point + transform.position);
                 
                 SetTooth(tooth, point);
-                tooth.SetParent(parent);
+                tooth.transform.SetParent(parent);
             }
 
             ChainEvents.OnTeethCreated?.Invoke(teethCount, transform, Mathf.Sin(intervalAngle * Mathf.Deg2Rad) * Data.Radius);
         }
 
-        void SetTooth(Transform tooth, Vector3 direction)
+        void SetTooth(Tooth tooth, Vector3 direction)
         {
             tooth.transform.rotation = Quaternion.LookRotation(direction);
             tooth.transform.localScale = Data.toothScale;

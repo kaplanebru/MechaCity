@@ -19,7 +19,6 @@ public class ChainMover : MonoBehaviour
     public static float LinearSpeed;
     
     private float _rotationExtentPerLink;
-    
 
     private void OnEnable()
     {

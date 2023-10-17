@@ -33,6 +33,7 @@ namespace GenericHelper
             {
                 T item = Instantiate(prefab, poolParent);
                 item.gameObject.SetActive(false);
+                item.transform.SetParent(transform);
                 pool.Enqueue(item);
             }
         }
