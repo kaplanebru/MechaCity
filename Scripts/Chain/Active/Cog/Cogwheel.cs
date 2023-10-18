@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Enums;
+using MyNamespace;
 using UnityEngine;
 
 namespace Chain
@@ -10,7 +9,6 @@ namespace Chain
     public class CogData
     {
         public float Radius = 3;
-        public float Speed = 10; //Todo: according to radius yap
         public int RotationDirection = 1;
         public Color Color = Color.cyan;
         public Vector3 PositionOffset;
@@ -19,11 +17,12 @@ namespace Chain
         public float circularThickness = 0.5f;
         public Transform[] holes;
     }
-    
+
+   
     public class Cogwheel : MonoBehaviour
     {
         public CogData Data;
-
+        float speed;
         private void OnEnable()
         {
             ChainEvents.OnTeethCreated += SetSpeedAndMove;
@@ -42,7 +41,7 @@ namespace Chain
             if(transform != _transform) return;
             if(!Data.IsMoving) return;
 
-            Data.Speed = ChainMover.CogSpeed / teethCount;
+            speed = ChainMover.CogSpeed / teethCount;
             ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval);
             
             StartCoroutine(nameof(SpinRoutine));
@@ -62,9 +61,9 @@ namespace Chain
             ChainEvents.OnCogStart?.Invoke(Data, transform);
         }
 
-        public void SetSpinDirection(ChainDirection chainDirection)
+        public void SetSpinDirection(ChainEnums.ChainDirection chainDirection)
         {
-            Data.RotationDirection = chainDirection == ChainDirection.Clockwise ? 1 : -1;
+            Data.RotationDirection = chainDirection == ChainEnums.ChainDirection.Clockwise ? 1 : -1;
         }
 
         void SetHoleSize()
@@ -82,10 +81,11 @@ namespace Chain
 
         IEnumerator SpinRoutine()
         {
+            print(speed);
             var direction = Vector3.up * Data.RotationDirection;
             while (true)
             {
-                transform.Rotate(direction, Data.Speed);
+                transform.Rotate(direction, speed); //Todo: enum yapılabilir, yukarı aşağı sağ sol
                 // transform.rotation =
                 //     Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(direction), Data.Speed);
                 yield return null;

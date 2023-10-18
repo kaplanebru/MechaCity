@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Enums;
+using MyNamespace;
 using UnityEngine;
 
 
@@ -31,7 +29,7 @@ namespace Chain
         {
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
-            if (Data.Type == ChainType.Line)
+            if (Data.Type == ChainEnums.ChainType.Line)
                 DrawLines();
             else
                 InstantiateObjs();
@@ -44,7 +42,7 @@ namespace Chain
                 var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
 
                 SetLookRotations(i, link);
-                if (Data.Type == ChainType.StandardChain)
+                if (Data.Type == ChainEnums.ChainType.StandardChain)
                     RotateLinks(i, link);
 
                 _links.Add(link);

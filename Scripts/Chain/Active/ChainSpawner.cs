@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
-using Enums;
 using Unity.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 //DISTANCE BASED
 namespace Chain
@@ -134,7 +130,7 @@ namespace Chain
             for (var j = 0; j < arcPoints.Count; j++)
             {
                 var point = arcPoints[j];
-                arcPoints[j] = gear.transform.position + point; //+ gear.transform.rotation * point;
+                arcPoints[j] = gear.transform.position + gear.transform.rotation * point;
             }
         }
 

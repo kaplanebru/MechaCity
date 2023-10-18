@@ -1,9 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Chain;
-using Codice.CM.Common;
-using Enums;
+using MyNamespace;
 using UnityEngine;
 
 public class ChainMover : MonoBehaviour
@@ -91,11 +89,11 @@ public class ChainMover : MonoBehaviour
         {
             switch (Data.motionDirection)
             {
-                case ChainDirection.Clockwise:
+                case ChainEnums.ChainDirection.Clockwise:
                     j++;
                     j %= _points.Count;
                     break;
-                case ChainDirection.ReverseClock:
+                case ChainEnums.ChainDirection.ReverseClock:
                     j--;
                     if (j < 0)
                         j = _points.Count-1;
