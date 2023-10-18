@@ -22,6 +22,8 @@ namespace Chain
     public class Cogwheel : MonoBehaviour
     {
         public CogData Data;
+        public Transform cogObject;
+        public Transform teeth;
         float speed;
 
         private void OnEnable()
@@ -50,7 +52,7 @@ namespace Chain
         void Setup()
         {
             var radius = Data.Radius;
-            var scale = transform.localScale;
+            var scale = cogObject.transform.localScale;
             scale.x = radius * 2;
             
             if(ChainSpawner.Upwards == ChainEnums.UpAxis.Z)
@@ -58,11 +60,11 @@ namespace Chain
             else
                 scale.y = radius * 2;
             
-            transform.localScale = scale;
+            cogObject.transform.localScale = scale;
             transform.position += Data.PositionOffset;
             //SetHoleSize();
 
-            ChainEvents.OnCogStart?.Invoke(Data, transform);
+            ChainEvents.OnCogStart?.Invoke(Data, teeth);
         }
 
         public void SetSpinDirection(ChainEnums.ChainDirection chainDirection)
