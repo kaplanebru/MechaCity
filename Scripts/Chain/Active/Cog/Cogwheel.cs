@@ -77,6 +77,7 @@ namespace Chain
             {
                 Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y,
                     1f / transform.localScale.z);
+                //hole.SetParent(null);
                 Vector3 scale = hole.transform.localScale;
                 
                 scale.x = holeSize;
@@ -84,6 +85,8 @@ namespace Chain
                     scale.z = holeSize;
                 else
                     scale.y = holeSize;
+                
+                //hole.SetParent(transform);
                 
                
                 
