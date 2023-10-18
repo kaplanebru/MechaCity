@@ -81,7 +81,7 @@ namespace Chain
 
         IEnumerator SpinRoutine()
         {
-            print(speed);
+            //print(speed);
             var direction = Vector3.up * Data.RotationDirection;
             while (true)
             {

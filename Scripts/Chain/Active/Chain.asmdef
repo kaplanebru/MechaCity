@@ -2,7 +2,8 @@
     "name": "Chain",
     "rootNamespace": "",
     "references": [
-        "GUID:b18e4d249f4d12844ae2fdcd52fda70a"
+        "GUID:b18e4d249f4d12844ae2fdcd52fda70a",
+        "GUID:8bb426bd7b6f04b41bd053132e8170af"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
