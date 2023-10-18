@@ -43,20 +43,28 @@ namespace Chain
                 teethCount++;
                 Vector3 point = TrigonometryHelper.CirclePoint(i, Data.Radius);
                 //Transform tooth = Instantiate(toothPb, point + transform.position, Quaternion.identity);
-                Tooth tooth = ToothPool.Instance.GetItem(t => t.transform.position = transform.position + transform.rotation * point);
+
+                Tooth tooth = ToothPool.Instance.GetItem(t =>
+                {
+                    t.transform.localScale = Data.toothScale;
+                    //t.transform.SetParent(transform);
+                    t.transform.localPosition = point;
+                }); //TODO: follow olmayan koşlda takip etmesin
                 
-                //gear.transform.position + gear.transform.rotation * point
-                SetTooth(tooth, point);
-                tooth.transform.SetParent(parent);
+                
+                tooth.transform.localPosition = transform.position + transform.rotation * point;
+                tooth.transform.SetParent(transform);
+                SetTooth(point, tooth);
             }
 
             ChainEvents.OnTeethCreated?.Invoke(teethCount, transform, Mathf.Sin(intervalAngle * Mathf.Deg2Rad) * Data.Radius);
         }
 
-        void SetTooth(Tooth tooth, Vector3 direction)
+        void SetTooth(Vector3 point, Tooth tooth)
         {
-            tooth.transform.rotation = Quaternion.LookRotation(direction);
-            tooth.transform.localScale = Data.toothScale;
+           
+            tooth.transform.localRotation = Quaternion.LookRotation(point);
+            // tooth.transform.localScale = Data.toothScale;
 
             // Vector3 scale = tooth.transform.localScale;
             // scale.x *= Data.toothScale.x;
