@@ -18,18 +18,18 @@ namespace Chain
         public Transform[] holes;
     }
 
-   
+
     public class Cogwheel : MonoBehaviour
     {
         public CogData Data;
         float speed;
+
         private void OnEnable()
         {
             ChainEvents.OnTeethCreated += SetSpeed;
             ChainEvents.OnMotionStateSet += Initialize;
-            //MoveCog; //TODO: bu kısım sadece moving statei set etsin. harekete başlatan başka bir etken olmalı
         }
-        
+
         private void Initialize(bool isMoving)
         {
             Setup();
@@ -40,23 +40,28 @@ namespace Chain
 
         private void SetSpeed(int teethCount, Transform _transform, float interval)
         {
-            if(transform != _transform) return;
-            
+            if (transform != _transform) return;
+
             speed = ChainMover.CogSpeed / teethCount;
             ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval);
         }
-        
+
 
         void Setup()
         {
             var radius = Data.Radius;
             var scale = transform.localScale;
             scale.x = radius * 2;
-            scale.z = radius * 2;
+            
+            if(ChainSpawner.Upwards == ChainEnums.UpAxis.Z)
+                scale.z = radius * 2;
+            else
+                scale.y = radius * 2;
+            
             transform.localScale = scale;
             transform.position += Data.PositionOffset;
-            SetHoleSize();
-            
+            //SetHoleSize();
+
             ChainEvents.OnCogStart?.Invoke(Data, transform);
         }
 
@@ -67,21 +72,31 @@ namespace Chain
 
         void SetHoleSize()
         {
-            var holeSize = (Data.Radius - Data.circularThickness) *2;
+            var holeSize = (Data.Radius - Data.circularThickness) * 2;
             foreach (var hole in Data.holes)
             {
-                Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y, 1f / transform.localScale.z);
+                Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y,
+                    1f / transform.localScale.z);
                 Vector3 scale = hole.transform.localScale;
+                
                 scale.x = holeSize;
-                scale.z = holeSize;
+                if(ChainSpawner.Upwards == ChainEnums.UpAxis.Z)
+                    scale.z = holeSize;
+                else
+                    scale.y = holeSize;
+                
+               
+                
                 hole.transform.localScale = Vector3.Scale(scale, inverseParentScale);
             }
         }
 
         IEnumerator SpinRoutine()
         {
-            //print(speed);
-            var direction = Vector3.up * Data.RotationDirection;
+            var direction = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
+                ? Vector3.up * Data.RotationDirection
+                : -Vector3.forward * Data.RotationDirection;
+            
             while (true)
             {
                 transform.Rotate(direction, speed); //Todo: enum yapılabilir, yukarı aşağı sağ sol
@@ -97,5 +112,4 @@ namespace Chain
             ChainEvents.OnMotionStateSet -= Initialize;
         }
     }
-
 }

@@ -70,8 +70,8 @@ namespace Chain
                     tangentPoints[1],
                     relatedArc.gear.transform.position);
 
-            // Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
-            // Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
+            Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
+            Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
         }
 
         void CreateParts(int i)

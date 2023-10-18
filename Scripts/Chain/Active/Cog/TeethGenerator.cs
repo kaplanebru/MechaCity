@@ -43,8 +43,9 @@ namespace Chain
                 teethCount++;
                 Vector3 point = TrigonometryHelper.CirclePoint(i, Data.Radius);
                 //Transform tooth = Instantiate(toothPb, point + transform.position, Quaternion.identity);
-                Tooth tooth = ToothPool.Instance.GetItem(t => t.transform.position = point + transform.position);
+                Tooth tooth = ToothPool.Instance.GetItem(t => t.transform.position = transform.position + transform.rotation * point);
                 
+                //gear.transform.position + gear.transform.rotation * point
                 SetTooth(tooth, point);
                 tooth.transform.SetParent(parent);
             }
