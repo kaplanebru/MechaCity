@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ChainData
   m_EditorClassIdentifier: 
   Type: 1
+  UpwardsAxis: 1
   Unit: 2.3
   RadiusOffset: 0.5
   Tension: -0.5

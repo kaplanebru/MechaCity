@@ -83,10 +83,14 @@ namespace Chain
         {
             var rot = newObj.transform.rotation;
             if (i % 2 == 0)
-                newObj.transform.rotation =
-                    Quaternion.Euler(rot.eulerAngles.x,
+                newObj.transform.rotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
+                    ? Quaternion.Euler(rot.eulerAngles.x,
                         rot.eulerAngles.y,
-                        rot.eulerAngles.z - 90);
+                        rot.eulerAngles.z - 90)
+                    : Quaternion.Euler(rot.eulerAngles.x,
+                        rot.eulerAngles.y - 90,
+                        rot.eulerAngles.z);
+
         }
 
         public void ReleaseChain()

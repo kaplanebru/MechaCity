@@ -25,7 +25,7 @@ namespace Chain
         float speed;
         private void OnEnable()
         {
-            ChainEvents.OnTeethCreated += SetSpeedAndMove;
+            ChainEvents.OnTeethCreated += SetSpeed;
             ChainEvents.OnMotionStateSet += Initialize;
             //MoveCog; //TODO: bu kısım sadece moving statei set etsin. harekete başlatan başka bir etken olmalı
         }
@@ -34,17 +34,16 @@ namespace Chain
         {
             Setup();
             Data.IsMoving = isMoving;
+            if (!Data.IsMoving) return;
+            StartCoroutine(nameof(SpinRoutine));
         }
 
-        private void SetSpeedAndMove(int teethCount, Transform _transform, float interval)
+        private void SetSpeed(int teethCount, Transform _transform, float interval)
         {
             if(transform != _transform) return;
-            if(!Data.IsMoving) return;
-
+            
             speed = ChainMover.CogSpeed / teethCount;
             ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval);
-            
-            StartCoroutine(nameof(SpinRoutine));
         }
         
 
@@ -94,7 +93,7 @@ namespace Chain
 
         private void OnDisable()
         {
-            ChainEvents.OnTeethCreated -= SetSpeedAndMove;
+            ChainEvents.OnTeethCreated -= SetSpeed;
             ChainEvents.OnMotionStateSet -= Initialize;
         }
     }

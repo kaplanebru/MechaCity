@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyNamespace;
 using Unity.Collections;
 using UnityEngine;
 
@@ -16,14 +17,20 @@ namespace Chain
         public Transform testCubePb;
         public Arc[] arcs;
         public static int ArcCount;
+        public static ChainEnums.UpAxis Upwards;
 
 
         private int linearPointAmount;
         [ReadOnly] public List<Vector3> chainPoints = new();
 
+        private void OnEnable()
+        {
+            Upwards = Data.UpwardsAxis;
+            chainPoints.Clear();
+        }
+
         private void Start()
         {
-            chainPoints.Clear();
             Setup();
             CreateParts(0);
             BindPoints();
@@ -130,7 +137,7 @@ namespace Chain
             for (var j = 0; j < arcPoints.Count; j++)
             {
                 var point = arcPoints[j];
-                arcPoints[j] = gear.transform.position + gear.transform.rotation * point;
+                arcPoints[j] = gear.transform.position + point; // gear.transform.rotation * point;
             }
         }
 

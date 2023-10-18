@@ -1,4 +1,5 @@
 using Chain;
+using MyNamespace;
 using UnityEngine;
 
 public static class TrigonometryHelper
@@ -9,28 +10,37 @@ public static class TrigonometryHelper
         float x = Mathf.Cos(radians);
         float y = Mathf.Sin(radians);
 
-        return new Vector3(x, 0, y) * radius;
+        Vector3 point = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
+            ? new Vector3(x, 0, y) * radius
+            : new Vector3(x, y, 0) * radius;
+
+        return point;
     }
 
 
     public static float AngleInPoint(Vector3 point, Vector3 referencePoint)
     {
-        float angle = Mathf.Atan2(point.z - referencePoint.z, point.x - referencePoint.x) * Mathf.Rad2Deg;
+        var upDistance = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
+            ? point.z - referencePoint.z
+            : point.y - referencePoint.y;
+        
+        float angle = Mathf.Atan2(upDistance, point.x - referencePoint.x) * Mathf.Rad2Deg;
         angle = (angle + 360) % 360;
         return angle;
     }
     
-    public static float AngleInPoint2(Vector3 point)
-    {
-        float angle = Mathf.Atan2(point.z, point.x) * Mathf.Rad2Deg;
-        return angle;
-    }
+    // public static float AngleInPoint2(Vector3 point)
+    // {
+    //     var up = ChainSpawner.Upwards == ChainEnums.UpAxis.Z ? point.z : point.y;
+    //     float angle = Mathf.Atan2(up, point.x) * Mathf.Rad2Deg;
+    //     return angle;
+    // }
     
     
     public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB) //, float offset)
     {
         Vector3 direction = (posB - posA).normalized;
-        float rotationAngle = AngleInPoint2(direction);//AngleInPoint(direction, Vector3.zero);
+        float rotationAngle = AngleInPoint(direction, Vector3.zero); //AngleInPoint2(direction);
 
         float distance = Vector3.Distance(posA, posB);
         float similarHyp = (distance * radiusB) / (radiusA - radiusB);

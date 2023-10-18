@@ -2,12 +2,6 @@ namespace MyNamespace
 {
     public class ChainEnums 
     {
-        public enum ChainState
-        {
-            Double,
-            Multiple
-        }
-
         public enum ChainType
         {
             StandardChain,
@@ -19,6 +13,12 @@ namespace MyNamespace
         {
             Clockwise,
             ReverseClock
+        }
+        
+        public enum UpAxis
+        {
+            Z,
+            X
         }
 
     }

@@ -1558,7 +1558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: cf41c1560fd13df4da97718c6fce6027, type: 2}
-  cogSpeed: 20
+  cogSpeed: 10
 --- !u!1 &1936693857
 GameObject:
   m_ObjectHideFlags: 0
@@ -1613,6 +1613,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1579374167}
     m_Modifications:
+    - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+      propertyPath: equalize
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -8651037349865285081, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: intervalAngle
       value: 60
