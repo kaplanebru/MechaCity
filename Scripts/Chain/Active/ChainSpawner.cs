@@ -137,7 +137,9 @@ namespace Chain
             for (var j = 0; j < arcPoints.Count; j++)
             {
                 var point = arcPoints[j];
-                arcPoints[j] = gear.transform.position + point; // gear.transform.rotation * point;
+                arcPoints[j] = Data.FollowGearRotation
+                    ? gear.transform.position + gear.transform.rotation * point
+                    : gear.transform.position + point;
             }
         }
 

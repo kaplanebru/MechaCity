@@ -18,7 +18,7 @@ namespace MyNamespace
         public enum UpAxis
         {
             Z,
-            X
+            Y
         }
 
     }
