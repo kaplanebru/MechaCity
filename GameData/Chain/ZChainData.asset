@@ -15,7 +15,7 @@ MonoBehaviour:
   Type: 1
   UpwardsAxis: 0
   Unit: 2.3
-  RadiusOffset: 0.5
+  RadiusOffset: 0.7
   Tension: -0.5
   Speed: 0.1
   LinkRotationMultiplier: 1
