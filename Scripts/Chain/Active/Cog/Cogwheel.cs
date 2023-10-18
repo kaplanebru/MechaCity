@@ -62,7 +62,7 @@ namespace Chain
             
             cogObject.transform.localScale = scale;
             transform.position += Data.PositionOffset;
-            //SetHoleSize();
+            SetHoleSize();
 
             ChainEvents.OnCogStart?.Invoke(Data, teeth);
         }
@@ -77,9 +77,9 @@ namespace Chain
             var holeSize = (Data.Radius - Data.circularThickness) * 2;
             foreach (var hole in Data.holes)
             {
-                Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y,
-                    1f / transform.localScale.z);
-                //hole.SetParent(null);
+                // Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y,
+                //     1f / transform.localScale.z);
+              
                 Vector3 scale = hole.transform.localScale;
                 
                 scale.x = holeSize;
@@ -87,12 +87,8 @@ namespace Chain
                     scale.z = holeSize;
                 else
                     scale.y = holeSize;
-                
-                //hole.SetParent(transform);
-                
-               
-                
-                hole.transform.localScale = Vector3.Scale(scale, inverseParentScale);
+
+                hole.transform.localScale = scale; //Vector3.Scale(scale, inverseParentScale);
             }
         }
 
