@@ -15,6 +15,7 @@ namespace Chain
 
 
         public Transform testCubePb;
+        public Transform testSpherePb;
         public Arc[] arcs;
         public static int ArcCount;
         public static ChainEnums.UpAxis Upwards;
@@ -71,7 +72,7 @@ namespace Chain
                     relatedArc.gear.transform.position);
 
             Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
-            Instantiate(testCubePb, tangentPoints[1], Quaternion.identity);
+            Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
         }
 
         void CreateParts(int i)

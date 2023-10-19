@@ -42,6 +42,13 @@ public static class TrigonometryHelper
         Vector3 direction = (posB - posA).normalized;
         float rotationAngle = AngleInPoint(direction, Vector3.zero); //AngleInPoint2(direction);
 
+        if (posB.x < posA.x)
+        {
+            //(posA, posB) = (posB, posA);
+            //rotationAngle += 180;
+        }
+           
+
         float distance = Vector3.Distance(posA, posB);
         float similarHyp = (distance * radiusB) / (radiusA - radiusB);
         
@@ -78,7 +85,7 @@ public static class TrigonometryHelper
         return Mathf.Acos(cos / radius) * Mathf.Rad2Deg;
     }
     
-    public static Vector3 CenterDirection(Arc[] arcParts)
+    public static Vector3 Center2(Arc[] arcParts)
     {
         Vector3 pos = Vector3.zero;
         foreach (var arcPart in arcParts)
@@ -87,6 +94,17 @@ public static class TrigonometryHelper
         }
 
         return pos / arcParts.Length;
+    }
+    
+    public static Vector3 Center(Vector3[] points)
+    {
+        Vector3 pos = Vector3.zero;
+        foreach (var point in points)
+        {
+            pos += point;
+        }
+
+        return pos / points.Length;
     }
     
     
