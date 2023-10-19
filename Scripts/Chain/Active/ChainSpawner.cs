@@ -40,6 +40,8 @@ namespace Chain
         void Setup()
         {
             ArcCount = arcs.Length;
+            OrderArcsClockwise();
+            print(arcs[0].gear.transform.position);
             SetArcs();
             RelateArcs();
             for (int i = 0; i < ArcCount; i++)
@@ -95,6 +97,17 @@ namespace Chain
                 else
                     arcs[i].radius += Data.RadiusOffset;
             }
+        }
+
+        void OrderArcsClockwise()
+        {
+            var arcPositions = new Vector3[arcs.Length];
+            for (int i = 0; i < arcs.Length; i++)
+            {
+                arcPositions[i] = arcs[i].gear.transform.position;
+            }
+
+            arcs = new ClockwiseSorter<Arc>(arcs, arcPositions).SortItems();
         }
 
         void RelateArcs()

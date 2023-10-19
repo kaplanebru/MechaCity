@@ -5,67 +5,78 @@ using UnityEngine;
 
 namespace Chain
 {
-    public class ClockwiseSorter
-    {
-        struct PointsAngles
+     struct ItemAngleModel<T>
         {
-            public Vector3 Point;
+            public T Item;
             public float Angle;
+            public Vector3 ItemPosition;
 
-            public PointsAngles(Vector3 point, float angle)
+            public ItemAngleModel(T item, float angle, Vector3 itemPosition)
             {
-                Point = point;
+                Item = item;
                 Angle = angle;
+                ItemPosition = itemPosition;
             }
         }
-
-        public Vector3[] points;
-        List<float> angles = new ();
-        List<PointsAngles> pointsAngles = new ();
+     
+    public class ClockwiseSorter<T>
+    {
+        T[] _items;
+        private Vector3[] _itemPositions;
+        List<ItemAngleModel<T>> itemAngleModels = new ();
 
         private Vector3 center;
 
-        void Sort()
+        public ClockwiseSorter(T[] items, Vector3[] itemPositions)
+        {
+            _items = items;
+            _itemPositions = itemPositions;
+        }
+
+        public T[] SortItems()
         {
             GetCenter();
             CalculateAngles();
             SortPointsByAngles();
-            RelatePointsToAngles();
-            //return points or arcs
+            return _items;
         }
 
         void GetCenter()
         {
-            center = TrigonometryHelper.Center(points);
+            center = TrigonometryHelper.Center(_itemPositions);
         }
 
         void CalculateAngles()
         {
-            foreach (Vector2 point in points)
+            for (var i = 0; i < _itemPositions.Length; i++)
             {
-                float angle = Mathf.Atan2(point.y - center.y, point.x - center.x) * Mathf.Rad2Deg; //TODO: if z
-                angles.Add(angle);
+                var pos = _itemPositions[i];
+                float angle = Mathf.Atan2(pos.z - center.z, pos.x - center.x) * Mathf.Rad2Deg; //TODO: if z
+                angle = (angle + 360) % 360;
+                itemAngleModels.Add(new ItemAngleModel<T>(_items[i], angle, pos));
             }
         }
-
-        void RelatePointsToAngles()
-        {
-            for (int i = 0; i < points.Length; i++)
-            {
-                pointsAngles.Add(new PointsAngles(points[i], angles[i]));
-            }
-        }
+        
 
         void SortPointsByAngles()
         {
-            pointsAngles = pointsAngles.OrderBy(p => p.Angle).ToList();
-            for (int i = 0; i < points.Length; i++)
+            itemAngleModels = itemAngleModels.OrderByDescending(i => i.Angle).ToList();
+           
+
+           
+            // itemAngleModels.Sort((a, b) =>
+            // {
+            //     float angleA = Mathf.Atan2(a.ItemPosition.z - center.z, a.ItemPosition.x - center.x);
+            //     float angleB = Mathf.Atan2(b.ItemPosition.z - center.z, b.ItemPosition.x - center.x);
+            //     return -angleA.CompareTo(angleB);
+            // });
+
+            //itemAngleModels.Reverse();
+            for (int i = 0; i < _items.Length; i++)
             {
-                points[i] = pointsAngles[i].Point;
+                _items[i] = itemAngleModels[i].Item;
+                Debug.Log(itemAngleModels[i].ItemPosition + " " + itemAngleModels[i].Angle);
             }
-            //sort sth by anothers order
-            //sort arcs here not points
-            //içeri arcları al
         }
     }
 }
