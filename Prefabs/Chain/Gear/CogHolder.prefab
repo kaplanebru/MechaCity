@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8d88bcb87e3fa4bb8e4ca7d7a34244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EventData: {fileID: 11400000, guid: 82c859374f83d9449a3eaba5a03cb8eb, type: 2}
   Data:
     Radius: 3
     RotationDirection: 1

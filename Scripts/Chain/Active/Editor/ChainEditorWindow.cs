@@ -7,9 +7,15 @@ using UnityEngine;
 
 public class ChainEditorWindow : EditorWindow
 {
+   
     private SerializedObject serializedObject;
     private SerializedProperty array;
     public Cogwheel[] cogArray;
+    
+    private string scriptableObjectPath = "Assets/GameData/Chain/EditorEventHandler.asset";
+    private EditorEventHandler EventData;
+    
+
 
     private float arcRadius;
     //private Cogwheel cog;
@@ -30,6 +36,9 @@ public class ChainEditorWindow : EditorWindow
     {
         serializedObject.Update();
         
+        EventData = AssetDatabase.LoadAssetAtPath<EditorEventHandler>(scriptableObjectPath);
+        Debug.Log(EventData.name);
+
         
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         arcRadius = EditorGUILayout.FloatField("Arc Radius", arcRadius);
@@ -41,7 +50,8 @@ public class ChainEditorWindow : EditorWindow
         SetCogs();
         if (GUILayout.Button("Generate Chain"))
         {
-            DoSth();
+            //DoSth();
+            EventData.RaiseEvent();
         }
         serializedObject.ApplyModifiedProperties();
     }

@@ -19,8 +19,10 @@ namespace Chain
     }
 
 
+    [ExecuteInEditMode]
     public class Cogwheel : MonoBehaviour
     {
+        public EditorEventHandler EventData;
         public CogData Data;
         public Transform cogObject;
         public Transform teeth;
@@ -28,14 +30,16 @@ namespace Chain
 
         private void OnEnable()
         {
+            //EventData = ScriptableObject.CreateInstance<EditorEventHandler>();
             ChainEvents.OnTeethCreated += SetSpeed;
             ChainEvents.OnMotionStateSet += Initialize;
 
-           // ChainEvents.OnTest += Test;
+            EventData.OnTest += Test;
         }
 
         private void Test()
         {
+            print("testtt");
             transform.localScale = Data.Radius * Vector3.one * 2;
         }
 
@@ -120,6 +124,7 @@ namespace Chain
             ChainEvents.OnMotionStateSet -= Initialize;
             
            // ChainEvents.OnTest -= Test;
+           EventData.OnTest -= Test;
         }
     }
 }
