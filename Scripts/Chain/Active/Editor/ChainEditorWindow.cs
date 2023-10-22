@@ -12,8 +12,8 @@ public class ChainEditorWindow : EditorWindow
     private SerializedProperty array;
     public Cogwheel[] cogArray;
     
-    private string scriptableObjectPath = "Assets/GameData/Chain/EditorEventHandler.asset";
-    private EditorEventHandler EventData;
+    // private string scriptableObjectPath = "Assets/GameData/Chain/EditorEventHandler.asset";
+    // private EditorEventHandler EventData;
     
 
 
@@ -36,8 +36,8 @@ public class ChainEditorWindow : EditorWindow
     {
         serializedObject.Update();
         
-        EventData = AssetDatabase.LoadAssetAtPath<EditorEventHandler>(scriptableObjectPath);
-        Debug.Log(EventData.name);
+        // EventData = AssetDatabase.LoadAssetAtPath<EditorEventHandler>(scriptableObjectPath);
+        // Debug.Log(EventData.name);
 
         
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
@@ -48,10 +48,13 @@ public class ChainEditorWindow : EditorWindow
         
 
         SetCogs();
+       
         if (GUILayout.Button("Generate Chain"))
         {
-            //DoSth();
-            EventData.RaiseEvent();
+            DoSth();
+            Debug.Log("log");
+            ChainEvents.OnTest.Invoke();
+            //EventData.RaiseEvent();
         }
         serializedObject.ApplyModifiedProperties();
     }
@@ -61,9 +64,9 @@ public class ChainEditorWindow : EditorWindow
         foreach (var cog in cogArray)
         {
             //cog.Data.Radius = arcRadius;
-            //ChainEvents.OnTest.Invoke();
-            cog.transform.localScale = arcRadius * 2 * Vector3.one;
-            Debug.Log("yo");
+           
+            //cog.transform.localScale = arcRadius * 2 * Vector3.one;
+            //Debug.Log("yo");
         }
     }
 

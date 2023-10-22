@@ -30,16 +30,16 @@ namespace Chain
 
         private void OnEnable()
         {
-            //EventData = ScriptableObject.CreateInstance<EditorEventHandler>();
+          
             ChainEvents.OnTeethCreated += SetSpeed;
             ChainEvents.OnMotionStateSet += Initialize;
 
-            EventData.OnTest += Test;
+            ChainEvents.OnTest += Test;
         }
 
         private void Test()
         {
-            print("testtt");
+            print("testtt beybi beybi");
             transform.localScale = Data.Radius * Vector3.one * 2;
         }
 
@@ -123,8 +123,8 @@ namespace Chain
             ChainEvents.OnTeethCreated -= SetSpeed;
             ChainEvents.OnMotionStateSet -= Initialize;
             
-           // ChainEvents.OnTest -= Test;
-           EventData.OnTest -= Test;
+            ChainEvents.OnTest -= Test;
+           
         }
     }
 }
