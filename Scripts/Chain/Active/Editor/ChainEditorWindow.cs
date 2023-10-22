@@ -7,23 +7,52 @@ using UnityEngine;
 
 public class ChainEditorWindow : EditorWindow
 {
+    private SerializedObject serializedObject;
+    private SerializedProperty array;
+    public Cogwheel[] cogArray;
+
     private float arcRadius;
-    private Cogwheel cog;
+    //private Cogwheel cog;
+
     [MenuItem("Tools/Chain Generator")]
     public static void ShowWindow()
     {
         GetWindow(typeof(ChainEditorWindow));
     }
 
+    private void OnEnable()
+    {
+        serializedObject = new SerializedObject(this);
+        array = serializedObject.FindProperty("cogArray");
+    }
+
     private void OnGUI()
     {
+        serializedObject.Update();
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         arcRadius = EditorGUILayout.FloatField("Arc Radius", arcRadius);
-        cog = EditorGUILayout.ObjectField("Cog", cog, typeof(Cogwheel), true) as Cogwheel;
+        //cog = EditorGUILayout.ObjectField("Cog", cog, typeof(Cogwheel), true) as Cogwheel;
 
+        EditorGUILayout.PropertyField(array, true);
+        
+
+       
         if (GUILayout.Button("Generate Chain"))
         {
-            Debug.Log("generate chain");
+            DoSth();
+        }
+        serializedObject.ApplyModifiedProperties();
+    }
+
+    void DoSth()
+    {
+        foreach (var cog in cogArray)
+        {
+            //cog.Data.Radius = arcRadius;
+            //ChainEvents.OnTest.Invoke();
+            cog.transform.localScale = arcRadius * 2 * Vector3.one;
+            Debug.Log("yo");
         }
     }
+   
 }

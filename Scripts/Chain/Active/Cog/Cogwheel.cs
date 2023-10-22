@@ -30,6 +30,13 @@ namespace Chain
         {
             ChainEvents.OnTeethCreated += SetSpeed;
             ChainEvents.OnMotionStateSet += Initialize;
+
+           // ChainEvents.OnTest += Test;
+        }
+
+        private void Test()
+        {
+            transform.localScale = Data.Radius * Vector3.one * 2;
         }
 
         private void Initialize(bool isMoving)
@@ -111,6 +118,8 @@ namespace Chain
         {
             ChainEvents.OnTeethCreated -= SetSpeed;
             ChainEvents.OnMotionStateSet -= Initialize;
+            
+           // ChainEvents.OnTest -= Test;
         }
     }
 }

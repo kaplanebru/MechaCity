@@ -11,4 +11,6 @@ public class ChainEvents
     public static Action<CogData, Transform> OnCogStart;
     public static Action<int, Transform, float> OnTeethCreated;
     public static Action<int, float> OnCogSpeedSet;
+
+    public static Action OnTest;
 }
