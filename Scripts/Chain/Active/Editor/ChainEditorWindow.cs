@@ -47,32 +47,22 @@ public class ChainEditorWindow : EditorWindow
         EditorGUILayout.PropertyField(array, true);
         
 
-        SetCogs();
+        GUILayout.Label("Cog Settings", EditorStyles.boldLabel);
+        
        
         if (GUILayout.Button("Generate Chain"))
         {
-            DoSth();
-            Debug.Log("log");
-            ChainEvents.OnTest.Invoke();
-            //EventData.RaiseEvent();
+            SetCogs();
+            
         }
         serializedObject.ApplyModifiedProperties();
     }
 
-    void DoSth()
-    {
-        foreach (var cog in cogArray)
-        {
-            //cog.Data.Radius = arcRadius;
-           
-            //cog.transform.localScale = arcRadius * 2 * Vector3.one;
-            //Debug.Log("yo");
-        }
-    }
+
 
     void SetCogs()
     {
-        GUILayout.Label("Cog Settings", EditorStyles.boldLabel);
+        ChainEvents.OnTest.Invoke();
     }
    
 }

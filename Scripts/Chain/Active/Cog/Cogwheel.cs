@@ -40,7 +40,6 @@ namespace Chain
         private void Test()
         {
             print("testtt beybi beybi");
-            transform.localScale = Data.Radius * Vector3.one * 2;
         }
 
         private void Initialize(bool isMoving)
