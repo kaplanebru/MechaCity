@@ -34,7 +34,12 @@ namespace Chain
             ChainEvents.OnTeethCreated += SetSpeed;
             ChainEvents.OnMotionStateSet += Initialize;
 
-            ChainEvents.OnTest += Test;
+            ChainEvents.OnTest += Setup;
+        }
+
+        private void Start()
+        {
+            ChainEvents.OnCogStart?.Invoke(Data, teeth);
         }
 
         private void Test()
@@ -74,7 +79,7 @@ namespace Chain
             transform.position += Data.PositionOffset;
             SetHoleSize();
 
-            ChainEvents.OnCogStart?.Invoke(Data, teeth);
+            //ChainEvents.OnCogStart?.Invoke(Data, teeth);
         }
 
         public void SetSpinDirection(ChainEnums.ChainDirection chainDirection)
@@ -122,7 +127,7 @@ namespace Chain
             ChainEvents.OnTeethCreated -= SetSpeed;
             ChainEvents.OnMotionStateSet -= Initialize;
             
-            ChainEvents.OnTest -= Test;
+            ChainEvents.OnTest -= Setup;
            
         }
     }
