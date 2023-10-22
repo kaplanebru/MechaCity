@@ -29,6 +29,8 @@ public class ChainEditorWindow : EditorWindow
     private void OnGUI()
     {
         serializedObject.Update();
+        
+        
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         arcRadius = EditorGUILayout.FloatField("Arc Radius", arcRadius);
         //cog = EditorGUILayout.ObjectField("Cog", cog, typeof(Cogwheel), true) as Cogwheel;
@@ -36,7 +38,7 @@ public class ChainEditorWindow : EditorWindow
         EditorGUILayout.PropertyField(array, true);
         
 
-       
+        SetCogs();
         if (GUILayout.Button("Generate Chain"))
         {
             DoSth();
@@ -53,6 +55,11 @@ public class ChainEditorWindow : EditorWindow
             cog.transform.localScale = arcRadius * 2 * Vector3.one;
             Debug.Log("yo");
         }
+    }
+
+    void SetCogs()
+    {
+        GUILayout.Label("Cog Settings", EditorStyles.boldLabel);
     }
    
 }
