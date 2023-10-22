@@ -5,18 +5,18 @@ using UnityEngine;
 
 namespace Chain
 {
-    [Serializable]
-    public class CogData
-    {
-        public float Radius = 3;
-        public int RotationDirection = 1;
-        public Color Color = Color.cyan;
-        public Vector3 PositionOffset;
-        public bool IsMoving = true;
-        public Vector3 toothScale = Vector3.one;
-        public float circularThickness = 0.5f;
-        public Transform[] holes;
-    }
+    // [Serializable]
+    // public class CogData
+    // {
+    //     public float Radius = 4;
+    //     public int RotationDirection = 1;
+    //     public Color Color = Color.cyan;
+    //     public Vector3 PositionOffset;
+    //     public bool IsMoving = true;
+    //     public Vector3 toothScale = Vector3.one;
+    //     public float circularThickness = 2f;
+    //     public Transform[] holes;
+    // }
 
 
     [ExecuteInEditMode]

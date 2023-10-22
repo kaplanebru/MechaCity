@@ -6,7 +6,7 @@ namespace Chain
 {
     public class TeethGenerator : MonoBehaviour
     {
-        public CogData Data;
+        private CogData Data;
         public Transform toothPb;
         public float intervalAngle = 60;
         public float minIntervalLimit = 6;
