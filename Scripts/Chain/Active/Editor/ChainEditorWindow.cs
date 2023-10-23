@@ -34,6 +34,11 @@ public class ChainEditorWindow : EditorWindow
 
 
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
+        
+       
+        
+       
+        
         EditorGUILayout.PropertyField(cogHoldersArray, true);
 
         if (cogHolders == null)
@@ -44,17 +49,17 @@ public class ChainEditorWindow : EditorWindow
 
         EditorGUI.BeginChangeCheck();
 
-
+        GUILayout.Label("_____Cog Settings_____", EditorStyles.boldLabel); //\n 
         if (cogHolderLabels == null || cogHolderLabels.Length != cogHolders.Length)
         {
             cogHolderLabels = new string[cogHolders.Length];
             for (int i = 0; i < cogHolders.Length; i++)
             {
-                cogHolderLabels[i] = "CogHolder " + i;
+                cogHolderLabels[i] = "Cog " + i;
             }
         }
 
-        selectedIndex = EditorGUILayout.Popup("Selected CogHolder", selectedIndex, cogHolderLabels);
+        selectedIndex = EditorGUILayout.Popup("Selected Cog", selectedIndex, cogHolderLabels);
 
         if (selectedIndex >= 0 && selectedIndex < cogHolders.Length)
         {
@@ -66,14 +71,14 @@ public class ChainEditorWindow : EditorWindow
 
         if (GUI.changed) //(EditorGUI.EndChangeCheck())
         {
-            if (cogHolders[selectedIndex].Data != null)
+            if (cogHolders[selectedIndex].cog.Data != null)
             {
-                EditorUtility.SetDirty(cogHolders[selectedIndex].Data);
+                EditorUtility.SetDirty(cogHolders[selectedIndex].cog.Data);
             }
         }
 
 
-        GUILayout.Label("Cog Settings", EditorStyles.boldLabel);
+      
 
 
         if (GUILayout.Button("Generate Chain"))

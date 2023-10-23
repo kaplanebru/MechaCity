@@ -17,6 +17,7 @@ namespace Chain
 
         public void SetCogData()
         {
+            //if (cog == null) return;
             Data = cog.Data;
             Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
             Data.toothScale = EditorGUILayout.Vector3Field("Tooth Scale", Data.toothScale);
