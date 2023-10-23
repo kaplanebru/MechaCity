@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24f08cdc525e724ca5966a1f7405f6c, type: 3}
   m_Name: CogData 1
   m_EditorClassIdentifier: 
-  Radius: 4
+  Radius: 2
   RotationDirection: -1
   IsMoving: 1
   toothScale: {x: 1, y: 1, z: 1}

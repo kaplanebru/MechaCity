@@ -12,13 +12,9 @@ public class ChainEditorWindow : EditorWindow
     private SerializedProperty cogHoldersArray;
     private SerializedProperty cogDatasArray;
     public CogHolder[] cogHolders;
+    private string[] cogHolderLabels;
 
     private int selectedIndex = 0;
-
-
-    private float arcRadius;
-    //private Cogwheel cog;
-
     [MenuItem("Tools/Chain Generator")]
     public static void ShowWindow()
     {
@@ -29,12 +25,17 @@ public class ChainEditorWindow : EditorWindow
     {
         serializedObject = new SerializedObject(this);
         cogHoldersArray = serializedObject.FindProperty("cogHolders");
-        //cogDatasArray = serializedObject.FindProperty("cogDatas");
+       
     }
 
     private void OnGUI()
     {
         serializedObject.Update();
+
+        
+
+        GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(cogHoldersArray, true);
 
         if (cogHolders == null)
         {
@@ -42,31 +43,28 @@ public class ChainEditorWindow : EditorWindow
             return;
         }
 
-        GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
-
-
         EditorGUI.BeginChangeCheck();
+        
+        
+        if (cogHolderLabels == null || cogHolderLabels.Length != cogHolders.Length)
+        {
+            cogHolderLabels = new string[cogHolders.Length];
+            for (int i = 0; i < cogHolders.Length; i++)
+            {
+                cogHolderLabels[i] = "CogHolder " + i;
+            }
+        }
 
-        selectedIndex = EditorGUILayout.IntSlider("Selected CogHolder", selectedIndex, 0, cogHolders.Length - 1);
+        selectedIndex = EditorGUILayout.Popup("Selected CogHolder", selectedIndex, cogHolderLabels);
+
         if (selectedIndex >= 0 && selectedIndex < cogHolders.Length)
         {
             EditorGUI.indentLevel++;
             cogHolders[selectedIndex].SetCogData();
             EditorGUI.indentLevel--;
         }
-
-        // foreach (var cogHolder in cogHolders)
-        // {
-        //     cogHolder.SetCogData();
-        // }
-
-        // foreach (var cogHolder in cogHolders)
-        // {
-        //     cogHolder.Data.Radius = EditorGUILayout.FloatField("Radius",  cogHolder.Data.Radius);
-        //     cogHolder.Data.toothScale = EditorGUILayout.Vector3Field("Tooth Scale",  cogHolder.Data.toothScale);
-        //     cogHolder.Data.circularThickness = EditorGUILayout.FloatField("Thickness",  cogHolder.Data.circularThickness);
-        //     cogHolder.Data.cogObject = (Transform)EditorGUILayout.ObjectField("Cog Object",  cogHolder.Data.cogObject, typeof(Transform), true);
-        // }
+        
+        
 
 
         if (EditorGUI.EndChangeCheck())
@@ -75,7 +73,7 @@ public class ChainEditorWindow : EditorWindow
         }
 
 
-        EditorGUILayout.PropertyField(cogHoldersArray, true);
+       
 
 
         GUILayout.Label("Cog Settings", EditorStyles.boldLabel);
@@ -92,10 +90,6 @@ public class ChainEditorWindow : EditorWindow
 
     void SetCogs()
     {
-        // foreach (var cogHolder in cogHolders)
-        // {
-        //     cogHolder.SetCogData();
-        // }
         ChainEvents.OnCogSetupRequest.Invoke();
     }
 }
