@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a4bff152c3eea74589670c92100d647, type: 3}
   m_Name: TestChainData
   m_EditorClassIdentifier: 
-  Type: 0
+  Type: 1
   UpwardsAxis: 0
   Unit: 2.3
   RadiusOffset: 0.5

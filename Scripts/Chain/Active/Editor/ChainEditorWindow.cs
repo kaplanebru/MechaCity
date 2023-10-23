@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Chain;
+using MyNamespace;
 using UnityEditor;
 using UnityEditor.TerrainTools;
 using UnityEngine;
@@ -51,6 +52,7 @@ public class ChainEditorWindow : EditorWindow
         EditorGUI.BeginChangeCheck();
 
         GUILayout.Label(" _______________Cog Settings_______________ ", EditorStyles.boldLabel); //\n 
+        EditorGUILayout.Space();
         if (cogHolderLabels == null || cogHolderLabels.Length != cogs.Length)
         {
             cogHolderLabels = new string[cogs.Length];
@@ -69,14 +71,20 @@ public class ChainEditorWindow : EditorWindow
             
         }
         
-        if (GUILayout.Button("Generate Chain"))
+        if (GUILayout.Button("Generate Cog"))
         {
             SetCogs();
         }
-        
-        EditorGUILayout.LabelField("\n\n  _______________Chain Properties_______________ \n\n", EditorStyles.boldLabel);
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
+        EditorGUILayout.Space();
         
         chainData = (ChainData) EditorGUILayout.ObjectField("Cog Data", chainData, typeof(ChainData), false);
+        if (chainData != null)
+        {
+            SetChainData();
+        }
 
         
         
@@ -111,7 +119,26 @@ public class ChainEditorWindow : EditorWindow
 
     void SetChainData()
     {
+        chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumFlagsField("Type", chainData.Type);
+        chainData.UpwardsAxis = (ChainEnums.UpAxis) EditorGUILayout.EnumFlagsField("Upwards Axis", chainData.UpwardsAxis);
+        chainData.Unit = EditorGUILayout.FloatField("Unit", chainData.Unit);
+        chainData.RadiusOffset = EditorGUILayout.FloatField("Radius Offset", chainData.RadiusOffset); //todo: adı cog offset olarak değiştirilebilir
+        chainData.Tension = EditorGUILayout.FloatField("Tension", chainData.Tension);
+
+        chainData.SetRadiusByGear = EditorGUILayout.Toggle("Set Radius By Cog", chainData.SetRadiusByGear);
+        chainData.IsMoving = EditorGUILayout.Toggle("Is Moving", chainData.IsMoving);
         
+        if (chainData.IsMoving)
+        {
+            chainData.Speed = EditorGUILayout.FloatField("Speed Multiplier", chainData.Speed); //todo : bool seçilince gelebilir
+            chainData.LinkRotationMultiplier = EditorGUILayout.FloatField("Link Rotation Multiplier", chainData.LinkRotationMultiplier);
+            
+            chainData.motionDirection = (ChainEnums.ChainDirection)EditorGUILayout.EnumFlagsField("Motion Direction", chainData.motionDirection);
+            chainData.FollowGearRotation = EditorGUILayout.Toggle("Follow Cog Rotation", chainData.FollowGearRotation);
+            chainData.SetMotionByGear = EditorGUILayout.Toggle("Set Motion By Cog", chainData.SetMotionByGear);
+        }
+        
+        //TODO: COG SPEED BURAYA. SYSTEM SPEED FALAN DA OLABİLİR ADI
     }
     
 
