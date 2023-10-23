@@ -13,9 +13,8 @@ public class ChainEditorWindow : EditorWindow
     private SerializedProperty array;
     public CogHolder[] cogHolders;
     
-    // private string scriptableObjectPath = "Assets/GameData/Chain/EditorEventHandler.asset";
-    // private EditorEventHandler EventData;
-    public CogData cogDataSO;
+  
+   
 
 
     private float arcRadius;
@@ -40,21 +39,33 @@ public class ChainEditorWindow : EditorWindow
 
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         //cog = EditorGUILayout.ObjectField("Cog", cog, typeof(Cogwheel), true) as Cogwheel;
-        cogDataSO = (CogData)EditorGUILayout.ObjectField("ScriptableObject", cogDataSO, typeof(CogData), false);
+
+        foreach (var cogHolder in cogHolders)
+        {
+            cogHolder.Data = (CogData)EditorGUILayout.ObjectField("Cog Data", cogHolder.Data, typeof(CogData), false);
+        }
+        //cogDataSO = (CogData)EditorGUILayout.ObjectField("ScriptableObject", cogDataSO, typeof(CogData), false);
         
         EditorGUI.BeginChangeCheck();
 
-        // Create fields for the data you want to edit
-        cogDataSO.Radius = EditorGUILayout.FloatField("Radius", cogDataSO.Radius);
-        cogDataSO.toothScale = EditorGUILayout.Vector3Field("Tooth Scale", cogDataSO.toothScale);
-        cogDataSO.circularThickness = EditorGUILayout.FloatField("Thickness", cogDataSO.circularThickness);
+        foreach (var cogHolder in cogHolders)
+        {
+            cogHolder.Data.Radius = EditorGUILayout.FloatField("Radius",  cogHolder.Data.Radius);
+            cogHolder.Data.toothScale = EditorGUILayout.Vector3Field("Tooth Scale",  cogHolder.Data.toothScale);
+            cogHolder.Data.circularThickness = EditorGUILayout.FloatField("Thickness",  cogHolder.Data.circularThickness);
             
-        cogDataSO.cogObject = (Transform)EditorGUILayout.ObjectField("Cog Object", cogDataSO.cogObject, typeof(Transform), true);
+            cogHolder.Data.cogObject = (Transform)EditorGUILayout.ObjectField("Cog Object",  cogHolder.Data.cogObject, typeof(Transform), true);
+        }
+
+       
 
         if (EditorGUI.EndChangeCheck())
         {
-            // Save the changes made in the editor
-            EditorUtility.SetDirty(cogDataSO);
+            foreach (var cogHolder in cogHolders)
+            {
+                EditorUtility.SetDirty(cogHolder.Data);
+            }
+            
         }
 
 
@@ -80,7 +91,7 @@ public class ChainEditorWindow : EditorWindow
         // {
         //     cogHolder.SetCogData();
         // }
-        ChainEvents.OnCogSetupRequest.Invoke(cogDataSO);
+        ChainEvents.OnCogSetupRequest.Invoke();
         
        
     }

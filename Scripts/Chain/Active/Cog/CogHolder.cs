@@ -15,7 +15,7 @@ namespace Chain
 
         public void SetCogData()
         {
-            Cog.Data = Data;
+            //Cog.Data = Data;
             Debug.Log("set cog data");
         }
         

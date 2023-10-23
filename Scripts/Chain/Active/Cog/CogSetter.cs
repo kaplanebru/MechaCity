@@ -17,7 +17,7 @@ namespace Chain
             ChainEvents.OnCogSetupRequest += Setup;
         }
 
-        void Setup(CogData data)
+        void Setup()
         {
             //Data = data;
             print("setup");
