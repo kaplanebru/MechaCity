@@ -41,7 +41,6 @@ namespace Chain
         {
             ArcCount = arcs.Length;
             OrderArcsClockwise();
-            print(arcs[0].gear.transform.position);
             SetArcs();
             RelateArcs();
             for (int i = 0; i < ArcCount; i++)

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2216297433484720855}
   - component: {fileID: 4853942488337658956}
   - component: {fileID: -8651037349865285081}
+  - component: {fileID: -92454076011392731}
   m_Layer: 0
   m_Name: CogHolder
   m_TagString: Untagged
@@ -60,6 +61,7 @@ MonoBehaviour:
     holes:
     - {fileID: 5451408089774622910}
     - {fileID: 5641935496469982459}
+    cogObject: {fileID: 0}
   cogObject: {fileID: 6241684560662293868}
   teeth: {fileID: 50034332948284259}
 --- !u!114 &-8651037349865285081
@@ -74,19 +76,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8365ef83a6d3e4aad55f14299bf2c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toothPb: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+  intervalAngle: 60
+  minIntervalLimit: 6
+  equalize: 0
+--- !u!114 &-92454076011392731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2216297433484720852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2c948766987dfa48930db183ccfde9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   Data:
-    Radius: 3
+    Radius: 1
     RotationDirection: 1
     Color: {r: 0, g: 1, b: 1, a: 1}
     PositionOffset: {x: 0, y: 0, z: 0}
     IsMoving: 1
     toothScale: {x: 1, y: 1, z: 1}
-    circularThickness: 0.5
+    circularThickness: 2
     holes: []
-  toothPb: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
-  intervalAngle: 60
-  minIntervalLimit: 6
-  equalize: 0
+    cogObject: {fileID: 6241684560662293868}
 --- !u!1 &4901621822006180803
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +191,7 @@ Transform:
   m_GameObject: {fileID: 9076388350052190662}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5828559597742675881}

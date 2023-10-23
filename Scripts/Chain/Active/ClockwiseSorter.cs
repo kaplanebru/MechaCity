@@ -75,7 +75,7 @@ namespace Chain
             for (int i = 0; i < _items.Length; i++)
             {
                 _items[i] = itemAngleModels[i].Item;
-                Debug.Log(itemAngleModels[i].ItemPosition + " " + itemAngleModels[i].Angle);
+                //Debug.Log(itemAngleModels[i].ItemPosition + " " + itemAngleModels[i].Angle);
             }
         }
     }
