@@ -9,13 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d24f08cdc525e724ca5966a1f7405f6c, type: 3}
-  m_Name: CogData
+  m_Script: {fileID: 11500000, guid: 8a4bff152c3eea74589670c92100d647, type: 3}
+  m_Name: TestChainData
   m_EditorClassIdentifier: 
-  Radius: 4
-  RotationDirection: -1
+  Type: 0
+  UpwardsAxis: 0
+  Unit: 2.3
+  RadiusOffset: 0.5
+  Tension: -0.5
+  Speed: 0.1
+  LinkRotationMultiplier: 1
+  motionDirection: 0
+  SetRadiusByGear: 1
+  SetMotionByGear: 1
   IsMoving: 1
-  toothScale: {x: 1, y: 1, z: 1}
-  circularThickness: 2
-  holes: []
-  cogObject: {fileID: 0}
+  FollowGearRotation: 1

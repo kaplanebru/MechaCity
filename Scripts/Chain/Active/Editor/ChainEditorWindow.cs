@@ -10,15 +10,16 @@ public class ChainEditorWindow : EditorWindow
 {
 
     private SerializedObject serializedObject;
-    private SerializedProperty cogsArray;
-    private SerializedProperty cogDatasArray;
     
-    [SerializeField]
-    public Cogwheel[] cogs;
+    private SerializedProperty cogsArray;
+    [SerializeField] private Cogwheel[] cogs;
     private List<CogData> cogDatas = new();
     private string[] cogHolderLabels;
-
     private int selectedIndex = 0;
+
+    [SerializeField] private ChainData chainData;
+    
+    
 
     [MenuItem("Tools/Chain Generator")]
     public static void ShowWindow()
@@ -30,16 +31,13 @@ public class ChainEditorWindow : EditorWindow
     {
         serializedObject = new SerializedObject(this);
         cogsArray = serializedObject.FindProperty("cogs");
+        cogs = FindObjectsOfType<Cogwheel>();
     }
 
     private void OnGUI()
     {
         serializedObject.Update();
-
-
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
-
-
         EditorGUILayout.PropertyField(cogsArray, true);
 
         if (cogs == null || cogs.Length == 0)
@@ -52,7 +50,7 @@ public class ChainEditorWindow : EditorWindow
 
         EditorGUI.BeginChangeCheck();
 
-        GUILayout.Label("_____Cog Settings_____", EditorStyles.boldLabel); //\n 
+        GUILayout.Label(" _______________Cog Settings_______________ ", EditorStyles.boldLabel); //\n 
         if (cogHolderLabels == null || cogHolderLabels.Length != cogs.Length)
         {
             cogHolderLabels = new string[cogs.Length];
@@ -65,50 +63,55 @@ public class ChainEditorWindow : EditorWindow
         selectedIndex = EditorGUILayout.Popup("Selected Cog", selectedIndex, cogHolderLabels);
         if (selectedIndex >= 0 && selectedIndex < cogs.Length)
         {
-            if (cogs[selectedIndex] == null)
-            {
-                Debug.Log(selectedIndex + " is null");
-                
-                // serializedObject.ApplyModifiedProperties();
-                // Repaint();
-                // return;
-            }
-              
             EditorGUI.indentLevel++;
             SetCogData(selectedIndex);
             EditorGUI.indentLevel--;
             
         }
+        
+        if (GUILayout.Button("Generate Chain"))
+        {
+            SetCogs();
+        }
+        
+        EditorGUILayout.LabelField("\n\n  _______________Chain Properties_______________ \n\n", EditorStyles.boldLabel);
+        
+        chainData = (ChainData) EditorGUILayout.ObjectField("Cog Data", chainData, typeof(ChainData), false);
 
-
+        
+        
         if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
         {
             if (cogs[selectedIndex].Data != null)
             {
                 EditorUtility.SetDirty(cogs[selectedIndex].Data);
             }
-        }
-
-
-        if (GUILayout.Button("Generate Chain"))
-        {
-            SetCogs();
+            
+            if(chainData != null)
+                EditorUtility.SetDirty(chainData);
         }
 
         serializedObject.ApplyModifiedProperties();
+        
+        
     }
 
-    public void SetCogData(int i)
+    void SetCogData(int i)
     {
         //if (cogs[i] == null) return;
         CogData Data = cogs[i].Data;
         cogDatas.Add(Data);
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
-        Data.toothScale = EditorGUILayout.Vector3Field("Tooth Scale", Data.toothScale);
         Data.circularThickness = EditorGUILayout.FloatField("Thickness", Data.circularThickness);
+        Data.toothScale = EditorGUILayout.Vector3Field("Tooth Scale", Data.toothScale);
         Data.cogObject = cogs[i].cogObject;
 
         EditorUtility.SetDirty(cogs[i].Data);
+    }
+
+    void SetChainData()
+    {
+        
     }
     
 
