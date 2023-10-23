@@ -15,6 +15,7 @@ public class ChainEditorWindow : EditorWindow
     private string[] cogHolderLabels;
 
     private int selectedIndex = 0;
+
     [MenuItem("Tools/Chain Generator")]
     public static void ShowWindow()
     {
@@ -25,14 +26,12 @@ public class ChainEditorWindow : EditorWindow
     {
         serializedObject = new SerializedObject(this);
         cogHoldersArray = serializedObject.FindProperty("cogHolders");
-       
     }
 
     private void OnGUI()
     {
         serializedObject.Update();
 
-        
 
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(cogHoldersArray, true);
@@ -44,8 +43,8 @@ public class ChainEditorWindow : EditorWindow
         }
 
         EditorGUI.BeginChangeCheck();
-        
-        
+
+
         if (cogHolderLabels == null || cogHolderLabels.Length != cogHolders.Length)
         {
             cogHolderLabels = new string[cogHolders.Length];
@@ -63,17 +62,15 @@ public class ChainEditorWindow : EditorWindow
             cogHolders[selectedIndex].SetCogData();
             EditorGUI.indentLevel--;
         }
-        
-        
 
 
-        if (EditorGUI.EndChangeCheck())
+        if (GUI.changed) //(EditorGUI.EndChangeCheck())
         {
-            EditorUtility.SetDirty(cogHolders[selectedIndex].Data);
+            if (cogHolders[selectedIndex].Data != null)
+            {
+                EditorUtility.SetDirty(cogHolders[selectedIndex].Data);
+            }
         }
-
-
-       
 
 
         GUILayout.Label("Cog Settings", EditorStyles.boldLabel);
