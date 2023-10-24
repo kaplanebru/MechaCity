@@ -13,10 +13,6 @@ namespace Chain
         public float minIntervalLimit = 6;
         public bool equalize = false;
 
-        private int teethCount;
-
-       
-
         private void OnEnable()
         {
             ChainEvents.OnCogDataSet += CreateTeethPoints;
@@ -46,7 +42,6 @@ namespace Chain
             
             for (float i = 0; i < 360; i += intervalAngle)
             {
-                teethCount++;
                 Vector3 point = TrigonometryHelper.CirclePoint(i, Data.Radius);
                 //Transform tooth = Instantiate(toothPb, point + transform.position, Quaternion.identity);
 
@@ -63,12 +58,12 @@ namespace Chain
                         : Quaternion.LookRotation(point, Vector3.forward);
                 });
 
-                print(tooth.name);
+              
                 teeth.Add(tooth);
                 //TODO: follow olmayan koşlda takip etmesin
             }
 
-            ChainEvents.OnTeethCreated?.Invoke(teethCount, transform, Mathf.Sin(intervalAngle * Mathf.Deg2Rad) * Data.Radius);
+            ChainEvents.OnTeethCreated?.Invoke(teeth.Count, transform, Mathf.Sin(intervalAngle * Mathf.Deg2Rad) * Data.Radius);
         }
 
         public List<Tooth> teeth = new();

@@ -107,12 +107,6 @@ public class ChainEditorWindow : EditorWindow
         
     }
 
-    void SetCogHolder()
-    {
-       // cogHolder.Cogs = cogsArray;
-
-    }
-
     void SetCogData(int i)
     {
         //if (cogs[i] == null) return;
