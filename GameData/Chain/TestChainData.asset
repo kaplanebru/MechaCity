@@ -17,7 +17,8 @@ MonoBehaviour:
   Unit: 2.3
   RadiusOffset: 0.5
   Tension: -0.5
-  Speed: 0.1
+  MachinerySpeed: 25
+  SpeedMultiplier: 0.1
   LinkRotationMultiplier: 1
   motionDirection: 0
   SetRadiusByGear: 1

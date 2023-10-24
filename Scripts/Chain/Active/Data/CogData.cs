@@ -17,6 +17,7 @@ namespace Chain
         public bool IsMoving = true;
         public Vector3 toothScale = Vector3.one;
         public float circularThickness = 2f;
+       
         
         public Transform[] holes;
         

@@ -23,6 +23,7 @@ namespace Chain
         public static ChainEnums.UpAxis Upwards;
 
 
+
         private int linearPointAmount;
         [ReadOnly] public List<Vector3> chainPoints = new();
 

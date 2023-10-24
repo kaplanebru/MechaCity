@@ -516,11 +516,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6241684560662293868, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalScale.x
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6241684560662293868, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalScale.z
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36fa7461231191a488510332a5da0c18, type: 3}
@@ -1066,11 +1066,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6241684560662293868, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalScale.x
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6241684560662293868, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalScale.z
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36fa7461231191a488510332a5da0c18, type: 3}
@@ -1453,7 +1453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2134aa162e8659743a3a44a598fd7df7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: cf41c1560fd13df4da97718c6fce6027, type: 2}
+  Data: {fileID: 11400000, guid: c885205d8b80a4e48b279cf1f5450c28, type: 2}
   cogs: []
   testCubePb: {fileID: 9112408327683927588, guid: b136ece2d9865d644944de074272c37e, type: 3}
   testSpherePb: {fileID: 7762909940027711531, guid: e52ac5224d13e3f4186c506261c0f729, type: 3}
@@ -1471,7 +1471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3431a6233d98f374dbae9e6996cff339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: cf41c1560fd13df4da97718c6fce6027, type: 2}
+  Data: {fileID: 11400000, guid: c885205d8b80a4e48b279cf1f5450c28, type: 2}
   lr: {fileID: 68324623}
   firstCubeMaterial: {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
   lastLinkPrefab: {fileID: 7363811566510024203, guid: 5d3c3d6de6672d64299d1bc4891f9a05, type: 3}
@@ -1487,8 +1487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9f1f797f6e090438c36d0d119acf80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: cf41c1560fd13df4da97718c6fce6027, type: 2}
-  cogSpeed: 10
+  Data: {fileID: 11400000, guid: c885205d8b80a4e48b279cf1f5450c28, type: 2}
 --- !u!1 &1936693857
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,11 +1697,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6241684560662293868, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalScale.x
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6241684560662293868, guid: 36fa7461231191a488510332a5da0c18, type: 3}
       propertyPath: m_LocalScale.z
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36fa7461231191a488510332a5da0c18, type: 3}

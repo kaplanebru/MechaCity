@@ -70,7 +70,6 @@ namespace Chain
 
         private void OnDisable()
         {
-            print(teeth.Count);
             teeth.ForEach(t=>ToothPool.Instance.ReleaseItem(t));
             ChainEvents.OnCogDataSet -= CreateTeethPoints;
         }

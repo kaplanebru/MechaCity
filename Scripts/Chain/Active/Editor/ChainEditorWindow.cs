@@ -74,11 +74,7 @@ public class ChainEditorWindow : EditorWindow
             
         }
         
-        if (GUILayout.Button("Generate Cog"))
-        {
-            SetCogs();
-        }
-
+       
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
         EditorGUILayout.Space();
@@ -86,10 +82,16 @@ public class ChainEditorWindow : EditorWindow
         chainData = (ChainData) EditorGUILayout.ObjectField("Cog Data", chainData, typeof(ChainData), false);
         if (chainData != null)
         {
-            SetChainData();
+            ChainSettings();
         }
 
-        
+        EditorGUILayout.Space();
+
+        if (GUILayout.Button("Generate Cog"))
+        {
+            CogSettings();
+        }
+
         
         if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
         {
@@ -119,10 +121,10 @@ public class ChainEditorWindow : EditorWindow
         EditorUtility.SetDirty(cogs[i].Data);
     }
 
-    void SetChainData()
+    void ChainSettings()
     {
-        chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumFlagsField("Type", chainData.Type);
-        chainData.UpwardsAxis = (ChainEnums.UpAxis) EditorGUILayout.EnumFlagsField("Upwards Axis", chainData.UpwardsAxis);
+        chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
+        chainData.UpwardsAxis = (ChainEnums.UpAxis) EditorGUILayout.EnumPopup("Upwards Axis", chainData.UpwardsAxis);
         chainData.Unit = EditorGUILayout.FloatField("Unit", chainData.Unit);
         chainData.RadiusOffset = EditorGUILayout.FloatField("Radius Offset", chainData.RadiusOffset); //todo: adı cog offset olarak değiştirilebilir
         chainData.Tension = EditorGUILayout.FloatField("Tension", chainData.Tension);
@@ -132,10 +134,11 @@ public class ChainEditorWindow : EditorWindow
         
         if (chainData.IsMoving)
         {
-            chainData.Speed = EditorGUILayout.FloatField("Speed Multiplier", chainData.Speed); //todo : bool seçilince gelebilir
+            chainData.MachinerySpeed = EditorGUILayout.FloatField("Machinery Speed", chainData.MachinerySpeed);
+            chainData.SpeedMultiplier = EditorGUILayout.FloatField("Speed Multiplier", chainData.SpeedMultiplier); 
             chainData.LinkRotationMultiplier = EditorGUILayout.FloatField("Link Rotation Multiplier", chainData.LinkRotationMultiplier);
             
-            chainData.motionDirection = (ChainEnums.ChainDirection)EditorGUILayout.EnumFlagsField("Motion Direction", chainData.motionDirection);
+            chainData.motionDirection = (ChainEnums.ChainDirection)EditorGUILayout.EnumPopup("Motion Direction", chainData.motionDirection);
             chainData.FollowGearRotation = EditorGUILayout.Toggle("Follow Cog Rotation", chainData.FollowGearRotation);
             chainData.SetMotionByGear = EditorGUILayout.Toggle("Set Motion By Cog", chainData.SetMotionByGear);
         }
@@ -145,7 +148,7 @@ public class ChainEditorWindow : EditorWindow
     
 
 
-    void SetCogs()
+    void CogSettings()
     {
         ChainEvents.OnCogSetupRequest.Invoke();
     }

@@ -36,8 +36,9 @@ namespace Chain
         {
             if (transform != _transform) return;
 
-            speed = ChainMover.CogSpeed / teethCount;
-            ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval);
+            speed = ChainMover.MachinerySpeed / teethCount;
+            print(speed);
+            ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval, Data.toothScale.x);
             ChainEvents.OnCogReady?.Invoke(new object[] {this});//Data, teeth //new object[] {Data, teeth}
         }
         
