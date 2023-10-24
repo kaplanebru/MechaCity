@@ -32,10 +32,10 @@ namespace Chain
             if (Data.Type == ChainEnums.ChainType.Line)
                 DrawLines();
             else
-                InstantiateObjs();
+                CreateLinks();
         }
 
-        void InstantiateObjs()
+        void CreateLinks()
         {
             for (int i = 0; i < _pointsCount; i++)
             {

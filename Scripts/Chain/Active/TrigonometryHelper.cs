@@ -90,7 +90,7 @@ public static class TrigonometryHelper
         Vector3 pos = Vector3.zero;
         foreach (var arcPart in arcParts)
         {
-            pos += arcPart.gear.transform.position;
+            pos += arcPart.cog.transform.position;
         }
 
         return pos / arcParts.Length;

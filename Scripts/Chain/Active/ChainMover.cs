@@ -31,20 +31,24 @@ public class ChainMover : MonoBehaviour
    
     private int totalCogTeeth = 0;
     private int counter = 0;
+
+    private float teethInterval;
     private void GetTotalCogSpeed(int teethAmount, float interval)
     {
         counter++;
         totalCogTeeth += teethAmount;
+        teethInterval = interval;
       
-        if (counter == ChainSpawner.ArcCount)
-        {
-            LinearSpeed = CogSpeed / (totalCogTeeth + (Data.Unit - interval) * totalCogTeeth);//(Data.Unit / interval)); fazlalığı da cogteethe eklemiş oluyoruz
-            //print("linear speed: " + LinearSpeed);
-            StartCoroutine(nameof(MoveRoutine));
-            
-            counter = 0;
-            totalCogTeeth = 0;
-        }
+        // print(ChainSpawner.ArcCount); //TODO bug detection
+        // if (counter == ChainSpawner.ArcCount)
+        // {
+        //     LinearSpeed = CogSpeed / (totalCogTeeth + (Data.Unit - interval) * totalCogTeeth);//(Data.Unit / interval)); fazlalığı da cogteethe eklemiş oluyoruz
+        //     //print("linear speed: " + LinearSpeed);
+        //     StartCoroutine(nameof(MoveRoutine));
+        //     
+        //     counter = 0;
+        //     totalCogTeeth = 0;
+        // }
     }
 
     void SetPoints(List<Vector3> points)
@@ -55,6 +59,8 @@ public class ChainMover : MonoBehaviour
     void SetLinks(List<Transform> links)
     {
         _links = links;
+        LinearSpeed = CogSpeed / (totalCogTeeth + (Data.Unit - teethInterval) * totalCogTeeth);//(Data.Unit / interval)); fazlalığı da cogteethe eklemiş oluyoruz
+        StartCoroutine(nameof(MoveRoutine));
     }
 
    

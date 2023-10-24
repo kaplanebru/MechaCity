@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MyNamespace;
@@ -31,16 +32,31 @@ namespace Chain
             Upwards = Data.UpwardsAxis;
             chainPoints.Clear();
         }
-
+        
+        
         private void GetCogs(object[] args)
         {
             Cogwheel newCog = args[0] as Cogwheel;
             cogs.Add(newCog);
-           // print(newCog.name);
+            
         }
 
-        private void Start()
+        void CreateArcs()
         {
+            ArcCount = cogs.Count;
+            arcs = new Arc[ArcCount];
+            print(arcs.Length);
+            for (int i = 0; i < cogs.Count; i++)
+            {
+                arcs[i] = new Arc(cogs[i]);
+                arcs[i].edgeAngles = new EdgeAngles(); //temp
+            }
+        }
+
+        private IEnumerator Start()
+        {
+            yield return new WaitForFixedUpdate();
+            CreateArcs();
             Setup();
             CreateParts(0);
             BindPoints();
@@ -48,7 +64,7 @@ namespace Chain
 
         void Setup()
         {
-            ArcCount = arcs.Length;
+            
             OrderArcsClockwise();
             SetArcs();
             RelateArcs();
@@ -65,8 +81,8 @@ namespace Chain
             Arc relatedArc = arcs[arcs[i].relatedArcId];
 
             Vector3[] tangentPoints = TrigonometryHelper.CommonTangentPoints(
-                arcs[i].gear.transform.position,
-                relatedArc.gear.transform.position,
+                arcs[i].cog.transform.position,
+                relatedArc.cog.transform.position,
                 arcs[i].radius,
                 relatedArc.radius);
 
@@ -74,12 +90,12 @@ namespace Chain
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
             arc.edgeAngles.End = TrigonometryHelper.AngleInPoint(
                 tangentPoints[0],
-                arc.gear.transform.position);
+                arc.cog.transform.position);
 
             relatedArc.edgeAngles.Start =
                 TrigonometryHelper.AngleInPoint(
                     tangentPoints[1],
-                    relatedArc.gear.transform.position);
+                    relatedArc.cog.transform.position);
 
             Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
             Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
@@ -98,7 +114,7 @@ namespace Chain
             for (int i = 0; i < ArcCount; i++)
             {
                 arcs[i].id = i;
-                arcs[i].gear.SetSpinDirection(Data.motionDirection);
+                arcs[i].cog.SetSpinDirection(Data.motionDirection);
 
                 if (Data.SetRadiusByGear)
                     arcs[i].SetRadiusByGear(Data.RadiusOffset);
@@ -112,7 +128,7 @@ namespace Chain
             var arcPositions = new Vector3[arcs.Length];
             for (int i = 0; i < arcs.Length; i++)
             {
-                arcPositions[i] = arcs[i].gear.transform.position;
+                arcPositions[i] = arcs[i].cog.transform.position;
             }
 
             arcs = new ClockwiseSorter<Arc>(arcs, arcPositions).SortItems();
@@ -154,7 +170,7 @@ namespace Chain
         void PositionPoints(int i)
         {
             var arcPoints = arcs[i].arcPoints;
-            var gear = arcs[i].gear;
+            var gear = arcs[i].cog;
 
             for (var j = 0; j < arcPoints.Count; j++)
             {
@@ -245,38 +261,7 @@ namespace Chain
     [Serializable]
     public class EdgeAngles
     {
-        public Vector2 EdgeSmoother;
-
-
         public float Start;
-        // {
-        //     get { return start; }
-        //     set
-        //     {
-        //         start = value; // * EdgeSmoother.x;
-        //     }
-        // }
-
-
         public float End;
-        // {
-        //     get {
-        //         return end;
-        //     }
-        //     set
-        //     {
-        //         end = value; // * (EdgeSmoother.y * baseAngle);
-        //     }
-        // }
-
-        // private float start;
-        // private float end;
-
-
-        // public EdgeAngles(float startAngle, float endAngle, )
-        // {
-        //     Start = startAngle; //* edgeSmoother[0];
-        //     End = endAngle; //* edgeSmoother[1];
-        // }
     }
 }

@@ -7,22 +7,24 @@ namespace Chain
     [Serializable]
     public class Arc
     {
-        public float radius;
-        public Vector2 edgeSmoother = new Vector2(1 ,1);
-        public Cogwheel gear;
-        
-        [Header("Not for user input")]
-        public int id;
+        [HideInInspector] public float radius;
+        public Cogwheel cog;
+
+        [Header("Not for user input")] public int id;
         public int relatedArcId;
         public EdgeAngles edgeAngles;
         public float baseAngle;
         public Vector3 nextPoint;
         public List<Vector3> arcPoints = new();
 
+        public Arc(Cogwheel _cog)
+        {
+            cog = _cog;
+        }
+
         public void SetRadiusByGear(float ArcOffset)
         {
-            radius = gear.Data.Radius + ArcOffset;
+            radius = cog.Data.Radius + ArcOffset;
         }
     }
-
 }
