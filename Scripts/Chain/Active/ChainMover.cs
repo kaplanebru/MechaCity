@@ -21,6 +21,7 @@ public class ChainMover : MonoBehaviour
 
     private void OnEnable()
     {
+        Data = GetComponent<ChainSpawner>().Data; //TODO: TEST. Data güncellendikten sonra on enable olduğu için sorun olmaz gibi. Ama yine de editöre taşınırsa drawer veya bu, sorun olabilir
         MachinerySpeed = Data.MachinerySpeed;
         print(Data.MachinerySpeed);
         print(MachinerySpeed);

@@ -21,6 +21,7 @@ namespace Chain
 
         private void OnEnable()
         {
+            Data = GetComponent<ChainSpawner>().Data; //TODO: TEST
             ChainEvents.OnPointsCreated += DrawChain;
             ResetValues();
         }
