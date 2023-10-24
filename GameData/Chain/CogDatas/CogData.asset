@@ -15,6 +15,6 @@ MonoBehaviour:
   Radius: 3
   RotationDirection: -1
   IsMoving: 1
-  toothScale: {x: 0.7, y: 1, z: 0.7}
+  toothScale: {x: 0.6, y: 1, z: 0.6}
   circularThickness: 2
   holes: []

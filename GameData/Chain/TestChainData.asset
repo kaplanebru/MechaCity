@@ -17,10 +17,10 @@ MonoBehaviour:
   Unit: 2.3
   RadiusOffset: 0.5
   Tension: -0.5
-  MachinerySpeed: 25
+  MachinerySpeed: 15
   SpeedMultiplier: 0.1
   LinkRotationMultiplier: 1
-  motionDirection: 0
+  motionDirection: 1
   SetRadiusByGear: 1
   SetMotionByGear: 1
   IsMoving: 1
