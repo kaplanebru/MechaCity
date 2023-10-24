@@ -14,5 +14,6 @@ public class ChainEvents
 
     public static Action OnCogSetupRequest;
     //public static Action<CogData, Transform> OnCogReady;
+    public static Action<CogData, Transform> OnCogDataSet;
     public static Action<object[]> OnCogReady;
 }

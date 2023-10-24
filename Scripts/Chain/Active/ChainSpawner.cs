@@ -45,7 +45,7 @@ namespace Chain
         {
             ArcCount = cogs.Count;
             arcs = new Arc[ArcCount];
-            print(arcs.Length);
+            print(cogs.Count);
             for (int i = 0; i < cogs.Count; i++)
             {
                 arcs[i] = new Arc(cogs[i]);

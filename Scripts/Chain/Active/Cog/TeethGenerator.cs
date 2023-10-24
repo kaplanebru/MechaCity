@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MyNamespace;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace Chain
 
         private void OnEnable()
         {
-            ChainEvents.OnCogReady += CreateTeethPoints;
+            ChainEvents.OnCogDataSet += CreateTeethPoints;
         }
 
         void SetIntervalAngle()
@@ -32,48 +33,51 @@ namespace Chain
                 intervalAngle = minIntervalLimit;
         }
 
-        void CreateTeethPoints(params object[] args) //CogData data, Transform teethParent //params object[] args
+        void CreateTeethPoints(CogData data, Transform teethParent) //CogData data, Transform teethParent //params object[] args
         {
-            Cogwheel cog = args[0] as Cogwheel;
-            CogData data = cog.Data;
-            Transform teethParent = cog.teeth;//args[1] as Transform;
-            
             if (teethParent.position != transform.position) return;
             Data = data;
 
             Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y,
                 1f / transform.localScale.z);
             SetIntervalAngle();
+
+          
+            
             for (float i = 0; i < 360; i += intervalAngle)
             {
                 teethCount++;
                 Vector3 point = TrigonometryHelper.CirclePoint(i, Data.Radius);
                 //Transform tooth = Instantiate(toothPb, point + transform.position, Quaternion.identity);
 
-                ToothPool.Instance.GetItem(t =>
+                var tooth = ToothPool.Instance.GetItem(t =>
                 {
-                    //t.transform.localScale = Data.toothScale;
                     t.transform.position = transform.position + transform.rotation * point;
                     t.transform.SetParent(teethParent);
-                    
+
                     t.transform.localScale = Vector3.Scale(Data.toothScale, inverseParentScale);
 
 
                     t.transform.localRotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
                         ? Quaternion.LookRotation(point)
                         : Quaternion.LookRotation(point, Vector3.forward);
-                }); 
+                });
+
+                print(tooth.name);
+                teeth.Add(tooth);
                 //TODO: follow olmayan koşlda takip etmesin
             }
 
             ChainEvents.OnTeethCreated?.Invoke(teethCount, transform, Mathf.Sin(intervalAngle * Mathf.Deg2Rad) * Data.Radius);
         }
 
-      
+        public List<Tooth> teeth = new();
 
         private void OnDisable()
         {
-            ChainEvents.OnCogReady -= CreateTeethPoints;
+            print(teeth.Count);
+            teeth.ForEach(t=>ToothPool.Instance.ReleaseItem(t));
+            ChainEvents.OnCogDataSet -= CreateTeethPoints;
         }
     }
 }

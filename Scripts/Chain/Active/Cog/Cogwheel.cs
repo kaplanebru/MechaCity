@@ -20,7 +20,7 @@ namespace Chain
 
         private void Start()
         {
-            ChainEvents.OnCogReady?.Invoke(new object[] {this});//Data, teeth //new object[] {Data, teeth}
+            ChainEvents.OnCogDataSet?.Invoke(Data, teeth);
         }
 
 
@@ -38,6 +38,7 @@ namespace Chain
 
             speed = ChainMover.CogSpeed / teethCount;
             ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval);
+            ChainEvents.OnCogReady?.Invoke(new object[] {this});//Data, teeth //new object[] {Data, teeth}
         }
         
         public void SetSpinDirection(ChainEnums.ChainDirection chainDirection)

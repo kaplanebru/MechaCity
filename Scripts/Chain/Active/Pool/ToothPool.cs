@@ -12,7 +12,7 @@ public class ToothPool : Pool<Tooth>
         
     }
 
-    private void Start()
+    private void OnEnable()
     {
         CreatePool(population, transform, toothPrefab);
     }
