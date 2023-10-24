@@ -13,6 +13,7 @@ namespace Chain
     {
         public ChainData Data;
 
+        [SerializeField]private List<Cogwheel> cogs = new();
 
         public Transform testCubePb;
         public Transform testSpherePb;
@@ -26,8 +27,16 @@ namespace Chain
 
         private void OnEnable()
         {
+            ChainEvents.OnCogReady += GetCogs;
             Upwards = Data.UpwardsAxis;
             chainPoints.Clear();
+        }
+
+        private void GetCogs(object[] args)
+        {
+            Cogwheel newCog = args[0] as Cogwheel;
+            cogs.Add(newCog);
+           // print(newCog.name);
         }
 
         private void Start()
@@ -224,6 +233,11 @@ namespace Chain
         void AdaptUnitToCircle()
         {
             Data.Unit = Vector3.Distance(chainPoints[0], chainPoints[1]); //print(chainPoints[1].z);
+        }
+
+        private void OnDisable()
+        {
+            ChainEvents.OnCogReady -= GetCogs;
         }
     }
 

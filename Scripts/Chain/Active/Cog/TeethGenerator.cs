@@ -18,7 +18,7 @@ namespace Chain
 
         private void OnEnable()
         {
-            ChainEvents.OnCogStart += CreateTeethPoints;
+            ChainEvents.OnCogReady += CreateTeethPoints;
         }
 
         void SetIntervalAngle()
@@ -32,8 +32,12 @@ namespace Chain
                 intervalAngle = minIntervalLimit;
         }
 
-        void CreateTeethPoints(CogData data, Transform teethParent)
+        void CreateTeethPoints(params object[] args) //CogData data, Transform teethParent //params object[] args
         {
+            Cogwheel cog = args[0] as Cogwheel;
+            CogData data = cog.Data;
+            Transform teethParent = cog.teeth;//args[1] as Transform;
+            
             if (teethParent.position != transform.position) return;
             Data = data;
 
@@ -69,7 +73,7 @@ namespace Chain
 
         private void OnDisable()
         {
-            ChainEvents.OnCogStart -= CreateTeethPoints;
+            ChainEvents.OnCogReady -= CreateTeethPoints;
         }
     }
 }

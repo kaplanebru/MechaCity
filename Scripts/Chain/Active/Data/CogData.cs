@@ -19,7 +19,7 @@ namespace Chain
         public float circularThickness = 2f;
         
         public Transform[] holes;
-        public Transform cogObject;
+        
     }
 }
 

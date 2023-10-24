@@ -14,6 +14,7 @@ public class ChainEditorWindow : EditorWindow
     
     private SerializedProperty cogsArray;
     [SerializeField] private Cogwheel[] cogs;
+    [SerializeField] private CogHolder cogHolder;
     private List<CogData> cogDatas = new();
     private string[] cogHolderLabels;
     private int selectedIndex = 0;
@@ -40,6 +41,8 @@ public class ChainEditorWindow : EditorWindow
         serializedObject.Update();
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(cogsArray, true);
+        
+        cogHolder = (CogHolder) EditorGUILayout.ObjectField("Cog Holder", cogHolder, typeof(CogHolder), false);
 
         if (cogs == null || cogs.Length == 0)
         {
@@ -104,6 +107,12 @@ public class ChainEditorWindow : EditorWindow
         
     }
 
+    void SetCogHolder()
+    {
+       // cogHolder.Cogs = cogsArray;
+
+    }
+
     void SetCogData(int i)
     {
         //if (cogs[i] == null) return;
@@ -112,7 +121,6 @@ public class ChainEditorWindow : EditorWindow
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
         Data.circularThickness = EditorGUILayout.FloatField("Thickness", Data.circularThickness);
         Data.toothScale = EditorGUILayout.Vector3Field("Tooth Scale", Data.toothScale);
-        Data.cogObject = cogs[i].cogObject;
 
         EditorUtility.SetDirty(cogs[i].Data);
     }

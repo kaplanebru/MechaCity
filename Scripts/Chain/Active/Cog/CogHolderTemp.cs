@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Chain
 {
     [Serializable]
-    public class CogHolder
+    public class CogHolderTemp
     {
         CogData Data;
         //public Transform CogObject;
@@ -23,7 +23,6 @@ namespace Chain
             Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
             Data.toothScale = EditorGUILayout.Vector3Field("Tooth Scale", Data.toothScale);
             Data.circularThickness = EditorGUILayout.FloatField("Thickness", Data.circularThickness);
-            Data.cogObject = cog.cogObject;
             
             //cog = (Cogwheel)EditorGUILayout.ObjectField("Cog Object", cog, typeof(Cogwheel), true);
             // cog = EditorGUILayout.ObjectField("Cog", cog, typeof(Cogwheel), true) as Cogwheel;

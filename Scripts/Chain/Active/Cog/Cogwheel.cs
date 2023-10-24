@@ -20,7 +20,7 @@ namespace Chain
 
         private void Start()
         {
-            ChainEvents.OnCogStart?.Invoke(Data, teeth);
+            ChainEvents.OnCogReady?.Invoke(new object[] {this});//Data, teeth //new object[] {Data, teeth}
         }
 
 
@@ -39,26 +39,7 @@ namespace Chain
             speed = ChainMover.CogSpeed / teethCount;
             ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval);
         }
-
-
-        // void Setup()
-        // {
-        //     var radius = Data.Radius;
-        //     var scale = cogObject.transform.localScale;
-        //     scale.x = radius * 2;
-        //     
-        //     if(ChainSpawner.Upwards == ChainEnums.UpAxis.Z)
-        //         scale.z = radius * 2;
-        //     else
-        //         scale.y = radius * 2;
-        //     
-        //     cogObject.transform.localScale = scale;
-        //     transform.position += Data.PositionOffset;
-        //     SetHoleSize();
-        //
-        //     //ChainEvents.OnCogStart?.Invoke(Data, teeth);
-        // }
-
+        
         public void SetSpinDirection(ChainEnums.ChainDirection chainDirection)
         {
             Data.RotationDirection = chainDirection == ChainEnums.ChainDirection.Clockwise ? 1 : -1;
