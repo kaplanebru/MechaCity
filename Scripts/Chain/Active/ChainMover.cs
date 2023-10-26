@@ -35,10 +35,10 @@ public class ChainMover : MonoBehaviour
     private int totalCogTeeth = 0;
     private int _toothSize;
     private float toothUnits;
-    private void GetTotalCogSpeed(int teethAmount, float interval, float toothSize) //x size mı
+    private void GetTotalCogSpeed(int teethAmount, float toothUnit)
     {
         totalCogTeeth += teethAmount;
-        toothUnits += interval;
+        toothUnits += toothUnit;
     }
 
     void SetPoints(List<Vector3> points)
@@ -121,5 +121,7 @@ public class ChainMover : MonoBehaviour
         ChainEvents.OnMotionStateSet -= enable => enabled = enable;
         ChainEvents.OnPointsCreated -= SetPoints;
         ChainEvents.OnLinksCreated -= SetLinks;
+        ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;
+
     }
 }

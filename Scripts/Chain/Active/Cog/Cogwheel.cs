@@ -27,12 +27,12 @@ namespace Chain
             StartCoroutine(nameof(SpinRoutine));
         }
 
-        private void SetSpeed(int teethCount, string uniqID, float interval)
+        private void SetSpeed(int teethCount, string uniqID, float toothUnit)
         {
             if (Data.uniqueID != uniqID) return;
 
             speed = ChainMover.MachinerySpeed / teethCount;
-            ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval, Data.toothScale.x);
+            ChainEvents.OnCogSpeedSet?.Invoke(teethCount, toothUnit);
             ChainEvents.OnCogReady?.Invoke(new object[] {this});//Data, teeth //new object[] {Data, teeth}
         }
         

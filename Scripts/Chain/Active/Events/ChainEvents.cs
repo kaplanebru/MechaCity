@@ -10,12 +10,10 @@ public class ChainEvents
     public static Action<bool> OnMotionStateSet;
     
     public static Action<int, string, float> OnTeethCreated;
-    public static Action<int, float, float> OnCogSpeedSet;
+    public static Action<int, float> OnCogSpeedSet;
 
     public static Action OnCogSetupRequest;
     //public static Action<CogData, Transform> OnCogReady;
     public static Action<CogData, Transform> OnCogDataSet;
     public static Action<object[]> OnCogReady;
-
-    public static Action OnPoolStart;
 }
