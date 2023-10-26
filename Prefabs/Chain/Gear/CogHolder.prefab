@@ -49,20 +49,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8d88bcb87e3fa4bb8e4ca7d7a34244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EventData: {fileID: 11400000, guid: 82c859374f83d9449a3eaba5a03cb8eb, type: 2}
-  Data:
-    Radius: 3
-    RotationDirection: 1
-    Color: {r: 0, g: 1, b: 1, a: 1}
-    PositionOffset: {x: 0, y: 0, z: 0}
-    IsMoving: 1
-    toothScale: {x: 1, y: 1, z: 1}
-    circularThickness: 0.5
-    holes:
-    - {fileID: 5451408089774622910}
-    - {fileID: 5641935496469982459}
-    cogObject: {fileID: 0}
+  Data: {fileID: 0}
   cogObject: {fileID: 6241684560662293868}
+  holes:
+  - {fileID: 5451408089774622910}
+  - {fileID: 5641935496469982459}
   teeth: {fileID: 50034332948284259}
 --- !u!114 &-8651037349865285081
 MonoBehaviour:
@@ -80,6 +71,7 @@ MonoBehaviour:
   intervalAngle: 60
   minIntervalLimit: 6
   equalize: 0
+  teeth: []
 --- !u!114 &-92454076011392731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,16 +84,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c948766987dfa48930db183ccfde9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data:
-    Radius: 1
-    RotationDirection: 1
-    Color: {r: 0, g: 1, b: 1, a: 1}
-    PositionOffset: {x: 0, y: 0, z: 0}
-    IsMoving: 1
-    toothScale: {x: 1, y: 1, z: 1}
-    circularThickness: 2
-    holes: []
-    cogObject: {fileID: 6241684560662293868}
 --- !u!1 &4901621822006180803
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1603454309820083217}
   m_Layer: 0
-  m_Name: Hole
+  m_Name: Holes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

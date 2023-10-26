@@ -42,8 +42,6 @@ public class ChainEditorWindow : EditorWindow
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(cogsArray, true);
         
-        cogHolder = (CogHolder) EditorGUILayout.ObjectField("Cog Holder", cogHolder, typeof(CogHolder), false);
-
         if (cogs == null || cogs.Length == 0)
         {
             EditorGUILayout.HelpBox("Assign the CogHolders array in the Inspector.", MessageType.Info);
