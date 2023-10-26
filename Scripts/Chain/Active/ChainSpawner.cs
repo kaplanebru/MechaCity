@@ -33,13 +33,25 @@ namespace Chain
             Upwards = Data.UpwardsAxis;
             chainPoints.Clear();
         }
-        
-        
-        private void GetCogs(object[] args)
+
+        private IEnumerator Start()
         {
-            Cogwheel newCog = args[0] as Cogwheel;
-            cogs.Add(newCog);
+            if (cogs.Count == 0)
+            {
+                print("no cogs");
+                yield break;
+            }
             
+            yield return new WaitForSeconds(1);
+            CreateArcs();
+            Setup();
+            CreateParts(0);
+            BindPoints();
+        }
+        
+        private void GetCogs(Cogwheel newCog)
+        {
+            cogs.Add(newCog);
         }
 
         void CreateArcs()
@@ -52,15 +64,6 @@ namespace Chain
                 arcs[i] = new Arc(cogs[i]);
                 arcs[i].edgeAngles = new EdgeAngles(); //temp
             }
-        }
-
-        private IEnumerator Start()
-        {
-            yield return new WaitForFixedUpdate();
-            CreateArcs();
-            Setup();
-            CreateParts(0);
-            BindPoints();
         }
 
         void Setup()

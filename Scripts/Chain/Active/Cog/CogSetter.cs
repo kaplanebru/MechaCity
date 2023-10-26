@@ -16,10 +16,24 @@ namespace Chain
 
         private void OnEnable()
         {
+
             cog = GetComponent<Cogwheel>();
             Data = cog.Data;
             
             ChainEvents.OnCogSetupRequest += Setup;
+            ChainEvents.OnTeethCreated += SetSpeedByTeeth;
+
+        }
+
+        private void SetSpeedByTeeth(int teethCount, string uniqID, float toothUnit)
+        {
+            print("yo");
+            if (Data.uniqueID != uniqID) return;
+            
+            Data.Speed = ChainMover.MachinerySpeed / teethCount;
+            print("speed at setter: " + Data.Speed);
+            Data.TeethCount = teethCount;
+            Data.ToothUnit = toothUnit;
         }
 
         void Setup()
@@ -75,6 +89,8 @@ namespace Chain
         private void OnDisable()
         {
             ChainEvents.OnCogSetupRequest -= Setup;
+            ChainEvents.OnTeethCreated -= SetSpeedByTeeth;
+
         }
     }
 
