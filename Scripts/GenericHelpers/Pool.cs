@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace GenericHelper
 {
+    //[ExecuteAlways]
     public abstract class Pool<T> : MonoBehaviour where T : Component
     {
         public static Pool<T> Instance;

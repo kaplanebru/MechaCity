@@ -19,12 +19,6 @@ namespace Chain
             ChainEvents.OnMotionStateSet += Initialize;
         }
 
-        private void Start()
-        {
-            ChainEvents.OnCogDataSet?.Invoke(Data, teeth);
-        }
-
-
         private void Initialize(bool isMoving)
         {
             //Setup();
@@ -33,12 +27,11 @@ namespace Chain
             StartCoroutine(nameof(SpinRoutine));
         }
 
-        private void SetSpeed(int teethCount, Transform _transform, float interval)
+        private void SetSpeed(int teethCount, string uniqID, float interval)
         {
-            if (transform != _transform) return;
+            if (Data.uniqueID != uniqID) return;
 
             speed = ChainMover.MachinerySpeed / teethCount;
-//            print(speed);
             ChainEvents.OnCogSpeedSet?.Invoke(teethCount, interval, Data.toothScale.x);
             ChainEvents.OnCogReady?.Invoke(new object[] {this});//Data, teeth //new object[] {Data, teeth}
         }

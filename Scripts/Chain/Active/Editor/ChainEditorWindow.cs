@@ -72,6 +72,10 @@ public class ChainEditorWindow : EditorWindow
             
         }
         
+        EditorGUILayout.Space();
+        if (GUILayout.Button("Generate Cog"))
+            CogSettings();
+        
        
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
@@ -85,10 +89,7 @@ public class ChainEditorWindow : EditorWindow
 
         EditorGUILayout.Space();
 
-        if (GUILayout.Button("Generate Cog"))
-        {
-            CogSettings();
-        }
+        
 
         
         if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
@@ -114,7 +115,14 @@ public class ChainEditorWindow : EditorWindow
         cogDatas.Add(Data);
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
         Data.circularThickness = EditorGUILayout.FloatField("Thickness", Data.circularThickness);
+        
+        EditorGUILayout.Space();
+
+        EditorGUILayout.LabelField("Teeth Settings", EditorStyles.boldLabel);
         Data.toothScale = EditorGUILayout.Vector3Field("Tooth Scale", Data.toothScale);
+        Data.ToothGap = EditorGUILayout.FloatField("Tooth Gap", Data.ToothGap);
+        Data.Equalize = EditorGUILayout.Toggle("Equal Gaps", Data.Equalize);
+        Data.MinGapLimit = EditorGUILayout.FloatField("Min Gap Limit", Data.MinGapLimit);
 
         EditorUtility.SetDirty(cogs[i].Data);
     }

@@ -25,7 +25,6 @@ namespace Chain
         void Setup()
         {
             //Data = data;
-            print("setup");
             var radius = Data.Radius;
             var scale = Vector3.one;
             scale.x = radius * 2;
@@ -38,6 +37,9 @@ namespace Chain
             cog.cogObject.transform.localScale = scale;
             
             SetHoleSize();
+            
+            ChainEvents.OnCogDataSet?.Invoke(Data, cog.teeth);
+
             
             //Data.cogObject.transform.localScale = scale;
             //transform.position += Data.PositionOffset;
