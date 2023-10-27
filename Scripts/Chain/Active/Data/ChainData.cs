@@ -21,6 +21,8 @@ namespace Chain
         public bool SetMotionByGear = true;
         public bool IsMoving = true;
         public bool FollowGearRotation = true;
+
+        [HideInInspector]public int CogAmount;
     }
 
    

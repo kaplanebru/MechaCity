@@ -1,22 +1,34 @@
 using System;
+using System.Linq;
 using Chain;
 using GenericHelper;
+using UnityEditor;
 using UnityEngine;
 
 [ExecuteInEditMode]
 public class ToothPool : Pool<Tooth>
 {
+
     [SerializeField] int population = 1000;
     [SerializeField] Tooth toothPrefab;
-    private void Awake() //instance awakete olunca editör bulamıyor
+
+  
+
+    private void Awake()
     {
+
+        Instance = this;
+        ChainEvents.OnPoolCreated?.Invoke();
     }
 
     private void OnEnable()
     {
-        print("on pool enabled");
-        Instance = this;
-        CreatePool(population, transform, toothPrefab);
+        if (!Application.isPlaying)
+        {
+            // Create the pool in Edit mode.
+            CreatePool(population, transform, toothPrefab);
+        }
     }
-    
+
+  
 }

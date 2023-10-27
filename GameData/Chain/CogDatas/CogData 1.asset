@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: CogData 1
   m_EditorClassIdentifier: 
   uniqueID: 
-  Radius: 4
+  Radius: 5
   RotationDirection: -1
   circularThickness: 2
   IsMoving: 1
-  Speed: 0
   toothScale: {x: 0.6, y: 1, z: 0.6}
   ToothGap: 60
   MinGapLimit: 6

@@ -19,7 +19,7 @@ namespace Chain
         public Transform testCubePb;
         public Transform testSpherePb;
         public Arc[] arcs;
-        public static int ArcCount;
+        private int _arcCount;
         public static ChainEnums.UpAxis Upwards;
         
         private int linearPointAmount;
@@ -27,7 +27,6 @@ namespace Chain
 
         private void OnEnable()
         {
-            
             ChainEvents.OnCogReady += GetCogs;
             Upwards = Data.UpwardsAxis;
             chainPoints.Clear();
@@ -35,7 +34,7 @@ namespace Chain
 
         private IEnumerator Start()
         {
-            yield return new WaitUntil(() => cogs.Count == 3);
+            yield return new WaitUntil(() => cogs.Count == Data.CogAmount);
             
             CreateArcs();
             Setup();
@@ -50,8 +49,8 @@ namespace Chain
 
         void CreateArcs()
         {
-            ArcCount = cogs.Count;
-            arcs = new Arc[ArcCount];
+            _arcCount = Data.CogAmount;
+            arcs = new Arc[_arcCount];
             for (int i = 0; i < cogs.Count; i++)
             {
                 arcs[i] = new Arc(cogs[i]);
@@ -65,7 +64,7 @@ namespace Chain
             OrderArcsClockwise();
             SetArcs();
             RelateArcs();
-            for (int i = 0; i < ArcCount; i++)
+            for (int i = 0; i < _arcCount; i++)
             {
                 CommonTangentAngles(i);
             }
@@ -108,7 +107,7 @@ namespace Chain
 
         void SetArcs()
         {
-            for (int i = 0; i < ArcCount; i++)
+            for (int i = 0; i < _arcCount; i++)
             {
                 arcs[i].id = i;
                 arcs[i].cog.SetSpinDirection(Data.motionDirection);
@@ -133,9 +132,9 @@ namespace Chain
 
         void RelateArcs()
         {
-            for (int i = 0; i < ArcCount; i++)
+            for (int i = 0; i < _arcCount; i++)
             {
-                arcs[i].relatedArcId = (i + 1) % ArcCount;
+                arcs[i].relatedArcId = (i + 1) % _arcCount;
             }
         }
 

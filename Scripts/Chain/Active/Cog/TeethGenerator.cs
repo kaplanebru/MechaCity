@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using MyNamespace;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Chain
     {
         private CogData Data;
         public Transform toothPb;
+        private Transform _teethParent;
         
         
         float _intervalAngle = 60;
@@ -17,7 +19,24 @@ namespace Chain
 
         private void OnEnable()
         {
-            ChainEvents.OnCogDataSet += CreateTeethPoints;
+            ChainEvents.OnCogDataSet += ReadyForTeethCreation;
+            ChainEvents.OnPoolCreated += WaitForPool;
+        }
+
+        void ReadyForTeethCreation(CogData data, Transform teethParent)
+        {
+            if (teethParent.position != transform.position) return;
+            ;
+            Data = data;
+            _teethParent = teethParent;
+            StartCoroutine(nameof(CreateTeethRoutine));
+        }
+
+        private bool waitPool = true;
+        void WaitForPool()
+        {
+            print("wait false");
+            waitPool = false;
         }
 
         void SetIntervalAngle()
@@ -30,12 +49,16 @@ namespace Chain
                 _intervalAngle = Data.MinGapLimit;
         }
 
-        public void CreateTeethPoints(CogData data, Transform teethParent) //CogData data, Transform teethParent //params object[] args
+        IEnumerator CreateTeethRoutine()
         {
-            if (teethParent.position != transform.position) return;
-            
+            yield return new WaitUntil(() => waitPool == false);
+            CreateTeethPoints();
+        }
+
+        public void CreateTeethPoints() //CogData data, Transform teethParent //params object[] args
+        {
             ResetTeeth();
-            Data = data;
+            print("reset");
 
             Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y,
                 1f / transform.localScale.z);
@@ -49,7 +72,7 @@ namespace Chain
                 Tooth tooth = ToothPool.Instance.GetItem(t =>
                 {
                     t.transform.position = transform.position + transform.rotation * point;
-                    t.transform.SetParent(teethParent);
+                    t.transform.SetParent(_teethParent);
 
                     t.transform.localScale = Vector3.Scale(Data.toothScale, inverseParentScale);
 
@@ -63,6 +86,8 @@ namespace Chain
                 teeth.Add(tooth);
                 //TODO: follow olmayan koşlda takip etmesin
             }
+            
+            print(teeth.Count);
 
             SetTeethInfo(teeth.Count, Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position));
         }
@@ -89,7 +114,9 @@ namespace Chain
 
         private void OnDisable()
         {
-            ChainEvents.OnCogDataSet -= CreateTeethPoints;
+            ChainEvents.OnCogDataSet -= ReadyForTeethCreation;
+            ChainEvents.OnPoolCreated -= WaitForPool;
+
         }
     }
 }

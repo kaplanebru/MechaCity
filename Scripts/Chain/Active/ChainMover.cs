@@ -48,7 +48,7 @@ public class ChainMover : MonoBehaviour
     void SetLinks(List<Transform> links)
     {
         _links = links;
-        LinearSpeed = Data.MachinerySpeed / (totalCogTeeth + (Data.Unit - toothUnits/ChainSpawner.ArcCount) * totalCogTeeth);  //fazlalığı da cogteethe eklemiş oluyoruz
+        LinearSpeed = Data.MachinerySpeed / (totalCogTeeth + (Data.Unit - toothUnits/Data.CogAmount) * totalCogTeeth);  //fazlalığı da cogteethe eklemiş oluyoruz
         //BOŞLUK + TEETH SİZE   /(totalCogTeeth + (Data.Unit - (teethInterval + _toothSize)) * totalCogTeeth);
 //        print("chain speed: " + LinearSpeed);
         StartCoroutine(nameof(MoveRoutine));

@@ -32,7 +32,10 @@ public class ChainEditorWindow : EditorWindow
     {
         serializedObject = new SerializedObject(this);
         cogsArray = serializedObject.FindProperty("cogs");
+        
         cogs = FindObjectsOfType<Cogwheel>();
+        chainData.CogAmount = cogs.Length;
+        
     }
 
     private void OnGUI()
@@ -97,9 +100,13 @@ public class ChainEditorWindow : EditorWindow
             {
                 EditorUtility.SetDirty(cogs[selectedIndex].Data);
             }
-            
-            if(chainData != null)
+
+            if (chainData != null)
+            {
+                chainData.CogAmount = cogs.Length;
                 EditorUtility.SetDirty(chainData);
+
+            }
         }
 
         serializedObject.ApplyModifiedProperties();
