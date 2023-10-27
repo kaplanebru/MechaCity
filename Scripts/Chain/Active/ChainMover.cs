@@ -16,14 +16,13 @@ public class ChainMover : MonoBehaviour
     public static float LinearSpeed;
     public static float MachinerySpeed;
 
-    
     private float _rotationExtentPerLink;
 
     private void OnEnable()
     {
-        Data = GetComponent<ChainSpawner>().Data; //TODO: TEST. Data güncellendikten sonra on enable olduğu için sorun olmaz gibi. Ama yine de editöre taşınırsa drawer veya bu, sorun olabilir
+        Data = GetComponent<ChainSpawner>().Data;
         MachinerySpeed = Data.MachinerySpeed;
-     
+        
         ChainEvents.OnMotionStateSet += enable => enabled = enable;
         ChainEvents.OnPointsCreated += SetPoints;
         ChainEvents.OnLinksCreated += SetLinks;
@@ -49,7 +48,7 @@ public class ChainMover : MonoBehaviour
     void SetLinks(List<Transform> links)
     {
         _links = links;
-        LinearSpeed = MachinerySpeed / (totalCogTeeth + (Data.Unit - toothUnits/ChainSpawner.ArcCount) * totalCogTeeth);  //fazlalığı da cogteethe eklemiş oluyoruz
+        LinearSpeed = Data.MachinerySpeed / (totalCogTeeth + (Data.Unit - toothUnits/ChainSpawner.ArcCount) * totalCogTeeth);  //fazlalığı da cogteethe eklemiş oluyoruz
         //BOŞLUK + TEETH SİZE   /(totalCogTeeth + (Data.Unit - (teethInterval + _toothSize)) * totalCogTeeth);
 //        print("chain speed: " + LinearSpeed);
         StartCoroutine(nameof(MoveRoutine));

@@ -21,14 +21,13 @@ namespace Chain
         public Arc[] arcs;
         public static int ArcCount;
         public static ChainEnums.UpAxis Upwards;
-
-
-
+        
         private int linearPointAmount;
         [ReadOnly] public List<Vector3> chainPoints = new();
 
         private void OnEnable()
         {
+            
             ChainEvents.OnCogReady += GetCogs;
             Upwards = Data.UpwardsAxis;
             chainPoints.Clear();
@@ -36,13 +35,8 @@ namespace Chain
 
         private IEnumerator Start()
         {
-            if (cogs.Count == 0)
-            {
-                print("no cogs");
-                yield break;
-            }
+            yield return new WaitUntil(() => cogs.Count == 3);
             
-            yield return new WaitForSeconds(1);
             CreateArcs();
             Setup();
             CreateParts(0);
@@ -58,7 +52,6 @@ namespace Chain
         {
             ArcCount = cogs.Count;
             arcs = new Arc[ArcCount];
-            print(cogs.Count);
             for (int i = 0; i < cogs.Count; i++)
             {
                 arcs[i] = new Arc(cogs[i]);

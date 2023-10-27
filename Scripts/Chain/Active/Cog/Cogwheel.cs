@@ -14,25 +14,22 @@ namespace Chain
 
         private void OnEnable()
         {
-            //ChainEvents.OnCogReady?.Invoke(this); // TODO: execution order sıkıntı
             ChainEvents.OnMotionStateSet += StartMotion;
         }
 
         private void Start()
         {
-            ChainEvents.OnCogReady?.Invoke(this); // TODO: execution order sıkıntı
-
+            ChainEvents.OnCogReady?.Invoke(this); //ninvoke pas en enable
         }
 
 
         private void StartMotion(bool isMoving)
         {
-            ChainEvents.OnCogSpeedSet?.Invoke(Data.TeethCount, Data.ToothUnit);
-
-            //Setup();
             Data.IsMoving = isMoving;
             if (!Data.IsMoving) return;
             
+            SetSpeedByTeeth();
+            ChainEvents.OnCogSpeedSet?.Invoke(Data.TeethCount, Data.ToothUnit);
             StartCoroutine(nameof(SpinRoutine));
         }
 
@@ -40,17 +37,23 @@ namespace Chain
         {
             Data.RotationDirection = chainDirection == ChainEnums.ChainDirection.Clockwise ? 1 : -1;
         }
-        
+
+        private float _speed;
+        private void SetSpeedByTeeth()
+        {
+            _speed = ChainMover.MachinerySpeed / Data.TeethCount;
+            print("cog speed: " + _speed);
+        }
+
         IEnumerator SpinRoutine()
         {
-            print("cog speed : " + Data.Speed);
             var direction = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
                 ? Vector3.up * Data.RotationDirection
                 : -Vector3.forward * Data.RotationDirection;
 
             while (true)
             {
-                transform.Rotate(direction, Data.Speed); //Todo: enum yapılabilir, yukarı aşağı sağ sol
+                transform.Rotate(direction, _speed); //Todo: enum yapılabilir, yukarı aşağı sağ sol
                 // transform.rotation =
                 //     Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(direction), Data.Speed);
                 yield return null;

@@ -14,7 +14,6 @@ public class ChainEditorWindow : EditorWindow
     
     private SerializedProperty cogsArray;
     [SerializeField] private Cogwheel[] cogs;
-    [SerializeField] private CogHolder cogHolder;
     private List<CogData> cogDatas = new();
     private string[] cogHolderLabels;
     private int selectedIndex = 0;

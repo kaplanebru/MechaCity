@@ -14,7 +14,6 @@ namespace Chain
         public int RotationDirection = 1;
         public float circularThickness = 2f;
         public bool IsMoving = true;
-        [HideInInspector] public float Speed;
 
         [Header("Teeth Settings")]
         public Vector3 toothScale = Vector3.one;

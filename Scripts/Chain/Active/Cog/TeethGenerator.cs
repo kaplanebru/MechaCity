@@ -18,7 +18,6 @@ namespace Chain
         private void OnEnable()
         {
             ChainEvents.OnCogDataSet += CreateTeethPoints;
-           
         }
 
         void SetIntervalAngle()
@@ -65,17 +64,12 @@ namespace Chain
                 //TODO: follow olmayan koşlda takip etmesin
             }
 
-            var toothUnit = Vector3.Distance(teeth[1].transform.position, teeth[0].transform.position);//Mathf.Sin(intervalAngle * Mathf.Deg2Rad) * Data.Radius;
-            //ChainEvents.OnTeethCreated?.Invoke(teeth.Count, Data.uniqueID, toothUnit);
-            SetSpeedByTeeth(teeth.Count, Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position));
+            SetTeethInfo(teeth.Count, Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position));
         }
         
         
-        private void SetSpeedByTeeth(int teethCount, float toothUnit)
+        private void SetTeethInfo(int teethCount, float toothUnit)
         {
-            print("Teeth count: " + Data.TeethCount);
-            Data.Speed = ChainMover.MachinerySpeed / teethCount;
-            print("speed at setter: " + Data.Speed);
             Data.TeethCount = teethCount;
             Data.ToothUnit = toothUnit;
         }
