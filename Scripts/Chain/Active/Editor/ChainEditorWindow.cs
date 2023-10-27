@@ -46,7 +46,6 @@ public class ChainEditorWindow : EditorWindow
         
         if (cogs == null || cogs.Length == 0)
         {
-            EditorGUILayout.HelpBox("Assign the CogHolders array in the Inspector.", MessageType.Info);
             serializedObject.ApplyModifiedProperties();
             return;
         }
@@ -76,7 +75,17 @@ public class ChainEditorWindow : EditorWindow
         
         EditorGUILayout.Space();
         if (GUILayout.Button("Generate Cog"))
+        {
             CogSettings();
+            // for (int i = 0; i < cogs.Length; i++)
+            // {
+            //     Undo.RecordObject(this, "this");
+            //     Undo.RecordObject(cogs[i], "Cog" + i);
+            //     Undo.RecordObject(cogs[i].GetComponent<TeethGenerator>(), "TeethGen" + i);
+            //
+            // }
+
+        }
         
        
         EditorGUILayout.Space();
@@ -105,8 +114,9 @@ public class ChainEditorWindow : EditorWindow
             {
                 chainData.CogAmount = cogs.Length;
                 EditorUtility.SetDirty(chainData);
-
             }
+            
+            Undo.RecordObject(this, "Chain Editor");
         }
 
         serializedObject.ApplyModifiedProperties();

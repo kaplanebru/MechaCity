@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using MyNamespace;
 using UnityEngine;
 
@@ -58,7 +59,6 @@ namespace Chain
         public void CreateTeethPoints() //CogData data, Transform teethParent //params object[] args
         {
             ResetTeeth();
-            print("reset");
 
             Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y,
                 1f / transform.localScale.z);
@@ -87,8 +87,6 @@ namespace Chain
                 //TODO: follow olmayan koşlda takip etmesin
             }
             
-            print(teeth.Count);
-
             SetTeethInfo(teeth.Count, Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position));
         }
         
@@ -103,7 +101,22 @@ namespace Chain
 
         void ResetTeeth()
         {
-            //if(teeth.Count == 0) return;
+            if (teeth.Count == 0)
+            {
+                print("zero");
+                if (Application.isEditor)
+                {
+                    List<Tooth> deadTeeth = _teethParent.GetComponentsInChildren<Tooth>().ToList();
+                    deadTeeth.ForEach(t=>
+                        {
+                            t.transform.SetParent(ToothPool.Instance.transform);
+                            ToothPool.Instance.ReleaseItem(t);
+                        });
+                }
+            }
+
+           
+           
             teeth.ForEach(t=>
             {
                 t.transform.SetParent(ToothPool.Instance.transform);

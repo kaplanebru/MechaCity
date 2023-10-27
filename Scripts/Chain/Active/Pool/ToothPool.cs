@@ -13,16 +13,26 @@ public class ToothPool : Pool<Tooth>
     [SerializeField] Tooth toothPrefab;
 
   
-
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+            ChainEvents.OnPoolCreated?.Invoke();
+        }
 
-        Instance = this;
-        ChainEvents.OnPoolCreated?.Invoke();
+        
     }
 
+    
     private void OnEnable()
     {
+        if (instance == null)
+        {
+            instance = this;
+            ChainEvents.OnPoolCreated?.Invoke();
+        }
+        
         if (!Application.isPlaying)
         {
             // Create the pool in Edit mode.
