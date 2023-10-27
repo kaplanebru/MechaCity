@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Chain;
 using MyNamespace;
 using UnityEditor;
@@ -30,13 +31,26 @@ public class ChainEditorWindow : EditorWindow
 
     private void OnEnable()
     {
+        EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         serializedObject = new SerializedObject(this);
         cogsArray = serializedObject.FindProperty("cogs");
-        
-        cogs = FindObjectsOfType<Cogwheel>();
+
+        // cogs = chainData.cogs.ToArray(); //FindObjectsOfType<Cogwheel>();
+        // Debug.Log(chainData.cogs.Count);
         chainData.CogAmount = cogs.Length;
         
     }
+
+    private void OnPlayModeStateChanged(PlayModeStateChange state)
+    {
+        if (state == PlayModeStateChange.EnteredEditMode)
+        {
+            cogs = chainData.cogs.ToArray(); //FindObjectsOfType<Cogwheel>();
+            Debug.Log(chainData.cogs.Count);
+            Repaint();
+        }
+    }
+    
 
     private void OnGUI()
     {
@@ -49,9 +63,30 @@ public class ChainEditorWindow : EditorWindow
             serializedObject.ApplyModifiedProperties();
             return;
         }
-        
+
+        for (var i = 0; i < cogs.Length; i++)
+        {
+            var cog = cogs[i];
+            if (cog == null)
+            {
+                if (chainData.cogs.Count == 0)
+                {
+                    Debug.Log("cog null");
+                    serializedObject.ApplyModifiedProperties();
+                    Repaint();
+                    return;
+                }
+              
+                cog = chainData.cogs[i];
+                
+            }
+           
+        }
+
 
         EditorGUI.BeginChangeCheck();
+
+        
 
         GUILayout.Label(" _______________Cog Settings_______________ ", EditorStyles.boldLabel); //\n 
         EditorGUILayout.Space();
@@ -76,7 +111,9 @@ public class ChainEditorWindow : EditorWindow
         EditorGUILayout.Space();
         if (GUILayout.Button("Generate Cog"))
         {
+            chainData.cogs = cogs.ToList();
             CogSettings();
+            EditorUtility.SetDirty(chainData);
             // for (int i = 0; i < cogs.Length; i++)
             // {
             //     Undo.RecordObject(this, "this");
@@ -173,5 +210,11 @@ public class ChainEditorWindow : EditorWindow
     void CogSettings()
     {
         ChainEvents.OnCogSetupRequest.Invoke();
+    }
+
+    private void OnDisable()
+    {
+        EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+
     }
 }
