@@ -35,8 +35,8 @@ public class ChainEditorWindow : EditorWindow
         serializedObject = new SerializedObject(this);
         cogsArray = serializedObject.FindProperty("cogs");
 
-        // cogs = chainData.cogs.ToArray(); //FindObjectsOfType<Cogwheel>();
-        // Debug.Log(chainData.cogs.Count);
+         cogs = FindObjectsOfType<Cogwheel>(); //TODO: TEMP
+     
         chainData.CogAmount = cogs.Length;
         
     }
@@ -45,7 +45,7 @@ public class ChainEditorWindow : EditorWindow
     {
         if (state == PlayModeStateChange.EnteredEditMode)
         {
-            cogs = chainData.cogs.ToArray(); //FindObjectsOfType<Cogwheel>();
+            cogs = FindObjectsOfType<Cogwheel>(); //chainData.cogs.ToArray(); 
             Debug.Log(chainData.cogs.Count);
             Repaint();
         }
