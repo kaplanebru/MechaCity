@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CogData 2
   m_EditorClassIdentifier: 
   uniqueID: 
-  Radius: 3
+  Radius: 4
   RotationDirection: -1
   circularThickness: 2
   IsMoving: 1

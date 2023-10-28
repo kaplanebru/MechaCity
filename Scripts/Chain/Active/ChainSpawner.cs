@@ -30,6 +30,8 @@ namespace Chain
             ChainEvents.OnCogReady += GetCogs;
             Upwards = Data.UpwardsAxis;
             chainPoints.Clear();
+
+           // cogs = GetComponentsInChildren<Cogwheel>().ToList();
         }
 
         private IEnumerator Start()

@@ -21,12 +21,14 @@ public class ToothPool : Pool<Tooth>
             ChainEvents.OnPoolCreated?.Invoke();
         }
 
+        print("pool awaken");
         
     }
 
     
     private void OnEnable()
     {
+        print("pool enbaled");
         if (instance == null)
         {
             instance = this;
@@ -36,7 +38,8 @@ public class ToothPool : Pool<Tooth>
         if (!Application.isPlaying)
         {
             // Create the pool in Edit mode.
-            CreatePool(population, transform, toothPrefab);
+            if(transform.childCount == 0)
+                CreatePool(population, transform, toothPrefab);
         }
     }
 

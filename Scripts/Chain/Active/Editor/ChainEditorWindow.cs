@@ -10,16 +10,19 @@ using UnityEngine;
 
 public class ChainEditorWindow : EditorWindow
 {
-
+    
     private SerializedObject serializedObject;
     
-    private SerializedProperty cogsArray;
+    //private SerializedProperty cogsArray;
     [SerializeField] private Cogwheel[] cogs;
     private List<CogData> cogDatas = new();
     private string[] cogHolderLabels;
     private int selectedIndex = 0;
 
     [SerializeField] private ChainData chainData;
+    
+    public Machinery machineryPrefab;
+
     
     
 
@@ -31,13 +34,15 @@ public class ChainEditorWindow : EditorWindow
 
     private void OnEnable()
     {
+       // _machinery = FindObjectOfType<Machinery>().gameObject;
         EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         serializedObject = new SerializedObject(this);
-        cogsArray = serializedObject.FindProperty("cogs");
+        //cogsArray = serializedObject.FindProperty("cogs");
 
-         cogs = FindObjectsOfType<Cogwheel>(); //TODO: TEMP
+         //cogs = FindObjectsOfType<Cogwheel>(); //TODO: TEMP
      
-        chainData.CogAmount = cogs.Length;
+        if(cogs != null) //TODO: possible bug, cog yoksa burda olmaması lazım
+            chainData.CogAmount = cogs.Length;
         
     }
 
@@ -45,48 +50,54 @@ public class ChainEditorWindow : EditorWindow
     {
         if (state == PlayModeStateChange.EnteredEditMode)
         {
-            cogs = FindObjectsOfType<Cogwheel>(); //chainData.cogs.ToArray(); 
+            cogs = chainData.cogs.ToArray(); //FindObjectsOfType<Cogwheel>(); //
             Debug.Log(chainData.cogs.Count);
             Repaint();
         }
     }
-    
 
     private void OnGUI()
     {
         serializedObject.Update();
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(cogsArray, true);
-        
-        if (cogs == null || cogs.Length == 0)
-        {
-            serializedObject.ApplyModifiedProperties();
-            return;
-        }
-
-        for (var i = 0; i < cogs.Length; i++)
-        {
-            var cog = cogs[i];
-            if (cog == null)
-            {
-                if (chainData.cogs.Count == 0)
-                {
-                    Debug.Log("cog null");
-                    serializedObject.ApplyModifiedProperties();
-                    Repaint();
-                    return;
-                }
-              
-                cog = chainData.cogs[i];
-                
-            }
-           
-        }
+        // EditorGUILayout.PropertyField(cogsArray, true);
+        //
+        // if (cogs == null || cogs.Length == 0)
+        // {
+        //     serializedObject.ApplyModifiedProperties();
+        //     return;
+        // }
+        //
+        // for (var i = 0; i < cogs.Length; i++)
+        // {
+        //     var cog = cogs[i];
+        //     if (cog == null)
+        //     {
+        //         serializedObject.ApplyModifiedProperties();
+        //         return;
+        //         if (chainData.cogs.Count == 0)
+        //         {
+        //             Debug.Log("cog null");
+        //             serializedObject.ApplyModifiedProperties();
+        //             return;
+        //         }
+        //       
+        //         cog = chainData.cogs[i];
+        //         
+        //     }
+        //    
+        // }
 
 
         EditorGUI.BeginChangeCheck();
 
-        
+        machineryPrefab =  (Machinery)EditorGUILayout.ObjectField("Machinery Prefab", machineryPrefab, typeof(Machinery), true);
+        if(machineryPrefab == null)
+            return;
+
+        if(cogs == null)
+            cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
+
 
         GUILayout.Label(" _______________Cog Settings_______________ ", EditorStyles.boldLabel); //\n 
         EditorGUILayout.Space();
@@ -111,16 +122,37 @@ public class ChainEditorWindow : EditorWindow
         EditorGUILayout.Space();
         if (GUILayout.Button("Generate Cog"))
         {
+           
             chainData.cogs = cogs.ToList();
             CogSettings();
             EditorUtility.SetDirty(chainData);
-            // for (int i = 0; i < cogs.Length; i++)
+            if (machineryPrefab != null)
+            {
+                Undo.RecordObject(machineryPrefab, "machineryPB");
+                EditorUtility.SetDirty(machineryPrefab);
+
+            }
+            
+            // string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(machineryPrefab.gameObject);
+            // if (!string.IsNullOrEmpty(prefabPath))
             // {
-            //     Undo.RecordObject(this, "this");
-            //     Undo.RecordObject(cogs[i], "Cog" + i);
-            //     Undo.RecordObject(cogs[i].GetComponent<TeethGenerator>(), "TeethGen" + i);
+            //     // Apply changes to the transform
+            //     // For example, change the position
             //
+            //     var machineryCogs = machineryPrefab.gameObject.GetComponent<Machinery>()
+            //         .GetComponentsInChildren<Cogwheel>();
+            //
+            //     for (int i = 0; i < machineryCogs.Length; i++)
+            //     {
+            //         machineryCogs[i].transform.position = cogs[i].transform.position;
+            //     }
+            //         
+            //     
+            //
+            //     // Save the changes to the Prefab Asset
+            //     PrefabUtility.SaveAsPrefabAsset(machineryPrefab.gameObject, prefabPath);
             // }
+
 
         }
         
@@ -129,7 +161,7 @@ public class ChainEditorWindow : EditorWindow
         EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
         EditorGUILayout.Space();
         
-        chainData = (ChainData) EditorGUILayout.ObjectField("Cog Data", chainData, typeof(ChainData), false);
+        chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
         if (chainData != null)
         {
             ChainSettings();
@@ -154,9 +186,10 @@ public class ChainEditorWindow : EditorWindow
             }
             
             Undo.RecordObject(this, "Chain Editor");
+            Repaint();
         }
 
-        serializedObject.ApplyModifiedProperties();
+        //serializedObject.ApplyModifiedProperties();
         
         
     }

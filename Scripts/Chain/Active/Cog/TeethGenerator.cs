@@ -13,8 +13,8 @@ namespace Chain
         private CogData Data;
         public Transform toothPb;
         private Transform _teethParent;
-        
-        
+
+
         float _intervalAngle = 60;
 
 
@@ -34,6 +34,7 @@ namespace Chain
         }
 
         private bool waitPool = true;
+
         void WaitForPool()
         {
             print("wait false");
@@ -53,7 +54,7 @@ namespace Chain
         IEnumerator CreateTeethRoutine()
         {
             yield return new WaitUntil(() => waitPool == false);
-            CreateTeethPoints();
+            //CreateTeethPoints();
         }
 
         public void CreateTeethPoints() //CogData data, Transform teethParent //params object[] args
@@ -72,7 +73,7 @@ namespace Chain
                 Tooth tooth = ToothPool.Instance.GetItem(t =>
                 {
                     t.transform.position = transform.position + transform.rotation * point;
-                    t.transform.SetParent(_teethParent);
+                    // t.transform.SetParent(_teethParent);
 
                     t.transform.localScale = Vector3.Scale(Data.toothScale, inverseParentScale);
 
@@ -82,15 +83,15 @@ namespace Chain
                         : Quaternion.LookRotation(point, Vector3.forward);
                 });
 
-               
+
                 teeth.Add(tooth);
                 //TODO: follow olmayan koşlda takip etmesin
             }
-            
+
             SetTeethInfo(teeth.Count, Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position));
         }
-        
-        
+
+
         private void SetTeethInfo(int teethCount, float toothUnit)
         {
             Data.TeethCount = teethCount;
@@ -107,19 +108,19 @@ namespace Chain
                 if (Application.isEditor)
                 {
                     List<Tooth> deadTeeth = _teethParent.GetComponentsInChildren<Tooth>().ToList();
-                    deadTeeth.ForEach(t=>
-                        {
-                            t.transform.SetParent(ToothPool.Instance.transform);
-                            ToothPool.Instance.ReleaseItem(t);
-                        });
+                    if (deadTeeth.Count == 0) return;
+                    deadTeeth.ForEach(t =>
+                    {
+                        //t.transform.SetParent(ToothPool.Instance.transform);
+                        ToothPool.Instance.ReleaseItem(t);
+                    });
                 }
             }
 
-           
-           
-            teeth.ForEach(t=>
+
+            teeth.ForEach(t =>
             {
-                t.transform.SetParent(ToothPool.Instance.transform);
+                //t.transform.SetParent(ToothPool.Instance.transform);
                 ToothPool.Instance.ReleaseItem(t);
             });
             teeth.Clear();
@@ -129,7 +130,6 @@ namespace Chain
         {
             ChainEvents.OnCogDataSet -= ReadyForTeethCreation;
             ChainEvents.OnPoolCreated -= WaitForPool;
-
         }
     }
 }
