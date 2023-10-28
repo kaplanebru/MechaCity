@@ -122,7 +122,10 @@ public class ChainEditorWindow : EditorWindow
         EditorGUILayout.Space();
         if (GUILayout.Button("Generate Cog"))
         {
-           
+            foreach (var cog in cogs)
+            { 
+                EditorUtility.SetDirty(cog.Data);
+            }
             chainData.cogs = cogs.ToList();
             CogSettings();
             EditorUtility.SetDirty(chainData);
@@ -130,29 +133,8 @@ public class ChainEditorWindow : EditorWindow
             {
                 Undo.RecordObject(machineryPrefab, "machineryPB");
                 EditorUtility.SetDirty(machineryPrefab);
-
+                Repaint();
             }
-            
-            // string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(machineryPrefab.gameObject);
-            // if (!string.IsNullOrEmpty(prefabPath))
-            // {
-            //     // Apply changes to the transform
-            //     // For example, change the position
-            //
-            //     var machineryCogs = machineryPrefab.gameObject.GetComponent<Machinery>()
-            //         .GetComponentsInChildren<Cogwheel>();
-            //
-            //     for (int i = 0; i < machineryCogs.Length; i++)
-            //     {
-            //         machineryCogs[i].transform.position = cogs[i].transform.position;
-            //     }
-            //         
-            //     
-            //
-            //     // Save the changes to the Prefab Asset
-            //     PrefabUtility.SaveAsPrefabAsset(machineryPrefab.gameObject, prefabPath);
-            // }
-
 
         }
         
@@ -174,19 +156,19 @@ public class ChainEditorWindow : EditorWindow
         
         if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
         {
-            if (cogs[selectedIndex].Data != null)
-            {
-                EditorUtility.SetDirty(cogs[selectedIndex].Data);
-            }
-
-            if (chainData != null)
-            {
-                chainData.CogAmount = cogs.Length;
-                EditorUtility.SetDirty(chainData);
-            }
-            
-            Undo.RecordObject(this, "Chain Editor");
-            Repaint();
+            // if (cogs[selectedIndex].Data != null)
+            // {
+            //     EditorUtility.SetDirty(cogs[selectedIndex].Data);
+            // }
+            //
+            // if (chainData != null)
+            // {
+            //     chainData.CogAmount = cogs.Length;
+            //     EditorUtility.SetDirty(chainData);
+            // }
+            //
+            // Undo.RecordObject(this, "Chain Editor");
+            // Repaint();
         }
 
         //serializedObject.ApplyModifiedProperties();

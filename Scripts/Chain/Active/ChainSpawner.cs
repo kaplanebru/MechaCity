@@ -27,6 +27,7 @@ namespace Chain
 
         private void OnEnable()
         {
+            cogs.Clear();
             ChainEvents.OnCogReady += GetCogs;
             Upwards = Data.UpwardsAxis;
             chainPoints.Clear();
