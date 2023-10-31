@@ -60,33 +60,6 @@ public class ChainEditorWindow : EditorWindow
     {
         serializedObject.Update();
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
-        // EditorGUILayout.PropertyField(cogsArray, true);
-        //
-        // if (cogs == null || cogs.Length == 0)
-        // {
-        //     serializedObject.ApplyModifiedProperties();
-        //     return;
-        // }
-        //
-        // for (var i = 0; i < cogs.Length; i++)
-        // {
-        //     var cog = cogs[i];
-        //     if (cog == null)
-        //     {
-        //         serializedObject.ApplyModifiedProperties();
-        //         return;
-        //         if (chainData.cogs.Count == 0)
-        //         {
-        //             Debug.Log("cog null");
-        //             serializedObject.ApplyModifiedProperties();
-        //             return;
-        //         }
-        //       
-        //         cog = chainData.cogs[i];
-        //         
-        //     }
-        //    
-        // }
 
 
         EditorGUI.BeginChangeCheck();
@@ -199,7 +172,6 @@ public class ChainEditorWindow : EditorWindow
         Data.ToothGap = EditorGUILayout.FloatField("Tooth Gap", Data.ToothGap);
         Data.Equalize = EditorGUILayout.Toggle("Equal Gaps", Data.Equalize);
         Data.MinGapLimit = EditorGUILayout.FloatField("Min Gap Limit", Data.MinGapLimit);
-        Data.ToothPoolCount = EditorGUILayout.IntField("Tooth Pool Count", Data.ToothPoolCount);
 
         EditorUtility.SetDirty(cogs[i].Data);
     }
