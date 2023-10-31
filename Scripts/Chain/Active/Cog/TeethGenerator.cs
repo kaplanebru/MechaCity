@@ -13,33 +13,24 @@ namespace Chain
         private CogData Data;
         public Transform toothPb;
         private Transform _teethParent;
-
-
         float _intervalAngle = 60;
-
 
         private void OnEnable()
         {
-            ChainEvents.OnCogDataSet += ReadyForTeethCreation;
-            ChainEvents.OnPoolCreated += WaitForPool;
+            // ChainEvents.OnCogDataSet += ReadyForTeethCreation;
+            ChainEvents.OnPoolReady += ReadyForTeethCreation;
         }
+
 
         void ReadyForTeethCreation(CogData data, Transform teethParent)
         {
             if (teethParent.position != transform.position) return;
-            ;
+
             Data = data;
             _teethParent = teethParent;
-            StartCoroutine(nameof(CreateTeethRoutine));
+            CreateTeethPoints();
         }
 
-        private bool waitPool = true;
-
-        void WaitForPool()
-        {
-            print("wait false");
-            waitPool = false;
-        }
 
         void SetIntervalAngle()
         {
@@ -51,11 +42,6 @@ namespace Chain
                 _intervalAngle = Data.MinGapLimit;
         }
 
-        IEnumerator CreateTeethRoutine()
-        {
-            yield return new WaitUntil(() => waitPool == false);
-            //CreateTeethPoints();
-        }
 
         public void CreateTeethPoints() //CogData data, Transform teethParent //params object[] args
         {
@@ -73,7 +59,7 @@ namespace Chain
                 Tooth tooth = ToothPool.Instance.GetItem(t =>
                 {
                     t.transform.position = transform.position + transform.rotation * point;
-                    // t.transform.SetParent(_teethParent);
+                    //t.transform.parent = _teethParent;
 
                     t.transform.localScale = Vector3.Scale(Data.toothScale, inverseParentScale);
 
@@ -82,6 +68,8 @@ namespace Chain
                         ? Quaternion.LookRotation(point)
                         : Quaternion.LookRotation(point, Vector3.forward);
                 });
+                
+                tooth.transform.SetParent(_teethParent);
 
 
                 teeth.Add(tooth);
@@ -102,34 +90,42 @@ namespace Chain
 
         void ResetTeeth()
         {
+            //if (!Application.isEditor) return;
             if (teeth.Count == 0)
             {
                 print("zero");
-                if (Application.isEditor)
+
+
+                List<Tooth> deadTeeth = _teethParent.GetComponentsInChildren<Tooth>().ToList();
+                if (deadTeeth.Count == 0) return;
+                deadTeeth.ForEach(t =>
                 {
-                    List<Tooth> deadTeeth = _teethParent.GetComponentsInChildren<Tooth>().ToList();
-                    if (deadTeeth.Count == 0) return;
-                    deadTeeth.ForEach(t =>
-                    {
-                        //t.transform.SetParent(ToothPool.Instance.transform);
-                        ToothPool.Instance.ReleaseItem(t);
-                    });
-                }
+                    t.transform.parent = ToothPool.Instance.transform;
+                    ToothPool.Instance.ReleaseItem(t);
+                });
+                teeth.Clear();
             }
-
-
-            teeth.ForEach(t =>
+            else
             {
-                //t.transform.SetParent(ToothPool.Instance.transform);
-                ToothPool.Instance.ReleaseItem(t);
-            });
-            teeth.Clear();
+                print("not zero");
+                teeth.ForEach(t =>
+                {
+                    if (t != null)
+                    {
+                        print(ToothPool.Instance.name);
+                        t.transform.parent = ToothPool.Instance.transform;
+                        ToothPool.Instance.ReleaseItem(t);
+                    }
+                });
+                teeth.Clear();
+            }
         }
 
         private void OnDisable()
         {
-            ChainEvents.OnCogDataSet -= ReadyForTeethCreation;
-            ChainEvents.OnPoolCreated -= WaitForPool;
+            //ChainEvents.OnCogDataSet -= ReadyForTeethCreation;
+            ChainEvents.OnPoolReady -= ReadyForTeethCreation;
+
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Chain
         public float ToothGap = 60;
         public float MinGapLimit = 6;
         public bool Equalize = false; //TODO: POSSİBLE BUG
+        public int ToothPoolCount = 100;
         [HideInInspector] public int TeethCount;
         [HideInInspector] public float ToothUnit;
 

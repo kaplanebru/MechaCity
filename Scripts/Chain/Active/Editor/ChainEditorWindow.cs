@@ -127,7 +127,7 @@ public class ChainEditorWindow : EditorWindow
                 EditorUtility.SetDirty(cog.Data);
             }
             chainData.cogs = cogs.ToList();
-            CogSettings();
+            StartMachinery();
             EditorUtility.SetDirty(chainData);
             if (machineryPrefab != null)
             {
@@ -191,6 +191,7 @@ public class ChainEditorWindow : EditorWindow
         Data.ToothGap = EditorGUILayout.FloatField("Tooth Gap", Data.ToothGap);
         Data.Equalize = EditorGUILayout.Toggle("Equal Gaps", Data.Equalize);
         Data.MinGapLimit = EditorGUILayout.FloatField("Min Gap Limit", Data.MinGapLimit);
+        Data.ToothPoolCount = EditorGUILayout.IntField("Tooth Pool Count", Data.ToothPoolCount);
 
         EditorUtility.SetDirty(cogs[i].Data);
     }
@@ -222,7 +223,7 @@ public class ChainEditorWindow : EditorWindow
     
 
 
-    void CogSettings()
+    void StartMachinery()
     {
         ChainEvents.OnCogSetupRequest.Invoke();
     }

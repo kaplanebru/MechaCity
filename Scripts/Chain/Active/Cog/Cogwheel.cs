@@ -42,7 +42,7 @@ namespace Chain
         private void SetSpeedByTeeth()
         {
             _speed = ChainMover.MachinerySpeed / Data.TeethCount;
-            print("cog speed: " + _speed);
+            //print("cog speed: " + _speed);
         }
 
         IEnumerator SpinRoutine()

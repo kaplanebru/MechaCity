@@ -10,7 +10,7 @@ namespace ProjectileHandler
     {
         private void Awake()
         {
-            instance = this;
+            Instance = this;
         }
     }
 }

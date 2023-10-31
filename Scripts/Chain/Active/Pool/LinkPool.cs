@@ -7,7 +7,7 @@ public class LinkPool : Pool<Transform>
     [SerializeField] Transform linkPrefab;
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
 
     private void Start()

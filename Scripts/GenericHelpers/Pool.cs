@@ -9,23 +9,11 @@ namespace GenericHelper
     //[ExecuteAlways]
     public abstract class Pool<T> : MonoBehaviour where T : Component
     {
-        public static Pool<T> instance;
         
-        public static Pool<T> Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = FindObjectOfType<Pool<T>>();
-                }
-                return instance;
-            }
-        }
-        
-        
-        private Queue<T> pool = new Queue<T>();
+        public static Pool<T> Instance;
+        public Queue<T> pool = new Queue<T>();
 
+        
         public T GetItem(Action<T> callback = null)
         {
             T itemFromPool = pool.Dequeue(); //sıranın BAŞINDAN alma, sıradan çıkartma
@@ -52,5 +40,29 @@ namespace GenericHelper
                 pool.Enqueue(item);
             }
         }
+
+
+        public void RestorePool(T[] items)
+        {
+            pool.Clear();
+            foreach (T item in items)
+            {
+                pool.Enqueue(item);
+            }
+        }
     }
 }
+
+//public static Pool<T> instance;
+
+//public static Pool<T> Instance;
+// {
+//     get
+//     {
+//         if (instance == null)
+//         {
+//             instance = FindObjectOfType<Pool<T>>();
+//         }
+//         return instance;
+//     }
+// }
