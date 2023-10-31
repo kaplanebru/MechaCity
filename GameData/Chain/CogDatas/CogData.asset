@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CogData
   m_EditorClassIdentifier: 
   uniqueID: 
-  Radius: 6
+  Radius: 2
   RotationDirection: -1
   circularThickness: 2
   IsMoving: 1
@@ -22,5 +22,5 @@ MonoBehaviour:
   MinGapLimit: 6
   Equalize: 0
   ToothPoolCount: 100
-  TeethCount: 36
-  ToothUnit: 1.045869
+  TeethCount: 42
+  ToothUnit: 1.0352762

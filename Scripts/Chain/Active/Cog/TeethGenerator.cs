@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using MyNamespace;
 using UnityEngine;
 
@@ -14,11 +15,13 @@ namespace Chain
         public Tooth toothPb;
         private Transform _teethParent;
         float _intervalAngle = 60;
+        [SerializeField]private bool hasTeeth;
 
         private void OnEnable()
         {
              ChainEvents.OnCogDataSet += ReadyForTeethCreation;
-            //ChainEvents.OnPoolReady += ReadyForTeethCreation;
+             _teethParent = transform.GetChild(1);
+             //ChainEvents.OnPoolReady += ReadyForTeethCreation;
         }
 
 
@@ -27,7 +30,7 @@ namespace Chain
             if (teethParent.position != transform.position) return;
 
             Data = data;
-            _teethParent = teethParent;
+            //_teethParent = teethParent;
             CreateTeethPoints();
         }
 
@@ -56,35 +59,33 @@ namespace Chain
             {
                 
                 Vector3 point = TrigonometryHelper.CirclePoint(i, Data.Radius);
-                Tooth tooth;
-                
+                Tooth tooth; // = null;
 
-                if (teeth.Count > 0)
+
+                CheckTeeth:
+                if (hasTeeth)
                 {
                     if (counter < teeth.Count)
                     {
                         teeth[counter].gameObject.SetActive(true);
                         tooth = teeth[counter];
-                        
                     }
                     else
                     {
-                        tooth = Instantiate(toothPb);
-                        teeth.Add(tooth);
+                        hasTeeth = false;
+                        goto CheckTeeth;
                     }
+                    
+                    counter++;
                 }
-                else //TODO: BURASI 1 KEZ ÇAĞRILIYOR LİSTEYE EKLENDİĞİ İÇİN
+                
+                else
                 {
                     tooth = Instantiate(toothPb);
                     teeth.Add(tooth);
                 }
-                
-                counter++;
-        
-               
-               
 
-                
+
                 tooth.transform.position = transform.position + transform.rotation * point;
                 tooth.transform.localScale = Vector3.Scale(Data.toothScale, inverseParentScale);
                 tooth.transform.localRotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
@@ -106,23 +107,20 @@ namespace Chain
                 //         : Quaternion.LookRotation(point, Vector3.forward);
                 // });
                 
-                tooth.transform.SetParent(transform.GetChild(1)); //_teethParent //BUG FİX : teethparenttan patlıyormuş
+                tooth.transform.SetParent(_teethParent); //_teethParent //BUG FİX : teethparenttan patlıyormuş
 
 
                 
                 //TODO: follow olmayan koşlda takip etmesin
             }
-
-            // if (teeth.Count < counter)
-            // {
-            //     int rest = counter - teeth.Count;
-            //     for (int i = rest; i < teeth.Count; i++)
-            //     {
-            //         teeth[i].gameObject.SetActive(false);
-            //     }
-            // }
+            
             SetTeethInfo(teeth.Count, Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position));
-            print(counter);
+        }
+
+        void InstantiateTooth(Tooth tooth)
+        {
+            tooth = Instantiate(toothPb);
+            teeth.Add(tooth);
         }
 
 
@@ -138,6 +136,7 @@ namespace Chain
         {
             //teeth.Clear();
             teeth = GetComponentsInChildren<Tooth>(true).ToList();
+            hasTeeth = teeth.Count > 0;
             teeth.ForEach(t=>t.gameObject.SetActive(false));
         }
 
@@ -155,7 +154,7 @@ namespace Chain
             {
                 var tooth = teeth[i];
                 teeth.Remove(tooth);
-                DestroyImmediate(tooth.gameObject);
+                DestroyImmediate(tooth.gameObject, true);
             }
         }
         void ResetTeeth2()

@@ -142,7 +142,8 @@ public class ChainEditorWindow : EditorWindow
         {
             foreach (var cog in cogs)
             {
-                cog.GetComponent<TeethGenerator>().DeleteTeeth();
+                var teeth = cog.GetComponent<TeethGenerator>();
+                teeth.DeleteTeeth();
             }
         }
        
