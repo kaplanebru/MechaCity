@@ -137,7 +137,14 @@ public class ChainEditorWindow : EditorWindow
             }
 
         }
-        
+
+        if (GUILayout.Button("Delete Teeth"))
+        {
+            foreach (var cog in cogs)
+            {
+                cog.GetComponent<TeethGenerator>().DeleteTeeth();
+            }
+        }
        
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);

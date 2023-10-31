@@ -19,7 +19,7 @@ public class ToothPool : Pool<Tooth>
     {
         if (Instance == null) 
             Instance = this;
-        ChainEvents.OnCogDataSet += ReadyForPool;
+       // ChainEvents.OnCogDataSet += ReadyForPool;
 
         EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         
