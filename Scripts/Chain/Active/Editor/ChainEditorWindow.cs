@@ -81,7 +81,7 @@ public class ChainEditorWindow : EditorWindow
 
             if (isChainRelated)
             {
-                chainData.cogs = cogs.ToList();
+                //chainData.cogs = cogs.ToList();
                 chainData.CogAmount = cogs.Length;
                 EditorUtility.SetDirty(chainData);
             }

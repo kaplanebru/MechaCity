@@ -28,17 +28,24 @@ namespace Chain
         private void OnEnable()
         {
             cogs.Clear();
-            ChainEvents.OnCogReady += GetCogs;
+            //ChainEvents.OnCogReady += GetCogs;
+            //ChainEvents.OnCogsSelected += GenerateChainBySelection;
             Upwards = Data.UpwardsAxis;
             chainPoints.Clear();
 
-           // cogs = GetComponentsInChildren<Cogwheel>().ToList();
+            cogs = GetComponentsInChildren<Cogwheel>().ToList();
         }
 
-        private IEnumerator Start()
+        private void Start() //runtime ise startta çağrılmaması lazım
         {
-            yield return new WaitUntil(() => cogs.Count == Data.CogAmount);
+            //yield return new WaitUntil(() => cogs.Count == Data.CogAmount);
             
+            GenerateChain();
+           
+        }
+
+        void GenerateChain()
+        {
             CreateArcs();
             Setup();
             CreateParts(0);
@@ -47,7 +54,7 @@ namespace Chain
         
         private void GetCogs(Cogwheel newCog)
         {
-            cogs.Add(newCog);
+            //cogs.Add(newCog);
         }
 
         void CreateArcs()
