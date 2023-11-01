@@ -19,7 +19,8 @@ namespace Chain
 
         private void Start()
         {
-            ChainEvents.OnCogReady?.Invoke(this); //ninvoke pas en enable
+            if(Data.IsChainRelated)
+                ChainEvents.OnCogReady?.Invoke(this); //ninvoke pas en enable
         }
 
 

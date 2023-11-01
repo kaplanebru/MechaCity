@@ -10,21 +10,19 @@ using UnityEngine;
 
 public class ChainEditorWindow : EditorWindow
 {
-    
     private SerializedObject serializedObject;
-    
-    //private SerializedProperty cogsArray;
+
     [SerializeField] private Cogwheel[] cogs;
     private List<CogData> cogDatas = new();
     private string[] cogHolderLabels;
     private int selectedIndex = 0;
 
+    [SerializeField] private bool isChainRelated;
+
     [SerializeField] private ChainData chainData;
-    
+
     public Machinery machineryPrefab;
 
-    
-    
 
     [MenuItem("Tools/Chain Generator")]
     public static void ShowWindow()
@@ -34,43 +32,24 @@ public class ChainEditorWindow : EditorWindow
 
     private void OnEnable()
     {
-       // _machinery = FindObjectOfType<Machinery>().gameObject;
-        EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-        serializedObject = new SerializedObject(this);
-        //cogsArray = serializedObject.FindProperty("cogs");
-
-         //cogs = FindObjectsOfType<Cogwheel>(); //TODO: TEMP
-     
-        if(cogs != null) //TODO: possible bug, cog yoksa burda olmaması lazım
-            chainData.CogAmount = cogs.Length;
-        
-    }
-
-    private void OnPlayModeStateChanged(PlayModeStateChange state)
-    {
-        if (state == PlayModeStateChange.EnteredEditMode)
-        {
-            cogs = chainData.cogs.ToArray(); //FindObjectsOfType<Cogwheel>(); //
-            Debug.Log(chainData.cogs.Count);
-            Repaint();
-        }
+        //cogs = chainData.cogs.ToArray();
     }
 
     private void OnGUI()
     {
-        serializedObject.Update();
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
 
 
         EditorGUI.BeginChangeCheck();
 
-        machineryPrefab =  (Machinery)EditorGUILayout.ObjectField("Machinery Prefab", machineryPrefab, typeof(Machinery), true);
-        if(machineryPrefab == null)
+        machineryPrefab = (Machinery) EditorGUILayout.ObjectField("Machinery Prefab", machineryPrefab, typeof(Machinery), true);
+        if (machineryPrefab == null)
             return;
 
-        if(cogs == null)
+        if (cogs == null)
             cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
 
+        isChainRelated = EditorGUILayout.Toggle("Is Chain Related", isChainRelated);
 
         GUILayout.Label(" _______________Cog Settings_______________ ", EditorStyles.boldLabel); //\n 
         EditorGUILayout.Space();
@@ -89,26 +68,32 @@ public class ChainEditorWindow : EditorWindow
             EditorGUI.indentLevel++;
             SetCogData(selectedIndex);
             EditorGUI.indentLevel--;
-            
         }
-        
+
         EditorGUILayout.Space();
         if (GUILayout.Button("Generate Cog"))
         {
             foreach (var cog in cogs)
-            { 
+            {
+                cog.Data.IsChainRelated = isChainRelated;
                 EditorUtility.SetDirty(cog.Data);
             }
-            chainData.cogs = cogs.ToList();
+
+            if (isChainRelated)
+            {
+                chainData.cogs = cogs.ToList();
+                chainData.CogAmount = cogs.Length;
+                EditorUtility.SetDirty(chainData);
+            }
+
+
             StartMachinery();
-            EditorUtility.SetDirty(chainData);
             if (machineryPrefab != null)
             {
                 Undo.RecordObject(machineryPrefab, "machineryPB");
                 EditorUtility.SetDirty(machineryPrefab);
                 Repaint();
             }
-
         }
 
         if (GUILayout.Button("Delete Teeth"))
@@ -119,42 +104,29 @@ public class ChainEditorWindow : EditorWindow
                 teeth.DeleteTeeth();
             }
         }
-       
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
-        EditorGUILayout.Space();
-        
-        chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
-        if (chainData != null)
+
+        if (isChainRelated)
         {
-            ChainSettings();
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
+            EditorGUILayout.Space();
+
+
+            chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
+            if (chainData != null)
+            {
+                ChainSettings();
+            }
         }
 
+
         EditorGUILayout.Space();
 
-        
 
-        
         if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
         {
-            // if (cogs[selectedIndex].Data != null)
-            // {
-            //     EditorUtility.SetDirty(cogs[selectedIndex].Data);
-            // }
-            //
-            // if (chainData != null)
-            // {
-            //     chainData.CogAmount = cogs.Length;
-            //     EditorUtility.SetDirty(chainData);
-            // }
-            //
-            // Undo.RecordObject(this, "Chain Editor");
-            // Repaint();
+           
         }
-
-        //serializedObject.ApplyModifiedProperties();
-        
-        
     }
 
     void SetCogData(int i)
@@ -164,7 +136,7 @@ public class ChainEditorWindow : EditorWindow
         cogDatas.Add(Data);
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
         Data.circularThickness = EditorGUILayout.FloatField("Thickness", Data.circularThickness);
-        
+
         EditorGUILayout.Space();
 
         EditorGUILayout.LabelField("Teeth Settings", EditorStyles.boldLabel);
@@ -181,36 +153,34 @@ public class ChainEditorWindow : EditorWindow
         chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
         chainData.UpwardsAxis = (ChainEnums.UpAxis) EditorGUILayout.EnumPopup("Upwards Axis", chainData.UpwardsAxis);
         chainData.Unit = EditorGUILayout.FloatField("Unit", chainData.Unit);
-        chainData.RadiusOffset = EditorGUILayout.FloatField("Radius Offset", chainData.RadiusOffset); //todo: adı cog offset olarak değiştirilebilir
+        chainData.RadiusOffset =
+            EditorGUILayout.FloatField("Radius Offset",
+                chainData.RadiusOffset); //todo: adı cog offset olarak değiştirilebilir
         chainData.Tension = EditorGUILayout.FloatField("Tension", chainData.Tension);
 
         chainData.SetRadiusByGear = EditorGUILayout.Toggle("Set Radius By Cog", chainData.SetRadiusByGear);
         chainData.IsMoving = EditorGUILayout.Toggle("Is Moving", chainData.IsMoving);
-        
+
         if (chainData.IsMoving)
         {
             chainData.MachinerySpeed = EditorGUILayout.FloatField("Machinery Speed", chainData.MachinerySpeed);
-            chainData.SpeedMultiplier = EditorGUILayout.FloatField("Speed Multiplier", chainData.SpeedMultiplier); 
-            chainData.LinkRotationMultiplier = EditorGUILayout.FloatField("Link Rotation Multiplier", chainData.LinkRotationMultiplier);
-            
-            chainData.motionDirection = (ChainEnums.ChainDirection)EditorGUILayout.EnumPopup("Motion Direction", chainData.motionDirection);
+            chainData.SpeedMultiplier = EditorGUILayout.FloatField("Speed Multiplier", chainData.SpeedMultiplier);
+            chainData.LinkRotationMultiplier =
+                EditorGUILayout.FloatField("Link Rotation Multiplier", chainData.LinkRotationMultiplier);
+
+            chainData.motionDirection =
+                (ChainEnums.ChainDirection) EditorGUILayout.EnumPopup("Motion Direction", chainData.motionDirection);
             chainData.FollowGearRotation = EditorGUILayout.Toggle("Follow Cog Rotation", chainData.FollowGearRotation);
             chainData.SetMotionByGear = EditorGUILayout.Toggle("Set Motion By Cog", chainData.SetMotionByGear);
         }
-        
+
         //TODO: COG SPEED BURAYA. SYSTEM SPEED FALAN DA OLABİLİR ADI
     }
-    
 
 
     void StartMachinery()
     {
         ChainEvents.OnCogSetupRequest.Invoke();
     }
-
-    private void OnDisable()
-    {
-        EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
-
-    }
+    
 }

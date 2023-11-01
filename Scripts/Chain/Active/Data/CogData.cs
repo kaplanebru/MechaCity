@@ -14,6 +14,7 @@ namespace Chain
         public int RotationDirection = 1;
         public float circularThickness = 2f;
         public bool IsMoving = true;
+        public bool IsChainRelated;
 
         [Header("Teeth Settings")]
         public Vector3 toothScale = Vector3.one;
