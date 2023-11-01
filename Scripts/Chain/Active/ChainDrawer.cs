@@ -32,7 +32,6 @@ namespace Chain
 
         void DrawChain(List<Vector3> points)
         {
-            print("draw chain");
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
             if (Data.Type == ChainEnums.ChainType.Line)
@@ -43,7 +42,6 @@ namespace Chain
 
         void CreateLinks()
         {
-            print("create links");
             ResetLinks();
             print(_pointsCount);
             for (int i = 0; i < _pointsCount; i++)

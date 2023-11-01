@@ -22,11 +22,14 @@ public class ChainMover : MonoBehaviour
     {
         Data = GetComponent<ChainSpawner>().Data;
         MachinerySpeed = Data.MachinerySpeed;
+
+        enabled = Data.IsMoving;
         
-        ChainEvents.OnMotionStateSet += enable => enabled = enable;
+       // ChainEvents.OnMotionStateSet += enable => enabled = enable;
         ChainEvents.OnPointsCreated += SetPoints;
         ChainEvents.OnLinksCreated += SetLinks;
-        ChainEvents.OnCogSpeedSet += GetTotalCogSpeed;
+        
+        ChainEvents.OnCogSpeedSet += GetTotalCogSpeed; //TODO: cog data is moving görünüyor
     }
 
 
@@ -117,7 +120,7 @@ public class ChainMover : MonoBehaviour
 
     private void OnDisable()
     {
-        ChainEvents.OnMotionStateSet -= enable => enabled = enable;
+       // ChainEvents.OnMotionStateSet -= enable => enabled = enable;
         ChainEvents.OnPointsCreated -= SetPoints;
         ChainEvents.OnLinksCreated -= SetLinks;
         ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;

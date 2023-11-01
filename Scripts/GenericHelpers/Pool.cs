@@ -47,8 +47,9 @@ namespace GenericHelper
             pool.Clear();
             foreach (T item in items)
             {
-                //pool.Enqueue(item);
-                ReleaseItem(item);
+                if(!item.gameObject.activeInHierarchy) 
+                    pool.Enqueue(item);
+                //ReleaseItem(item);
             }
         }
     }

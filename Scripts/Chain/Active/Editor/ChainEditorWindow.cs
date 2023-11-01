@@ -13,7 +13,6 @@ public class ChainEditorWindow : EditorWindow
     private SerializedObject serializedObject;
 
     [SerializeField] private Cogwheel[] cogs;
-    private List<CogData> cogDatas = new();
     private string[] cogHolderLabels;
     private int selectedIndex = 0;
 
@@ -47,7 +46,7 @@ public class ChainEditorWindow : EditorWindow
         if (machineryPrefab == null)
             return;
 
-        if (cogs == null)
+        if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
             cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
         
         if(_linksPool == null)
@@ -67,6 +66,7 @@ public class ChainEditorWindow : EditorWindow
         }
 
         selectedIndex = EditorGUILayout.Popup("Selected Cog", selectedIndex, cogHolderLabels);
+        
         if (selectedIndex >= 0 && selectedIndex < cogs.Length)
         {
             EditorGUI.indentLevel++;
@@ -85,9 +85,12 @@ public class ChainEditorWindow : EditorWindow
 
             if (isChainRelated)
             {
-                //chainData.cogs = cogs.ToList();
-                chainData.CogAmount = cogs.Length;
-                EditorUtility.SetDirty(chainData);
+                if (chainData != null)
+                {
+                    //chainData.cogs = cogs.ToList();
+                    chainData.CogAmount = cogs.Length;
+                    EditorUtility.SetDirty(chainData);
+                }
             }
 
 
@@ -114,7 +117,7 @@ public class ChainEditorWindow : EditorWindow
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
             EditorGUILayout.Space();
-
+            
             //if(machineryPrefab.GetComponentInChildren<ChainSpawner>().Data == null) TODO: yoksa yarat, varsa get
             chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
             if (chainData != null)
@@ -151,7 +154,12 @@ public class ChainEditorWindow : EditorWindow
     {
         //if (cogs[i] == null) return;
         CogData Data = cogs[i].Data;
-        cogDatas.Add(Data);
+        if (Data == null)
+        {
+            Debug.Log(cogs.Length);
+            Debug.Log(cogs[i].name);
+            return;
+        }
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
         Data.circularThickness = EditorGUILayout.FloatField("Thickness", Data.circularThickness);
 
