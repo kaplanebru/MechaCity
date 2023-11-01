@@ -6,7 +6,7 @@ using UnityEngine;
 public class ChainEvents
 {
     public static Action<List<Vector3>> OnPointsCreated;
-    public static Action<List<Transform>> OnLinksCreated;
+    public static Action<List<ChainLink>> OnLinksCreated;
     public static Action<bool> OnMotionStateSet;
     
     public static Action<int, float> OnCogSpeedSet;
@@ -16,4 +16,5 @@ public class ChainEvents
     public static Action<Cogwheel> OnCogReady;
 
     public static Action<CogData, Transform> OnPoolReady;
+    public static Action OnChainRequest;
 }

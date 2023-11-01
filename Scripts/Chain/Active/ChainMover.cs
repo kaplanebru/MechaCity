@@ -8,7 +8,7 @@ public class ChainMover : MonoBehaviour
 {
     public ChainData Data;
     
-    private List<Transform> _links = new();
+    private List<ChainLink> _links = new();
     private List<Vector3> _points = new();
     private List<Quaternion> _rotations = new();
     
@@ -45,7 +45,7 @@ public class ChainMover : MonoBehaviour
         _points = points;
     }
 
-    void SetLinks(List<Transform> links)
+    void SetLinks(List<ChainLink> links)
     {
         _links = links;
         LinearSpeed = Data.MachinerySpeed / (totalCogTeeth + (Data.Unit - toothUnits/Data.CogAmount) * totalCogTeeth);  //fazlalığı da cogteethe eklemiş oluyoruz

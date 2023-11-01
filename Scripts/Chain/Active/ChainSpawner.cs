@@ -10,28 +10,28 @@ using UnityEngine;
 namespace Chain
 {
     [RequireComponent(typeof(ChainDrawer))]
+    [ExecuteInEditMode]
     public class ChainSpawner : MonoBehaviour
     {
         public ChainData Data;
 
-        [SerializeField]private List<Cogwheel> cogs = new();
+        [SerializeField] private List<Cogwheel> cogs = new();
 
         public Transform testCubePb;
         public Transform testSpherePb;
         public Arc[] arcs;
         private int _arcCount;
         public static ChainEnums.UpAxis Upwards;
-        
+
         private int linearPointAmount;
         [ReadOnly] public List<Vector3> chainPoints = new();
 
         private void OnEnable()
         {
             cogs.Clear();
-            //ChainEvents.OnCogReady += GetCogs;
+            ChainEvents.OnCogReady += GetCogs;
+            ChainEvents.OnChainRequest += StartChain;
             //ChainEvents.OnCogsSelected += GenerateChainBySelection;
-            Upwards = Data.UpwardsAxis;
-            chainPoints.Clear();
 
             cogs = GetComponentsInChildren<Cogwheel>().ToList();
         }
@@ -39,19 +39,24 @@ namespace Chain
         private void Start() //runtime ise startta çağrılmaması lazım
         {
             //yield return new WaitUntil(() => cogs.Count == Data.CogAmount);
-            
-            GenerateChain();
-           
         }
 
         void GenerateChain()
         {
+            chainPoints.Clear();
+
             CreateArcs();
             Setup();
             CreateParts(0);
             BindPoints();
         }
-        
+
+        private void StartChain()
+        {
+            Upwards = Data.UpwardsAxis;
+            GenerateChain();
+        }
+
         private void GetCogs(Cogwheel newCog)
         {
             //cogs.Add(newCog);
@@ -70,7 +75,6 @@ namespace Chain
 
         void Setup()
         {
-            
             OrderArcsClockwise();
             SetArcs();
             RelateArcs();
@@ -78,6 +82,7 @@ namespace Chain
             {
                 CommonTangentAngles(i);
             }
+
             ChainEvents.OnMotionStateSet?.Invoke(Data.IsMoving);
         }
 
@@ -154,7 +159,7 @@ namespace Chain
             var end = arcs[i].edgeAngles.End;
             float angle = arcs[i].baseAngle;
             float a = start;
-            
+
             while (a < end)
             {
                 arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
@@ -260,6 +265,7 @@ namespace Chain
         private void OnDisable()
         {
             ChainEvents.OnCogReady -= GetCogs;
+            ChainEvents.OnChainRequest -= StartChain;
         }
     }
 

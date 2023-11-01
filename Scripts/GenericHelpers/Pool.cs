@@ -27,7 +27,7 @@ namespace GenericHelper
         public void ReleaseItem(T item)
         {
             item.gameObject.SetActive(false);
-            pool.Enqueue(item); //sıraya ekleme (SONDAN)
+            pool.Enqueue(item); //sıraya ekleme (SONDAN))
         }
         
         public void CreatePool(int amount, Transform poolParent, T prefab)
@@ -47,7 +47,8 @@ namespace GenericHelper
             pool.Clear();
             foreach (T item in items)
             {
-                pool.Enqueue(item);
+                //pool.Enqueue(item);
+                ReleaseItem(item);
             }
         }
     }

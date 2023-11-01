@@ -1,6 +1,9 @@
 using GenericHelper;
 using UnityEngine;
 
+
+[ExecuteInEditMode]
+
 public class LinkPool : Pool<Transform>
 {
     [SerializeField] int population = 100;
@@ -15,8 +18,5 @@ public class LinkPool : Pool<Transform>
         CreatePool(population, transform, linkPrefab);
     }
 
-    // public Transform GetLinkPrefab()
-    // {
-    //     return linkPrefab;
-    // }
+ 
 }

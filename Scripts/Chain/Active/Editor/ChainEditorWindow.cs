@@ -30,6 +30,7 @@ public class ChainEditorWindow : EditorWindow
         GetWindow(typeof(ChainEditorWindow));
     }
 
+    private LinksPool _linksPool;
     private void OnEnable()
     {
         //cogs = chainData.cogs.ToArray();
@@ -48,6 +49,9 @@ public class ChainEditorWindow : EditorWindow
 
         if (cogs == null)
             cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
+        
+        if(_linksPool == null)
+            _linksPool = machineryPrefab.GetComponentInChildren<LinksPool>();
 
         isChainRelated = EditorGUILayout.Toggle("Is Chain Related", isChainRelated);
 
@@ -87,7 +91,7 @@ public class ChainEditorWindow : EditorWindow
             }
 
 
-            StartMachinery();
+            StartCogSetup();
             if (machineryPrefab != null)
             {
                 Undo.RecordObject(machineryPrefab, "machineryPB");
@@ -111,12 +115,26 @@ public class ChainEditorWindow : EditorWindow
             EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
             EditorGUILayout.Space();
 
-
+            //if(machineryPrefab.GetComponentInChildren<ChainSpawner>().Data == null) TODO: yoksa yarat, varsa get
             chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
             if (chainData != null)
             {
                 ChainSettings();
+                if (GUILayout.Button("Generate Chain"))
+                {
+                    ChainEvents.OnChainRequest?.Invoke(); //ninvoke pas en enable
+                    Repaint();
+                }
+
+                if (GUILayout.Button("DeleteLinks"))
+                {
+                    _linksPool.DeleteLinks();
+                }
             }
+            
+            
+            
+            
         }
 
 
@@ -178,7 +196,7 @@ public class ChainEditorWindow : EditorWindow
     }
 
 
-    void StartMachinery()
+    void StartCogSetup()
     {
         ChainEvents.OnCogSetupRequest.Invoke();
     }

@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Chain
 {
+    [ExecuteInEditMode]
     public class ChainDrawer : MonoBehaviour
     {
         public ChainData Data;
@@ -13,14 +14,17 @@ namespace Chain
         Material lrMat;
         public Material firstCubeMaterial;
         public Transform lastLinkPrefab;
+        [SerializeField] ChainLink linkPrefab; //temp 
 
 
         private List<Vector3> _chainPoints = new();
-        private List<Transform> _links = new();
+        [SerializeField]private List<ChainLink> _links = new();
         private int _pointsCount;
+        private LinksPool linksPool;
 
         private void OnEnable()
         {
+            linksPool = GetComponentInChildren<LinksPool>();
             Data = GetComponent<ChainSpawner>().Data; //TODO: TEST
             ChainEvents.OnPointsCreated += DrawChain;
             ResetValues();
@@ -28,6 +32,7 @@ namespace Chain
 
         void DrawChain(List<Vector3> points)
         {
+            print("draw chain");
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
             if (Data.Type == ChainEnums.ChainType.Line)
@@ -38,11 +43,17 @@ namespace Chain
 
         void CreateLinks()
         {
+            print("create links");
+            ResetLinks();
+            print(_pointsCount);
             for (int i = 0; i < _pointsCount; i++)
             {
-                var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
+                //var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
+                //var link = Instantiate(linkPrefab, transform.GetChild(1));
+                //link.transform.localPosition = _chainPoints[i];
+                var link = linksPool.GetItem(l => l.transform.localPosition = _chainPoints[i]);
 
-                SetLookRotations(i, link);
+                SetLookRotations(i, link.transform);
                 // if (Data.Type == ChainEnums.ChainType.StandardChain)
                 //     RotateLinks(i, link);
 
@@ -51,6 +62,8 @@ namespace Chain
                 if (i == 0)
                     link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //debug
             }
+            
+          
 
             // if(Data.Type == ChainType.BikeChain)
             //     RegulateLastLink();
@@ -58,7 +71,14 @@ namespace Chain
             ChainEvents.OnLinksCreated?.Invoke(_links);
         }
 
-       
+
+        void ResetLinks()
+        {
+            // _links.Clear();
+            // _links = linksPool.GetComponentsInChildren<ChainLink>(false).ToList();
+            _links.ForEach(l=> linksPool.ReleaseItem(l));
+            _links.Clear();
+        }
 
 
         void SetLookRotations(int i, Transform newObj)
