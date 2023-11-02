@@ -23,6 +23,6 @@ MonoBehaviour:
   motionDirection: 1
   SetRadiusByGear: 1
   SetMotionByGear: 1
-  IsMoving: 0
+  IsMoving: 1
   FollowGearRotation: 1
   CogAmount: 3

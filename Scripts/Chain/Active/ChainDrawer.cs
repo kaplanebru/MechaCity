@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MyNamespace;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -17,7 +19,7 @@ namespace Chain
         [SerializeField] ChainLink linkPrefab; //temp 
 
 
-        private List<Vector3> _chainPoints = new();
+        [SerializeField]private List<Vector3> _chainPoints = new();
         [SerializeField]private List<ChainLink> _links = new();
         private int _pointsCount;
         private LinksPool linksPool;
@@ -25,13 +27,28 @@ namespace Chain
         private void OnEnable()
         {
             linksPool = GetComponentInChildren<LinksPool>();
-            Data = GetComponent<ChainSpawner>().Data; //TODO: TEST
-            ChainEvents.OnPointsCreated += DrawChain;
-            ResetValues();
+            Data = GetComponent<ChainSpawner>().Data;
+            if (!Application.isPlaying)
+            {
+                ChainEvents.OnPointsCreated += DrawChain;
+                //ResetValues();
+            }
+                
+            
+            print("drawe enabled");
+        }
+
+        private void Start()
+        {
+            ChainEvents.OnLinksCreated?.Invoke(_links, _chainPoints); //after edit, for mover
+            //ChainEvents.OnPointsCreated.Invoke(_chainPoints);//after edit, for mover
+
         }
 
         void DrawChain(List<Vector3> points)
         {
+            ResetValues();
+
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
             if (Data.Type == ChainEnums.ChainType.Line)
@@ -62,11 +79,12 @@ namespace Chain
             }
             
           
+            EditorUtility.SetDirty(GetComponentInParent<Machinery>().gameObject);
 
             // if(Data.Type == ChainType.BikeChain)
             //     RegulateLastLink();
 
-            ChainEvents.OnLinksCreated?.Invoke(_links);
+            //ChainEvents.OnLinksCreated?.Invoke(_links);
         }
 
 
@@ -105,7 +123,8 @@ namespace Chain
 
         private void OnDisable()
         {
-            ChainEvents.OnPointsCreated -= DrawChain;
+            if(!Application.isPlaying)
+                ChainEvents.OnPointsCreated -= DrawChain;
         }
         
         // void RotateLinks(int i, Transform newObj)

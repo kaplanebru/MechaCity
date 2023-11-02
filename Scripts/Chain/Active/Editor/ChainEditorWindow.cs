@@ -30,6 +30,7 @@ public class ChainEditorWindow : EditorWindow
     }
 
     private LinksPool _linksPool;
+
     private void OnEnable()
     {
         //cogs = chainData.cogs.ToArray();
@@ -42,14 +43,15 @@ public class ChainEditorWindow : EditorWindow
 
         EditorGUI.BeginChangeCheck();
 
-        machineryPrefab = (Machinery) EditorGUILayout.ObjectField("Machinery Prefab", machineryPrefab, typeof(Machinery), true);
+        machineryPrefab =
+            (Machinery) EditorGUILayout.ObjectField("Machinery Prefab", machineryPrefab, typeof(Machinery), true);
         if (machineryPrefab == null)
             return;
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
             cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
-        
-        if(_linksPool == null)
+
+        if (_linksPool == null)
             _linksPool = machineryPrefab.GetComponentInChildren<LinksPool>();
 
         isChainRelated = EditorGUILayout.Toggle("Is Chain Related", isChainRelated);
@@ -66,7 +68,7 @@ public class ChainEditorWindow : EditorWindow
         }
 
         selectedIndex = EditorGUILayout.Popup("Selected Cog", selectedIndex, cogHolderLabels);
-        
+
         if (selectedIndex >= 0 && selectedIndex < cogs.Length)
         {
             EditorGUI.indentLevel++;
@@ -79,7 +81,7 @@ public class ChainEditorWindow : EditorWindow
         {
             foreach (var cog in cogs)
             {
-                cog.Data.IsChainRelated = isChainRelated;
+                cog.Data.IsChainRelated = isChainRelated; //TODO: is it necessary?
                 EditorUtility.SetDirty(cog.Data);
             }
 
@@ -117,7 +119,7 @@ public class ChainEditorWindow : EditorWindow
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
             EditorGUILayout.Space();
-            
+
             //if(machineryPrefab.GetComponentInChildren<ChainSpawner>().Data == null) TODO: yoksa yarat, varsa get
             chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
             if (chainData != null)
@@ -125,6 +127,13 @@ public class ChainEditorWindow : EditorWindow
                 ChainSettings();
                 if (GUILayout.Button("Generate Chain"))
                 {
+                    foreach (var cog in cogs)
+                    {
+                        cog.Data.IsMoving = chainData.IsMoving;
+                        EditorUtility.SetDirty(cog.Data);
+                    }
+
+
                     ChainEvents.OnChainRequest?.Invoke(); //ninvoke pas en enable
                     Repaint();
                 }
@@ -134,10 +143,6 @@ public class ChainEditorWindow : EditorWindow
                     _linksPool.DeleteLinks();
                 }
             }
-            
-            
-            
-            
         }
 
 
@@ -146,7 +151,6 @@ public class ChainEditorWindow : EditorWindow
 
         if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
         {
-           
         }
     }
 
@@ -160,6 +164,7 @@ public class ChainEditorWindow : EditorWindow
             Debug.Log(cogs[i].name);
             return;
         }
+
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
         Data.circularThickness = EditorGUILayout.FloatField("Thickness", Data.circularThickness);
 
@@ -208,5 +213,4 @@ public class ChainEditorWindow : EditorWindow
     {
         ChainEvents.OnCogSetupRequest.Invoke();
     }
-    
 }

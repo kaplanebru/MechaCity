@@ -8,8 +8,8 @@ public class ChainMover : MonoBehaviour
 {
     public ChainData Data;
     
-    private List<ChainLink> _links = new();
-    private List<Vector3> _points = new();
+    [SerializeField]private List<ChainLink> _links = new();
+    [SerializeField]private List<Vector3> _points = new();
     private List<Quaternion> _rotations = new();
     
    
@@ -26,8 +26,8 @@ public class ChainMover : MonoBehaviour
         enabled = Data.IsMoving;
         
        // ChainEvents.OnMotionStateSet += enable => enabled = enable;
-        ChainEvents.OnPointsCreated += SetPoints;
-        ChainEvents.OnLinksCreated += SetLinks;
+        //ChainEvents.OnPointsCreated += SetPoints;
+        ChainEvents.OnLinksCreated += SetLinksAndPoints;
         
         ChainEvents.OnCogSpeedSet += GetTotalCogSpeed; //TODO: cog data is moving görünüyor
     }
@@ -37,10 +37,23 @@ public class ChainMover : MonoBehaviour
     private int totalCogTeeth = 0;
     private int _toothSize;
     private float toothUnits;
+
+    private int counter = 0;
     private void GetTotalCogSpeed(int teethAmount, float toothUnit)
     {
         totalCogTeeth += teethAmount;
         toothUnits += toothUnit;
+
+        counter++;
+        print(Data.CogAmount);
+        if (counter == Data.CogAmount)
+        {
+            print("after countwer");
+            counter = 0;
+            SetSpeed();
+            print("linear speed " + LinearSpeed);
+            StartCoroutine(nameof(MoveRoutine));
+        }
     }
 
     void SetPoints(List<Vector3> points)
@@ -48,13 +61,19 @@ public class ChainMover : MonoBehaviour
         _points = points;
     }
 
-    void SetLinks(List<ChainLink> links)
+    void SetLinksAndPoints(List<ChainLink> links, List<Vector3> points)
     {
         _links = links;
+        _points = points;
+       
+        //StartCoroutine(nameof(MoveRoutine));
+    }
+
+    void SetSpeed()
+    {
         LinearSpeed = Data.MachinerySpeed / (totalCogTeeth + (Data.Unit - toothUnits/Data.CogAmount) * totalCogTeeth);  //fazlalığı da cogteethe eklemiş oluyoruz
         //BOŞLUK + TEETH SİZE   /(totalCogTeeth + (Data.Unit - (teethInterval + _toothSize)) * totalCogTeeth);
 //        print("chain speed: " + LinearSpeed);
-        StartCoroutine(nameof(MoveRoutine));
     }
 
    
@@ -69,6 +88,7 @@ public class ChainMover : MonoBehaviour
 
     IEnumerator MoveRoutine()
     {
+        print("move routine");
         yield return new WaitWhile(() => _points.Count == 0);
         RotatePointsByObj();
 
@@ -121,8 +141,8 @@ public class ChainMover : MonoBehaviour
     private void OnDisable()
     {
        // ChainEvents.OnMotionStateSet -= enable => enabled = enable;
-        ChainEvents.OnPointsCreated -= SetPoints;
-        ChainEvents.OnLinksCreated -= SetLinks;
+        //ChainEvents.OnPointsCreated -= SetPoints;
+        ChainEvents.OnLinksCreated -= SetLinksAndPoints;
         ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;
 
     }

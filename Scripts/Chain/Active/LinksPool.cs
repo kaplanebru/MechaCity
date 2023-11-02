@@ -18,9 +18,7 @@ namespace Chain
     
         private void OnEnable()
         {
-            
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-            print(_state);
             if (_state == PlayModeStateChange.EnteredEditMode)
             {
                 EnablePool();
@@ -31,6 +29,10 @@ namespace Chain
         private void OnPlayModeStateChanged(PlayModeStateChange state)
         {
             _state = state;
+            if (_state == PlayModeStateChange.ExitingEditMode)
+            {
+               print(pool.Count + state);
+            }
         }
 
 
@@ -58,6 +60,12 @@ namespace Chain
                 var link = links[i];
                 DestroyImmediate(link.gameObject, true);
             }
+        }
+
+        private void OnDisable()
+        {
+            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+
         }
     }
 }

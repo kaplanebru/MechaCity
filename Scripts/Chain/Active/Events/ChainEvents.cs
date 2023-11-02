@@ -6,7 +6,7 @@ using UnityEngine;
 public class ChainEvents
 {
     public static Action<List<Vector3>> OnPointsCreated;
-    public static Action<List<ChainLink>> OnLinksCreated;
+    public static Action<List<ChainLink>, List<Vector3>> OnLinksCreated;
     public static Action<bool> OnMotionStateSet;
     
     public static Action<int, float> OnCogSpeedSet;

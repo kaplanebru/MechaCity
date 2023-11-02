@@ -29,8 +29,12 @@ namespace Chain
         private void OnEnable()
         {
             cogs.Clear();
-            ChainEvents.OnCogReady += GetCogs;
-            ChainEvents.OnChainRequest += StartChain;
+            if (!Application.isPlaying)
+            {
+                ChainEvents.OnCogReady += GetCogs;
+                ChainEvents.OnChainRequest += StartChain;
+            }
+          
             //ChainEvents.OnCogsSelected += GenerateChainBySelection;
 
             cogs = GetComponentsInChildren<Cogwheel>().ToList();
@@ -264,8 +268,12 @@ namespace Chain
 
         private void OnDisable()
         {
-            ChainEvents.OnCogReady -= GetCogs;
-            ChainEvents.OnChainRequest -= StartChain;
+            if (!Application.isPlaying)
+            {
+                ChainEvents.OnCogReady -= GetCogs;
+                ChainEvents.OnChainRequest -= StartChain;
+            }
+            
         }
     }
 
