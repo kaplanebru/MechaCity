@@ -25,11 +25,8 @@ public class ChainMover : MonoBehaviour
 
         enabled = Data.IsMoving;
         
-       // ChainEvents.OnMotionStateSet += enable => enabled = enable;
-        //ChainEvents.OnPointsCreated += SetPoints;
         ChainEvents.OnLinksCreated += SetLinksAndPoints;
-        
-        ChainEvents.OnCogSpeedSet += GetTotalCogSpeed; //TODO: cog data is moving görünüyor
+        ChainEvents.OnCogSpeedSet += GetTotalCogSpeed; 
     }
 
 
@@ -45,7 +42,7 @@ public class ChainMover : MonoBehaviour
         toothUnits += toothUnit;
 
         counter++;
-        print(Data.CogAmount);
+        
         if (counter == Data.CogAmount)
         {
             print("after countwer");
@@ -55,18 +52,12 @@ public class ChainMover : MonoBehaviour
             StartCoroutine(nameof(MoveRoutine));
         }
     }
-
-    void SetPoints(List<Vector3> points)
-    {
-        _points = points;
-    }
+    
 
     void SetLinksAndPoints(List<ChainLink> links, List<Vector3> points)
     {
         _links = links;
         _points = points;
-       
-        //StartCoroutine(nameof(MoveRoutine));
     }
 
     void SetSpeed()
@@ -88,7 +79,6 @@ public class ChainMover : MonoBehaviour
 
     IEnumerator MoveRoutine()
     {
-        print("move routine");
         yield return new WaitWhile(() => _points.Count == 0);
         RotatePointsByObj();
 
@@ -140,9 +130,7 @@ public class ChainMover : MonoBehaviour
 
     private void OnDisable()
     {
-       // ChainEvents.OnMotionStateSet -= enable => enabled = enable;
-        //ChainEvents.OnPointsCreated -= SetPoints;
-        ChainEvents.OnLinksCreated -= SetLinksAndPoints;
+       ChainEvents.OnLinksCreated -= SetLinksAndPoints;
         ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;
 
     }

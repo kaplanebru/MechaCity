@@ -26,23 +26,24 @@ namespace Chain
 
         private void OnEnable()
         {
-            linksPool = GetComponentInChildren<LinksPool>();
-            Data = GetComponent<ChainSpawner>().Data;
             if (!Application.isPlaying)
             {
-                ChainEvents.OnPointsCreated += DrawChain;
-                //ResetValues();
-            }
+                linksPool = GetComponentInChildren<LinksPool>();
+                Data = GetComponent<ChainSpawner>().Data;
                 
-            
-            print("drawe enabled");
+                ChainEvents.OnPointsCreated += DrawChain;
+                ChainEvents.OnDeleteLinks += ClearLinks;
+            }
         }
 
         private void Start()
         {
             ChainEvents.OnLinksCreated?.Invoke(_links, _chainPoints); //after edit, for mover
-            //ChainEvents.OnPointsCreated.Invoke(_chainPoints);//after edit, for mover
+        }
 
+        void ClearLinks()
+        {
+            _links.Clear();
         }
 
         void DrawChain(List<Vector3> points)
@@ -60,7 +61,7 @@ namespace Chain
         void CreateLinks()
         {
             ResetLinks();
-            print(_pointsCount);
+            print("points count at drawer: " + _pointsCount);
             for (int i = 0; i < _pointsCount; i++)
             {
                 //var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
@@ -83,6 +84,7 @@ namespace Chain
 
             // if(Data.Type == ChainType.BikeChain)
             //     RegulateLastLink();
+            //
 
             //ChainEvents.OnLinksCreated?.Invoke(_links);
         }
@@ -92,6 +94,10 @@ namespace Chain
         {
             // _links.Clear();
             // _links = linksPool.GetComponentsInChildren<ChainLink>(false).ToList();
+            
+            if(linksPool.pool.Count == 0)
+                linksPool.ActivatePool();
+            
             _links.ForEach(l=> linksPool.ReleaseItem(l));
             _links.Clear();
         }
@@ -123,8 +129,11 @@ namespace Chain
 
         private void OnDisable()
         {
-            if(!Application.isPlaying)
+            if (!Application.isPlaying)
+            {
                 ChainEvents.OnPointsCreated -= DrawChain;
+                ChainEvents.OnDeleteLinks -= ClearLinks;
+            }
         }
         
         // void RotateLinks(int i, Transform newObj)

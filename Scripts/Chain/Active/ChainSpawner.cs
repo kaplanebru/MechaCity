@@ -31,7 +31,6 @@ namespace Chain
             cogs.Clear();
             if (!Application.isPlaying)
             {
-                ChainEvents.OnCogReady += GetCogs;
                 ChainEvents.OnChainRequest += StartChain;
             }
           
@@ -39,11 +38,7 @@ namespace Chain
 
             cogs = GetComponentsInChildren<Cogwheel>().ToList();
         }
-
-        private void Start() //runtime ise startta çağrılmaması lazım
-        {
-            //yield return new WaitUntil(() => cogs.Count == Data.CogAmount);
-        }
+        
 
         void GenerateChain()
         {
@@ -60,11 +55,7 @@ namespace Chain
             Upwards = Data.UpwardsAxis;
             GenerateChain();
         }
-
-        private void GetCogs(Cogwheel newCog)
-        {
-            //cogs.Add(newCog);
-        }
+        
 
         void CreateArcs()
         {
@@ -112,8 +103,8 @@ namespace Chain
                     tangentPoints[1],
                     relatedArc.cog.transform.position);
 
-            Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
-            Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
+            // Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
+            // Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
         }
 
         void CreateParts(int i)
@@ -270,7 +261,6 @@ namespace Chain
         {
             if (!Application.isPlaying)
             {
-                ChainEvents.OnCogReady -= GetCogs;
                 ChainEvents.OnChainRequest -= StartChain;
             }
             

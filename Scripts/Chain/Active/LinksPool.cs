@@ -13,60 +13,35 @@ namespace Chain
     {
         [SerializeField] int population = 100;
         [SerializeField] ChainLink linkPrefab;
-
-        private PlayModeStateChange _state = PlayModeStateChange.EnteredEditMode;
-    
-        private void OnEnable()
-        {
-            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-            if (_state == PlayModeStateChange.EnteredEditMode)
-            {
-                EnablePool();
-            }
-          
-        }
-        
-        private void OnPlayModeStateChanged(PlayModeStateChange state)
-        {
-            _state = state;
-            if (_state == PlayModeStateChange.ExitingEditMode)
-            {
-               print(pool.Count + state);
-            }
-        }
-
-
-        void EnablePool()
+        public void ActivatePool()
         {
             if (pool.Count == 0)
             {
-                RestorePool(GetComponentsInChildren<ChainLink>(true)); //TODO: kendisi de ekli, link diye class açmak lazım
+                RestorePool(GetComponentsInChildren<ChainLink>(true));
                 if(pool.Count == 0)
                     CreatePool(population, transform, linkPrefab);
             }
         
-            print(pool.Count);
-            print("pool enabled");
+            print("pool count " +pool.Count);
         }
 
         
 
         public void DeleteLinks()
         {
-            var links = GetComponentsInChildren<ChainLink>();
+            ChainEvents.OnDeleteLinks?.Invoke();
+
+            var links = GetComponentsInChildren<ChainLink>(true);
        
             for (int i = links.Length - 1; i >= 0; i--)
             {
                 var link = links[i];
                 DestroyImmediate(link.gameObject, true);
             }
+            
+            pool.Clear();
         }
-
-        private void OnDisable()
-        {
-            EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
-
-        }
+        
     }
 }
 

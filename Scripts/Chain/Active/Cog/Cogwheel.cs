@@ -19,8 +19,6 @@ namespace Chain
 
         private void Start()
         {
-            // if(Data.IsChainRelated)
-            //     ChainEvents.OnCogReady?.Invoke(this); //ninvoke pas en enable
             StartMotion(Data.IsMoving); //after edit
         }
 

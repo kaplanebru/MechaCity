@@ -11,7 +11,7 @@ namespace GenericHelper
     {
         
         public static Pool<T> Instance;
-        public Queue<T> pool = new Queue<T>();
+        [SerializeField]public Queue<T> pool = new Queue<T>();
 
         
         public T GetItem(Action<T> callback = null)

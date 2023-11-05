@@ -30,11 +30,7 @@ public class ChainEditorWindow : EditorWindow
     }
 
     private LinksPool _linksPool;
-
-    private void OnEnable()
-    {
-        //cogs = chainData.cogs.ToArray();
-    }
+    
 
     private void OnGUI()
     {
@@ -79,30 +75,8 @@ public class ChainEditorWindow : EditorWindow
         EditorGUILayout.Space();
         if (GUILayout.Button("Generate Cog"))
         {
-            foreach (var cog in cogs)
-            {
-                cog.Data.IsChainRelated = isChainRelated; //TODO: is it necessary?
-                EditorUtility.SetDirty(cog.Data);
-            }
-
-            if (isChainRelated)
-            {
-                if (chainData != null)
-                {
-                    //chainData.cogs = cogs.ToList();
-                    chainData.CogAmount = cogs.Length;
-                    EditorUtility.SetDirty(chainData);
-                }
-            }
-
-
-            StartCogSetup();
-            if (machineryPrefab != null)
-            {
-                Undo.RecordObject(machineryPrefab, "machineryPB");
-                EditorUtility.SetDirty(machineryPrefab);
-                Repaint();
-            }
+            GenerateCog();
+            SaveMachinery();
         }
 
         if (GUILayout.Button("Delete Teeth"))
@@ -125,22 +99,15 @@ public class ChainEditorWindow : EditorWindow
             if (chainData != null)
             {
                 ChainSettings();
+                
                 if (GUILayout.Button("Generate Chain"))
                 {
-                    foreach (var cog in cogs)
-                    {
-                        cog.Data.IsMoving = chainData.IsMoving;
-                        EditorUtility.SetDirty(cog.Data);
-                    }
-
-
-                    ChainEvents.OnChainRequest?.Invoke(); //ninvoke pas en enable
-                    Repaint();
+                   GenerateChain();
                 }
 
                 if (GUILayout.Button("DeleteLinks"))
                 {
-                    _linksPool.DeleteLinks();
+                    DeleteLinks();
                 }
             }
         }
@@ -152,6 +119,53 @@ public class ChainEditorWindow : EditorWindow
         if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
         {
         }
+    }
+
+    void SaveMachinery()
+    {
+        if (machineryPrefab != null)
+        {
+            Undo.RecordObject(machineryPrefab, "machineryPB");
+            EditorUtility.SetDirty(machineryPrefab);
+            Repaint();
+        }
+    }
+
+    void GenerateChain()
+    {
+        foreach (var cog in cogs)
+        {
+            cog.Data.IsMoving = chainData.IsMoving;
+        }
+        GenerateCog();
+        
+        ChainEvents.OnChainRequest?.Invoke(); //ninvoke pas en enable
+        Repaint();
+    }
+
+    void DeleteLinks()
+    {
+        
+        _linksPool.DeleteLinks();
+    }
+    void GenerateCog()
+    {
+        foreach (var cog in cogs)
+        {
+            cog.Data.IsChainRelated = isChainRelated;
+            EditorUtility.SetDirty(cog.Data);
+        }
+
+        if (isChainRelated)
+        {
+            if (chainData != null)
+            {
+                chainData.CogAmount = cogs.Length;
+                EditorUtility.SetDirty(chainData);
+            }
+        }
+        
+        StartCogSetup();
     }
 
     void SetCogData(int i)
@@ -204,8 +218,6 @@ public class ChainEditorWindow : EditorWindow
             chainData.FollowGearRotation = EditorGUILayout.Toggle("Follow Cog Rotation", chainData.FollowGearRotation);
             chainData.SetMotionByGear = EditorGUILayout.Toggle("Set Motion By Cog", chainData.SetMotionByGear);
         }
-
-        //TODO: COG SPEED BURAYA. SYSTEM SPEED FALAN DA OLABİLİR ADI
     }
 
 

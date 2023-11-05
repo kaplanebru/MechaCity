@@ -143,13 +143,7 @@ namespace Chain
         public void DeleteTeeth()
         {
             ResetTeeth();
-            // for (int i = 0; i < teeth.Count; i++)
-            // {
-            //     var tooth = teeth[0];
-            //     teeth.Remove(tooth);
-            //     DestroyImmediate(tooth.gameObject);
-            // }
-
+         
             for (int i = teeth.Count - 1; i >= 0; i--)
             {
                 var tooth = teeth[i];

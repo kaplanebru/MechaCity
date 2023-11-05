@@ -4,8 +4,8 @@ namespace MyNamespace
     {
         public enum ChainType
         {
-            StandardChain,
             BikeChain,
+            StandardChain,
             Line
         }
     

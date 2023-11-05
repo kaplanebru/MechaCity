@@ -61,17 +61,7 @@ namespace Chain
         void SortPointsByAngles()
         {
             itemAngleModels = itemAngleModels.OrderByDescending(i => i.Angle).ToList();
-           
-
-           
-            // itemAngleModels.Sort((a, b) =>
-            // {
-            //     float angleA = Mathf.Atan2(a.ItemPosition.z - center.z, a.ItemPosition.x - center.x);
-            //     float angleB = Mathf.Atan2(b.ItemPosition.z - center.z, b.ItemPosition.x - center.x);
-            //     return -angleA.CompareTo(angleB);
-            // });
-
-            //itemAngleModels.Reverse();
+            
             for (int i = 0; i < _items.Length; i++)
             {
                 _items[i] = itemAngleModels[i].Item;

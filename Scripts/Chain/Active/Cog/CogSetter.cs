@@ -16,15 +16,12 @@ namespace Chain
 
         private void OnEnable()
         {
-
             cog = GetComponent<Cogwheel>();
             Data = cog.Data;
-            
-            ChainEvents.OnCogSetupRequest += Setup;
 
+            ChainEvents.OnCogSetupRequest += Setup;
         }
 
-      
 
         void Setup()
         {
@@ -32,29 +29,24 @@ namespace Chain
             var radius = Data.Radius;
             var scale = Vector3.one;
             scale.x = radius * 2;
-            
-            if(ChainSpawner.Upwards == ChainEnums.UpAxis.Z)
+
+            if (ChainSpawner.Upwards == ChainEnums.UpAxis.Z)
                 scale.z = radius * 2;
             else
                 scale.y = radius * 2;
 
             cog.cogObject.transform.localScale = scale;
-            
+
             SetHoleSize();
-            
+
             ChainEvents.OnCogDataSet?.Invoke(Data, cog.teeth);
-
             
-            //Data.cogObject.transform.localScale = scale;
-            //transform.position += Data.PositionOffset;
-
-            //SetHoleSize();
+            
             //ChainEvents.OnCogStart?.Invoke(Data, teeth);
         }
-        
+
         void SetHoleSize()
         {
-            //Transform[] holes = cog.holes.GetComponentsInChildren<Transform>().Where(t=>t!=cog.holes).ToArray();
             Transform[] holes = cog.holes;
             var holeSize = (Data.Radius - Data.circularThickness) * 2;
             foreach (var hole in holes)
@@ -81,5 +73,4 @@ namespace Chain
             ChainEvents.OnCogSetupRequest -= Setup;
         }
     }
-
 }

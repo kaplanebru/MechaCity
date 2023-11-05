@@ -7,7 +7,6 @@ namespace Chain
     [CreateAssetMenu(fileName = nameof(ChainData))]
     public class ChainData : ScriptableObject
     {
-        //public List<Cogwheel> cogs;
         public ChainEnums.ChainType Type = ChainEnums.ChainType.BikeChain;
         public ChainEnums.UpAxis UpwardsAxis;
         public float Unit = 2.3f;
