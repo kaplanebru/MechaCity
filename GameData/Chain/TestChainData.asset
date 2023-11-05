@@ -16,7 +16,8 @@ MonoBehaviour:
   UpwardsAxis: 0
   Unit: 2.3
   RadiusOffset: 0.5
-  Tension: -0.5
+  Tension: -0.3
+  linkPrefab: {fileID: 155826592908102890, guid: dde0c66cc1ed6a2408573931ede16f6e, type: 3}
   MachinerySpeed: 25
   SpeedMultiplier: 0.1
   LinkRotationMultiplier: 1

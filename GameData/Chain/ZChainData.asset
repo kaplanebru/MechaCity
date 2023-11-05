@@ -17,10 +17,13 @@ MonoBehaviour:
   Unit: 2.3
   RadiusOffset: 0.7
   Tension: -0.5
-  Speed: 0.1
+  linkPrefab: {fileID: 0}
+  MachinerySpeed: 10
+  SpeedMultiplier: 0.1
   LinkRotationMultiplier: 1
   motionDirection: 1
   SetRadiusByGear: 1
   SetMotionByGear: 1
   IsMoving: 1
   FollowGearRotation: 1
+  CogAmount: 3

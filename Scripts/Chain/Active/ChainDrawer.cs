@@ -48,6 +48,7 @@ namespace Chain
 
         void DrawChain(List<Vector3> points)
         {
+            _chainPoints.Clear(); //todo: bazen buga sebep oluyor
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
             if (Data.Type == ChainEnums.ChainType.Line)
@@ -95,7 +96,7 @@ namespace Chain
 
             if (linksPool.pool.Count == 0)
             {
-                linksPool.ActivatePool(_chainPoints.Count);
+                linksPool.ActivatePool(_chainPoints.Count, Data.linkPrefab);
             }
 
             if (_links.Count > 0 && _links[0] == null)

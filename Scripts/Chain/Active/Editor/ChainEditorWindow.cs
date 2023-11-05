@@ -39,6 +39,12 @@ public class ChainEditorWindow : EditorWindow
 
         EditorGUI.BeginChangeCheck();
 
+        if (GUILayout.Button("SAVE CHANGES"))
+        {
+            SaveMachinery();
+
+        }
+
         machineryPrefab =
             (Machinery) EditorGUILayout.ObjectField("Machinery Prefab", machineryPrefab, typeof(Machinery), true);
         if (machineryPrefab == null)
@@ -76,7 +82,7 @@ public class ChainEditorWindow : EditorWindow
         if (GUILayout.Button("Generate Cog"))
         {
             GenerateCog();
-            SaveMachinery();
+            //SaveMachinery();
         }
 
         if (GUILayout.Button("Delete Teeth"))
@@ -95,7 +101,19 @@ public class ChainEditorWindow : EditorWindow
             EditorGUILayout.Space();
 
             //if(machineryPrefab.GetComponentInChildren<ChainSpawner>().Data == null) TODO: yoksa yarat, varsa get
+           
+            
+            if(GUILayout.Button("Create New Chain Data"))
+            {
+                chainData = CreateInstance<ChainData>();
+                AssetDatabase.CreateAsset(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+            
             chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
+
+            
             if (chainData != null)
             {
                 ChainSettings();
@@ -103,7 +121,7 @@ public class ChainEditorWindow : EditorWindow
                 if (GUILayout.Button("Generate Chain"))
                 {
                    GenerateChain();
-                   SaveMachinery();
+                   //SaveMachinery();
 
                 }
 
@@ -148,7 +166,6 @@ public class ChainEditorWindow : EditorWindow
 
     void DeleteLinks()
     {
-        
         _linksPool.DeleteLinks();
     }
     void GenerateCog()
@@ -164,6 +181,11 @@ public class ChainEditorWindow : EditorWindow
             if (chainData != null)
             {
                 chainData.CogAmount = cogs.Length;
+                
+                if (lastLinkPrefab != null && lastLinkPrefab != chainData.linkPrefab) // //TODO: test later
+                    DeleteLinks();
+                lastLinkPrefab = chainData.linkPrefab;
+
                 EditorUtility.SetDirty(chainData);
             }
         }
@@ -196,6 +218,7 @@ public class ChainEditorWindow : EditorWindow
         EditorUtility.SetDirty(cogs[i].Data);
     }
 
+    private ChainLink lastLinkPrefab;
     void ChainSettings()
     {
         chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
@@ -205,6 +228,9 @@ public class ChainEditorWindow : EditorWindow
             EditorGUILayout.FloatField("Radius Offset",
                 chainData.RadiusOffset); //todo: adı cog offset olarak değiştirilebilir
         chainData.Tension = EditorGUILayout.FloatField("Tension", chainData.Tension);
+
+        chainData.linkPrefab = (ChainLink) EditorGUILayout.ObjectField("Link Prefab", chainData.linkPrefab, typeof(ChainLink), false);
+
 
         chainData.SetRadiusByGear = EditorGUILayout.Toggle("Set Radius By Cog", chainData.SetRadiusByGear);
         chainData.IsMoving = EditorGUILayout.Toggle("Is Moving", chainData.IsMoving);

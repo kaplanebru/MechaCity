@@ -12,10 +12,10 @@ namespace Chain
     public class LinksPool : Pool<ChainLink>
     {
         //[SerializeField] int population = 0;
-        [SerializeField] ChainLink linkPrefab;
+        //[SerializeField] ChainLink linkPrefab;
         
         
-        public void ActivatePool(int pointCount)
+        public void ActivatePool(int pointCount, ChainLink linkPrefab)
         {
             if (pool.Count == 0)
             {
