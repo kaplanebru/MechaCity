@@ -13,7 +13,6 @@ public class ChainEvents
 
     public static Action OnCogSetupRequest;
     public static Action<CogData, Transform> OnCogDataSet;
-    public static Action<Cogwheel> OnCogReady;
 
     public static Action<CogData, Transform> OnPoolReady;
     public static Action OnChainRequest;

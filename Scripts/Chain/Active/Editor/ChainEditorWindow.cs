@@ -103,12 +103,15 @@ public class ChainEditorWindow : EditorWindow
                 if (GUILayout.Button("Generate Chain"))
                 {
                    GenerateChain();
+                   SaveMachinery();
+
                 }
 
                 if (GUILayout.Button("DeleteLinks"))
                 {
                     DeleteLinks();
                 }
+                
             }
         }
 
@@ -140,7 +143,7 @@ public class ChainEditorWindow : EditorWindow
         GenerateCog();
         
         ChainEvents.OnChainRequest?.Invoke(); //ninvoke pas en enable
-        Repaint();
+        //Repaint();
     }
 
     void DeleteLinks()

@@ -29,6 +29,8 @@ namespace Chain
         private void OnEnable()
         {
             cogs.Clear();
+            cogs = GetComponentsInChildren<Cogwheel>().ToList();
+
             if (!Application.isPlaying)
             {
                 ChainEvents.OnChainRequest += StartChain;
@@ -36,7 +38,6 @@ namespace Chain
           
             //ChainEvents.OnCogsSelected += GenerateChainBySelection;
 
-            cogs = GetComponentsInChildren<Cogwheel>().ToList();
         }
         
 
@@ -239,6 +240,9 @@ namespace Chain
                 i = arcs[i].relatedArcId;
                 if (i == 0) break;
             }
+            
+            print(chainPoints.Count);
+
 
             // if (Data.Type == ChainType.BikeChain)
             // {

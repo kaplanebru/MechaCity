@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Chain;
@@ -7,13 +8,13 @@ using UnityEngine;
 public class ChainMover : MonoBehaviour
 {
     public ChainData Data;
-    
-    [SerializeField]private List<ChainLink> _links = new();
-    [SerializeField]private List<Vector3> _points = new();
+
+    [SerializeField] private List<ChainLink> _links = new();
+    [SerializeField] private List<Vector3> _points = new();
     private List<Quaternion> _rotations = new();
-    
-   
-    public static float LinearSpeed;
+
+
+    public static float LinearSpeed = 0;
     public static float MachinerySpeed;
 
     private float _rotationExtentPerLink;
@@ -24,35 +25,35 @@ public class ChainMover : MonoBehaviour
         MachinerySpeed = Data.MachinerySpeed;
 
         enabled = Data.IsMoving;
-        
+
         ChainEvents.OnLinksCreated += SetLinksAndPoints;
-        ChainEvents.OnCogSpeedSet += GetTotalCogSpeed; 
+        ChainEvents.OnCogSpeedSet += GetTotalCogSpeed;
     }
 
 
-   
     private int totalCogTeeth = 0;
     private int _toothSize;
     private float toothUnits;
 
     private int counter = 0;
+
+    private IEnumerator Start()
+    {
+        yield return new WaitWhile(() => _points.Count == 0 || LinearSpeed == 0);
+        MoveChain();
+    }
+
     private void GetTotalCogSpeed(int teethAmount, float toothUnit)
     {
         totalCogTeeth += teethAmount;
         toothUnits += toothUnit;
-
         counter++;
         
-        if (counter == Data.CogAmount)
-        {
-            print("after countwer");
-            counter = 0;
-            SetSpeed();
-            print("linear speed " + LinearSpeed);
-            StartCoroutine(nameof(MoveRoutine));
-        }
+        if (counter != Data.CogAmount) return;
+        counter = 0;
+        SetSpeed();
     }
-    
+
 
     void SetLinksAndPoints(List<ChainLink> links, List<Vector3> points)
     {
@@ -62,12 +63,14 @@ public class ChainMover : MonoBehaviour
 
     void SetSpeed()
     {
-        LinearSpeed = Data.MachinerySpeed / (totalCogTeeth + (Data.Unit - toothUnits/Data.CogAmount) * totalCogTeeth);  //fazlalığı da cogteethe eklemiş oluyoruz
+        LinearSpeed = Data.MachinerySpeed /
+                      (totalCogTeeth +
+                       (Data.Unit - toothUnits / Data.CogAmount) *
+                       totalCogTeeth); //fazlalığı da cogteethe eklemiş oluyoruz
         //BOŞLUK + TEETH SİZE   /(totalCogTeeth + (Data.Unit - (teethInterval + _toothSize)) * totalCogTeeth);
 //        print("chain speed: " + LinearSpeed);
     }
 
-   
 
     void RotatePointsByObj()
     {
@@ -77,16 +80,15 @@ public class ChainMover : MonoBehaviour
         }
     }
 
-    IEnumerator MoveRoutine()
+    void MoveChain()
     {
-        yield return new WaitWhile(() => _points.Count == 0);
+        print(_links.Count);
         RotatePointsByObj();
 
         for (int i = 0; i < _links.Count; i++)
         {
             StartCoroutine(LinkMotionRoutine(i));
         }
-        
     }
 
     IEnumerator LinkMotionRoutine(int startIndex)
@@ -94,7 +96,7 @@ public class ChainMover : MonoBehaviour
         float speed = Data.SetMotionByGear ? LinearSpeed : Data.SpeedMultiplier;
         _rotationExtentPerLink = speed * Data.LinkRotationMultiplier;
         int j = startIndex;
-        
+
         while (true)
         {
             switch (Data.motionDirection)
@@ -106,7 +108,7 @@ public class ChainMover : MonoBehaviour
                 case ChainEnums.ChainDirection.ReverseClock:
                     j--;
                     if (j < 0)
-                        j = _points.Count-1;
+                        j = _points.Count - 1;
                     break;
             }
 
@@ -115,7 +117,7 @@ public class ChainMover : MonoBehaviour
                 _links[startIndex].transform.position = Vector3.MoveTowards(
                     _links[startIndex].transform.position,
                     _points[j], speed);
-                
+
                 _links[startIndex].transform.rotation = Quaternion.Slerp(
                     _links[startIndex].transform.rotation,
                     _rotations[j], _rotationExtentPerLink);
@@ -130,8 +132,7 @@ public class ChainMover : MonoBehaviour
 
     private void OnDisable()
     {
-       ChainEvents.OnLinksCreated -= SetLinksAndPoints;
+        ChainEvents.OnLinksCreated -= SetLinksAndPoints;
         ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;
-
     }
 }

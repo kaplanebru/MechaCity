@@ -11,28 +11,35 @@ namespace Chain
     [ExecuteInEditMode]
     public class LinksPool : Pool<ChainLink>
     {
-        [SerializeField] int population = 100;
+        //[SerializeField] int population = 0;
         [SerializeField] ChainLink linkPrefab;
-        public void ActivatePool()
+        
+        
+        public void ActivatePool(int pointCount)
         {
             if (pool.Count == 0)
             {
-                RestorePool(GetComponentsInChildren<ChainLink>(true));
-                if(pool.Count == 0)
-                    CreatePool(population, transform, linkPrefab);
+                var poolChildren = GetComponentsInChildren<ChainLink>(true);
+                var childrenLength = poolChildren.Length;
+                
+                RestorePool(poolChildren);
+                if (pointCount > childrenLength)
+                {
+                    CreatePool(pointCount-childrenLength, transform, linkPrefab);
+                }
+                
+                if(pool.Count == 0 && childrenLength == 0)  //not: eşitse de 0 olur
+                    CreatePool(pointCount, transform, linkPrefab);
             }
-        
-            print("pool count " +pool.Count);
         }
 
         
 
         public void DeleteLinks()
         {
-            ChainEvents.OnDeleteLinks?.Invoke();
 
             var links = GetComponentsInChildren<ChainLink>(true);
-       
+            
             for (int i = links.Length - 1; i >= 0; i--)
             {
                 var link = links[i];
@@ -40,7 +47,9 @@ namespace Chain
             }
             
             pool.Clear();
+            ChainEvents.OnDeleteLinks?.Invoke();
         }
+        
         
     }
 }
