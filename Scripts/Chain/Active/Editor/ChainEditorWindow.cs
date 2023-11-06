@@ -162,6 +162,7 @@ public class ChainEditorWindow : EditorWindow
         {
             Undo.RecordObject(machineryPrefab, "machineryPB");
             EditorUtility.SetDirty(machineryPrefab);
+            PrefabUtility.SavePrefabAsset(machineryPrefab.gameObject);
             Repaint();
         }
     }
