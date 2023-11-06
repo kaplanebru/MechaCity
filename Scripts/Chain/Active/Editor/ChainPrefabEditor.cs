@@ -1,15 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Chain;
 using MyNamespace;
-using UnityEditor;
-using UnityEditor.TerrainTools;
 using UnityEngine;
+using UnityEditor;
 
-public class ChainEditorWindow : EditorWindow
+[CustomEditor(typeof(Machinery))]
+public class ChainPrefabEditor : Editor
 {
     [SerializeField] private Cogwheel[] cogs;
     private string[] cogHolderLabels;
@@ -18,39 +16,36 @@ public class ChainEditorWindow : EditorWindow
     [SerializeField] private bool isChainRelated;
 
     [SerializeField] private ChainData chainData;
-
-    public Machinery machineryPrefab;
     private LinksPool _linksPool;
 
+    public Machinery machineryPrefab;
 
-    [MenuItem("Tools/Chain Generator")]
-    public static void ShowWindow()
+    private GameObject prefabObject;
+
+    public override void OnInspectorGUI()
     {
-        GetWindow(typeof(ChainEditorWindow));
-    }
+        DrawDefaultInspector(); // Draw the default Inspector
 
-   
-    
-
-    private void OnGUI()
-    {
+        machineryPrefab = target as Machinery;
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
-        
+
         EditorGUI.BeginChangeCheck();
 
         if (GUILayout.Button("SAVE CHANGES"))
         {
             SaveMachinery();
-
         }
 
-        machineryPrefab =
-            (Machinery) EditorGUILayout.ObjectField("Machinery Prefab", machineryPrefab, typeof(Machinery), true);
-        if (machineryPrefab == null)
-            return;
+        if (target is GameObject) // Check if target is a GameObject  prefabObject == null &&
+        {
+            prefabObject = (GameObject) target;
+            Debug.Log(prefabObject.name);
+        }
+
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
             cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
+        
 
         if (_linksPool == null)
             _linksPool = machineryPrefab.GetComponentInChildren<LinksPool>();
@@ -99,33 +94,33 @@ public class ChainEditorWindow : EditorWindow
             EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
             EditorGUILayout.Space();
 
-            //if(machineryPrefab.GetComponentInChildren<ChainSpawner>().Data == null) TODO: yoksa yarat, varsa get
-           
+            if (machineryPrefab.GetComponentInChildren<ChainSpawner>().Data != null)
+                chainData = machineryPrefab.GetComponentInChildren<ChainSpawner>().Data;
+            else
+                chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
             
-            if(GUILayout.Button("Create New Chain Data"))
-            {
-               CreateChainData();
-            }
-            
-            chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
 
-            
+            if (GUILayout.Button("Create New Chain Data"))
+            {
+                CreateChainData();
+            }
+
+
+
             if (chainData != null)
             {
                 ChainSettings();
-                
+
                 if (GUILayout.Button("Generate Chain"))
                 {
-                   GenerateChain();
-                   //SaveMachinery();
-
+                    GenerateChain();
+                    //SaveMachinery();
                 }
 
                 if (GUILayout.Button("DeleteLinks"))
                 {
                     DeleteLinks();
                 }
-                
             }
         }
 
@@ -136,6 +131,7 @@ public class ChainEditorWindow : EditorWindow
         if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
         {
         }
+        
     }
 
     void CreateChainData()
@@ -144,10 +140,13 @@ public class ChainEditorWindow : EditorWindow
         //var allChainDatas = Resources.LoadAll<ChainData>("ChainDatas");
         string[] guids = AssetDatabase.FindAssets("t:ChainData");
         int newIndex = guids.Length + 1;
-        AssetDatabase.CreateAsset(chainData, GetPath(nameof(chainData) + newIndex, "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
+        AssetDatabase.CreateAsset(chainData,
+            GetPath(nameof(chainData) + newIndex,
+                "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
+
     string GetPath(string fileName, string subFolderName)
     {
         string basePath = "Assets/Resources/" + subFolderName;
@@ -156,13 +155,29 @@ public class ChainEditorWindow : EditorWindow
 
     void SaveMachinery()
     {
-        if (machineryPrefab != null)
+        EditorUtility.SetDirty(target);
+
+        if (target as GameObject != null)
         {
-            Undo.RecordObject(machineryPrefab, "machineryPB");
-            EditorUtility.SetDirty(machineryPrefab);
-            PrefabUtility.SavePrefabAsset(machineryPrefab.gameObject);
-            Repaint();
+            Debug.Log("target is go");
         }
+        
+        //PrefabUtility.SavePrefabAsset(target as GameObject);
+        // if (machineryPrefab != null)
+        // {
+        //     EditorUtility.SetDirty(target);
+        //
+        //     // Automatically save the prefab
+        //     if (target is GameObject) // Check if target is a GameObject
+        //     {
+        //         GameObject prefabObject = (GameObject)target;
+        //         PrefabUtility.SavePrefabAsset(prefabObject);
+        //     }
+        //     // Undo.RecordObject(machineryPrefab, "machineryPB");
+        //     // EditorUtility.SetDirty(machineryPrefab);
+        //     // PrefabUtility.SavePrefabAsset(machineryPrefab.gameObject);
+        //     Repaint();
+        // }
     }
 
     void GenerateChain()
@@ -171,8 +186,9 @@ public class ChainEditorWindow : EditorWindow
         {
             cog.Data.IsMoving = chainData.IsMoving;
         }
+
         GenerateCog();
-        
+
         ChainEvents.OnChainRequest?.Invoke(); //ninvoke pas en enable
         //Repaint();
     }
@@ -181,6 +197,7 @@ public class ChainEditorWindow : EditorWindow
     {
         _linksPool.DeleteLinks();
     }
+
     void GenerateCog()
     {
         foreach (var cog in cogs)
@@ -194,7 +211,7 @@ public class ChainEditorWindow : EditorWindow
             if (chainData != null)
             {
                 chainData.CogAmount = cogs.Length;
-                
+
                 if (lastLinkPrefab != null && lastLinkPrefab != chainData.linkPrefab) // //TODO: test later
                     DeleteLinks();
                 lastLinkPrefab = chainData.linkPrefab;
@@ -202,7 +219,7 @@ public class ChainEditorWindow : EditorWindow
                 EditorUtility.SetDirty(chainData);
             }
         }
-        
+
         StartCogSetup();
     }
 
@@ -232,6 +249,7 @@ public class ChainEditorWindow : EditorWindow
     }
 
     private ChainLink lastLinkPrefab;
+
     void ChainSettings()
     {
         chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
@@ -242,7 +260,8 @@ public class ChainEditorWindow : EditorWindow
                 chainData.RadiusOffset); //todo: adı cog offset olarak değiştirilebilir
         chainData.Tension = EditorGUILayout.FloatField("Tension", chainData.Tension);
 
-        chainData.linkPrefab = (ChainLink) EditorGUILayout.ObjectField("Link Prefab", chainData.linkPrefab, typeof(ChainLink), false);
+        chainData.linkPrefab =
+            (ChainLink) EditorGUILayout.ObjectField("Link Prefab", chainData.linkPrefab, typeof(ChainLink), false);
 
 
         chainData.SetRadiusByGear = EditorGUILayout.Toggle("Set Radius By Cog", chainData.SetRadiusByGear);
