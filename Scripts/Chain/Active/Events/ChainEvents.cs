@@ -18,4 +18,5 @@ public class ChainEvents
     public static Action OnChainRequest;
 
     public static Action OnDeleteLinks;
+    public static Action<LinksPool> OnLinksPoolUpdated;
 }

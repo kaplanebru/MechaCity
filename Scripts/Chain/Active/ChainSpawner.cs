@@ -33,8 +33,11 @@ namespace Chain
 
             if (!Application.isPlaying)
             {
+                print("x");
                 ChainEvents.OnChainRequest += StartChain;
             }
+            
+            print("y");
           
             //ChainEvents.OnCogsSelected += GenerateChainBySelection;
 
@@ -53,6 +56,7 @@ namespace Chain
 
         private void StartChain()
         {
+            print("start chain");
             Upwards = Data.UpwardsAxis;
             GenerateChain();
         }
@@ -241,7 +245,6 @@ namespace Chain
                 if (i == 0) break;
             }
             
-            print(chainPoints.Count);
 
 
             // if (Data.Type == ChainType.BikeChain)
@@ -253,6 +256,7 @@ namespace Chain
             //     }
             // }
 
+            print("on points created");
             ChainEvents.OnPointsCreated?.Invoke(chainPoints);
         }
 

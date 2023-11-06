@@ -20,6 +20,7 @@ public class ChainPrefabEditor : Editor
 
     [SerializeField] private ChainData chainData;
     private LinksPool _linksPool;
+    private ChainSpawner _chainSpawner;
 
     public Machinery machineryPrefab;
 
@@ -36,6 +37,12 @@ public class ChainPrefabEditor : Editor
         if (GUILayout.Button("SAVE CHANGES"))
         {
             SaveMachinery();
+        }
+
+        if (GUILayout.Button("OVERRIDE CHANGES ON SCENE"))
+        {
+            SaveMachinery();
+            OverrideChanges();
         }
 
 
@@ -90,14 +97,22 @@ public class ChainPrefabEditor : Editor
             EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
             EditorGUILayout.Space();
 
+            if (_chainSpawner == null)
+                _chainSpawner = machineryPrefab.GetComponentInChildren<ChainSpawner>();
+            else
+            {
+                chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
+
+            }
+
             chooseAnotherData = EditorGUILayout.Toggle("Choose Another Data", chooseAnotherData);
             newChainData = EditorGUILayout.Toggle("Create New Chain Data", newChainData);
 
             if (chainData == null && !chooseAnotherData)
             {
-                if (machineryPrefab.GetComponentInChildren<ChainSpawner>().Data != null)
+                if (_chainSpawner.Data != null)
                 {
-                    chainData = machineryPrefab.GetComponentInChildren<ChainSpawner>().Data;
+                    chainData = _chainSpawner.Data;
                 }
                 oldChainData = chainData;
             }
@@ -132,6 +147,18 @@ public class ChainPrefabEditor : Editor
                 {
                     DeleteLinks();
                 }
+
+                if (GUILayout.Button("create POOL"))
+                {
+                    var go = new GameObject("LinksPool");
+                    go.transform.SetParent(_chainSpawner.transform);
+                    go.AddComponent<LinksPool>();
+                    _linksPool = go.GetComponent<LinksPool>();
+                    ChainEvents.OnLinksPoolUpdated?.Invoke(_linksPool);
+                    SaveMachinery();
+                    // var pool = _chainSpawner.transform.GetChild(1).gameObject.AddComponent<LinksPool>();
+                    // _linksPool = pool;
+                }
             }
         }
 
@@ -165,14 +192,9 @@ public class ChainPrefabEditor : Editor
 
     void SaveMachinery()
     {
-        machineryPrefab.GetComponentInChildren<ChainSpawner>().Data = chainData;
+       _chainSpawner.Data = chainData;
 
         EditorUtility.SetDirty(target);
-
-        if (target as GameObject != null)
-        {
-            Debug.Log("target is go");
-        }
 
         //PrefabUtility.SavePrefabAsset(target as GameObject);
         // if (machineryPrefab != null)
@@ -192,6 +214,11 @@ public class ChainPrefabEditor : Editor
         // }
     }
 
+    void OverrideChanges()
+    {
+        PrefabUtility.ApplyPrefabInstance(machineryPrefab.gameObject, InteractionMode.UserAction);
+    }
+
     void GenerateChain()
     {
         machineryPrefab.GetComponentInChildren<ChainSpawner>().Data = chainData;
@@ -208,7 +235,10 @@ public class ChainPrefabEditor : Editor
 
     void DeleteLinks()
     {
+        Debug.Log("delete");
         _linksPool.DeleteLinks();
+        SaveMachinery();
+        //EditorUtility.SetDirty(target);
     }
 
     void GenerateCog()

@@ -21,7 +21,7 @@ MonoBehaviour:
   MachinerySpeed: 10
   SpeedMultiplier: 0.1
   LinkRotationMultiplier: 1
-  motionDirection: 0
+  motionDirection: 1
   SetRadiusByGear: 1
   SetMotionByGear: 1
   IsMoving: 1

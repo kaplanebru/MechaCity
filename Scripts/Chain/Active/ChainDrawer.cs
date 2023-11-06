@@ -33,8 +33,16 @@ namespace Chain
 
                 ChainEvents.OnPointsCreated += DrawChain;
                 ChainEvents.OnDeleteLinks += ClearLinks;
+                ChainEvents.OnLinksPoolUpdated += GetLinksPool;
             }
         }
+
+        private void GetLinksPool(LinksPool pool)
+        {
+            print(pool.name);
+            linksPool = pool;
+        }
+
 
         private void Start()
         {
@@ -48,7 +56,8 @@ namespace Chain
 
         void DrawChain(List<Vector3> points)
         {
-            _chainPoints.Clear(); //todo: bazen buga sebep oluyor
+            print("draw chain");
+            //_chainPoints.Clear(); //todo: bazen buga sebep oluyor
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
             if (Data.Type == ChainEnums.ChainType.Line)
@@ -59,8 +68,9 @@ namespace Chain
 
         void CreateLinks()
         {
+            print("create links");
             ResetLinks();
-            //print("points count at drawer: " + _pointsCount);
+            
             for (int i = 0; i < _pointsCount; i++)
             {
                 //var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
@@ -91,6 +101,7 @@ namespace Chain
 
         void ResetLinks()
         {
+            print("reset links");
             // _links.Clear();
             // _links = linksPool.GetComponentsInChildren<ChainLink>(false).ToList();
 
@@ -136,6 +147,8 @@ namespace Chain
             {
                 ChainEvents.OnPointsCreated -= DrawChain;
                 ChainEvents.OnDeleteLinks -= ClearLinks;
+                ChainEvents.OnLinksPoolUpdated -= GetLinksPool;
+
             }
         }
 
