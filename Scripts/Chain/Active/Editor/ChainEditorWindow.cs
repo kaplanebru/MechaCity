@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Chain;
 using MyNamespace;
@@ -105,10 +106,7 @@ public class ChainEditorWindow : EditorWindow
             
             if(GUILayout.Button("Create New Chain Data"))
             {
-                chainData = CreateInstance<ChainData>();
-                AssetDatabase.CreateAsset(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
+               CreateChainData();
             }
             
             chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
@@ -140,6 +138,22 @@ public class ChainEditorWindow : EditorWindow
         if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
         {
         }
+    }
+
+    void CreateChainData()
+    {
+        chainData = CreateInstance<ChainData>();
+        //var allChainDatas = Resources.LoadAll<ChainData>("ChainDatas");
+        string[] guids = AssetDatabase.FindAssets("t:ChainData");
+        int newIndex = guids.Length + 1;
+        AssetDatabase.CreateAsset(chainData, GetPath(nameof(chainData) + newIndex, "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+    }
+    string GetPath(string fileName, string subFolderName)
+    {
+        string basePath = "Assets/Resources/" + subFolderName;
+        return Path.Combine(basePath, fileName + ".asset");
     }
 
     void SaveMachinery()
