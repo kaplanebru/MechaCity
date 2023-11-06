@@ -175,10 +175,10 @@ public class ChainPrefabEditor : Editor
 
         EditorGUILayout.Space();
 
-
-        if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
-        {
-        }
+        EditorGUI.EndChangeCheck();
+        // if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
+        // {
+        // }
     }
 
 

@@ -48,6 +48,11 @@ namespace Chain
             // }
         }
 
+        public void InitializePool()
+        {
+            CreatePool(population, transform, linkPrefab);
+        }
+
 
         public void DeleteLinks()
         {

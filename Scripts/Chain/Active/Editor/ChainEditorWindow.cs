@@ -132,10 +132,10 @@ public class ChainEditorWindow : EditorWindow
 
         EditorGUILayout.Space();
 
-
-        if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
-        {
-        }
+        EditorGUI.EndChangeCheck();
+        // if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
+        // {
+        // }
     }
 
     void CreateChainData()
