@@ -33,11 +33,9 @@ namespace Chain
 
             if (!Application.isPlaying)
             {
-                print("x");
                 ChainEvents.OnChainRequest += StartChain;
             }
             
-            print("y");
           
             //ChainEvents.OnCogsSelected += GenerateChainBySelection;
 
@@ -56,7 +54,6 @@ namespace Chain
 
         private void StartChain()
         {
-            print("start chain");
             Upwards = Data.UpwardsAxis;
             GenerateChain();
         }
@@ -256,8 +253,8 @@ namespace Chain
             //     }
             // }
 
-            print("on points created");
-            ChainEvents.OnPointsCreated?.Invoke(chainPoints);
+            //ChainEvents.OnPointsCreated?.Invoke(chainPoints);
+            GetComponent<ChainDrawer>().DrawChain(chainPoints);
         }
 
         void AdaptUnitToCircle()

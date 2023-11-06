@@ -13,6 +13,7 @@ namespace Chain
         public float RadiusOffset = 0.5f;
         public float Tension = -0.5f; //Linear Offset
         public ChainLink linkPrefab;
+        public LinksPool LinksPoolPrefab;
 
         public float MachinerySpeed = 10;
         public float SpeedMultiplier = 0.1f;

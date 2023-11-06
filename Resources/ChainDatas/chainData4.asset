@@ -18,6 +18,7 @@ MonoBehaviour:
   RadiusOffset: 0.5
   Tension: -0.5
   linkPrefab: {fileID: 155826592908102890, guid: dde0c66cc1ed6a2408573931ede16f6e, type: 3}
+  LinksPoolPrefab: {fileID: 6997480075077878009, guid: 3baf006ca503d4e478c22dac90ff4217, type: 3}
   MachinerySpeed: 10
   SpeedMultiplier: 0.1
   LinkRotationMultiplier: 1

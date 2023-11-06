@@ -22,7 +22,7 @@ namespace Chain
         [SerializeField] private List<Vector3> _chainPoints = new();
         [SerializeField] private List<ChainLink> _links = new();
         private int _pointsCount;
-        private LinksPool linksPool;
+        [SerializeField] private LinksPool linksPool;
 
         private void OnEnable()
         {
@@ -37,9 +37,8 @@ namespace Chain
             }
         }
 
-        private void GetLinksPool(LinksPool pool)
+        public void GetLinksPool(LinksPool pool)
         {
-            print(pool.name);
             linksPool = pool;
         }
 
@@ -54,9 +53,9 @@ namespace Chain
             _links.Clear();
         }
 
-        void DrawChain(List<Vector3> points)
+        public void DrawChain(List<Vector3> points)
         {
-            print("draw chain");
+           // print("draw chain");
             //_chainPoints.Clear(); //todo: bazen buga sebep oluyor
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
@@ -68,8 +67,8 @@ namespace Chain
 
         void CreateLinks()
         {
-            print("create links");
             ResetLinks();
+           // return;
             
             for (int i = 0; i < _pointsCount; i++)
             {
@@ -101,20 +100,25 @@ namespace Chain
 
         void ResetLinks()
         {
-            print("reset links");
             // _links.Clear();
             // _links = linksPool.GetComponentsInChildren<ChainLink>(false).ToList();
 
+           // if(linksPool == null)
+                linksPool = GetComponentInChildren<LinksPool>();
+            
+          //  print(linksPool.name);
+
             if (linksPool.pool.Count == 0)
             {
+                print("chain points count: "+_chainPoints.Count);
                 linksPool.ActivatePool(_chainPoints.Count, Data.linkPrefab);
             }
 
             if (_links.Count > 0 && _links[0] == null)
                 _links.Clear();
 
-            _links.ForEach(l => linksPool.ReleaseItem(l));
-            _links.Clear();
+            // _links.ForEach(l => linksPool.ReleaseItem(l));
+            // _links.Clear();
         }
 
 

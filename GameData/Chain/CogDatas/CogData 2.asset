@@ -22,5 +22,5 @@ MonoBehaviour:
   ToothGap: 60
   MinGapLimit: 6
   Equalize: 0
-  TeethCount: 36
+  TeethCount: 24
   ToothUnit: 1.0442097
