@@ -96,16 +96,18 @@ public class ChainPrefabEditor : Editor
             if (chainData == null && !chooseAnotherData)
             {
                 if (machineryPrefab.GetComponentInChildren<ChainSpawner>().Data != null)
+                {
                     chainData = machineryPrefab.GetComponentInChildren<ChainSpawner>().Data;
+                }
                 oldChainData = chainData;
             }
             
             if (chooseAnotherData)
             {
-                if (chainData != oldChainData)
-                {
+                // if (chainData != oldChainData)
+                // {
                     chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
-                }
+                // }
             }
             
 
@@ -114,12 +116,7 @@ public class ChainPrefabEditor : Editor
                 if (GUILayout.Button("Create New Chain Data"))
                     CreateChainData();
             }
-
-
-            // else
-            //     chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
-            //
-
+            
 
             if (chainData != null)
             {
@@ -168,6 +165,8 @@ public class ChainPrefabEditor : Editor
 
     void SaveMachinery()
     {
+        machineryPrefab.GetComponentInChildren<ChainSpawner>().Data = chainData;
+
         EditorUtility.SetDirty(target);
 
         if (target as GameObject != null)
@@ -195,6 +194,7 @@ public class ChainPrefabEditor : Editor
 
     void GenerateChain()
     {
+        machineryPrefab.GetComponentInChildren<ChainSpawner>().Data = chainData;
         foreach (var cog in cogs)
         {
             cog.Data.IsMoving = chainData.IsMoving;
