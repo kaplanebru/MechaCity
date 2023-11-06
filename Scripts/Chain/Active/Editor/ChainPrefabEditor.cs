@@ -14,13 +14,15 @@ public class ChainPrefabEditor : Editor
     private int selectedIndex = 0;
 
     [SerializeField] private bool isChainRelated;
+    [SerializeField] private bool chooseAnotherData;
+    [SerializeField] private bool newChainData;
+    [SerializeField] private ChainData oldChainData;
 
     [SerializeField] private ChainData chainData;
     private LinksPool _linksPool;
 
     public Machinery machineryPrefab;
 
-    private GameObject prefabObject;
 
     public override void OnInspectorGUI()
     {
@@ -36,16 +38,10 @@ public class ChainPrefabEditor : Editor
             SaveMachinery();
         }
 
-        if (target is GameObject) // Check if target is a GameObject  prefabObject == null &&
-        {
-            prefabObject = (GameObject) target;
-            Debug.Log(prefabObject.name);
-        }
-
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
             cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
-        
+
 
         if (_linksPool == null)
             _linksPool = machineryPrefab.GetComponentInChildren<LinksPool>();
@@ -94,17 +90,35 @@ public class ChainPrefabEditor : Editor
             EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
             EditorGUILayout.Space();
 
-            if (machineryPrefab.GetComponentInChildren<ChainSpawner>().Data != null)
-                chainData = machineryPrefab.GetComponentInChildren<ChainSpawner>().Data;
-            else
-                chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
+            chooseAnotherData = EditorGUILayout.Toggle("Choose Another Data", chooseAnotherData);
+            newChainData = EditorGUILayout.Toggle("Create New Chain Data", newChainData);
+
+            if (chainData == null && !chooseAnotherData)
+            {
+                if (machineryPrefab.GetComponentInChildren<ChainSpawner>().Data != null)
+                    chainData = machineryPrefab.GetComponentInChildren<ChainSpawner>().Data;
+                oldChainData = chainData;
+            }
+            
+            if (chooseAnotherData)
+            {
+                if (chainData != oldChainData)
+                {
+                    chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
+                }
+            }
             
 
-            if (GUILayout.Button("Create New Chain Data"))
+            if (newChainData)
             {
-                CreateChainData();
+                if (GUILayout.Button("Create New Chain Data"))
+                    CreateChainData();
             }
 
+
+            // else
+            //     chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
+            //
 
 
             if (chainData != null)
@@ -131,7 +145,6 @@ public class ChainPrefabEditor : Editor
         if (EditorGUI.EndChangeCheck()) //(GUI.changed) 
         {
         }
-        
     }
 
     void CreateChainData()
@@ -161,7 +174,7 @@ public class ChainPrefabEditor : Editor
         {
             Debug.Log("target is go");
         }
-        
+
         //PrefabUtility.SavePrefabAsset(target as GameObject);
         // if (machineryPrefab != null)
         // {
