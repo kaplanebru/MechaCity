@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Chain
 {
-    public class EditorHelpers
+    public class MyEditorHelpers
     {
         public static string GetPath(string fileName, string subFolderName)
         {

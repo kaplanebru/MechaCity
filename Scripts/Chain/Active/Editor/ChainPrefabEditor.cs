@@ -133,6 +133,8 @@ public class ChainPrefabEditor : Editor
 
             if (newChainData)
             {
+                chainDataName = EditorGUILayout.TextField("Chain Data Name", chainDataName); //write the same name if you want to modify pool + reset pool before
+
                 if (GUILayout.Button("Create New Chain Data"))
                     CreateChainData();
             }
@@ -193,15 +195,13 @@ public class ChainPrefabEditor : Editor
         SaveMachinery();
     }
 
+    private string chainDataName;
     void CreateChainData()
     {
         chainData = CreateInstance<ChainData>();
-        //var allChainDatas = Resources.LoadAll<ChainData>("ChainDatas");
-        string[] guids = AssetDatabase.FindAssets("t:ChainData");
-        int newIndex = guids.Length + 1;
-        AssetDatabase.CreateAsset(chainData,
-            GetPath(nameof(chainData) + newIndex,
-                "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
+        
+        AssetDatabase.CreateAsset(chainData, MyEditorHelpers.GetPath(chainDataName, "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
+        
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

@@ -143,7 +143,7 @@ public class ChainEditorWindow : EditorWindow
         chainData = CreateInstance<ChainData>();
         // string[] guids = AssetDatabase.FindAssets("t:ChainData");
         // int newIndex = guids.Length + 1;
-        AssetDatabase.CreateAsset(chainData, EditorHelpers.GetPath(nameof(chainData) + EditorHelpers.GetTypeIndex(nameof(ChainData)), "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
+        AssetDatabase.CreateAsset(chainData, MyEditorHelpers.GetPath(nameof(ChainData) + MyEditorHelpers.GetTypeIndex(nameof(ChainData)), "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
