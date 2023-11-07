@@ -13,7 +13,7 @@ public class ChainPrefabEditor : Editor
     private string[] cogHolderLabels;
     private int selectedIndex = 0;
 
-    [SerializeField] private bool isChainRelated;
+    private bool isChainRelated = true;
     [SerializeField] private bool newChainData;
     private string chainDataName;
 
@@ -48,7 +48,7 @@ public class ChainPrefabEditor : Editor
             cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
 
         
-        isChainRelated = EditorGUILayout.Toggle("Is Chain Related", isChainRelated);
+        SetChainRelation();
 
         GUILayout.Label(" _______________Cog Settings_______________ ", EditorStyles.boldLabel); //\n 
         EditorGUILayout.Space();
@@ -83,8 +83,9 @@ public class ChainPrefabEditor : Editor
                 teeth.DeleteTeeth();
             }
         }
+        
 
-        if (isChainRelated)
+        if (machineryPrefab.isChainRelated)
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
@@ -149,6 +150,26 @@ public class ChainPrefabEditor : Editor
             }
             _chainDrawer.GetLinksPool(_linksPool);
         }
+    }
+
+    void SetChainRelation()
+    {
+        //isChainRelated = EditorGUILayout.Toggle("Is Chain Related", isChainRelated);
+        
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Toggle(isChainRelated, "Is Chain Related", "Button"))
+        {
+            isChainRelated = true;
+            machineryPrefab.isChainRelated = isChainRelated;
+        }
+
+        if (GUILayout.Toggle(!isChainRelated, "Not Chain Related", "Button"))
+        {
+            isChainRelated = false;
+            machineryPrefab.isChainRelated = isChainRelated;
+        }
+        GUILayout.EndHorizontal();
+
     }
 
 

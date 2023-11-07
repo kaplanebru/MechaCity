@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Machinery : MonoBehaviour
 {
+    public bool isChainRelated = false;
     // void SavePrefab()
     // {
     //     GameObject machineryPrefab = PrefabUtility.GetCorrespondingObjectFromSource(gameObject);
