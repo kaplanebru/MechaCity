@@ -23,6 +23,9 @@ public class ChainPrefabEditor : Editor
     private ChainDrawer _chainDrawer;
 
     public Machinery machineryPrefab;
+    
+    private GUIStyle narrowButton;
+
 
 
     public override void OnInspectorGUI()
@@ -31,6 +34,9 @@ public class ChainPrefabEditor : Editor
 
         machineryPrefab = target as Machinery;
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
+        narrowButton = new GUIStyle(GUI.skin.button);
+        narrowButton.fixedWidth = 200f;
+       
 
         EditorGUI.BeginChangeCheck();
 
@@ -172,18 +178,6 @@ public class ChainPrefabEditor : Editor
 
     }
 
-
-    void NewPool()
-    {
-        var go = new GameObject("LinksPool");
-        go.transform.SetParent(_chainSpawner.transform);
-        go.AddComponent<LinksPool>();
-        _linksPool = go.GetComponent<LinksPool>();
-        //ChainEvents.OnLinksPoolUpdated?.Invoke(_linksPool);
-        _chainDrawer.GetLinksPool(_linksPool);
-        SaveMachinery();
-    }
-
     void CreateChainData()
     {
         chainData = CreateInstance<ChainData>();
@@ -193,12 +187,7 @@ public class ChainPrefabEditor : Editor
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
-
-    string GetPath(string fileName, string subFolderName)
-    {
-        string basePath = "Assets/Resources/" + subFolderName;
-        return Path.Combine(basePath, fileName + ".asset");
-    }
+    
 
     void SaveMachinery()
     {
@@ -206,23 +195,6 @@ public class ChainPrefabEditor : Editor
             _chainSpawner.Data = chainData;
         
         EditorUtility.SetDirty(target);
-
-        //PrefabUtility.SavePrefabAsset(target as GameObject);
-        // if (machineryPrefab != null)
-        // {
-        //     EditorUtility.SetDirty(target);
-        //
-        //     // Automatically save the prefab
-        //     if (target is GameObject) // Check if target is a GameObject
-        //     {
-        //         GameObject prefabObject = (GameObject)target;
-        //         PrefabUtility.SavePrefabAsset(prefabObject);
-        //     }
-        //     // Undo.RecordObject(machineryPrefab, "machineryPB");
-        //     // EditorUtility.SetDirty(machineryPrefab);
-        //     // PrefabUtility.SavePrefabAsset(machineryPrefab.gameObject);
-        //     Repaint();
-        // }
     }
 
     void OverrideChanges()
@@ -266,9 +238,9 @@ public class ChainPrefabEditor : Editor
             {
                 chainData.CogAmount = cogs.Length;
 
-                if (lastLinkPrefab != null && lastLinkPrefab != chainData.linkPrefab) // //TODO: test later
-                    DeleteLinks();
-                lastLinkPrefab = chainData.linkPrefab;
+                // if (lastLinkPrefab != null && lastLinkPrefab != chainData.linkPrefab) // //TODO: test later
+                //     DeleteLinks();
+                // lastLinkPrefab = chainData.linkPrefab;
 
                 EditorUtility.SetDirty(chainData);
             }
@@ -302,7 +274,7 @@ public class ChainPrefabEditor : Editor
         EditorUtility.SetDirty(cogs[i].Data);
     }
 
-    private ChainLink lastLinkPrefab;
+    //private ChainLink lastLinkPrefab;
 
     void ChainSettings()
     {
@@ -315,13 +287,12 @@ public class ChainPrefabEditor : Editor
         chainData.Tension = EditorGUILayout.FloatField("Tension", chainData.Tension);
         
         chainData.LinksPoolPrefab = (LinksPool) EditorGUILayout.ObjectField("Links Pool Prefab",  chainData.LinksPoolPrefab, typeof(LinksPool), false);
-
         
-        chainData.linkPrefab =
-            (ChainLink) EditorGUILayout.ObjectField("Link Prefab", chainData.linkPrefab, typeof(ChainLink), false);
-
+        GUILayout.FlexibleSpace();
+        if (GUILayout.Button("Link Pool Changed", narrowButton))
+            HandlePoolChange();
+        GUILayout.FlexibleSpace();
         
-
         chainData.SetRadiusByGear = EditorGUILayout.Toggle("Set Radius By Cog", chainData.SetRadiusByGear);
         chainData.IsMoving = EditorGUILayout.Toggle("Is Moving", chainData.IsMoving);
 
@@ -339,9 +310,29 @@ public class ChainPrefabEditor : Editor
         }
     }
 
+    void HandlePoolChange()
+    {
+        DeleteLinks();
+        GetLinkPool();
+        GenerateChain();
+        
+    }
+
 
     void StartCogSetup()
     {
         ChainEvents.OnCogSetupRequest.Invoke();
     }
+    
 }
+
+// void NewPool()
+// {
+//     var go = new GameObject("LinksPool");
+//     go.transform.SetParent(_chainSpawner.transform);
+//     go.AddComponent<LinksPool>();
+//     _linksPool = go.GetComponent<LinksPool>();
+//     //ChainEvents.OnLinksPoolUpdated?.Invoke(_linksPool);
+//     _chainDrawer.GetLinksPool(_linksPool);
+//     SaveMachinery();
+// }
