@@ -21,6 +21,12 @@ namespace MyNamespace
             Y
         }
 
+        public enum PoolFunction
+        {
+            CreateNewPool,
+            ModifyPool
+        }
+
     }
 
 }

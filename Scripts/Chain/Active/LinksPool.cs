@@ -11,9 +11,10 @@ namespace Chain
     [ExecuteInEditMode]
     public class LinksPool : Pool<ChainLink>
     {
-        [SerializeField] int population = 100;
-        [SerializeField] ChainLink linkPrefab;
+        // [SerializeField] int population = 100;
+        // [SerializeField] ChainLink linkPrefab;
         //[SerializeField] private List<ChainLink> poolChildren = new();
+        [SerializeField] 
 
 
         public void ActivatePool(int pointCount, ChainLink linkPrefab)
@@ -48,29 +49,29 @@ namespace Chain
             // }
         }
 
-        public void InitializePool()
-        {
-            CreatePool(population, transform, linkPrefab);
-        }
+        // public void InitializePool()
+        // {
+        //     CreatePool(population, transform, linkPrefab);
+        // }
 
 
         public void DeleteLinks()
         {
-            ChainEvents.OnDeleteLinks?.Invoke();
-            DestroyImmediate(gameObject, true);
+            // ChainEvents.OnDeleteLinks?.Invoke();
+            // DestroyImmediate(gameObject, true);
 
-            // var links = GetComponentsInChildren<ChainLink>(true);
-            //
-            // for (int i = links.Length - 1; i >= 0; i--)
-            // {
-            //     var link = links[i];
-            //     DestroyImmediate(link.gameObject, true);
-            //     
-            // }
-            //
-            // pool.Clear();
-            //
-            // transform.DetachChildren();
+            var links = GetComponentsInChildren<ChainLink>(true);
+            
+            for (int i = links.Length - 1; i >= 0; i--)
+            {
+                var link = links[i];
+                DestroyImmediate(link.gameObject, true);
+                
+            }
+            
+            pool.Clear();
+            
+            //transform.DetachChildren();
             // ChainEvents.OnDeleteLinks?.Invoke();
             //
             // print("after delete children: " + GetComponentsInChildren<ChainLink>(true).Length);

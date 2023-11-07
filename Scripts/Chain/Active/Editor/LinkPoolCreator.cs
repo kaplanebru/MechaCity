@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using MyNamespace;
 using UnityEditor;
 using UnityEngine;
-
 
 namespace Chain
 {
@@ -11,6 +10,7 @@ namespace Chain
     {
         [SerializeField] private int amount = 100;
         [SerializeField] private ChainLink chainLinkPrefab;
+        [SerializeField] private ChainEnums.PoolFunction poolFunction;
         private LinksPool _linksPool;
         
         [MenuItem("Tools/Link Pool Creator")]
@@ -25,14 +25,37 @@ namespace Chain
 
             EditorGUI.BeginChangeCheck();
 
+            poolFunction = (ChainEnums.PoolFunction) EditorGUILayout.EnumPopup("Pool Function", poolFunction);
             amount = EditorGUILayout.IntField("Amount", amount);
-            chainLinkPrefab =
-                (ChainLink) EditorGUILayout.ObjectField("Link Prefab", chainLinkPrefab, typeof(ChainLink), false);
-            if (GUILayout.Button("Create Pool"))
+            chainLinkPrefab = (ChainLink) EditorGUILayout.ObjectField("Link Prefab", chainLinkPrefab, typeof(ChainLink), false);
+
+            switch (poolFunction)
             {
-                CreatePoolPrefab();
-           
+                case ChainEnums.PoolFunction.CreateNewPool:
+                {
+                    if (GUILayout.Button("Create Pool"))
+                    {
+                        CreatePoolPrefab();
+                    }
+
+                    break;
+                }
+                case ChainEnums.PoolFunction.ModifyPool:
+                {
+                    _linksPool = (LinksPool) EditorGUILayout.ObjectField("Pool Prefab", _linksPool, typeof(LinksPool), false);
+                    if (_linksPool != null)
+                    {
+                        if (GUILayout.Button("Create Pool"))
+                        {
+                           // ModifyPoolPrefab();
+                        }
+                       
+                    }
+                    break;
+                }
+                    
             }
+           
 
             EditorGUI.EndChangeCheck();
 
@@ -45,11 +68,23 @@ namespace Chain
             go.AddComponent<LinksPool>();
             _linksPool = go.GetComponent<LinksPool>();
             InitializePool();
-            PrefabUtility.SaveAsPrefabAsset(go, "Assets/LinksPool.prefab");
+            PrefabUtility.SaveAsPrefabAsset(go, "Assets/LinksPool.prefab"); //EditorHelpers.GetPath(nameof(go) + newIndex, "")
 
 
             DestroyImmediate(go);
         }
+
+        // void ModifyPoolPrefab()
+        // {
+        //     _linksPool.DeleteLinks();
+        //     InitializePool();
+        //     
+        //     Debug.Log(_linksPool.pool.Count);
+        //
+        //     
+        //     PrefabUtility.SaveAsPrefabAsset(_linksPool.gameObject, "Assets/LinksPool.prefab"); //todo: FİND PATH
+        //     //PrefabUtility.SavePrefabAsset()
+        // }
 
         void InitializePool()
         {
