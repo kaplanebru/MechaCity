@@ -57,19 +57,19 @@ namespace Chain
 
         public void DeleteLinks()
         {
-            // ChainEvents.OnDeleteLinks?.Invoke();
-            // DestroyImmediate(gameObject, true);
+            ChainEvents.OnDeleteLinks?.Invoke();
+            DestroyImmediate(gameObject, true);
 
-            var links = GetComponentsInChildren<ChainLink>(true);
-            
-            for (int i = links.Length - 1; i >= 0; i--)
-            {
-                var link = links[i];
-                DestroyImmediate(link.gameObject, true);
-                
-            }
-            
-            pool.Clear();
+            // var links = GetComponentsInChildren<ChainLink>(true);
+            //
+            // for (int i = links.Length - 1; i >= 0; i--)
+            // {
+            //     var link = links[i];
+            //     DestroyImmediate(link.gameObject, true);
+            //     
+            // }
+            //
+            // pool.Clear();
             
             //transform.DetachChildren();
             // ChainEvents.OnDeleteLinks?.Invoke();

@@ -160,7 +160,7 @@ public class ChainPrefabEditor : Editor
                     //SaveMachinery();
                 }
 
-                if (GUILayout.Button("DeleteLinks"))
+                if (GUILayout.Button("Delete Link Pool"))
                 {
                     DeleteLinks();
                     //NewPool();
