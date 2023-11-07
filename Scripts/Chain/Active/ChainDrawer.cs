@@ -108,6 +108,11 @@ namespace Chain
             
           //  print(linksPool.name);
 
+          if (linksPool == null)  //for bug check, temporary
+          {
+              Debug.LogError("links pool null");
+              return;
+          }
             if (linksPool.pool.Count == 0)
             {
                 print("chain points count: "+_chainPoints.Count);
