@@ -157,13 +157,13 @@ public class ChainPrefabEditor : Editor
         //isChainRelated = EditorGUILayout.Toggle("Is Chain Related", isChainRelated);
         
         GUILayout.BeginHorizontal();
-        if (GUILayout.Toggle(isChainRelated, "Is Chain Related", "Button"))
+        if (GUILayout.Toggle(isChainRelated, "Is Chain Related", "Button")) //(GUILayout.Button("Is Chain Related"))
         {
             isChainRelated = true;
             machineryPrefab.isChainRelated = isChainRelated;
         }
 
-        if (GUILayout.Toggle(!isChainRelated, "Not Chain Related", "Button"))
+        if (GUILayout.Toggle(!isChainRelated, "Not Chain Related", "Button")) //(GUILayout.Button("Not Chain Related"))
         {
             isChainRelated = false;
             machineryPrefab.isChainRelated = isChainRelated;
