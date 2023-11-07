@@ -200,8 +200,8 @@ public class ChainPrefabEditor : Editor
     {
         chainData = CreateInstance<ChainData>();
         
-        AssetDatabase.CreateAsset(chainData, MyEditorHelpers.GetPath(chainDataName, "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
-        
+        AssetDatabase.CreateAsset(chainData, MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
+        Debug.Log(MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas"));
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

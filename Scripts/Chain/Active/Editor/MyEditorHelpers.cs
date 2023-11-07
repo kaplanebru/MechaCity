@@ -8,10 +8,16 @@ namespace Chain
 {
     public class MyEditorHelpers
     {
-        public static string GetPath(string fileName, string subFolderName)
+        public static string WriteAssetPath(string fileName, string subFolderName)
         {
-            string basePath = "Assets/Resources/" + subFolderName;
+            string basePath = "Assets/Resources/" + subFolderName +"/";
             return Path.Combine(basePath, fileName + ".asset");
+        }
+
+        public static string WritePrefabPath(string fileName, string subFolderName)
+        {
+            string basePath = "Assets/Resources/" + subFolderName +"/";
+            return Path.Combine(basePath, fileName + ".prefab");
         }
         
         public static int GetTypeIndex(string typeName)

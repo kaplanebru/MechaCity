@@ -45,9 +45,8 @@ namespace Chain
             _linksPool = go.GetComponent<LinksPool>();
             InitializePool();
 
-            var path = MyEditorHelpers.GetPath(poolName, "LinkPools");
             
-            PrefabUtility.SaveAsPrefabAsset(go, path);//"Assets/LinksPool.prefab"); //EditorHelpers.GetPath(nameof(go) + newIndex, "")
+            PrefabUtility.SaveAsPrefabAsset(go,  MyEditorHelpers.WritePrefabPath(poolName, "LinkPools"));//"Assets/LinksPool.prefab")
 
             DestroyImmediate(go);
         }
