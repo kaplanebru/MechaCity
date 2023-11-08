@@ -29,12 +29,21 @@ public static class TrigonometryHelper
         return angle;
     }
     
-    // public static float AngleInPoint2(Vector3 point)
+    // public static float AngleInPoint(Vector3 point, Vector3? referencePoint = null)
     // {
-    //     var up = ChainSpawner.Upwards == ChainEnums.UpAxis.Z ? point.z : point.y;
-    //     float angle = Mathf.Atan2(up, point.x) * Mathf.Rad2Deg;
+    //     if (!referencePoint.HasValue)
+    //         referencePoint = Vector3.zero;
+    //     
+    //     var upDistance = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
+    //         ? point.z - referencePoint.Value.z
+    //         : point.y - referencePoint.Value.y;
+    //     
+    //     float angle = Mathf.Atan2(upDistance, point.x - referencePoint.Value.x) * Mathf.Rad2Deg;
+    //     angle = (angle + 360) % 360;
     //     return angle;
     // }
+    
+    
     
     
     public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB) //, float offset)

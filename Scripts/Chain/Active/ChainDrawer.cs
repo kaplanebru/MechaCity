@@ -122,8 +122,8 @@ namespace Chain
             if (_links.Count > 0 && _links[0] == null)
                 _links.Clear();
 
-            // _links.ForEach(l => linksPool.ReleaseItem(l));
-            // _links.Clear();
+            _links.ForEach(l => linksPool.ReleaseItem(l));
+            _links.Clear();
         }
 
 

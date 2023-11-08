@@ -105,8 +105,8 @@ namespace Chain
                     tangentPoints[1],
                     relatedArc.cog.transform.position);
 
-            // Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
-            // Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
+            Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
+            Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
         }
 
         void CreateParts(int i)
@@ -195,23 +195,23 @@ namespace Chain
 
             if (relatedArc.id == 0)
             {
-                arcs[i].nextPoint = relatedArc.arcPoints.First();
+                arcs[i].nextArcPoint = relatedArc.arcPoints.First();
                 return;
             }
 
             relatedArc.arcPoints.Add(TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start,
                 relatedArc.radius + Data.Tension));
             PositionPoints(relatedArc.id);
-            arcs[i].nextPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
+            arcs[i].nextArcPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
         }
 
 
         void AddLinearPoints(int i)
         {
             linearPointAmount =
-                TrigonometryHelper.LinearPointAmountByDistance(arcs[i].nextPoint, arcs[i].arcPoints.Last(), Data.Unit);
+                TrigonometryHelper.LinearPointAmountByDistance(arcs[i].nextArcPoint, arcs[i].arcPoints.Last(), Data.Unit);
 
-            Vector3 edgeDirection = (arcs[i].nextPoint - arcs[i].arcPoints.Last()).normalized;
+            Vector3 edgeDirection = (arcs[i].nextArcPoint - arcs[i].arcPoints.Last()).normalized;
             Vector3 unitDistance = edgeDirection * Data.Unit;
 
             var arcPoints = arcs[i].arcPoints;
@@ -223,11 +223,32 @@ namespace Chain
             if (arcs[i].relatedArcId == 0) return;
             Arc relatedArc = arcs[arcs[i].relatedArcId];
 
-            float extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
-            relatedArc.edgeAngles.Start =
-                (extraAngle + relatedArc.edgeAngles.Start) % 360; //potential bug: 0 da sorun olabilir
 
-            relatedArc.arcPoints.Clear();
+            var lastPointDistance = relatedArc.arcPoints.First() - arcPoints.Last();
+            var rest = unitDistance - lastPointDistance;
+            rest += relatedArc.arcPoints.First();
+            //relatedArc.arcPoints[0] += rest;
+
+            //float extraAngle = TrigonometryHelper.AngleInPoint(rest, relatedArc.arcPoints.First());
+            float extraAngle = Vector3.Angle(rest, relatedArc.arcPoints.First());
+            
+            print("last point distance: " + lastPointDistance + " unit: " + unitDistance + " extraAngle: " + extraAngle);
+            
+            // var lastPointDistance = Vector3.Distance(arcPoints.Last(), relatedArc.arcPoints.First());
+            // print("last point distance: " + lastPointDistance + " unit: " + Data.Unit);
+            // //if(lastPointDistance < unitDistance) //eşit olması dışındaki bütün caseler bu yönde olmalı.
+            // var rest = Data.Unit - lastPointDistance;
+            // 
+
+           // float extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
+           if(relatedArc.arcPoints.First().y < 0)
+               relatedArc.edgeAngles.Start = (extraAngle + relatedArc.edgeAngles.Start) % 360; //potential bug: 0 da sorun olabilir
+           else
+           {
+               relatedArc.edgeAngles.Start = (relatedArc.edgeAngles.Start - extraAngle) % 360; 
+           }
+
+            relatedArc.arcPoints.Clear(); //çünkü first'ün yeri değişiyor.
 
             CreateParts(relatedArc.id);
         }

@@ -14,7 +14,7 @@ namespace Chain
         public int relatedArcId;
         public EdgeAngles edgeAngles;
         public float baseAngle;
-        public Vector3 nextPoint;
+        public Vector3 nextArcPoint;
         public List<Vector3> arcPoints = new();
 
         public Arc(Cogwheel _cog)
