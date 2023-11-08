@@ -199,7 +199,7 @@ namespace Chain
             {
                 var point = arcPoints[j];
                 arcPoints[j] = Data.FollowGearRotation
-                    ? cog.transform.position + cog.transform.rotation * point
+                    ? cog.transform.position + cog.transform.localRotation * point
                     : cog.transform.position + point;
             }
         }
