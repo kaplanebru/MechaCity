@@ -227,6 +227,7 @@ namespace Chain
             var lastPointDistance = relatedArc.arcPoints.First() - arcPoints.Last();
             var rest = unitDistance - lastPointDistance;
             rest += relatedArc.arcPoints.First();
+            
             //relatedArc.arcPoints[0] += rest;
 
             //float extraAngle = TrigonometryHelper.AngleInPoint(rest, relatedArc.arcPoints.First());
@@ -240,13 +241,19 @@ namespace Chain
             // var rest = Data.Unit - lastPointDistance;
             // 
 
+            
            // float extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
-           if(relatedArc.arcPoints.First().y < 0)
-               relatedArc.edgeAngles.Start = (extraAngle + relatedArc.edgeAngles.Start) % 360; //potential bug: 0 da sorun olabilir
-           else
-           {
-               relatedArc.edgeAngles.Start = (relatedArc.edgeAngles.Start - extraAngle) % 360; 
-           }
+           // if(relatedArc.arcPoints.First().y > 0)
+           //     relatedArc.edgeAngles.Start = (extraAngle + relatedArc.edgeAngles.Start) % 360; //potential bug: 0 da sorun olabilir
+           // else
+           //     relatedArc.edgeAngles.Start = (relatedArc.edgeAngles.Start - extraAngle) % 360; 
+           //
+           
+           relatedArc.edgeAngles.Start =  relatedArc.edgeAngles.Start =
+               TrigonometryHelper.AngleInPoint(
+                   arcPoints.Last(),
+                   relatedArc.cog.transform.position);
+           arcPoints.Remove(arcPoints.Last());
 
             relatedArc.arcPoints.Clear(); //çünkü first'ün yeri değişiyor.
 
