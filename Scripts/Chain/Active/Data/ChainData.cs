@@ -11,7 +11,7 @@ namespace Chain
         public ChainEnums.UpAxis UpwardsAxis;
         public float Unit = 2.3f;
         public float RadiusOffset = 0.5f;
-        public float Tension = -0.5f; //Linear Offset
+        public float Tension = 0f; //Linear Offset
         public ChainLink linkPrefab;
         public LinksPool LinksPoolPrefab;
 

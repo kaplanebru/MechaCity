@@ -98,16 +98,16 @@ namespace Chain
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
             arc.edgeAngles.End = TrigonometryHelper.AngleInPoint(
                 tangentPoints[0],
-                arc.cog.transform.position) - Data.Tension;
-            
+                arc.cog.transform.position) - Data.Tension; // * arc.radius;
+
 
             relatedArc.edgeAngles.Start =
                 TrigonometryHelper.AngleInPoint(
                     tangentPoints[1],
-                    relatedArc.cog.transform.position) + Data.Tension;
+                    relatedArc.cog.transform.position) + Data.Tension; // * relatedArc.radius;
 
-            Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
-            Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
+            // Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
+            // Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
         }
 
         void CreateParts(int i)
@@ -235,7 +235,7 @@ namespace Chain
             relatedArc.edgeAngles.Start = newAngle;
 
 
-            print("last point distance: " + lastPointDistance + " unit: " + unitDistance + " extraAngle: " + newAngle);
+//            print("last point distance: " + lastPointDistance + " unit: " + unitDistance + " extraAngle: " + newAngle);
             
 
             relatedArc.arcPoints.Clear(); //çünkü first'ün yeri değişiyor.
