@@ -98,12 +98,13 @@ namespace Chain
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
             arc.edgeAngles.End = TrigonometryHelper.AngleInPoint(
                 tangentPoints[0],
-                arc.cog.transform.position);
+                arc.cog.transform.position) - Data.Tension;
+            
 
             relatedArc.edgeAngles.Start =
                 TrigonometryHelper.AngleInPoint(
                     tangentPoints[1],
-                    relatedArc.cog.transform.position);
+                    relatedArc.cog.transform.position) + Data.Tension;
 
             Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
             Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
@@ -200,7 +201,7 @@ namespace Chain
             }
 
             relatedArc.arcPoints.Add(TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start,
-                relatedArc.radius + Data.Tension));
+                relatedArc.radius));// + Data.Tension));
             PositionPoints(relatedArc.id);
             arcs[i].nextArcPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
         }
@@ -236,21 +237,6 @@ namespace Chain
 
             print("last point distance: " + lastPointDistance + " unit: " + unitDistance + " extraAngle: " + newAngle);
             
-           
-
-            
-           // float extraAngle = Vector3.Angle(arcPoints.Last(), relatedArc.arcPoints.First());
-           // if(relatedArc.arcPoints.First().y > 0)
-           //     relatedArc.edgeAngles.Start = (extraAngle + relatedArc.edgeAngles.Start) % 360; //potential bug: 0 da sorun olabilir
-           // else
-           //     relatedArc.edgeAngles.Start = (relatedArc.edgeAngles.Start - extraAngle) % 360; 
-           //
-           
-           /*relatedArc.edgeAngles.Start =  relatedArc.edgeAngles.Start =
-               TrigonometryHelper.AngleInPoint(
-                   arcPoints.Last(),
-                   relatedArc.cog.transform.position);
-           arcPoints.Remove(arcPoints.Last());*/
 
             relatedArc.arcPoints.Clear(); //çünkü first'ün yeri değişiyor.
 
