@@ -19,4 +19,6 @@ public class ChainEvents
 
     public static Action OnDeleteLinks;
     public static Action<LinksPool> OnLinksPoolUpdated;
+
+    public static Action<Cogwheel[]> OnCogsUpdated;
 }

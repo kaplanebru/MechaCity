@@ -34,16 +34,26 @@ namespace Chain
             if (!Application.isPlaying)
             {
                 ChainEvents.OnChainRequest += StartChain;
+                ChainEvents.OnCogsUpdated += UpdateArcs;
             }
             
           
             //ChainEvents.OnCogsSelected += GenerateChainBySelection;
 
         }
-        
+
+        private void UpdateArcs(Cogwheel[] _cogs)
+        {
+            cogs = _cogs.ToList();
+        }
+
 
         void GenerateChain()
         {
+            var linkPool = GetComponentInChildren<LinksPool>();
+            linkPool.transform.position = Vector3.zero;
+            linkPool.transform.rotation = Quaternion.identity;
+
             chainPoints.Clear();
 
             CreateArcs();
@@ -106,8 +116,8 @@ namespace Chain
                     tangentPoints[1],
                     relatedArc.cog.transform.position) + Data.Tension; // * relatedArc.radius;
 
-            // Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
-            // Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
+            Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
+            Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
         }
 
         void CreateParts(int i)
@@ -137,10 +147,14 @@ namespace Chain
             var arcPositions = new Vector3[arcs.Length];
             for (int i = 0; i < arcs.Length; i++)
             {
-                arcPositions[i] = arcs[i].cog.transform.position;
+                arcPositions[i] = arcs[i].cog.transform.localPosition;
             }
 
             arcs = new ClockwiseSorter<Arc>(arcs, arcPositions).SortItems();
+            foreach (var arc in arcs)
+            {
+                print(arc.cog.name);
+            }
         }
 
         void RelateArcs()
@@ -179,14 +193,14 @@ namespace Chain
         void PositionPoints(int i)
         {
             var arcPoints = arcs[i].arcPoints;
-            var gear = arcs[i].cog;
+            var cog = arcs[i].cog;
 
             for (var j = 0; j < arcPoints.Count; j++)
             {
                 var point = arcPoints[j];
                 arcPoints[j] = Data.FollowGearRotation
-                    ? gear.transform.position + gear.transform.rotation * point
-                    : gear.transform.position + point;
+                    ? cog.transform.position + cog.transform.rotation * point
+                    : cog.transform.position + point;
             }
         }
 
@@ -278,6 +292,8 @@ namespace Chain
             if (!Application.isPlaying)
             {
                 ChainEvents.OnChainRequest -= StartChain;
+                ChainEvents.OnCogsUpdated -= UpdateArcs;
+
             }
             
         }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -8651037349865285081}
   - component: {fileID: -92454076011392731}
   m_Layer: 0
-  m_Name: CogHolder
+  m_Name: CogPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8d88bcb87e3fa4bb8e4ca7d7a34244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 0}
+  Data: {fileID: 11400000, guid: 1056bd505f9679148938ac213e600311, type: 2}
   cogObject: {fileID: 6241684560662293868}
   holes:
   - {fileID: 5451408089774622910}
@@ -67,10 +67,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8365ef83a6d3e4aad55f14299bf2c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toothPb: {fileID: 7827882231684985033, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
-  intervalAngle: 60
-  minIntervalLimit: 6
-  equalize: 0
+  toothPb: {fileID: 3168982511082292637, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
+  hasTeeth: 0
   teeth: []
 --- !u!114 &-92454076011392731
 MonoBehaviour:

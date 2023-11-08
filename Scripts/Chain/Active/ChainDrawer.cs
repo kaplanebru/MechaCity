@@ -98,7 +98,7 @@ namespace Chain
         }
 
 
-        void ResetLinks()
+        public void ResetLinks()
         {
             // _links.Clear();
             // _links = linksPool.GetComponentsInChildren<ChainLink>(false).ToList();
@@ -115,7 +115,6 @@ namespace Chain
           }
             if (linksPool.pool.Count == 0)
             {
-                print("chain points count: "+_chainPoints.Count);
                 linksPool.ActivatePool(_chainPoints.Count, Data.linkPrefab);
             }
 

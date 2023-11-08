@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using Chain;
 using MyNamespace;
@@ -18,6 +19,7 @@ public class ChainPrefabEditor : Editor
     private string chainDataName;
 
     [SerializeField] private ChainData chainData;
+    [SerializeField] private Cogwheel cogPrefab;
     private LinksPool _linksPool;
     private ChainSpawner _chainSpawner;
     private ChainDrawer _chainDrawer;
@@ -26,7 +28,7 @@ public class ChainPrefabEditor : Editor
     
     private GUIStyle narrowButton;
 
-
+    [SerializeField]int destroyCogIndex;
 
     public override void OnInspectorGUI()
     {
@@ -58,6 +60,31 @@ public class ChainPrefabEditor : Editor
 
         GUILayout.Label(" _______________Cog Settings_______________ ", EditorStyles.boldLabel); //\n 
         EditorGUILayout.Space();
+        
+        cogPrefab = (Cogwheel) EditorGUILayout.ObjectField("Cog Prefab", cogPrefab, typeof(Cogwheel), false);
+        
+        
+        destroyCogIndex = EditorGUILayout.IntField("destroy cog index", destroyCogIndex);
+
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add Cog"))
+        {
+            Instantiate(cogPrefab, machineryPrefab.transform.GetChild(0).transform); //TODO: address properly
+            cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
+            ChainEvents.OnCogsUpdated?.Invoke(cogs);
+        }
+        
+        if (GUILayout.Button("Remove Cog"))
+        {
+            //DestroyImmediate(cogs[cogIndex].gameObject);
+            if(cogs.Length == 0 || cogs == null) return;
+            cogs[destroyCogIndex].gameObject.SetActive(false);
+            cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
+            ChainEvents.OnCogsUpdated?.Invoke(cogs);
+            machineryPrefab.GetComponentInChildren<ChainDrawer>().ResetLinks();
+        }
+        
+        GUILayout.EndHorizontal();
         
         if (cogHolderLabels == null || cogHolderLabels.Length != cogs.Length)
         {
@@ -106,9 +133,7 @@ public class ChainPrefabEditor : Editor
             if (chainData == null) //Get old data
             {
                 if (_chainSpawner.Data != null)
-                {
                     chainData = _chainSpawner.Data;
-                }
             }
 
             newChainData = EditorGUILayout.Toggle("Create New Chain Data", newChainData);
@@ -135,14 +160,19 @@ public class ChainPrefabEditor : Editor
                 if (GUILayout.Button("Delete Link Pool"))
                     DeleteLinks();
 
-                // if (GUILayout.Button("create POOL"))
-                //     NewPool();
+                if (GUILayout.Button("Deactivate Link pool"))
+                {
+                    _chainDrawer.ResetLinks();
+                }
             }
         }
         
         EditorGUILayout.Space();
         EditorGUI.EndChangeCheck();
     }
+    
+   
+    
 
     void GetLinkPool()
     {
@@ -214,6 +244,8 @@ public class ChainPrefabEditor : Editor
 
         ChainEvents.OnChainRequest?.Invoke(); //ninvoke pas en enable
         //Repaint();
+        //_linksPool.transform.position = Vector3.zero;
+       // _linksPool.transform.rotation = Quaternion.identity;
     }
 
     void DeleteLinks()
@@ -237,11 +269,6 @@ public class ChainPrefabEditor : Editor
             if (chainData != null)
             {
                 chainData.CogAmount = cogs.Length;
-
-                // if (lastLinkPrefab != null && lastLinkPrefab != chainData.linkPrefab) // //TODO: test later
-                //     DeleteLinks();
-                // lastLinkPrefab = chainData.linkPrefab;
-
                 EditorUtility.SetDirty(chainData);
             }
         }
@@ -315,9 +342,10 @@ public class ChainPrefabEditor : Editor
         DeleteLinks();
         GetLinkPool();
         GenerateChain();
-        
     }
 
+  
+    
 
     void StartCogSetup()
     {
