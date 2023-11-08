@@ -234,8 +234,8 @@ public class ChainPrefabEditor : Editor
 
     void GenerateChain()
     {
-        _linksPool.transform.position = Vector3.zero;
-         _linksPool.transform.rotation = Quaternion.identity;
+        _linksPool.transform.position = Vector3.zero; 
+        _linksPool.transform.rotation = Quaternion.identity;
         machineryPrefab.GetComponentInChildren<ChainSpawner>().Data = chainData;
         foreach (var cog in cogs)
         {

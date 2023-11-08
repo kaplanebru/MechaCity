@@ -77,7 +77,7 @@ namespace Chain
                 //link.transform.localPosition = _chainPoints[i];
                 var link = linksPool.GetItem(l => l.transform.localPosition = _chainPoints[i]);
 
-                SetLookRotations(i, link.transform);
+                SetLookRotations(i, link);
                 // if (Data.Type == ChainEnums.ChainType.StandardChain)
                 //     RotateLinks(i, link);
 
@@ -126,13 +126,14 @@ namespace Chain
         }
 
 
-        void SetLookRotations(int i, Transform newObj)
+        void SetLookRotations(int i, ChainLink newLink)
         {
             if (i < _pointsCount)
             {
-                newObj.transform.rotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
-                    ? Quaternion.LookRotation(_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i])
-                    : Quaternion.LookRotation(_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i], Vector3.forward);
+                newLink.transform.localRotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
+                    ? Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized)
+                    : Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized, Vector3.forward);
+                //TODO: normalized sonradan eklendi, local sonradan eklendi
             }
         }
 
