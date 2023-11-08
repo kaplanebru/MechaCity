@@ -28,7 +28,7 @@ namespace Chain
         {
             if (!Application.isPlaying)
             {
-                linksPool = GetComponentInChildren<LinksPool>();
+                linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>();//GetComponentInChildren<LinksPool>();
                 Data = GetComponent<ChainSpawner>().Data;
 
                 ChainEvents.OnPointsCreated += DrawChain;
@@ -83,8 +83,8 @@ namespace Chain
 
                 _links.Add(link);
 
-                if (i == 0)
-                    link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //debug
+                // if (i == 0)
+                //     link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //debug
             }
 
 
@@ -104,7 +104,7 @@ namespace Chain
             // _links = linksPool.GetComponentsInChildren<ChainLink>(false).ToList();
 
            // if(linksPool == null)
-                linksPool = GetComponentInChildren<LinksPool>();
+                linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>();//GetComponentInChildren<LinksPool>();
             
           //  print(linksPool.name);
 

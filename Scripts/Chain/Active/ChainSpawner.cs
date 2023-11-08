@@ -50,9 +50,9 @@ namespace Chain
 
         void GenerateChain()
         {
-            var linkPool = GetComponentInChildren<LinksPool>();
-            linkPool.transform.position = Vector3.zero;
-            linkPool.transform.rotation = Quaternion.identity;
+            // var linkPool = GetComponentInChildren<LinksPool>();
+            // linkPool.transform.position = Vector3.zero;
+            // linkPool.transform.rotation = Quaternion.identity;
 
             chainPoints.Clear();
 
@@ -116,8 +116,8 @@ namespace Chain
                     tangentPoints[1],
                     relatedArc.cog.transform.position) + Data.Tension; // * relatedArc.radius;
 
-            Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
-            Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
+            // Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
+            // Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
         }
 
         void CreateParts(int i)

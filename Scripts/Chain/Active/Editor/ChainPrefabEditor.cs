@@ -181,7 +181,7 @@ public class ChainPrefabEditor : Editor
             _linksPool = machineryPrefab.GetComponentInChildren<LinksPool>();
             if (_linksPool == null)
             {
-                _linksPool = Instantiate(chainData.LinksPoolPrefab, _chainSpawner.transform);
+                _linksPool = Instantiate(chainData.LinksPoolPrefab, target as Transform);
                        
             }
             _chainDrawer.GetLinksPool(_linksPool);
@@ -234,6 +234,8 @@ public class ChainPrefabEditor : Editor
 
     void GenerateChain()
     {
+        _linksPool.transform.position = Vector3.zero;
+         _linksPool.transform.rotation = Quaternion.identity;
         machineryPrefab.GetComponentInChildren<ChainSpawner>().Data = chainData;
         foreach (var cog in cogs)
         {
@@ -244,8 +246,7 @@ public class ChainPrefabEditor : Editor
 
         ChainEvents.OnChainRequest?.Invoke(); //ninvoke pas en enable
         //Repaint();
-        //_linksPool.transform.position = Vector3.zero;
-       // _linksPool.transform.rotation = Quaternion.identity;
+       
     }
 
     void DeleteLinks()
