@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using Chain;
 using MyNamespace;
 using UnityEngine;
@@ -17,7 +18,6 @@ public class ChainPrefabEditor : Editor
     private bool isChainRelated = true;
     [SerializeField] private bool newChainData;
     private string chainDataName;
-    private string cogDataName;
 
 
     [SerializeField] private ChainData chainData;
@@ -29,7 +29,7 @@ public class ChainPrefabEditor : Editor
 
     private GUIStyle narrowButton;
 
-    [SerializeField] int destroyCogIndex;
+    [SerializeField] int cogToDestroy;
 
     public override void OnInspectorGUI()
     {
@@ -39,14 +39,12 @@ public class ChainPrefabEditor : Editor
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         narrowButton = new GUIStyle(GUI.skin.button);
         narrowButton.fixedWidth = 200f;
-
-
+        
         EditorGUI.BeginChangeCheck();
 
         if (GUILayout.Button("SAVE CHANGES"))
             SaveMachinery();
-
-
+        
         if (GUILayout.Button("OVERRIDE CHANGES ON SCENE"))
         {
             SaveMachinery();
@@ -54,55 +52,40 @@ public class ChainPrefabEditor : Editor
         }
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
-            cogs = machineryPrefab.GetComponentsInChildren<Cogwheel>();
-
-
-        SetMachinaryChainRelation();
-
-        GUILayout.Label(" _______________Cog Settings_______________ ", EditorStyles.boldLabel); //\n 
-        EditorGUILayout.Space();
-
-       // machineryPrefab.assetHolder.CogPrefab = (Cogwheel) EditorGUILayout.ObjectField("Cog Prefab", machineryPrefab.assetHolder.CogPrefab, typeof(Cogwheel), false);
-
-
-
-        cogData = (CogData) EditorGUILayout.ObjectField("Cog Data", cogData, typeof(CogData), false);
-        cogDataName = EditorGUILayout.TextField("New Cog Data Name", cogDataName);
-        destroyCogIndex = EditorGUILayout.IntField("destroy cog index", destroyCogIndex);
-
-
-        GUILayout.BeginHorizontal();
-        
-        if (GUILayout.Button("Add Cog Data"))
-            AddCog(false);
-        
-        if (GUILayout.Button("Create New Cog Data"))
-            AddCog(true);
-
-        if (GUILayout.Button("Remove Cog"))
-        {
-            //DestroyImmediate(cogs[cogIndex].gameObject);
-            if (cogs.Length == 0 || cogs == null) return;
-
-            cogs[destroyCogIndex].gameObject.SetActive(false);
             cogs = machineryPrefab.cogHolder.GetComponentsInChildren<Cogwheel>();
-            ChainEvents.OnCogsUpdated?.Invoke(cogs);
-
-            machineryPrefab.chainDrawer.ResetLinks();
-        }
-
-        GUILayout.EndHorizontal();
-
+        
         if (cogHolderLabels == null || cogHolderLabels.Length != cogs.Length)
         {
             cogHolderLabels = new string[cogs.Length];
-            for (int i = 0; i < cogs.Length; i++)
-            {
-                cogHolderLabels[i] = "Cog " + i;
-            }
+            cogHolderLabels = cogs.Select(x => x.ToString()).ToArray();
         }
+        
+        SetMachinaryChainRelation();
 
-        selectedIndex = EditorGUILayout.Popup("Selected Cog", selectedIndex, cogHolderLabels);
+        EditorGUILayout.Space();
+
+        GUILayout.Label(" _______________Add or Remove Cog_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
+        
+        GUILayout.BeginHorizontal();
+        cogData = (CogData) EditorGUILayout.ObjectField("Old Cog Data", cogData, typeof(CogData), false);
+        if (GUILayout.Button("Add Cog With Old Data"))
+            AddCog(false);
+        GUILayout.EndHorizontal();
+
+        if (GUILayout.Button("Add Cog With New Data"))
+            AddCog(true);
+
+        GUILayout.BeginHorizontal();
+        cogToDestroy = EditorGUILayout.Popup("Cog to destroy", cogToDestroy, cogHolderLabels);
+        if (GUILayout.Button("Remove Cog"))
+            RemoveCog();
+        GUILayout.EndHorizontal();
+        
+        EditorGUILayout.Space();
+        
+        GUILayout.Label(" _______________Cog Settings_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
+
+        selectedIndex = EditorGUILayout.Popup("Cog To Set", selectedIndex, cogHolderLabels);
 
         if (selectedIndex >= 0 && selectedIndex < cogs.Length)
         {
@@ -179,13 +162,23 @@ public class ChainPrefabEditor : Editor
     void AddCog(bool isNew)
     {
         var newCog = Instantiate(machineryPrefab.assetHolder.CogPrefab, machineryPrefab.cogHolder.transform);
-
-        newCog.AddData(isNew ? CreateCogData() : cogData);
-
-        //newCog.Data = isNew ? CreateCogData() : cogData;
-
+        newCog.name = "Cog " + machineryPrefab.cogHolder.newCogIndex++;
+        newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
+        
         cogs = machineryPrefab.cogHolder.GetComponentsInChildren<Cogwheel>();
         ChainEvents.OnCogsUpdated?.Invoke(cogs);
+    }
+
+    void RemoveCog()
+    {
+        //DestroyImmediate(cogs[cogIndex].gameObject);
+        if (cogs.Length == 0 || cogs == null) return;
+
+        cogs[cogToDestroy].gameObject.SetActive(false);
+        cogs = machineryPrefab.cogHolder.GetComponentsInChildren<Cogwheel>();
+        ChainEvents.OnCogsUpdated?.Invoke(cogs);
+
+        machineryPrefab.chainDrawer.ResetLinks(); //todo: is it necessary?
     }
 
 
@@ -223,10 +216,10 @@ public class ChainPrefabEditor : Editor
         GUILayout.EndHorizontal();
     }
 
-    CogData CreateCogData()
+    CogData CreateCogData(string cogName)
     {
         var cogData = CreateInstance<CogData>();
-        AssetDatabase.CreateAsset(cogData, MyEditorHelpers.WriteAssetPath(cogDataName, "CogDatas"));
+        AssetDatabase.CreateAsset(cogData, MyEditorHelpers.WriteAssetPath(cogName + " Data", "CogDatas"));
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -238,8 +231,7 @@ public class ChainPrefabEditor : Editor
         chainData = CreateInstance<ChainData>();
 
         AssetDatabase.CreateAsset(chainData,
-            MyEditorHelpers.WriteAssetPath(chainDataName,
-                "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
+            MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
         Debug.Log(MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas"));
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

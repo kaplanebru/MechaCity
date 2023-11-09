@@ -19,6 +19,7 @@ namespace Chain
         public LinksPool linksPool;
         public ChainAssetHolder assetHolder;
 
+
         private void OnEnable()
         {
             cogHolder = GetComponentInChildren<CogHolder>();

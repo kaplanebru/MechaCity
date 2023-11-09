@@ -10,6 +10,8 @@ namespace Chain
     public class CogHolder : MonoBehaviour
     {
         public List<Cogwheel> cogs = new();
+        public int newCogIndex = 0;
+
 
         private void OnEnable()
         {

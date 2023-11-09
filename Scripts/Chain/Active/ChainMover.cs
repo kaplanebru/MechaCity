@@ -82,7 +82,6 @@ public class ChainMover : MonoBehaviour
 
     void MoveChain()
     {
-        print(_links.Count);
         RotatePointsByObj();
 
         for (int i = 0; i < _links.Count; i++)
