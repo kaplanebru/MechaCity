@@ -18,7 +18,7 @@ namespace Chain
 
         private void Start()
         {
-            ChainEvents.OnCogsUpdated?.Invoke(cogs.ToArray());
+           // ChainEvents.OnCogsUpdated?.Invoke(cogs.ToArray());
 
         }
     }

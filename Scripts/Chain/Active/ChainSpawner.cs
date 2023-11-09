@@ -28,21 +28,15 @@ namespace Chain
 
         private void OnEnable()
         {
-            cogs.Clear();
-            cogs = GetComponentsInChildren<Cogwheel>().ToList();
-
             if (!Application.isPlaying)
             {
                 ChainEvents.OnChainRequest += StartChain;
                 ChainEvents.OnCogsUpdated += UpdateArcs;
             }
-            
-          
             //ChainEvents.OnCogsSelected += GenerateChainBySelection;
-
         }
 
-        private void UpdateArcs(Cogwheel[] _cogs)
+        public void UpdateArcs(Cogwheel[] _cogs)
         {
             cogs = _cogs.ToList();
         }
@@ -50,10 +44,6 @@ namespace Chain
 
         void GenerateChain()
         {
-            // var linkPool = GetComponentInChildren<LinksPool>();
-            // linkPool.transform.position = Vector3.zero;
-            // linkPool.transform.rotation = Quaternion.identity;
-
             chainPoints.Clear();
 
             CreateArcs();

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0e6446427df504e84eb94fb7ff36f2, type: 3}
   m_Name: ChainAssetHolder
   m_EditorClassIdentifier: 
-  CogPrefab: {fileID: 0}
-  LinksPoolPrefab: {fileID: 0}
+  CogPrefab: {fileID: 4853942488337658956, guid: 36fa7461231191a488510332a5da0c18, type: 3}
+  LinksPoolPrefab: {fileID: 5377034247376129179, guid: 5f519c935394d1649a73ae3accdfd89d, type: 3}
   lastLinkPrefab: {fileID: 0}

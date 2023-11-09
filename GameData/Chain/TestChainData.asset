@@ -27,4 +27,4 @@ MonoBehaviour:
   SetMotionByGear: 1
   IsMoving: 1
   FollowGearRotation: 1
-  CogAmount: 3
+  CogAmount: 4

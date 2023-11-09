@@ -15,11 +15,18 @@ namespace Chain
         private void OnEnable()
         {
             ChainEvents.OnMotionStateSet += StartMotion;
+            ChainEvents.OnNewCogData += AddData;
         }
 
         private void Start()
         {
             StartMotion(Data.IsMoving); //after edit
+        }
+
+        public void AddData(CogData data)
+        {
+            print("add data");
+            Data = data;
         }
 
 
@@ -63,6 +70,8 @@ namespace Chain
         private void OnDisable()
         {
             ChainEvents.OnMotionStateSet -= StartMotion;
+            ChainEvents.OnNewCogData -= AddData;
+
         }
     }
 }

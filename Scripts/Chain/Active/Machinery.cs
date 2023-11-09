@@ -25,8 +25,24 @@ namespace Chain
             chainSpawner = GetComponentInChildren<ChainSpawner>();
             chainDrawer = GetComponentInChildren<ChainDrawer>();
             linksPool = GetComponentInChildren<LinksPool>();
+            
+            //ChainEvents.OnCogsReady += UpdateArcs;: cogs hazır olunca cogholdera yollamaya gerek var mı data updatei için?
+
         }
-        
+
+        private void Start()
+        {
+            chainSpawner.UpdateArcs(cogHolder.cogs.ToArray());
+        }
+
+
+        private void OnDisable()
+        {
+            
+
+        }
+
+
         //todo: first set cogs from here, later start chain process
 
 

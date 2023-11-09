@@ -19,13 +19,19 @@ namespace Chain
             cog = GetComponent<Cogwheel>();
             Data = cog.Data;
 
+            ChainEvents.OnNewCogData += SetData;
             ChainEvents.OnCogSetupRequest += Setup;
+        }
+
+        private void SetData(CogData data)
+        {
+            Data = data;
         }
 
 
         void Setup()
         {
-            //Data = data;
+            Data = cog.Data;
             var radius = Data.Radius;
             var scale = Vector3.one;
             scale.x = radius * 2;
@@ -71,6 +77,8 @@ namespace Chain
         private void OnDisable()
         {
             ChainEvents.OnCogSetupRequest -= Setup;
+            ChainEvents.OnNewCogData -= SetData;
+
         }
     }
 }
