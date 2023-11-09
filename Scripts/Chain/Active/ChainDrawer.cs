@@ -12,11 +12,9 @@ namespace Chain
     public class ChainDrawer : MonoBehaviour
     {
         public ChainData Data;
-        public LineRenderer lr;
-        Material lrMat;
-        public Material firstCubeMaterial;
+        //public LineRenderer lr;
+        //Material lrMat;
         public Transform lastLinkPrefab;
-        [SerializeField] ChainLink linkPrefab; //temp 
 
 
         [SerializeField] private List<Vector3> _chainPoints = new();
@@ -82,9 +80,7 @@ namespace Chain
                 //     RotateLinks(i, link);
 
                 _links.Add(link);
-
-                // if (i == 0)
-                //     link.GetComponentInChildren<MeshRenderer>().material = firstCubeMaterial; //debug
+                
             }
 
 
@@ -92,7 +88,6 @@ namespace Chain
 
             // if(Data.Type == ChainType.BikeChain)
             //     RegulateLastLink();
-            //
 
             //ChainEvents.OnLinksCreated?.Invoke(_links);
         }
@@ -140,14 +135,14 @@ namespace Chain
 
         void DrawLines()
         {
-            lr.positionCount = _chainPoints.Count;
-            lr.SetPositions(_chainPoints.ToArray());
+            // lr.positionCount = _chainPoints.Count;
+            // lr.SetPositions(_chainPoints.ToArray());
         }
 
         void ResetValues() //editörde hata veriyor
         {
-            _chainPoints.Clear();
-            lr.positionCount = 0;
+            // _chainPoints.Clear();
+            // lr.positionCount = 0;
         }
 
         private void OnDisable()
