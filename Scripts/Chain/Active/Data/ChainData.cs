@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using MyNamespace;
 using UnityEngine;
 
 namespace Chain

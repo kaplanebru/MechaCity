@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using MyNamespace;
+using System.Linq;
 using UnityEngine;
 
 namespace Chain
@@ -9,7 +9,7 @@ namespace Chain
     {
         public CogData Data;
         public Transform cogObject;
-        public Transform []holes;
+        public Hole []holes;
         public Transform teeth;
 
         private void OnEnable()
@@ -28,6 +28,7 @@ namespace Chain
             print("add data");
             Data = data;
         }
+        
 
 
         private void StartMotion(bool isMoving)

@@ -16,6 +16,7 @@ MonoBehaviour:
   Radius: 4
   RotationDirection: -1
   circularThickness: 2
+  HoleType: 3
   IsMoving: 1
   IsChainRelated: 1
   toothScale: {x: 0.6, y: 1, z: 0.6}

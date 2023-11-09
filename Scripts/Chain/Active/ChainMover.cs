@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Chain;
-using MyNamespace;
 using UnityEngine;
 
 public class ChainMover : MonoBehaviour

@@ -1,5 +1,4 @@
 using Chain;
-using MyNamespace;
 using UnityEngine;
 
 public static class TrigonometryHelper

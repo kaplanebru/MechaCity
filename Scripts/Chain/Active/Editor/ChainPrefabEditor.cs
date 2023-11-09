@@ -4,7 +4,6 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using Chain;
-using MyNamespace;
 using UnityEngine;
 using UnityEditor;
 
@@ -137,7 +136,7 @@ public class ChainPrefabEditor : Editor
 
             if (chainData != null)
             {
-                ChainSettings();
+                SetChainData();
                 GetLinkPool();
 
                 if (GUILayout.Button("Generate Chain"))
@@ -308,6 +307,7 @@ public class ChainPrefabEditor : Editor
 
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
         Data.circularThickness = EditorGUILayout.FloatField("Thickness", Data.circularThickness);
+        Data.HoleType = (ChainEnums.HoleType) EditorGUILayout.EnumPopup("Hole Type", Data.HoleType);
 
         EditorGUILayout.Space();
 
@@ -322,7 +322,7 @@ public class ChainPrefabEditor : Editor
 
     //private ChainLink lastLinkPrefab;
 
-    void ChainSettings()
+    void SetChainData()
     {
         chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
         chainData.UpwardsAxis = (ChainEnums.UpAxis) EditorGUILayout.EnumPopup("Upwards Axis", chainData.UpwardsAxis);

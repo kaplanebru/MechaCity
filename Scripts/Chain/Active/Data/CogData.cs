@@ -13,8 +13,10 @@ namespace Chain
         public float Radius = 4;
         public int RotationDirection = 1;
         public float circularThickness = 2f;
+        public ChainEnums.HoleType HoleType;
         public bool IsMoving = true;
         public bool IsChainRelated;
+        
 
         [Header("Teeth Settings")]
         public Vector3 toothScale = Vector3.one;

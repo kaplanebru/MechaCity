@@ -1,4 +1,4 @@
-namespace MyNamespace
+namespace Chain
 {
     public class ChainEnums 
     {
@@ -19,6 +19,14 @@ namespace MyNamespace
         {
             Z,
             Y
+        }
+
+        public enum HoleType
+        {
+            Basic,
+            Complex,
+            Custom,
+            None
         }
 
         public enum PoolFunction

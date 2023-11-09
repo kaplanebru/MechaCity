@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using MyNamespace;
 using UnityEngine;
 
 
@@ -51,9 +50,18 @@ namespace Chain
             //ChainEvents.OnCogStart?.Invoke(Data, teeth);
         }
 
+        Hole[] GetHolesByType(ChainEnums.HoleType holeType)
+        {
+            var allHoles = GetComponentsInChildren<Hole>(true);
+            return allHoles.Where(h =>
+            {
+                h.gameObject.SetActive(h.holeType == holeType);
+                return h.holeType == holeType;
+            }).ToArray();
+        }
         void SetHoleSize()
         {
-            Transform[] holes = cog.holes;
+            Hole[] holes = GetHolesByType(Data.HoleType);
             var holeSize = (Data.Radius - Data.circularThickness) * 2;
             foreach (var hole in holes)
             {
