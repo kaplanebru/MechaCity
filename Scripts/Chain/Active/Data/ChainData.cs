@@ -23,6 +23,7 @@ namespace Chain
         public bool SetMotionByGear = true;
         public bool IsMoving = true;
         public bool FollowGearRotation = true;
+        public bool LinkRotationEffect;
 
         [HideInInspector]public int CogAmount;
     }

@@ -129,6 +129,23 @@ namespace Chain
                     : Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized, Vector3.forward);
                 //TODO: normalized sonradan eklendi, local sonradan eklendi
             }
+            
+            if(Data.LinkRotationEffect)
+                RotateLinks(i, newLink);
+        }
+        
+        void RotateLinks(int i, ChainLink link)
+        {
+            var rot = link.transform.rotation;
+            if (i % 2 == 0)
+                link.transform.rotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
+                    ? Quaternion.Euler(rot.eulerAngles.x,
+                        rot.eulerAngles.y,
+                        rot.eulerAngles.z - 90)
+                    : Quaternion.Euler(rot.eulerAngles.x,
+                        rot.eulerAngles.y - 90,
+                        rot.eulerAngles.z);
+        
         }
 
 
@@ -155,19 +172,7 @@ namespace Chain
             }
         }
 
-        // void RotateLinks(int i, Transform newObj)
-        // {
-        //     var rot = newObj.transform.rotation;
-        //     if (i % 2 == 0)
-        //         newObj.transform.rotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
-        //             ? Quaternion.Euler(rot.eulerAngles.x,
-        //                 rot.eulerAngles.y,
-        //                 rot.eulerAngles.z - 90)
-        //             : Quaternion.Euler(rot.eulerAngles.x,
-        //                 rot.eulerAngles.y - 90,
-        //                 rot.eulerAngles.z);
-        //
-        // }
+     
         //
         // void RegulateLastLink()
         // {
