@@ -28,4 +28,4 @@ MonoBehaviour:
   IsMoving: 1
   FollowGearRotation: 1
   LinkRotationEffect: 0
-  CogAmount: 3
+  CogAmount: 2
