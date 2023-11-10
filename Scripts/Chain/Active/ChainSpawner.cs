@@ -122,7 +122,7 @@ namespace Chain
             for (int i = 0; i < _arcCount; i++)
             {
                 arcs[i].id = i;
-                arcs[i].cog.SetSpinDirection(Data.motionDirection);
+                arcs[i].cog.SetSpinDirectionByChain(Data.motionDirection);
 
                 if (Data.SetRadiusByGear)
                     arcs[i].SetRadiusByGear(Data.RadiusOffset);

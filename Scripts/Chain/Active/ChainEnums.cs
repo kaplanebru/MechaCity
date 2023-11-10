@@ -29,10 +29,11 @@ namespace Chain
             None
         }
 
-        public enum PoolFunction
+        public enum CogContactType
         {
-            CreateNewPool,
-            ModifyPool
+            ChainRelated,
+            CogRelated,
+            Indifferent
         }
 
     }

@@ -27,4 +27,5 @@ MonoBehaviour:
   SetMotionByGear: 1
   IsMoving: 1
   FollowGearRotation: 1
+  LinkRotationEffect: 0
   CogAmount: 2

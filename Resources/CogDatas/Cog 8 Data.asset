@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uniqueID: 
   Radius: 4
+  ContactType: 0
   RotationDirection: -1
   circularThickness: 2
   HoleType: 0
   IsMoving: 1
-  IsChainRelated: 1
   toothScale: {x: 0.6, y: 1, z: 0.6}
   ToothGap: 60
   MinGapLimit: 6
   Equalize: 0
-  TeethCount: 24
+  TeethCount: 48
   ToothUnit: 1.0442096

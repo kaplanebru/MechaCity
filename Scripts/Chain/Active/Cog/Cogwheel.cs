@@ -9,7 +9,7 @@ namespace Chain
     {
         public CogData Data;
         public Transform cogObject;
-        public Hole []holes;
+        public Hole[] holes;
         public Transform teeth;
 
         private void OnEnable()
@@ -28,25 +28,30 @@ namespace Chain
             print("add data");
             Data = data;
         }
-        
 
 
         private void StartMotion(bool isMoving)
         {
             Data.IsMoving = isMoving;
             if (!Data.IsMoving) return;
-            
+
             SetSpeedByTeeth();
             ChainEvents.OnCogSpeedSet?.Invoke(Data.TeethCount, Data.ToothUnit);
             StartCoroutine(nameof(SpinRoutine));
         }
 
-        public void SetSpinDirection(ChainEnums.ChainDirection chainDirection)
+        public void SetSpinDirectionByChain(ChainEnums.ChainDirection chainDirection)
         {
             Data.RotationDirection = chainDirection == ChainEnums.ChainDirection.Clockwise ? 1 : -1;
         }
-
+        
+        public void SetSpinDirectionByCog(Cogwheel relatedCog)
+        {
+            Data.RotationDirection = relatedCog.Data.RotationDirection * -1;
+        }
+        
         private float _speed;
+
         private void SetSpeedByTeeth()
         {
             _speed = ChainMover.MachinerySpeed / Data.TeethCount;
@@ -72,7 +77,6 @@ namespace Chain
         {
             ChainEvents.OnMotionStateSet -= StartMotion;
             ChainEvents.OnNewCogData -= AddData;
-
         }
     }
 }

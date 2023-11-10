@@ -106,7 +106,6 @@ public class ChainPrefabEditor : Editor
             }
         }
 
-
         if (machineryPrefab.isChainRelated)
         {
             EditorGUILayout.Space();
@@ -165,7 +164,7 @@ public class ChainPrefabEditor : Editor
         newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
         
         cogs = machineryPrefab.cogHolder.GetComponentsInChildren<Cogwheel>();
-        ChainEvents.OnCogsUpdated?.Invoke(cogs);
+        ChainEvents.OnCogsUpdated?.Invoke(machineryPrefab.cogHolder.GetChainRelatedCogs().ToArray());
     }
 
     void RemoveCog()
@@ -175,7 +174,7 @@ public class ChainPrefabEditor : Editor
 
         cogs[cogToDestroy].gameObject.SetActive(false);
         cogs = machineryPrefab.cogHolder.GetComponentsInChildren<Cogwheel>();
-        ChainEvents.OnCogsUpdated?.Invoke(cogs);
+        ChainEvents.OnCogsUpdated?.Invoke(machineryPrefab.cogHolder.GetChainRelatedCogs().ToArray());
 
         machineryPrefab.chainDrawer.ResetLinks(); //todo: is it necessary?
     }
@@ -230,7 +229,7 @@ public class ChainPrefabEditor : Editor
         chainData = CreateInstance<ChainData>();
 
         AssetDatabase.CreateAsset(chainData,
-            MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas")); //(chainData, "Assets/chainData.asset"); //TODO ismine +1 eklenir foldera bakılıp
+            MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas")); //(chainData, "Assets/chainData.asset"); 
         Debug.Log(MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas"));
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -257,6 +256,7 @@ public class ChainPrefabEditor : Editor
         machineryPrefab.GetComponentInChildren<ChainSpawner>().Data = chainData;
         foreach (var cog in cogs)
         {
+            if(cog.Data.ContactType == ChainEnums.CogContactType.Indifferent) continue;
             cog.Data.IsMoving = chainData.IsMoving;
         }
 
@@ -278,7 +278,6 @@ public class ChainPrefabEditor : Editor
     {
         foreach (var cog in cogs)
         {
-            cog.Data.IsChainRelated = isChainRelated;
             EditorUtility.SetDirty(cog.Data);
         }
 
@@ -306,9 +305,22 @@ public class ChainPrefabEditor : Editor
         }
 
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
+        Data.ContactType = (ChainEnums.CogContactType) EditorGUILayout.EnumPopup("Contact Type", Data.ContactType);
+        if (Data.ContactType == ChainEnums.CogContactType.CogRelated)
+        {
+            Data.RelatedCog =
+                (Cogwheel) EditorGUILayout.ObjectField("Related Cog", Data.RelatedCog, typeof(Cogwheel), true);
+        }
+            
         Data.circularThickness = EditorGUILayout.FloatField("Thickness", Data.circularThickness);
         Data.HoleType = (ChainEnums.HoleType) EditorGUILayout.EnumPopup("Hole Type", Data.HoleType);
 
+        if (!machineryPrefab.isChainRelated || Data.ContactType == ChainEnums.CogContactType.Indifferent)
+        {
+            Data.IsMoving = EditorGUILayout.Toggle("Is Moving", Data.IsMoving);
+            Data.RotationDirection = EditorGUILayout.IntField("Rotation Direction", Data.RotationDirection);
+        }
+        
         EditorGUILayout.Space();
 
         EditorGUILayout.LabelField("Teeth Settings", EditorStyles.boldLabel);
@@ -317,7 +329,7 @@ public class ChainPrefabEditor : Editor
         Data.Equalize = EditorGUILayout.Toggle("Equal Gaps", Data.Equalize);
         Data.MinGapLimit = EditorGUILayout.FloatField("Min Gap Limit", Data.MinGapLimit);
 
-        EditorUtility.SetDirty(cogs[i].Data);
+        //EditorUtility.SetDirty(cogs[i].Data); //TODO: removed
     }
 
     //private ChainLink lastLinkPrefab;

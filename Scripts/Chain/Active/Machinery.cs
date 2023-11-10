@@ -33,7 +33,7 @@ namespace Chain
 
         private void Start()
         {
-            chainSpawner.UpdateArcs(cogHolder.cogs.ToArray());
+            chainSpawner.UpdateArcs(cogHolder.GetChainRelatedCogs().ToArray());
         }
 
 

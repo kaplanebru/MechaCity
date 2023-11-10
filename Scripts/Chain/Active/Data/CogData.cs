@@ -11,11 +11,13 @@ namespace Chain
     {
         public string uniqueID;
         public float Radius = 4;
+        public ChainEnums.CogContactType ContactType; //Todo: direction set edilen yer
         public int RotationDirection = 1;
         public float circularThickness = 2f;
         public ChainEnums.HoleType HoleType;
         public bool IsMoving = true;
-        public bool IsChainRelated;
+
+        public Cogwheel RelatedCog; //If CONTACT TYPE IS COG RELATED
         
 
         [Header("Teeth Settings")]
