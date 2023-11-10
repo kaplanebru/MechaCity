@@ -11,6 +11,7 @@ namespace Chain
     public class ChainDrawer : MonoBehaviour
     {
         public ChainData Data;
+
         //public LineRenderer lr;
         //Material lrMat;
         public Transform lastLinkPrefab;
@@ -25,7 +26,7 @@ namespace Chain
         {
             if (!Application.isPlaying)
             {
-                linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>();//GetComponentInChildren<LinksPool>();
+                linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>(); //TODO: address
                 Data = GetComponent<ChainSpawner>().Data;
 
                 ChainEvents.OnPointsCreated += DrawChain;
@@ -52,8 +53,6 @@ namespace Chain
 
         public void DrawChain(List<Vector3> points)
         {
-           // print("draw chain");
-            //_chainPoints.Clear(); //todo: bazen buga sebep oluyor
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
             if (Data.Type == ChainEnums.ChainType.Line)
@@ -65,21 +64,22 @@ namespace Chain
         void CreateLinks()
         {
             ResetLinks();
-           // return;
-            
+            // return;
+
             for (int i = 0; i < _pointsCount; i++)
             {
                 //var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
                 //var link = Instantiate(linkPrefab, transform.GetChild(1));
                 //link.transform.localPosition = _chainPoints[i];
-                var link = linksPool.GetItem(l => l.transform.localPosition = _chainPoints[i]);
+                var link = linksPool.GetItem(l =>
+                {
+                    l.transform.rotation = Quaternion.identity;
+                    l.transform.position = _chainPoints[i];
+                });
 
                 SetLookRotations(i, link);
-                // if (Data.Type == ChainEnums.ChainType.StandardChain)
-                //     RotateLinks(i, link);
 
                 _links.Add(link);
-                
             }
 
 
@@ -94,19 +94,15 @@ namespace Chain
 
         public void ResetLinks()
         {
-            // _links.Clear();
-            // _links = linksPool.GetComponentsInChildren<ChainLink>(false).ToList();
+            linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>();
 
-           // if(linksPool == null)
-                linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>();//GetComponentInChildren<LinksPool>();
-            
-          //  print(linksPool.name);
 
-          if (linksPool == null)  //for bug check, temporary
-          {
-              Debug.LogError("links pool null");
-              return;
-          }
+            if (linksPool == null) //for bug check, temporary
+            {
+                Debug.LogError("links pool null");
+                return;
+            }
+
             if (linksPool.pool.Count == 0)
             {
                 linksPool.ActivatePool(_chainPoints.Count, Data.linkPrefab);
@@ -126,14 +122,15 @@ namespace Chain
             {
                 newLink.transform.localRotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
                     ? Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized)
-                    : Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized, Vector3.forward);
+                    : Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized,
+                        Vector3.forward);
                 //TODO: normalized sonradan eklendi, local sonradan eklendi
             }
-            
-            if(Data.LinkRotationEffect)
+
+            if (Data.LinkRotationEffect)
                 RotateLinks(i, newLink);
         }
-        
+
         void RotateLinks(int i, ChainLink link)
         {
             var rot = link.transform.rotation;
@@ -145,7 +142,6 @@ namespace Chain
                     : Quaternion.Euler(rot.eulerAngles.x,
                         rot.eulerAngles.y - 90,
                         rot.eulerAngles.z);
-        
         }
 
 
@@ -168,11 +164,10 @@ namespace Chain
                 ChainEvents.OnPointsCreated -= DrawChain;
                 ChainEvents.OnDeleteLinks -= ClearLinks;
                 ChainEvents.OnLinksPoolUpdated -= GetLinksPool;
-
             }
         }
 
-     
+
         //
         // void RegulateLastLink()
         // {
