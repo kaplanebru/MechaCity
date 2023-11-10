@@ -16,7 +16,7 @@ public class ChainEvents
     public static Action<CogData> OnNewCogData;
 
     public static Action<CogData, Transform> OnPoolReady;
-    public static Action OnChainRequest;
+    public static Action<List<Cogwheel>> OnChainRequest;
 
     public static Action OnDeleteLinks;
     public static Action<LinksPool> OnLinksPoolUpdated;

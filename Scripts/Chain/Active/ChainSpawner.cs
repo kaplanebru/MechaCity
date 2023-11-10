@@ -51,8 +51,12 @@ namespace Chain
             BindPoints();
         }
 
-        private void StartChain()
+        private void StartChain(List<Cogwheel> _cogs)
         {
+            cogs = _cogs;
+            
+            _cogs.ForEach(c=>  print(c.name + " " + cogs.Count));
+
             Upwards = Data.UpwardsAxis;
             GenerateChain();
         }

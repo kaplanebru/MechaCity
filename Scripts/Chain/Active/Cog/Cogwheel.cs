@@ -25,7 +25,6 @@ namespace Chain
 
         public void AddData(CogData data)
         {
-            print("add data");
             Data = data;
         }
 

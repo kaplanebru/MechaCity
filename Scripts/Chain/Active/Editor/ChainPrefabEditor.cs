@@ -66,19 +66,23 @@ public class ChainPrefabEditor : Editor
         GUILayout.Label(" _______________Add or Remove Cog_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
         
         GUILayout.BeginHorizontal();
+        cogToDestroy = EditorGUILayout.Popup("Cog to destroy", cogToDestroy, cogHolderLabels);
+        if (GUILayout.Button("Remove Cog"))
+            RemoveCog();
+        GUILayout.EndHorizontal();
+        
+        GUILayout.BeginHorizontal();
         cogData = (CogData) EditorGUILayout.ObjectField("Old Cog Data", cogData, typeof(CogData), false);
         if (GUILayout.Button("Add Cog With Old Data"))
             AddCog(false);
         GUILayout.EndHorizontal();
 
+        GUILayout.Label("Or", EditorStyles.centeredGreyMiniLabel); //\n 
+
         if (GUILayout.Button("Add Cog With New Data"))
             AddCog(true);
 
-        GUILayout.BeginHorizontal();
-        cogToDestroy = EditorGUILayout.Popup("Cog to destroy", cogToDestroy, cogHolderLabels);
-        if (GUILayout.Button("Remove Cog"))
-            RemoveCog();
-        GUILayout.EndHorizontal();
+       
         
         EditorGUILayout.Space();
         
@@ -95,7 +99,7 @@ public class ChainPrefabEditor : Editor
 
         EditorGUILayout.Space();
         if (GUILayout.Button("Generate Cog"))
-            GenerateCog();
+            GenerateCogs();
 
         if (GUILayout.Button("Delete Teeth"))
         {
@@ -253,16 +257,21 @@ public class ChainPrefabEditor : Editor
     {
         _linksPool.transform.position = Vector3.zero;
         _linksPool.transform.rotation = Quaternion.identity;
-        machineryPrefab.GetComponentInChildren<ChainSpawner>().Data = chainData;
+        machineryPrefab.chainSpawner.Data = chainData;
+        int chainRelatedCogAmount = 0;
         foreach (var cog in cogs)
         {
             if(cog.Data.ContactType == ChainEnums.CogContactType.Indifferent) continue;
+            chainRelatedCogAmount++;
             cog.Data.IsMoving = chainData.IsMoving;
         }
 
-        GenerateCog();
+        GenerateCogs();
+        
+        //cogs.Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToList()
 
-        ChainEvents.OnChainRequest?.Invoke(); //ninvoke pas en enable
+        chainData.CogAmount = chainRelatedCogAmount;
+        ChainEvents.OnChainRequest?.Invoke(machineryPrefab.cogHolder.GetChainRelatedCogs()); //ninvoke pas en enable
         //Repaint();
     }
 
@@ -274,20 +283,11 @@ public class ChainPrefabEditor : Editor
         //EditorUtility.SetDirty(target);
     }
 
-    void GenerateCog()
+    void GenerateCogs()
     {
         foreach (var cog in cogs)
         {
             EditorUtility.SetDirty(cog.Data);
-        }
-
-        if (isChainRelated)
-        {
-            if (chainData != null)
-            {
-                chainData.CogAmount = cogs.Length;
-                EditorUtility.SetDirty(chainData);
-            }
         }
 
         StartCogSetup();

@@ -20,8 +20,6 @@ namespace Chain
 
         public List<Cogwheel> GetChainRelatedCogs()
         {
-            //return GetComponentsInChildren<Cogwheel>().Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToList();
-            print(cogs.Count);
             return GetComponentsInChildren<Cogwheel>().Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToList();
         }
 
