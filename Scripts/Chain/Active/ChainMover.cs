@@ -38,7 +38,7 @@ public class ChainMover : MonoBehaviour
 
     private IEnumerator Start()
     {
-        yield return new WaitWhile(() => _points.Count == 0 || LinearSpeed == 0);
+        yield return new WaitWhile(() => _links.Count == 0 || LinearSpeed == 0); //WaitWhile(() => _points.Count == 0 || LinearSpeed == 0);
         MoveChain();
     }
 
@@ -57,7 +57,7 @@ public class ChainMover : MonoBehaviour
     void SetLinksAndPoints(List<ChainLink> links, List<Vector3> points)
     {
         _links = links;
-        _points = points;
+       // _points = points; // yön değiştirince tekrar tekrar generate etmeyelim diye iptal, pointleri linklerin kendisinden alırız
     }
 
     void SetSpeed()
@@ -71,17 +71,19 @@ public class ChainMover : MonoBehaviour
     }
 
 
-    void RotatePointsByObj()
+    void GetRotationPoints()
     {
+        _points.Clear();
         foreach (var link in _links)
         {
             _rotations.Add(link.transform.rotation);
+            _points.Add(link.transform.position);
         }
     }
 
     void MoveChain()
     {
-        RotatePointsByObj();
+        GetRotationPoints();
 
         for (int i = 0; i < _links.Count; i++)
         {
