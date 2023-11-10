@@ -120,11 +120,11 @@ namespace Chain
         {
             if (i < _pointsCount)
             {
-                newLink.transform.localRotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
+                newLink.transform.rotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
                     ? Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized)
                     : Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized,
                         Vector3.forward);
-                //TODO: normalized sonradan eklendi, local sonradan eklendi
+                //TODO: normalized sonradan eklendi, local silindi
             }
 
             if (Data.LinkRotationEffect)
