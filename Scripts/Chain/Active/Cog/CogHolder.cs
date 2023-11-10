@@ -9,18 +9,35 @@ namespace Chain
     [ExecuteInEditMode]
     public class CogHolder : MonoBehaviour
     {
-        public List<Cogwheel> cogs = new();
+        [SerializeField] private List<Cogwheel> cogs;
         public int newCogIndex = 0;
 
 
         private void OnEnable()
         {
-            cogs = GetComponentsInChildren<Cogwheel>().ToList(); 
+            cogs = GetRestoredCogs().ToList();
         }
 
-        public List<Cogwheel> GetChainRelatedCogs()
+        public Cogwheel[] GetRestoredCogs()
         {
-            return GetComponentsInChildren<Cogwheel>().Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToList();
+            return GetComponentsInChildren<Cogwheel>();
+        }
+
+        public Cogwheel[] AddCog(Cogwheel newCog)
+        {
+            cogs.Add(newCog);
+            return cogs.ToArray();
+        }
+
+        public Cogwheel[] RemoveCog(Cogwheel cogToRemove)
+        {
+            cogs.Remove(cogToRemove);
+            return cogs.ToArray();
+        }
+
+        public Cogwheel[] GetChainRelatedCogs()
+        {
+            return cogs.Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToArray();
         }
 
         private void Start()

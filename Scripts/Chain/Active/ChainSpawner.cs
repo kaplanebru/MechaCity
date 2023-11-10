@@ -14,7 +14,7 @@ namespace Chain
     {
         public ChainData Data;
 
-        [SerializeField] private List<Cogwheel> cogs = new();
+        [SerializeField] private List<Cogwheel> cogs = new(); //Selected cog vs olacağı için list
 
         public Transform testCubePb;
         public Transform testSpherePb;
@@ -30,17 +30,10 @@ namespace Chain
             if (!Application.isPlaying)
             {
                 ChainEvents.OnChainRequest += StartChain;
-                ChainEvents.OnCogsUpdated += UpdateArcs;
             }
             //ChainEvents.OnCogsSelected += GenerateChainBySelection;
         }
-
-        public void UpdateArcs(Cogwheel[] _cogs)
-        {
-            cogs = _cogs.ToList();
-        }
-
-
+        
         void GenerateChain()
         {
             chainPoints.Clear();
@@ -51,12 +44,10 @@ namespace Chain
             BindPoints();
         }
 
-        private void StartChain(List<Cogwheel> _cogs)
+        private void StartChain(Cogwheel[] _cogs)
         {
-            cogs = _cogs;
-            
-            _cogs.ForEach(c=>  print(c.name + " " + cogs.Count));
-
+            cogs = _cogs.ToList();
+            if(cogs.Count <= 1) return;
             Upwards = Data.UpwardsAxis;
             GenerateChain();
         }
@@ -285,8 +276,6 @@ namespace Chain
             if (!Application.isPlaying)
             {
                 ChainEvents.OnChainRequest -= StartChain;
-                ChainEvents.OnCogsUpdated -= UpdateArcs;
-
             }
             
         }

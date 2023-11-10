@@ -51,7 +51,7 @@ public class ChainPrefabEditor : Editor
         }
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
-            cogs = machineryPrefab.cogHolder.GetComponentsInChildren<Cogwheel>();
+            cogs = machineryPrefab.cogHolder.GetRestoredCogs();
         
         if (cogHolderLabels == null || cogHolderLabels.Length != cogs.Length)
         {
@@ -166,9 +166,9 @@ public class ChainPrefabEditor : Editor
         var newCog = Instantiate(machineryPrefab.assetHolder.CogPrefab, machineryPrefab.cogHolder.transform);
         newCog.name = "Cog " + machineryPrefab.cogHolder.newCogIndex++;
         newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
+
+        cogs = machineryPrefab.cogHolder.AddCog(newCog);
         
-        cogs = machineryPrefab.cogHolder.GetComponentsInChildren<Cogwheel>();
-        ChainEvents.OnCogsUpdated?.Invoke(machineryPrefab.cogHolder.GetChainRelatedCogs().ToArray());
     }
 
     void RemoveCog()
@@ -177,8 +177,7 @@ public class ChainPrefabEditor : Editor
         if (cogs.Length == 0 || cogs == null) return;
 
         cogs[cogToDestroy].gameObject.SetActive(false);
-        cogs = machineryPrefab.cogHolder.GetComponentsInChildren<Cogwheel>();
-        ChainEvents.OnCogsUpdated?.Invoke(machineryPrefab.cogHolder.GetChainRelatedCogs().ToArray());
+        cogs = machineryPrefab.cogHolder.RemoveCog(cogs[cogToDestroy]);
 
         machineryPrefab.chainDrawer.ResetLinks(); //todo: is it necessary?
     }
