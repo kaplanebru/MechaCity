@@ -56,6 +56,7 @@ namespace Chain
         void CreateArcs()
         {
             _arcCount = Data.CogAmount;
+            print(Data.CogAmount);
             arcs = new Arc[_arcCount];
             for (int i = 0; i < cogs.Count; i++)
             {

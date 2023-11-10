@@ -35,7 +35,8 @@ namespace Chain
             if (!Data.IsMoving) return;
 
             SetSpeedByTeeth();
-            ChainEvents.OnCogSpeedSet?.Invoke(Data.TeethCount, Data.ToothUnit);
+            if(Data.ContactType == ChainEnums.CogContactType.ChainRelated)
+                ChainEvents.OnCogSpeedSet?.Invoke(Data.TeethCount, Data.ToothUnit);
             StartCoroutine(nameof(SpinRoutine));
         }
 

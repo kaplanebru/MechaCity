@@ -260,7 +260,7 @@ public class ChainPrefabEditor : Editor
         int chainRelatedCogAmount = 0;
         foreach (var cog in cogs)
         {
-            if(cog.Data.ContactType == ChainEnums.CogContactType.Indifferent) continue;
+            if(cog.Data.ContactType != ChainEnums.CogContactType.ChainRelated) continue;
             chainRelatedCogAmount++;
             cog.Data.IsMoving = chainData.IsMoving;
         }
