@@ -79,8 +79,7 @@ public class ChainPrefabEditor : Editor
         {
             GetPrefabInstance();
             SaveMachinery();
-            if(isPrefabInstance)
-                OverrideChanges();
+            
         }
             
 
@@ -229,10 +228,13 @@ public class ChainPrefabEditor : Editor
             _linksPool = machineryPrefab.GetComponentInChildren<LinksPool>();
             if (_linksPool == null)
             {
-                _linksPool = Instantiate(chainData.LinksPoolPrefab, target as Transform);
+                _linksPool = Instantiate(chainData.LinksPoolPrefab); //, machineryPrefab.transform);
+                _linksPool.transform.SetParent(machineryPrefab.transform);
             }
 
             machineryPrefab.chainDrawer.GetLinksPool(_linksPool);
+            
+            //SaveMachinery();
         }
     }
 
@@ -285,6 +287,9 @@ public class ChainPrefabEditor : Editor
             machineryPrefab.chainSpawner.Data = chainData;
 
         EditorUtility.SetDirty(target);
+        
+        if(isPrefabInstance)
+            OverrideChanges();
     }
 
     void OverrideChanges()
@@ -315,12 +320,16 @@ public class ChainPrefabEditor : Editor
 
     void DeleteLinks()
     {
-        if(isPrefabInstance)
-            _linksPool.gameObject.SetActive(false);
-        else
-            _linksPool.DeleteLinks();
+        if (isPrefabInstance)
+        {
+            //_linksPool.gameObject.SetActive(false);
+            Debug.LogWarning("Change pool from prefab view");
+            return;
+        }
         
+        _linksPool.DeleteLinks();
         SaveMachinery();
+        
         //EditorUtility.SetDirty(target);
     }
 
