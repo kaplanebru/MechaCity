@@ -15,13 +15,14 @@ namespace Chain
 
         private void OnEnable()
         {
-            cogs = GetComponentsInChildren<Cogwheel>().ToList(); //Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToList();
+            cogs = GetComponentsInChildren<Cogwheel>().ToList(); 
         }
 
         public List<Cogwheel> GetChainRelatedCogs()
         {
             //return GetComponentsInChildren<Cogwheel>().Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToList();
-            return cogs.Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToList();
+            print(cogs.Count);
+            return GetComponentsInChildren<Cogwheel>().Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToList();
         }
 
         private void Start()
