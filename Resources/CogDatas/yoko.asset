@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uniqueID: 
   Radius: 4
-  ContactType: 1
-  RotationDirection: 1
+  ContactType: 0
+  RotationDirection: -1
   circularThickness: 2
   HoleType: 1
   IsMoving: 1
@@ -25,4 +25,4 @@ MonoBehaviour:
   MinGapLimit: 6
   Equalize: 0
   TeethCount: 24
-  ToothUnit: 1.0442121
+  ToothUnit: 1.0442096
