@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Cog 10 Data
   m_EditorClassIdentifier: 
   uniqueID: 
-  Radius: 3
+  Radius: 5
   ContactType: 0
-  RotationDirection: 1
+  RotationDirection: -1
   circularThickness: 2
   HoleType: 0
   IsMoving: 1
@@ -24,5 +24,5 @@ MonoBehaviour:
   ToothGap: 60
   MinGapLimit: 6
   Equalize: 0
-  TeethCount: 48
-  ToothUnit: 1.041889
+  TeethCount: 30
+  ToothUnit: 1.0452859

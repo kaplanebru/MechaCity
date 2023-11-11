@@ -36,6 +36,7 @@ public class ChainPrefabEditor : Editor
     private void OnEnable()
     {
         GetPrefabInstance();
+        ChainEvents.OnLinksReady += SaveMachinery;
     }
 
     void GetPrefabInstance()
@@ -46,18 +47,18 @@ public class ChainPrefabEditor : Editor
 
         if (assetType == PrefabAssetType.NotAPrefab)
         {
-            Debug.Log("Not a Prefab");
+            //Debug.Log("Not a Prefab");
         }
         else
         {
             if (instanceStatus == PrefabInstanceStatus.NotAPrefab)
             {
-                Debug.Log("Prefab Asset");
+                //Debug.Log("Prefab Asset");
                 isPrefabInstance = false;
             }
             else
             {
-                Debug.Log("Prefab Instance");
+                //Debug.Log("Prefab Instance");
                 isPrefabInstance = true;
             }
         }
@@ -66,9 +67,11 @@ public class ChainPrefabEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        if (EditorApplication.isPlaying) return;
         DrawDefaultInspector(); // Draw the default Inspector
 
-        machineryPrefab = target as Machinery;
+        if(machineryPrefab == null) //possible bug: added later
+            machineryPrefab = target as Machinery;
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         narrowButton = new GUIStyle(GUI.skin.button);
         narrowButton.fixedWidth = 200f;
@@ -191,6 +194,7 @@ public class ChainPrefabEditor : Editor
                 if (GUILayout.Button("Deactivate Link pool"))
                 {
                     machineryPrefab.chainDrawer.ResetLinks();
+                    //machineryPrefab.chainDrawer._chainPoints.Clear();
                 }
             }
         }
@@ -284,6 +288,7 @@ public class ChainPrefabEditor : Editor
 
     void SaveMachinery()
     {
+        //GetPrefabInstance();
         Debug.Log("saved");
         if (isChainRelated)
             machineryPrefab.chainSpawner.Data = chainData;
@@ -320,7 +325,7 @@ public class ChainPrefabEditor : Editor
         GenerateCogs();
         
         chainData.CogAmount = chainRelatedCogAmount;
-        ChainEvents.OnChainRequest?.Invoke(machineryPrefab.cogHolder.GetChainRelatedCogs()); //ninvoke pas en enable
+        ChainEvents.OnChainRequest?.Invoke(machineryPrefab.cogHolder.GetChainRelatedCogs(), machineryPrefab.chainSpawner); //ninvoke pas en enable
         //Repaint();
     }
 
@@ -346,7 +351,7 @@ public class ChainPrefabEditor : Editor
             EditorUtility.SetDirty(cog.Data);
         }
 
-        StartCogSetup();
+        ChainEvents.OnCogSetupRequest.Invoke(); //parenta yollanır(machinery), ordan çocuklara gider. Parentı da çek ederiz.
     }
 
     void SetCogData(int i)
@@ -435,19 +440,12 @@ public class ChainPrefabEditor : Editor
     }
 
 
-    void StartCogSetup()
+    
+    
+
+    private void OnDisable()
     {
-        ChainEvents.OnCogSetupRequest.Invoke();
+        ChainEvents.OnLinksReady -= SaveMachinery;
     }
 }
 
-// void NewPool()
-// {
-//     var go = new GameObject("LinksPool");
-//     go.transform.SetParent(_chainSpawner.transform);
-//     go.AddComponent<LinksPool>();
-//     _linksPool = go.GetComponent<LinksPool>();
-//     //ChainEvents.OnLinksPoolUpdated?.Invoke(_linksPool);
-//     _chainDrawer.GetLinksPool(_linksPool);
-//     SaveMachinery();
-// }

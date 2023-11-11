@@ -44,8 +44,10 @@ namespace Chain
             BindPoints();
         }
 
-        private void StartChain(Cogwheel[] _cogs)
+        private void StartChain(Cogwheel[] _cogs, ChainSpawner chainSpawner)
         {
+            //if(_machinery != GetComponentInParent<Machinery>()) return;
+            if(chainSpawner != this) return;
             cogs = _cogs.ToList();
             if(cogs.Count <= 1) return;
             Upwards = Data.UpwardsAxis;
@@ -56,7 +58,6 @@ namespace Chain
         void CreateArcs()
         {
             _arcCount = Data.CogAmount;
-            print(Data.CogAmount);
             arcs = new Arc[_arcCount];
             for (int i = 0; i < cogs.Count; i++)
             {
@@ -136,10 +137,10 @@ namespace Chain
             }
 
             arcs = new ClockwiseSorter<Arc>(arcs, arcPositions).SortItems();
-            foreach (var arc in arcs)
-            {
-                print(arc.cog.name);
-            }
+            // foreach (var arc in arcs)
+            // {
+            //     print(arc.cog.name);
+            // }
         }
 
         void RelateArcs()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Chain;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ public class ChainMover : MonoBehaviour
 
         enabled = Data.IsMoving;
 
-        ChainEvents.OnLinksCreated += SetLinksAndPoints;
+        //ChainEvents.OnLinksCreated += GetLinksAndPoints;
         ChainEvents.OnCogSpeedSet += GetTotalCogSpeed;
     }
 
@@ -38,7 +39,10 @@ public class ChainMover : MonoBehaviour
 
     private IEnumerator Start()
     {
+        _links = GetComponent<ChainDrawer>()._links;
+        //_links = GetComponentInParent<Machinery>().linksPool.GetComponentsInChildren<ChainLink>().ToList();
         yield return new WaitWhile(() => _links.Count == 0 || LinearSpeed == 0); //WaitWhile(() => _points.Count == 0 || LinearSpeed == 0);
+        //yield return new WaitUntil(() => _links.Count > 0 && LinearSpeed > 0);
         MoveChain();
     }
 
@@ -54,8 +58,10 @@ public class ChainMover : MonoBehaviour
     }
 
 
-    void SetLinksAndPoints(List<ChainLink> links, List<Vector3> points)
+    public void GetLinksAndPoints(List<ChainLink> links, List<Vector3> points)
     {
+        print("get links event");
+
         _links = links;
        // _points = points; // yön değiştirince tekrar tekrar generate etmeyelim diye iptal, pointleri linklerin kendisinden alırız
     }
@@ -96,7 +102,7 @@ public class ChainMover : MonoBehaviour
         float speed = Data.SetMotionByGear ? LinearSpeed : Data.SpeedMultiplier;
         _rotationExtentPerLink = speed * Data.LinkRotationMultiplier;
         int j = startIndex;
-
+        
         while (true)
         {
             switch (Data.motionDirection)
@@ -132,7 +138,7 @@ public class ChainMover : MonoBehaviour
 
     private void OnDisable()
     {
-        ChainEvents.OnLinksCreated -= SetLinksAndPoints;
+        ChainEvents.OnLinksCreated -= GetLinksAndPoints;
         ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;
     }
 }

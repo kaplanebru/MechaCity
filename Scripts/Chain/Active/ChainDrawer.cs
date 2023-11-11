@@ -12,28 +12,28 @@ namespace Chain
     {
         public ChainData Data;
 
-        //public LineRenderer lr;
-        //Material lrMat;
+        
         public Transform lastLinkPrefab;
-
-
-        [SerializeField] private List<Vector3> _chainPoints = new();
-        [SerializeField] private List<ChainLink> _links = new();
+        
+        public List<Vector3> _chainPoints = new();
+        public List<ChainLink> _links = new();
         private int _pointsCount;
         [SerializeField] private LinksPool linksPool;
 
         private void OnEnable()
         {
+            
             if (!Application.isPlaying)
             {
-                linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>(); //TODO: address
+                linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>(); //TODO: linkspool her silindiğinde machineryde update oluyor mu
                 Data = GetComponent<ChainSpawner>().Data;
 
-                ChainEvents.OnPointsCreated += DrawChain;
-                ChainEvents.OnDeleteLinks += ClearLinks;
-                ChainEvents.OnLinksPoolUpdated += GetLinksPool;
+                //ChainEvents.OnPointsCreated += DrawChain;
+                //ChainEvents.OnDeleteLinks += ClearLinks;
             }
         }
+        
+        
 
         public void GetLinksPool(LinksPool pool)
         {
@@ -43,7 +43,7 @@ namespace Chain
 
         private void Start()
         {
-            ChainEvents.OnLinksCreated?.Invoke(_links, _chainPoints); //after edit, for mover
+            //ChainEvents.OnLinksCreated?.Invoke(_links, _chainPoints); //after edit, for mover
         }
 
         void ClearLinks()
@@ -55,14 +55,13 @@ namespace Chain
         {
             _chainPoints = points;
             _pointsCount = _chainPoints.Count;
-            if (Data.Type == ChainEnums.ChainType.Line)
-                DrawLines();
-            else
-                CreateLinks();
+          
+            CreateLinks();
         }
 
         void CreateLinks()
         {
+            print("create links");
             ResetLinks();
             // return;
 
@@ -83,24 +82,31 @@ namespace Chain
             }
 
 
-            EditorUtility.SetDirty(GetComponentInParent<Machinery>().gameObject);
+            //EditorUtility.SetDirty(GetComponentInParent<Machinery>().gameObject);
+            
 
             // if(Data.Type == ChainType.BikeChain)
             //     RegulateLastLink();
 
+            print(_links.Count + " from drawer");
+            
+            //GetComponentInParent<Machinery>().ApplyChangesToPrefab();
+           // ChainEvents.OnLinksReady?.Invoke();
             //ChainEvents.OnLinksCreated?.Invoke(_links);
         }
 
 
         public void ResetLinks()
         {
-            linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>();
-
-
-            if (linksPool == null) //for bug check, temporary
+            print("reset links");
+            if (linksPool == null)
             {
-                Debug.LogError("links pool null");
-                return;
+                linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>();
+                if (linksPool == null) //for bug check, temporary
+                {
+                    Debug.LogError("links pool null");
+                    return;
+                }
             }
 
             if (linksPool.pool.Count == 0)
@@ -163,27 +169,30 @@ namespace Chain
             {
                 ChainEvents.OnPointsCreated -= DrawChain;
                 ChainEvents.OnDeleteLinks -= ClearLinks;
-                ChainEvents.OnLinksPoolUpdated -= GetLinksPool;
             }
         }
+        
+        
 
 
-        //
-        // void RegulateLastLink()
-        // {
-        //     if (Vector3.Distance(_chainPoints.First(), _chainPoints.Last()) > Data.Unit)
-        //     {
-        //         var lastLink = _links.Last();
-        //         Vector3 dir = (_links.First().position - lastLink.transform.position).normalized;
-        //         var newLastLink = Instantiate(lastLinkPrefab, lastLink.transform.position + dir , lastLink.transform.rotation);
-        //         _links.Add(newLastLink);
-        //         _chainPoints.Add(newLastLink.transform.position);
-        //     }
-        // }
-        //
-        // public void ReleaseChain()
-        // {
-        //     _links.ForEach(l => LinkPool.Instance.ReleaseItem(l));
-        // }
+       
     }
 }
+
+//
+// void RegulateLastLink()
+// {
+//     if (Vector3.Distance(_chainPoints.First(), _chainPoints.Last()) > Data.Unit)
+//     {
+//         var lastLink = _links.Last();
+//         Vector3 dir = (_links.First().position - lastLink.transform.position).normalized;
+//         var newLastLink = Instantiate(lastLinkPrefab, lastLink.transform.position + dir , lastLink.transform.rotation);
+//         _links.Add(newLastLink);
+//         _chainPoints.Add(newLastLink.transform.position);
+//     }
+// }
+//
+// public void ReleaseChain()
+// {
+//     _links.ForEach(l => LinkPool.Instance.ReleaseItem(l));
+// }

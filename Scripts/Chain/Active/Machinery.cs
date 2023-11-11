@@ -8,49 +8,90 @@ using UnityEngine;
 
 namespace Chain
 {
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public class Machinery : MonoBehaviour
     {
-        [HideInInspector]public bool isChainRelated = false;
-        
-        [HideInInspector]public CogHolder cogHolder;
-        [HideInInspector]public ChainSpawner chainSpawner;
-        [HideInInspector]public ChainDrawer chainDrawer;
+        public bool isChainRelated = false;
+
+        public CogHolder cogHolder;
+        public ChainSpawner chainSpawner;
+        public ChainDrawer chainDrawer;
         public Residual residual;
         public LinksPool linksPool;
-        
+
         public ChainAssetHolder assetHolder;
-      
+
+        public string InstanceID; //{ get; private set; }
+
+        private void Awake()
+        {
+            // Assign a unique ID using System.Guid
+            InstanceID = Guid.NewGuid().ToString();
+        }
 
 
         private void OnEnable()
         {
-            cogHolder = GetComponentInChildren<CogHolder>();
-            chainSpawner = GetComponentInChildren<ChainSpawner>();
-            chainDrawer = GetComponentInChildren<ChainDrawer>();
-            linksPool = GetComponentInChildren<LinksPool>();
-            residual = GetComponentInChildren<Residual>();
+            // cogHolder = GetComponentInChildren<CogHolder>();
+            // chainSpawner = GetComponentInChildren<ChainSpawner>();
+            // chainDrawer = GetComponentInChildren<ChainDrawer>();
+            // linksPool = GetComponentInChildren<LinksPool>();
+            // residual = GetComponentInChildren<Residual>();
             //ChainEvents.OnCogsReady += UpdateArcs;: cogs hazır olunca cogholdera yollamaya gerek var mı data updatei için?
+        }
 
+        public void ApplyChangesToPrefab()
+        {
+            // Check if the object is a prefab instance
+            if (PrefabUtility.IsPartOfPrefabInstance(gameObject))
+            {
+                // Get the prefab asset
+                GameObject prefab = PrefabUtility.GetCorrespondingObjectFromSource(gameObject) as GameObject;
+
+                if (prefab != null)
+                {
+                    // Apply changes to the prefab
+                    PrefabUtility.ApplyPrefabInstance(gameObject, InteractionMode.AutomatedAction);
+                }
+                else
+                {
+                    Debug.LogWarning("Prefab not found.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("This GameObject is not a prefab instance.");
+            }
+        }
+
+        void UnpackPrefabInstance()
+        {
+            if (!Application.isPlaying)
+            {
+                PrefabType prefabType = PrefabUtility.GetPrefabType(gameObject);
+
+
+                if (prefabType == PrefabType.PrefabInstance || prefabType == PrefabType.DisconnectedPrefabInstance)
+                {
+                    PrefabUtility.UnpackPrefabInstance(gameObject, PrefabUnpackMode.OutermostRoot,
+                        InteractionMode.AutomatedAction);
+                }
+            }
         }
 
         private void Start()
         {
             //chainSpawner.UpdateArcs(cogHolder.GetChainRelatedCogs().ToArray());
+            UnpackPrefabInstance();
         }
 
 
         private void OnDisable()
         {
-            
-
         }
 
 
         //todo: first set cogs from here, later start chain process
-
-
-       
     }
 }
 

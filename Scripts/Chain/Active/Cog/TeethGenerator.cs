@@ -62,7 +62,6 @@ namespace Chain
                 1f / transform.localScale.z);
             SetIntervalAngle();
 
-            int counter = 0;
             for (float i = 0; i < 360; i += _intervalAngle)
             {
                 Vector3 point = TrigonometryHelper.CirclePoint(i, Data.Radius);

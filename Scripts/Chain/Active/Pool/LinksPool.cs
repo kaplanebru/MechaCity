@@ -13,7 +13,9 @@ namespace Chain
     {
         public void ActivatePool(int pointCount, ChainLink linkPrefab)
         {
+            print("activate pool");
             if (pool.Count > 0) return;
+            print("activated");
             
             var poolChildren = GetComponentsInChildren<ChainLink>(true).ToList();
             var childrenLength = poolChildren.Count;
