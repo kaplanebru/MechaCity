@@ -19,6 +19,9 @@ public class ChainEvents
     public static Action<Cogwheel[]> OnChainRequest;
 
     public static Action OnDeleteLinks;
+    public static Action OnDeleteTeeth;
+    
+    
     public static Action<LinksPool> OnLinksPoolUpdated;
 
     public static Action<Transform> OnDeleteObject;

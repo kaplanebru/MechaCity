@@ -44,7 +44,7 @@ namespace Chain
 
             SetHoleSize();
 
-            ChainEvents.OnCogDataSet?.Invoke(Data, cog.teeth);
+            ChainEvents.OnCogDataSet?.Invoke(Data, transform);
             
             
             //ChainEvents.OnCogStart?.Invoke(Data, teeth);

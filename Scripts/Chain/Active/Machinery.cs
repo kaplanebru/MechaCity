@@ -18,6 +18,7 @@ namespace Chain
         [HideInInspector]public ChainDrawer chainDrawer;
         public Residual residual;
         public LinksPool linksPool;
+        
         public ChainAssetHolder assetHolder;
       
 

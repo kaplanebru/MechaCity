@@ -11,8 +11,6 @@ namespace Chain
     [ExecuteInEditMode]
     public class LinksPool : Pool<ChainLink>
     {
-        
-
         public void ActivatePool(int pointCount, ChainLink linkPrefab)
         {
             if (pool.Count > 0) return;
