@@ -213,10 +213,12 @@ public class ChainPrefabEditor : Editor
     {
         //DestroyImmediate(cogs[cogIndex].gameObject);
         if (cogs.Length == 0 || cogs == null) return;
+        var cogsToDestroy = cogs[cogToDestroy];
+        
+        ChainEvents.OnDeleteObject?.Invoke(cogsToDestroy.transform);
 
-        cogs[cogToDestroy].gameObject.SetActive(false);
-        cogs = machineryPrefab.cogHolder.RemoveCog(cogs[cogToDestroy]);
-
+        cogsToDestroy.gameObject.SetActive(false);
+        cogs = machineryPrefab.cogHolder.RemoveCog(cogsToDestroy);
         machineryPrefab.chainDrawer.ResetLinks(); //todo: is it necessary?
     }
 
@@ -290,6 +292,10 @@ public class ChainPrefabEditor : Editor
         
         if(isPrefabInstance)
             OverrideChanges();
+        else
+        {
+            machineryPrefab.residual.CleanResiduals();
+        }
     }
 
     void OverrideChanges()

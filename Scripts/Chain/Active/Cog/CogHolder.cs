@@ -32,6 +32,7 @@ namespace Chain
         public Cogwheel[] RemoveCog(Cogwheel cogToRemove)
         {
             cogs.Remove(cogToRemove);
+            
             return cogs.ToArray();
         }
 

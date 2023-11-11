@@ -16,8 +16,10 @@ namespace Chain
         [HideInInspector]public CogHolder cogHolder;
         [HideInInspector]public ChainSpawner chainSpawner;
         [HideInInspector]public ChainDrawer chainDrawer;
+        public Residual residual;
         public LinksPool linksPool;
         public ChainAssetHolder assetHolder;
+      
 
 
         private void OnEnable()
@@ -26,7 +28,7 @@ namespace Chain
             chainSpawner = GetComponentInChildren<ChainSpawner>();
             chainDrawer = GetComponentInChildren<ChainDrawer>();
             linksPool = GetComponentInChildren<LinksPool>();
-            
+            residual = GetComponentInChildren<Residual>();
             //ChainEvents.OnCogsReady += UpdateArcs;: cogs hazır olunca cogholdera yollamaya gerek var mı data updatei için?
 
         }
