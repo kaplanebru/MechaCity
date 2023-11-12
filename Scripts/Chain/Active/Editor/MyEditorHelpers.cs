@@ -26,6 +26,37 @@ namespace Chain
             string[] guids = AssetDatabase.FindAssets("t:"+typeName);
             return guids.Length + 1;
         }
+
+        public static string FindPathByGuid(string objectName)
+        {
+
+            // string searchType = "t:Machinery"; //"t:" + typeName; //"t:Machinery"; // Adjust the type based on your asset type
+            // string searchString = "t:Machinery Machinery2";//$"{searchType} {objectName}";
+            
+            string[] guids = AssetDatabase.FindAssets(objectName);
+            Debug.Log(guids.Length);
+            string assetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
+            return assetPath;
+        }
+
+        public static GameObject FindObjectByGuid(string objectName)
+        {
+            string assetPath =  FindPathByGuid(objectName);
+            
+            if (!string.IsNullOrEmpty(assetPath))
+            {
+                Object loadedObject = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
+
+                if (loadedObject is GameObject)
+                {
+                    GameObject foundObject = (GameObject)loadedObject;
+                    Debug.Log("Found GameObject: " + foundObject.name);
+                    return foundObject;
+                }
+            }
+
+            return null;
+        }
     }
 
 }

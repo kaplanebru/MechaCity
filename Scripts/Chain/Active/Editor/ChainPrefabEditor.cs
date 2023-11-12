@@ -61,11 +61,11 @@ public class ChainPrefabEditor : Editor
         }
             
 
-        // if (GUILayout.Button("OVERRIDE CHANGES ON SCENE"))
-        // {
-        //     SaveMachinery();
-        //     OverrideChanges();
-        // }
+        if (GUILayout.Button("SAVE ONTO EXISTING PREFAB"))
+        {
+            SaveOnExistingPrefab();
+            SaveMachinery();
+        }
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
             cogs = machineryPrefab.cogHolder.GetRestoredCogs();
@@ -281,6 +281,17 @@ public class ChainPrefabEditor : Editor
     {
         Debug.Log("ovverride");
         PrefabUtility.ApplyPrefabInstance(machineryPrefab.gameObject, InteractionMode.UserAction);
+    }
+
+    void SaveOnExistingPrefab()
+    {
+        Debug.Log(machineryPrefab.name);
+        
+        GameObject newInstance = Instantiate(machineryPrefab.gameObject);
+        PrefabUtility.SaveAsPrefabAsset(newInstance,
+            MyEditorHelpers.FindPathByGuid(machineryPrefab.name));
+        
+        DestroyImmediate(newInstance);
     }
 
     void GenerateChain()

@@ -17,7 +17,7 @@ MonoBehaviour:
   ContactType: 0
   RotationDirection: -1
   circularThickness: 2
-  HoleType: 1
+  HoleType: 0
   IsMoving: 1
   RelatedCog: {fileID: 0}
   toothScale: {x: 0.6, y: 1, z: 0.6}
@@ -25,4 +25,4 @@ MonoBehaviour:
   MinGapLimit: 6
   Equalize: 0
   TeethCount: 30
-  ToothUnit: 1.0452865
+  ToothUnit: 1.0452859
