@@ -64,24 +64,40 @@ namespace Chain
             }
         }
 
+        public bool IsPrefabInstance()
+        {
+            PrefabAssetType assetType = PrefabUtility.GetPrefabAssetType(gameObject);
+            PrefabInstanceStatus instanceStatus = PrefabUtility.GetPrefabInstanceStatus(gameObject);
+
+            if (assetType == PrefabAssetType.NotAPrefab)
+            {
+                //Debug.Log("Not a Prefab");
+                return false;
+            }
+
+            if (instanceStatus == PrefabInstanceStatus.NotAPrefab)
+            {
+                Debug.Log("Prefab Asset");
+                return false;
+            }
+
+
+            Debug.Log("Prefab Instance");
+            return true;
+        }
+
         void UnpackPrefabInstance()
         {
-            if (!Application.isPlaying)
+            if (IsPrefabInstance())
             {
-                PrefabType prefabType = PrefabUtility.GetPrefabType(gameObject);
-
-
-                if (prefabType == PrefabType.PrefabInstance || prefabType == PrefabType.DisconnectedPrefabInstance)
-                {
-                    PrefabUtility.UnpackPrefabInstance(gameObject, PrefabUnpackMode.OutermostRoot,
-                        InteractionMode.AutomatedAction);
-                }
+                PrefabUtility.UnpackPrefabInstance(gameObject, PrefabUnpackMode.OutermostRoot,
+                    InteractionMode.AutomatedAction);
             }
         }
 
+
         private void Start()
         {
-            //chainSpawner.UpdateArcs(cogHolder.GetChainRelatedCogs().ToArray());
             UnpackPrefabInstance();
         }
 
@@ -107,4 +123,19 @@ namespace Chain
 //
 //     PrefabUtility.RecordPrefabInstancePropertyModifications(machineryPrefab);
 //     PrefabUtility.SavePrefabAsset(machineryPrefab);
+// }
+
+// void UnpackPrefabInstance()
+// {
+//     if (!Application.isPlaying)
+//     {
+//         PrefabType prefabType = PrefabUtility.GetPrefabType(gameObject);
+//
+//
+//         if (prefabType == PrefabType.PrefabInstance || prefabType == PrefabType.DisconnectedPrefabInstance)
+//         {
+//             PrefabUtility.UnpackPrefabInstance(gameObject, PrefabUnpackMode.OutermostRoot,
+//                 InteractionMode.AutomatedAction);
+//         }
+//     }
 // }

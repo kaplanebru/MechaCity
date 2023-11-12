@@ -31,47 +31,24 @@ public class ChainPrefabEditor : Editor
 
     [SerializeField] int cogToDestroy;
 
-    private bool isPrefabInstance;
+ 
 
     private void OnEnable()
     {
-        GetPrefabInstance();
         ChainEvents.OnLinksReady += SaveMachinery;
     }
 
-    void GetPrefabInstance()
-    {
-        
-        PrefabAssetType assetType = PrefabUtility.GetPrefabAssetType(target);
-        PrefabInstanceStatus instanceStatus = PrefabUtility.GetPrefabInstanceStatus(target);
 
-        if (assetType == PrefabAssetType.NotAPrefab)
-        {
-            //Debug.Log("Not a Prefab");
-        }
-        else
-        {
-            if (instanceStatus == PrefabInstanceStatus.NotAPrefab)
-            {
-                //Debug.Log("Prefab Asset");
-                isPrefabInstance = false;
-            }
-            else
-            {
-                //Debug.Log("Prefab Instance");
-                isPrefabInstance = true;
-            }
-        }
-    }
-   
 
     public override void OnInspectorGUI()
     {
         if (EditorApplication.isPlaying) return;
         DrawDefaultInspector(); // Draw the default Inspector
 
-        if(machineryPrefab == null) //possible bug: added later
+        if (machineryPrefab == null) //possible bug: added later
             machineryPrefab = target as Machinery;
+        
+           
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         narrowButton = new GUIStyle(GUI.skin.button);
         narrowButton.fixedWidth = 200f;
@@ -80,9 +57,7 @@ public class ChainPrefabEditor : Editor
 
         if (GUILayout.Button("SAVE CHANGES"))
         {
-            GetPrefabInstance();
             SaveMachinery();
-            
         }
             
 
@@ -288,18 +263,17 @@ public class ChainPrefabEditor : Editor
 
     void SaveMachinery()
     {
-        //GetPrefabInstance();
         Debug.Log("saved");
         if (isChainRelated)
             machineryPrefab.chainSpawner.Data = chainData;
 
         EditorUtility.SetDirty(target);
         
-        if(isPrefabInstance)
+        if(machineryPrefab.IsPrefabInstance())
             OverrideChanges();
         else
         {
-            machineryPrefab.residual.CleanResiduals();
+            machineryPrefab.residual.CleanResiduals(); 
         }
     }
 
@@ -331,9 +305,8 @@ public class ChainPrefabEditor : Editor
 
     void DeleteLinks()
     {
-        if (isPrefabInstance)
+        if (machineryPrefab.IsPrefabInstance())
         {
-            //_linksPool.gameObject.SetActive(false);
             Debug.LogWarning("Change pool from prefab view");
             return;
         }
@@ -428,7 +401,6 @@ public class ChainPrefabEditor : Editor
                 (ChainEnums.ChainDirection) EditorGUILayout.EnumPopup("Motion Direction", chainData.motionDirection);
             chainData.FollowGearRotation = EditorGUILayout.Toggle("Follow Cog Rotation", chainData.FollowGearRotation);
             chainData.SetMotionByGear = EditorGUILayout.Toggle("Set Motion By Cog", chainData.SetMotionByGear);
-
             chainData.LinkRotationEffect = EditorGUILayout.Toggle("Rotate Links", chainData.LinkRotationEffect);
         }
     }
@@ -440,9 +412,6 @@ public class ChainPrefabEditor : Editor
         GenerateChain();
     }
 
-
-    
-    
 
     private void OnDisable()
     {

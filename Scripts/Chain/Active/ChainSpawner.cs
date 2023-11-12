@@ -205,7 +205,7 @@ namespace Chain
             arcs[i].arcPoints[arcs[i].arcPoints.Count - 1] = LastPointOffset(i);
         }
 
-        Vector3 LastPointOffset(int i)
+        Vector3 LastPointOffset(int i) //todo: add to trig hepler
         {
             var lastPointAngle = TrigonometryHelper.AngleInPoint(arcs[i].arcPoints.Last(), Vector3.zero);
             var alphaDegrees = 90 - Mathf.Abs(lastPointAngle - arcs[i].edgeAngles.End);
