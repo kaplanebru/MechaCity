@@ -177,16 +177,16 @@ namespace Chain
             float angle = arcs[i].baseAngle;
             float a = start;
 
-            if (arcs[i].radius < arcs[arcs[i].relatedArcId].radius)
-            {
-                end -= angle;
-                if (end < 0)
-                {
-                    end = (end + 360) % 360;
-                }
-
-                extraPoint = true;
-            }
+            // if (arcs[i].radius < arcs[arcs[i].relatedArcId].radius)
+            // {
+            //     end -= angle;
+            //     if (end < 0)
+            //     {
+            //         end = (end + 360) % 360;
+            //     }
+            //
+            //     extraPoint = true;
+            // }
 
             while (a < end)
             {
@@ -205,19 +205,29 @@ namespace Chain
                 a -= angle;
             }
 
-            if (extraPoint)
-            {
-                var dir = arcs[i].arcPoints.Last().normalized;
-                arcs[i].arcPoints[arcs[i].arcPoints.Count-1] = arcs[i].arcPoints.Last() + dir *.5f;
-                extraPoint = false;
-            }
+            arcs[i].arcPoints[arcs[i].arcPoints.Count - 1] = LastPointOffset(i);
+            
+            // if (!extraPoint) return;
+            // var dir = arcs[i].arcPoints.Last().normalized;
+            // arcs[i].arcPoints[arcs[i].arcPoints.Count-1] = arcs[i].arcPoints.Last() + dir *.5f;
+            // extraPoint = false;
+
+        }
+
+        Vector3 LastPointOffset(int i)
+        {
+            var lastPointAngle = TrigonometryHelper.AngleInPoint(arcs[i].arcPoints.Last(), Vector3.zero);
+            var alphaDegrees = 90 - Mathf.Abs(lastPointAngle - arcs[i].edgeAngles.End);
+            float opposite = arcs[i].radius;
+            float alphaRadians = Mathf.Deg2Rad * alphaDegrees;
+            float hypotenuse = opposite / Mathf.Sin(alphaRadians);
+            var direction = arcs[i].arcPoints.Last().normalized;
+            return Vector3.zero + hypotenuse * direction;
 
         }
         
         void PositionPoints(int i)
         {
-           
-            
             
             var arcPoints = arcs[i].arcPoints;
             var cog = arcs[i].cog;
