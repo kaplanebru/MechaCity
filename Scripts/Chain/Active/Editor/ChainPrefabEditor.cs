@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using Chain;
+using PlasticPipe.PlasticProtocol.Client;
 using UnityEngine;
 using UnityEditor;
 
@@ -43,9 +44,9 @@ public class ChainPrefabEditor : Editor
     public override void OnInspectorGUI()
     {
         if (EditorApplication.isPlaying) return;
-        DrawDefaultInspector(); // Draw the default Inspector
+        DrawDefaultInspector(); 
 
-        if (machineryPrefab == null) //possible bug: added later
+        if (machineryPrefab == null) 
             machineryPrefab = target as Machinery;
         
            
@@ -59,8 +60,7 @@ public class ChainPrefabEditor : Editor
         {
             SaveMachinery();
         }
-            
-
+        
         if (GUILayout.Button("SAVE ONTO EXISTING PREFAB"))
         {
             SaveOnExistingPrefab();
@@ -80,52 +80,64 @@ public class ChainPrefabEditor : Editor
 
         EditorGUILayout.Space();
 
-        GUILayout.Label(" _______________Add or Remove Cog_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
+        if (cogs.Length > 0)
+        {
+            GUILayout.Label(" _______________COG SETTINGS_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
+            EditorGUILayout.Space();
 
-        GUILayout.BeginHorizontal();
-        cogToDestroy = EditorGUILayout.Popup("Cog to destroy", cogToDestroy, cogHolderLabels);
-        if (GUILayout.Button("Remove Cog"))
-            RemoveCog();
-        GUILayout.EndHorizontal();
+            selectedIndex = EditorGUILayout.Popup("Cog To Set", selectedIndex, cogHolderLabels);
 
-        GUILayout.BeginHorizontal();
-        cogData = (CogData) EditorGUILayout.ObjectField("Old Cog Data", cogData, typeof(CogData), false);
-        if (GUILayout.Button("Add Cog With Old Data"))
-            AddCog(false);
-        GUILayout.EndHorizontal();
+            if (selectedIndex >= 0 && selectedIndex < cogs.Length)
+            {
+                EditorGUI.indentLevel++;
+                SetCogData(selectedIndex);
+                EditorGUI.indentLevel--;
+                
+            }
+
+            EditorGUILayout.Space();
+            if (GUILayout.Button("Generate Cog"))
+                GenerateCogs();
+
+            if (GUILayout.Button("Delete Teeth"))
+            {
+                foreach (var cog in cogs)
+                {
+                    var teeth = cog.GetComponent<TeethGenerator>(); //todo: event?
+                    teeth.DeleteTeeth();
+                }
+            }
+        }
+        
+        
+        EditorGUILayout.Space();
+        
+        GUILayout.Label(" _______________ADD or REMOVE COG_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
+        EditorGUILayout.Space();
         
         GUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-        if (GUILayout.Button("Add Cog With New Data"))
+        //GUILayout.FlexibleSpace();
+        EditorGUILayout.LabelField("Add Cog With Creating New Data");
+        if (GUILayout.Button("Apply"))
             AddCog(true);
         GUILayout.EndHorizontal();
 
+        GUILayout.BeginHorizontal();
+        cogData = (CogData) EditorGUILayout.ObjectField("Add Cog With Selected Data", cogData, typeof(CogData), false);
+        if (GUILayout.Button("Apply"))
+            AddCog(false);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        cogToDestroy = EditorGUILayout.Popup("Remove Selected Cog", cogToDestroy, cogHolderLabels);
+        if (GUILayout.Button("Remove"))
+            RemoveCog();
+        GUILayout.EndHorizontal();
+
 
         EditorGUILayout.Space();
-
-        GUILayout.Label(" _______________Cog Settings_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
-
-        selectedIndex = EditorGUILayout.Popup("Cog To Set", selectedIndex, cogHolderLabels);
-
-        if (selectedIndex >= 0 && selectedIndex < cogs.Length)
-        {
-            EditorGUI.indentLevel++;
-            SetCogData(selectedIndex);
-            EditorGUI.indentLevel--;
-        }
-
-        EditorGUILayout.Space();
-        if (GUILayout.Button("Generate Cog"))
-            GenerateCogs();
-
-        if (GUILayout.Button("Delete Teeth"))
-        {
-            foreach (var cog in cogs)
-            {
-                var teeth = cog.GetComponent<TeethGenerator>(); //todo: event?
-                teeth.DeleteTeeth();
-            }
-        }
+        
+        ////////////////CHAIN RELATED///////////////////////////////
 
         if (machineryPrefab.isChainRelated)
         {
@@ -141,7 +153,7 @@ public class ChainPrefabEditor : Editor
             }
 
             newChainData = EditorGUILayout.Toggle("Create New Chain Data", newChainData);
-            chainData = (ChainData) EditorGUILayout.ObjectField("Chain Data", chainData, typeof(ChainData), false);
+            
 
             if (newChainData)
             {
@@ -149,9 +161,14 @@ public class ChainPrefabEditor : Editor
                     EditorGUILayout.TextField("Chain Data Name",
                         chainDataName); //write the same name if you want to modify pool + reset pool before
 
-                if (GUILayout.Button("Create New Chain Data"))
+                if (GUILayout.Button("Apply"))
+                {
                     CreateChainData();
+                    newChainData = false;
+                }
             }
+            
+            chainData = (ChainData) EditorGUILayout.ObjectField("Use Selected Chain Data", chainData, typeof(ChainData), false);
 
 
             if (chainData != null)
@@ -186,6 +203,8 @@ public class ChainPrefabEditor : Editor
         newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
 
         cogs = machineryPrefab.cogHolder.AddCog(newCog);
+        
+        Repaint();
     }
 
     void RemoveCog()
@@ -338,16 +357,67 @@ public class ChainPrefabEditor : Editor
         ChainEvents.OnCogSetupRequest.Invoke(); //parenta yollanır(machinery), ordan çocuklara gider. Parentı da çek ederiz.
     }
 
+    private bool changeCogData = false;
+    private bool changeWithNewCogData = false;
+
+    private CogData otherCogData;
+    void ChangeCogData(int i)
+    {
+        GUILayout.BeginHorizontal();
+        changeCogData = EditorGUILayout.Toggle("Change With Other Data", changeCogData);
+        changeWithNewCogData = EditorGUILayout.Toggle("Change With New Data", changeWithNewCogData);
+        GUILayout.EndHorizontal();
+        
+        if (changeCogData)
+        {
+             otherCogData= (CogData) EditorGUILayout.ObjectField("Cog Data", otherCogData, typeof(CogData), false);
+            if (GUILayout.Button("Apply"))
+            {
+                if (otherCogData == null) return;
+                
+                cogData = otherCogData;
+                machineryPrefab.cogHolder.cogs[i].Data = otherCogData;
+                changeCogData = false;
+                //Repaint();
+               // SaveMachinery();
+            }
+                
+        }
+
+        if (changeWithNewCogData)
+        {
+            if (GUILayout.Button("Apply"))
+            {
+                cogs[i].Data = CreateCogData("Cog " + machineryPrefab.cogHolder.newCogIndex++);
+                changeWithNewCogData = false;
+                Repaint();
+                SaveMachinery();
+            }
+        }
+    }
     void SetCogData(int i)
     {
-        //if (cogs[i] == null) return;
+        StartCog:
         CogData Data = cogs[i].Data;
+        
         if (Data == null)
         {
             Debug.Log(cogs.Length);
             Debug.Log(cogs[i].name);
-            return;
+            // cogs[i].Data = machineryPrefab.cogHolder.cogs[i].Data;
+            // Data = cogs[i].Data;
+            // if(Data == null)
+                return;
+            //     goto StartCog;
+            
         }
+        
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Data Name");
+        EditorGUILayout.LabelField(Data.name, EditorStyles.helpBox);
+        GUILayout.EndHorizontal();
+        
+        EditorGUILayout.Space();
 
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
         Data.ContactType = (ChainEnums.CogContactType) EditorGUILayout.EnumPopup("Contact Type", Data.ContactType);
@@ -373,6 +443,9 @@ public class ChainPrefabEditor : Editor
         Data.ToothGap = EditorGUILayout.FloatField("Tooth Gap", Data.ToothGap);
         Data.Equalize = EditorGUILayout.Toggle("Equal Gaps", Data.Equalize);
         Data.MinGapLimit = EditorGUILayout.FloatField("Min Gap Limit", Data.MinGapLimit);
+        
+        EditorGUILayout.Space();
+        ChangeCogData(i);
 
         //EditorUtility.SetDirty(cogs[i].Data); //TODO: removed
     }

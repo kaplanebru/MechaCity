@@ -9,7 +9,7 @@ namespace Chain
     [ExecuteInEditMode]
     public class CogHolder : MonoBehaviour
     {
-        [SerializeField] private List<Cogwheel> cogs;
+        public List<Cogwheel> cogs;
         public int newCogIndex = 0;
 
 
