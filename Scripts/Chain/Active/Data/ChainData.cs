@@ -26,6 +26,8 @@ namespace Chain
         public bool LinkRotationEffect;
 
         [HideInInspector]public int CogAmount;
+
+        public bool OnTesting;
     }
 
    

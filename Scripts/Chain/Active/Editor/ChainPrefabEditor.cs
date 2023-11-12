@@ -397,6 +397,7 @@ public class ChainPrefabEditor : Editor
 
     void SetChainData()
     {
+        chainData.OnTesting =  EditorGUILayout.Toggle("On Testing", chainData.OnTesting);
         chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
         chainData.UpwardsAxis = (ChainEnums.UpAxis) EditorGUILayout.EnumPopup("Upwards Axis", chainData.UpwardsAxis);
         chainData.Unit = EditorGUILayout.FloatField("Unit", chainData.Unit);

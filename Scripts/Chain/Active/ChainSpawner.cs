@@ -22,6 +22,7 @@ namespace Chain
         public Arc[] arcs;
         private int _arcCount;
         public static ChainEnums.UpAxis Upwards;
+       
 
         private int linearPointAmount;
         [ReadOnly] public List<Vector3> chainPoints = new();
@@ -38,13 +39,15 @@ namespace Chain
         private List<Transform> testCubes = new();
         void GenerateChain()
         {
-            
-            for (int i = testCubes.Count - 1; i >= 0; i--)
+            if (Data.OnTesting)
             {
-                if(testCubes[i] != null)
-                    DestroyImmediate(testCubes[i].gameObject);
+                for (int i = testCubes.Count - 1; i >= 0; i--)
+                {
+                    if(testCubes[i] != null)
+                        DestroyImmediate(testCubes[i].gameObject);
+                }
             }
-            
+
             chainPoints.Clear();
 
             CreateArcs();
@@ -120,6 +123,7 @@ namespace Chain
             //     DestroyImmediate(testCube.gameObject);
             // }
             //
+            if(!Data.OnTesting) return;
             testCube = Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
             testSphere = Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity);
             testSphere.transform.localScale *= 2;
@@ -169,26 +173,18 @@ namespace Chain
                 arcs[i].relatedArcId = (i + 1) % _arcCount;
             }
         }
-
-        private bool extraPoint = false;
+        
         void CreateArcPoints(int i)
         {
             var start = arcs[i].edgeAngles.Start;
             var end = arcs[i].edgeAngles.End;
             float angle = arcs[i].baseAngle;
             float a = start;
-
-            // if (arcs[i].radius < arcs[arcs[i].relatedArcId].radius)
-            // {
+            
             end -= angle;
             if (end < 0)
-            {
                 end = (end + 360) % 360;
-            }
             
-            extraPoint = true;
-            // }
-
             while (a < end)
             {
                 arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
@@ -206,12 +202,7 @@ namespace Chain
                 a -= angle;
             }
 
-            
             arcs[i].arcPoints[arcs[i].arcPoints.Count - 1] = LastPointOffset(i);
-            
-            if (!extraPoint) return;
-            extraPoint = false;
-
         }
 
         Vector3 LastPointOffset(int i)
@@ -262,17 +253,8 @@ namespace Chain
        
         void AddLinearPoints(int i)
         {
-            // var lastAngle = TrigonometryHelper.AngleInPoint(arcs[i].arcPoints.Last(), arcs[i].cog.transform.position);
-            // lastAngle -= arcs[i].baseAngle;
-            // var point = TrigonometryHelper.CirclePoint(lastAngle, arcs[i].radius);
-            // var edgeOfEndPoint = Data.FollowGearRotation
-            //     ? arcs[i].cog.transform.position + arcs[i].cog.transform.localRotation * point
-            //     : arcs[i].cog.transform.position + point;
-            //
-
-           
-           
-            testCubes.Add(Instantiate(testCube2Pb, arcs[i].arcPoints.Last(), Quaternion.identity));
+            if(Data.OnTesting)
+                testCubes.Add(Instantiate(testCube2Pb, arcs[i].arcPoints.Last(), Quaternion.identity));
             
             linearPointAmount =
                 TrigonometryHelper.LinearPointAmountByDistance(arcs[i].nextArcPoint, arcs[i].arcPoints.Last(),
