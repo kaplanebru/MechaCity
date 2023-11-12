@@ -33,9 +33,17 @@ namespace Chain
             }
             //ChainEvents.OnCogsSelected += GenerateChainBySelection;
         }
-        
+
+        private List<Transform> testCubes = new();
         void GenerateChain()
         {
+            
+            for (int i = testCubes.Count - 1; i >= 0; i--)
+            {
+                if(testCubes[i] != null)
+                    DestroyImmediate(testCubes[i].gameObject);
+            }
+            
             chainPoints.Clear();
 
             CreateArcs();
@@ -47,13 +55,13 @@ namespace Chain
         private void StartChain(Cogwheel[] _cogs, ChainSpawner chainSpawner)
         {
             //if(_machinery != GetComponentInParent<Machinery>()) return;
-            if(chainSpawner != this) return;
+            if (chainSpawner != this) return;
             cogs = _cogs.ToList();
-            if(cogs.Count <= 1) return;
+            if (cogs.Count <= 1) return;
             Upwards = Data.UpwardsAxis;
             GenerateChain();
         }
-        
+
 
         void CreateArcs()
         {
@@ -79,6 +87,9 @@ namespace Chain
             ChainEvents.OnMotionStateSet?.Invoke(Data.IsMoving);
         }
 
+        private Transform testCube;
+        private Transform testSphere;
+
         void CommonTangentAngles(int i)
         {
             Arc arc = arcs[i];
@@ -94,23 +105,30 @@ namespace Chain
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
             arc.edgeAngles.End = TrigonometryHelper.AngleInPoint(
                 tangentPoints[0],
-                arc.cog.transform.position) - Data.Tension; // * arc.radius;
+                arc.cog.transform.position) - Data.Tension * arc.radius;
 
 
             relatedArc.edgeAngles.Start =
                 TrigonometryHelper.AngleInPoint(
                     tangentPoints[1],
-                    relatedArc.cog.transform.position) + Data.Tension; // * relatedArc.radius;
+                    relatedArc.cog.transform.position) + Data.Tension * relatedArc.radius;
 
-            // Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
-            // Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity).transform.localScale *= 2;
+            // if (testSphere != null)
+            // {
+            //     DestroyImmediate(testSphere.gameObject);
+            //     DestroyImmediate(testCube.gameObject);
+            // }
+            //
+            // testCube = Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
+            // testSphere = Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity);
+            // testSphere.transform.localScale *= 2;
         }
 
         void CreateParts(int i)
         {
             CreateArcPoints(i);
             PositionPoints(i);
-            SetNextPoint(i);
+            SetNextArcPoint(i);
             AddLinearPoints(i);
         }
 
@@ -137,10 +155,10 @@ namespace Chain
             }
 
             arcs = new ClockwiseSorter<Arc>(arcs, arcPositions).SortItems();
-            // foreach (var arc in arcs)
-            // {
-            //     print(arc.cog.name);
-            // }
+            foreach (var arc in arcs)
+            {
+                print(arc.cog.name);
+            }
         }
 
         void RelateArcs()
@@ -151,12 +169,24 @@ namespace Chain
             }
         }
 
+        private bool extraPoint = false;
         void CreateArcPoints(int i)
         {
             var start = arcs[i].edgeAngles.Start;
             var end = arcs[i].edgeAngles.End;
             float angle = arcs[i].baseAngle;
             float a = start;
+
+            if (arcs[i].radius < arcs[arcs[i].relatedArcId].radius)
+            {
+                end -= angle;
+                if (end < 0)
+                {
+                    end = (end + 360) % 360;
+                }
+
+                extraPoint = true;
+            }
 
             while (a < end)
             {
@@ -174,10 +204,21 @@ namespace Chain
                 arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
                 a -= angle;
             }
-        }
 
+            if (extraPoint)
+            {
+                var dir = arcs[i].arcPoints.Last().normalized;
+                arcs[i].arcPoints[arcs[i].arcPoints.Count-1] = arcs[i].arcPoints.Last() + dir *.5f;
+                extraPoint = false;
+            }
+
+        }
+        
         void PositionPoints(int i)
         {
+           
+            
+            
             var arcPoints = arcs[i].arcPoints;
             var cog = arcs[i].cog;
 
@@ -190,7 +231,7 @@ namespace Chain
             }
         }
 
-        void SetNextPoint(int i)
+        void SetNextArcPoint(int i)
         {
             var relatedArc = arcs[arcs[i].relatedArcId];
 
@@ -201,18 +242,32 @@ namespace Chain
             }
 
             relatedArc.arcPoints.Add(TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start,
-                relatedArc.radius));// + Data.Tension));
+                relatedArc.radius)); // + Data.Tension));
             PositionPoints(relatedArc.id);
             arcs[i].nextArcPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
         }
 
 
+        Transform testcube2;
         void AddLinearPoints(int i)
         {
-            linearPointAmount =
-                TrigonometryHelper.LinearPointAmountByDistance(arcs[i].nextArcPoint, arcs[i].arcPoints.Last(), Data.Unit);
+            // var lastAngle = TrigonometryHelper.AngleInPoint(arcs[i].arcPoints.Last(), arcs[i].cog.transform.position);
+            // lastAngle -= arcs[i].baseAngle;
+            // var point = TrigonometryHelper.CirclePoint(lastAngle, arcs[i].radius);
+            // var edgeOfEndPoint = Data.FollowGearRotation
+            //     ? arcs[i].cog.transform.position + arcs[i].cog.transform.localRotation * point
+            //     : arcs[i].cog.transform.position + point;
+            //
 
-            Vector3 edgeDirection = (arcs[i].nextArcPoint - arcs[i].arcPoints.Last()).normalized;
+           
+           
+            testCubes.Add(Instantiate(testCubePb, arcs[i].arcPoints.Last(), Quaternion.identity));
+            
+            linearPointAmount =
+                TrigonometryHelper.LinearPointAmountByDistance(arcs[i].nextArcPoint, arcs[i].arcPoints.Last(),
+                    Data.Unit);
+
+            Vector3 edgeDirection = (arcs[i].nextArcPoint - arcs[i].arcPoints.Last()).normalized; //arcs[i].arcPoints.Last()
             Vector3 unitDistance = edgeDirection * Data.Unit;
 
             var arcPoints = arcs[i].arcPoints;
@@ -224,19 +279,18 @@ namespace Chain
             if (arcs[i].relatedArcId == 0) return;
             Arc relatedArc = arcs[arcs[i].relatedArcId];
 
-
+            
             var lastPointDistance = relatedArc.arcPoints.First() - arcPoints.Last();
             var rest = unitDistance - lastPointDistance;
             rest += relatedArc.arcPoints.First();
-            
-            //relatedArc.arcPoints[0] += rest;
 
             float newAngle = TrigonometryHelper.AngleInPoint(rest, relatedArc.cog.transform.position);
             relatedArc.edgeAngles.Start = newAngle;
-
+            
+           
 
 //            print("last point distance: " + lastPointDistance + " unit: " + unitDistance + " extraAngle: " + newAngle);
-            
+
 
             relatedArc.arcPoints.Clear(); //çünkü first'ün yeri değişiyor.
 
@@ -252,7 +306,6 @@ namespace Chain
                 i = arcs[i].relatedArcId;
                 if (i == 0) break;
             }
-            
 
 
             // if (Data.Type == ChainType.BikeChain)
@@ -279,7 +332,6 @@ namespace Chain
             {
                 ChainEvents.OnChainRequest -= StartChain;
             }
-            
         }
     }
 

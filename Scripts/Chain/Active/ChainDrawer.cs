@@ -61,7 +61,6 @@ namespace Chain
 
         void CreateLinks()
         {
-            print("create links");
             ResetLinks();
             // return;
 
@@ -88,7 +87,6 @@ namespace Chain
             // if(Data.Type == ChainType.BikeChain)
             //     RegulateLastLink();
 
-            print(_links.Count + " from drawer");
             
             //GetComponentInParent<Machinery>().ApplyChangesToPrefab();
            // ChainEvents.OnLinksReady?.Invoke();
@@ -98,7 +96,6 @@ namespace Chain
 
         public void ResetLinks()
         {
-            print("reset links");
             if (linksPool == null)
             {
                 linksPool = GetComponentInParent<Machinery>().GetComponentInChildren<LinksPool>();
