@@ -397,7 +397,6 @@ public class ChainPrefabEditor : Editor
     }
     void SetCogData(int i)
     {
-        StartCog:
         CogData Data = cogs[i].Data;
         
         if (Data == null)
@@ -463,13 +462,15 @@ public class ChainPrefabEditor : Editor
                 chainData.RadiusOffset); //todo: adı cog offset olarak değiştirilebilir
         chainData.Tension = EditorGUILayout.FloatField("Tension", chainData.Tension);
 
+        GUILayout.BeginHorizontal();
         chainData.LinksPoolPrefab = (LinksPool) EditorGUILayout.ObjectField("Links Pool Prefab",
             chainData.LinksPoolPrefab, typeof(LinksPool), false);
 
-        GUILayout.FlexibleSpace();
-        if (GUILayout.Button("Link Pool Changed", narrowButton))
+      
+        if (GUILayout.Button("Apply")) //, narrowButton))
             HandlePoolChange();
-        GUILayout.FlexibleSpace();
+       
+        GUILayout.EndHorizontal();
 
         chainData.SetRadiusByGear = EditorGUILayout.Toggle("Set Radius By Cog", chainData.SetRadiusByGear);
         chainData.IsMoving = EditorGUILayout.Toggle("Is Moving", chainData.IsMoving);
