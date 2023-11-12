@@ -18,6 +18,7 @@ namespace Chain
 
         public Transform testCubePb;
         public Transform testSpherePb;
+        public Transform testCube2Pb;
         public Arc[] arcs;
         private int _arcCount;
         public static ChainEnums.UpAxis Upwards;
@@ -119,9 +120,9 @@ namespace Chain
             //     DestroyImmediate(testCube.gameObject);
             // }
             //
-            // testCube = Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
-            // testSphere = Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity);
-            // testSphere.transform.localScale *= 2;
+            testCube = Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
+            testSphere = Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity);
+            testSphere.transform.localScale *= 2;
         }
 
         void CreateParts(int i)
@@ -179,13 +180,13 @@ namespace Chain
 
             // if (arcs[i].radius < arcs[arcs[i].relatedArcId].radius)
             // {
-            //     end -= angle;
-            //     if (end < 0)
-            //     {
-            //         end = (end + 360) % 360;
-            //     }
-            //
-            //     extraPoint = true;
+            end -= angle;
+            if (end < 0)
+            {
+                end = (end + 360) % 360;
+            }
+            
+            extraPoint = true;
             // }
 
             while (a < end)
@@ -205,12 +206,11 @@ namespace Chain
                 a -= angle;
             }
 
+            
             arcs[i].arcPoints[arcs[i].arcPoints.Count - 1] = LastPointOffset(i);
             
-            // if (!extraPoint) return;
-            // var dir = arcs[i].arcPoints.Last().normalized;
-            // arcs[i].arcPoints[arcs[i].arcPoints.Count-1] = arcs[i].arcPoints.Last() + dir *.5f;
-            // extraPoint = false;
+            if (!extraPoint) return;
+            extraPoint = false;
 
         }
 
@@ -218,6 +218,7 @@ namespace Chain
         {
             var lastPointAngle = TrigonometryHelper.AngleInPoint(arcs[i].arcPoints.Last(), Vector3.zero);
             var alphaDegrees = 90 - Mathf.Abs(lastPointAngle - arcs[i].edgeAngles.End);
+            alphaDegrees = (alphaDegrees + 360) % 360;
             float opposite = arcs[i].radius;
             float alphaRadians = Mathf.Deg2Rad * alphaDegrees;
             float hypotenuse = opposite / Mathf.Sin(alphaRadians);
@@ -258,7 +259,7 @@ namespace Chain
         }
 
 
-        Transform testcube2;
+       
         void AddLinearPoints(int i)
         {
             // var lastAngle = TrigonometryHelper.AngleInPoint(arcs[i].arcPoints.Last(), arcs[i].cog.transform.position);
@@ -271,7 +272,7 @@ namespace Chain
 
            
            
-            testCubes.Add(Instantiate(testCubePb, arcs[i].arcPoints.Last(), Quaternion.identity));
+            testCubes.Add(Instantiate(testCube2Pb, arcs[i].arcPoints.Last(), Quaternion.identity));
             
             linearPointAmount =
                 TrigonometryHelper.LinearPointAmountByDistance(arcs[i].nextArcPoint, arcs[i].arcPoints.Last(),
