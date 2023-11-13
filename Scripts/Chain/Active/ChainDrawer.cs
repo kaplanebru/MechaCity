@@ -124,10 +124,7 @@ namespace Chain
         {
             if (i < _pointsCount)
             {
-                newLink.transform.localRotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
-                    ? Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized)
-                    : Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized,
-                        Vector3.forward);
+                newLink.transform.localRotation = Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized);
                 //TODO: normalized sonradan eklendi, local silindi
             }
 
@@ -139,13 +136,10 @@ namespace Chain
         {
             var rot = link.transform.rotation;
             if (i % 2 == 0)
-                link.transform.rotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
-                    ? Quaternion.Euler(rot.eulerAngles.x,
+                link.transform.rotation = 
+                    Quaternion.Euler(rot.eulerAngles.x,
                         rot.eulerAngles.y,
-                        rot.eulerAngles.z - 90)
-                    : Quaternion.Euler(rot.eulerAngles.x,
-                        rot.eulerAngles.y - 90,
-                        rot.eulerAngles.z);
+                        rot.eulerAngles.z - 90);
         }
 
 

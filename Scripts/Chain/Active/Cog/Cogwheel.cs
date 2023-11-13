@@ -60,13 +60,11 @@ namespace Chain
 
         IEnumerator SpinRoutine()
         {
-            var direction = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
-                ? Vector3.up * Data.RotationDirection
-                : -Vector3.forward * Data.RotationDirection;
+            var direction = Vector3.up * Data.RotationDirection;
 
             while (true)
             {
-                transform.Rotate(direction, _speed); //Todo: enum yapılabilir, yukarı aşağı sağ sol
+                transform.Rotate(direction, _speed); 
                 // transform.rotation =
                 //     Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(direction), Data.Speed);
                 yield return null;

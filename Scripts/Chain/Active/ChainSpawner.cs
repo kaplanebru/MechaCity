@@ -26,7 +26,6 @@ namespace Chain
         
         public Arc[] arcs;
         private int _arcCount;
-        public static ChainEnums.UpAxis Upwards;
        
 
         private int linearPointAmount;
@@ -65,7 +64,6 @@ namespace Chain
             if (chainSpawner != this) return;
             cogs = _cogs.ToList();
             if (cogs.Count <= 1) return;
-            Upwards = Data.UpwardsAxis;
             GenerateChain();
         }
 

@@ -13,6 +13,7 @@ namespace Chain
     {
         public bool isChainRelated = false;
 
+
         public CogHolder cogHolder;
         public ChainSpawner chainSpawner;
         public ChainDrawer chainDrawer;
@@ -28,6 +29,13 @@ namespace Chain
             // Assign a unique ID using System.Guid
             InstanceID = Guid.NewGuid().ToString();
         }
+
+
+        public void To2D()
+        {
+            transform.rotation = Quaternion.Euler(90, 0, 0);
+        }
+        
 
 
         private void OnEnable()

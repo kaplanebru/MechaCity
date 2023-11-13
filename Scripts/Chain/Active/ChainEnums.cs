@@ -14,12 +14,6 @@ namespace Chain
             Clockwise,
             ReverseClock
         }
-        
-        public enum UpAxis
-        {
-            Z,
-            Y
-        }
 
         public enum HoleType
         {

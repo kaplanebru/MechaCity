@@ -71,9 +71,7 @@ namespace Chain
                     t.transform.position = transform.position + transform.rotation * point;
                    // t.transform.parent = _teethParent;
                     t.transform.localScale = Vector3.Scale(Data.toothScale, inverseParentScale);
-                    t.transform.localRotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
-                        ? Quaternion.LookRotation(point)
-                        : Quaternion.LookRotation(point, Vector3.forward);
+                    t.transform.localRotation = Quaternion.LookRotation(point);
                 });
                 
                 teeth.Add(tooth);

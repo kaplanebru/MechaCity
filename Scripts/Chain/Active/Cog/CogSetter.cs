@@ -34,11 +34,8 @@ namespace Chain
             var radius = Data.Radius;
             var scale = Vector3.one;
             scale.x = radius * 2;
-
-            if (ChainSpawner.Upwards == ChainEnums.UpAxis.Z)
-                scale.z = radius * 2;
-            else
-                scale.y = radius * 2;
+            scale.z = radius * 2;
+            
 
             cog.cogObject.transform.localScale = scale;
 
@@ -71,11 +68,7 @@ namespace Chain
                 Vector3 scale = hole.transform.localScale;
 
                 scale.x = holeSize;
-                if (ChainSpawner.Upwards == ChainEnums.UpAxis.Z)
-                    scale.z = holeSize;
-                else
-                    scale.y = holeSize;
-
+                scale.z = holeSize;
                 scale.x = holeSize;
 
                 hole.transform.localScale = scale; //Vector3.Scale(scale, inverseParentScale);

@@ -9,9 +9,7 @@ public static class TrigonometryHelper
         float x = Mathf.Cos(radians);
         float y = Mathf.Sin(radians);
 
-        Vector3 point = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
-            ? new Vector3(x, 0, y) * radius
-            : new Vector3(x, y, 0) * radius;
+        Vector3 point = new Vector3(x, 0, y) * radius;
 
         return point;
     }
@@ -19,11 +17,7 @@ public static class TrigonometryHelper
 
     public static float AngleInCirclePoint(Vector3 point, Vector3 referencePoint)
     {
-        var upDistance = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
-            ? point.z - referencePoint.z
-            : point.y - referencePoint.y;
-        
-        float angle = Mathf.Atan2(upDistance, point.x - referencePoint.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(point.z - referencePoint.z, point.x - referencePoint.x) * Mathf.Rad2Deg;
         angle = (angle + 360) % 360;
         return angle;
     }
@@ -33,11 +27,9 @@ public static class TrigonometryHelper
     //     if (!referencePoint.HasValue)
     //         referencePoint = Vector3.zero;
     //     
-    //     var upDistance = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
-    //         ? point.z - referencePoint.Value.z
-    //         : point.y - referencePoint.Value.y;
-    //     
-    //     float angle = Mathf.Atan2(upDistance, point.x - referencePoint.Value.x) * Mathf.Rad2Deg;
+    //    
+    //  
+    //     float angle = Mathf.Atan2(point.z - referencePoint.z, point.x - referencePoint.Value.x) * Mathf.Rad2Deg;
     //     angle = (angle + 360) % 360;
     //     return angle;
     // }

@@ -48,8 +48,8 @@ public class ChainPrefabEditor : Editor
 
         if (machineryPrefab == null) 
             machineryPrefab = target as Machinery;
-        
-           
+
+
         GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
         narrowButton = new GUIStyle(GUI.skin.button);
         narrowButton.fixedWidth = 200f;
@@ -77,6 +77,9 @@ public class ChainPrefabEditor : Editor
         }
 
         SetMachinaryChainRelation();
+        if(GUILayout.Button("Reset To 2D Space"))
+            machineryPrefab.To2D();
+        
 
         EditorGUILayout.Space();
 
@@ -455,7 +458,6 @@ public class ChainPrefabEditor : Editor
     {
         chainData.OnTesting =  EditorGUILayout.Toggle("On Testing", chainData.OnTesting);
         chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
-        chainData.UpwardsAxis = (ChainEnums.UpAxis) EditorGUILayout.EnumPopup("Upwards Axis", chainData.UpwardsAxis);
         chainData.Unit = EditorGUILayout.FloatField("Unit", chainData.Unit);
         chainData.RadiusOffset =
             EditorGUILayout.FloatField("Radius Offset",
