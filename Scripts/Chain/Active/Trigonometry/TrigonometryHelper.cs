@@ -17,7 +17,7 @@ public static class TrigonometryHelper
     }
 
 
-    public static float AngleInPoint(Vector3 point, Vector3 referencePoint)
+    public static float AngleInCirclePoint(Vector3 point, Vector3 referencePoint)
     {
         var upDistance = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
             ? point.z - referencePoint.z
@@ -48,13 +48,13 @@ public static class TrigonometryHelper
     public static Vector3[] CommonTangentPoints(Vector3 posA, Vector3 posB, float radiusA, float radiusB) //, float offset)
     {
         Vector3 direction = (posB - posA).normalized;
-        float rotationAngle = AngleInPoint(direction, Vector3.zero); //AngleInPoint2(direction);
+        float rotationAngle = AngleInCirclePoint(direction, Vector3.zero); //AngleInPoint2(direction);
 
-        if (posB.x < posA.x)
-        {
-            //(posA, posB) = (posB, posA);
-            //rotationAngle += 180;
-        }
+        // if (posB.x < posA.x)
+        // {
+        //     //(posA, posB) = (posB, posA);
+        //     //rotationAngle += 180;
+        // }
            
 
         float distance = Vector3.Distance(posA, posB);

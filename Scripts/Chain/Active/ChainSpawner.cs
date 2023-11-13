@@ -19,6 +19,11 @@ namespace Chain
         public Transform testCubePb;
         public Transform testSpherePb;
         public Transform testCube2Pb;
+        private Transform testCube;
+        private Transform testSphere;
+        private List<Transform> testCubes = new();
+
+        
         public Arc[] arcs;
         private int _arcCount;
         public static ChainEnums.UpAxis Upwards;
@@ -36,7 +41,6 @@ namespace Chain
             //ChainEvents.OnCogsSelected += GenerateChainBySelection;
         }
 
-        private List<Transform> testCubes = new();
         void GenerateChain()
         {
             if (Data.OnTesting)
@@ -58,7 +62,6 @@ namespace Chain
 
         private void StartChain(Cogwheel[] _cogs, ChainSpawner chainSpawner)
         {
-            //if(_machinery != GetComponentInParent<Machinery>()) return;
             if (chainSpawner != this) return;
             cogs = _cogs.ToList();
             if (cogs.Count <= 1) return;
@@ -91,8 +94,7 @@ namespace Chain
             ChainEvents.OnMotionStateSet?.Invoke(Data.IsMoving);
         }
 
-        private Transform testCube;
-        private Transform testSphere;
+        
 
         void CommonTangentAngles(int i)
         {
@@ -107,27 +109,20 @@ namespace Chain
 
 
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
-            arc.edgeAngles.End = TrigonometryHelper.AngleInPoint(
+            arc.edgeAngles.End = TrigonometryHelper.AngleInCirclePoint(
                 tangentPoints[0],
                 arc.cog.transform.position) - Data.Tension * arc.radius;
 
 
             relatedArc.edgeAngles.Start =
-                TrigonometryHelper.AngleInPoint(
+                TrigonometryHelper.AngleInCirclePoint(
                     tangentPoints[1],
                     relatedArc.cog.transform.position) + Data.Tension * relatedArc.radius;
 
-            // if (testSphere != null)
-            // {
-            //     DestroyImmediate(testSphere.gameObject);
-            //     DestroyImmediate(testCube.gameObject);
-            // }
-            //
-            if(!Data.OnTesting) return;
-            testCube = Instantiate(testCubePb, tangentPoints[0], Quaternion.identity);
-            testSphere = Instantiate(testSpherePb, tangentPoints[1], Quaternion.identity);
-            testSphere.transform.localScale *= 2;
+            DebugTangentPoints(tangentPoints[0], tangentPoints[1]);
         }
+
+       
 
         void CreateParts(int i)
         {
@@ -207,7 +202,7 @@ namespace Chain
 
         Vector3 LastPointOffset(int i) //todo: add to trig hepler
         {
-            var lastPointAngle = TrigonometryHelper.AngleInPoint(arcs[i].arcPoints.Last(), Vector3.zero);
+            var lastPointAngle = TrigonometryHelper.AngleInCirclePoint(arcs[i].arcPoints.Last(), Vector3.zero);
             var alphaDegrees = 90 - Mathf.Abs(lastPointAngle - arcs[i].edgeAngles.End);
             alphaDegrees = (alphaDegrees + 360) % 360;
             float opposite = arcs[i].radius;
@@ -277,7 +272,7 @@ namespace Chain
             var rest = unitDistance - lastPointDistance;
             rest += relatedArc.arcPoints.First();
 
-            float newAngle = TrigonometryHelper.AngleInPoint(rest, relatedArc.cog.transform.position);
+            float newAngle = TrigonometryHelper.AngleInCirclePoint(rest, relatedArc.cog.transform.position);
             relatedArc.edgeAngles.Start = newAngle;
             
            
@@ -317,6 +312,20 @@ namespace Chain
         void AdaptUnitToCircle()
         {
             Data.Unit = Vector3.Distance(chainPoints[0], chainPoints[1]); //print(chainPoints[1].z);
+        }
+        
+        void DebugTangentPoints( Vector3 tangent0, Vector3 tangent1)
+        {
+            // if (testSphere != null)
+            // {
+            //     DestroyImmediate(testSphere.gameObject);
+            //     DestroyImmediate(testCube.gameObject);
+            // }
+            //
+            if(!Data.OnTesting) return;
+            testCube = Instantiate(testCubePb, tangent0, Quaternion.identity);
+            testSphere = Instantiate(testSpherePb, tangent1, Quaternion.identity);
+            testSphere.transform.localScale *= 2;
         }
 
         private void OnDisable()
