@@ -80,16 +80,24 @@ public class ChainPrefabEditor : Editor
         if(GUILayout.Button("Reset To 2D Space"))
             machineryPrefab.To2D();
         
-
         EditorGUILayout.Space();
 
         if (cogs.Length > 0)
         {
-            GUILayout.Label(" _______________COG SETTINGS_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
+            GUILayout.Label("COG SETTINGS", EditorStyles.boldLabel); //\n 
+            //MyEditorHelpers.DrawSeparatorLine(Color.gray);
             EditorGUILayout.Space();
-
+            EditorGUILayout.Space();
+            
+            // Color originalBackgroundColor = GUI.backgroundColor;
+            // GUI.backgroundColor = Color.cyan;
             selectedIndex = EditorGUILayout.Popup("Cog To Set", selectedIndex, cogHolderLabels);
+            //GUI.backgroundColor = originalBackgroundColor;
 
+            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.Space();
+            
+            
             if (selectedIndex >= 0 && selectedIndex < cogs.Length)
             {
                 EditorGUI.indentLevel++;
@@ -97,9 +105,12 @@ public class ChainPrefabEditor : Editor
                 EditorGUI.indentLevel--;
                 
             }
-
             EditorGUILayout.Space();
-            if (GUILayout.Button("Generate Cog"))
+            EditorGUILayout.EndVertical();
+            MyEditorHelpers.DrawFrames(Color.gray, GUILayoutUtility.GetLastRect());
+            
+            EditorGUILayout.Space();
+            if (GUILayout.Button("Generate Cogs"))
                 GenerateCogs();
 
             if (GUILayout.Button("Delete Teeth"))
@@ -112,8 +123,9 @@ public class ChainPrefabEditor : Editor
             }
         }
         
-        
         EditorGUILayout.Space();
+        
+      
         
         GUILayout.Label(" _______________ADD or REMOVE COG_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
         EditorGUILayout.Space();
@@ -145,7 +157,8 @@ public class ChainPrefabEditor : Editor
         if (machineryPrefab.isChainRelated)
         {
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("_______________Chain Properties_______________", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("CHAIN PROPERTIES", EditorStyles.boldLabel);
+            MyEditorHelpers.DrawSeparatorLine(Color.gray);
             EditorGUILayout.Space();
 
 
@@ -197,6 +210,8 @@ public class ChainPrefabEditor : Editor
         EditorGUILayout.Space();
         EditorGUI.EndChangeCheck();
     }
+    
+    
 
 
     void AddCog(bool isNew)
@@ -243,8 +258,6 @@ public class ChainPrefabEditor : Editor
 
     void SetMachinaryChainRelation()
     {
-        //isChainRelated = EditorGUILayout.Toggle("Is Chain Related", isChainRelated);
-
         GUILayout.BeginHorizontal();
         if (GUILayout.Toggle(isChainRelated, "Is Chain Related", "Button")) //(GUILayout.Button("Is Chain Related"))
         {
@@ -301,14 +314,12 @@ public class ChainPrefabEditor : Editor
 
     void OverrideChanges()
     {
-        Debug.Log("ovverride");
+        Debug.Log("override");
         PrefabUtility.ApplyPrefabInstance(machineryPrefab.gameObject, InteractionMode.UserAction);
     }
 
     void SaveOnExistingPrefab()
     {
-        Debug.Log(machineryPrefab.name);
-        
         GameObject newInstance = Instantiate(machineryPrefab.gameObject);
         PrefabUtility.SaveAsPrefabAsset(newInstance,
             MyEditorHelpers.FindPathByGuid(machineryPrefab.name));
@@ -318,8 +329,6 @@ public class ChainPrefabEditor : Editor
 
     void GenerateChain()
     {
-        // _linksPool.transform.position = Vector3.zero;
-        // _linksPool.transform.rotation = Quaternion.identity;
         machineryPrefab.chainSpawner.Data = chainData;
         int chainRelatedCogAmount = 0;
         foreach (var cog in cogs)
@@ -362,7 +371,6 @@ public class ChainPrefabEditor : Editor
 
     private bool changeCogData = false;
     private bool changeWithNewCogData = false;
-
     private CogData otherCogData;
     void ChangeCogData(int i)
     {
