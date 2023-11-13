@@ -102,8 +102,8 @@ namespace Chain
             Arc relatedArc = arcs[arcs[i].relatedArcId];
 
             Vector3[] tangentPoints = TrigonometryHelper.CommonTangentPoints(
-                arcs[i].cog.transform.position,
-                relatedArc.cog.transform.position,
+                arcs[i].cog.transform.localPosition,
+                relatedArc.cog.transform.localPosition,
                 arcs[i].radius,
                 relatedArc.radius);
 
@@ -111,13 +111,13 @@ namespace Chain
             arc.baseAngle = TrigonometryHelper.AngleBySin(Data.Unit, arcs[i].radius);
             arc.edgeAngles.End = TrigonometryHelper.AngleInCirclePoint(
                 tangentPoints[0],
-                arc.cog.transform.position) - Data.Tension * arc.radius;
+                arc.cog.transform.localPosition) - Data.Tension * arc.radius;
 
 
             relatedArc.edgeAngles.Start =
                 TrigonometryHelper.AngleInCirclePoint(
                     tangentPoints[1],
-                    relatedArc.cog.transform.position) + Data.Tension * relatedArc.radius;
+                    relatedArc.cog.transform.localPosition) + Data.Tension * relatedArc.radius;
 
             DebugTangentPoints(tangentPoints[0], tangentPoints[1]);
         }
@@ -212,6 +212,12 @@ namespace Chain
             return Vector3.zero + hypotenuse * direction;
 
         }
+
+        Vector3 PositionSinglePoint(Cogwheel cog, Vector3 point)
+        {
+            var positionedPoint = cog.transform.localPosition + point;// + cog.transform.localRotation * point;
+            return positionedPoint;
+        }
         
         void PositionPoints(int i)
         {
@@ -222,9 +228,7 @@ namespace Chain
             for (var j = 0; j < arcPoints.Count; j++)
             {
                 var point = arcPoints[j];
-                arcPoints[j] = Data.FollowGearRotation
-                    ? cog.transform.position + cog.transform.localRotation * point
-                    : cog.transform.position + point;
+                arcPoints[j] = PositionSinglePoint(cog, point);
             }
         }
 
@@ -238,9 +242,10 @@ namespace Chain
                 return;
             }
 
-            relatedArc.arcPoints.Add(TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start,
-                relatedArc.radius)); // + Data.Tension));
-            PositionPoints(relatedArc.id);
+            Vector3 point = TrigonometryHelper.CirclePoint(relatedArc.edgeAngles.Start,
+                relatedArc.radius); // + Data.Tension));
+
+            relatedArc.arcPoints.Add(PositionSinglePoint(relatedArc.cog, point));
             arcs[i].nextArcPoint = relatedArc.arcPoints.First(); //bug: hiç point yoksa geliyor
         }
 
@@ -261,7 +266,7 @@ namespace Chain
             var arcPoints = arcs[i].arcPoints;
             for (int j = 0; j < linearPointAmount; j++)
             {
-                arcPoints.Add(arcPoints.Last() + unitDistance);
+                arcPoints.Add(arcPoints.Last() + unitDistance); //
             }
 
             if (arcs[i].relatedArcId == 0) return;
@@ -272,7 +277,7 @@ namespace Chain
             var rest = unitDistance - lastPointDistance;
             rest += relatedArc.arcPoints.First();
 
-            float newAngle = TrigonometryHelper.AngleInCirclePoint(rest, relatedArc.cog.transform.position);
+            float newAngle = TrigonometryHelper.AngleInCirclePoint(rest, relatedArc.cog.transform.localPosition);
             relatedArc.edgeAngles.Start = newAngle;
             
            

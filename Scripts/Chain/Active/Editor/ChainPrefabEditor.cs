@@ -315,8 +315,8 @@ public class ChainPrefabEditor : Editor
 
     void GenerateChain()
     {
-        _linksPool.transform.position = Vector3.zero;
-        _linksPool.transform.rotation = Quaternion.identity;
+        // _linksPool.transform.position = Vector3.zero;
+        // _linksPool.transform.rotation = Quaternion.identity;
         machineryPrefab.chainSpawner.Data = chainData;
         int chainRelatedCogAmount = 0;
         foreach (var cog in cogs)
@@ -484,7 +484,6 @@ public class ChainPrefabEditor : Editor
 
             chainData.motionDirection =
                 (ChainEnums.ChainDirection) EditorGUILayout.EnumPopup("Motion Direction", chainData.motionDirection);
-            chainData.FollowGearRotation = EditorGUILayout.Toggle("Follow Cog Rotation", chainData.FollowGearRotation);
             chainData.SetMotionByGear = EditorGUILayout.Toggle("Set Motion By Cog", chainData.SetMotionByGear);
             chainData.LinkRotationEffect = EditorGUILayout.Toggle("Rotate Links", chainData.LinkRotationEffect);
         }

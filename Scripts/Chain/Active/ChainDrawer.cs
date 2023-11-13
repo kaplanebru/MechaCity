@@ -71,8 +71,9 @@ namespace Chain
                 //link.transform.localPosition = _chainPoints[i];
                 var link = linksPool.GetItem(l =>
                 {
-                    l.transform.rotation = Quaternion.identity;
-                    l.transform.position = _chainPoints[i];
+                    //l.transform.localRotation = Quaternion.identity;
+                   // l.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                    l.transform.localPosition = _chainPoints[i];
                 });
 
                 SetLookRotations(i, link);
@@ -123,7 +124,7 @@ namespace Chain
         {
             if (i < _pointsCount)
             {
-                newLink.transform.rotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
+                newLink.transform.localRotation = ChainSpawner.Upwards == ChainEnums.UpAxis.Z
                     ? Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized)
                     : Quaternion.LookRotation((_chainPoints[(i + 1) % _pointsCount] - _chainPoints[i]).normalized,
                         Vector3.forward);
