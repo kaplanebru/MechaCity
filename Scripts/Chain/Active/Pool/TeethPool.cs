@@ -11,13 +11,7 @@ namespace Chain
     [ExecuteInEditMode]
     public class TeethPool : Pool<Tooth>
     {
-        public Tooth toothPrefab;
-        private void OnEnable()
-        {
-            //CreatePool(200, transform, toothPrefab);
-        }
-
-        public void ActivatePool(int pointCount, Tooth toothPrefab)
+        public void ActivatePool()
         {
             if (pool.Count > 0) return;
             
@@ -29,9 +23,8 @@ namespace Chain
             
         }
         
-        public void DeleteLinks()
+        public void DeletePool()
         {
-            ChainEvents.OnDeleteTeeth?.Invoke();
             DestroyImmediate(gameObject, true);
         }
     }

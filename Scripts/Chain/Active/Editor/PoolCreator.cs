@@ -17,13 +17,12 @@ namespace Chain
         private void OnGUI()
         {
             GUILayout.Label(typeof(T).Name + " Pool Creator", EditorStyles.boldLabel);
-            Debug.Log(typeof(T).Name);
-
+            
             EditorGUI.BeginChangeCheck();
 
             poolName = EditorGUILayout.TextField("Pool Name", poolName); //write the same name if you want to modify pool + reset pool before
             amount = EditorGUILayout.IntField("Amount", amount);
-            objectPrefab = (U) EditorGUILayout.ObjectField("Link Prefab", objectPrefab, typeof(U), false);
+            objectPrefab = (U) EditorGUILayout.ObjectField("Object Prefab", objectPrefab, typeof(U), false);
             
             if (GUILayout.Button("Create Pool"))
             {

@@ -21,13 +21,14 @@ namespace Chain
         public LinksPool linksPool;
         public ChainAssetHolder assetHolder;
 
-        //public string InstanceID; //{ get; private set; }
+        public string instanceID; //for debug
+        public static string InstanceID { get; private set; }
 
-        private void Awake()
+        void SetID()
         {
-            //InstanceID = Guid.NewGuid().ToString();
+            InstanceID = Guid.NewGuid().ToString();
+            instanceID = InstanceID;
         }
-
 
         public void To2D()
         {
@@ -98,6 +99,7 @@ namespace Chain
             {
                 PrefabUtility.UnpackPrefabInstance(gameObject, PrefabUnpackMode.OutermostRoot,
                     InteractionMode.AutomatedAction);
+                SetID();
             }
         }
 

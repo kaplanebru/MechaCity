@@ -8,10 +8,11 @@ using UnityEngine;
 namespace Chain
 {
     [ExecuteInEditMode]
-    public class CogSetter : MonoBehaviour
+    public class CogSetter : MonoBehaviour, CogComponent
     {
         private CogData Data;
         private Cogwheel cog;
+        public int Id { get; set; }
 
         private void OnEnable()
         {
@@ -26,24 +27,20 @@ namespace Chain
         {
             Data = data;
         }
-
-
+        
         void Setup()
         {
             Data = cog.Data;
+            
             var radius = Data.Radius;
             var scale = Vector3.one;
             scale.x = radius * 2;
             scale.z = radius * 2;
-            
-
             cog.cogObject.transform.localScale = scale;
 
             SetHoleSize();
 
             ChainEvents.OnCogDataSet?.Invoke(Data, transform);
-            
-            
             //ChainEvents.OnCogStart?.Invoke(Data, teeth);
         }
 
@@ -74,12 +71,14 @@ namespace Chain
                 hole.transform.localScale = scale; //Vector3.Scale(scale, inverseParentScale);
             }
         }
+        
+      
 
         private void OnDisable()
         {
             ChainEvents.OnCogSetupRequest -= Setup;
             ChainEvents.OnNewCogData -= SetData;
-
         }
+
     }
 }

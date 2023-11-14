@@ -5,8 +5,10 @@ using UnityEngine;
 
 namespace Chain
 {
-    public class Cogwheel : MonoBehaviour
+    public class Cogwheel : MonoBehaviour, CogComponent
     {
+        public int Id { get; set; }
+
         public CogData Data;
         public Transform cogObject;
         public Hole[] holes;
@@ -76,5 +78,6 @@ namespace Chain
             ChainEvents.OnMotionStateSet -= StartMotion;
             ChainEvents.OnNewCogData -= AddData;
         }
+
     }
 }

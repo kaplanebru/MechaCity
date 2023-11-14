@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,41 +9,45 @@ using UnityEngine;
 namespace Chain
 {
     [ExecuteInEditMode]
-    public class TeethGenerator : MonoBehaviour
+    public class TeethGenerator : MonoBehaviour, CogComponent
     {
+        public int Id { get; set; }
+
         public List<Tooth> teeth = new();
-        [SerializeField] private TeethPool teethPool;
 
         private CogData Data;
-        public Tooth toothPb;
         float _intervalAngle = 60;
-        [SerializeField] private bool hasTeeth;
+        [SerializeField] private TeethPool pool;
 
         private void OnEnable()
         {
             if (Application.isPlaying) return;
 
-            teethPool = GetComponentInChildren<TeethPool>();
-            ChainEvents.OnDeleteTeeth += ClearTeeth;
+            ChainEvents.OnDeleteTeethPool += DeletePool;
             ChainEvents.OnCogDataSet += ReadyForTeethCreation;
-           
+            ChainEvents.OnNewTeethPool += CreateNewPool;
+            pool = GetComponentInChildren<TeethPool>();
+
             //ChainEvents.OnPoolReady += ReadyForTeethCreation;
         }
-
-        private void ClearTeeth()
-        {
-            teeth.Clear();
-        }
-
-
         void ReadyForTeethCreation(CogData data, Transform cogTransform)
         {
             if (cogTransform.position != transform.position) return;
 
             Data = data;
+            StartPool();
             CreateTeeth();
         }
-
+        
+        void StartPool()
+        {
+            pool = pool == null ? CreatePool() : GetComponentInChildren<TeethPool>();
+        }
+        
+        TeethPool CreatePool()
+        {
+            return Instantiate(Data.TeethPoolPrefab, transform);
+        }
 
         void SetIntervalAngle()
         {
@@ -53,8 +58,7 @@ namespace Chain
             if (_intervalAngle < Data.MinGapLimit)
                 _intervalAngle = Data.MinGapLimit;
         }
-
-
+        
         public void CreateTeeth() //CogData data, Transform teethParent //params object[] args
         {
             ResetTeeth3(); //!her event için resetlenemez, butona basıldığında resetlenebilir.
@@ -66,25 +70,19 @@ namespace Chain
             {
                 Vector3 point = TrigonometryHelper.CirclePoint(i, Data.Radius);
 
-                Tooth tooth = teethPool.GetItem(t =>
+                Tooth tooth = pool.GetItem(t =>
                 {
                     t.transform.position = transform.position + transform.rotation * point;
-                   // t.transform.parent = _teethParent;
                     t.transform.localScale = Vector3.Scale(Data.toothScale, inverseParentScale);
                     t.transform.localRotation = Quaternion.LookRotation(point);
                 });
                 
                 teeth.Add(tooth);
-
-                //tooth.transform.SetParent(_teethParent); //BUG FİX : teethparenttan patlıyormuş. prefab ve scene moddan da patlıyor olabilir.transform yerine eventte this denebilir
             }
 
             SetTeethInfo(teeth.Count, Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position));
         }
-
         
-
-
         private void SetTeethInfo(int teethCount, float toothUnit)
         {
             Data.TeethCount = teethCount;
@@ -93,53 +91,52 @@ namespace Chain
 
         public void ResetTeeth3()
         {
-            teethPool = GetComponentInChildren<TeethPool>();
-
-
-            if (teethPool == null) //for bug check, temporary
+            if (pool == null) //for bug check, temporary
             {
                 Debug.LogError("teeth pool null");
                 return;
             }
 
-            if (teethPool.pool.Count == 0)
-            {
-                teethPool.ActivatePool(0, toothPb);
-            }
+            if (pool.pool.Count == 0)
+                pool.ActivatePool();
 
-            if (teeth.Count > 0 && teeth[0] == null)
+            if (teeth.Count > 0 && teeth.Any(t=>t==null))
                 teeth.Clear();
 
-            teeth.ForEach(t =>
-            {
-                //t.transform.SetParent(teethPool.transform);
-                teethPool.ReleaseItem(t);
-            });
+            teeth.ForEach(t => pool.ReleaseItem(t));
+            ClearTeeth();
+        }
+        
+        private void DeletePool(int id, string systemId)
+        {
+            if(systemId != Machinery.InstanceID) return;
+            if(id != Id) return;
+            
+            ClearTeeth();
+            pool.DeletePool();
+        }
+
+        void CreateNewPool(int id, string systemId) 
+        {
+            if(systemId != Machinery.InstanceID) return;
+            if(id != Id) return;
+            
+            pool = CreatePool();
+        }
+        
+        private void ClearTeeth()
+        {
             teeth.Clear();
         }
-
-       
-
-        public void DeleteTeeth()
-        {
-            ResetTeeth3();
-
-            for (int i = teeth.Count - 1; i >= 0; i--)
-            {
-                var tooth = teeth[i];
-                teeth.Remove(tooth);
-                DestroyImmediate(tooth.gameObject, true);
-            }
-        }
-
-        
 
         private void OnDisable()
         {
             if (Application.isPlaying) return;
 
-            ChainEvents.OnDeleteTeeth -= ClearTeeth;
+            ChainEvents.OnDeleteTeethPool -= DeletePool;
             ChainEvents.OnCogDataSet -= ReadyForTeethCreation;
+            ChainEvents.OnNewTeethPool -= CreateNewPool;
         }
+
     }
 }

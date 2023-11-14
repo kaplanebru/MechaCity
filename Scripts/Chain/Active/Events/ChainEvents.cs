@@ -20,12 +20,12 @@ public class ChainEvents
     public static Action<CogData> OnNewCogData;
 
     public static Action<CogData, Transform> OnPoolReady;
+    public static Action<int, string> OnNewTeethPool;
 
     public static Action OnDeleteLinks;
-    public static Action OnDeleteTeeth;
+    public static Action <int, string> OnDeleteTeethPool;
     
     
-
     public static Action<Transform> OnDeleteObject;
 
     public static Action OnLinksReady;
