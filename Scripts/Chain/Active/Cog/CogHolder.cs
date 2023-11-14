@@ -66,6 +66,14 @@ namespace Chain
         {
             return cogs.Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToArray();
         }
+
+        public bool showGizmos = true;
+        public void DrawGizmosOnSelectedCog(int i)
+        {
+            cogs.ForEach(c => c.drawGizmos = false);
+            if(!showGizmos) return;
+            cogs[i].drawGizmos = true;
+        }
         
         
         

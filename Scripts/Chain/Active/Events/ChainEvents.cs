@@ -12,7 +12,7 @@ public class ChainEvents
     public static Action<int, float> OnCogSpeedSet; //todo: centralize from machinery
 
     public static Action OnCogSetupRequest; //todo: centralize from machinery
-    public static Action<CogData, Transform> OnCogDataSet;
+    public static Action<CogData, int, string> OnCogDataSet;
     public static Action<Cogwheel[], ChainSpawner> OnChainRequest;
 
     
@@ -20,7 +20,7 @@ public class ChainEvents
     public static Action<CogData> OnNewCogData;
 
     public static Action<CogData, Transform> OnPoolReady;
-    public static Action<int, string> OnNewTeethPool;
+    public static Action<int, string> OnCreateTeethPool;
 
     public static Action OnDeleteLinks;
     public static Action <int, string> OnDeleteTeethPool;

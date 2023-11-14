@@ -58,7 +58,7 @@ public class ToothPool : Pool<Tooth>
     
     private void OnDisable()
     {
-        ChainEvents.OnCogDataSet -= ReadyForPool;
+       // ChainEvents.OnCogDataSet -= ReadyForPool;
         EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
     }
 }

@@ -23,6 +23,7 @@ namespace Chain
 
         public string instanceID; //for debug
         public static string InstanceID { get; private set; }
+        
 
         void SetID()
         {
@@ -42,7 +43,7 @@ namespace Chain
             cogHolder = GetComponentInChildren<CogHolder>();
             chainSpawner = GetComponentInChildren<ChainSpawner>();
             chainDrawer = GetComponentInChildren<ChainDrawer>();
-            linksPool = GetComponentInChildren<LinksPool>();
+            linksPool = linksPool == null ? CreateLinkPool() : GetComponentInChildren<LinksPool>();
             residual = GetComponentInChildren<Residual>();
             //ChainEvents.OnCogsReady += UpdateArcs;: cogs hazır olunca cogholdera yollamaya gerek var mı data updatei için?
         }
@@ -91,7 +92,7 @@ namespace Chain
 
             Debug.Log("Prefab Instance");
             return true;
-        }
+        } //enumla prefab mi instance mi yoksa obsolate mi bakarız
 
         void UnpackPrefabInstance()
         {
@@ -101,6 +102,13 @@ namespace Chain
                     InteractionMode.AutomatedAction);
                 SetID();
             }
+        }
+        
+        public LinksPool CreateLinkPool()
+        {
+            linksPool = Instantiate(chainSpawner.Data.LinksPoolPrefab, transform);
+            chainDrawer.GetLinksPool(linksPool);
+            return linksPool;
         }
 
 

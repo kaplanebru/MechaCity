@@ -23,7 +23,6 @@ public class ChainPrefabEditor : Editor
 
     [SerializeField] private ChainData chainData;
     [SerializeField] private CogData cogData;
-    private LinksPool _linksPool;
 
 
     public Machinery machineryPrefab;
@@ -82,24 +81,26 @@ public class ChainPrefabEditor : Editor
 
         if (cogs.Length > 0)
         {
+            machineryPrefab.cogHolder.showGizmos = EditorGUILayout.Toggle("Show Gizmos On Selected Cog", machineryPrefab.cogHolder.showGizmos);
             GUILayout.Label("COG SETTINGS", EditorStyles.boldLabel); //\n 
             //MyEditorHelpers.DrawSeparatorLine(Color.gray);
             EditorGUILayout.Space();
             EditorGUILayout.Space();
 
-            // Color originalBackgroundColor = GUI.backgroundColor;
-            // GUI.backgroundColor = Color.cyan;
-            selectedIndex = EditorGUILayout.Popup("Cog To Set", selectedIndex, cogHolderLabels);
-            //GUI.backgroundColor = originalBackgroundColor;
+            Color originalBackgroundColor = GUI.backgroundColor;
+            GUI.backgroundColor = Color.yellow;
+            selectedIndex = EditorGUILayout.Popup("Selected Cog :", selectedIndex, cogHolderLabels);
+            GUI.backgroundColor = originalBackgroundColor;
 
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.Space();
 
-
+           
             if (selectedIndex >= 0 && selectedIndex < cogs.Length)
             {
                 EditorGUI.indentLevel++;
                 SetCogData(selectedIndex);
+                machineryPrefab.cogHolder.DrawGizmosOnSelectedCog(selectedIndex);
                 EditorGUI.indentLevel--;
             }
 
@@ -110,11 +111,7 @@ public class ChainPrefabEditor : Editor
             EditorGUILayout.Space();
             if (GUILayout.Button("Generate Cogs"))
                 GenerateCogs();
-
-            if (GUILayout.Button("Delete Teeth"))
-            {
-                
-            }
+            
         }
 
         EditorGUILayout.Space();
@@ -184,7 +181,6 @@ public class ChainPrefabEditor : Editor
             if (chainData != null)
             {
                 SetChainData();
-                GetLinkPool();
 
                 if (GUILayout.Button("Generate Chain"))
                     GenerateChain();
@@ -269,7 +265,7 @@ public class ChainPrefabEditor : Editor
     }
 
 
-    void SaveMachinery()
+    void SaveMachinery() //todo: buralar machinerye taşınabilir
     {
         Debug.Log("saved");
         if (isChainRelated)
@@ -469,14 +465,12 @@ public class ChainPrefabEditor : Editor
     void HandleLinksPoolChange()
     {
         DeleteLinkPool();
-        GetLinkPool();
         GenerateChain();
     }
-
+    
     void HandleTeethPoolChange(int i)
     {
         DeleteTeethPool(i);
-        ChainEvents.OnNewTeethPool?.Invoke(cogs[i].Id, Machinery.InstanceID);
         GenerateCogs();
     }
     
@@ -488,10 +482,9 @@ public class ChainPrefabEditor : Editor
             return;
         }
 
-        _linksPool.DeleteLinks();
+        machineryPrefab.linksPool.DeleteLinks();
         SaveMachinery();
-
-        //EditorUtility.SetDirty(target);
+        machineryPrefab.CreateLinkPool();
     }
 
     void DeleteTeethPool(int i)
@@ -504,23 +497,10 @@ public class ChainPrefabEditor : Editor
         
         ChainEvents.OnDeleteTeethPool?.Invoke(cogs[i].Id, Machinery.InstanceID);
         SaveMachinery();
+        ChainEvents.OnCreateTeethPool?.Invoke(cogs[i].Id, Machinery.InstanceID);
     }
     
-    void GetLinkPool()
-    {
-        if (_linksPool == null)
-        {
-            _linksPool = machineryPrefab.GetComponentInChildren<LinksPool>();
-            if (_linksPool == null)
-            {
-                _linksPool = Instantiate(chainData.LinksPoolPrefab, machineryPrefab.transform);
-                //_linksPool.transform.SetParent(machineryPrefab.transform);
-            }
-
-            machineryPrefab.chainDrawer.GetLinksPool(_linksPool);
-        }
-    }
-    
+ 
     private void OnDisable()
     {
         ChainEvents.OnLinksReady -= SaveMachinery;

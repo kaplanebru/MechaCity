@@ -25,14 +25,15 @@ namespace Chain
 
             ChainEvents.OnDeleteTeethPool += DeletePool;
             ChainEvents.OnCogDataSet += ReadyForTeethCreation;
-            ChainEvents.OnNewTeethPool += CreateNewPool;
+            ChainEvents.OnCreateTeethPool += CreateNewPool;
             pool = GetComponentInChildren<TeethPool>();
 
             //ChainEvents.OnPoolReady += ReadyForTeethCreation;
         }
-        void ReadyForTeethCreation(CogData data, Transform cogTransform)
+        void ReadyForTeethCreation(CogData data, int id, string systemId)
         {
-            if (cogTransform.position != transform.position) return;
+            if(systemId != Machinery.InstanceID) return;
+            if(id != Id) return;
 
             Data = data;
             StartPool();
@@ -135,7 +136,7 @@ namespace Chain
 
             ChainEvents.OnDeleteTeethPool -= DeletePool;
             ChainEvents.OnCogDataSet -= ReadyForTeethCreation;
-            ChainEvents.OnNewTeethPool -= CreateNewPool;
+            ChainEvents.OnCreateTeethPool -= CreateNewPool;
         }
 
     }

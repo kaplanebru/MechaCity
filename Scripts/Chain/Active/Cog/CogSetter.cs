@@ -27,11 +27,11 @@ namespace Chain
         {
             Data = data;
         }
-        
+
         void Setup()
         {
             Data = cog.Data;
-            
+
             var radius = Data.Radius;
             var scale = Vector3.one;
             scale.x = radius * 2;
@@ -40,7 +40,7 @@ namespace Chain
 
             SetHoleSize();
 
-            ChainEvents.OnCogDataSet?.Invoke(Data, transform);
+            ChainEvents.OnCogDataSet?.Invoke(Data, Id, Machinery.InstanceID);
             //ChainEvents.OnCogStart?.Invoke(Data, teeth);
         }
 
@@ -53,6 +53,7 @@ namespace Chain
                 return h.holeType == holeType;
             }).ToArray();
         }
+
         void SetHoleSize()
         {
             Hole[] holes = GetHolesByType(Data.HoleType);
@@ -71,14 +72,32 @@ namespace Chain
                 hole.transform.localScale = scale; //Vector3.Scale(scale, inverseParentScale);
             }
         }
-        
-      
+
+        private void DrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            //Gizmos.DrawWireSphere(transform.position, Data.Radius + 2);
+            
+            Gizmos.DrawWireCube(transform.position, (Data.Radius * 2 * Vector3.one) + 5 * Vector3.one);
+
+            //var pos = Quaternion.identity * transform.position;
+            
+            
+            //Gizmos.DrawCube(transform.position + Vector3.forward * (Data.Radius + 5), Vector3.one * 1f);
+            
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (cog.drawGizmos)
+                DrawGizmos();
+        }
+
 
         private void OnDisable()
         {
             ChainEvents.OnCogSetupRequest -= Setup;
             ChainEvents.OnNewCogData -= SetData;
         }
-
     }
 }

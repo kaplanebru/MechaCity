@@ -8,6 +8,8 @@ namespace Chain
     public class Cogwheel : MonoBehaviour, CogComponent
     {
         public int Id { get; set; }
+        public bool drawGizmos = false;
+
 
         public CogData Data;
         public Transform cogObject;
