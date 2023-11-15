@@ -17,6 +17,7 @@ namespace Chain
 
         public List<Vector3> _chainPoints = new();
         public List<ChainLink> _links = new();
+        [SerializeField]private int _oldPointsCount;
         private int _pointsCount;
         public LinksPool pool;
 
@@ -44,6 +45,7 @@ namespace Chain
         public LinksPool CreatePool()
         {
             pool = Instantiate(Data.LinksPoolPrefab, transform);
+            _oldPointsCount = 0;
             return pool;
         }
 
@@ -53,39 +55,80 @@ namespace Chain
             //ChainEvents.OnLinksCreated?.Invoke(_links, _chainPoints); //after edit, for mover
         }
 
-        void ClearLinks()
+        public void DeletePoolClearLinks() //on delete links
         {
             _links.Clear();
+            _oldPointsCount = 0;
+            pool.DeletePool();
         }
 
         public void DrawChain(List<Vector3> points)
         {
             _chainPoints = points;
+          
             _pointsCount = _chainPoints.Count;
+            CheckPointAmountDifference();
+            
 
             CreateLinks();
+            _oldPointsCount = _pointsCount;
+        }
+
+        void CheckPointAmountDifference()
+        {
+            if(PoolNull()) return;
+            if (_pointsCount < _oldPointsCount)
+            {
+                print("points bigger");
+                int rest = _oldPointsCount - _pointsCount;
+                for (int i = 0; i < rest; i++)
+                {
+                    pool.ReleaseItem(_links.Last());
+                    _links.Remove(_links.Last());
+                }
+            }
+            else // if(_pointsCount > _oldPointsCount)
+            {
+                int requiredAmount = _pointsCount - _oldPointsCount;
+                print(_pointsCount + " " + _oldPointsCount);
+                for (int i = 0; i < requiredAmount; i++)
+                {
+                    _links.Add(pool.GetItem());
+                }
+            }
+            // else
+            // {
+            //     for (int i = 0; i < UPPER; i++)
+            //     {
+            //         
+            //     }
+            //     _links.Add(pool.GetItem());
+            // }
         }
 
         void CreateLinks()
         {
-            ResetLinks();
-            // return;
+            //ResetLinks();
+         
 
             for (int i = 0; i < _pointsCount; i++)
             {
                 //var link = LinkPool.Instance.GetItem(l => l.transform.position = _chainPoints[i]);
                 //var link = Instantiate(linkPrefab, transform.GetChild(1));
                 //link.transform.localPosition = _chainPoints[i];
-                var link = pool.GetItem(l =>
-                {
-                    //l.transform.localRotation = Quaternion.identity;
-                    // l.transform.localRotation = Quaternion.Euler(Vector3.zero);
-                    l.transform.localPosition = _chainPoints[i];
-                });
+                
+                // var link = pool.GetItem(l =>
+                // {
+                //     //l.transform.localRotation = Quaternion.identity;
+                //     // l.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                //     l.transform.localPosition = _chainPoints[i];
+                // });
+                
+                _links[i].transform.localPosition = _chainPoints[i];
 
-                SetLookRotations(i, link);
+                SetLookRotations(i, _links[i]);
 
-                _links.Add(link);
+                //_links.Add(link);
             }
 
 
@@ -100,7 +143,7 @@ namespace Chain
         }
 
 
-        public void ResetLinks()
+        bool PoolNull()
         {
             if (pool == null)
             {
@@ -108,18 +151,28 @@ namespace Chain
                 if (pool == null) //for bug check, temporary
                 {
                     Debug.LogError("links pool null");
-                    return;
+                    return true;
                 }
             }
 
             if (pool.pool.Count == 0)
-            {
                 pool.ActivatePool(_chainPoints.Count, Data.linkPrefab);
-            }
+            
 
-            if (_links.Count > 0 && _links[0] == null)
+            if (_links.Count > 0 && _links.Any(l => l == null))
+            {
                 _links.Clear();
+                Debug.LogError("links null");
+                //return true;
+            }
+                
+            return false;
+        }
+        public void ResetLinks()
+        {
+            if(PoolNull()) return;
 
+            _oldPointsCount = 0;
             _links.ForEach(l => pool.ReleaseItem(l));
             _links.Clear();
         }
@@ -166,7 +219,7 @@ namespace Chain
             if (!Application.isPlaying)
             {
                 ChainEvents.OnPointsCreated -= DrawChain;
-                ChainEvents.OnDeleteLinks -= ClearLinks;
+                ChainEvents.OnDeleteLinks -= DeletePoolClearLinks;
             }
         }
     }

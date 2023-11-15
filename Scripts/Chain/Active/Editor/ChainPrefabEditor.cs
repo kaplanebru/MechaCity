@@ -223,7 +223,7 @@ public class ChainPrefabEditor : Editor
 
         cogsToDestroy.gameObject.SetActive(false);
         cogs = machineryPrefab.cogHolder.RemoveCog(cogsToDestroy);
-        machineryPrefab.chainDrawer.ResetLinks(); //todo: is it necessary?
+       // machineryPrefab.chainDrawer.ResetLinks(); //todo: is it necessary?
     }
 
     void SetMachinaryChainRelation()
@@ -498,7 +498,7 @@ public class ChainPrefabEditor : Editor
             return;
         }
 
-        machineryPrefab.chainDrawer.pool.DeleteLinks();
+        machineryPrefab.chainDrawer.DeletePoolClearLinks();
         SaveMachinery();
         machineryPrefab.chainDrawer.CreatePool();
     }

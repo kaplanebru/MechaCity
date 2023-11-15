@@ -25,12 +25,16 @@ namespace Chain
             
         }
         
-
-        public void DeleteLinks()
+        public void DeletePool()
         {
-            ChainEvents.OnDeleteLinks?.Invoke();
             DestroyImmediate(gameObject, true);
-            
         }
+
+        // public void DeleteLinks()
+        // {
+        //     ChainEvents.OnDeleteLinks?.Invoke();
+        //     DestroyImmediate(gameObject, true);
+        //     
+        // }
     }
 }
