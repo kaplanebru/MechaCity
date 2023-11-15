@@ -386,13 +386,12 @@ public class ChainPrefabEditor : Editor
 
         EditorGUI.BeginChangeCheck();
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
-        if (GUI.changed)
+        if (EditorGUI.EndChangeCheck())
         {
+            Debug.Log("teeth related");
             cogs[i].TeethRelatedSetup();
             GenerateChain();
         }
-            
-        EditorGUI.EndChangeCheck();
 
         EditorGUI.BeginChangeCheck();
         Data.ContactType = (ChainEnums.CogContactType) EditorGUILayout.EnumPopup("Contact Type", Data.ContactType);
@@ -410,10 +409,9 @@ public class ChainPrefabEditor : Editor
             Data.IsMoving = EditorGUILayout.Toggle("Is Moving", Data.IsMoving);
             Data.RotationDirection = EditorGUILayout.IntField("Rotation Direction", Data.RotationDirection);
         }
-
-        if (GUI.changed)
+        
+        if(EditorGUI.EndChangeCheck())
             cogs[i].ExtraSetup();
-        EditorGUI.EndChangeCheck();
 
 
         EditorGUILayout.Space();
@@ -435,10 +433,9 @@ public class ChainPrefabEditor : Editor
 
         EditorGUILayout.Space();
         ChangeCogData(i);
-
-        if (GUI.changed)
+        
+        if(EditorGUI.EndChangeCheck())
             cogs[i].TeethRelatedSetup();
-        EditorGUI.EndChangeCheck();
         //EditorUtility.SetDirty(cogs[i].Data); //TODO: removed
     }
 
