@@ -387,7 +387,11 @@ public class ChainPrefabEditor : Editor
         EditorGUI.BeginChangeCheck();
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
         if (GUI.changed)
+        {
             cogs[i].TeethRelatedSetup();
+            GenerateChain();
+        }
+            
         EditorGUI.EndChangeCheck();
 
         EditorGUI.BeginChangeCheck();

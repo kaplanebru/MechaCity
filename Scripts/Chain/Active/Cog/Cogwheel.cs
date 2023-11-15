@@ -49,12 +49,14 @@ namespace Chain
         public void TeethRelatedSetup()
         {
             SetCogSize();
+            SetHoleSizeAndType(); //hole size radiusla bağlantılı
+
             StartPool();
             GenerateTeeth();
         }
         public void ExtraSetup()
         {
-            SetHoleSizeAndType();
+            SetHoleSizeAndType(); //burda teethle ve chainle işimiz yok
         }
 
        
@@ -71,7 +73,6 @@ namespace Chain
 
         Hole[] GetHolesByType(ChainEnums.HoleType holeType)
         {
-            //var allHoles = GetComponentsInChildren<Hole>(true);
             return allHoles.Where(h =>
             {
                 h.gameObject.SetActive(h.holeType == holeType);
