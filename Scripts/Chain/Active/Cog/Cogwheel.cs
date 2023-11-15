@@ -15,7 +15,8 @@ namespace Chain
         public bool drawGizmos = false;
         public Transform cogObject;
         public Hole[] holes;
-        
+        private Hole[] allHoles;
+
 
         [SerializeField] List<Tooth> teeth = new();
         [SerializeField] private TeethPool pool;
@@ -27,32 +28,41 @@ namespace Chain
             {
                 ChainEvents.OnDeleteTeethPool += DeletePool;
                 ChainEvents.OnCreateTeethPool += CreateNewPool;
-            
+
                 StartPool();
+                allHoles = GetComponentsInChildren<Hole>(true);
+
             }
-         
         }
 
 
+        private ChainEnums.HoleType _holeType;
+        private float _holeSize;
+        private float radius;
+        private float oldRadius;
         public void Setup()
         {
-            var radius = Data.Radius;
+            oldRadius = radius;
+            radius = Data.Radius;
             var scale = Vector3.one;
             scale.x = radius * 2;
             scale.z = radius * 2;
             cogObject.transform.localScale = scale;
 
            
-            SetHoleSize();
+            SetHoleSizeAndType();
+            
+            
+            if(Math.Abs(oldRadius - radius) < 0.01f) return;
             StartPool();
             GenerateTeeth();
-            
+
             //ChainEvents.OnCogStart?.Invoke(Data, teeth);
         }
 
         Hole[] GetHolesByType(ChainEnums.HoleType holeType)
         {
-            var allHoles = GetComponentsInChildren<Hole>(true);
+            //var allHoles = GetComponentsInChildren<Hole>(true);
             return allHoles.Where(h =>
             {
                 h.gameObject.SetActive(h.holeType == holeType);
@@ -60,10 +70,19 @@ namespace Chain
             }).ToArray();
         }
 
-        void SetHoleSize()
+        void SetHoleSizeAndType()
         {
-            Hole[] holes = GetHolesByType(Data.HoleType);
-            var holeSize = (Data.Radius - Data.circularThickness) * 2;
+            if (_holeType != Data.HoleType)
+            {
+                holes = GetHolesByType(Data.HoleType);
+                _holeType = Data.HoleType;
+            }
+
+            if (Math.Abs(_holeSize - Data.HoleSize) < 0.01f) return;
+            _holeSize = Data.HoleSize;
+            
+           
+            var holeSize = (Data.Radius - Data.HoleSize) * 2;
             foreach (var hole in holes)
             {
                 // Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y,
@@ -83,7 +102,7 @@ namespace Chain
         {
             Data = data;
         }
-        
+
         void GenerateTeeth()
         {
             ResetTeeth();
@@ -91,14 +110,13 @@ namespace Chain
             Data.TeethCount = teeth.Count;
             Data.ToothUnit = Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position);
         }
-        
+
         void StartPool()
         {
-            
             //pool = pool == null ? CreatePool() : GetComponentInChildren<TeethPool>();
             if (pool != null)
                 return;
-           
+            print("pool null");
             pool = GetComponentInChildren<TeethPool>();
             if (pool == null) pool = CreatePool();
         }
@@ -120,7 +138,7 @@ namespace Chain
             if (id != Id) return;
             pool = CreatePool();
         }
-        
+
         public void ResetTeeth()
         {
             if (pool == null) //for bug check, temporary
@@ -132,13 +150,13 @@ namespace Chain
             if (pool.pool.Count == 0)
                 pool.ActivatePool();
 
-            if (teeth.Count > 0 && teeth.Any(t=>t==null))
+            if (teeth.Count > 0 && teeth.Any(t => t == null))
                 teeth.Clear();
 
             teeth.ForEach(t => pool.ReleaseItem(t));
             teeth.Clear();
         }
-        
+
         public void SetSpinDirectionByChain(ChainEnums.ChainDirection chainDirection)
         {
             Data.RotationDirection = chainDirection == ChainEnums.ChainDirection.Clockwise ? 1 : -1;
@@ -157,7 +175,7 @@ namespace Chain
             if (drawGizmos)
                 DrawGizmos();
         }
-        
+
         private void OnDisable()
         {
             if (!EditorApplication.isPlaying)
@@ -165,7 +183,6 @@ namespace Chain
                 ChainEvents.OnDeleteTeethPool -= DeletePool;
                 ChainEvents.OnCreateTeethPool -= CreateNewPool;
             }
-            
         }
     }
 }

@@ -114,7 +114,6 @@ public class ChainPrefabEditor : Editor
             
         }
 
-        EditorGUI.EndChangeCheck();
         
         EditorGUILayout.Space();
 
@@ -140,16 +139,11 @@ public class ChainPrefabEditor : Editor
         if (GUILayout.Button("Remove"))
             RemoveCog();
         GUILayout.EndHorizontal();
-
-        if (GUI.changed)
-        {
-            Debug.Log("changed");
-        }
+        
 
         EditorGUILayout.Space();
 
         ////////////////CHAIN RELATED///////////////////////////////
-        EditorGUI.BeginChangeCheck();
 
         if (machineryPrefab.isChainRelated)
         {
@@ -202,10 +196,7 @@ public class ChainPrefabEditor : Editor
                     //machineryPrefab.chainDrawer._chainPoints.Clear();
                 }
             }
-            if (GUI.changed)
-            {
-                Debug.Log("changed2");
-            }
+           
         }
 
         EditorGUILayout.Space();
@@ -335,7 +326,7 @@ public class ChainPrefabEditor : Editor
             EditorUtility.SetDirty(cog.Data);
         }
 
-        ChainEvents.OnCogSetupRequest.Invoke(machineryPrefab.cogHolder); //parenta yollanır(machinery), ordan çocuklara gider. Parentı da çek ederiz.
+       // ChainEvents.OnCogSetupRequest.Invoke(machineryPrefab.cogHolder); //parenta yollanır(machinery), ordan çocuklara gider. Parentı da çek ederiz.
     }
 
     private bool changeCogData = false;
@@ -404,7 +395,7 @@ public class ChainPrefabEditor : Editor
                 (Cogwheel) EditorGUILayout.ObjectField("Related Cog", Data.RelatedCog, typeof(Cogwheel), true);
         }
 
-        Data.circularThickness = EditorGUILayout.FloatField("Thickness", Data.circularThickness);
+        Data.HoleSize = EditorGUILayout.FloatField("Hole Size", Data.HoleSize);
         Data.HoleType = (ChainEnums.HoleType) EditorGUILayout.EnumPopup("Hole Type", Data.HoleType);
 
         if (!machineryPrefab.isChainRelated || Data.ContactType == ChainEnums.CogContactType.Indifferent)
