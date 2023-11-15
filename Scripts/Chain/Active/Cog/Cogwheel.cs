@@ -38,24 +38,35 @@ namespace Chain
 
         private ChainEnums.HoleType oldHoleType;
         private float oldHoleSize;
-        private float radius;
-        private float oldRadius;
+        
         public void Setup()
         {
-            oldRadius = radius;
-            radius = Data.Radius;
+            TeethRelatedSetup();
+            ExtraSetup();
+            //ChainEvents.OnCogStart?.Invoke(Data, teeth);
+        }
+
+        public void TeethRelatedSetup()
+        {
+            SetCogSize();
+            StartPool();
+            GenerateTeeth();
+        }
+        public void ExtraSetup()
+        {
+            SetHoleSizeAndType();
+        }
+
+       
+
+        void SetCogSize()
+        {
+            var radius = Data.Radius;
             if(radius == 0) return;
             var scale = Vector3.one;
             scale.x = radius * 2;
             scale.z = radius * 2;
             cogObject.transform.localScale = scale;
-
-           
-            SetHoleSizeAndType();
-            StartPool();
-            GenerateTeeth();
-
-            //ChainEvents.OnCogStart?.Invoke(Data, teeth);
         }
 
         Hole[] GetHolesByType(ChainEnums.HoleType holeType)
