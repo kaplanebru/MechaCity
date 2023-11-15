@@ -18,7 +18,7 @@ namespace Chain
         [HideInInspector]public ChainSpawner chainSpawner;
         [HideInInspector]public ChainDrawer chainDrawer;
         [HideInInspector]public Residual residual;
-        public LinksPool linksPool;
+       
         public ChainAssetHolder assetHolder;
 
         public string instanceID; //for debug
@@ -43,7 +43,7 @@ namespace Chain
             cogHolder = GetComponentInChildren<CogHolder>();
             chainSpawner = GetComponentInChildren<ChainSpawner>();
             chainDrawer = GetComponentInChildren<ChainDrawer>();
-            linksPool = linksPool == null ? CreateLinkPool() : GetComponentInChildren<LinksPool>();
+            
             residual = GetComponentInChildren<Residual>();
             //ChainEvents.OnCogsReady += UpdateArcs;: cogs hazır olunca cogholdera yollamaya gerek var mı data updatei için?
         }
@@ -104,12 +104,6 @@ namespace Chain
             }
         }
         
-        public LinksPool CreateLinkPool()
-        {
-            linksPool = Instantiate(chainSpawner.Data.LinksPoolPrefab, transform);
-            chainDrawer.GetLinksPool(linksPool);
-            return linksPool;
-        }
 
 
         private void Start()

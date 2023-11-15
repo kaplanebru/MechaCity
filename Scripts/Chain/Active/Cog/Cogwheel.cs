@@ -22,7 +22,6 @@ namespace Chain
         [SerializeField] private TeethPool pool;
         public int Id { get; set; }
 
-        //TODO: COG DATA SO OLMAKTAN ÇIKARSA EŞLEŞTİRİP KALAN FARKLARI AYARLARIZ
         private void OnEnable()
         {
             if (!EditorApplication.isPlaying)

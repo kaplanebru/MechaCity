@@ -498,9 +498,9 @@ public class ChainPrefabEditor : Editor
             return;
         }
 
-        machineryPrefab.linksPool.DeleteLinks();
+        machineryPrefab.chainDrawer.pool.DeleteLinks();
         SaveMachinery();
-        machineryPrefab.CreateLinkPool();
+        machineryPrefab.chainDrawer.CreatePool();
     }
 
     void DeleteTeethPool(int i)
