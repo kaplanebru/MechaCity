@@ -114,6 +114,8 @@ public class ChainPrefabEditor : Editor
             
         }
 
+        EditorGUI.EndChangeCheck();
+        
         EditorGUILayout.Space();
 
 
@@ -139,10 +141,15 @@ public class ChainPrefabEditor : Editor
             RemoveCog();
         GUILayout.EndHorizontal();
 
+        if (GUI.changed)
+        {
+            Debug.Log("changed");
+        }
 
         EditorGUILayout.Space();
 
         ////////////////CHAIN RELATED///////////////////////////////
+        EditorGUI.BeginChangeCheck();
 
         if (machineryPrefab.isChainRelated)
         {
@@ -194,6 +201,10 @@ public class ChainPrefabEditor : Editor
                     machineryPrefab.chainDrawer.ResetLinks();
                     //machineryPrefab.chainDrawer._chainPoints.Clear();
                 }
+            }
+            if (GUI.changed)
+            {
+                Debug.Log("changed2");
             }
         }
 
@@ -324,7 +335,7 @@ public class ChainPrefabEditor : Editor
             EditorUtility.SetDirty(cog.Data);
         }
 
-        ChainEvents.OnCogSetupRequest.Invoke(); //parenta yollanır(machinery), ordan çocuklara gider. Parentı da çek ederiz.
+        ChainEvents.OnCogSetupRequest.Invoke(machineryPrefab.cogHolder); //parenta yollanır(machinery), ordan çocuklara gider. Parentı da çek ederiz.
     }
 
     private bool changeCogData = false;
@@ -367,6 +378,7 @@ public class ChainPrefabEditor : Editor
 
     void SetCogData(int i)
     {
+        EditorGUI.BeginChangeCheck();
         CogData Data = cogs[i].Data;
 
         if (Data == null)
@@ -420,6 +432,13 @@ public class ChainPrefabEditor : Editor
         EditorGUILayout.Space();
         ChangeCogData(i);
 
+        if (GUI.changed)
+        {
+            Debug.Log("changed " + i);
+            cogs[i].Setup();
+        }
+
+        EditorGUI.EndChangeCheck();
         //EditorUtility.SetDirty(cogs[i].Data); //TODO: removed
     }
 
@@ -495,9 +514,9 @@ public class ChainPrefabEditor : Editor
             return;
         }
         
-        ChainEvents.OnDeleteTeethPool?.Invoke(cogs[i].Id, Machinery.InstanceID);
+        ChainEvents.OnDeleteTeethPool?.Invoke(cogs[i].Id);
         SaveMachinery();
-        ChainEvents.OnCreateTeethPool?.Invoke(cogs[i].Id, Machinery.InstanceID);
+        ChainEvents.OnCreateTeethPool?.Invoke(cogs[i].Id);
     }
     
  

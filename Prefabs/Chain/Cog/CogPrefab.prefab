@@ -15159,7 +15159,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2216297433484720855}
   - component: {fileID: 4853942488337658956}
-  - component: {fileID: -8651037349865285081}
   - component: {fileID: -92454076011392731}
   m_Layer: 0
   m_Name: CogPrefab
@@ -15199,27 +15198,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 0}
-  cogObject: {fileID: 6241684560662293868}
-  holes:
-  - {fileID: 5451408089774622910}
-  - {fileID: 5641935496469982459}
-  teeth: {fileID: 0}
---- !u!114 &-8651037349865285081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2216297433484720852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8365ef83a6d3e4aad55f14299bf2c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teeth: []
-  teethPool: {fileID: 2675609585245036453}
-  toothPb: {fileID: 3168982511082292637, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
-  hasTeeth: 0
 --- !u!114 &-92454076011392731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15232,6 +15210,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c948766987dfa48930db183ccfde9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Data: {fileID: 0}
+  drawGizmos: 0
+  cogObject: {fileID: 6241684560662293868}
+  holes: []
+  teeth: []
+  pool: {fileID: 2675609585245036453}
 --- !u!1 &2222215641734412018
 GameObject:
   m_ObjectHideFlags: 0
@@ -27818,7 +27802,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3378a2f539c39d244ba1c763bfab859c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toothPrefab: {fileID: 3168982511082292637, guid: 4d3f08032037a7341aa7a82bc399d087, type: 3}
 --- !u!1 &4086500007943165223
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,7 +22,7 @@ namespace Chain
         public ChainAssetHolder assetHolder;
 
         public string instanceID; //for debug
-        public static string InstanceID { get; private set; }
+        public string InstanceID { get; private set; }
         
 
         void SetID()

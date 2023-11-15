@@ -14,8 +14,8 @@ public class ChainMover : MonoBehaviour
     private List<Quaternion> _rotations = new();
 
 
-    public static float LinearSpeed = 0;
-    public static float MachinerySpeed;
+    public float LinearSpeed = 0;
+    public static float MachinerySpeed; //todo: evenlerle paslaşılır
 
     private float _rotationExtentPerLink;
 

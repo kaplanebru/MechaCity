@@ -34,7 +34,6 @@ namespace Chain
             // string searchString = "t:Machinery Machinery2";//$"{searchType} {objectName}";
             
             string[] guids = AssetDatabase.FindAssets(objectName);
-            Debug.Log(guids.Length);
             string assetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
             return assetPath;
         }

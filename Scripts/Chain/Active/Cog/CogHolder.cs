@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Chain
 {
-
     public interface CogComponent
     {
         int Id { get; set; }
@@ -16,7 +15,7 @@ namespace Chain
             Id = id;
         }
     }
-    
+
     [ExecuteInEditMode]
     public class CogHolder : MonoBehaviour
     {
@@ -26,12 +25,30 @@ namespace Chain
 
         private void OnEnable()
         {
-            cogs = GetRestoredCogs().ToList();
+            if(cogs.Count == 0)
+                cogs = GetRestoredCogs().ToList();
+            //ChainEvents.OnCogSetupRequest += CogsReady;
         }
+
+
+        // private void CogsReady(CogHolder cogHolder)
+        // {
+        //     if (cogHolder != this)
+        //     {
+        //         print("not this");
+        //         return;
+        //     }
+        //
+        //     cogs.ForEach(c =>
+        //     {
+        //         c.Setup();
+        //     });
+        // }
+
 
         public Cogwheel[] GetRestoredCogs()
         {
-            var _cogs= GetComponentsInChildren<Cogwheel>();
+            var _cogs = GetComponentsInChildren<Cogwheel>();
             for (var i = 0; i < _cogs.Length; i++)
             {
                 SetCogComponentsId(i);
@@ -64,19 +81,21 @@ namespace Chain
 
         public Cogwheel[] GetChainRelatedCogs()
         {
-            return cogs.Where(c=>c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToArray();
+            return cogs.Where(c => c.Data.ContactType == ChainEnums.CogContactType.ChainRelated).ToArray();
         }
 
         public bool showGizmos = true;
+
         public void DrawGizmosOnSelectedCog(int i)
         {
             cogs.ForEach(c => c.drawGizmos = false);
-            if(!showGizmos) return;
+            if (!showGizmos) return;
             cogs[i].drawGizmos = true;
         }
-        
-        
-        
+
+        private void OnDisable()
+        {
+            //ChainEvents.OnCogSetupRequest -= CogsReady;
+        }
     }
 }
-

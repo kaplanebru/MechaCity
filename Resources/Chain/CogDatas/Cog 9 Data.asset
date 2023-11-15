@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24f08cdc525e724ca5966a1f7405f6c, type: 3}
   m_Name: Cog 9 Data
   m_EditorClassIdentifier: 
-  uniqueID: 
   Radius: 4
   ContactType: 0
   RotationDirection: 1
   circularThickness: 0.2
   HoleType: 1
   IsMoving: 1
+  TeethPoolPrefab: {fileID: 0}
   RelatedCog: {fileID: 0}
   toothScale: {x: 0.6, y: 1, z: 0.6}
   ToothGap: 60

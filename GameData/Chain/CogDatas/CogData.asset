@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24f08cdc525e724ca5966a1f7405f6c, type: 3}
   m_Name: CogData
   m_EditorClassIdentifier: 
-  Radius: 6
+  Radius: 4
   ContactType: 0
   RotationDirection: -1
   circularThickness: 2
   HoleType: 1
   IsMoving: 1
-  TeethPoolPrefab: {fileID: 0}
+  TeethPoolPrefab: {fileID: 1728467043557369954, guid: 3e8a3626034e3af4483fe9064851d64b, type: 3}
   RelatedCog: {fileID: 0}
   toothScale: {x: 0.6, y: 1, z: 0.6}
   ToothGap: 60
   MinGapLimit: 6
   Equalize: 0
-  TeethCount: 36
-  ToothUnit: 1.0458691
+  TeethCount: 24
+  ToothUnit: 1.0442094
