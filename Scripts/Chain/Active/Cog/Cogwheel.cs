@@ -22,6 +22,7 @@ namespace Chain
         [SerializeField] private TeethPool pool;
         public int Id { get; set; }
 
+        //TODO: COG DATA SO OLMAKTAN ÇIKARSA EŞLEŞTİRİP KALAN FARKLARI AYARLARIZ
         private void OnEnable()
         {
             if (!EditorApplication.isPlaying)
@@ -31,19 +32,19 @@ namespace Chain
 
                 StartPool();
                 allHoles = GetComponentsInChildren<Hole>(true);
-
             }
         }
 
 
-        private ChainEnums.HoleType _holeType;
-        private float _holeSize;
+        private ChainEnums.HoleType oldHoleType;
+        private float oldHoleSize;
         private float radius;
         private float oldRadius;
         public void Setup()
         {
             oldRadius = radius;
             radius = Data.Radius;
+            if(radius == 0) return;
             var scale = Vector3.one;
             scale.x = radius * 2;
             scale.z = radius * 2;
@@ -51,9 +52,6 @@ namespace Chain
 
            
             SetHoleSizeAndType();
-            
-            
-            if(Math.Abs(oldRadius - radius) < 0.01f) return;
             StartPool();
             GenerateTeeth();
 
@@ -72,22 +70,17 @@ namespace Chain
 
         void SetHoleSizeAndType()
         {
-            if (_holeType != Data.HoleType)
+            if (oldHoleType != Data.HoleType)
             {
                 holes = GetHolesByType(Data.HoleType);
-                _holeType = Data.HoleType;
+                oldHoleType = Data.HoleType;
             }
-
-            if (Math.Abs(_holeSize - Data.HoleSize) < 0.01f) return;
-            _holeSize = Data.HoleSize;
             
-           
             var holeSize = (Data.Radius - Data.HoleSize) * 2;
+            if (Math.Abs(oldHoleSize - holeSize) < 0.01f) return;
+            oldHoleSize = holeSize;
             foreach (var hole in holes)
             {
-                // Vector3 inverseParentScale = new Vector3(1f / transform.localScale.x, 1f / transform.localScale.y,
-                //     1f / transform.localScale.z);
-
                 Vector3 scale = hole.transform.localScale;
 
                 scale.x = holeSize;
@@ -103,10 +96,16 @@ namespace Chain
             Data = data;
         }
 
+        private TeethGenerator _teethGenerator;
+        private Vector3 _toothScale;
         void GenerateTeeth()
         {
-            ResetTeeth();
-            teeth = new TeethGenerator(Data, pool).CreateTeeth(transform);
+            // if(_toothScale != Data.toothScale && _teethGenerator != null)
+            //     _teethGenerator.SetTeethSize();
+            
+            _teethGenerator = new TeethGenerator(Data, pool, transform);
+            _teethGenerator.ReleasePreviousTeeth(teeth);
+            teeth = _teethGenerator.CreateTeeth();
             Data.TeethCount = teeth.Count;
             Data.ToothUnit = Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position);
         }
@@ -139,23 +138,7 @@ namespace Chain
             pool = CreatePool();
         }
 
-        public void ResetTeeth()
-        {
-            if (pool == null) //for bug check, temporary
-            {
-                Debug.LogError("teeth pool null");
-                return;
-            }
-
-            if (pool.pool.Count == 0)
-                pool.ActivatePool();
-
-            if (teeth.Count > 0 && teeth.Any(t => t == null))
-                teeth.Clear();
-
-            teeth.ForEach(t => pool.ReleaseItem(t));
-            teeth.Clear();
-        }
+       
 
         public void SetSpinDirectionByChain(ChainEnums.ChainDirection chainDirection)
         {

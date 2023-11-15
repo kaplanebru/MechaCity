@@ -15,7 +15,7 @@ MonoBehaviour:
   Radius: 4
   ContactType: 0
   RotationDirection: -1
-  circularThickness: 2
+  HoleSize: 2
   HoleType: 1
   IsMoving: 1
   TeethPoolPrefab: {fileID: 0}
