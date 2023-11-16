@@ -224,7 +224,6 @@ public class ChainPrefabEditor : Editor
     Vector3 NewCogPos(float radius)
     {
         Vector3 newPos;
-        float distanceToCog;
 
         if (cogs.Length == 0) return Vector3.zero;
 
@@ -236,8 +235,7 @@ public class ChainPrefabEditor : Editor
 
         Vector3 center = TrigonometryHelper.Center(cogPositions);
         var outermostCog = cogs.OrderByDescending(c => Vector3.Distance(center, c.transform.localPosition)).First();
-        Vector3 randomPointInUnitSphere = UnityEngine.Random.onUnitSphere;
-        randomPointInUnitSphere.y = 0;
+      
         float distanceFromCenter =
             Vector3.Distance(center, outermostCog.transform.localPosition); // + outermostCog.Data.Radius;
 
@@ -245,7 +243,7 @@ public class ChainPrefabEditor : Editor
         CreatePos:
         newPos = TrigonometryHelper.CirclePoint(UnityEngine.Random.Range(0, 360), distanceFromCenter) + center;
         float offset = radius * 2 + 2;
-        newPos += new Vector3(offset, 0, offset);
+        newPos += new Vector3(offset, 0, offset); //not: hiç offset olmazsa sonsuz döngüye girebiliyor
 
         foreach (var cog in cogs)
         {
