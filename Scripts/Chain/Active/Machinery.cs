@@ -12,12 +12,14 @@ namespace Chain
     public class Machinery : MonoBehaviour
     {
         public bool isChainRelated = false;
+        public float machinerySpeed;
 
 
         [HideInInspector]public CogHolder cogHolder;
         [HideInInspector]public ChainSpawner chainSpawner;
         [HideInInspector]public ChainDrawer chainDrawer;
         [HideInInspector]public Residual residual;
+        [HideInInspector]public Mover[] movers;
        
         public ChainAssetHolder assetHolder;
 
@@ -25,6 +27,11 @@ namespace Chain
         public string InstanceID { get; private set; }
         
 
+        private void Start()
+        {
+            UnpackPrefabInstance();
+           
+        }
         void SetID()
         {
             InstanceID = Guid.NewGuid().ToString();
@@ -40,11 +47,21 @@ namespace Chain
 
         private void OnEnable()
         {
+            //if(!Application.isPlaying)
             cogHolder = GetComponentInChildren<CogHolder>();
             chainSpawner = GetComponentInChildren<ChainSpawner>();
             chainDrawer = GetComponentInChildren<ChainDrawer>();
-            
             residual = GetComponentInChildren<Residual>();
+            movers = GetComponentsInChildren<Mover>();
+            
+            if (Application.isPlaying)
+            {
+                print(machinerySpeed);
+                foreach (var mover in movers)
+                {
+                    mover.MachinerySpeed = machinerySpeed;
+                }
+            }
             //ChainEvents.OnCogsReady += UpdateArcs;: cogs hazır olunca cogholdera yollamaya gerek var mı data updatei için?
         }
 
@@ -106,10 +123,7 @@ namespace Chain
         
 
 
-        private void Start()
-        {
-            UnpackPrefabInstance();
-        }
+        
 
 
         private void OnDisable()

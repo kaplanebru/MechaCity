@@ -13,7 +13,6 @@ namespace Chain
         public ChainLink linkPrefab;
         public LinksPool LinksPoolPrefab;
 
-        public float MachinerySpeed = 10;
         public float SpeedMultiplier = 0.1f;
         public float LinkRotationMultiplier = 1f;
         public ChainEnums.ChainDirection motionDirection = ChainEnums.ChainDirection.Clockwise;

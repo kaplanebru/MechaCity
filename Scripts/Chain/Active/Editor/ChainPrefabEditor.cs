@@ -527,7 +527,8 @@ public class ChainPrefabEditor : Editor
 
         if (chainData.IsMoving)
         {
-            chainData.MachinerySpeed = EditorGUILayout.FloatField("Machinery Speed", chainData.MachinerySpeed);
+            //chainData.MachinerySpeed = EditorGUILayout.FloatField("Machinery Speed", chainData.MachinerySpeed);
+            machineryPrefab.machinerySpeed = EditorGUILayout.FloatField("Machinery Speed", machineryPrefab.machinerySpeed);
             chainData.SpeedMultiplier = EditorGUILayout.FloatField("Speed Multiplier", chainData.SpeedMultiplier);
             chainData.LinkRotationMultiplier =
                 EditorGUILayout.FloatField("Link Rotation Multiplier", chainData.LinkRotationMultiplier);

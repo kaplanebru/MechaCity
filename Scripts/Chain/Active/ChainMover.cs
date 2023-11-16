@@ -5,8 +5,14 @@ using System.Linq;
 using Chain;
 using UnityEngine;
 
-public class ChainMover : MonoBehaviour
+public interface Mover
 {
+    public float MachinerySpeed { get; set; }
+}
+public class ChainMover : MonoBehaviour, Mover
+{
+    public float MachinerySpeed { get; set; }
+
     public ChainData Data;
 
     [SerializeField] private List<ChainLink> _links = new();
@@ -15,14 +21,11 @@ public class ChainMover : MonoBehaviour
 
 
     public float LinearSpeed = 0;
-    public static float MachinerySpeed; //todo: evenlerle paslaşılır
-
     private float _rotationExtentPerLink;
 
     private void OnEnable()
     {
         Data = GetComponent<ChainSpawner>().Data;
-        MachinerySpeed = Data.MachinerySpeed;
 
         enabled = Data.IsMoving;
 
@@ -68,7 +71,7 @@ public class ChainMover : MonoBehaviour
 
     void SetSpeed()
     {
-        LinearSpeed = Data.MachinerySpeed /
+        LinearSpeed = MachinerySpeed /
                       (totalCogTeeth +
                        (Data.Unit - toothUnits / Data.CogAmount) *
                        totalCogTeeth); //fazlalığı da cogteethe eklemiş oluyoruz
@@ -141,4 +144,5 @@ public class ChainMover : MonoBehaviour
         ChainEvents.OnLinksCreated -= GetLinksAndPoints;
         ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;
     }
+
 }

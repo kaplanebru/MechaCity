@@ -5,8 +5,10 @@ using UnityEngine;
 
 namespace Chain
 {
-    public class CogMover : MonoBehaviour, CogComponent
+    public class CogMover : MonoBehaviour, Mover
     {
+        public float MachinerySpeed { get; set; }
+
         public int Id { get; set; }
        
         public CogData Data;
@@ -44,7 +46,7 @@ namespace Chain
 
         private void SetSpeedByTeeth()
         {
-            _speed = ChainMover.MachinerySpeed / Data.TeethCount;
+            _speed = MachinerySpeed / Data.TeethCount;
             //print("cog speed: " + _speed);
         }
 
