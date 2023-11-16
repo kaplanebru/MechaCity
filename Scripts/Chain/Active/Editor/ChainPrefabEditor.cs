@@ -210,7 +210,7 @@ public class ChainPrefabEditor : Editor
         newCog.name = "Cog " + machineryPrefab.cogHolder.newCogIndex++;
         newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
 
-        newCog.transform.localPosition = NewCogPos(newCog.Data.Radius);
+        newCog.transform.localPosition = machineryPrefab.cogHolder.NewCogPos(newCog.Data.Radius);
 
         cogs = machineryPrefab.cogHolder.AddCog(newCog);
         newCog.Setup();
@@ -221,40 +221,7 @@ public class ChainPrefabEditor : Editor
         Repaint();
     }
 
-    Vector3 NewCogPos(float radius)
-    {
-        Vector3 newPos;
-
-        if (cogs.Length == 0) return Vector3.zero;
-
-        var cogPositions = new Vector3[cogs.Length];
-        for (int i = 0; i < cogs.Length; i++)
-        {
-            cogPositions[i] = cogs[i].transform.localPosition;
-        }
-
-        Vector3 center = TrigonometryHelper.Center(cogPositions);
-        var outermostCog = cogs.OrderByDescending(c => Vector3.Distance(center, c.transform.localPosition)).First();
-      
-        float distanceFromCenter =
-            Vector3.Distance(center, outermostCog.transform.localPosition); // + outermostCog.Data.Radius;
-
-
-        CreatePos:
-        newPos = TrigonometryHelper.CirclePoint(UnityEngine.Random.Range(0, 360), distanceFromCenter) + center;
-        float offset = radius * 2 + 2;
-        newPos += new Vector3(offset, 0, offset); //not: hiç offset olmazsa sonsuz döngüye girebiliyor
-
-        foreach (var cog in cogs)
-        {
-            if (Vector3.Distance(newPos, cog.transform.localPosition) <= cog.Data.Radius + radius)
-                goto CreatePos;
-        }
-
-
-        return newPos;
-    }
-
+   
 
     void RemoveCog()
     {

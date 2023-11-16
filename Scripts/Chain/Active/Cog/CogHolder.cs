@@ -92,6 +92,40 @@ namespace Chain
             if (!showGizmos) return;
             cogs[i].drawGizmos = true;
         }
+        
+        public Vector3 NewCogPos(float radius)
+        {
+            Vector3 newPos;
+
+            if (cogs.Count == 0) return Vector3.zero;
+
+            var cogPositions = new Vector3[cogs.Count];
+            for (int i = 0; i < cogs.Count; i++)
+            {
+                cogPositions[i] = cogs[i].transform.localPosition;
+            }
+
+            Vector3 center = TrigonometryHelper.Center(cogPositions);
+            var outermostCog = cogs.OrderByDescending(c => Vector3.Distance(center, c.transform.localPosition)).First();
+      
+            float distanceFromCenter =
+                Vector3.Distance(center, outermostCog.transform.localPosition); // + outermostCog.Data.Radius;
+
+
+            CreatePos:
+            newPos = TrigonometryHelper.CirclePoint(UnityEngine.Random.Range(0, 360), distanceFromCenter) + center;
+            float offset = radius * 2 + 2;
+            newPos += new Vector3(offset, 0, offset); //not: hiç offset olmazsa sonsuz döngüye girebiliyor
+
+            foreach (var cog in cogs)
+            {
+                if (Vector3.Distance(newPos, cog.transform.localPosition) <= cog.Data.Radius + radius)
+                    goto CreatePos;
+            }
+            
+            return newPos;
+        }
+
 
         private void OnDisable()
         {
