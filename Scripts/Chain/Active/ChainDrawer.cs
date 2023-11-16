@@ -87,23 +87,14 @@ namespace Chain
                     _links.Remove(_links.Last());
                 }
             }
-            else // if(_pointsCount > _oldPointsCount)
+            else
             {
                 int requiredAmount = _pointsCount - _oldPointsCount;
-                print(_pointsCount + " " + _oldPointsCount);
                 for (int i = 0; i < requiredAmount; i++)
                 {
                     _links.Add(pool.GetItem());
                 }
             }
-            // else
-            // {
-            //     for (int i = 0; i < UPPER; i++)
-            //     {
-            //         
-            //     }
-            //     _links.Add(pool.GetItem());
-            // }
         }
 
         void CreateLinks()

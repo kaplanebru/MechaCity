@@ -8,6 +8,7 @@ using Chain;
 using PlasticPipe.PlasticProtocol.Client;
 using UnityEngine;
 using UnityEditor;
+using Random = System.Random;
 
 [CustomEditor(typeof(Machinery))]
 public class ChainPrefabEditor : Editor
@@ -29,7 +30,7 @@ public class ChainPrefabEditor : Editor
 
     private GUIStyle narrowButton;
 
-    [SerializeField] int cogToDestroy;
+    [SerializeField] int cogToDestroyIndex;
 
 
     private void OnEnable()
@@ -79,8 +80,8 @@ public class ChainPrefabEditor : Editor
 
         EditorGUILayout.Space();
 
-        if (cogs.Length > 0)
-        {
+        // if (cogs.Length > 0)
+        // {
             machineryPrefab.cogHolder.showGizmos =
                 EditorGUILayout.Toggle("Show Gizmos On Selected Cog", machineryPrefab.cogHolder.showGizmos);
             GUILayout.Label("COG SETTINGS", EditorStyles.boldLabel); //\n 
@@ -112,7 +113,7 @@ public class ChainPrefabEditor : Editor
             EditorGUILayout.Space();
             if (GUILayout.Button("Generate Cogs"))
                 GenerateCogs();
-        }
+        // }
 
 
         EditorGUILayout.Space();
@@ -135,7 +136,7 @@ public class ChainPrefabEditor : Editor
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
-        cogToDestroy = EditorGUILayout.Popup("Remove Selected Cog", cogToDestroy, cogHolderLabels);
+        cogToDestroyIndex = EditorGUILayout.Popup("Remove Selected Cog", cogToDestroyIndex, cogHolderLabels);
         if (GUILayout.Button("Remove"))
             RemoveCog();
         GUILayout.EndHorizontal();
@@ -208,8 +209,17 @@ public class ChainPrefabEditor : Editor
         var newCog = Instantiate(machineryPrefab.assetHolder.CogPrefab, machineryPrefab.cogHolder.transform);
         newCog.name = "Cog " + machineryPrefab.cogHolder.newCogIndex++;
         newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
+        
+        Vector3 randomPointInUnitSphere = UnityEngine.Random.onUnitSphere;
+        randomPointInUnitSphere.y = 0;
+        Vector3 newPosition = randomPointInUnitSphere.normalized * (newCog.Data.Radius * 3);
+        newCog.transform.localPosition = newPosition;
+
 
         cogs = machineryPrefab.cogHolder.AddCog(newCog);
+        newCog.Setup();
+        selectedIndex = cogs.Length - 1;
+        //GenerateChain();
 
         Repaint();
     }
@@ -217,12 +227,26 @@ public class ChainPrefabEditor : Editor
     void RemoveCog()
     {
         if (cogs.Length == 0 || cogs == null) return;
-        var cogsToDestroy = cogs[cogToDestroy];
+        var cogsToDestroy = cogs[cogToDestroyIndex];
+
+        if (selectedIndex == cogToDestroyIndex && cogs.Length > 2)
+        {
+            int newIndex;
+            do
+            {
+                newIndex = UnityEngine.Random.Range(0, cogs.Length);
+            } while (newIndex == selectedIndex);
+
+            selectedIndex = newIndex;
+        }
+            
 
         ChainEvents.OnDeleteObject?.Invoke(cogsToDestroy.transform);
 
         cogsToDestroy.gameObject.SetActive(false);
         cogs = machineryPrefab.cogHolder.RemoveCog(cogsToDestroy);
+        
+        GenerateChain();
        // machineryPrefab.chainDrawer.ResetLinks(); //todo: is it necessary?
     }
 
@@ -388,8 +412,7 @@ public class ChainPrefabEditor : Editor
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
         if (EditorGUI.EndChangeCheck())
         {
-            Debug.Log("teeth related");
-            cogs[i].TeethRelatedSetup();
+            SetupCogsWithSameData(i);
             GenerateChain();
         }
 
@@ -411,7 +434,7 @@ public class ChainPrefabEditor : Editor
         }
         
         if(EditorGUI.EndChangeCheck())
-            cogs[i].ExtraSetup();
+            AccidentalSetupCogsWithSameData(i);
 
 
         EditorGUILayout.Space();
@@ -435,8 +458,28 @@ public class ChainPrefabEditor : Editor
         ChangeCogData(i);
         
         if(EditorGUI.EndChangeCheck())
-            cogs[i].TeethRelatedSetup();
+            SetupCogsWithSameData(i);
         //EditorUtility.SetDirty(cogs[i].Data); //TODO: removed
+    }
+
+    void SetupCogsWithSameData(int i)
+    {
+        Cogwheel selectedCog = cogs[i];
+        foreach (var cog in cogs)
+        {
+            if(cog.Data == selectedCog.Data)
+                cog.Setup();
+        }
+    }
+
+    void AccidentalSetupCogsWithSameData(int i)
+    {
+        Cogwheel selectedCog = cogs[i];
+        foreach (var cog in cogs)
+        {
+            if(cog.Data == selectedCog.Data)
+                cog.AccidentalSetup();
+        }
     }
 
     //private ChainLink lastLinkPrefab;

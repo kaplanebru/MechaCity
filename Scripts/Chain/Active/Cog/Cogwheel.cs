@@ -38,14 +38,8 @@ namespace Chain
         private ChainEnums.HoleType oldHoleType;
         private float oldHoleSize;
         
+        
         public void Setup()
-        {
-            TeethRelatedSetup();
-            ExtraSetup();
-            //ChainEvents.OnCogStart?.Invoke(Data, teeth);
-        }
-
-        public void TeethRelatedSetup()
         {
             SetCogSize();
             SetHoleSizeAndType(); //hole size radiusla bağlantılı
@@ -53,7 +47,7 @@ namespace Chain
             StartPool();
             GenerateTeeth();
         }
-        public void ExtraSetup()
+        public void AccidentalSetup()
         {
             SetHoleSizeAndType(); //burda teethle ve chainle işimiz yok
         }

@@ -15,7 +15,7 @@ MonoBehaviour:
   Radius: 4
   ContactType: 0
   RotationDirection: -1
-  circularThickness: 2
+  HoleSize: 2
   HoleType: 1
   IsMoving: 1
   TeethPoolPrefab: {fileID: 1728467043557369954, guid: 3e8a3626034e3af4483fe9064851d64b, type: 3}
@@ -25,4 +25,4 @@ MonoBehaviour:
   MinGapLimit: 6
   Equalize: 0
   TeethCount: 24
-  ToothUnit: 1.0442094
+  ToothUnit: 1.0442097
