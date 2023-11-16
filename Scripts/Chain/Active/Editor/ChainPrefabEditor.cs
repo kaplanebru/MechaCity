@@ -250,7 +250,7 @@ public class ChainPrefabEditor : Editor
         }
 
 
-        if (cogs.Length > 1)
+        // if (cogs.Length > 1)
             GenerateChain();
 
         Repaint();
@@ -338,6 +338,12 @@ public class ChainPrefabEditor : Editor
             if (cog.Data.ContactType != ChainEnums.CogContactType.ChainRelated) continue;
             chainRelatedCogAmount++;
             cog.Data.IsMoving = chainData.IsMoving;
+        }
+
+        if (chainRelatedCogAmount < 2)
+        {
+            machineryPrefab.chainDrawer.ResetLinks();
+            return;
         }
 
         GenerateCogs();
