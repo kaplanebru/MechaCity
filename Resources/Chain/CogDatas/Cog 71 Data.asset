@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d24f08cdc525e724ca5966a1f7405f6c, type: 3}
-  m_Name: CogData 2
+  m_Name: Cog 71 Data
   m_EditorClassIdentifier: 
-  Radius: 3
+  Radius: 4
   ContactType: 0
-  RotationDirection: -1
+  RotationDirection: 1
   HoleSize: 2
   HoleType: 0
   IsMoving: 1
   TeethPoolPrefab: {fileID: 0}
   RelatedCog: {fileID: 0}
-  toothScale: {x: 0.6, y: 1, z: 0.6}
+  toothScale: {x: 1, y: 1, z: 1}
   ToothGap: 60
   MinGapLimit: 6
   Equalize: 0
-  TeethCount: 18
-  ToothUnit: 1.0418886
+  TeethCount: 0
+  ToothUnit: 0

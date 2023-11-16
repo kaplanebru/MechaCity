@@ -153,10 +153,10 @@ namespace Chain
             }
 
             arcs = new ClockwiseSorter<Arc>(arcs, arcPositions).SortItems();
-            // foreach (var arc in arcs)
-            // {
-            //     print(arc.cog.name);
-            // }
+            foreach (var arc in arcs)
+            {
+                print(arc.cog.name);
+            }
         }
 
         void RelateArcs()
