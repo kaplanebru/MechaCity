@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace Chain
@@ -86,10 +87,15 @@ namespace Chain
 
         public bool showGizmos = true;
 
-        public void DrawGizmosOnSelectedCog(int i)
+        public void DisableAllGizmos()
         {
             cogs.ForEach(c => c.drawGizmos = false);
+        }
+        public void DrawGizmosOnSelectedCog(int i)
+        {
             if (!showGizmos) return;
+            
+            DisableAllGizmos();
             cogs[i].drawGizmos = true;
         }
         

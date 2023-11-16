@@ -74,16 +74,23 @@ public class ChainPrefabEditor : Editor
             cogHolderLabels = cogs.Select(x => x.ToString()).ToArray();
         }
 
-        SetMachinaryChainRelation();
+        SetMachineryChainRelation();
         if (GUILayout.Button("Reset To 2D Space"))
             machineryPrefab.To2D();
 
         EditorGUILayout.Space();
 
-        // if (cogs.Length > 0)
-        // {
-        machineryPrefab.cogHolder.showGizmos =
-            EditorGUILayout.Toggle("Show Gizmos On Selected Cog", machineryPrefab.cogHolder.showGizmos);
+        EditorGUI.BeginChangeCheck();
+        machineryPrefab.cogHolder.showGizmos = EditorGUILayout.Toggle("Show Gizmos On Selected Cog", machineryPrefab.cogHolder.showGizmos);
+        if (EditorGUI.EndChangeCheck())
+        {
+            if (!machineryPrefab.cogHolder.showGizmos)
+                machineryPrefab.cogHolder.DisableAllGizmos();
+            else
+                machineryPrefab.cogHolder.DrawGizmosOnSelectedCog(selectedIndex);
+            Repaint();
+        }
+        
         GUILayout.Label("COG SETTINGS", EditorStyles.boldLabel); //\n 
         //MyEditorHelpers.DrawSeparatorLine(Color.gray);
         EditorGUILayout.Space();
@@ -221,7 +228,6 @@ public class ChainPrefabEditor : Editor
         Repaint();
     }
 
-   
 
     void RemoveCog()
     {
@@ -248,16 +254,12 @@ public class ChainPrefabEditor : Editor
 
             cogToDestroyIndex = cogs.Length - 1;
         }
-
-
-        // if (cogs.Length > 1)
-            GenerateChain();
-
+        
+        GenerateChain();
         Repaint();
-        // machineryPrefab.chainDrawer.ResetLinks(); //todo: is it necessary?
     }
 
-    void SetMachinaryChainRelation()
+    void SetMachineryChainRelation()
     {
         GUILayout.BeginHorizontal();
         if (GUILayout.Toggle(isChainRelated, "Is Chain Related", "Button")) //(GUILayout.Button("Is Chain Related"))

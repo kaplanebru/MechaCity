@@ -158,7 +158,7 @@ namespace Chain
             //Gizmos.DrawCube(transform.position + Vector3.forward * (Data.Radius + 5), Vector3.one * 1f);
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (drawGizmos)
                 DrawGizmos();
