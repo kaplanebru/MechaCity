@@ -229,7 +229,7 @@ public class ChainPrefabEditor : Editor
         if (cogs.Length == 0 || cogs == null) return;
         var cogsToDestroy = cogs[cogToDestroyIndex];
 
-        if (selectedIndex == cogToDestroyIndex && cogs.Length > 2)
+        if (selectedIndex == cogToDestroyIndex && cogs.Length > 1)
         {
             int newIndex;
             do
@@ -246,7 +246,10 @@ public class ChainPrefabEditor : Editor
         cogsToDestroy.gameObject.SetActive(false);
         cogs = machineryPrefab.cogHolder.RemoveCog(cogsToDestroy);
         
-        GenerateChain();
+        if(cogs.Length > 1)
+            GenerateChain();
+        
+        Repaint();
        // machineryPrefab.chainDrawer.ResetLinks(); //todo: is it necessary?
     }
 
@@ -371,6 +374,7 @@ public class ChainPrefabEditor : Editor
 
                 cogData = otherCogData;
                 machineryPrefab.cogHolder.cogs[i].Data = otherCogData;
+                GenerateChain();
                 changeCogData = false;
                 //Repaint();
                 // SaveMachinery();
@@ -383,6 +387,7 @@ public class ChainPrefabEditor : Editor
             {
                 cogs[i].Data = CreateCogData("Cog " + machineryPrefab.cogHolder.newCogIndex++);
                 changeWithNewCogData = false;
+                GenerateChain();
                 Repaint();
                 SaveMachinery();
             }

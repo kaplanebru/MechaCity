@@ -79,7 +79,6 @@ namespace Chain
             if(PoolNull()) return;
             if (_pointsCount < _oldPointsCount)
             {
-                print("points bigger");
                 int rest = _oldPointsCount - _pointsCount;
                 for (int i = 0; i < rest; i++)
                 {
