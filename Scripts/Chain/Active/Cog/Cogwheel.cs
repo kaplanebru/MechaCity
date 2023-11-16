@@ -82,7 +82,7 @@ namespace Chain
             }
             
             var holeSize = (Data.Radius - Data.HoleSize) * 2;
-            if (Math.Abs(oldHoleSize - holeSize) < 0.01f) return;
+            //if (Math.Abs(oldHoleSize - holeSize) < 0.01f) return;
             oldHoleSize = holeSize;
             foreach (var hole in holes)
             {

@@ -16,7 +16,7 @@ MonoBehaviour:
   ContactType: 0
   RotationDirection: -1
   HoleSize: 2
-  HoleType: 1
+  HoleType: 0
   IsMoving: 1
   TeethPoolPrefab: {fileID: 0}
   RelatedCog: {fileID: 0}
