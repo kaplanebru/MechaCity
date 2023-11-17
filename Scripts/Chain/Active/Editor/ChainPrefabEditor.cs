@@ -61,7 +61,7 @@ public class ChainPrefabEditor : Editor
 
         if (GUILayout.Button("SAVE ONTO EXISTING PREFAB"))
         {
-            SaveOnExistingPrefab();
+            machineryPrefab.SaveOnExistingPrefab();
             SaveMachinery();
         }
 
@@ -309,27 +309,16 @@ public class ChainPrefabEditor : Editor
         EditorUtility.SetDirty(target);
 
         if (machineryPrefab.IsPrefabInstance())
-            OverrideChanges();
+            machineryPrefab.OverrideChanges();
         else
         {
             machineryPrefab.residual.CleanResiduals();
         }
     }
 
-    void OverrideChanges()
-    {
-        Debug.Log("override");
-        PrefabUtility.ApplyPrefabInstance(machineryPrefab.gameObject, InteractionMode.UserAction);
-    }
+ 
 
-    void SaveOnExistingPrefab()
-    {
-        GameObject newInstance = Instantiate(machineryPrefab.gameObject);
-        PrefabUtility.SaveAsPrefabAsset(newInstance,
-            MyEditorHelpers.FindPathByGuid(machineryPrefab.name));
-
-        DestroyImmediate(newInstance);
-    }
+ 
 
     void GenerateChain()
     {

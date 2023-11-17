@@ -15231,8 +15231,8 @@ GameObject:
   - component: {fileID: 2309914981968850150}
   - component: {fileID: 8423895215501557981}
   m_Layer: 0
-  m_Name: Machinery
-  m_TagString: Untagged
+  m_Name: _MachineryModel
+  m_TagString: Model
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15267,6 +15267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isChainRelated: 1
+  machinerySpeed: 0
   cogHolder: {fileID: 8363056915014616255}
   chainSpawner: {fileID: 2309914982356263317}
   chainDrawer: {fileID: 2309914982356263316}
@@ -15494,6 +15495,7 @@ MonoBehaviour:
   - {x: -26.513329, y: 0, z: -23.735254}
   - {x: -28.536152, y: 0, z: -24.829872}
   _links: []
+  _oldPointsCount: 0
   pool: {fileID: 6327388999532663818}
 --- !u!114 &2309914982356263315
 MonoBehaviour:

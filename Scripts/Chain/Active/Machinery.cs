@@ -13,6 +13,7 @@ namespace Chain
     {
         public bool isChainRelated = false;
         public float machinerySpeed;
+        public static int NameTracker = 0;
 
 
         [HideInInspector]public CogHolder cogHolder;
@@ -117,13 +118,38 @@ namespace Chain
             {
                 PrefabUtility.UnpackPrefabInstance(gameObject, PrefabUnpackMode.OutermostRoot,
                     InteractionMode.AutomatedAction);
+
+                if (transform.CompareTag("Model"))
+                {
+                    transform.tag = "Untagged";
+                    if (!IsPrefabInstance())
+                    {
+                        //NameTracker++;
+                        //gameObject.name = "Machinery " + NameTracker;
+                        gameObject.name = "Machinery Copy";
+                    
+                        
+                    }
+                   
+                }
                 SetID();
             }
         }
         
+        public void SaveOnExistingPrefab()
+        {
+            GameObject newInstance = Instantiate(gameObject);
+            PrefabUtility.SaveAsPrefabAsset(newInstance,
+                MyEditorHelpers.FindPathByGuid(name));
 
+            DestroyImmediate(newInstance);
+        }
 
-        
+        public void OverrideChanges()
+        {
+            Debug.Log("override");
+            PrefabUtility.ApplyPrefabInstance(gameObject, InteractionMode.UserAction);
+        }
 
 
         private void OnDisable()

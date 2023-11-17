@@ -38,6 +38,14 @@ namespace Chain
             return assetPath;
         }
 
+        public static  string[] FindGuidsByType(string typeName)//FindGuidsByType<T>(T type) where T: Component  //
+        {
+            string[] guids = AssetDatabase.FindAssets("t:" + typeName);
+            Debug.Log("t:" + typeName);
+            Debug.Log(guids.Length);
+            return guids;
+        }
+
         public static GameObject FindObjectByGuid(string objectName)
         {
             string assetPath =  FindPathByGuid(objectName);
