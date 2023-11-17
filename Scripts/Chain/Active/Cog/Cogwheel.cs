@@ -112,6 +112,11 @@ namespace Chain
             _teethGenerator.ReleasePreviousTeeth(teeth);
             teeth = _teethGenerator.CreateTeeth();
             Data.TeethCount = teeth.Count;
+            if (Data.TeethCount < 2)
+            {
+                Debug.LogWarning("Not enough magnitude for teeth generation");
+                return;
+            }
             Data.ToothUnit = Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position);
         }
 

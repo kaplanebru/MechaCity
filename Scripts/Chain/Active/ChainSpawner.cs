@@ -42,6 +42,7 @@ namespace Chain
 
         void GenerateChain()
         {
+            stopExecution = false;
             if (Data.OnTesting)
             {
                 for (int i = testCubes.Count - 1; i >= 0; i--)
@@ -120,11 +121,12 @@ namespace Chain
             DebugTangentPoints(tangentPoints[0], tangentPoints[1]);
         }
 
-       
 
+        private bool stopExecution = false;
         void CreateParts(int i)
         {
             CreateArcPoints(i);
+            if(stopExecution) return;
             PositionPoints(i);
             SetNextArcPoint(i);
             AddLinearPoints(i);
@@ -194,12 +196,24 @@ namespace Chain
                 arcs[i].arcPoints.Add(TrigonometryHelper.CirclePoint(a, arcs[i].radius));
                 a -= angle;
             }
+            print(arcs[i].arcPoints.Count);
+           
+            if (arcs[i].arcPoints.Count == 0)
+            {
+                
+                Debug.LogWarning("Not enough magnitude for chain generation");
+                stopExecution = true;
+                return;
+            }
 
             arcs[i].arcPoints[arcs[i].arcPoints.Count - 1] = LastPointOffset(i);
         }
+        
+        
 
         Vector3 LastPointOffset(int i) //todo: add to trig hepler
         {
+           
             var lastPointAngle = TrigonometryHelper.AngleInCirclePoint(arcs[i].arcPoints.Last(), Vector3.zero);
             var alphaDegrees = 90 - Mathf.Abs(lastPointAngle - arcs[i].edgeAngles.End);
             alphaDegrees = (alphaDegrees + 360) % 360;
