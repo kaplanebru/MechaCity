@@ -9,12 +9,7 @@ namespace Chain
 {
     public interface CogComponent
     {
-        int Id { get; set; }
-
-        public void SetId(int id)
-        {
-            Id = id;
-        }
+       
     }
 
     [ExecuteInEditMode]
@@ -28,49 +23,18 @@ namespace Chain
         {
             if(cogs.Count == 0)
                 cogs = GetRestoredCogs().ToList();
-            //ChainEvents.OnCogSetupRequest += CogsReady;
         }
-
-
-        // private void CogsReady(CogHolder cogHolder)
-        // {
-        //     if (cogHolder != this)
-        //     {
-        //         print("not this");
-        //         return;
-        //     }
-        //
-        //     cogs.ForEach(c =>
-        //     {
-        //         c.Setup();
-        //     });
-        // }
-
+        
 
         public Cogwheel[] GetRestoredCogs()
         {
             var _cogs = GetComponentsInChildren<Cogwheel>();
-            for (var i = 0; i < _cogs.Length; i++)
-            {
-                SetCogComponentsId(i);
-            }
-
             return _cogs;
-        }
-
-        void SetCogComponentsId(int i)
-        {
-            var components = cogs[i].GetComponentsInChildren<CogComponent>();
-            foreach (var component in components)
-            {
-                component.Id = i;
-            }
         }
 
         public Cogwheel[] AddCog(Cogwheel newCog)
         {
             cogs.Add(newCog);
-            SetCogComponentsId(cogs.Count - 1);
             return cogs.ToArray();
         }
 
@@ -99,7 +63,7 @@ namespace Chain
             cogs[i].drawGizmos = true;
         }
         
-        public Vector3 NewCogPos(float radius)
+        public Vector3 AddedNewCogPos(float radius)
         {
             Vector3 newPos;
 

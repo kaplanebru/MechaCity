@@ -178537,8 +178537,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9201847825879984427}
-  - component: {fileID: 9201847825879984424}
-  - component: {fileID: 9201847825879984425}
   - component: {fileID: 9201847825879984430}
   m_Layer: 0
   m_Name: ChainGenerator
@@ -178563,145 +178561,6 @@ Transform:
   m_Father: {fileID: 9201847826302067803}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9201847825879984424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9201847825879984426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2134aa162e8659743a3a44a598fd7df7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: c885205d8b80a4e48b279cf1f5450c28, type: 2}
-  cogs:
-  - {fileID: 1689568816003404814}
-  - {fileID: 299467447535641441}
-  testCubePb: {fileID: 9112408327683927588, guid: b136ece2d9865d644944de074272c37e, type: 3}
-  testSpherePb: {fileID: 7762909940027711531, guid: e52ac5224d13e3f4186c506261c0f729, type: 3}
-  testCube2Pb: {fileID: 0}
-  arcs:
-  - radius: 3.5
-    cog: {fileID: 1689568816003404814}
-    id: 0
-    relatedArcId: 1
-    edgeAngles:
-      Start: 336.46826
-      End: 166.1659
-    baseAngle: 41.082333
-    nextArcPoint: {x: 7.4202266, y: 0, z: 20.283163}
-    arcPoints:
-    - {x: 11.208937, y: 0, z: 6.6026}
-    - {x: 9.500496, y: 0, z: 4.837958}
-    - {x: 7.05311, y: 0, z: 4.6305194}
-    - {x: 5.072036, y: 0, z: 6.0824423}
-    - {x: 4.5328913, y: 0, z: 8.478702}
-    - {x: 5.189907, y: 0, z: 11.226202}
-    - {x: 5.7398634, y: 0, z: 13.459484}
-    - {x: 6.2898197, y: 0, z: 15.692766}
-    - {x: 6.839776, y: 0, z: 17.926048}
-  - radius: 4.5
-    cog: {fileID: 299467447535641441}
-    id: 1
-    relatedArcId: 0
-    edgeAngles:
-      Start: 167.78925
-      End: 336.46826
-    baseAngle: 30.737867
-    nextArcPoint: {x: 11.208937, y: 0, z: 6.6026}
-    arcPoints:
-    - {x: 7.391498, y: 0, z: 20.158949}
-    - {x: 8.495849, y: 0, z: 22.273201}
-    - {x: 10.525673, y: 0, z: 23.525986}
-    - {x: 12.910648, y: 0, z: 23.56531}
-    - {x: 14.980668, y: 0, z: 22.38012}
-    - {x: 16.154118, y: 0, z: 20.303421}
-    - {x: 16.10129, y: 0, z: 17.918705}
-    - {x: 15.121395, y: 0, z: 15.587028}
-    - {x: 14.203104, y: 0, z: 13.478298}
-    - {x: 13.284813, y: 0, z: 11.369568}
-    - {x: 12.366522, y: 0, z: 9.260838}
-  chainPoints:
-  - {x: 11.208937, y: 0, z: 6.6026}
-  - {x: 9.500496, y: 0, z: 4.837958}
-  - {x: 7.05311, y: 0, z: 4.6305194}
-  - {x: 5.072036, y: 0, z: 6.0824423}
-  - {x: 4.5328913, y: 0, z: 8.478702}
-  - {x: 5.189907, y: 0, z: 11.226202}
-  - {x: 5.7398634, y: 0, z: 13.459484}
-  - {x: 6.2898197, y: 0, z: 15.692766}
-  - {x: 6.839776, y: 0, z: 17.926048}
-  - {x: 7.391498, y: 0, z: 20.158949}
-  - {x: 8.495849, y: 0, z: 22.273201}
-  - {x: 10.525673, y: 0, z: 23.525986}
-  - {x: 12.910648, y: 0, z: 23.56531}
-  - {x: 14.980668, y: 0, z: 22.38012}
-  - {x: 16.154118, y: 0, z: 20.303421}
-  - {x: 16.10129, y: 0, z: 17.918705}
-  - {x: 15.121395, y: 0, z: 15.587028}
-  - {x: 14.203104, y: 0, z: 13.478298}
-  - {x: 13.284813, y: 0, z: 11.369568}
-  - {x: 12.366522, y: 0, z: 9.260838}
---- !u!114 &9201847825879984425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9201847825879984426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3431a6233d98f374dbae9e6996cff339, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: c885205d8b80a4e48b279cf1f5450c28, type: 2}
-  lastLinkPrefab: {fileID: 7363811566510024203, guid: 5d3c3d6de6672d64299d1bc4891f9a05, type: 3}
-  _chainPoints:
-  - {x: 11.208937, y: 0, z: 6.6026}
-  - {x: 9.500496, y: 0, z: 4.837958}
-  - {x: 7.05311, y: 0, z: 4.6305194}
-  - {x: 5.072036, y: 0, z: 6.0824423}
-  - {x: 4.5328913, y: 0, z: 8.478702}
-  - {x: 5.189907, y: 0, z: 11.226202}
-  - {x: 5.7398634, y: 0, z: 13.459484}
-  - {x: 6.2898197, y: 0, z: 15.692766}
-  - {x: 6.839776, y: 0, z: 17.926048}
-  - {x: 7.391498, y: 0, z: 20.158949}
-  - {x: 8.495849, y: 0, z: 22.273201}
-  - {x: 10.525673, y: 0, z: 23.525986}
-  - {x: 12.910648, y: 0, z: 23.56531}
-  - {x: 14.980668, y: 0, z: 22.38012}
-  - {x: 16.154118, y: 0, z: 20.303421}
-  - {x: 16.10129, y: 0, z: 17.918705}
-  - {x: 15.121395, y: 0, z: 15.587028}
-  - {x: 14.203104, y: 0, z: 13.478298}
-  - {x: 13.284813, y: 0, z: 11.369568}
-  - {x: 12.366522, y: 0, z: 9.260838}
-  _links:
-  - {fileID: 272199649619693746}
-  - {fileID: 6508976451243000852}
-  - {fileID: 2393600310580285071}
-  - {fileID: 1044925045736356291}
-  - {fileID: 2320289137284643701}
-  - {fileID: 7561142709853501373}
-  - {fileID: 4337375408729749867}
-  - {fileID: 8756404536861340616}
-  - {fileID: 3011341482292169053}
-  - {fileID: 1617929081705278465}
-  - {fileID: 3564363118886253161}
-  - {fileID: 1360442341735830645}
-  - {fileID: 1139519082040170291}
-  - {fileID: 7194454647993736371}
-  - {fileID: 1324799838032905721}
-  - {fileID: 4467835469447632654}
-  - {fileID: 6552762192730483244}
-  - {fileID: 2504366918031823016}
-  - {fileID: 7361976162034326513}
-  - {fileID: 8364965238077679303}
-  _oldPointsCount: 20
-  pool: {fileID: 8558672664936818845}
 --- !u!114 &9201847825879984430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178767,8 +178626,6 @@ MonoBehaviour:
   isChainRelated: 1
   machinerySpeed: 0
   cogHolder: {fileID: 3148714725989567490}
-  chainSpawner: {fileID: 9201847825879984424}
-  chainDrawer: {fileID: 9201847825879984425}
   residual: {fileID: 7340258440166819128}
   assetHolder: {fileID: 11400000, guid: 8b53029014a0eb64183772f5eda0f732, type: 2}
   instanceID: bbc024f9-8d9d-471a-8207-2c22d6bd33fe

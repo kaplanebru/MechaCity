@@ -14,7 +14,7 @@ public class ChainEvents
     public static Action<int, float> OnCogSpeedSet; //todo: Bunu moverda yap. sürekli set edilmesine gerek yok. application is playing
 
    
-    public static Action<Cogwheel[], ChainSpawner> OnChainRequest; //gerek yok chain spawnera ulaşıyoruz zaten
+    public static Action<Cogwheel[], ChainPointCreator> OnChainRequest; //gerek yok chain spawnera ulaşıyoruz zaten
     
     //bunlar anlık tetiklenmediği için eventle yapılabilir
     public static Action<int> OnCreateTeethPool;

@@ -25,11 +25,6 @@ public class ChainMover : MonoBehaviour, Mover
 
     private void OnEnable()
     {
-        Data = GetComponent<ChainSpawner>().Data;
-
-        enabled = Data.IsMoving;
-
-        //ChainEvents.OnLinksCreated += GetLinksAndPoints;
         ChainEvents.OnCogSpeedSet += GetTotalCogSpeed;
     }
 
@@ -37,17 +32,21 @@ public class ChainMover : MonoBehaviour, Mover
     private int totalCogTeeth = 0;
     private int _toothSize;
     private float toothUnits;
-
     private int counter = 0;
 
-    private IEnumerator Start()
+   
+
+    public void StartMover()
     {
-        _links = GetComponent<ChainDrawer>()._links;
-        //_links = GetComponentInParent<Machinery>().linksPool.GetComponentsInChildren<ChainLink>().ToList();
-        yield return new WaitWhile(() => _links.Count == 0 || LinearSpeed == 0); //WaitWhile(() => _points.Count == 0 || LinearSpeed == 0);
-        //yield return new WaitUntil(() => _links.Count > 0 && LinearSpeed > 0);
+       
+        //Data =
+        //_links = 
+        //linear speedin 0dan büyük olması beklenebilir
+        enabled = Data.IsMoving;
         MoveChain();
     }
+    
+    
 
     private void GetTotalCogSpeed(int teethAmount, float toothUnit)
     {

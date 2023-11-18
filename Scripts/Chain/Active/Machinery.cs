@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Chain;
 using UnityEditor;
 using UnityEngine;
@@ -13,45 +14,39 @@ namespace Chain
     {
         public bool isChainRelated = false;
         public float machinerySpeed;
-        public static int NameTracker = 0;
+        public ChainData ChainData;
+        [HideInInspector]public LinksPool linksPool;
+        public List<ChainLink> links = new();
 
 
         [HideInInspector]public CogHolder cogHolder;
-        [HideInInspector]public ChainSpawner chainSpawner;
-        [HideInInspector]public ChainDrawer chainDrawer;
         [HideInInspector]public Residual residual;
         [HideInInspector]public Mover[] movers;
        
         public ChainAssetHolder assetHolder;
 
-        public string instanceID; //for debug
-        public string InstanceID { get; private set; }
         
-
         private void Start()
         {
             UnpackPrefabInstance();
-           
         }
-        void SetID()
-        {
-            InstanceID = Guid.NewGuid().ToString();
-            instanceID = InstanceID;
-        }
+       
 
         public void To2D()
         {
             transform.rotation = Quaternion.Euler(90, 0, 0);
         }
         
+        // ChainEvents.OnDeleteLinks -= DeletePoolClearLinks;
 
 
         private void OnEnable()
         {
             //if(!Application.isPlaying)
+            linksPool = GetComponentInChildren<LinksPool>();
+            PoolNull();
+            linksPool.ActivatePool();
             cogHolder = GetComponentInChildren<CogHolder>();
-            chainSpawner = GetComponentInChildren<ChainSpawner>();
-            chainDrawer = GetComponentInChildren<ChainDrawer>();
             residual = GetComponentInChildren<Residual>();
             movers = GetComponentsInChildren<Mover>();
             
@@ -63,31 +58,99 @@ namespace Chain
                     mover.MachinerySpeed = machinerySpeed;
                 }
             }
-            //ChainEvents.OnCogsReady += UpdateArcs;: cogs hazır olunca cogholdera yollamaya gerek var mı data updatei için?
+        }
+        
+        public void GenerateChain(Action saveCogs)
+        {
+            var chainRelatedCogs = cogHolder.GetChainRelatedCogs();
+            
+            if (chainRelatedCogs.Length < 2)
+            {
+                ResetLinks();
+                return;
+            }
+
+            foreach (var cog in chainRelatedCogs)
+            {
+                cog.Data.IsMoving = ChainData.IsMoving;
+            }
+            saveCogs(); //GenerateCogs();SetDirty
+
+            ChainData.CogAmount = chainRelatedCogs.Length;
+
+            if(PoolNull()) return;
+            ResetLinks();
+            
+            var chainGeneratorData = new ChainGeneratorData(ChainData, linksPool);
+            links = new ChainPointCreator(cogHolder.GetChainRelatedCogs(), chainGeneratorData).ExecutePhase();
+        }
+        
+        public void ResetLinks() //direkt pooldan yapılabilir
+        {
+            links.ForEach(l => linksPool.ReleaseItem(l));
+            links.Clear();
+        }
+        
+        void StartPool()
+        {
+            if (linksPool != null)
+                return;
+            Debug.Log("pool null");
+            linksPool = GetComponentInChildren<LinksPool>();
+            if (linksPool == null) linksPool = CreatePool();
         }
 
+        LinksPool CreatePool()
+        {
+            linksPool = Instantiate(ChainData.LinksPoolPrefab, transform);
+            return linksPool;
+        }
+
+        public void DeletePoolClearLinks() //on delete links
+        {
+            links.Clear();
+            linksPool.DeletePool();
+        }
+
+        bool PoolNull()
+        {
+            if (linksPool == null)
+            {
+                linksPool = GetComponentInChildren<LinksPool>();
+                if (linksPool == null) //for bug check, temporary
+                {
+                    Debug.LogError("links pool null");
+                    return true;
+                }
+            }
+
+            if (linksPool.pool.Count == 0)
+                linksPool.ActivatePool();
+            
+
+            if (links.Count > 0 && links.Any(l => l == null))
+            {
+                links.Clear();
+                Debug.LogError("links null");
+            }
+                
+            return false;
+        }
+        
         public void ApplyChangesToPrefab()
         {
-            // Check if the object is a prefab instance
             if (PrefabUtility.IsPartOfPrefabInstance(gameObject))
             {
-                // Get the prefab asset
                 GameObject prefab = PrefabUtility.GetCorrespondingObjectFromSource(gameObject) as GameObject;
 
                 if (prefab != null)
-                {
-                    // Apply changes to the prefab
                     PrefabUtility.ApplyPrefabInstance(gameObject, InteractionMode.AutomatedAction);
-                }
+                
                 else
-                {
                     Debug.LogWarning("Prefab not found.");
-                }
             }
             else
-            {
                 Debug.LogWarning("This GameObject is not a prefab instance.");
-            }
         }
 
         public bool IsPrefabInstance()
@@ -124,15 +187,9 @@ namespace Chain
                     transform.tag = "Untagged";
                     if (!IsPrefabInstance())
                     {
-                        //NameTracker++;
-                        //gameObject.name = "Machinery " + NameTracker;
                         gameObject.name = "Machinery Copy";
-                    
-                        
                     }
-                   
                 }
-                SetID();
             }
         }
         
