@@ -14,7 +14,7 @@ namespace Chain
     {
         public bool isChainRelated = false;
         public float machinerySpeed;
-        public ChainData ChainData;
+        [HideInInspector]public ChainData ChainData;
         [HideInInspector]public LinksPool linksPool;
         public List<ChainLink> links = new();
 
@@ -42,12 +42,13 @@ namespace Chain
 
         private void OnEnable()
         {
-            //if(!Application.isPlaying)
-            linksPool = GetComponentInChildren<LinksPool>();
-            PoolNull();
-            linksPool.ActivatePool();
-            cogHolder = GetComponentInChildren<CogHolder>();
-            residual = GetComponentInChildren<Residual>();
+            if (!Application.isPlaying)
+            {
+                StartPool();
+                cogHolder = GetComponentInChildren<CogHolder>();
+                residual = GetComponentInChildren<Residual>();
+            }
+           
             movers = GetComponentsInChildren<Mover>();
             
             if (Application.isPlaying)
@@ -93,14 +94,12 @@ namespace Chain
         
         void StartPool()
         {
-            if (linksPool != null)
-                return;
-            Debug.Log("pool null");
+            if (linksPool != null) return;
             linksPool = GetComponentInChildren<LinksPool>();
             if (linksPool == null) linksPool = CreatePool();
         }
 
-        LinksPool CreatePool()
+        public LinksPool CreatePool()
         {
             linksPool = Instantiate(ChainData.LinksPoolPrefab, transform);
             return linksPool;
@@ -110,31 +109,6 @@ namespace Chain
         {
             links.Clear();
             linksPool.DeletePool();
-        }
-
-        bool PoolNull()
-        {
-            if (linksPool == null)
-            {
-                linksPool = GetComponentInChildren<LinksPool>();
-                if (linksPool == null) //for bug check, temporary
-                {
-                    Debug.LogError("links pool null");
-                    return true;
-                }
-            }
-
-            if (linksPool.pool.Count == 0)
-                linksPool.ActivatePool();
-            
-
-            if (links.Count > 0 && links.Any(l => l == null))
-            {
-                links.Clear();
-                Debug.LogError("links null");
-            }
-                
-            return false;
         }
         
         public void ApplyChangesToPrefab()
@@ -208,6 +182,30 @@ namespace Chain
             PrefabUtility.ApplyPrefabInstance(gameObject, InteractionMode.UserAction);
         }
 
+        bool PoolNull()
+        {
+            if (linksPool == null)
+            {
+                linksPool = GetComponentInChildren<LinksPool>();
+                if (linksPool == null) //for bug check, temporary
+                {
+                    Debug.LogError("links pool null");
+                    return true;
+                }
+            }
+
+            if (linksPool.pool.Count == 0)
+                linksPool.ActivatePool();
+            
+
+            if (links.Count > 0 && links.Any(l => l == null))
+            {
+                links.Clear();
+                Debug.LogError("links null");
+            }
+                
+            return false;
+        }
 
         private void OnDisable()
         {
