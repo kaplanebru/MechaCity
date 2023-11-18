@@ -32,7 +32,6 @@ public class ChainPrefabEditor : Editor
 
     private void OnEnable()
     {
-        ChainEvents.OnLinksReady += SaveMachinery;
     }
     
     public override void OnInspectorGUI()
@@ -197,7 +196,7 @@ public class ChainPrefabEditor : Editor
         newCog.name = "Cog " + machineryPrefab.cogHolder.newCogIndex++;
         newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
 
-        newCog.transform.localPosition = machineryPrefab.cogHolder.AddedNewCogPos(newCog.Data.Radius);
+        newCog.transform.localPosition = machineryPrefab.cogHolder.NewAddedCogPos(newCog.Data.Radius);
 
         cogs = machineryPrefab.cogHolder.AddCog(newCog);
         newCog.Setup();
@@ -523,6 +522,5 @@ public class ChainPrefabEditor : Editor
 
     private void OnDisable()
     {
-        ChainEvents.OnLinksReady -= SaveMachinery;
     }
 }

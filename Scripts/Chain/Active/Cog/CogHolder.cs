@@ -8,13 +8,12 @@ using UnityEngine;
 namespace Chain
 {
     public interface CogComponent
-    {
-       
-    }
+    { }
 
     [ExecuteInEditMode]
     public class CogHolder : MonoBehaviour
     {
+        private Cogwheel CogPrefab;
         public List<Cogwheel> cogs;
         public int newCogIndex = 0;
 
@@ -63,7 +62,24 @@ namespace Chain
             cogs[i].drawGizmos = true;
         }
         
-        public Vector3 AddedNewCogPos(float radius)
+        // void AddCog(bool isNew)
+        // {
+        //     var newCog = Instantiate(CogPrefab, transform);
+        //     newCog.name = "Cog " + newCogIndex++;
+        //     newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
+        //
+        //     newCog.transform.localPosition = NewAddedCogPos(newCog.Data.Radius);
+        //
+        //     cogs = AddCog(newCog);
+        //     newCog.Setup();
+        //     selectedIndex = cogs.Length - 1;
+        //     cogToDestroyIndex = selectedIndex;
+        //     GenerateChain();
+        //
+        //     Repaint();
+        // }
+        
+        public Vector3 NewAddedCogPos(float radius)
         {
             Vector3 newPos;
 
