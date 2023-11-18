@@ -287,8 +287,8 @@ public class ChainPrefabEditor : Editor
         EditorUtility.SetDirty(machineryPrefab.ChainData); //TODO: sonradan eklendi
         EditorUtility.SetDirty(target);
 
-        if (machineryPrefab.IsPrefabInstance())
-            machineryPrefab.OverrideChanges();
+        if (MyPrefabHelpers.IsPrefabInstance(machineryPrefab.gameObject))
+            MyPrefabHelpers.OverrideChanges(machineryPrefab.gameObject);
         else
             machineryPrefab.residual.CleanResiduals();
         
@@ -496,7 +496,7 @@ public class ChainPrefabEditor : Editor
 
     void DeleteLinkPool()
     {
-        if (machineryPrefab.IsPrefabInstance())
+        if (MyPrefabHelpers.IsPrefabInstance(machineryPrefab.gameObject))
         {
             Debug.LogWarning("Change pool from prefab view");
             return;
@@ -509,7 +509,7 @@ public class ChainPrefabEditor : Editor
 
     void DeleteTeethPool(int i)
     {
-        if (machineryPrefab.IsPrefabInstance())
+        if (MyPrefabHelpers.IsPrefabInstance(machineryPrefab.gameObject))
         {
             Debug.LogWarning("Change pool from prefab view");
             return;

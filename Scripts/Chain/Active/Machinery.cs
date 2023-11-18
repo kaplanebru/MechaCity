@@ -28,7 +28,7 @@ namespace Chain
         
         private void Start()
         {
-            UnpackPrefabInstance();
+            MyPrefabHelpers.UnpackPrefabInstance(gameObject);
         }
        
 
@@ -44,7 +44,8 @@ namespace Chain
         {
             if (!Application.isPlaying)
             {
-                StartPool();
+                if(isChainRelated)
+                    StartPool();
                 cogHolder = GetComponentInChildren<CogHolder>();
                 residual = GetComponentInChildren<Residual>();
             }
@@ -111,62 +112,6 @@ namespace Chain
             linksPool.DeletePool();
         }
         
-        public void ApplyChangesToPrefab()
-        {
-            if (PrefabUtility.IsPartOfPrefabInstance(gameObject))
-            {
-                GameObject prefab = PrefabUtility.GetCorrespondingObjectFromSource(gameObject) as GameObject;
-
-                if (prefab != null)
-                    PrefabUtility.ApplyPrefabInstance(gameObject, InteractionMode.AutomatedAction);
-                
-                else
-                    Debug.LogWarning("Prefab not found.");
-            }
-            else
-                Debug.LogWarning("This GameObject is not a prefab instance.");
-        }
-
-        public bool IsPrefabInstance()
-        {
-            PrefabAssetType assetType = PrefabUtility.GetPrefabAssetType(gameObject);
-            PrefabInstanceStatus instanceStatus = PrefabUtility.GetPrefabInstanceStatus(gameObject);
-
-            if (assetType == PrefabAssetType.NotAPrefab)
-            {
-                //Debug.Log("Not a Prefab");
-                return false;
-            }
-
-            if (instanceStatus == PrefabInstanceStatus.NotAPrefab)
-            {
-                Debug.Log("Prefab Asset");
-                return false;
-            }
-
-
-            Debug.Log("Prefab Instance");
-            return true;
-        } //enumla prefab mi instance mi yoksa obsolate mi bakarız
-
-        void UnpackPrefabInstance()
-        {
-            if (IsPrefabInstance())
-            {
-                PrefabUtility.UnpackPrefabInstance(gameObject, PrefabUnpackMode.OutermostRoot,
-                    InteractionMode.AutomatedAction);
-
-                if (transform.CompareTag("Model"))
-                {
-                    transform.tag = "Untagged";
-                    if (!IsPrefabInstance())
-                    {
-                        gameObject.name = "Machinery Copy";
-                    }
-                }
-            }
-        }
-        
         public void SaveOnExistingPrefab()
         {
             GameObject newInstance = Instantiate(gameObject);
@@ -175,12 +120,7 @@ namespace Chain
 
             DestroyImmediate(newInstance);
         }
-
-        public void OverrideChanges()
-        {
-            Debug.Log("override");
-            PrefabUtility.ApplyPrefabInstance(gameObject, InteractionMode.UserAction);
-        }
+        
 
         bool PoolNull()
         {
@@ -216,31 +156,3 @@ namespace Chain
     }
 }
 
-
-// void SavePrefab()
-// {
-//     GameObject machineryPrefab = PrefabUtility.GetCorrespondingObjectFromSource(gameObject);
-//     
-//     if(machineryPrefab == null) return;
-//     
-//     //prefab.GetComponent<MyComponent>().myValue = newValue;
-//
-//
-//     PrefabUtility.RecordPrefabInstancePropertyModifications(machineryPrefab);
-//     PrefabUtility.SavePrefabAsset(machineryPrefab);
-// }
-
-// void UnpackPrefabInstance()
-// {
-//     if (!Application.isPlaying)
-//     {
-//         PrefabType prefabType = PrefabUtility.GetPrefabType(gameObject);
-//
-//
-//         if (prefabType == PrefabType.PrefabInstance || prefabType == PrefabType.DisconnectedPrefabInstance)
-//         {
-//             PrefabUtility.UnpackPrefabInstance(gameObject, PrefabUnpackMode.OutermostRoot,
-//                 InteractionMode.AutomatedAction);
-//         }
-//     }
-// }
