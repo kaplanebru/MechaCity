@@ -2,46 +2,35 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
 namespace Chain
 {
-    public interface CogComponent
-    { }
+    public interface CogComponent {}
 
     [ExecuteInEditMode]
     public class CogHolder : MonoBehaviour
     {
-        private Cogwheel CogPrefab;
+        [HideInInspector] public Cogwheel cogPrefab;
         public List<Cogwheel> cogs;
         public int newCogIndex = 0;
 
 
         private void OnEnable()
         {
-            if(cogs.Count == 0)
-                cogs = GetRestoredCogs().ToList();
+            GetRestoredCogs();
         }
         
-
-        public Cogwheel[] GetRestoredCogs()
+        void GetRestoredCogs()
         {
-            var _cogs = GetComponentsInChildren<Cogwheel>();
-            return _cogs;
+            if (cogs.Count == 0) // || cogs == null || (cogs.Count > 0 && cogs[0] == null))
+                cogs = GetComponentsInChildren<Cogwheel>().ToList();
         }
 
-        public Cogwheel[] AddCog(Cogwheel newCog)
-        {
-            cogs.Add(newCog);
-            return cogs.ToArray();
-        }
+        public Cogwheel[] RestoreCogsInEditor() => cogs.ToArray();
 
-        public Cogwheel[] RemoveCog(Cogwheel cogToRemove)
-        {
-            cogs.Remove(cogToRemove);
-            return cogs.ToArray();
-        }
 
         public Cogwheel[] GetChainRelatedCogs()
         {
@@ -54,32 +43,48 @@ namespace Chain
         {
             cogs.ForEach(c => c.drawGizmos = false);
         }
+
         public void DrawGizmosOnSelectedCog(int i)
         {
             if (!showGizmos) return;
-            
+
             DisableAllGizmos();
             cogs[i].drawGizmos = true;
         }
-        
-        // void AddCog(bool isNew)
-        // {
-        //     var newCog = Instantiate(CogPrefab, transform);
-        //     newCog.name = "Cog " + newCogIndex++;
-        //     newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
-        //
-        //     newCog.transform.localPosition = NewAddedCogPos(newCog.Data.Radius);
-        //
-        //     cogs = AddCog(newCog);
-        //     newCog.Setup();
-        //     selectedIndex = cogs.Length - 1;
-        //     cogToDestroyIndex = selectedIndex;
-        //     GenerateChain();
-        //
-        //     Repaint();
-        // }
-        
-        public Vector3 NewAddedCogPos(float radius)
+
+        public void AddCog(bool isNew, CogData cogData = null)
+        {
+            var newCog = Instantiate(cogPrefab, transform);
+            newCog.name = "Cog " + newCogIndex++;
+            newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
+
+            newCog.transform.localPosition = NewAddedCogPos(newCog.Data.Radius);
+            cogs.Add(newCog);
+            newCog.Setup();
+        }
+
+        public CogData CreateCogData(string cogName)
+        {
+            var cogData = ScriptableObject.CreateInstance<CogData>();
+            AssetDatabase.CreateAsset(cogData, MyEditorHelpers.WriteAssetPath(cogName + " Data", "CogDatas"));
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            return cogData;
+        }
+
+        public void RemoveCog(int cogToDestroyIndex)
+        {
+            if (cogs.Count == 0 || cogs == null) return;
+            var cogsToDestroy = cogs[cogToDestroyIndex];
+
+            ChainEvents.OnDeleteObject?.Invoke(cogsToDestroy.transform); //TODO: HANDLE POOL
+
+            cogsToDestroy.gameObject.SetActive(false);
+            cogs.Remove(cogsToDestroy);
+        }
+
+        Vector3 NewAddedCogPos(float radius)
         {
             Vector3 newPos;
 
@@ -93,7 +98,7 @@ namespace Chain
 
             Vector3 center = TrigonometryHelper.Center(cogPositions);
             var outermostCog = cogs.OrderByDescending(c => Vector3.Distance(center, c.transform.localPosition)).First();
-      
+
             float distanceFromCenter =
                 Vector3.Distance(center, outermostCog.transform.localPosition); // + outermostCog.Data.Radius;
 
@@ -108,7 +113,7 @@ namespace Chain
                 if (Vector3.Distance(newPos, cog.transform.localPosition) <= cog.Data.Radius + radius)
                     goto CreatePos;
             }
-            
+
             return newPos;
         }
 

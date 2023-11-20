@@ -233029,6 +233029,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 736aeb3fe37cc5140b2401d10d947c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cogPrefab: {fileID: 0}
   cogs:
   - {fileID: 407899760020649854}
   - {fileID: 1656277136835411985}
@@ -347977,6 +347978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 736aeb3fe37cc5140b2401d10d947c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cogPrefab: {fileID: -92454076011392731, guid: 36fa7461231191a488510332a5da0c18, type: 3}
   cogs:
   - {fileID: 97913566}
   - {fileID: 644926952}

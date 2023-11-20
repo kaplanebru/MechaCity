@@ -12,7 +12,7 @@ namespace Chain
     [ExecuteAlways]
     public class Machinery : MonoBehaviour
     {
-        public bool isChainRelated = false;
+        [HideInInspector]public bool isChainRelated = false;
         public float machinerySpeed;
         [HideInInspector]public ChainData ChainData;
         [HideInInspector]public LinksPool linksPool;

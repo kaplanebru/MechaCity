@@ -16,7 +16,6 @@ public class ChainPrefabEditor : Editor
     private string[] cogHolderLabels;
     private int selectedIndex = 0;
 
-    private bool isChainRelated = true;
     [SerializeField] private bool newChainData;
     private string chainDataName;
 
@@ -61,7 +60,7 @@ public class ChainPrefabEditor : Editor
         }
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
-            cogs = machineryPrefab.cogHolder.GetRestoredCogs();
+            cogs = machineryPrefab.cogHolder.RestoreCogsInEditor();
 
         if (cogHolderLabels == null || cogHolderLabels.Length != cogs.Length)
         {
@@ -69,26 +68,15 @@ public class ChainPrefabEditor : Editor
             cogHolderLabels = cogs.Select(x => x.ToString()).ToArray();
         }
 
-        SetMachineryChainRelation();
         if (GUILayout.Button("Reset To 2D Space"))
             machineryPrefab.To2D();
 
         EditorGUILayout.Space();
-
-        EditorGUI.BeginChangeCheck();
-        machineryPrefab.cogHolder.showGizmos = EditorGUILayout.Toggle("Show Gizmos On Selected Cog", machineryPrefab.cogHolder.showGizmos);
-        if (EditorGUI.EndChangeCheck())
-        {
-            if (!machineryPrefab.cogHolder.showGizmos)
-                machineryPrefab.cogHolder.DisableAllGizmos();
-            else
-                machineryPrefab.cogHolder.DrawGizmosOnSelectedCog(selectedIndex);
-            Repaint();
-        }
         
         GUILayout.Label("COG SETTINGS", EditorStyles.boldLabel); //\n 
         //MyEditorHelpers.DrawSeparatorLine(Color.gray);
-        EditorGUILayout.Space();
+
+        ShowGizmosOnSelection();
         EditorGUILayout.Space();
 
         Color originalBackgroundColor = GUI.backgroundColor;
@@ -103,7 +91,7 @@ public class ChainPrefabEditor : Editor
         if (selectedIndex >= 0 && selectedIndex < cogs.Length)
         {
             EditorGUI.indentLevel++;
-            SetCogData(selectedIndex);
+            FillCogData(selectedIndex);
             machineryPrefab.cogHolder.DrawGizmosOnSelectedCog(selectedIndex);
             EditorGUI.indentLevel--;
         }
@@ -121,7 +109,7 @@ public class ChainPrefabEditor : Editor
 
         GUILayout.Label(" _______________ADD or REMOVE COG_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
         EditorGUILayout.Space();
-
+        machineryPrefab.cogHolder.cogPrefab = (Cogwheel) EditorGUILayout.ObjectField("Cog Prefab",  machineryPrefab.cogHolder.cogPrefab, typeof(Cogwheel), false);
         GUILayout.BeginHorizontal();
         //GUILayout.FlexibleSpace();
         EditorGUILayout.LabelField("Add Cog With Creating New Data");
@@ -145,6 +133,7 @@ public class ChainPrefabEditor : Editor
         EditorGUILayout.Space();
 
         ////////////////CHAIN RELATED///////////////////////////////
+        machineryPrefab.isChainRelated = EditorGUILayout.Toggle("Chain Related", machineryPrefab.isChainRelated);
 
         if (machineryPrefab.isChainRelated)
         {
@@ -189,35 +178,36 @@ public class ChainPrefabEditor : Editor
         EditorGUI.EndChangeCheck();
     }
 
-
-    void AddCog(bool isNew)
+    void ShowGizmosOnSelection()
     {
-        var newCog = Instantiate(machineryPrefab.assetHolder.CogPrefab, machineryPrefab.cogHolder.transform);
-        newCog.name = "Cog " + machineryPrefab.cogHolder.newCogIndex++;
-        newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
-
-        newCog.transform.localPosition = machineryPrefab.cogHolder.NewAddedCogPos(newCog.Data.Radius);
-
-        cogs = machineryPrefab.cogHolder.AddCog(newCog);
-        newCog.Setup();
-        selectedIndex = cogs.Length - 1;
-        cogToDestroyIndex = selectedIndex;
-        GenerateChain();
-
-        Repaint();
+        EditorGUI.BeginChangeCheck();
+        machineryPrefab.cogHolder.showGizmos = EditorGUILayout.Toggle("Show Gizmos On Selected Cog", machineryPrefab.cogHolder.showGizmos);
+        if (EditorGUI.EndChangeCheck())
+        {
+            if (!machineryPrefab.cogHolder.showGizmos)
+                machineryPrefab.cogHolder.DisableAllGizmos();
+            else
+                machineryPrefab.cogHolder.DrawGizmosOnSelectedCog(selectedIndex);
+            Repaint();
+        }
     }
 
 
+    void AddCog(bool isNew)
+    {
+        machineryPrefab.cogHolder.AddCog(isNew, cogData);
+        cogs = machineryPrefab.cogHolder.RestoreCogsInEditor();
+        selectedIndex = cogs.Length - 1;
+        cogToDestroyIndex = selectedIndex;
+        GenerateChain();
+        Repaint();
+    }
+
     void RemoveCog()
     {
-        if (cogs.Length == 0 || cogs == null) return;
-        var cogsToDestroy = cogs[cogToDestroyIndex];
-
-        ChainEvents.OnDeleteObject?.Invoke(cogsToDestroy.transform);
-
-        cogsToDestroy.gameObject.SetActive(false);
-        cogs = machineryPrefab.cogHolder.RemoveCog(cogsToDestroy);
-
+        machineryPrefab.cogHolder.RemoveCog(cogToDestroyIndex);
+        cogs = machineryPrefab.cogHolder.RestoreCogsInEditor();
+        
         if (cogs.Length > 0)
         {
             if (selectedIndex == cogToDestroyIndex)
@@ -230,42 +220,15 @@ public class ChainPrefabEditor : Editor
 
                 selectedIndex = newIndex;
             }
-
             cogToDestroyIndex = cogs.Length - 1;
         }
-        
         GenerateChain();
         Repaint();
     }
 
-    void SetMachineryChainRelation()
-    {
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Toggle(isChainRelated, "Is Chain Related", "Button")) //(GUILayout.Button("Is Chain Related"))
-        {
-            isChainRelated = true;
-            machineryPrefab.isChainRelated = isChainRelated;
-        }
+   
 
-        if (GUILayout.Toggle(!isChainRelated, "Not Chain Related",
-                "Button")) //(GUILayout.Button("Not Chain Related"))
-        {
-            isChainRelated = false;
-            machineryPrefab.isChainRelated = isChainRelated;
-        }
-
-        GUILayout.EndHorizontal();
-    }
-
-    CogData CreateCogData(string cogName)
-    {
-        var cogData = CreateInstance<CogData>();
-        AssetDatabase.CreateAsset(cogData, MyEditorHelpers.WriteAssetPath(cogName + " Data", "CogDatas"));
-
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
-        return cogData;
-    }
+  
 
     void CreateChainData()
     {
@@ -292,8 +255,7 @@ public class ChainPrefabEditor : Editor
             machineryPrefab.residual.CleanResiduals();
         
     }
-
-
+    
     void GenerateChain()
     {
         machineryPrefab.GenerateChain(SaveCogs);
@@ -338,7 +300,7 @@ public class ChainPrefabEditor : Editor
         {
             if (GUILayout.Button("Apply"))
             {
-                cogs[i].Data = CreateCogData("Cog " + machineryPrefab.cogHolder.newCogIndex++);
+                cogs[i].Data = machineryPrefab.cogHolder.CreateCogData("Cog " + machineryPrefab.cogHolder.newCogIndex++);
                 changeWithNewCogData = false;
                 GenerateChain();
                 Repaint();
@@ -347,7 +309,7 @@ public class ChainPrefabEditor : Editor
         }
     }
 
-    void SetCogData(int i)
+    void FillCogData(int i)
     {
         CogData Data = cogs[i].Data;
 
