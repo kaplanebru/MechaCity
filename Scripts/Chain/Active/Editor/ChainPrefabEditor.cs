@@ -42,12 +42,13 @@ public class ChainPrefabEditor : Editor
             machineryPrefab = target as Machinery;
 
 
-        GUILayout.Label("Chain Generator", EditorStyles.boldLabel);
+        GUILayout.Label("Chain & Cog Generator", EditorStyles.boldLabel);
         _narrowButton = new GUIStyle(GUI.skin.button);
         _narrowButton.fixedWidth = 200f;
 
         EditorGUI.BeginChangeCheck();
 
+        EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("SAVE CHANGES"))
         {
             SaveMachinery();
@@ -58,6 +59,7 @@ public class ChainPrefabEditor : Editor
             machineryPrefab.SaveOnExistingPrefab();
             SaveMachinery();
         }
+        EditorGUILayout.EndHorizontal();
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
             cogs = machineryPrefab.cogHolder.RestoreCogsInEditor();

@@ -13,7 +13,7 @@ namespace Chain
     public class Machinery : MonoBehaviour
     {
         [HideInInspector]public bool isChainRelated = false;
-        public float machinerySpeed;
+        [HideInInspector]public float machinerySpeed;
         [HideInInspector]public ChainData ChainData;
         [HideInInspector]public LinksPool linksPool;
         public List<ChainLink> links = new();
@@ -23,7 +23,7 @@ namespace Chain
         [HideInInspector]public Residual residual;
         [HideInInspector]public Mover[] movers;
        
-        public ChainAssetHolder assetHolder;
+        //public ChainAssetHolder assetHolder;
 
         
         private void Start()
