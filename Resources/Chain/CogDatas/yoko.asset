@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24f08cdc525e724ca5966a1f7405f6c, type: 3}
   m_Name: yoko
   m_EditorClassIdentifier: 
-  Radius: 3
+  Radius: 2.93
   ContactType: 0
   RotationDirection: -1
   HoleSize: 2
@@ -25,4 +25,4 @@ MonoBehaviour:
   MinGapLimit: 6
   Equalize: 0
   TeethCount: 18
-  ToothUnit: 1.0418888
+  ToothUnit: 1.0416331

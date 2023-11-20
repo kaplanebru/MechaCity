@@ -47,18 +47,12 @@ public class ChainPrefabEditor : Editor
         _narrowButton.fixedWidth = 200f;
 
         EditorGUI.BeginChangeCheck();
-
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("SAVE CHANGES"))
-        {
-            SaveMachinery();
-        }
-
+            machineryPrefab.SaveMachinery();
+        
         if (GUILayout.Button("SAVE ONTO EXISTING PREFAB"))
-        {
             machineryPrefab.SaveOnExistingPrefab();
-            SaveMachinery();
-        }
         EditorGUILayout.EndHorizontal();
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
@@ -152,16 +146,20 @@ public class ChainPrefabEditor : Editor
 
                 if (GUILayout.Button("Apply")) 
                 {
-                    CreateChainData();
+                    machineryPrefab.chainGenerator.CreateChainData(chainDataName);
                     newChainData = false;
                 }
             }
 
-            machineryPrefab.ChainData = (ChainData) EditorGUILayout.ObjectField("Use Selected Chain Data",  machineryPrefab.ChainData , typeof(ChainData),
+            if(machineryPrefab.chainGenerator == null) return;
+           
+            machineryPrefab.chainGenerator.ChainData = (ChainData) EditorGUILayout.ObjectField("Use Selected Chain Data",  machineryPrefab.chainGenerator.ChainData , typeof(ChainData),
                 false);
+            
+            
 
 
-            if (machineryPrefab.ChainData  != null)
+            if (machineryPrefab.chainGenerator.ChainData  != null)
             {
                 FillChainData();
 
@@ -172,7 +170,7 @@ public class ChainPrefabEditor : Editor
                     DeleteLinkPool();
 
                 if (GUILayout.Button("Deactivate Link pool"))
-                    machineryPrefab.ResetLinks();
+                    machineryPrefab.chainGenerator.ResetLinks();
             }
         }
 
@@ -227,40 +225,12 @@ public class ChainPrefabEditor : Editor
         GenerateChain();
         Repaint();
     }
-
-   
-
-  
-
-    void CreateChainData()
-    {
-        machineryPrefab.ChainData = CreateInstance<ChainData>();
-
-        AssetDatabase.CreateAsset(machineryPrefab.ChainData,
-            MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas")); //(chainData, "Assets/chainData.asset"); 
-        Debug.Log(MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas"));
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
-    }
-
-
-    void SaveMachinery() //todo: buralar machinerye taşınabilir
-    {
-        Debug.Log("saved");
-
-        EditorUtility.SetDirty(machineryPrefab.ChainData); //TODO: sonradan eklendi
-        EditorUtility.SetDirty(target);
-
-        if (MyPrefabHelpers.IsPrefabInstance(machineryPrefab.gameObject))
-            MyPrefabHelpers.OverrideChanges(machineryPrefab.gameObject);
-        else
-            machineryPrefab.residual.CleanResiduals();
-        
-    }
     
+    
+
     void GenerateChain()
     {
-        machineryPrefab.GenerateChain(SaveCogs);
+        machineryPrefab.chainGenerator.GenerateChain(SaveCogs, machineryPrefab.cogHolder.GetChainRelatedCogs());
     }
     
     void SaveCogs()
@@ -306,7 +276,7 @@ public class ChainPrefabEditor : Editor
                 changeWithNewCogData = false;
                 GenerateChain();
                 Repaint();
-                SaveMachinery();
+                machineryPrefab.SaveMachinery();
             }
         }
     }
@@ -408,7 +378,7 @@ public class ChainPrefabEditor : Editor
 
     void FillChainData()
     {
-        ChainData chainData = machineryPrefab.ChainData;
+        ChainData chainData = machineryPrefab.chainGenerator.ChainData;
         chainData.OnTesting = EditorGUILayout.Toggle("On Testing", chainData.OnTesting);
         chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
         chainData.Unit = EditorGUILayout.FloatField("Unit", chainData.Unit);
@@ -465,9 +435,9 @@ public class ChainPrefabEditor : Editor
             return;
         }
 
-        machineryPrefab.DeletePoolClearLinks();
-        SaveMachinery();
-        machineryPrefab.CreatePool();
+        machineryPrefab.chainGenerator.DeletePoolClearLinks();
+        machineryPrefab.SaveMachinery();
+        machineryPrefab.chainGenerator.CreatePool();
     }
 
     void DeleteTeethPool(int i)
@@ -479,7 +449,7 @@ public class ChainPrefabEditor : Editor
         }
 
         ChainEvents.OnDeleteTeethPool?.Invoke(cogs[i].Id);
-        SaveMachinery();
+        machineryPrefab.SaveMachinery();
         ChainEvents.OnCreateTeethPool?.Invoke(cogs[i].Id);
     }
 

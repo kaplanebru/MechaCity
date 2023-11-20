@@ -15268,10 +15268,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isChainRelated: 1
   machinerySpeed: 0
+  chainGenerator: {fileID: 878985583772333609}
   cogHolder: {fileID: 8363056915014616255}
   residual: {fileID: 4206404387720957317}
-  assetHolder: {fileID: 11400000, guid: 8b53029014a0eb64183772f5eda0f732, type: 2}
-  instanceID: 
 --- !u!1 &2309914982356263319
 GameObject:
   m_ObjectHideFlags: 0
@@ -15281,6 +15280,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2309914982356263318}
+  - component: {fileID: 878985583772333609}
   - component: {fileID: 2309914982356263315}
   m_Layer: 0
   m_Name: ChainGenerator
@@ -15305,6 +15305,21 @@ Transform:
   m_Father: {fileID: 2309914981968850150}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &878985583772333609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2309914982356263319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b4dccc5f6c14b46b2cd049e945118f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChainData: {fileID: 11400000, guid: c885205d8b80a4e48b279cf1f5450c28, type: 2}
+  links: []
+  linksPool: {fileID: 6327388999532663818}
 --- !u!114 &2309914982356263315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45046,6 +45061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 736aeb3fe37cc5140b2401d10d947c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cogPrefab: {fileID: -92454076011392731, guid: 36fa7461231191a488510332a5da0c18, type: 3}
   cogs: []
   newCogIndex: 30
   showGizmos: 1
