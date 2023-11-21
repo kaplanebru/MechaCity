@@ -58,12 +58,18 @@ namespace Chain
 
         public void SaveOnExistingPrefab()
         {
-            GameObject newInstance = Instantiate(gameObject);
-            PrefabUtility.SaveAsPrefabAsset(newInstance,
-                MyEditorHelpers.FindPathByGuid(name));
+            if(MyPrefabHelpers.IsPrefabInstance(gameObject))
+                MyPrefabHelpers.OverrideChanges(gameObject);
+            else
+            {
+                GameObject newInstance = Instantiate(gameObject);
+                PrefabUtility.SaveAsPrefabAsset(newInstance,
+                    MyEditorHelpers.FindPathByGuid(name));
 
-            DestroyImmediate(newInstance);
-            SaveMachinery();
+                DestroyImmediate(newInstance);
+                SaveMachinery();
+            }
+           
         }
 
         public void SaveMachinery() //todo: buralar machinerye taşınabilir

@@ -50,9 +50,11 @@ public class ChainPrefabEditor : Editor
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("SAVE CHANGES"))
             machineryPrefab.SaveMachinery();
-        
+
         if (GUILayout.Button("SAVE ONTO EXISTING PREFAB"))
             machineryPrefab.SaveOnExistingPrefab();
+        
+            
         EditorGUILayout.EndHorizontal();
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
@@ -151,7 +153,11 @@ public class ChainPrefabEditor : Editor
                 }
             }
 
-            if(machineryPrefab.chainGenerator == null) return;
+            if (machineryPrefab.chainGenerator == null)
+            {
+                Debug.LogWarning("Add Chain Generator Script");
+                return;
+            }
            
             machineryPrefab.chainGenerator.ChainData = (ChainData) EditorGUILayout.ObjectField("Use Selected Chain Data",  machineryPrefab.chainGenerator.ChainData , typeof(ChainData),
                 false);

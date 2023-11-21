@@ -7,21 +7,7 @@ namespace Chain
 {
     public class MyPrefabHelpers
     {
-        public static void ApplyChangesToPrefab(GameObject gameObject)
-        {
-            if (PrefabUtility.IsPartOfPrefabInstance(gameObject))
-            {
-                GameObject prefab = PrefabUtility.GetCorrespondingObjectFromSource(gameObject) as GameObject;
-
-                if (prefab != null)
-                    PrefabUtility.ApplyPrefabInstance(gameObject, InteractionMode.AutomatedAction);
-                
-                else
-                    Debug.LogWarning("Prefab not found.");
-            }
-            else
-                Debug.LogWarning("This GameObject is not a prefab instance.");
-        }
+        
 
         public static bool IsPrefabInstance(GameObject gameObject)
         {
@@ -63,12 +49,26 @@ namespace Chain
             }
         }
         
-        
-
         public static void OverrideChanges(GameObject gameObject)
         {
             Debug.Log("override");
             PrefabUtility.ApplyPrefabInstance(gameObject, InteractionMode.UserAction);
+        }
+        
+        public static void ApplyChangesToPrefab(GameObject gameObject)
+        {
+            if (PrefabUtility.IsPartOfPrefabInstance(gameObject))
+            {
+                GameObject prefab = PrefabUtility.GetCorrespondingObjectFromSource(gameObject) as GameObject;
+
+                if (prefab != null)
+                    PrefabUtility.ApplyPrefabInstance(gameObject, InteractionMode.AutomatedAction);
+                
+                else
+                    Debug.LogWarning("Prefab not found.");
+            }
+            else
+                Debug.LogWarning("This GameObject is not a prefab instance.");
         }
 
     }
