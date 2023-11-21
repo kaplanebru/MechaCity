@@ -18,7 +18,7 @@ namespace Chain
         //public dynamic ExecutePhase<T>() where T : new();
     }
 
-    public class ChainPointCreator : IChainGenerator //chainlinks function parametresi olarak gelsin
+    public class ChainPointCreator : IChainGenerator 
     {
         public ChainGeneratorData Data { get; set; }
         
@@ -41,7 +41,6 @@ namespace Chain
         {
             StartChain();
             IChainGenerator chainDrawer = new ChainDrawer(Data);
-            Debug.Log(Data.ChainPoints.Count);
             return chainDrawer.ExecutePhase();
         }
         
@@ -51,8 +50,6 @@ namespace Chain
             Data.ChainPoints = new();
             Data.ChainPoints.Clear();
             GenerateChainPoints();
-
-            //+chain drawer
         }
 
 

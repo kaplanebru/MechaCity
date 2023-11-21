@@ -26,24 +26,19 @@ namespace Chain
 
         private void Start()
         {
-            MyPrefabHelpers.UnpackPrefabInstance(gameObject);
+            if(transform.CompareTag("Model"))
+                MyPrefabHelpers.UnpackPrefabInstance(gameObject);
         }
-
-
+        
         public void To2D()
         {
             transform.rotation = Quaternion.Euler(90, 0, 0);
         }
-
-        // ChainEvents.OnDeleteLinks -= DeletePoolClearLinks;
-
-
+        
         private void OnEnable()
         {
             if (!Application.isPlaying)
             {
-                // if(isChainRelated)
-                //     StartPool();
                 cogHolder = GetComponentInChildren<CogHolder>();
                 chainGenerator = GetComponentInChildren<ChainGenerator>();
                 residual = GetComponentInChildren<Residual>();
@@ -60,27 +55,6 @@ namespace Chain
                 }
             }
         }
-
-
-        // void StartPool()
-        // {
-        //     if (linksPool != null) return;
-        //     linksPool = GetComponentInChildren<LinksPool>();
-        //     if (linksPool == null) linksPool = CreatePool();
-        // }
-        //
-        // public LinksPool CreatePool()
-        // {
-        //     linksPool = Instantiate(ChainData.LinksPoolPrefab, transform);
-        //     return linksPool;
-        // }
-        //
-        // public void DeletePoolClearLinks() //on delete links
-        // {
-        //     links.Clear();
-        //     linksPool.DeletePool();
-        // }
-
 
         public void SaveOnExistingPrefab()
         {
@@ -105,38 +79,5 @@ namespace Chain
                 residual.CleanResiduals();
         }
 
-
-        // bool PoolNull()
-        // {
-        //     if (linksPool == null)
-        //     {
-        //         linksPool = GetComponentInChildren<LinksPool>();
-        //         if (linksPool == null) //for bug check, temporary
-        //         {
-        //             Debug.LogError("links pool null");
-        //             return true;
-        //         }
-        //     }
-        //
-        //     if (linksPool.pool.Count == 0)
-        //         linksPool.ActivatePool();
-        //     
-        //
-        //     if (links.Count > 0 && links.Any(l => l == null))
-        //     {
-        //         links.Clear();
-        //         Debug.LogError("links null");
-        //     }
-        //         
-        //     return false;
-        // }
-
-
-        private void OnDisable()
-        {
-        }
-
-
-        //todo: first set cogs from here, later start chain process
     }
 }
