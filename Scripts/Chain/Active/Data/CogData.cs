@@ -7,7 +7,7 @@ namespace Chain
 {
     [Serializable]
     [CreateAssetMenu(fileName = nameof(CogData))]
-    public class CogData : ScriptableObject
+    public class CogData : ScriptableObject, IMachinePartData
     {
         public float Radius = 4;
         public ChainEnums.CogContactType ContactType; //Todo: direction set edilen yer

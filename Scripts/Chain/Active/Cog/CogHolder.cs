@@ -8,7 +8,10 @@ using UnityEngine;
 
 namespace Chain
 {
-    public interface CogComponent {}
+    public interface CogComponent
+    {
+        public int CogId { get; set; }
+    }
 
     [ExecuteInEditMode]
     public class CogHolder : MonoBehaviour
@@ -17,16 +20,9 @@ namespace Chain
         public List<Cogwheel> cogs;
         public int newCogIndex = 0;
 
-
-        private void OnEnable()
+        public void GetCogs(IEnumerable<Cogwheel> _cogs)
         {
-            GetRestoredCogs();
-        }
-        
-        void GetRestoredCogs()
-        {
-            if (cogs.Count == 0) // || cogs == null || (cogs.Count > 0 && cogs[0] == null))
-                cogs = GetComponentsInChildren<Cogwheel>().ToList();
+            cogs = _cogs.ToList();
         }
 
         public Cogwheel[] RestoreCogsInEditor() => cogs.ToArray();

@@ -6,12 +6,12 @@ using UnityEngine;
 public class ChainEvents
 {
     // public static Action<List<Vector3>> OnPointsCreated;
-    public static Action<List<ChainLink>, List<Vector3>> OnLinksCreated;
+    //public static Action<List<ChainLink>, List<Vector3>> OnLinksCreated;
     // public static Action<CogHolder> OnCogSetupRequest; 
      // public static Action OnLinksReady; += save machinery
     
-    public static Action<bool> OnMotionStateSet; //todo: startta yapılır: application is playingse
-    public static Action<int, float> OnCogSpeedSet; //todo: Bunu moverda yap. sürekli set edilmesine gerek yok. application is playing
+   // public static Action<bool> OnMotionStateSet; //todo: startta yapılır: application is playingse
+    public static Action<int, float, int> OnCogSpeedSet; //todo: Maybe: Bunu moverda yap. sürekli set edilmesine gerek yok. application is playing
 
    
     //public static Action<Cogwheel[], ChainPointCreator> OnChainRequest; //gerek yok chain spawnera ulaşıyoruz zaten

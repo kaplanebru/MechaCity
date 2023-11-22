@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface IMachinePartData
+{}
+
 namespace Chain
 {
     [CreateAssetMenu(fileName = nameof(ChainData))]
-    public class ChainData : ScriptableObject
+    public class ChainData : ScriptableObject, IMachinePartData
     {
         public ChainEnums.ChainType Type = ChainEnums.ChainType.BikeChain;
         public float Unit = 2.3f;

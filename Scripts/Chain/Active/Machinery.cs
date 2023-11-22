@@ -5,6 +5,7 @@ using System.Linq;
 using Chain;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 
 namespace Chain
@@ -19,14 +20,23 @@ namespace Chain
         [HideInInspector] public ChainGenerator chainGenerator;
         [HideInInspector] public CogHolder cogHolder;
         [HideInInspector] public Residual residual;
-        [HideInInspector] public Mover[] movers;
+
+        private Mover[] _movers;
+        private IMachinePart[] _machineParts;
 
         //public ChainAssetHolder assetHolder;
 
-
+        private void OnEnable()
+        {
+            if (!Application.isPlaying)
+                GetObjects();
+            if (Application.isPlaying)
+                SetMovers();
+        }
+        
         private void Start()
         {
-            if(transform.CompareTag("Model"))
+            if (transform.CompareTag("Model"))
                 MyPrefabHelpers.UnpackPrefabInstance(gameObject);
         }
         
@@ -34,31 +44,42 @@ namespace Chain
         {
             transform.rotation = Quaternion.Euler(90, 0, 0);
         }
-        
-        private void OnEnable()
+
+        void GetObjects()
         {
-            if (!Application.isPlaying)
-            {
-                cogHolder = GetComponentInChildren<CogHolder>();
-                chainGenerator = GetComponentInChildren<ChainGenerator>();
-                residual = GetComponentInChildren<Residual>();
-            }
+            _machineParts = GetComponentsInChildren<IMachinePart>();
+            cogHolder = GetComponentInChildren<CogHolder>();
+            residual = GetComponentInChildren<Residual>();
 
-            movers = GetComponentsInChildren<Mover>();
+            chainGenerator = (ChainGenerator) _machineParts.FirstOrDefault(m => m is ChainGenerator);
+            cogHolder.GetCogs(_machineParts.OfType<Cogwheel>());
+        }
 
-            if (Application.isPlaying)
+        void SetMovers()
+        {
+            ////machineParts.OfType<Mover>().ToArray();
+            _machineParts = GetComponentsInChildren<IMachinePart>();
+            _movers = GetComponentsInChildren<Mover>();
+            
+            for (var i = 0; i < _movers.Length; i++)
             {
-                print(machinerySpeed);
-                foreach (var mover in movers)
+                var mover = _movers[i];
+                mover.MachinerySetup(machinerySpeed, gameObject.GetInstanceID(), _machineParts[i].GetMoverData());
+
+                if (mover is ChainMover chainMover)
                 {
-                    mover.MachinerySpeed = machinerySpeed;
+                    chainMover.Setup(chainGenerator.links);
+                    chainMover.StartCoroutine("StartMover");
+
                 }
+                
+                // mover.DataSetup(machineParts[i].GetMoverData()); //tek sorun aynı sırayla dizilmiş olup olmamaları: mover ve machinepartın
             }
         }
 
         public void SaveOnExistingPrefab()
         {
-            if(MyPrefabHelpers.IsPrefabInstance(gameObject))
+            if (MyPrefabHelpers.IsPrefabInstance(gameObject))
                 MyPrefabHelpers.OverrideChanges(gameObject);
             else
             {
@@ -69,7 +90,6 @@ namespace Chain
                 DestroyImmediate(newInstance);
                 SaveMachinery();
             }
-           
         }
 
         public void SaveMachinery() //todo: buralar machinerye taşınabilir
@@ -84,6 +104,5 @@ namespace Chain
             else
                 residual.CleanResiduals();
         }
-
     }
 }

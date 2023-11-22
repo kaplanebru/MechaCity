@@ -5,49 +5,55 @@ using UnityEngine;
 
 namespace Chain
 {
-    public class CogMover : MonoBehaviour, Mover
+    public class CogMover : MonoBehaviour, CogComponent, Mover
     {
         public float MachinerySpeed { get; set; }
+        public int MachineryId { get; set; }
 
-        public int Id { get; set; }
+        public int CogId { get; set; }
        
         public CogData Data;
+        
+        private float _speed;
+
 
         private void OnEnable()
         {
-            ChainEvents.OnMotionStateSet += StartMotion;
-            Data = GetComponent<Cogwheel>().Data;
+            //ChainEvents.OnMotionStateSet += SendSpeed;
         }
 
-        private void Start()
+        public void MachinerySetup(float machinerySpeed, int machineryId, IMachinePartData machinePartData)
         {
-            StartMotion(Data.IsMoving); //after edit
+            MachinerySpeed = machinerySpeed;
+            MachineryId = machineryId;
+            Data = machinePartData as CogData;
+            if(Data.IsMoving)
+                ProcessMotion();
         }
-        
-        private void StartMotion(bool isMoving)
-        {
-            Data.IsMoving = isMoving;
-            if (!Data.IsMoving) return;
 
+        void ProcessMotion()
+        {
             SetSpeedByTeeth();
-            if(Data.ContactType == ChainEnums.CogContactType.ChainRelated)
-                ChainEvents.OnCogSpeedSet?.Invoke(Data.TeethCount, Data.ToothUnit);
+            SendTeethInfo();
             StartCoroutine(nameof(SpinRoutine));
         }
 
-       
+        private void SendTeethInfo()
+        {
+            if(Data.ContactType == ChainEnums.CogContactType.ChainRelated)
+                ChainEvents.OnCogSpeedSet?.Invoke(Data.TeethCount, Data.ToothUnit, MachineryId);
+        }
+
         
         public void SetSpinDirectionByCog(Cogwheel relatedCog)
         {
             Data.RotationDirection = relatedCog.Data.RotationDirection * -1;
         }
         
-        private float _speed;
 
         private void SetSpeedByTeeth()
         {
             _speed = MachinerySpeed / Data.TeethCount;
-            //print("cog speed: " + _speed);
         }
 
         IEnumerator SpinRoutine()
@@ -65,7 +71,7 @@ namespace Chain
 
         private void OnDisable()
         {
-            ChainEvents.OnMotionStateSet -= StartMotion;
+            //ChainEvents.OnMotionStateSet -= SendSpeed;
         }
 
     }

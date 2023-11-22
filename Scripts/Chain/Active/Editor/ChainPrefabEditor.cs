@@ -32,7 +32,7 @@ public class ChainPrefabEditor : Editor
     private void OnEnable()
     {
     }
-    
+
     public override void OnInspectorGUI()
     {
         if (EditorApplication.isPlaying) return;
@@ -53,8 +53,8 @@ public class ChainPrefabEditor : Editor
 
         if (GUILayout.Button("SAVE ONTO EXISTING PREFAB"))
             machineryPrefab.SaveOnExistingPrefab();
-        
-            
+
+
         EditorGUILayout.EndHorizontal();
 
         if (cogs == null || (cogs.Length > 0 && cogs[0] == null))
@@ -70,7 +70,7 @@ public class ChainPrefabEditor : Editor
             machineryPrefab.To2D();
 
         EditorGUILayout.Space();
-        
+
         GUILayout.Label("COG SETTINGS", EditorStyles.boldLabel); //\n 
         //MyEditorHelpers.DrawSeparatorLine(Color.gray);
 
@@ -101,13 +101,14 @@ public class ChainPrefabEditor : Editor
         EditorGUILayout.Space();
         if (GUILayout.Button("Generate Cogs"))
             SaveCogs();
-        
+
         EditorGUILayout.Space();
 
 
         GUILayout.Label(" _______________ADD or REMOVE COG_______________ ", EditorStyles.centeredGreyMiniLabel); //\n 
         EditorGUILayout.Space();
-        machineryPrefab.cogHolder.cogPrefab = (Cogwheel) EditorGUILayout.ObjectField("Cog Prefab",  machineryPrefab.cogHolder.cogPrefab, typeof(Cogwheel), false);
+        machineryPrefab.cogHolder.cogPrefab = (Cogwheel) EditorGUILayout.ObjectField("Cog Prefab",
+            machineryPrefab.cogHolder.cogPrefab, typeof(Cogwheel), false);
         GUILayout.BeginHorizontal();
         //GUILayout.FlexibleSpace();
         EditorGUILayout.LabelField("Add Cog With Creating New Data");
@@ -131,6 +132,8 @@ public class ChainPrefabEditor : Editor
         EditorGUILayout.Space();
 
         ////////////////CHAIN RELATED///////////////////////////////
+        machineryPrefab.machinerySpeed = EditorGUILayout.FloatField("Machinery Speed", machineryPrefab.machinerySpeed);
+
         machineryPrefab.isChainRelated = EditorGUILayout.Toggle("Chain Related", machineryPrefab.isChainRelated);
 
         if (machineryPrefab.isChainRelated)
@@ -139,14 +142,16 @@ public class ChainPrefabEditor : Editor
             EditorGUILayout.LabelField("CHAIN PROPERTIES", EditorStyles.boldLabel);
             MyEditorHelpers.DrawSeparatorLine(Color.gray);
             EditorGUILayout.Space();
-            
+
             newChainData = EditorGUILayout.Toggle("Create New Chain Data", newChainData);
-            
+
             if (newChainData)
             {
-                chainDataName = EditorGUILayout.TextField("Chain Data Name", chainDataName); //write the same name if you want to modify pool + reset pool before
+                chainDataName =
+                    EditorGUILayout.TextField("Chain Data Name",
+                        chainDataName); //write the same name if you want to modify pool + reset pool before
 
-                if (GUILayout.Button("Apply")) 
+                if (GUILayout.Button("Apply"))
                 {
                     machineryPrefab.chainGenerator.CreateChainData(chainDataName);
                     newChainData = false;
@@ -158,20 +163,18 @@ public class ChainPrefabEditor : Editor
                 Debug.LogWarning("Add Chain Generator Script");
                 return;
             }
-           
-            machineryPrefab.chainGenerator.ChainData = (ChainData) EditorGUILayout.ObjectField("Use Selected Chain Data",  machineryPrefab.chainGenerator.ChainData , typeof(ChainData),
+
+            machineryPrefab.chainGenerator.ChainData = (ChainData) EditorGUILayout.ObjectField(
+                "Use Selected Chain Data", machineryPrefab.chainGenerator.ChainData, typeof(ChainData),
                 false);
-            
-            
 
-
-            if (machineryPrefab.chainGenerator.ChainData  != null)
+            if (machineryPrefab.chainGenerator.ChainData != null)
             {
                 FillChainData();
 
                 if (GUILayout.Button("Generate Chain"))
                     GenerateChain();
-                
+
                 if (GUILayout.Button("Delete Link Pool"))
                     DeleteLinkPool();
 
@@ -187,7 +190,8 @@ public class ChainPrefabEditor : Editor
     void ShowGizmosOnSelection()
     {
         EditorGUI.BeginChangeCheck();
-        machineryPrefab.cogHolder.showGizmos = EditorGUILayout.Toggle("Show Gizmos On Selected Cog", machineryPrefab.cogHolder.showGizmos);
+        machineryPrefab.cogHolder.showGizmos =
+            EditorGUILayout.Toggle("Show Gizmos On Selected Cog", machineryPrefab.cogHolder.showGizmos);
         if (EditorGUI.EndChangeCheck())
         {
             if (!machineryPrefab.cogHolder.showGizmos)
@@ -213,7 +217,7 @@ public class ChainPrefabEditor : Editor
     {
         machineryPrefab.cogHolder.RemoveCog(cogToDestroyIndex);
         cogs = machineryPrefab.cogHolder.RestoreCogsInEditor();
-        
+
         if (cogs.Length > 0)
         {
             if (selectedIndex == cogToDestroyIndex)
@@ -226,19 +230,20 @@ public class ChainPrefabEditor : Editor
 
                 selectedIndex = newIndex;
             }
+
             cogToDestroyIndex = cogs.Length - 1;
         }
+
         GenerateChain();
         Repaint();
     }
-    
-    
+
 
     void GenerateChain()
     {
         machineryPrefab.chainGenerator.GenerateChain(SaveCogs, machineryPrefab.cogHolder.GetChainRelatedCogs());
     }
-    
+
     void SaveCogs()
     {
         foreach (var cog in cogs)
@@ -278,7 +283,8 @@ public class ChainPrefabEditor : Editor
         {
             if (GUILayout.Button("Apply"))
             {
-                cogs[i].Data = machineryPrefab.cogHolder.CreateCogData("Cog " + machineryPrefab.cogHolder.newCogIndex++);
+                cogs[i].Data =
+                    machineryPrefab.cogHolder.CreateCogData("Cog " + machineryPrefab.cogHolder.newCogIndex++);
                 changeWithNewCogData = false;
                 GenerateChain();
                 Repaint();
@@ -409,7 +415,6 @@ public class ChainPrefabEditor : Editor
         if (chainData.IsMoving)
         {
             //chainData.MachinerySpeed = EditorGUILayout.FloatField("Machinery Speed", chainData.MachinerySpeed);
-            machineryPrefab.machinerySpeed = EditorGUILayout.FloatField("Machinery Speed", machineryPrefab.machinerySpeed);
             chainData.SpeedMultiplier = EditorGUILayout.FloatField("Speed Multiplier", chainData.SpeedMultiplier);
             chainData.LinkRotationMultiplier =
                 EditorGUILayout.FloatField("Link Rotation Multiplier", chainData.LinkRotationMultiplier);
@@ -454,9 +459,9 @@ public class ChainPrefabEditor : Editor
             return;
         }
 
-        ChainEvents.OnDeleteTeethPool?.Invoke(cogs[i].Id);
+        ChainEvents.OnDeleteTeethPool?.Invoke(cogs[i].CogId);
         machineryPrefab.SaveMachinery();
-        ChainEvents.OnCreateTeethPool?.Invoke(cogs[i].Id);
+        ChainEvents.OnCreateTeethPool?.Invoke(cogs[i].CogId);
     }
 
 

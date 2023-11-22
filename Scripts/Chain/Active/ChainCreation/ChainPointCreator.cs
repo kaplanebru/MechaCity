@@ -82,7 +82,7 @@ namespace Chain
                 CommonTangentAngles(i);
             }
 
-            ChainEvents.OnMotionStateSet?.Invoke(ChainData.IsMoving);
+            //ChainEvents.OnMotionStateSet?.Invoke(ChainData.IsMoving);
         }
 
         void CommonTangentAngles(int i)

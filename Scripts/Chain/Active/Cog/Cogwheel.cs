@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Chain
 {
     [ExecuteInEditMode]
-    public class Cogwheel : MonoBehaviour, CogComponent
+    public class Cogwheel : MonoBehaviour, CogComponent, IMachinePart
     {
         public CogData Data;
         public bool drawGizmos = false;
@@ -20,7 +20,7 @@ namespace Chain
 
         [SerializeField] List<Tooth> teeth = new();
         [SerializeField] private TeethPool pool;
-        public int Id { get; set; }
+        public int CogId { get; set; }
 
         private void OnEnable()
         {
@@ -32,6 +32,7 @@ namespace Chain
                 StartPool();
                 allHoles = GetComponentsInChildren<Hole>(true);
             }
+
         }
 
 
@@ -137,14 +138,14 @@ namespace Chain
 
         private void DeletePool(int id)
         {
-            if (id != Id) return;
+            if (id != CogId) return;
             teeth.Clear();
             pool.DeletePool();
         }
 
         void CreateNewPool(int id)
         {
-            if (id != Id) return;
+            if (id != CogId) return;
             pool = CreatePool();
         }
 
@@ -176,6 +177,11 @@ namespace Chain
                 ChainEvents.OnDeleteTeethPool -= DeletePool;
                 ChainEvents.OnCreateTeethPool -= CreateNewPool;
             }
+        }
+        
+        public IMachinePartData GetMoverData()
+        {
+            return (IMachinePartData)Data;
         }
     }
 }

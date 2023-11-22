@@ -7,13 +7,18 @@ using UnityEngine;
 
 namespace Chain
 {
-    public class ChainGenerator : MonoBehaviour
+    public interface IMachinePart
+    {
+        public IMachinePartData GetMoverData();
+    }
+    public class ChainGenerator : MonoBehaviour, IMachinePart
     {
         [HideInInspector]public ChainData ChainData;
         public List<ChainLink> links = new();
         public LinksPool linksPool;
         public void GenerateChain(Action saveCogs, Cogwheel[] chainRelatedCogs)
         {
+            print(gameObject.GetInstanceID());
             if (chainRelatedCogs.Length < 2)
             {
                 ResetLinks();
@@ -88,8 +93,13 @@ namespace Chain
             return false;
         }
 
-        
 
+        public IMachinePartData MachinePartData { get; set; }
+
+        public IMachinePartData GetMoverData()
+        {
+            return (IMachinePartData)ChainData;
+        }
     }
 }
 

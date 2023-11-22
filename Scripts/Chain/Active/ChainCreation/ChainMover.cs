@@ -8,10 +8,17 @@ using UnityEngine;
 public interface Mover
 {
     public float MachinerySpeed { get; set; }
+    public int MachineryId { get; set; }
+
+    public void MachinerySetup(float machinerySpeed, int machineryId, IMachinePartData data)
+    {
+    }
 }
+
 public class ChainMover : MonoBehaviour, Mover
 {
     public float MachinerySpeed { get; set; }
+    public int MachineryId { get; set; }
 
     public ChainData Data;
 
@@ -34,54 +41,65 @@ public class ChainMover : MonoBehaviour, Mover
     private float toothUnits;
     private int counter = 0;
 
+    public void MachinerySetup(float machinerySpeed, int machineryId, IMachinePartData machinePartData)
+    {
+        MachinerySpeed = machinerySpeed;
+        MachineryId = machineryId;
+        Data = machinePartData as ChainData;
+    }
+
+    public void Setup(List<ChainLink> links)
+    {
+        _links = links;
+    }
+
    
 
-    public void StartMover()
+
+    public IEnumerator StartMover()
     {
-       
         //Data =
         //_links = 
         //linear speedin 0dan büyük olması beklenebilir
-        enabled = Data.IsMoving;
+        // enabled = Data.IsMoving;
+        if (!Data.IsMoving) yield break;
+      
+        
+        yield return new WaitUntil(() => _speedSet); //possbile bug: linear speed daha önceden set edilmiş olabilir.
+        _speedSet = false;
         MoveChain();
     }
-    
-    
 
-    private void GetTotalCogSpeed(int teethAmount, float toothUnit)
+
+    private void GetTotalCogSpeed(int teethAmount, float toothUnit, int machineryId)
     {
+        if (MachineryId != machineryId) return;
+
         totalCogTeeth += teethAmount;
         toothUnits += toothUnit;
         counter++;
-        
+
         if (counter != Data.CogAmount) return;
         counter = 0;
         SetSpeed();
     }
 
 
-    public void GetLinksAndPoints(List<ChainLink> links, List<Vector3> points)
-    {
-        print("get links event");
-
-        _links = links;
-       // _points = points; // yön değiştirince tekrar tekrar generate etmeyelim diye iptal, pointleri linklerin kendisinden alırız
-    }
-
+    private bool _speedSet = false;
     void SetSpeed()
     {
         LinearSpeed = MachinerySpeed /
                       (totalCogTeeth +
                        (Data.Unit - toothUnits / Data.CogAmount) *
                        totalCogTeeth); //fazlalığı da cogteethe eklemiş oluyoruz
-        //BOŞLUK + TEETH SİZE   /(totalCogTeeth + (Data.Unit - (teethInterval + _toothSize)) * totalCogTeeth);
-//        print("chain speed: " + LinearSpeed);
+        _speedSet = true;
     }
 
 
     void GetRotationPoints()
     {
         _points.Clear();
+        _rotations.Clear();
         foreach (var link in _links)
         {
             _rotations.Add(link.transform.rotation);
@@ -104,7 +122,7 @@ public class ChainMover : MonoBehaviour, Mover
         float speed = Data.SetMotionByGear ? LinearSpeed : Data.SpeedMultiplier;
         _rotationExtentPerLink = speed * Data.LinkRotationMultiplier;
         int j = startIndex;
-        
+
         while (true)
         {
             switch (Data.motionDirection)
@@ -112,6 +130,7 @@ public class ChainMover : MonoBehaviour, Mover
                 case ChainEnums.ChainDirection.Clockwise:
                     j++;
                     j %= _points.Count;
+                    print(j);
                     break;
                 case ChainEnums.ChainDirection.ReverseClock:
                     j--;
@@ -140,8 +159,16 @@ public class ChainMover : MonoBehaviour, Mover
 
     private void OnDisable()
     {
-        ChainEvents.OnLinksCreated -= GetLinksAndPoints;
+        //ChainEvents.OnLinksCreated -= GetLinksAndPoints;
         ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;
     }
-
 }
+
+
+// public void GetLinksAndPoints(List<ChainLink> links, List<Vector3> points)
+// {
+//     print("get links event");
+//
+//     _links = links;
+//     // _points = points; // yön değiştirince tekrar tekrar generate etmeyelim diye iptal
+// }
