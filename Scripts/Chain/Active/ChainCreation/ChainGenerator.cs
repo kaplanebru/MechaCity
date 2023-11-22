@@ -18,7 +18,6 @@ namespace Chain
         public LinksPool linksPool;
         public void GenerateChain(Action saveCogs, Cogwheel[] chainRelatedCogs)
         {
-            print(gameObject.GetInstanceID());
             if (chainRelatedCogs.Length < 2)
             {
                 ResetLinks();

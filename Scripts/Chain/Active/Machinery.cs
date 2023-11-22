@@ -36,7 +36,7 @@ namespace Chain
         
         private void Start()
         {
-            if (transform.CompareTag("Model"))
+            //if (transform.CompareTag("Model"))
                 MyPrefabHelpers.UnpackPrefabInstance(gameObject);
         }
         
