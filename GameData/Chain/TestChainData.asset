@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a4bff152c3eea74589670c92100d647, type: 3}
   m_Name: TestChainData
   m_EditorClassIdentifier: 
-  LinkInterval: 2.3
-  LinkSize: {x: 1, y: 1.4, z: 1}
-  RadiusOffset: 0.5
+  LinkInterval: 1.2
+  LinkSize: {x: 0.5, y: 1.4, z: 0.5}
+  RadiusOffset: 0.4
   Tension: 0
   linkPrefab: {fileID: 155826592908102890, guid: dde0c66cc1ed6a2408573931ede16f6e, type: 3}
   LinksPoolPrefab: {fileID: 5377034247376129179, guid: 5f519c935394d1649a73ae3accdfd89d, type: 3}

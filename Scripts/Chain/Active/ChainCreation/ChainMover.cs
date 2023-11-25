@@ -38,7 +38,7 @@ public class ChainMover : MonoBehaviour, Mover
 
     private int totalCogTeeth = 0;
     private int _toothSize;
-    private float toothUnits;
+    private float toothIntervals;
     private int counter = 0;
 
     public void MachinerySetup(float machinerySpeed, int machineryId, IMachinePartData machinePartData)
@@ -71,12 +71,12 @@ public class ChainMover : MonoBehaviour, Mover
     }
 
 
-    private void GetTotalCogSpeed(int teethAmount, float toothUnit, int machineryId)
+    private void GetTotalCogSpeed(int teethAmount, float toothInterval, int machineryId)
     {
         if (MachineryId != machineryId) return;
 
         totalCogTeeth += teethAmount;
-        toothUnits += toothUnit;
+        toothIntervals += toothInterval;
         counter++;
 
         if (counter != Data.CogAmount) return;
@@ -88,10 +88,16 @@ public class ChainMover : MonoBehaviour, Mover
     private bool _speedSet = false;
     void SetSpeed()
     {
-        LinearSpeed = MachinerySpeed /
-                      (totalCogTeeth +
-                       (Data.LinkInterval - toothUnits / Data.CogAmount) *
-                       totalCogTeeth); //fazlalığı da cogteethe eklemiş oluyoruz
+        var surplus = (Data.LinkInterval - (toothIntervals / Data.CogAmount)) * _links.Count; 
+        //var surplus = (Data.LinkInterval - (toothIntervals / Data.CogAmount)) * totalCogTeeth; 
+        // LinearSpeed = MachinerySpeed / (totalCogTeeth + surplus); 
+
+        LinearSpeed = MachinerySpeed / Data.CogAmount / (_links.Count + surplus);
+        print("speed: " + LinearSpeed + " SURPLUS: " + surplus);
+        print("tooth interval: " +toothIntervals / Data.CogAmount);
+        print(toothIntervals/ Data.CogAmount);
+        print(Data.LinkInterval);
+       
         _speedSet = true;
     }
 
