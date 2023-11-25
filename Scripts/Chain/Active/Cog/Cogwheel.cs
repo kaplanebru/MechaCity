@@ -62,7 +62,21 @@ namespace Chain
             var scale = Vector3.one;
             scale.x = radius * 2;
             scale.z = radius * 2;
+            scale.y = Data.Volume;
             cogObject.transform.localScale = scale;
+        }
+        
+
+        void HoleDepth()
+        {
+            float multiplier = 1;
+            foreach (var hole in holes)
+            {
+                var pos = hole.transform.localPosition;
+                pos.y = Data.HoleDepth * multiplier;
+                multiplier *= -1;
+                hole.transform.localPosition = pos;
+            }
         }
 
         Hole[] GetHolesByType(ChainEnums.HoleType holeType)
@@ -76,11 +90,13 @@ namespace Chain
 
         void SetHoleSizeAndType()
         {
-            if (oldHoleType != Data.HoleType)
-            {
-                holes = GetHolesByType(Data.HoleType);
-                oldHoleType = Data.HoleType;
-            }
+            // if (oldHoleType != Data.HoleType)
+            // {
+            //     holes = GetHolesByType(Data.HoleType);
+            //     oldHoleType = Data.HoleType;
+            // }
+            holes = GetHolesByType(Data.HoleType);
+
             
             var holeSize = (Data.Radius - Data.HoleSize) * 2;
             //if (Math.Abs(oldHoleSize - holeSize) < 0.01f) return;
@@ -95,6 +111,8 @@ namespace Chain
 
                 hole.transform.localScale = scale; //Vector3.Scale(scale, inverseParentScale);
             }
+            
+            HoleDepth();
         }
 
         public void AddData(CogData data)

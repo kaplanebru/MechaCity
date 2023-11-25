@@ -311,6 +311,8 @@ public class ChainPrefabEditor : Editor
         GUILayout.EndHorizontal();
 
         EditorGUILayout.Space();
+        
+        EditorGUILayout.LabelField("Shape Settings", EditorStyles.boldLabel);
 
         EditorGUI.BeginChangeCheck();
         Data.Radius = EditorGUILayout.FloatField("Radius", Data.Radius);
@@ -321,21 +323,27 @@ public class ChainPrefabEditor : Editor
         }
 
         EditorGUI.BeginChangeCheck();
-        Data.ContactType = (ChainEnums.CogContactType) EditorGUILayout.EnumPopup("Contact Type", Data.ContactType);
+
+        Data.Volume = EditorGUILayout.FloatField("Cog Volume", Data.Volume);
         if (Data.ContactType == ChainEnums.CogContactType.CogRelated)
         {
             Data.RelatedCog =
                 (Cogwheel) EditorGUILayout.ObjectField("Related Cog", Data.RelatedCog, typeof(Cogwheel), true);
         }
 
-        Data.HoleSize = EditorGUILayout.FloatField("Hole Size", Data.HoleSize);
         Data.HoleType = (ChainEnums.HoleType) EditorGUILayout.EnumPopup("Hole Type", Data.HoleType);
-
+        Data.HoleSize = EditorGUILayout.FloatField("Hole Size", Data.HoleSize);
+        Data.HoleDepth = EditorGUILayout.FloatField("Hole Depth", Data.HoleDepth);
+        
         if (!machineryPrefab.isChainRelated || Data.ContactType == ChainEnums.CogContactType.Indifferent)
         {
             Data.IsMoving = EditorGUILayout.Toggle("Is Moving", Data.IsMoving);
             Data.RotationDirection = EditorGUILayout.IntField("Rotation Direction", Data.RotationDirection);
         }
+        
+        EditorGUILayout.Space();
+        
+        Data.ContactType = (ChainEnums.CogContactType) EditorGUILayout.EnumPopup("Contact Type", Data.ContactType);
 
         if (EditorGUI.EndChangeCheck())
             AccidentalSetupCogsWithSameData(i);

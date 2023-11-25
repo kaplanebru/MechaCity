@@ -10,13 +10,14 @@ namespace Chain
     public class CogData : ScriptableObject, IMachinePartData
     {
         public float Radius = 4;
+        public float Volume = 1;
+        public float HoleDepth = 0;
         public ChainEnums.CogContactType ContactType; //Todo: direction set edilen yer
         public int RotationDirection = 1;
         public float HoleSize = 2f;
         public ChainEnums.HoleType HoleType;
         public bool IsMoving = true;
         public TeethPool TeethPoolPrefab;
-
         public Cogwheel RelatedCog; //If CONTACT TYPE IS COG RELATED
         
 
