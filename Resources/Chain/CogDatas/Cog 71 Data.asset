@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Cog 71 Data
   m_EditorClassIdentifier: 
   Radius: 3
+  Volume: 1
+  HoleDepth: 0
   ContactType: 0
   RotationDirection: -1
   HoleSize: 2

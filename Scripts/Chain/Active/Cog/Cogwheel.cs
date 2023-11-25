@@ -42,7 +42,8 @@ namespace Chain
         
         public void Setup()
         {
-            SetCogSize();
+            SetCogRadius();
+            SetCogVolume();
             SetHoleSizeAndType(); //hole size radiusla bağlantılı
 
             StartPool();
@@ -50,18 +51,25 @@ namespace Chain
         }
         public void AccidentalSetup()
         {
+            SetCogVolume();
             SetHoleSizeAndType(); //burda teethle ve chainle işimiz yok
         }
 
        
 
-        void SetCogSize()
+        void SetCogRadius()
         {
             var radius = Data.Radius;
             if(radius == 0) return;
             var scale = Vector3.one;
             scale.x = radius * 2;
             scale.z = radius * 2;
+            cogObject.transform.localScale = scale;
+        }
+
+        void SetCogVolume()
+        {
+            var scale = cogObject.transform.localScale;
             scale.y = Data.Volume;
             cogObject.transform.localScale = scale;
         }

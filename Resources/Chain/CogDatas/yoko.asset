@@ -12,17 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24f08cdc525e724ca5966a1f7405f6c, type: 3}
   m_Name: yoko
   m_EditorClassIdentifier: 
-  Radius: 8
+  Radius: 7
+  Volume: 3
+  HoleDepth: 1
   ContactType: 0
   RotationDirection: -1
-  HoleSize: 2
-  HoleType: 1
+  HoleSize: 1
+  HoleType: 0
   IsMoving: 1
   TeethPoolPrefab: {fileID: 3191762794047512475, guid: de40dfbf6ac9d3c4982e6a4a60920c76, type: 3}
   RelatedCog: {fileID: 0}
-  toothScale: {x: 0.6, y: 1, z: 0.6}
+  toothScale: {x: 0.6, y: 1.5, z: 0.6}
   ToothGap: 60
   MinGapLimit: 6
   Equalize: 0
-  TeethCount: 48
-  ToothUnit: 1.0464498
+  TeethCount: 42
+  ToothUnit: 1.0462219
