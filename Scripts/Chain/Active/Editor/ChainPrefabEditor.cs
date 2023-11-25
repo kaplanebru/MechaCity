@@ -18,21 +18,13 @@ public class ChainPrefabEditor : Editor
 
     [SerializeField] private bool newChainData;
     private string chainDataName;
-
-
+    
     [SerializeField] private CogData cogData;
-
-
     public Machinery machineryPrefab;
     private GUIStyle _narrowButton;
 
     [SerializeField] int cogToDestroyIndex;
-
-
-    private void OnEnable()
-    {
-    }
-
+    
     public override void OnInspectorGUI()
     {
         if (EditorApplication.isPlaying) return;
@@ -110,7 +102,7 @@ public class ChainPrefabEditor : Editor
         machineryPrefab.cogHolder.cogPrefab = (Cogwheel) EditorGUILayout.ObjectField("Cog Prefab",
             machineryPrefab.cogHolder.cogPrefab, typeof(Cogwheel), false);
         GUILayout.BeginHorizontal();
-        //GUILayout.FlexibleSpace();
+        
         EditorGUILayout.LabelField("Add Cog With Creating New Data");
         if (GUILayout.Button("Apply"))
             AddCog(true);
@@ -142,15 +134,21 @@ public class ChainPrefabEditor : Editor
             EditorGUILayout.LabelField("CHAIN PROPERTIES", EditorStyles.boldLabel);
             MyEditorHelpers.DrawSeparatorLine(Color.gray);
             EditorGUILayout.Space();
-            
 
+            
+            EditorGUILayout.LabelField("Set Chain Data: ", EditorStyles.boldLabel);
+
+            machineryPrefab.chainGenerator.ChainData = (ChainData) EditorGUILayout.ObjectField(
+                "Use Selected Chain Data", machineryPrefab.chainGenerator.ChainData, typeof(ChainData),
+                false);
+            EditorGUILayout.BeginHorizontal();
             newChainData = EditorGUILayout.Toggle("Create New Chain Data", newChainData);
+            EditorGUILayout.LabelField("(Optional)");
+            EditorGUILayout.EndHorizontal();
 
             if (newChainData)
             {
-                chainDataName =
-                    EditorGUILayout.TextField("Chain Data Name",
-                        chainDataName); //write the same name if you want to modify pool + reset pool before
+                chainDataName = EditorGUILayout.TextField("Chain Data Name", chainDataName);
 
                 if (GUILayout.Button("Apply"))
                 {
@@ -158,6 +156,8 @@ public class ChainPrefabEditor : Editor
                     newChainData = false;
                 }
             }
+            
+            EditorGUILayout.Space();
 
             if (machineryPrefab.chainGenerator == null)
             {
@@ -165,9 +165,7 @@ public class ChainPrefabEditor : Editor
                 return;
             }
 
-            machineryPrefab.chainGenerator.ChainData = (ChainData) EditorGUILayout.ObjectField(
-                "Use Selected Chain Data", machineryPrefab.chainGenerator.ChainData, typeof(ChainData),
-                false);
+          
 
             if (machineryPrefab.chainGenerator.ChainData != null)
             {
@@ -313,7 +311,7 @@ public class ChainPrefabEditor : Editor
         GUILayout.EndHorizontal();
 
         EditorGUILayout.Space();
-        
+
         EditorGUILayout.LabelField("Shape Settings", EditorStyles.boldLabel);
 
         EditorGUI.BeginChangeCheck();
@@ -332,21 +330,21 @@ public class ChainPrefabEditor : Editor
             Data.RelatedCog =
                 (Cogwheel) EditorGUILayout.ObjectField("Related Cog", Data.RelatedCog, typeof(Cogwheel), true);
         }
-        
+
         EditorGUILayout.Space();
 
         Data.HoleType = (ChainEnums.HoleType) EditorGUILayout.EnumPopup("Hole Type", Data.HoleType);
         Data.HoleSize = EditorGUILayout.FloatField("Hole Size", Data.HoleSize);
         Data.HoleDepth = EditorGUILayout.FloatField("Hole Depth", Data.HoleDepth);
-        
+
         if (!machineryPrefab.isChainRelated || Data.ContactType == ChainEnums.CogContactType.Indifferent)
         {
             Data.IsMoving = EditorGUILayout.Toggle("Is Moving", Data.IsMoving);
             Data.RotationDirection = EditorGUILayout.IntField("Rotation Direction", Data.RotationDirection);
         }
-        
+
         EditorGUILayout.Space();
-        
+
         Data.ContactType = (ChainEnums.CogContactType) EditorGUILayout.EnumPopup("Contact Type", Data.ContactType);
 
         if (EditorGUI.EndChangeCheck())
@@ -404,25 +402,25 @@ public class ChainPrefabEditor : Editor
     {
         ChainData chainData = machineryPrefab.chainGenerator.ChainData;
         chainData.OnTesting = EditorGUILayout.Toggle("On Testing", chainData.OnTesting);
-        
+
         EditorGUI.BeginChangeCheck();
         //chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
         chainData.RadiusOffset = EditorGUILayout.FloatField("Distance from Cogs", chainData.RadiusOffset);
         chainData.Tension = EditorGUILayout.FloatField("Tension", chainData.Tension);
-        
+
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Chain Link Settings", EditorStyles.boldLabel);
         chainData.LinkInterval = EditorGUILayout.FloatField("Link Interval", chainData.LinkInterval);
         chainData.LinkSize = EditorGUILayout.Vector3Field("Link Size", chainData.LinkSize);
         chainData.LinkRotationEffect = EditorGUILayout.Toggle("Rotate Links", chainData.LinkRotationEffect);
 
-        if(EditorGUI.EndChangeCheck())
+        if (EditorGUI.EndChangeCheck())
             GenerateChain();
 
         GUILayout.BeginHorizontal();
         chainData.LinksPoolPrefab = (LinksPool) EditorGUILayout.ObjectField("Links Pool Prefab",
             chainData.LinksPoolPrefab, typeof(LinksPool), false);
-        
+
         if (GUILayout.Button("Apply")) //, narrowButton))
             HandleLinksPoolChange();
 

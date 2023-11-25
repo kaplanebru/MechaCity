@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a4bff152c3eea74589670c92100d647, type: 3}
   m_Name: TestChainData
   m_EditorClassIdentifier: 
-  Type: 0
-  Unit: 2.3
+  LinkInterval: 2.3
+  LinkSize: {x: 1, y: 1.4, z: 1}
   RadiusOffset: 0.5
   Tension: 0
   linkPrefab: {fileID: 155826592908102890, guid: dde0c66cc1ed6a2408573931ede16f6e, type: 3}
