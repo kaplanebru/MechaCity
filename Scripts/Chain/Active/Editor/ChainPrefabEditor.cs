@@ -142,6 +142,7 @@ public class ChainPrefabEditor : Editor
             EditorGUILayout.LabelField("CHAIN PROPERTIES", EditorStyles.boldLabel);
             MyEditorHelpers.DrawSeparatorLine(Color.gray);
             EditorGUILayout.Space();
+            
 
             newChainData = EditorGUILayout.Toggle("Create New Chain Data", newChainData);
 
@@ -172,14 +173,16 @@ public class ChainPrefabEditor : Editor
             {
                 FillChainData();
 
+                EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("Generate Chain"))
                     GenerateChain();
 
-                if (GUILayout.Button("Delete Link Pool"))
-                    DeleteLinkPool();
+                // if (GUILayout.Button("Delete Link Pool"))
+                //     DeleteLinkPool();
 
-                if (GUILayout.Button("Deactivate Link pool"))
+                if (GUILayout.Button("Reset Links"))
                     machineryPrefab.chainGenerator.ResetLinks();
+                EditorGUILayout.EndHorizontal();
             }
         }
 
@@ -301,7 +304,6 @@ public class ChainPrefabEditor : Editor
         {
             Debug.Log(cogs.Length);
             Debug.Log(cogs[i].name);
-
             return;
         }
 
@@ -330,6 +332,8 @@ public class ChainPrefabEditor : Editor
             Data.RelatedCog =
                 (Cogwheel) EditorGUILayout.ObjectField("Related Cog", Data.RelatedCog, typeof(Cogwheel), true);
         }
+        
+        EditorGUILayout.Space();
 
         Data.HoleType = (ChainEnums.HoleType) EditorGUILayout.EnumPopup("Hole Type", Data.HoleType);
         Data.HoleSize = EditorGUILayout.FloatField("Hole Size", Data.HoleSize);
@@ -400,24 +404,32 @@ public class ChainPrefabEditor : Editor
     {
         ChainData chainData = machineryPrefab.chainGenerator.ChainData;
         chainData.OnTesting = EditorGUILayout.Toggle("On Testing", chainData.OnTesting);
-        chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
-        chainData.Unit = EditorGUILayout.FloatField("Unit", chainData.Unit);
-        chainData.RadiusOffset =
-            EditorGUILayout.FloatField("Radius Offset",
-                chainData.RadiusOffset); //todo: adı cog offset olarak değiştirilebilir
+        
+        EditorGUI.BeginChangeCheck();
+        //chainData.Type = (ChainEnums.ChainType) EditorGUILayout.EnumPopup("Type", chainData.Type);
+        chainData.RadiusOffset = EditorGUILayout.FloatField("Distance from Cogs", chainData.RadiusOffset);
         chainData.Tension = EditorGUILayout.FloatField("Tension", chainData.Tension);
+        
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Chain Link Settings", EditorStyles.boldLabel);
+        chainData.LinkInterval = EditorGUILayout.FloatField("Link Interval", chainData.LinkInterval);
+        chainData.LinkSize = EditorGUILayout.Vector3Field("Link Size", chainData.LinkSize);
+        chainData.LinkRotationEffect = EditorGUILayout.Toggle("Rotate Links", chainData.LinkRotationEffect);
+
+        if(EditorGUI.EndChangeCheck())
+            GenerateChain();
 
         GUILayout.BeginHorizontal();
         chainData.LinksPoolPrefab = (LinksPool) EditorGUILayout.ObjectField("Links Pool Prefab",
             chainData.LinksPoolPrefab, typeof(LinksPool), false);
-
-
+        
         if (GUILayout.Button("Apply")) //, narrowButton))
             HandleLinksPoolChange();
 
         GUILayout.EndHorizontal();
+        EditorGUILayout.Space();
 
-        chainData.SetRadiusByGear = EditorGUILayout.Toggle("Set Radius By Cog", chainData.SetRadiusByGear);
+        //chainData.SetRadiusByGear = EditorGUILayout.Toggle("Set Radius By Cog", chainData.SetRadiusByGear);
         chainData.IsMoving = EditorGUILayout.Toggle("Is Moving", chainData.IsMoving);
 
         if (chainData.IsMoving)
@@ -430,7 +442,6 @@ public class ChainPrefabEditor : Editor
             chainData.motionDirection =
                 (ChainEnums.ChainDirection) EditorGUILayout.EnumPopup("Motion Direction", chainData.motionDirection);
             chainData.SetMotionByGear = EditorGUILayout.Toggle("Set Motion By Cog", chainData.SetMotionByGear);
-            chainData.LinkRotationEffect = EditorGUILayout.Toggle("Rotate Links", chainData.LinkRotationEffect);
         }
     }
 

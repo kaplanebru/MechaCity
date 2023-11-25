@@ -45,6 +45,7 @@ namespace Chain
             {
                 var link = Data.Pool.GetItem();
                 link.transform.localPosition = Data.ChainPoints[i];
+                link.transform.localScale = Data.ChainData.LinkSize;
                 
                 _links.Add(link);
                 SetLookRotations(i, link);

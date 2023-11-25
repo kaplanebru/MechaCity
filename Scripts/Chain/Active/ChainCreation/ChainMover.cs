@@ -90,7 +90,7 @@ public class ChainMover : MonoBehaviour, Mover
     {
         LinearSpeed = MachinerySpeed /
                       (totalCogTeeth +
-                       (Data.Unit - toothUnits / Data.CogAmount) *
+                       (Data.LinkInterval - toothUnits / Data.CogAmount) *
                        totalCogTeeth); //fazlalığı da cogteethe eklemiş oluyoruz
         _speedSet = true;
     }

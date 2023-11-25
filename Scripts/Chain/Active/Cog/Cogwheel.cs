@@ -129,7 +129,6 @@ namespace Chain
         }
 
         private TeethGenerator _teethGenerator;
-        private Vector3 _toothScale;
         void GenerateTeeth()
         {
             // if(_toothScale != Data.toothScale && _teethGenerator != null)

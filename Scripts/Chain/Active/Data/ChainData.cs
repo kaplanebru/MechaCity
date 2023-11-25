@@ -9,8 +9,9 @@ namespace Chain
     [CreateAssetMenu(fileName = nameof(ChainData))]
     public class ChainData : ScriptableObject, IMachinePartData
     {
-        public ChainEnums.ChainType Type = ChainEnums.ChainType.BikeChain;
-        public float Unit = 2.3f;
+        //public ChainEnums.ChainType Type = ChainEnums.ChainType.BikeChain;
+        public float LinkInterval = 2.3f;
+        public Vector3 LinkSize = Vector3.one;
         public float RadiusOffset = 0.5f;
         public float Tension = 0f; //Linear Offset
         public ChainLink linkPrefab;

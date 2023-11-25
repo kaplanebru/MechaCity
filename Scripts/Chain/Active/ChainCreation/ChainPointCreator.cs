@@ -97,7 +97,7 @@ namespace Chain
                 relatedArc.radius);
 
 
-            arc.baseAngle = TrigonometryHelper.AngleBySin(ChainData.Unit, _arcs[i].radius);
+            arc.baseAngle = TrigonometryHelper.AngleBySin(ChainData.LinkInterval, _arcs[i].radius);
             arc.edgeAngles.End = TrigonometryHelper.AngleInCirclePoint(
                 tangentPoints[0],
                 arc.cog.transform.localPosition) - ChainData.Tension * arc.radius;
@@ -247,11 +247,11 @@ namespace Chain
         {
             _linearPointAmount =
                 TrigonometryHelper.LinearPointAmountByDistance(_arcs[i].nextArcPoint, _arcs[i].arcPoints.Last(),
-                    ChainData.Unit);
+                    ChainData.LinkInterval);
 
             Vector3 edgeDirection =
                 (_arcs[i].nextArcPoint - _arcs[i].arcPoints.Last()).normalized; //arcs[i].arcPoints.Last()
-            Vector3 unitDistance = edgeDirection * ChainData.Unit;
+            Vector3 unitDistance = edgeDirection * ChainData.LinkInterval;
 
             var arcPoints = _arcs[i].arcPoints;
             for (int j = 0; j < _linearPointAmount; j++)
