@@ -48,12 +48,14 @@ namespace Chain
             cogs[i].drawGizmos = true;
         }
 
-        public void AddCog(bool isNew, CogData cogData = null)
+        public void AddCog(bool isNew, CogData cogData = null, string cogName = null)
         {
             var newCog = Instantiate(cogPrefab, transform);
-            newCog.name = "Cog " + newCogIndex++;
+           
+            if (isNew)
+                newCog.name = cogName; //"Cog " + newCogIndex++;
+            
             newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
-
             newCog.transform.localPosition = NewAddedCogPos(newCog.Data.Radius);
             cogs.Add(newCog);
             newCog.Setup();
@@ -62,7 +64,7 @@ namespace Chain
         public CogData CreateCogData(string cogName)
         {
             var cogData = ScriptableObject.CreateInstance<CogData>();
-            AssetDatabase.CreateAsset(cogData, MyEditorHelpers.WriteAssetPath(cogName + " Data", "CogDatas"));
+            AssetDatabase.CreateAsset(cogData, MyEditorHelpers.WriteAssetPath(cogName, "CogDatas")); //cogName + " Data", "CogDatas")
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

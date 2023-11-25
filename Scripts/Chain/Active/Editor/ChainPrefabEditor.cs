@@ -101,11 +101,11 @@ public class ChainPrefabEditor : Editor
         EditorGUILayout.Space();
         machineryPrefab.cogHolder.cogPrefab = (Cogwheel) EditorGUILayout.ObjectField("Cog Prefab",
             machineryPrefab.cogHolder.cogPrefab, typeof(Cogwheel), false);
-        GUILayout.BeginHorizontal();
         
-        EditorGUILayout.LabelField("Add Cog With Creating New Data");
+        GUILayout.BeginHorizontal();
+        cogDataName = EditorGUILayout.TextField( "Add Cog Creating New Data",cogDataName);
         if (GUILayout.Button("Apply"))
-            AddCog(true);
+            AddCog(true, cogDataName);
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
@@ -204,9 +204,9 @@ public class ChainPrefabEditor : Editor
     }
 
 
-    void AddCog(bool isNew)
+    void AddCog(bool isNew, string cogName = null)
     {
-        machineryPrefab.cogHolder.AddCog(isNew, cogData);
+        machineryPrefab.cogHolder.AddCog(isNew, cogData, cogName);
         cogs = machineryPrefab.cogHolder.RestoreCogsInEditor();
         selectedIndex = cogs.Length - 1;
         cogToDestroyIndex = selectedIndex;
@@ -275,8 +275,6 @@ public class ChainPrefabEditor : Editor
                 machineryPrefab.cogHolder.cogs[i].Data = otherCogData;
                 GenerateChain();
                 changeCogData = false;
-                //Repaint();
-                // SaveMachinery();
             }
         }
 
@@ -284,8 +282,8 @@ public class ChainPrefabEditor : Editor
         {
             if (GUILayout.Button("Apply"))
             {
-                cogs[i].Data =
-                    machineryPrefab.cogHolder.CreateCogData("Cog " + machineryPrefab.cogHolder.newCogIndex++);
+                cogDataName = EditorGUILayout.TextField("Cog Data Name", cogDataName);
+                cogs[i].Data = machineryPrefab.cogHolder.CreateCogData("Cog " + cogDataName); //machineryPrefab.cogHolder.newCogIndex++
                 changeWithNewCogData = false;
                 GenerateChain();
                 Repaint();
@@ -293,6 +291,9 @@ public class ChainPrefabEditor : Editor
             }
         }
     }
+    
+    string cogDataName;
+    
 
     void FillCogData(int i)
     {
@@ -480,9 +481,5 @@ public class ChainPrefabEditor : Editor
         machineryPrefab.SaveMachinery();
         ChainEvents.OnCreateTeethPool?.Invoke(cogs[i].CogId);
     }
-
-
-    private void OnDisable()
-    {
-    }
+    
 }
