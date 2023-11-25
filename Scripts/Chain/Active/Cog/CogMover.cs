@@ -40,8 +40,8 @@ namespace Chain
 
         private void SendTeethInfo()
         {
-            if(Data.ContactType == ChainEnums.CogContactType.ChainRelated)
-                ChainEvents.OnCogSpeedSet?.Invoke(Data.TeethCount, Data.ToothUnit, MachineryId);
+            if (Data.ContactType == ChainEnums.CogContactType.ChainRelated)
+                ChainEvents.OnCogSpeedSet?.Invoke(_speed * Data.Radius, MachineryId); //(Data.TeethCount, Data.ToothUnit, MachineryId);
         }
 
         

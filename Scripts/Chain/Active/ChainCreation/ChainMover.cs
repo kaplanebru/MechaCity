@@ -71,12 +71,14 @@ public class ChainMover : MonoBehaviour, Mover
     }
 
 
-    private void GetTotalCogSpeed(int teethAmount, float toothInterval, int machineryId)
+    private float totalCogSpeed = 0;
+    private void GetTotalCogSpeed(float cogSpeed, int machineryId)//(int teethAmount, float toothInterval, int machineryId)
     {
         if (MachineryId != machineryId) return;
 
-        totalCogTeeth += teethAmount;
-        toothIntervals += toothInterval;
+        totalCogSpeed += cogSpeed;
+        // totalCogTeeth += teethAmount;
+        // toothIntervals += toothInterval;
         counter++;
 
         if (counter != Data.CogAmount) return;
@@ -84,21 +86,25 @@ public class ChainMover : MonoBehaviour, Mover
         SetSpeed();
     }
 
+    void ResetCogValues()
+    {
+        totalCogTeeth = 0;
+        totalCogSpeed = 0;
+        totalCogTeeth = 0;
+        counter = 0;
+    }
+
 
     private bool _speedSet = false;
     void SetSpeed()
     {
-        var surplus = (Data.LinkInterval - (toothIntervals / Data.CogAmount)) * _links.Count; 
+        LinearSpeed = totalCogSpeed / Data.CogAmount /_links.Count * 2; //TODO: 2 yerine centerdan ortalama yarı çap hesabı mı? total cogs - 1 mi? deneyerek bak
         //var surplus = (Data.LinkInterval - (toothIntervals / Data.CogAmount)) * totalCogTeeth; 
         // LinearSpeed = MachinerySpeed / (totalCogTeeth + surplus); 
+        print(LinearSpeed);
 
-        LinearSpeed = MachinerySpeed / Data.CogAmount / (_links.Count + surplus);
-        print("speed: " + LinearSpeed + " SURPLUS: " + surplus);
-        print("tooth interval: " +toothIntervals / Data.CogAmount);
-        print(toothIntervals/ Data.CogAmount);
-        print(Data.LinkInterval);
-       
         _speedSet = true;
+        ResetCogValues();
     }
 
 

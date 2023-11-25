@@ -11,7 +11,7 @@ public class ChainEvents
      // public static Action OnLinksReady; += save machinery
     
    // public static Action<bool> OnMotionStateSet; //todo: startta yapılır: application is playingse
-    public static Action<int, float, int> OnCogSpeedSet; //todo: Maybe: Bunu moverda yap. sürekli set edilmesine gerek yok. application is playing
+    public static Action<float, int> OnCogSpeedSet;  //Action<int, float, int> 
 
    
     //public static Action<Cogwheel[], ChainPointCreator> OnChainRequest; //gerek yok chain spawnera ulaşıyoruz zaten
