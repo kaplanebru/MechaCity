@@ -48,14 +48,12 @@ namespace Chain
             cogs[i].drawGizmos = true;
         }
 
-        public void AddCog(bool isNew, CogData cogData = null, string cogName = null)
+        public void AddCog(bool isNew, CogData cogData = null, string cogDataName = null)
         {
             var newCog = Instantiate(cogPrefab, transform);
-           
-            if (isNew)
-                newCog.name = cogName; //"Cog " + newCogIndex++;
+            newCog.name = "Cog " + newCogIndex++;
             
-            newCog.AddData(isNew ? CreateCogData(newCog.name) : cogData);
+            newCog.AddData(isNew ? CreateCogData(cogDataName) : cogData);
             newCog.transform.localPosition = NewAddedCogPos(newCog.Data.Radius);
             cogs.Add(newCog);
             newCog.Setup();

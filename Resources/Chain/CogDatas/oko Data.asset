@@ -16,7 +16,7 @@ MonoBehaviour:
   Volume: 1
   HoleDepth: 0
   ContactType: 0
-  RotationDirection: 1
+  RotationDirection: -1
   HoleSize: 2
   HoleType: 0
   IsMoving: 1
@@ -26,5 +26,5 @@ MonoBehaviour:
   ToothGap: 60
   MinGapLimit: 6
   Equalize: 0
-  TeethCount: 0
-  ToothUnit: 0
+  TeethCount: 24
+  ToothUnit: 1.0442022
