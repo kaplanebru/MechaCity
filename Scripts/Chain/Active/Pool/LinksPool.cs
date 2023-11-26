@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using GenericHelper;
-using UnityEditor;
 using UnityEngine;
 
 namespace Chain

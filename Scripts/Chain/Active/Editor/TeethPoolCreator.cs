@@ -1,4 +1,3 @@
-using GenericHelper;
 using UnityEditor;
 
 namespace Chain

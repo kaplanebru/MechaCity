@@ -1,8 +1,5 @@
-using System;
-using System.Linq;
 using Chain;
 using GenericHelper;
-using UnityEditor;
 using UnityEngine;
 
 [ExecuteInEditMode]
