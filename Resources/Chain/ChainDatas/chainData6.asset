@@ -12,19 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a4bff152c3eea74589670c92100d647, type: 3}
   m_Name: chainData6
   m_EditorClassIdentifier: 
-  Type: 0
-  UpwardsAxis: 0
-  Unit: 2.3
+  LinkInterval: 2.3
+  LinkSize: {x: 1, y: 1, z: 1}
   RadiusOffset: 0.5
   Tension: -0.5
-  linkPrefab: {fileID: 0}
-  LinksPoolPrefab: {fileID: 0}
-  MachinerySpeed: 10
+  LinksPoolPrefab: {fileID: 960227436772478937, guid: 4bbc30ba29c230d47b3dc7d11a0854b1, type: 3}
   SpeedMultiplier: 0.1
   LinkRotationMultiplier: 1
   motionDirection: 0
   SetRadiusByGear: 1
   SetMotionByGear: 1
   IsMoving: 1
-  FollowGearRotation: 1
-  CogAmount: 0
+  LinkRotationEffect: 0
+  CogAmount: 5
+  OnTesting: 0

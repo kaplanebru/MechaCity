@@ -14,10 +14,9 @@ namespace Chain
         public Vector3 LinkSize = Vector3.one;
         public float RadiusOffset = 0.5f;
         public float Tension = 0f; //Linear Offset
-        public ChainLink linkPrefab;
         public LinksPool LinksPoolPrefab;
 
-        public float SpeedMultiplier = 0.1f;
+        public float SpeedMultiplier = 1f;
         public float LinkRotationMultiplier = 1f;
         public ChainEnums.ChainDirection motionDirection = ChainEnums.ChainDirection.Clockwise;
         

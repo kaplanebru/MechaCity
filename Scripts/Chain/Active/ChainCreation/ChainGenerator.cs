@@ -51,6 +51,8 @@ namespace Chain
         
         public void ResetLinks() //direkt pooldan yapılabilir
         {
+            if (linksPool.pool.Count == 0)
+                PoolNull();
             links.ForEach(l => linksPool.ReleaseItem(l));
             links.Clear();
         }
