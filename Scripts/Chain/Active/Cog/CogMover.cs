@@ -15,12 +15,7 @@ namespace Chain
         public CogData Data;
         
         private float _speed;
-
-
-        private void OnEnable()
-        {
-            //ChainEvents.OnMotionStateSet += SendSpeed;
-        }
+        
 
         public void MachinerySetup(float machinerySpeed, int machineryId, IMachinePartData machinePartData)
         {
@@ -34,14 +29,16 @@ namespace Chain
         void ProcessMotion()
         {
             SetSpeedByTeeth();
-            SendTeethInfo();
+            SendLinearSpeed();
             StartCoroutine(nameof(SpinRoutine));
         }
 
-        private void SendTeethInfo()
+        private void SendLinearSpeed()
         {
             if (Data.ContactType == ChainEnums.CogContactType.ChainRelated)
-                ChainEvents.OnCogSpeedSet?.Invoke(_speed * Data.Radius, MachineryId); //(Data.TeethCount, Data.ToothUnit, MachineryId);
+            {
+                ChainEvents.OnCogSpeedSet?.Invoke(_speed * Data.Radius, MachineryId);
+            }
         }
 
         
@@ -68,11 +65,7 @@ namespace Chain
                 yield return null;
             }
         }
-
-        private void OnDisable()
-        {
-            //ChainEvents.OnMotionStateSet -= SendSpeed;
-        }
+        
 
     }
 }

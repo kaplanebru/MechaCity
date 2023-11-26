@@ -28,18 +28,15 @@ public class ChainMover : MonoBehaviour, Mover
 
 
     public float LinearSpeed = 0;
+    private int counter = 0;
+    private float totalCogSpeed = 0;
+
     private float _rotationExtentPerLink;
 
     private void OnEnable()
     {
         ChainEvents.OnCogSpeedSet += GetTotalCogSpeed;
     }
-
-
-    private int totalCogTeeth = 0;
-    private int _toothSize;
-    private float toothIntervals;
-    private int counter = 0;
 
     public void MachinerySetup(float machinerySpeed, int machineryId, IMachinePartData machinePartData)
     {
@@ -52,18 +49,10 @@ public class ChainMover : MonoBehaviour, Mover
     {
         _links = links;
     }
-
-   
-
-
+    
     public IEnumerator StartMover()
     {
-        //Data =
-        //_links = 
-        //linear speedin 0dan büyük olması beklenebilir
-        // enabled = Data.IsMoving;
         if (!Data.IsMoving) yield break;
-      
         
         yield return new WaitUntil(() => _speedSet); //possbile bug: linear speed daha önceden set edilmiş olabilir.
         _speedSet = false;
@@ -71,14 +60,11 @@ public class ChainMover : MonoBehaviour, Mover
     }
 
 
-    private float totalCogSpeed = 0;
     private void GetTotalCogSpeed(float cogSpeed, int machineryId)//(int teethAmount, float toothInterval, int machineryId)
     {
         if (MachineryId != machineryId) return;
 
         totalCogSpeed += cogSpeed;
-        // totalCogTeeth += teethAmount;
-        // toothIntervals += toothInterval;
         counter++;
 
         if (counter != Data.CogAmount) return;
@@ -88,9 +74,7 @@ public class ChainMover : MonoBehaviour, Mover
 
     void ResetCogValues()
     {
-        totalCogTeeth = 0;
         totalCogSpeed = 0;
-        totalCogTeeth = 0;
         counter = 0;
     }
 
@@ -99,10 +83,7 @@ public class ChainMover : MonoBehaviour, Mover
     void SetSpeed()
     {
         LinearSpeed = totalCogSpeed / Data.CogAmount /_links.Count * 2; //TODO: 2 yerine centerdan ortalama yarı çap hesabı mı? total cogs - 1 mi? deneyerek bak
-        //var surplus = (Data.LinkInterval - (toothIntervals / Data.CogAmount)) * totalCogTeeth; 
-        // LinearSpeed = MachinerySpeed / (totalCogTeeth + surplus); 
-        print(LinearSpeed);
-
+        //MachinerySpeed /(Data.LinkInterval - (toothIntervals / Data.CogAmount)) * totalCogTeeth; 
         _speedSet = true;
         ResetCogValues();
     }
@@ -171,16 +152,8 @@ public class ChainMover : MonoBehaviour, Mover
 
     private void OnDisable()
     {
-        //ChainEvents.OnLinksCreated -= GetLinksAndPoints;
         ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;
     }
 }
 
 
-// public void GetLinksAndPoints(List<ChainLink> links, List<Vector3> points)
-// {
-//     print("get links event");
-//
-//     _links = links;
-//     // _points = points; // yön değiştirince tekrar tekrar generate etmeyelim diye iptal
-// }
