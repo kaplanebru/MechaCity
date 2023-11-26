@@ -85,7 +85,7 @@ namespace Chain
             {
                 GameObject newInstance = Instantiate(gameObject);
                 PrefabUtility.SaveAsPrefabAsset(newInstance,
-                    MyEditorHelpers.FindPathByGuid(name));
+                    PathHelper.FindPathByGuid(name));
 
                 DestroyImmediate(newInstance);
                 SaveMachinery();

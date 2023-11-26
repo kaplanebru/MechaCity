@@ -88,7 +88,7 @@ public class ChainPrefabEditor : Editor
 
         EditorGUILayout.Space();
         EditorGUILayout.EndVertical();
-        MyEditorHelpers.DrawFrames(Color.gray, GUILayoutUtility.GetLastRect());
+        EditorStyleHelper.DrawFrames(Color.gray, GUILayoutUtility.GetLastRect());
 
         EditorGUILayout.Space();
         if (GUILayout.Button("Generate Cogs"))
@@ -132,7 +132,7 @@ public class ChainPrefabEditor : Editor
         {
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("CHAIN PROPERTIES", EditorStyles.boldLabel);
-            MyEditorHelpers.DrawSeparatorLine(Color.gray);
+            EditorStyleHelper.DrawSeparatorLine(Color.gray);
             EditorGUILayout.Space();
 
 

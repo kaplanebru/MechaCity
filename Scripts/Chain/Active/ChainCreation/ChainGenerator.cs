@@ -43,8 +43,8 @@ namespace Chain
         {
             ChainData = ScriptableObject.CreateInstance<ChainData>();
 
-            AssetDatabase.CreateAsset(ChainData, MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas")); //(chainData, "Assets/chainData.asset"); 
-            Debug.Log(MyEditorHelpers.WriteAssetPath(chainDataName, "ChainDatas"));
+            AssetDatabase.CreateAsset(ChainData, PathHelper.WriteAssetPath(chainDataName, "ChainDatas")); //(chainData, "Assets/chainData.asset"); 
+            Debug.Log(PathHelper.WriteAssetPath(chainDataName, "ChainDatas"));
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }

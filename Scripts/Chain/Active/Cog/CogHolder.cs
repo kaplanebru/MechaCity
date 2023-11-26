@@ -62,7 +62,7 @@ namespace Chain
         public CogData CreateCogData(string cogName)
         {
             var cogData = ScriptableObject.CreateInstance<CogData>();
-            AssetDatabase.CreateAsset(cogData, MyEditorHelpers.WriteAssetPath(cogName, "CogDatas")); //cogName + " Data", "CogDatas")
+            AssetDatabase.CreateAsset(cogData, PathHelper.WriteAssetPath(cogName, "CogDatas")); //cogName + " Data", "CogDatas")
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
