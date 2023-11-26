@@ -26,7 +26,7 @@ namespace Chain
             return guids.Length + 1;
         }
 
-        public static string FindPathByGuid(string objectName)
+        public static string FindPathByName(string objectName)
         {
 
             // string searchType = "t:Machinery"; //"t:" + typeName; //"t:Machinery"; // Adjust the type based on your asset type
@@ -47,7 +47,7 @@ namespace Chain
 
         public static GameObject FindObjectByGuid(string objectName)
         {
-            string assetPath =  FindPathByGuid(objectName);
+            string assetPath =  FindPathByName(objectName);
             
             if (!string.IsNullOrEmpty(assetPath))
             {

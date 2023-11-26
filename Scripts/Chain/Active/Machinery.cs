@@ -80,7 +80,7 @@ namespace Chain
             {
                 GameObject newInstance = Instantiate(gameObject);
                 PrefabUtility.SaveAsPrefabAsset(newInstance,
-                    PathHelper.FindPathByGuid(name));
+                    PathHelper.FindPathByName(name));
 
                 DestroyImmediate(newInstance);
                 SaveMachinery();

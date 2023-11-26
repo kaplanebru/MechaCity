@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hole
+  m_Name: HoleMat
   m_Shader: {fileID: 4800000, guid: d5d6ebed1e829bf4f9a9a622d391bd5d, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

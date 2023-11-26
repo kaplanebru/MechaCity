@@ -39,7 +39,7 @@ namespace Chain
             InitializePool();
 
             
-            PrefabUtility.SaveAsPrefabAsset(go,  PathHelper.WritePrefabPath(poolName, typeof(T).Name));
+            PrefabUtility.SaveAsPrefabAsset(go,  PathHelper.WritePrefabPath(poolName + " " + amount, typeof(T).Name));
 
             DestroyImmediate(go);
         }
