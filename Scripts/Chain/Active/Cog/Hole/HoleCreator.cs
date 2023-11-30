@@ -6,7 +6,7 @@ namespace Chain
 {
     public class HoleCreator : MonoBehaviour
     {
-        public HoleHolder holeHolder;
+        public HoleAssetHolder holeAssetHolder;
     }
 
 }

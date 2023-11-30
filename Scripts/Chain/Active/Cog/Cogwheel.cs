@@ -32,9 +32,6 @@ namespace Chain
             }
 
         }
-
-
-        private float oldHoleSize;
         
         
         public void Setup()
@@ -77,21 +74,14 @@ namespace Chain
             float multiplier = 1;
             foreach (var hole in holes)
             {
-                var pos = hole.transform.localPosition;
+                var pos = hole.transform.localScale;
                 pos.y = Data.HoleDepth * multiplier;
                 multiplier *= -1;
-                hole.transform.localPosition = pos;
+                hole.transform.localScale = pos;
             }
         }
 
-        // Hole[] GetHolesByType(ChainEnums.HoleType holeType)
-        // {
-        //     return allHoles.Where(h =>
-        //     {
-        //         h.gameObject.SetActive(h.holeType == holeType);
-        //         return h.holeType == holeType;
-        //     }).ToArray();
-        // }
+        
         
         Hole[] GetHolesById(int id)
         {
@@ -105,23 +95,20 @@ namespace Chain
         void SetHoleSizeAndType()
         {
             holes = GetHolesById(Data.HoleId);
-
-            
             var holeSize = (Data.Radius - Data.HoleSize) * 2;
-            //if (Math.Abs(oldHoleSize - holeSize) < 0.01f) return;
-            oldHoleSize = holeSize;
+           
             foreach (var hole in holes)
             {
                 Vector3 scale = hole.transform.localScale;
 
-                scale.x = holeSize;
                 scale.z = holeSize;
                 scale.x = holeSize;
+                scale.y = Data.HoleDepth;
 
                 hole.transform.localScale = scale; //Vector3.Scale(scale, inverseParentScale);
             }
             
-            HoleDepth();
+            //HoleDepth();
         }
 
         public void AddData(CogData data)

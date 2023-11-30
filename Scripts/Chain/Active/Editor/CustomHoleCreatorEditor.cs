@@ -10,12 +10,7 @@ namespace Chain
     [CustomEditor(typeof(HoleCreator))]
     public class CustomHoleCreatorEditor : Editor
     {
-        // private void OnEnable()
-        // {
-        //     Debug.Log(            ChainEnums.HoleTypes.Count()
-        //     );
-        // }
-
+        
         private HoleCreator _holeCreator;
         public GameObject holeModel;
         public string holeName;
@@ -23,11 +18,7 @@ namespace Chain
         private Hole _hole;
 
         [SerializeField] Material _holeMat;
-        // [MenuItem("Tools/Chain Generator/Custom Hole Creator")]
-        // public static void ShowWindow()
-        // {
-        //     GetWindow(typeof(CustomHoleCreator));
-        // }
+    
 
         public override void OnInspectorGUI()
         {
@@ -78,7 +69,7 @@ namespace Chain
             for (int i = 0; i < _holeChildren.Length; i++)
             {
                 _holeChildren[i] = Instantiate(holeModel, _hole.transform);
-                _holeChildren[i].GetComponentInChildren<MeshRenderer>().material = _holeCreator.holeHolder.HoleMaterial; //_holeMat;
+                _holeChildren[i].GetComponentInChildren<MeshRenderer>().material = _holeCreator.holeAssetHolder.HoleMaterial; //_holeMat;
                 _holeChildren[i].transform.localRotation = Quaternion.Euler(-90, 0, 0);
             }
         }
@@ -92,10 +83,10 @@ namespace Chain
         {
             //_hole.holeType = ChainEnums.HoleType.Custom;
            
-            _holeCreator.holeHolder.HoleTypes.Add(_hole);
-            _hole.Id = _holeCreator.holeHolder.HoleTypes.Count;
-            _holeCreator.holeHolder.RestoreHoleLabels();
-            // _hole.Id = ChainEnums.HoleTypes.Count;
+            _holeCreator.holeAssetHolder.HoleTypes.Add(_hole);
+            _hole.Id = _holeCreator.holeAssetHolder.HoleTypes.Count;
+            _holeCreator.holeAssetHolder.RestoreHoleLabels();
+            _holeCreator.holeAssetHolder.holeHolder.ResetHoles();
         }
     }
 }

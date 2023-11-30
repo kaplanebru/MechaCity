@@ -5,12 +5,13 @@ using UnityEngine;
 
 namespace Chain
 {
-    [CreateAssetMenu(fileName = nameof(HoleHolder))]
-    public class HoleHolder : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(HoleAssetHolder))]
+    public class HoleAssetHolder : ScriptableObject
     {
         public List<Hole> HoleTypes;
         public Material HoleMaterial;
         public string[] HoleLabels;
+        public HoleHolder holeHolder;
 
         public void RestoreHoleLabels()
         {
@@ -23,10 +24,10 @@ namespace Chain
             HoleLabels[HoleLabels.Length - 1] = "None";
         }
 
-        private void OnEnable()
-        {
-            RestoreHoleLabels();
-        }
+        // private void OnEnable()
+        // {
+        //     RestoreHoleLabels();
+        // }
     }
 
 }

@@ -18,7 +18,7 @@ namespace Chain
 
         private Mover[] _movers;
         private IMachinePart[] _machineParts;
-        public HoleHolder holeHolder;
+        public HoleAssetHolder holeAssetHolder;
 
 
         //public ChainAssetHolder assetHolder;

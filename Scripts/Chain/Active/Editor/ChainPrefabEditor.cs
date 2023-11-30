@@ -297,7 +297,6 @@ public class ChainPrefabEditor : Editor
     }
 
     string cogDataName;
-    private int selectedHoleType;
     void FillCogData(int i)
     {
         CogData Data = cogs[i].Data;
@@ -337,10 +336,10 @@ public class ChainPrefabEditor : Editor
 
         EditorGUILayout.Space();
 
-        if (machineryPrefab.holeHolder.HoleTypes.Count != 0)
+        if (machineryPrefab.holeAssetHolder != null && machineryPrefab.holeAssetHolder.HoleTypes.Count != 0)
         {
-            selectedHoleType = EditorGUILayout.Popup("Hole Type", selectedHoleType, machineryPrefab.holeHolder.HoleLabels);
-            Data.HoleId = selectedHoleType;
+            Data.HoleId = EditorGUILayout.Popup("Hole Type",  Data.HoleId, machineryPrefab.holeAssetHolder.HoleLabels);
+           
         }
      
 
