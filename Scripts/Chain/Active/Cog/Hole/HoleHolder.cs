@@ -10,6 +10,7 @@ namespace Chain
     {
         public HoleAssetHolder assetHolder;
         private Hole currentHole;
+        private Hole oldHole;
         
 
         public void ResetHoles()
@@ -21,11 +22,17 @@ namespace Chain
             MyPrefabHelpers.ApplyChangesToPrefab(gameObject);
         }
 
-        public void CreateHole(int i)
+        public Hole CreateHole(int i)
         {
-            var oldHole = currentHole.gameObject;
-            currentHole = Instantiate(assetHolder.HoleTypes[i], transform);
-            DestroyImmediate(oldHole);
+            
+            if(currentHole != null)
+                 oldHole = currentHole;
+            if(i < assetHolder.HoleTypes.Count)
+                currentHole = Instantiate(assetHolder.HoleTypes[i], transform);
+            if(oldHole != null)
+                DestroyImmediate(oldHole.gameObject);
+
+            return currentHole;
         }
     }
     

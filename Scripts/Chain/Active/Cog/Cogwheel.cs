@@ -12,8 +12,9 @@ namespace Chain
         public CogData Data;
         public bool drawGizmos = false;
         public Transform cogObject;
-        public Hole[] holes;
+        public Hole hole;
         private Hole[] allHoles;
+        public HoleHolder holeHolder;
 
 
         [SerializeField] List<Tooth> teeth = new();
@@ -29,32 +30,30 @@ namespace Chain
 
                 StartPool();
                 allHoles = GetComponentsInChildren<Hole>(true);
+                holeHolder = GetComponentInChildren<HoleHolder>();
             }
-
         }
-        
-        
+
+
         public void Setup()
         {
             SetCogRadius();
-            SetCogVolume();
             SetHoleSizeAndType(); //hole size radiusla bağlantılı
 
             StartPool();
             GenerateTeeth();
         }
+
         public void AccidentalSetup()
         {
-            SetCogVolume();
             SetHoleSizeAndType(); //burda teethle ve chainle işimiz yok
         }
 
-       
 
         void SetCogRadius()
         {
             var radius = Data.Radius;
-            if(radius == 0) return;
+            if (radius == 0) return;
             var scale = Vector3.one;
             scale.x = radius * 2;
             scale.z = radius * 2;
@@ -67,47 +66,54 @@ namespace Chain
             scale.y = Data.Volume;
             cogObject.transform.localScale = scale;
         }
-        
+
 
         void HoleDepth()
         {
             float multiplier = 1;
-            foreach (var hole in holes)
-            {
-                var pos = hole.transform.localScale;
-                pos.y = Data.HoleDepth * multiplier;
-                multiplier *= -1;
-                hole.transform.localScale = pos;
-            }
+
+            var pos = hole.transform.localScale;
+            pos.y = Data.HoleDepth * multiplier;
+            multiplier *= -1;
+            hole.transform.localScale = pos;
         }
 
-        
-        
-        Hole[] GetHolesById(int id)
+
+        Hole GetHolesById(int id)
         {
-            return allHoles.Where(h =>
+            if (holeHolder != null)
             {
-                h.gameObject.SetActive(h.Id == id);
-                return h.Id == id;
-            }).ToArray();
+                return holeHolder.CreateHole(id);
+            }
+            else
+            {
+                return null;
+            }
+            // return allHoles.Where(h =>
+            // {
+            //     h.gameObject.SetActive(h.Id == id);
+            //     return h.Id == id;
+            // }).ToArray();
         }
 
         void SetHoleSizeAndType()
         {
-            holes = GetHolesById(Data.HoleId);
+            SetCogVolume();
+            hole = GetHolesById(Data.HoleId);
+            if (hole == null) return;
+
             var holeSize = (Data.Radius - Data.HoleSize) * 2;
-           
-            foreach (var hole in holes)
-            {
-                Vector3 scale = hole.transform.localScale;
 
-                scale.z = holeSize;
-                scale.x = holeSize;
-                scale.y = Data.HoleDepth;
 
-                hole.transform.localScale = scale; //Vector3.Scale(scale, inverseParentScale);
-            }
-            
+            Vector3 scale = hole.transform.localScale;
+
+            scale.z = holeSize;
+            scale.x = holeSize;
+            scale.y = Data.HoleDepth;
+
+            hole.transform.localScale = scale; //Vector3.Scale(scale, inverseParentScale);
+
+
             //HoleDepth();
         }
 
@@ -117,11 +123,12 @@ namespace Chain
         }
 
         private TeethGenerator _teethGenerator;
+
         void GenerateTeeth()
         {
             // if(_toothScale != Data.toothScale && _teethGenerator != null)
             //     _teethGenerator.SetTeethSize();
-            
+
             _teethGenerator = new TeethGenerator(Data, pool, transform);
             _teethGenerator.ReleasePreviousTeeth(teeth);
             teeth = _teethGenerator.CreateTeeth();
@@ -131,6 +138,7 @@ namespace Chain
                 Debug.LogWarning("Not enough magnitude for teeth generation");
                 return;
             }
+
             Data.ToothUnit = Vector3.Distance(teeth[0].transform.position, teeth[1].transform.position);
         }
 
@@ -162,7 +170,6 @@ namespace Chain
             pool = CreatePool();
         }
 
-       
 
         public void SetSpinDirectionByChain(ChainEnums.ChainDirection chainDirection)
         {
@@ -191,10 +198,10 @@ namespace Chain
                 ChainEvents.OnCreateTeethPool -= CreateNewPool;
             }
         }
-        
+
         public IMachinePartData GetMoverData()
         {
-            return (IMachinePartData)Data;
+            return (IMachinePartData) Data;
         }
     }
 }
