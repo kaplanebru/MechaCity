@@ -13,7 +13,8 @@ namespace Chain
         public ChainEnums.CogContactType ContactType; //Todo: direction set edilen yer
         public int RotationDirection = 1;
         public float HoleSize = 2f;
-        public ChainEnums.HoleType HoleType;
+        //public ChainEnums.HoleType HoleType;
+        public int HoleId;
         public bool IsMoving = true;
         public TeethPool TeethPoolPrefab;
         public Cogwheel RelatedCog; //If CONTACT TYPE IS COG RELATED

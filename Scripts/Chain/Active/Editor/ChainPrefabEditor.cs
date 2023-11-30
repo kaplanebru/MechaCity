@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Chain;
 using UnityEngine;
@@ -296,8 +297,7 @@ public class ChainPrefabEditor : Editor
     }
 
     string cogDataName;
-
-
+    private int selectedHoleType;
     void FillCogData(int i)
     {
         CogData Data = cogs[i].Data;
@@ -337,7 +337,15 @@ public class ChainPrefabEditor : Editor
 
         EditorGUILayout.Space();
 
-        Data.HoleType = (ChainEnums.HoleType) EditorGUILayout.EnumPopup("Hole Type", Data.HoleType);
+        if (machineryPrefab.holeHolder.HoleTypes.Count != 0)
+        {
+            selectedHoleType = EditorGUILayout.Popup("Hole Type", selectedHoleType, machineryPrefab.holeHolder.HoleLabels);
+            Data.HoleId = selectedHoleType;
+        }
+     
+
+
+        //(ChainEnums.HoleType) EditorGUILayout.EnumPopup("Hole Type", Data.HoleType);
         Data.HoleSize = EditorGUILayout.FloatField("Hole Size", Data.HoleSize);
         Data.HoleDepth = EditorGUILayout.FloatField("Hole Depth", Data.HoleDepth);
 

@@ -34,7 +34,6 @@ namespace Chain
         }
 
 
-        private ChainEnums.HoleType oldHoleType;
         private float oldHoleSize;
         
         
@@ -85,23 +84,27 @@ namespace Chain
             }
         }
 
-        Hole[] GetHolesByType(ChainEnums.HoleType holeType)
+        // Hole[] GetHolesByType(ChainEnums.HoleType holeType)
+        // {
+        //     return allHoles.Where(h =>
+        //     {
+        //         h.gameObject.SetActive(h.holeType == holeType);
+        //         return h.holeType == holeType;
+        //     }).ToArray();
+        // }
+        
+        Hole[] GetHolesById(int id)
         {
             return allHoles.Where(h =>
             {
-                h.gameObject.SetActive(h.holeType == holeType);
-                return h.holeType == holeType;
+                h.gameObject.SetActive(h.Id == id);
+                return h.Id == id;
             }).ToArray();
         }
 
         void SetHoleSizeAndType()
         {
-            // if (oldHoleType != Data.HoleType)
-            // {
-            //     holes = GetHolesByType(Data.HoleType);
-            //     oldHoleType = Data.HoleType;
-            // }
-            holes = GetHolesByType(Data.HoleType);
+            holes = GetHolesById(Data.HoleId);
 
             
             var holeSize = (Data.Radius - Data.HoleSize) * 2;

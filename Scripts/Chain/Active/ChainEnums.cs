@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Chain
 {
     public class ChainEnums 
@@ -15,13 +17,15 @@ namespace Chain
             ReverseClock
         }
 
-        public enum HoleType
-        {
-            Basic,
-            Complex,
-            Custom,
-            None
-        }
+        // public enum HoleType
+        // {
+        //     Basic,
+        //     Complex,
+        //     Custom,
+        //     None
+        // }
+       
+       
 
         public enum CogContactType
         {
@@ -29,6 +33,7 @@ namespace Chain
             CogRelated,
             Indifferent
         }
+        
 
     }
 
