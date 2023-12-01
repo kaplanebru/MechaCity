@@ -25,15 +25,16 @@ namespace Chain
         {
             if (!EditorApplication.isPlaying)
             {
-                ChainEvents.OnDeleteTeethPool += DeletePool;
-                ChainEvents.OnCreateTeethPool += CreateNewPool;
-
                 StartPool();
                 allHoles = GetComponentsInChildren<Hole>(true);
                 holeHolder = GetComponentInChildren<HoleHolder>();
             }
         }
 
+        public IMachinePartData GetMoverData()
+        {
+            return (IMachinePartData) Data;
+        }
 
         public void Setup()
         {
@@ -66,18 +67,7 @@ namespace Chain
             scale.y = Data.Volume;
             cogObject.transform.localScale = scale;
         }
-
-
-        void HoleDepth()
-        {
-            float multiplier = 1;
-
-            var pos = hole.transform.localScale;
-            pos.y = Data.HoleDepth * multiplier;
-            multiplier *= -1;
-            hole.transform.localScale = pos;
-        }
-
+        
 
         Hole GetHolesById(int id)
         {
@@ -104,7 +94,6 @@ namespace Chain
 
             var holeSize = (Data.Radius - Data.HoleSize) * 2;
 
-
             Vector3 scale = hole.transform.localScale;
 
             scale.z = holeSize;
@@ -113,8 +102,6 @@ namespace Chain
 
             hole.transform.localScale = scale; //Vector3.Scale(scale, inverseParentScale);
 
-
-            //HoleDepth();
         }
 
         public void AddData(CogData data)
@@ -157,16 +144,14 @@ namespace Chain
             return Instantiate(Data.TeethPoolPrefab, transform);
         }
 
-        private void DeletePool(int id)
+        public void DeletePool()
         {
-            if (id != CogId) return;
             teeth.Clear();
             pool.DeletePool();
         }
 
-        void CreateNewPool(int id)
+        public void CreateNewPool()
         {
-            if (id != CogId) return;
             pool = CreatePool();
         }
 
@@ -188,20 +173,6 @@ namespace Chain
         {
             if (drawGizmos)
                 DrawGizmos();
-        }
-
-        private void OnDisable()
-        {
-            if (!EditorApplication.isPlaying)
-            {
-                ChainEvents.OnDeleteTeethPool -= DeletePool;
-                ChainEvents.OnCreateTeethPool -= CreateNewPool;
-            }
-        }
-
-        public IMachinePartData GetMoverData()
-        {
-            return (IMachinePartData) Data;
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Chain
         [HideInInspector] public bool isChainRelated = false;
         [HideInInspector] public float machinerySpeed;
 
-
         [HideInInspector] public ChainGenerator chainGenerator;
         [HideInInspector] public CogHolder cogHolder;
         [HideInInspector] public Residual residual;
@@ -20,9 +19,6 @@ namespace Chain
         private IMachinePart[] _machineParts;
         public HoleAssetHolder holeAssetHolder;
 
-
-        //public ChainAssetHolder assetHolder;
-
         private void OnEnable()
         {
             if (!Application.isPlaying)
@@ -30,13 +26,13 @@ namespace Chain
             if (Application.isPlaying)
                 SetMovers();
         }
-        
+
         private void Start()
         {
             //if (transform.CompareTag("Model"))
-                MyPrefabHelpers.UnpackPrefabInstance(gameObject);
+            MyPrefabHelpers.UnpackPrefabInstance(gameObject);
         }
-        
+
         public void To2D()
         {
             transform.rotation = Quaternion.Euler(90, 0, 0);
@@ -57,7 +53,7 @@ namespace Chain
             ////machineParts.OfType<Mover>().ToArray();
             _machineParts = GetComponentsInChildren<IMachinePart>();
             _movers = GetComponentsInChildren<Mover>();
-            
+
             for (var i = 0; i < _movers.Length; i++)
             {
                 var mover = _movers[i];
@@ -67,9 +63,8 @@ namespace Chain
                 {
                     chainMover.Setup(chainGenerator.links);
                     chainMover.StartCoroutine("StartMover");
-
                 }
-                
+
                 // mover.DataSetup(machineParts[i].GetMoverData()); //tek sorun aynı sırayla dizilmiş olup olmamaları: mover ve machinepartın
             }
         }
@@ -100,6 +95,32 @@ namespace Chain
                 MyPrefabHelpers.OverrideChanges(gameObject);
             else
                 residual.CleanResiduals();
+        }
+
+        public void DeleteLinkPool()
+        {
+            if (MyPrefabHelpers.IsPrefabInstance(gameObject))
+            {
+                Debug.LogWarning("Change pool from prefab view");
+                return;
+            }
+
+            chainGenerator.DeletePoolClearLinks();
+            SaveMachinery();
+            chainGenerator.CreatePool();
+        }
+
+        public void DeleteTeethPool(int i)
+        {
+            if (MyPrefabHelpers.IsPrefabInstance(gameObject))
+            {
+                Debug.LogWarning("Change pool from prefab view");
+                return;
+            }
+
+            cogHolder.cogs[i].DeletePool();
+            SaveMachinery();
+            cogHolder.cogs[i].CreateNewPool();
         }
     }
 }

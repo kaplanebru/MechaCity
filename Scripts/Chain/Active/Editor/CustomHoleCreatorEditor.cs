@@ -57,7 +57,6 @@ namespace Chain
             _hole = go.GetComponent<Hole>();
 
             SetHoleType();
-            //GetHoleMaterial();
             AddModels();
 
             PrefabUtility.SaveAsPrefabAsset(go, PathHelper.WritePrefabPath(holeName, "Holes"));
@@ -81,12 +80,10 @@ namespace Chain
 
         void SetHoleType()
         {
-            //_hole.holeType = ChainEnums.HoleType.Custom;
            
             _holeCreator.holeAssetHolder.HoleTypes.Add(_hole);
             _hole.Id = _holeCreator.holeAssetHolder.HoleTypes.Count;
             _holeCreator.holeAssetHolder.RestoreHoleLabels();
-            _holeCreator.holeAssetHolder.holeHolder.ResetHoles();
         }
     }
 }

@@ -16,7 +16,6 @@ namespace Chain
         void AddToResidual(Transform child)
         {
             print("add to residue");
-//            child.SetParent(transform);
             residualChildren.Add(child);
         }
 

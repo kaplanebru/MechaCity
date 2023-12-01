@@ -71,7 +71,8 @@ namespace Chain
             if (cogs.Count == 0 || cogs == null) return;
             var cogsToDestroy = cogs[cogToDestroyIndex];
 
-            ChainEvents.OnDeleteObject?.Invoke(cogsToDestroy.transform); //TODO: HANDLE POOL
+            //ChainEvents.OnDeleteObject?.Invoke(cogsToDestroy.transform);
+            DestroyImmediate(cogsToDestroy.gameObject);
 
             cogsToDestroy.gameObject.SetActive(false);
             cogs.Remove(cogsToDestroy);
