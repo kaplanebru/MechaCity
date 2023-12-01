@@ -102,28 +102,35 @@ public class ChainPrefabEditor : Editor
         machinery.cogHolder.cogPrefab = (Cogwheel) EditorGUILayout.ObjectField("Cog Prefab",
             machinery.cogHolder.cogPrefab, typeof(Cogwheel), false);
 
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Option 1: Add Cog Creating New Data");
         GUILayout.BeginHorizontal();
-        cogDataName = EditorGUILayout.TextField("Add Cog Creating New Data", cogDataName);
+        cogDataName = EditorGUILayout.TextField("New Cog Data Name", cogDataName);
         if (GUILayout.Button("Apply"))
             AddCog(true, cogDataName);
         GUILayout.EndHorizontal();
 
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Option 2: Add Cog With Selected Data");
         GUILayout.BeginHorizontal();
-        cogData = (CogData) EditorGUILayout.ObjectField("Add Cog With Selected Data", cogData, typeof(CogData), false);
+        cogData = (CogData) EditorGUILayout.ObjectField("Selected Data", cogData, typeof(CogData), false);
         if (GUILayout.Button("Apply"))
             AddCog(false);
         GUILayout.EndHorizontal();
 
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
         GUILayout.BeginHorizontal();
         cogToDestroyIndex = EditorGUILayout.Popup("Remove Selected Cog", cogToDestroyIndex, cogHolderLabels);
         if (GUILayout.Button("Remove"))
             RemoveCog();
         GUILayout.EndHorizontal();
-
-
         EditorGUILayout.Space();
 
         ////////////////CHAIN RELATED///////////////////////////////
+        EditorStyleHelper.DrawSeparatorLine(Color.gray);
+        EditorGUILayout.Space();
+
         machinery.machinerySpeed = EditorGUILayout.FloatField("Machinery Speed", machinery.machinerySpeed);
 
         machinery.isChainRelated = EditorGUILayout.Toggle("Chain Related", machinery.isChainRelated);
