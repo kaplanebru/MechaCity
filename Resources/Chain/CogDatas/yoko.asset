@@ -17,7 +17,7 @@ MonoBehaviour:
   HoleDepth: 1
   ContactType: 0
   RotationDirection: -1
-  HoleSize: 3
+  HoleSize: 3.81
   HoleId: 1
   IsMoving: 1
   TeethPoolPrefab: {fileID: 3191762794047512475, guid: de40dfbf6ac9d3c4982e6a4a60920c76, type: 3}
