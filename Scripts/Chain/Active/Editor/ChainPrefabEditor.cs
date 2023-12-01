@@ -17,7 +17,7 @@ public class ChainPrefabEditor : Editor
     [SerializeField] private CogData cogData;
     public Machinery machinery;
     private GUIStyle _narrowButton;
-    string cogDataName;
+    string cogDataName = "name";
     private bool changeCogData = false;
     private bool changeWithNewCogData = false;
     private CogData otherCogData;
@@ -341,8 +341,7 @@ public class ChainPrefabEditor : Editor
             Data.HoleId = EditorGUILayout.Popup("Hole Type",  Data.HoleId, machinery.holeAssetHolder.HoleLabels);
         }
         
-        Data.HoleSize  = EditorGUILayout.Slider("Custom Slider", Data.HoleSize , Data.Radius, 0);
-
+        Data.HoleSize  = EditorGUILayout.Slider("Hole Size", Data.HoleSize , Data.Radius, 0);
         Data.HoleDepth = EditorGUILayout.FloatField("Hole Depth", Data.HoleDepth);
 
         if (!machinery.isChainRelated || Data.ContactType == ChainEnums.CogContactType.Indifferent)
@@ -372,9 +371,9 @@ public class ChainPrefabEditor : Editor
         GUILayout.EndHorizontal();
 
         Data.toothScale = EditorGUILayout.Vector3Field("Tooth Scale", Data.toothScale);
-        Data.ToothGap = EditorGUILayout.FloatField("Tooth Gap", Data.ToothGap);
-        Data.Equalize = EditorGUILayout.Toggle("Equal Gaps", Data.Equalize);
         Data.MinGapLimit = EditorGUILayout.FloatField("Min Gap Limit", Data.MinGapLimit);
+        Data.ToothGap = EditorGUILayout.Slider("Tooth Gap", Data.ToothGap , Data.MinGapLimit, 360);
+        Data.Equalize = EditorGUILayout.Toggle("Equal Gaps", Data.Equalize);
 
         EditorGUILayout.Space();
         ChangeCogData(i);
