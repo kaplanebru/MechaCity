@@ -92,6 +92,7 @@ namespace Towers
             {
                 foreach (var linkedTowerID in Towers[i].Data.LinkedTowerIDs)
                 {
+                    if (Towers[i] == null) continue;
                     Gizmos.DrawLine(Towers[i].transform.position, GetTower(linkedTowerID).transform.position);
                 }
             }
