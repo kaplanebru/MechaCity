@@ -87,6 +87,15 @@ namespace Turn
             CompleteAction();
         }
 
+        void CreateCombatPairsById() //is even ve initialda sadece
+        {
+            for (var i = 0; i < AllTowers.Datas.Count-1; i++)
+            {
+                Data.CombatPairs.Add(new CombatPair(AllTowers.Datas[i], AllTowers.Datas[i+1], true));
+            }
+            Data.CombatPairs.Add(new CombatPair(AllTowers.Datas.Last(), AllTowers.Datas.First(), true));
+        }
+
         public void CreateCombatPairByTower(TowerData tower)
         {
             //for (int i = 0; i < Grids[tower.TeamTowerData.TeamType].Slots[tower.SlotId].LinkedSlotIDs.Count; i++)

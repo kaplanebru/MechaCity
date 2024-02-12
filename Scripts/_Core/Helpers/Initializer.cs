@@ -37,6 +37,9 @@ namespace Core
             Eventbus.TeamEvents.OnTeamsSet?.Invoke(teams);
         }
         
+
+       
+        
         
         private void AssignPlayers(Player newPlayer, ulong id)
         {

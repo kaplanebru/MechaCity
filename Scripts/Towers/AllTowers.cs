@@ -57,15 +57,32 @@ namespace Towers
                 Datas.Add(Towers[i].Data);
             }
         }
+        // private readonly CombatData Data = new();
+        // void CreateCombatPairsById() //is even ve initialda sadece
+        // {
+        //     for (var i = 0; i < AllTowers.Datas.Count-1; i++)
+        //     {
+        //         Data.CombatPairs.Add(new CombatPair(AllTowers.Datas[i], AllTowers.Datas[i+1], true));
+        //     }
+        //     Data.CombatPairs.Add(new CombatPair(AllTowers.Datas.Last(), AllTowers.Datas.First(), true));
+        // }
 
         void SetFirstMatches()
         {
-            int teamTowerAmount = TowersCount / 2;
-            for (var i = 0; i < teamTowerAmount; i++)
+            for (int i = 0; i < Datas.Count-1; i++)
             {
-                Datas[i].LinkedTowerIDs.Add(Datas[i + teamTowerAmount].UniqID);
-                Datas[i + teamTowerAmount].LinkedTowerIDs.Add(Datas[i].UniqID);
+                Datas[i].LinkedTowerIDs.Add(Datas[i+1].UniqID);
+                Datas[i+1].LinkedTowerIDs.Add(Datas[i].UniqID);
             }
+            
+            Datas.Last().LinkedTowerIDs.Add(Datas.First().UniqID);
+            
+            // int teamTowerAmount = TowersCount / 2;
+            // for (var i = 0; i < teamTowerAmount; i++)
+            // {
+            //     Datas[i].LinkedTowerIDs.Add(Datas[i + teamTowerAmount].UniqID);
+            //     Datas[i + teamTowerAmount].LinkedTowerIDs.Add(Datas[i].UniqID);
+            // }
         }
 
         public static void RestoreBullets()
