@@ -80,37 +80,3 @@ namespace Core
         }
     }
 }
-
-// void AssignPlayers()
-// {
-//     if(!isMultiplayerOn) return;
-//     for (var i = 0; i < teams.Length; i++)
-//     {
-//         teams[i].Data.Player = players[i];
-//         teams[i].Data.Player.Setup(teams[i].Data.TeamTowerData.TeamType);
-//     }
-// }
-
-
-// void InstantiateTowers()
-// {
-//     List<Tower> _towers = new();
-//     foreach (var prefab in TowersPrefab)
-//     {
-//         var towersPb = Instantiate(prefab, transform);
-//         _towers.AddRange(towersPb.GetComponentsInChildren<Tower>().ToList());
-//     }
-//     AllTowers.GetTowers(_towers);
-//     AssignTowers(_towers);
-// }
-//
-// void AssignTowers(List<Tower> _towers)
-// {
-//     for (int i = 0; i < _towers.Count; i++)
-//     {
-//         var tower = _towers[i];
-//         tower.Data = towerDatas.GetTowerData(i);
-//         tower.Data.UniqID = i;
-//     }
-//     CreateTeams();
-// }

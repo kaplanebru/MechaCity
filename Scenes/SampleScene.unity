@@ -1883,7 +1883,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.42590424, y: -0, z: -0, w: 0.9047683}
-  m_LocalPosition: {x: 0, y: 11.24, z: -8.09}
+  m_LocalPosition: {x: 0, y: 7.32, z: -12.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2767,9 +2767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e552255b8bdb5a4b81903949028a60a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TowersPrefab:
-  - {fileID: 5579547957973982615, guid: 05c482badfba7d24eb2c1f172eafeadf, type: 3}
-  - {fileID: 1247575438718957919, guid: 3c7ffae76fc75144fb2066bf0fa55c07, type: 3}
+  levelPrefab: {fileID: 5579547957973982615, guid: 69e0af0ab8b1f56428a430dafd07202f, type: 3}
   constantDatas: {fileID: 11400000, guid: 59b44fa1b60a2e24fb78ab3cfc8fef0c, type: 2}
 --- !u!4 &1484794544
 Transform:
