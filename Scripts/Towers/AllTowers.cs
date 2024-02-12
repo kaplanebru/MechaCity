@@ -17,7 +17,6 @@ namespace Towers
         public static List<TowerData> Datas = new();
 
         [SerializeField] Transform levelPrefab;
-        [SerializeField] TowersDataHolder constantDatas; //gerek var mı bakacağız
         Transform _level;
         
 
@@ -36,7 +35,8 @@ namespace Towers
             InstantiateLevelPrefab();
             ReceiveTowers();
             ReceiveTowerData();
-            AssignDataToTowers();
+            SetFirstMatches();
+
             TowerEvents.OnTowersCreated?.Invoke();
         }
 
@@ -56,17 +56,6 @@ namespace Towers
             {
                 Datas.Add(Towers[i].Data);
             }
-        }
-
-        void AssignDataToTowers()
-        {
-            for (int i = 0; i < TowersCount; i++)
-            {
-                var tower = Towers[i];
-                tower.ConstantData = constantDatas.Datas[i];
-            }
-
-            SetFirstMatches();
         }
 
         void SetFirstMatches()
