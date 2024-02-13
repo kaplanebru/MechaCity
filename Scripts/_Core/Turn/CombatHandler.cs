@@ -19,7 +19,7 @@ namespace Turn
     [Serializable]
     public class CombatData
     {
-        public List<CombatPair> CombatPairs = new();
+        public List<CombatGroup> CombatPairs = new();
         public TowerData latestDeadTower;
         [ReadOnly] public float projectileSpeed = 1;
         [ReadOnly] public bool pairsRestored = false;
@@ -51,13 +51,12 @@ namespace Turn
         {
             RemoveAlteredCombatPairs();
             TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t)));
-            //RestoreBullets();
             StartCoroutine(nameof(FireRoutine));
         }
 
         IEnumerator FireRoutine()
         {
-            Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.Perpetrator.SlotId).ToList();
+            Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.OtherTowerData.SlotId).ToList();
 
             int j = 0;
             while (true)
@@ -69,13 +68,13 @@ namespace Turn
                 yield return new WaitUntil(() => pair.CombatCompleted);
                 yield return new WaitForSeconds(Data.fireDelay);
 
-                if (pair.Victim == Data.latestDeadTower)
+                if (pair.OtherTowerData == Data.latestDeadTower)
                 {
                     yield return new WaitUntil(() => Data.pairsRestored);
                     Data.pairsRestored = false;
                     Data.latestDeadTower = null;
 
-                    j = pair.Perpetrator.SlotId;
+                    j = pair.OtherTowerData.SlotId;
                 }
                 else
                     j++;
@@ -83,50 +82,25 @@ namespace Turn
 
             yield return new WaitForSeconds(0.1f);
             AllTowers.RestoreBullets();
-            //RestoreBullets();
             CompleteAction();
         }
-
-        void CreateCombatPairsById() //is even ve initialda sadece
-        {
-            for (var i = 0; i < AllTowers.Datas.Count-1; i++)
-            {
-                Data.CombatPairs.Add(new CombatPair(AllTowers.Datas[i], AllTowers.Datas[i+1], true));
-            }
-            Data.CombatPairs.Add(new CombatPair(AllTowers.Datas.Last(), AllTowers.Datas.First(), true));
-        }
+        
 
         public void CreateCombatPairByTower(TowerData tower)
         {
-            //for (int i = 0; i < Grids[tower.TeamTowerData.TeamType].Slots[tower.SlotId].LinkedSlotIDs.Count; i++)
             
             OrderLinkedTowersByDistance(tower);
-            
 
             for (var i = 0; i < tower.LinkedTowerIDs.Count; i++)
             {
-                //var linkedTower = tower.Data.LinkedTowerIDs[i];
                 var linkedTower = AllTowers.GetData(tower.LinkedTowerIDs[i]);
-                if (tower.Height > linkedTower.Height)
-                {
-                    if (!tower.CanShoot) continue;
-                    AddToPairs(tower, linkedTower);
-                }
-                else if (linkedTower.Height > tower.Height)
-                {
-                    if (!linkedTower.CanShoot) continue;
-                    AddToPairs(linkedTower, tower);
-                }
-                else
-                    AddToPairs(linkedTower, tower, true);
+                AddToPairs(tower, linkedTower);
             }
         }
 
-        void AddToPairs(TowerData tower1, TowerData tower2, bool isEven = false)
+        void AddToPairs(TowerData tower1, TowerData tower2)
         {
-            Data.CombatPairs.Add(new CombatPair(tower1, tower2, isEven));
-            if (!isEven)
-                tower1.BulletAmount--;
+            Data.CombatPairs.Add(new CombatGroup(tower1, tower2));
         }
 
         void RemoveAlteredCombatPairs()
@@ -143,14 +117,6 @@ namespace Turn
                 tower.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.SlotId - AllTowers.GetData(other).SlotId)).ToList();
         }
         
-        // void RestoreBullets()
-        // {
-        //     foreach (var team in teams)
-        //     {
-        //         team.Value.Data.TowerIds.ForEach(t => t.RestoreBullets());
-        //     }
-        // }
-
         void DeselectAlteredTowers() //TODO: At the end of animation
         {
             TransferData.AlteredTowers.ForEach(t => AllTowers.GetTower(t).towerParts.SetColor( AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
