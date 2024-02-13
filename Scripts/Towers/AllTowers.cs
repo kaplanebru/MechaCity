@@ -69,20 +69,15 @@ namespace Towers
 
         void SetFirstMatches()
         {
-            for (int i = 0; i < Datas.Count-1; i++)
+            int dataSize = Datas.Count;
+            for (int i = 0; i < dataSize; i++)
             {
-                Datas[i].LinkedTowerIDs.Add(Datas[i+1].UniqID);
-                Datas[i+1].LinkedTowerIDs.Add(Datas[i].UniqID);
+                var nextIndex = (i + 1) % dataSize;
+                var prevIndex = (i - 1 + dataSize) % dataSize;
+                
+                Datas[i].LinkedTowerIDs.Add(nextIndex);
+                Datas[i].LinkedTowerIDs.Add(prevIndex);
             }
-            
-            Datas.Last().LinkedTowerIDs.Add(Datas.First().UniqID);
-            
-            // int teamTowerAmount = TowersCount / 2;
-            // for (var i = 0; i < teamTowerAmount; i++)
-            // {
-            //     Datas[i].LinkedTowerIDs.Add(Datas[i + teamTowerAmount].UniqID);
-            //     Datas[i + teamTowerAmount].LinkedTowerIDs.Add(Datas[i].UniqID);
-            // }
         }
 
         public static void RestoreBullets()
@@ -94,12 +89,12 @@ namespace Towers
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
-            for (int i = 0; i < Towers.Count / 2; i++)
+            foreach (var tower in Towers)
             {
-                foreach (var linkedTowerID in Towers[i].Data.LinkedTowerIDs)
+                foreach (var linkedTowerID in tower.Data.LinkedTowerIDs)
                 {
-                    if (Towers[i] == null) continue;
-                    Gizmos.DrawLine(Towers[i].transform.position, GetTower(linkedTowerID).transform.position);
+                    if (tower == null) continue;
+                    Gizmos.DrawLine(tower.transform.position, GetTower(linkedTowerID).transform.position);
                 }
             }
         }
