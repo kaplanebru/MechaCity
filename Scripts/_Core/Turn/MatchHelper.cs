@@ -20,15 +20,16 @@ namespace Turn
         
         private void HandleDeadTower(TowerData deadTower)
         {
-            SetValues(deadTower, deadTower.LinkedTowerIDs, _grids[deadTower.TeamTowerData.TeamType]);
+            // SetValues(deadTower, deadTower.LinkedTowerIDs, _grids[deadTower.TeamTowerData.TeamType]);
+            //
+            // for (var i = _linkedTowers.Count - 1; i >= 0; i--)
+            // {
+            //     var linkedTower = AllTowers.GetData(_linkedTowers[i]);
+            //     RematchDetachedTowers(linkedTower);
+            //     RemoveLink(linkedTower);
+            // }
             
-            for (var i = _linkedTowers.Count - 1; i >= 0; i--)
-            {
-                var linkedTower = AllTowers.GetData(_linkedTowers[i]);
-                RematchDetachedTowers(linkedTower);
-                RemoveLink(linkedTower);
-            }
-            
+            _deadTower = deadTower;
             SwitchSides();
             Eventbus.CombatEvents.OnMatchesRestored?.Invoke();
         }
