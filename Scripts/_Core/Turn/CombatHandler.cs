@@ -50,13 +50,18 @@ namespace Turn
         public override void Setup()
         {
             RemoveAlteredCombatPairs();
-            TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t)));
+            AllTowers.Towers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
+            //TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t)));
             StartCoroutine(nameof(FireRoutine));
         }
 
         IEnumerator FireRoutine()
         {
+            
+            print(Data.CombatPairs.Count);
             Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.OtherTowerData.SlotId).ToList();
+            
+            Eventbus.CombatEvents.OnFire?.Invoke(Data.fireDelay);
 
             int j = 0;
             while (true)

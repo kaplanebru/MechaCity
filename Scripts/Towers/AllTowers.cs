@@ -64,10 +64,10 @@ namespace Towers
             for (int i = 0; i < dataSize; i++)
             {
                 var nextIndex = (i + 1) % dataSize;
-                var prevIndex = (i - 1 + dataSize) % dataSize;
+               // var prevIndex = (i - 1 + dataSize) % dataSize;
                 
                 Datas[i].LinkedTowerIDs.Add(nextIndex);
-                Datas[i].LinkedTowerIDs.Add(prevIndex);
+               // Datas[i].LinkedTowerIDs.Add(prevIndex);
             }
         }
 

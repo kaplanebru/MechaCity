@@ -38,11 +38,11 @@ namespace DataModels
                     SendProjectile(_mainTower, _nextTower, duration);
             }
             
-            else if (OtherTowerData.Height > MainTowerData.Height)
-            {
-                if(OtherTowerData.CanShoot)
-                    SendProjectile(_nextTower, _mainTower, duration);
-            }
+            // else if (OtherTowerData.Height > MainTowerData.Height)
+            // {
+            //     if(OtherTowerData.CanShoot)
+            //         SendProjectile(_nextTower, _mainTower, duration);
+            // }
             
             else
                 CombatCompleted = true;
