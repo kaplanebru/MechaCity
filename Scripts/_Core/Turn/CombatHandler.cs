@@ -67,6 +67,14 @@ namespace Turn
             StartCoroutine(nameof(FireRoutine));
         }
 
+        void Select(CombatPair pair, bool select = true)
+        {
+            if(select)
+                AllTowers.GetTower(pair.MainTowerData.UniqID).SelectColor();
+            else
+                AllTowers.GetTower(pair.MainTowerData.UniqID).ResetColor();
+        }
+
         IEnumerator FireRoutine()
         {
             //print(Data.CombatPairs.Count);
@@ -74,8 +82,11 @@ namespace Turn
 
             for (int i = 0; i < AllTowers.TowersCount; i++)
             {
-                yield return new WaitForSeconds(Data.selectionDelay);
                 var pair = Data.CombatPairs[i];
+                Select(pair);
+
+                yield return new WaitForSeconds(Data.selectionDelay);
+               
                
                 pair.Combat(timingData);
 
@@ -84,6 +95,7 @@ namespace Turn
 
                 Eventbus.CombatEvents.OnFire?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
+                Select(pair, false);
             }
             
             //
