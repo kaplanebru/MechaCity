@@ -11,12 +11,17 @@ public class CombatCursor : MonoBehaviour
     public float intervalAngle;
     private float _duration;
     public GameObject line;
+    public GameObject cursor;
 
     private void OnEnable()
     {
         Eventbus.CombatEvents.OnFire += ShiftTarget; 
+        
         Eventbus.CombatEvents.OnCombatStarted += EnableLine;
         Eventbus.CombatEvents.OnCombatEnding += DisableLine;
+        
+        Eventbus.CombatEvents.OnCombatStarted += EnableCursor;
+        Eventbus.CombatEvents.OnCombatEnding += DisableCursor;
     }
 
     void Start()
@@ -49,13 +54,26 @@ public class CombatCursor : MonoBehaviour
     {
         line.SetActive(false);
     }
-    
+
+    void EnableCursor()
+    {
+        cursor.SetActive(true);
+    }
+
+    void DisableCursor()
+    {
+        cursor.SetActive(false);
+    }
     
 
     private void OnDisable()
     {
         Eventbus.CombatEvents.OnFire -= ShiftTarget;
+        
         Eventbus.CombatEvents.OnCombatStarted -= EnableLine;
         Eventbus.CombatEvents.OnCombatEnding -= DisableLine;
+        
+        Eventbus.CombatEvents.OnCombatStarted -= EnableCursor;
+        Eventbus.CombatEvents.OnCombatEnding -= DisableCursor;
     }
 }

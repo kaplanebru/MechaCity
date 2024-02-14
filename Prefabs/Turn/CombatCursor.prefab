@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &216564512013192212
 Transform:
   m_ObjectHideFlags: 0
@@ -329,3 +329,4 @@ MonoBehaviour:
   _currentAngle: 0
   intervalAngle: 0
   line: {fileID: 1481852321838014581}
+  cursor: {fileID: 974907865121698555}
