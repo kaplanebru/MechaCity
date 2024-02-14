@@ -10,16 +10,19 @@ public class CombatCursor : MonoBehaviour
     public float _currentAngle;
     public float intervalAngle;
     private float _duration;
+    public GameObject line;
 
     private void OnEnable()
     {
         Eventbus.CombatEvents.OnFire += ShiftTarget;
+        Eventbus.CombatEvents.OnCombatStarted += EnableLine;
+        Eventbus.CombatEvents.OnCombatTerminated += DisableLine;
     }
 
     void Start()
     {
         Setup(); //initializera al
-
+        DisableLine();
     }
 
     void Setup()
@@ -50,8 +53,22 @@ public class CombatCursor : MonoBehaviour
          transform.DORotate(new Vector3(0, _currentAngle, 0), duration);
     }
 
+    void EnableLine()
+    {
+        line.SetActive(true);
+    }
+
+    void DisableLine()
+    {
+        line.SetActive(false);
+    }
+    
+    
+
     private void OnDisable()
     {
         Eventbus.CombatEvents.OnFire -= ShiftTarget;
+        Eventbus.CombatEvents.OnCombatStarted -= EnableLine;
+        Eventbus.CombatEvents.OnCombatTerminated -= DisableLine;
     }
 }

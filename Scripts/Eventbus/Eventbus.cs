@@ -16,6 +16,8 @@ public static class Eventbus
         public static Action<TowerData> OnTowerKilled;
         public static Action OnMatchesRestored;
         public static Action <float> OnFire;
+        public static Action OnCombatStarted;
+        public static Action OnCombatTerminated;
     }
 
 

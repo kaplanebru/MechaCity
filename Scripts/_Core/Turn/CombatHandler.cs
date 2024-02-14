@@ -63,6 +63,7 @@ namespace Turn
             Data.CombatPairs.Clear();
             AllTowers.Towers.ForEach(t => CreateCombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
             //TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t)));
+            Eventbus.CombatEvents.OnCombatStarted?.Invoke();
             StartCoroutine(nameof(FireRoutine));
         }
 
@@ -94,9 +95,10 @@ namespace Turn
             //
             //         j = pair.OtherTowerData.SlotId;
          
-
+            
             yield return new WaitForSeconds(0.1f);
             AllTowers.RestoreBullets();
+            Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
             CompleteAction();
         }
 
