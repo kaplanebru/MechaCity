@@ -30,6 +30,7 @@ namespace Turn
 
             oldTeam.RemoveTower(deadTower);
             newTeam.TakeTowerFromRival(deadTower);
+            
         }
 
         private void OnDisable()

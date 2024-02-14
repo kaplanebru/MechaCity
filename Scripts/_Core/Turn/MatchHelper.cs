@@ -100,6 +100,7 @@ namespace Turn
 
         void SwitchSides()
         {
+            print("switch sides");
             Eventbus.TeamEvents.OnTeamChange?.Invoke(_deadTower);
         }
 

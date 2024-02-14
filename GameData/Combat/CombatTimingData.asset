@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CombatTimingData
   m_EditorClassIdentifier: 
   shootDuration: 1
-  afterCombatDelay: 0.3
-  skipDelay: 0.3
+  afterCombatDelay: 0
+  skipDelay: 0
   selectionDelay: 0.3
   cursorDuration: 0.5

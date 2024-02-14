@@ -23,8 +23,6 @@ namespace GameUI
     private void Initialize()
     {
        // Buttons = GetComponentsInChildren<Button>(); //ownerın butonlarını da alıyor 0 olarak, kendi butonlarından sonra!
-        print(Buttons.Length);
-        print("yo");
         DisableAllButtons();
         
         NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest += RestartSequence;
@@ -36,7 +34,6 @@ namespace GameUI
     {
         StopCoroutine(nameof(ButtonSequenceRoutine));
         StartCoroutine(nameof(ButtonSequenceRoutine));
-        //print(Buttons.Length);
     }
 
 

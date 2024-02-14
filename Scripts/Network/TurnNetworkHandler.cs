@@ -33,11 +33,10 @@ namespace Network
 
         void TurnButtonsSetup(TeamType currentTeamType)
         {
-            print("owner team type: " + ownerTeamType + " currentTeamType: " + currentTeamType);
+            //print("owner team type: " + ownerTeamType + " currentTeamType: " + currentTeamType);
             if (currentTeamType == ownerTeamType)
             {
                 NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest?.Invoke();
-                print("equal");
             }
         }
 
