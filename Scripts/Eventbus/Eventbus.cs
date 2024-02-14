@@ -17,6 +17,8 @@ public static class Eventbus
         public static Action OnMatchesRestored;
         public static Action <float> OnFire;
         public static Action OnCombatStarted;
+        public static Action OnCombatReady;
+        public static Action OnCombatEnding;
         public static Action OnCombatTerminated;
     }
 

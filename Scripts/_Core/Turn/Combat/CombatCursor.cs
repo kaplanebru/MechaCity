@@ -16,7 +16,7 @@ public class CombatCursor : MonoBehaviour
     {
         Eventbus.CombatEvents.OnFire += ShiftTarget;
         Eventbus.CombatEvents.OnCombatStarted += EnableLine;
-        Eventbus.CombatEvents.OnCombatTerminated += DisableLine;
+        Eventbus.CombatEvents.OnCombatEnding += DisableLine;
     }
 
     void Start()
@@ -69,6 +69,6 @@ public class CombatCursor : MonoBehaviour
     {
         Eventbus.CombatEvents.OnFire -= ShiftTarget;
         Eventbus.CombatEvents.OnCombatStarted -= EnableLine;
-        Eventbus.CombatEvents.OnCombatTerminated -= DisableLine;
+        Eventbus.CombatEvents.OnCombatEnding -= DisableLine;
     }
 }

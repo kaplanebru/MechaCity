@@ -15,7 +15,7 @@ public class Cam : MonoBehaviour
 
     private void OnEnable()
     {
-        Eventbus.CombatEvents.OnCombatStarted += SwitchToCombatCam;
+        Eventbus.CombatEvents.OnCombatReady += SwitchToCombatCam;
         Eventbus.CombatEvents.OnCombatTerminated += ResetCam;
     }
 
@@ -48,7 +48,7 @@ public class Cam : MonoBehaviour
 
     private void OnDisable()
     {
-        Eventbus.CombatEvents.OnCombatStarted -= SwitchToCombatCam;
+        Eventbus.CombatEvents.OnCombatReady -= SwitchToCombatCam;
         Eventbus.CombatEvents.OnCombatTerminated -= ResetCam;
     }
 }

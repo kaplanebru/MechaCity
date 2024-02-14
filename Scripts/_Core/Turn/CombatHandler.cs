@@ -63,7 +63,6 @@ namespace Turn
             Data.CombatPairs.Clear();
             AllTowers.Towers.ForEach(t => CreateCombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
             //TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t)));
-            Eventbus.CombatEvents.OnCombatStarted?.Invoke();
             StartCoroutine(nameof(FireRoutine));
         }
 
@@ -79,6 +78,10 @@ namespace Turn
         {
             //print(Data.CombatPairs.Count);
             //Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.OtherTowerData.UniqID).ToList(); //SlotId idi
+            Eventbus.CombatEvents.OnCombatReady?.Invoke();
+            yield return new WaitForSeconds(1); //cameraDelay
+            Eventbus.CombatEvents.OnCombatStarted?.Invoke();
+
 
             for (int i = 0; i < AllTowers.TowersCount; i++)
             {
@@ -107,8 +110,8 @@ namespace Turn
             //
             //         j = pair.OtherTowerData.SlotId;
          
-            
-            yield return new WaitForSeconds(0.1f);
+            Eventbus.CombatEvents.OnCombatEnding?.Invoke();
+            yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
             CompleteAction();
