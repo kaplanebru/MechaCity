@@ -327,10 +327,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 977726238, guid: 77c2cd14ff2442a4c8587a19506f3d3b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2.47
-      objectReference: {fileID: 0}
     - target: {fileID: 4558152631787932796, guid: 77c2cd14ff2442a4c8587a19506f3d3b, type: 3}
       propertyPath: m_Name
       value: CardArea

@@ -7,7 +7,7 @@ namespace DataModels
     [CreateAssetMenu(fileName = nameof(CardHolder))]
     public class CardHolder : ScriptableObject
     {
-        
+        public CardData[] CardData;
     }
 }
 

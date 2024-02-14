@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977726237}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.29, y: 0, z: -1.29}
+  m_LocalPosition: {x: 2.29, y: 0, z: -2.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -183,6 +183,7 @@ MonoBehaviour:
   - {fileID: 4212347416900450301}
   origin: {fileID: 977726238}
   cardPrefab: {fileID: 4808294167653233880, guid: dc0eaac5acc91734cb25fb6289967453, type: 3}
+  cardHolder: {fileID: 11400000, guid: aa03fb4110da1184ca6a30346e91d482, type: 2}
   cards: []
 --- !u!1 &4697376544763590322
 GameObject:

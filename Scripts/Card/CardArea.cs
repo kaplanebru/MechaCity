@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DataModels;
 using DG.Tweening;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class CardArea : MonoBehaviour
     public Transform[] waypoints;
     public Transform origin;
     public Card cardPrefab;
+    public CardHolder cardHolder;
     public List<Card> cards = new List<Card>();
 
     void OnDrawGizmos()
@@ -33,9 +35,13 @@ public class CardArea : MonoBehaviour
 
     void CreateCards()
     {
-        foreach (var point in waypoints)
+        for (var i = 0; i < waypoints.Length; i++)
         {
-            cards.Add(Instantiate(cardPrefab, point));
+            var point = waypoints[i];
+            Card card = Instantiate(cardPrefab, point);
+            cards.Add(card);
+            card.Data = cardHolder.CardData[i];
+            card.Setup();
             SetRotation(point.transform.position, cards.Last());
         }
     }

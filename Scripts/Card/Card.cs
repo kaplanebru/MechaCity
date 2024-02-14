@@ -1,18 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using DataModels;
 using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+   public CardData Data;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   private void Start() //TODO: Initialize
+   {
+      Setup();
+   }
+
+   public void Setup()
+   {
+      GetComponentInChildren<MeshRenderer>().material.color = Data.color;
+   }
 }
