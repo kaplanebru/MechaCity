@@ -58,6 +58,8 @@ namespace Turn
         public override void Setup()
         {
             //RemoveAlteredCombatPairs();
+            TransferData.AlteredTowers.ForEach(at=> AllTowers.GetTower(at).ResetColor());
+            
             Data.CombatPairs.Clear();
             AllTowers.Towers.ForEach(t => CreateCombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
             //TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t)));

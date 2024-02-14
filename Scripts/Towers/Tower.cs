@@ -37,8 +37,14 @@ namespace Towers
         public void SetTeam(TeamTowerData teamTowerData)
         {
             Data.TeamTowerData = teamTowerData;
-            towerParts.SetColor(teamTowerData.DefaultMaterial);
+            //towerParts.SetColor(teamTowerData.DefaultMaterial);
+            ResetColor();
             clickHandler.SetClickableTeams(teamTowerData.TeamType);
+        }
+
+        public void ResetColor()
+        {
+            towerParts.SetColor(Data.TeamTowerData.DefaultMaterial);
         }
 
         public void RestoreBullets() //Todo: name change: bullet hakkı
