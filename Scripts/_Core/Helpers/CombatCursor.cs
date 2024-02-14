@@ -9,11 +9,11 @@ public class CombatCursor : MonoBehaviour
 {
     public float _currentAngle;
     public float intervalAngle;
-    private float _duration = 0.7f;
+    private float _duration;
 
     private void OnEnable()
     {
-        Eventbus.CombatEvents.OnFire += Loop;
+        Eventbus.CombatEvents.OnFire += ShiftTarget;
     }
 
     void Start()
@@ -30,29 +30,28 @@ public class CombatCursor : MonoBehaviour
     
     void Loop(float duration)
     {
-        //_duration = duration;
+        _duration = duration;
         StartCoroutine(nameof(LoopRoutine));
     }
 
     IEnumerator LoopRoutine()
     {
-        for (int i = 0; i < AllTowers.TowersCount; i++)
-        {
-            ShiftTarget();
+        // for (int i = 0; i < AllTowers.TowersCount; i++)
+        // {
             _currentAngle = (_currentAngle + intervalAngle) % 360;
             yield return transform.DORotate(new Vector3(0, _currentAngle, 0), _duration).WaitForCompletion();
-            yield return new WaitForSeconds(0.5f);
-        }
+           // yield return new WaitForSeconds(0.5f);
+        // }
     }
     
-    void ShiftTarget()
+    void ShiftTarget(float duration)
     {
-       
-         //, RotateMode.FastBeyond360
+        _currentAngle = (_currentAngle + intervalAngle) % 360;
+         transform.DORotate(new Vector3(0, _currentAngle, 0), duration);
     }
 
     private void OnDisable()
     {
-        Eventbus.CombatEvents.OnFire -= Loop;
+        Eventbus.CombatEvents.OnFire -= ShiftTarget;
     }
 }

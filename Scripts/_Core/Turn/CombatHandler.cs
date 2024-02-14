@@ -19,11 +19,12 @@ namespace Turn
     [Serializable]
     public class CombatData
     {
-        public List<CombatGroup> CombatPairs = new();
+        public List<CombatPair> CombatPairs = new();
         public TowerData latestDeadTower;
-        [ReadOnly] public float projectileSpeed = 1;
+        [ReadOnly] public float projectileDuration = 1;
         [ReadOnly] public bool pairsRestored = false;
-        [ReadOnly] public float fireDelay = 0.5f;
+        [ReadOnly] public float fireDelay = .5f;
+        public float cursorDuration = 0.5f;
     }
 
     public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferData>
@@ -37,10 +38,10 @@ namespace Turn
         {
             TransferData = new();
 
-            Eventbus.CombatEvents.OnTowerKilled += LatestDeadTower;
-            Eventbus.CombatEvents.OnMatchesRestored += SetDetachedPairsRestored;
+            //Eventbus.CombatEvents.OnTowerKilled += LatestDeadTower;
+            //Eventbus.CombatEvents.OnMatchesRestored += SetDetachedPairsRestored;
         }
-        
+
         public override void ProcessIncomingData(BaseTurnTransferData data)
         {
             var incomingData = (TowerGroupTransferData) data;
@@ -49,51 +50,51 @@ namespace Turn
 
         public override void Setup()
         {
-            RemoveAlteredCombatPairs();
-            AllTowers.Towers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
+            //RemoveAlteredCombatPairs();
+            Data.CombatPairs.Clear();
+            AllTowers.Towers.ForEach(t => CreateCombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
             //TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t)));
             StartCoroutine(nameof(FireRoutine));
         }
 
         IEnumerator FireRoutine()
         {
-            
-            print(Data.CombatPairs.Count);
-            Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.OtherTowerData.SlotId).ToList();
-            
-            Eventbus.CombatEvents.OnFire?.Invoke(Data.fireDelay);
+            //print(Data.CombatPairs.Count);
+            //Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.OtherTowerData.UniqID).ToList(); //SlotId idi
 
-            int j = 0;
-            while (true)
+            for (int i = 0; i < AllTowers.TowersCount; i++)
             {
-                if (j >= Data.CombatPairs.Count) break;
-                var pair = Data.CombatPairs[j];
+                var pair = Data.CombatPairs[i];
+               
+                print(i);
+                pair.Combat(Data.projectileDuration);
 
-                pair.Combat(Data.projectileSpeed);
                 yield return new WaitUntil(() => pair.CombatCompleted);
+                //yield return new WaitForSeconds(Data.projectileDuration);
                 yield return new WaitForSeconds(Data.fireDelay);
 
-                if (pair.OtherTowerData == Data.latestDeadTower)
-                {
-                    yield return new WaitUntil(() => Data.pairsRestored);
-                    Data.pairsRestored = false;
-                    Data.latestDeadTower = null;
-
-                    j = pair.OtherTowerData.SlotId;
-                }
-                else
-                    j++;
+                Eventbus.CombatEvents.OnFire?.Invoke(Data.cursorDuration);
+                yield return new WaitForSeconds(Data.cursorDuration);
             }
+            
+            //
+            //     if (pair.OtherTowerData == Data.latestDeadTower)
+            //     {
+            //         yield return new WaitUntil(() => Data.pairsRestored);
+            //         Data.pairsRestored = false;
+            //         Data.latestDeadTower = null;
+            //
+            //         j = pair.OtherTowerData.SlotId;
+         
 
             yield return new WaitForSeconds(0.1f);
             AllTowers.RestoreBullets();
             CompleteAction();
         }
-        
+
 
         public void CreateCombatPairByTower(TowerData tower)
         {
-            
             OrderLinkedTowersByDistance(tower);
 
             for (var i = 0; i < tower.LinkedTowerIDs.Count; i++)
@@ -105,7 +106,7 @@ namespace Turn
 
         void AddToPairs(TowerData tower1, TowerData tower2)
         {
-            Data.CombatPairs.Add(new CombatGroup(tower1, tower2));
+            Data.CombatPairs.Add(new CombatPair(tower1, tower2));
         }
 
         void RemoveAlteredCombatPairs()
@@ -119,12 +120,14 @@ namespace Turn
         void OrderLinkedTowersByDistance(TowerData tower)
         {
             tower.LinkedTowerIDs =
-                tower.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.SlotId - AllTowers.GetData(other).SlotId)).ToList();
+                tower.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.SlotId - AllTowers.GetData(other).SlotId))
+                    .ToList();
         }
-        
+
         void DeselectAlteredTowers() //TODO: At the end of animation
         {
-            TransferData.AlteredTowers.ForEach(t => AllTowers.GetTower(t).towerParts.SetColor( AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
+            TransferData.AlteredTowers.ForEach(t =>
+                AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
         }
 
         private void SetDetachedPairsRestored()

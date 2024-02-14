@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using ProjectileHandler;
 using Towers;
@@ -5,7 +7,7 @@ using GameUI;
 
 namespace DataModels
 {
-    public class CombatGroup
+    public class CombatPair
     {
         public TowerData MainTowerData { get; }
         public TowerData OtherTowerData { get; }
@@ -14,7 +16,7 @@ namespace DataModels
         private Tower _nextTower;
        
         public bool CombatCompleted { get; private set; } = false;
-        public CombatGroup(TowerData mainTowerData, TowerData otherTowerData)
+        public CombatPair(TowerData mainTowerData, TowerData otherTowerData)
         {
             MainTowerData = mainTowerData;
             OtherTowerData = otherTowerData;
@@ -30,22 +32,23 @@ namespace DataModels
 
         public void Combat(float duration)
         {
-            if (OtherTowerData.Health <= 0 || MainTowerData.Health <= 0) return;
+            Debug.Log(MainTowerData.UniqID + " " + OtherTowerData.UniqID);
+
+            if (OtherTowerData.Health <= 0 || MainTowerData.Health <= 0)
+            {
+                SkipCombat(duration);
+                return;
+            }
 
             if (MainTowerData.Height > OtherTowerData.Height)
             {
-                if(MainTowerData.CanShoot)
+                if(MainTowerData.CanShoot) //aynı takımdan mı diye de bak
                     SendProjectile(_mainTower, _nextTower, duration);
             }
-            
-            // else if (OtherTowerData.Height > MainTowerData.Height)
-            // {
-            //     if(OtherTowerData.CanShoot)
-            //         SendProjectile(_nextTower, _mainTower, duration);
-            // }
-            
             else
-                CombatCompleted = true;
+            {
+               SkipCombat(duration);
+            }
         }
 
         void SendProjectile(Tower perpetrator, Tower victim, float duration)
@@ -54,8 +57,9 @@ namespace DataModels
             projectile.Setup(duration, victim.towerParts.Data.Top.transform.position-Vector3.up);
 
             perpetrator.Data.BulletAmount--;
+            
             projectile.Move(()=>RemoveHealth(victim.Data));
-            //sırf pozisyon için tower taşıma, dataya ekle!
+            //sırf pozisyon için tower taşıma, dataya ekle! Ama top pozisyonu vs değişken
         }
 
         void RemoveHealth(TowerData victimData)
@@ -66,6 +70,19 @@ namespace DataModels
             if (victimData.Health <= 0)
                 Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData);
 
+            CompleteCombat();
+        }
+
+        void SkipCombat(float duration)
+        {
+            Task.Delay(TimeSpan.FromSeconds(duration)).ContinueWith(task =>
+            {
+                CompleteCombat();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        void CompleteCombat()
+        {
             CombatCompleted = true;
         }
         

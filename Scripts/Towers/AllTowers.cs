@@ -47,7 +47,7 @@ namespace Towers
 
         void ReceiveTowers()
         {
-            Towers.AddRange(_level.GetComponentsInChildren<Tower>().ToList());
+            Towers = _level.GetComponentsInChildren<Tower>().ToList();
             TowersCount = Towers.Count;
         }
         void ReceiveTowerData()
