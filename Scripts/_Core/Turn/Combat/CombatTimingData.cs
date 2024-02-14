@@ -12,5 +12,6 @@ namespace DataModels
         public float skipDelay = 0.3f;
         public float selectionDelay = 0.3f;
         public float cursorDuration = 0.5f;
+        public float cameraDelay = 1;
     }
 }

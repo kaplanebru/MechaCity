@@ -1938,7 +1938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   combatTransform: {fileID: 201799892}
-  duration: 1
+  timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
   ease: 4
 --- !u!1 &973694559
 GameObject:

@@ -14,7 +14,7 @@ public class CombatCursor : MonoBehaviour
 
     private void OnEnable()
     {
-        Eventbus.CombatEvents.OnFire += ShiftTarget;
+        Eventbus.CombatEvents.OnFire += ShiftTarget; 
         Eventbus.CombatEvents.OnCombatStarted += EnableLine;
         Eventbus.CombatEvents.OnCombatEnding += DisableLine;
     }
@@ -31,26 +31,13 @@ public class CombatCursor : MonoBehaviour
         intervalAngle = 360f / AllTowers.TowersCount;
     }
     
-    void Loop(float duration)
-    {
-        _duration = duration;
-        StartCoroutine(nameof(LoopRoutine));
-    }
-
-    IEnumerator LoopRoutine()
-    {
-        // for (int i = 0; i < AllTowers.TowersCount; i++)
-        // {
-            _currentAngle = (_currentAngle + intervalAngle) % 360;
-            yield return transform.DORotate(new Vector3(0, _currentAngle, 0), _duration).WaitForCompletion();
-           // yield return new WaitForSeconds(0.5f);
-        // }
-    }
+  
     
     void ShiftTarget(float duration)
     {
+        DisableLine();
         _currentAngle = (_currentAngle + intervalAngle) % 360;
-         transform.DORotate(new Vector3(0, _currentAngle, 0), duration);
+         transform.DORotate(new Vector3(0, _currentAngle, 0), duration).OnComplete(EnableLine);
     }
 
     void EnableLine()

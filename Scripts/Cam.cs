@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using DataModels;
 using DG.Tweening;
 using UnityEngine;
 
 public class Cam : MonoBehaviour
 {
     public Transform combatTransform;
-    public float duration = 1f;
+    public CombatTimingData timingData;
     public Ease ease;
     private Vector3 startPos;
     private Quaternion startRot;
@@ -42,8 +43,8 @@ public class Cam : MonoBehaviour
 
     void Move(Vector3 pos, Quaternion rot)
     {
-        transform.DOMove(pos, duration).SetEase(ease);
-        transform.DORotateQuaternion(rot, duration).SetEase(ease);
+        transform.DOMove(pos, timingData.cameraDelay).SetEase(ease);
+        transform.DORotateQuaternion(rot, timingData.cameraDelay).SetEase(ease);
     }
 
     private void OnDisable()

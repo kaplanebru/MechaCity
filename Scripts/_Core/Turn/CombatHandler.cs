@@ -79,7 +79,7 @@ namespace Turn
             //print(Data.CombatPairs.Count);
             //Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.OtherTowerData.UniqID).ToList(); //SlotId idi
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
-            yield return new WaitForSeconds(1); //cameraDelay
+            yield return new WaitForSeconds(timingData.cameraDelay);
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
 
 
