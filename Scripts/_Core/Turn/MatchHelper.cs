@@ -106,7 +106,7 @@ namespace Turn
 
         private void OnDisable()
         {
-            //Eventbus.CombatEvents.OnTowerKilled -= HandleDeadTower;
+            Eventbus.CombatEvents.OnTowerKilled -= HandleDeadTower;
             SetValues(null, null, null);
         }
 

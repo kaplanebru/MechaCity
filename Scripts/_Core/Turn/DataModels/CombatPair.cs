@@ -72,9 +72,12 @@ namespace DataModels
         {
             victimData.Health -= OtherTowerData.DamagePower;
             UIEventbus.OnHealthChange.Invoke(victimData.Health, _nextTower.gameObject);
-            
+
             if (victimData.Health <= 0)
+            {
+                Debug.Log("tower killed");
                 Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData);
+            }
 
             CompleteCombat();
         }
