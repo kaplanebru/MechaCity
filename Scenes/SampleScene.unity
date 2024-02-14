@@ -461,7 +461,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8473bd93cb8e18d46b8cec2741c32bdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Buttons: []
+  Buttons:
+  - {fileID: 1965905641}
+  - {fileID: 701792525}
 --- !u!1 &474807232
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,7 +633,7 @@ MonoBehaviour:
   NetworkUIController: {fileID: 923155417}
   teams: []
   assetHolder: {fileID: 11400000, guid: a2d96ec40fc3ed3408057310e9159772, type: 2}
-  isMultiplayerOn: 0
+  isMultiplayerOn: 1
 --- !u!1001 &560683655
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1939,8 +1941,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b66e0b6380d6f843b1394f3d86d88d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnHandlerType:
-    m_InternalValue: 0
   currentTeamType: 0
 --- !u!1 &1059644803
 GameObject:

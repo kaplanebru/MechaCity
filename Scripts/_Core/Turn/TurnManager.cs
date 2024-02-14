@@ -13,7 +13,7 @@ namespace Turn
 {
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
-        public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
+        //public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
         BaseTurnHandler[] turnHandlers;
         Dictionary<string, Team> turnTeams;
 
@@ -86,6 +86,7 @@ namespace Turn
             
             for (var i = 0; i < turnHandlers.Length; i++)
             {
+                //print(currentTurnHandler.turnAction);
                 currentTurnHandler = turnHandlers[i];
                 currentTurnHandler.enabled = true;
                 currentTurnHandler.SetTeams(turnTeams);

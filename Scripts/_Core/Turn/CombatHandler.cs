@@ -74,7 +74,6 @@ namespace Turn
                 yield return new WaitForSeconds(Data.selectionDelay);
                 var pair = Data.CombatPairs[i];
                
-                print(i);
                 pair.Combat(timingData);
 
                 yield return new WaitUntil(() => pair.CombatCompleted);

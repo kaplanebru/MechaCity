@@ -32,7 +32,13 @@ namespace DataModels
 
         public void Combat(CombatTimingData timingData)
         {
-            Debug.Log(MainTowerData.UniqID + " " + OtherTowerData.UniqID);
+            //Debug.Log(MainTowerData.UniqID + " " + OtherTowerData.UniqID);
+
+            if (OtherTowerData.TeamTowerData.TeamType == MainTowerData.TeamTowerData.TeamType)
+            {
+                SkipCombat(timingData.skipDelay);
+                return;
+            }
 
             if (OtherTowerData.Health <= 0 || MainTowerData.Health <= 0)
             {
@@ -42,7 +48,7 @@ namespace DataModels
 
             if (MainTowerData.Height > OtherTowerData.Height)
             {
-                if(MainTowerData.CanShoot) //aynı takımdan mı diye de bak
+                if(MainTowerData.CanShoot)
                     SendProjectile(_mainTower, _nextTower, timingData.shootDuration);
             }
             else
