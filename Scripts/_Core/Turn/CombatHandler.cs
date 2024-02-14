@@ -21,10 +21,14 @@ namespace Turn
     {
         public List<CombatPair> CombatPairs = new();
         public TowerData latestDeadTower;
-        [ReadOnly] public float projectileDuration = 1;
         [ReadOnly] public bool pairsRestored = false;
-        [ReadOnly] public float fireDelay = .5f;
+
+        [ReadOnly] public float shootDuration = 1;
+        [ReadOnly] public float afterCombatDelay = .3f;
+        public float skipDelay = 0.3f;
+        public float selectionDelay = 0.3f;
         public float cursorDuration = 0.5f;
+
     }
 
     public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferData>
@@ -64,14 +68,14 @@ namespace Turn
 
             for (int i = 0; i < AllTowers.TowersCount; i++)
             {
+                yield return new WaitForSeconds(Data.selectionDelay);
                 var pair = Data.CombatPairs[i];
                
                 print(i);
-                pair.Combat(Data.projectileDuration);
+                pair.Combat(Data.shootDuration, Data.skipDelay);
 
                 yield return new WaitUntil(() => pair.CombatCompleted);
-                //yield return new WaitForSeconds(Data.projectileDuration);
-                yield return new WaitForSeconds(Data.fireDelay);
+                yield return new WaitForSeconds(Data.afterCombatDelay);
 
                 Eventbus.CombatEvents.OnFire?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);

@@ -30,24 +30,24 @@ namespace DataModels
             return OtherTowerData.UniqID == newTower || MainTowerData.UniqID == newTower;
         }
 
-        public void Combat(float duration)
+        public void Combat(float shootDuration, float skipDelay)
         {
             Debug.Log(MainTowerData.UniqID + " " + OtherTowerData.UniqID);
 
             if (OtherTowerData.Health <= 0 || MainTowerData.Health <= 0)
             {
-                SkipCombat(duration);
+                SkipCombat(skipDelay);
                 return;
             }
 
             if (MainTowerData.Height > OtherTowerData.Height)
             {
                 if(MainTowerData.CanShoot) //aynı takımdan mı diye de bak
-                    SendProjectile(_mainTower, _nextTower, duration);
+                    SendProjectile(_mainTower, _nextTower, shootDuration);
             }
             else
             {
-               SkipCombat(duration);
+               SkipCombat(skipDelay);
             }
         }
 
