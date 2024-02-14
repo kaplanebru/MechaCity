@@ -1436,6 +1436,7 @@ MonoBehaviour:
   turnAction: 0
   TurnHelpers:
   - {fileID: 99857715}
+  timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
 --- !u!1 &917562591
 GameObject:
   m_ObjectHideFlags: 0

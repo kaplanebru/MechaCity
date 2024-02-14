@@ -22,6 +22,7 @@ namespace Turn
         public List<CombatPair> CombatPairs = new();
         public TowerData latestDeadTower;
         [ReadOnly] public bool pairsRestored = false;
+        
 
         [ReadOnly] public float shootDuration = 1;
         [ReadOnly] public float afterCombatDelay = .3f;
@@ -34,6 +35,8 @@ namespace Turn
     public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferData>
     {
         public CombatTransferData TransferData { get; private set; }
+        public CombatTimingData timingData;
+
         public override TurnHandlerType HandlerType => TurnHandlerType.Combat;
         private readonly CombatData Data = new();
 
@@ -72,7 +75,7 @@ namespace Turn
                 var pair = Data.CombatPairs[i];
                
                 print(i);
-                pair.Combat(Data.shootDuration, Data.skipDelay);
+                pair.Combat(timingData);
 
                 yield return new WaitUntil(() => pair.CombatCompleted);
                 yield return new WaitForSeconds(Data.afterCombatDelay);
