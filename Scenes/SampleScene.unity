@@ -4147,7 +4147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1983015665
 Transform:
   m_ObjectHideFlags: 0
@@ -4175,7 +4175,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4e5995b64bc8648830e162bdf6f904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardCam: {fileID: 0}
+  cardCam: {fileID: 386463564}
+  scaleAmount: 1.5
+  duration: 1
+  endY: 0.1
 --- !u!1 &1984091715
 GameObject:
   m_ObjectHideFlags: 0

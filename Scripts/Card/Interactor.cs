@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -11,37 +12,71 @@ public class Interactor : MonoBehaviour
     public float duration = 1;
     public float endY = 0.1f;
 
+    [SerializeField] private bool onHover = false;
+    private Vector3 newScale;
+
     private void Start()
     {
         transformValues = new TransformValues(transform);
+        newScale = new Vector3(1, transformValues.startScale.y, 1) * scaleAmount;
     }
 
-    private void OnMouseEnter()
+
+    // private void OnMouseEnter()
+    // {
+    //     if (!onHover)
+    //     {
+    //         onHover = true;
+    //         Hover();
+    //     }
+    // }
+    //
+    // private void OnMouseExit()
+    // {
+    //     // if (onHover)
+    //     // {
+    //     //     onHover = false;
+    //     //     Reset();
+    //     // }
+    //     onHover = false;
+    //     transform.DOKill();
+    //     Reset();
+    // }
+
+    void Hover()
     {
-        KillTweens();
-        Vector3 newScale = new Vector3(1, transformValues.startScale.y, 1) * scaleAmount;
-        transform.DOScale(newScale, duration).SetId("Scale");
-        transform.DORotate(Vector3.zero, duration).SetId("Rotate");
-        transform.DOLocalMoveY(endY, duration).SetId("Move");
+        transform.DOKill();
+        Adjust(newScale, Vector3.zero, endY);
     }
 
-    private void OnMouseExit()
+    void Reset()
     {
-        KillTweens();
+        // KillTweens();
+        // Adjust(transformValues.startScale, transformValues.startRot.eulerAngles, transformValues.startPos.y);
         transformValues.ResetValues();
+        onHover = false;
     }
+
+    void Adjust(Vector3 scale, Vector3 rot, float y)
+    {
+        transform.DOScale(scale, duration); 
+        transform.DOLocalRotate(rot, duration); 
+        transform.DOLocalMoveY(y, duration).OnComplete(Reset);
+    }
+
+    void KillTweens()
+    {
+        transform.DOKill();
+        // DOTween.Kill("Scale"); //bekle sonra kill et
+        // DOTween.Kill("Rotate");
+        // DOTween.Kill("Move");
+    }
+
 
     private void OnMouseDown()
     {
         //ayrı bir bölgeye gitsin
         //card deck update olsun
-    }
-
-    void KillTweens()
-    {
-        DOTween.Kill("Scale"); //bekle sonra kill et
-        DOTween.Kill("Rotate");
-        DOTween.Kill("Move");
     }
 }
 
@@ -63,14 +98,14 @@ public class TransformValues
     void GetValues()
     {
         startScale = _transform.localScale;
-        startPos = _transform.position;
-        startRot = _transform.rotation;
+        startPos = _transform.localPosition;
+        startRot = _transform.localRotation;
     }
 
     public void ResetValues()
     {
-        _transform.position = startPos;
-        _transform.rotation = startRot;
+        _transform.localPosition = startPos;
+        _transform.localRotation = startRot;
         _transform.localScale = startScale;
     }
 }
