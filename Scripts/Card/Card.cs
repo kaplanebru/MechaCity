@@ -31,6 +31,5 @@ public class Card : MonoBehaviour
    void SetColor()
    {
       GetComponentInChildren<MeshRenderer>().material.color = Data.color;
-
    }
 }
