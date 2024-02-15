@@ -9,6 +9,7 @@ public class CardInteractor : MonoBehaviour
     public Camera cardCam;
     private Ray ray;
     private GameObject currentGO = null;
+    private GameObject selectableGO = null;
 
 
     private Quaternion startRot;
@@ -19,6 +20,7 @@ public class CardInteractor : MonoBehaviour
     public float endY = 0.1f;
     private Vector3 newScale;
     private bool onCard = false;
+    private bool isSelectable = false;
 
     void Start()
     {
@@ -37,6 +39,14 @@ public class CardInteractor : MonoBehaviour
                 if (Physics.Raycast(ray, out RaycastHit hit, LayerMask.GetMask("Card")))
                 {
                     print(hit.transform.name);
+                    if (selectableGO == hit.transform.gameObject)
+                    {
+                        
+                        currentGO.layer = LayerMask.NameToLayer("SelectedCard");
+                        currentGO.transform.localPosition = Vector3.forward * 5;
+                        currentGO = null;
+                        selectableGO = null;
+                    }
                     if (hit.transform.gameObject != currentGO ||
                         (hit.transform.gameObject == currentGO && !onCard)) //hit.transform.gameObject != currentGO)
                     {
@@ -63,7 +73,12 @@ public class CardInteractor : MonoBehaviour
         startPos = currentGO.transform.localPosition;
         currentGO.transform.DOScale(new Vector3(scaleAmount, 1, scaleAmount), duration);
         currentGO.transform.DOLocalMoveY(endY, duration);
-        currentGO.transform.DOLocalRotate(Vector3.zero, duration).OnComplete(() => onCard = false);
+        currentGO.transform.DOLocalRotate(Vector3.zero, duration).OnComplete(() =>
+        {
+            onCard = false;
+            //isSelectable = true;
+            selectableGO = currentGO;
+        });
     }
 
     private void Reset()
