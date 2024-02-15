@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed63e7d8df4e4e64b94aab4aa1244594, type: 3}
   m_Name: CardData
   m_EditorClassIdentifier: 
-  color: {r: 0.9056604, g: 0.5217189, b: 0.11448912, a: 0}
+  color: {r: 0.7921569, g: 0.3254902, b: 0.3254902, a: 0}
+  Title: Resurrect
+  Description: Resurrects dead tower in next round

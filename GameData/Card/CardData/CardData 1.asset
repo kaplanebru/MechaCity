@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: CardData 1
   m_EditorClassIdentifier: 
   color: {r: 0.7924528, g: 0.32445708, b: 0.32445708, a: 0}
+  Title: Reverse
+  Description: Changes combat direction

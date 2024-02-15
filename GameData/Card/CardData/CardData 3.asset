@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed63e7d8df4e4e64b94aab4aa1244594, type: 3}
   m_Name: CardData 3
   m_EditorClassIdentifier: 
-  color: {r: 0.20797431, g: 0.8679245, b: 0.77064353, a: 0}
+  color: {r: 0.7921569, g: 0.3254902, b: 0.3254902, a: 0}
+  Title: Inverse Gear
+  Description: By adding a reversed gear next to opponent's towers, adjustes heights
+    inversely
