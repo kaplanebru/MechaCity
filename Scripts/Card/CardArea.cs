@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DataModels;
 using DG.Tweening;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class CardArea : MonoBehaviour
@@ -38,7 +39,10 @@ public class CardArea : MonoBehaviour
         for (var i = 0; i < waypoints.Length; i++)
         {
             var point = waypoints[i];
-            Card card = Instantiate(cardPrefab, point);
+            
+            Card card = Instantiate(cardPrefab, origin); //transform
+            card.transform.localPosition += Vector3.up * (waypoints.Length-i) * 0.01f;
+
             cards.Add(card);
             card.Data = cardHolder.CardData[i];
             card.Setup();
@@ -49,7 +53,11 @@ public class CardArea : MonoBehaviour
     void SetRotation(Vector3 point, Card card)
     {
         var direction = (point - origin.transform.position).normalized;
-        card.transform.rotation = Quaternion.LookRotation(direction);
+       
+        // Quaternion angledRot = Quaternion.LookRotation(direction);
+        // card.transform.rotation = Quaternion.Euler(angledRot.x, angledRot.eulerAngles.y, 0);
+        card.transform.localRotation = Quaternion.LookRotation(direction);
+
     }
 
     private void Start()
