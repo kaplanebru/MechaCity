@@ -13,39 +13,43 @@ public class CardInteractor : MonoBehaviour
 
     private Quaternion startRot;
     private Vector3 startPos;
-    
+
     public float scaleAmount = 1.5f;
     public float duration = 1;
     public float endY = 0.1f;
     private Vector3 newScale;
     private bool onCard = false;
+
     void Start()
     {
-       
         StartCoroutine(nameof(InteractRoutine));
     }
 
-    
+
     IEnumerator InteractRoutine()
     {
         while (true)
         {
-            ray = cardCam.ScreenPointToRay(Input.mousePosition);
+            if (Input.GetMouseButtonDown(0))
+            {
+                ray = cardCam.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out RaycastHit hit, LayerMask.GetMask("Card")))
-            {
-                if (currentGO == null || hit.transform.gameObject != currentGO)
+                if (Physics.Raycast(ray, out RaycastHit hit, LayerMask.GetMask("Card")))
                 {
-                    Reset();
-                    currentGO = hit.transform.gameObject;
-                    Hover();
+                    print(hit.transform.name);
+                    if (hit.transform.gameObject != currentGO ||
+                        (hit.transform.gameObject == currentGO && !onCard)) //hit.transform.gameObject != currentGO)
+                    {
+                        Reset();
+                        currentGO = hit.transform.gameObject;
+                        Hover();
+                    }
                 }
-            }
-            else
-            {
-               
-                if(!onCard)
+                else
+                {
+                    print("empty");
                     Reset();
+                }
             }
 
             yield return new WaitForFixedUpdate();
@@ -59,10 +63,7 @@ public class CardInteractor : MonoBehaviour
         startPos = currentGO.transform.localPosition;
         currentGO.transform.DOScale(new Vector3(scaleAmount, 1, scaleAmount), duration);
         currentGO.transform.DOLocalMoveY(endY, duration);
-        currentGO.transform.DOLocalRotate(Vector3.zero, duration).OnComplete(() =>
-        {
-            onCard = false;
-        });
+        currentGO.transform.DOLocalRotate(Vector3.zero, duration).OnComplete(() => onCard = false);
     }
 
     private void Reset()
@@ -72,5 +73,6 @@ public class CardInteractor : MonoBehaviour
         currentGO.transform.localScale = Vector3.one;
         currentGO.transform.localRotation = startRot;
         currentGO.transform.localPosition = startPos;
+        onCard = false;
     }
 }
