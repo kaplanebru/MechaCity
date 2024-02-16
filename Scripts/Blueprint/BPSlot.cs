@@ -17,6 +17,7 @@ public class BPSlot : MonoBehaviour
 
     void SetImage()
     {
+        if (spriteHolder == null) return;
         spriteHolder.sprite = Data.Sprite;
     }
 
