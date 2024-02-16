@@ -7,15 +7,15 @@ using UnityEngine;
 public class BPInteraction : MonoBehaviour
 {
     public Transform imageTransform;
+    public Transform gear;
     
-    Vector3 startScale; // = Vector3.one;
     private float startHeight;
 
-    private Vector3 rot = new Vector3(0, 360, 0);
+    public Vector3 rot = new Vector3(0, 360, 0);
     private Vector3 startRot;
-    
-    public float scaleAmount = 1.5f;
-    public float duration = 1;
+
+    public float hoverDuration = 1;
+    public float selectDuration = 1;
     public float selectY = 0.1f;
     private bool onSlot = false;
 
@@ -26,9 +26,8 @@ public class BPInteraction : MonoBehaviour
 
     void Initialize()
     {
-        startScale = imageTransform.localScale;
         startHeight = transform.localPosition.y;
-        startRot = imageTransform.localEulerAngles;
+        startRot = gear.localEulerAngles;
     }
     private void OnMouseEnter()
     {
@@ -47,26 +46,25 @@ public class BPInteraction : MonoBehaviour
 
     void HoverImage()
     {
-        // imageTransform.DOScale(new Vector3(scaleAmount, startScale.y, scaleAmount), duration/2).OnComplete(() =>
-        // {
-        //     imageTransform.DOScale(startScale, duration / 2);
-        // });
-        imageTransform.DOLocalRotate(new Vector3(0, 360, 0), duration, RotateMode.FastBeyond360);
+        //imageTransform.DOLocalRotate(rot, duration, RotateMode.FastBeyond360);
+        gear.DOLocalRotate(rot, hoverDuration, RotateMode.FastBeyond360);
     }
 
     void ResetImage()
     {
-        imageTransform.DOKill();
-        //imageTransform.localScale = startScale;
-        imageTransform.localEulerAngles = startRot;
+        gear.DOKill();
+        gear.localEulerAngles = startRot;
+        
+        // imageTransform.DOKill();
+        // imageTransform.localEulerAngles = startRot;
     }
 
     void Select()
     {
         //ResetImage();
-        transform.DOLocalMoveY(selectY, duration/2).OnComplete(() =>
+        transform.DOLocalMoveY(selectY, selectDuration/2).OnComplete(() =>
         {
-            transform.DOLocalMoveY(startHeight, duration/2);
+            transform.DOLocalMoveY(startHeight, selectDuration/2);
         });
     }
 }
