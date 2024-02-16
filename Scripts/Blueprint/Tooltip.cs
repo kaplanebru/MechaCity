@@ -9,15 +9,30 @@ public class Tooltip : MonoBehaviour
 
     private void OnEnable()
     {
-        content.SetActive(false);
+        Disable();
     }
 
     private void OnMouseEnter()
     {
-        content.SetActive(true);
+        Enable();
+    }
+
+    private void OnMouseDown()
+    {
+        Disable();
     }
 
     private void OnMouseExit()
+    {
+        Disable();
+    }
+
+    void Enable()
+    {
+        content.SetActive(true);
+    }
+
+    void Disable()
     {
         content.SetActive(false);
     }

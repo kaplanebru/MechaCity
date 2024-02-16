@@ -15,6 +15,7 @@ public class BPInteractor : MonoBehaviour
     private float startHeight;
     public float scaleAmount = 1.5f;
     public float duration = 1;
+    public float selectY = 0.1f;
 
     private bool onSlot = false;
 
@@ -60,7 +61,8 @@ public class BPInteractor : MonoBehaviour
             startHeight = currentGO.transform.localPosition.y;
             isFirst = false;
         }
-        currentGO.transform.DOScale(new Vector3(scaleAmount, 1, scaleAmount), duration).OnUpdate(CheckSelection);
+        
+        currentGO.transform.DOScale(new Vector3(scaleAmount, startScale.y, scaleAmount), duration).OnUpdate(CheckSelection);
     }
 
     void Reset()
@@ -75,7 +77,7 @@ public class BPInteractor : MonoBehaviour
 
     void Select()
     {
-        currentGO.transform.DOLocalMoveY(0.5f, duration).OnComplete(() =>
+        currentGO.transform.DOLocalMoveY(selectY, duration).OnComplete(() =>
         {
             currentGO.transform.DOLocalMoveY(startHeight, duration);
         });
