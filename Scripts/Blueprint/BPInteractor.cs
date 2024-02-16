@@ -12,6 +12,7 @@ public class BPInteractor : MonoBehaviour
     private GameObject selectableGO = null;
     
     Vector3 startScale; // = Vector3.one;
+    private float startHeight;
     public float scaleAmount = 1.5f;
     public float duration = 1;
 
@@ -27,22 +28,21 @@ public class BPInteractor : MonoBehaviour
         while (true)
         {
             ray = bpCam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))//, LayerMask.GetMask("BlueprintSlot")))
+            if (Physics.Raycast(ray, out RaycastHit hit, LayerMask.GetMask("BlueprintSlot")))
             {
-              
-                print("bp");
-
                 if (hit.transform.gameObject != currentGO ||
                     (hit.transform.gameObject == currentGO && !onSlot)) //hit.transform.gameObject != currentGO)
                 {
                     Reset();
                     currentGO = hit.transform.gameObject;
                     Hover();
+                    
                 }
+                if(onSlot)
+                {CheckSelection();}
             }
             else
             {
-                print("empty");
                 Reset();
             }
 
@@ -57,16 +57,37 @@ public class BPInteractor : MonoBehaviour
         if (isFirst)
         {
             startScale = currentGO.transform.localScale;
+            startHeight = currentGO.transform.localPosition.y;
             isFirst = false;
         }
-        currentGO.transform.DOScale(new Vector3(scaleAmount, 1, scaleAmount), duration);
+        currentGO.transform.DOScale(new Vector3(scaleAmount, 1, scaleAmount), duration).OnUpdate(CheckSelection);
     }
 
     void Reset()
     {
-        onSlot = false;
+        if(!onSlot) return;
         if(currentGO == null) return;
+
+        onSlot = false;
         currentGO.transform.DOKill();
         currentGO.transform.localScale = startScale;
+    }
+
+    void Select()
+    {
+        currentGO.transform.DOLocalMoveY(0.5f, duration).OnComplete(() =>
+        {
+            currentGO.transform.DOLocalMoveY(startHeight, duration);
+        });
+    }
+
+    void CheckSelection()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            print("select");
+            onSlot = false;
+            Select();
+        }
     }
 }
