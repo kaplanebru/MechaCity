@@ -10,9 +10,9 @@ public class CardArea : MonoBehaviour
 {
     public Transform[] waypoints;
     public Transform origin;
-    public Card cardPrefab;
-    public CardHolder cardHolder;
-    public List<Card> cards = new List<Card>();
+    public Blueprint blueprintPrefab;
+    public DataModels.BPHolder bpHolder;
+    public List<Blueprint> cards = new List<Blueprint>();
 
     void OnDrawGizmos()
     {
@@ -36,27 +36,27 @@ public class CardArea : MonoBehaviour
 
     void CreateCards()
     {
-        for (var i = 0; i < waypoints.Length; i++)
-        {
-            var point = waypoints[i];
-            
-            Card card = Instantiate(cardPrefab, origin); //transform
-            card.transform.localPosition += Vector3.up * (waypoints.Length-i) * 0.01f;
-
-            cards.Add(card);
-            card.Data = cardHolder.CardData[i];
-            card.Setup();
-            SetRotation(point.transform.position, cards.Last());
-        }
+        // for (var i = 0; i < waypoints.Length; i++)
+        // {
+        //     var point = waypoints[i];
+        //     
+        //     Blueprint blueprint = Instantiate(blueprintPrefab, origin); //transform
+        //     blueprint.transform.localPosition += Vector3.up * (waypoints.Length-i) * 0.01f;
+        //
+        //     cards.Add(blueprint);
+        //     blueprint.Data = bpHolder.BPData[i];
+        //     blueprint.Setup();
+        //     SetRotation(point.transform.position, cards.Last());
+        // }
     }
 
-    void SetRotation(Vector3 point, Card card)
+    void SetRotation(Vector3 point, Blueprint blueprint)
     {
         var direction = (point - origin.transform.position).normalized;
        
         // Quaternion angledRot = Quaternion.LookRotation(direction);
         // card.transform.rotation = Quaternion.Euler(angledRot.x, angledRot.eulerAngles.y, 0);
-        card.transform.localRotation = Quaternion.LookRotation(direction);
+        blueprint.transform.localRotation = Quaternion.LookRotation(direction);
 
     }
 

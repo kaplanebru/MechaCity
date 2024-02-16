@@ -10,11 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e827853553da534caa535a1b3289a89, type: 3}
-  m_Name: CardHolder
+  m_Name: BPHolder
   m_EditorClassIdentifier: 
-  CardData:
+  BPData:
   - {fileID: 11400000, guid: 93869b786a092484385d87df8921d57f, type: 2}
   - {fileID: 11400000, guid: f2f91face75ad444f93b2c9e89697e93, type: 2}
-  - {fileID: 11400000, guid: 8bafbac1a77f31b44ad8898bffd70fbb, type: 2}
-  - {fileID: 11400000, guid: 1cebd3da193fa0a44878230bcf71549c, type: 2}
-  - {fileID: 11400000, guid: d9c5f9df509d624418ebd9c9d28a9e75, type: 2}
+  - {fileID: 11400000, guid: 48e9c62b97ac35f4a8309e42dfc7baed, type: 2}
