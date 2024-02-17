@@ -15,20 +15,46 @@ namespace Turn
         public List<int> AlteredTowers = new();
     }
 
-
     [Serializable]
     public class CombatData
     {
         public List<CombatPair> CombatPairs = new();
-        public TowerData latestDeadTower;
-        [ReadOnly] public bool pairsRestored = false;
         
-
-        [ReadOnly] public float shootDuration = 1;
         [ReadOnly] public float afterCombatDelay = .3f;
-        public float skipDelay = 0.3f;
         public float selectionDelay = 0.3f;
         public float cursorDuration = 0.5f;
+
+        public void CreateCombatPairs()
+        {
+            CombatPairs.Clear();
+            AllTowers.Towers.ForEach(t => CreateCombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
+        }
+        
+        
+         void CreateCombatPairByTower(TowerData tower)
+        {
+            OrderLinkedTowersByDistance(tower);
+
+            for (var i = 0; i < tower.LinkedTowerIDs.Count; i++)
+            {
+                var linkedTower = AllTowers.GetData(tower.LinkedTowerIDs[i]);
+                AddToPairs(tower, linkedTower);
+            }
+        }
+
+        void AddToPairs(TowerData tower1, TowerData tower2)
+        {
+            CombatPairs.Add(new CombatPair(tower1, tower2));
+        }
+
+       
+
+        void OrderLinkedTowersByDistance(TowerData tower)
+        {
+            tower.LinkedTowerIDs =
+                tower.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.SlotId - AllTowers.GetData(other).SlotId))
+                    .ToList();
+        }
 
     }
 
@@ -44,9 +70,6 @@ namespace Turn
         public override void OnHandlerEnabled()
         {
             TransferData = new();
-
-            //Eventbus.CombatEvents.OnTowerKilled += LatestDeadTower;
-            //Eventbus.CombatEvents.OnMatchesRestored += SetDetachedPairsRestored;
         }
 
         public override void ProcessIncomingData(BaseTurnTransferData data)
@@ -55,14 +78,14 @@ namespace Turn
             TransferData.AlteredTowers = incomingData.TowerGroup;
         }
 
+        public void ConstantSetup()
+        {
+            Data.CreateCombatPairs();
+        }
+
         public override void Setup()
         {
-            //RemoveAlteredCombatPairs();
             TransferData.AlteredTowers.ForEach(at=> AllTowers.GetTower(at).ResetColor());
-            
-            Data.CombatPairs.Clear();
-            AllTowers.Towers.ForEach(t => CreateCombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
-            //TransferData.AlteredTowers.ForEach(t=> CreateCombatPairByTower(AllTowers.GetData(t)));
             StartCoroutine(nameof(FireRoutine));
         }
 
@@ -76,8 +99,6 @@ namespace Turn
 
         IEnumerator FireRoutine()
         {
-            //print(Data.CombatPairs.Count);
-            //Data.CombatPairs = Data.CombatPairs.OrderBy(p => p.OtherTowerData.UniqID).ToList(); //SlotId idi
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
             yield return new WaitForSeconds(timingData.cameraDelay);
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
@@ -101,76 +122,21 @@ namespace Turn
                 Select(pair, false);
             }
             
-            //
-            //     if (pair.OtherTowerData == Data.latestDeadTower)
-            //     {
-            //         yield return new WaitUntil(() => Data.pairsRestored);
-            //         Data.pairsRestored = false;
-            //         Data.latestDeadTower = null;
-            //
-            //         j = pair.OtherTowerData.SlotId;
-         
             Eventbus.CombatEvents.OnCombatEnding?.Invoke();
             yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
             CompleteAction();
         }
-
-
-        public void CreateCombatPairByTower(TowerData tower)
-        {
-            OrderLinkedTowersByDistance(tower);
-
-            for (var i = 0; i < tower.LinkedTowerIDs.Count; i++)
-            {
-                var linkedTower = AllTowers.GetData(tower.LinkedTowerIDs[i]);
-                AddToPairs(tower, linkedTower);
-            }
-        }
-
-        void AddToPairs(TowerData tower1, TowerData tower2)
-        {
-            Data.CombatPairs.Add(new CombatPair(tower1, tower2));
-        }
-
-        void RemoveAlteredCombatPairs()
-        {
-            foreach (var alteredTower in TransferData.AlteredTowers)
-            {
-                Data.CombatPairs.RemoveAll(pair => pair.Contains(alteredTower));
-            }
-        }
-
-        void OrderLinkedTowersByDistance(TowerData tower)
-        {
-            tower.LinkedTowerIDs =
-                tower.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.SlotId - AllTowers.GetData(other).SlotId))
-                    .ToList();
-        }
-
         void DeselectAlteredTowers() //TODO: At the end of animation
         {
             TransferData.AlteredTowers.ForEach(t =>
                 AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
         }
 
-        private void SetDetachedPairsRestored()
-        {
-            Data.pairsRestored = true;
-        }
-
-        private void LatestDeadTower(TowerData tower)
-        {
-            Data.latestDeadTower = tower;
-            Data.CombatPairs.RemoveAll(p => p.Contains(Data.latestDeadTower.UniqID));
-        }
-
         public override void Unsubscribe()
         {
             DeselectAlteredTowers();
-            Eventbus.CombatEvents.OnTowerKilled -= LatestDeadTower;
-            Eventbus.CombatEvents.OnMatchesRestored -= SetDetachedPairsRestored;
         }
     }
 }

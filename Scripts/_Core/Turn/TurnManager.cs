@@ -70,10 +70,11 @@ namespace Turn
         {
             var combatHandler = turnHandlers.FirstOrDefault(i => i as CombatHandler != null) as CombatHandler;
             combatHandler.enabled = true;
+            combatHandler.ConstantSetup();
             
             foreach (var tower in turnTeams["currentTeam"].Data.Towers)
             {
-                combatHandler.CreateCombatPairByTower(tower);
+                //combatHandler.CreateCombatPairByTower(tower);
                 var matchHelper = (MatchHelper) combatHandler.TurnHelpers[0];
                 matchHelper.SetGrids(turnTeams.Values.ToArray());
             }
