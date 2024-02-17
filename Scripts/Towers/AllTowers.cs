@@ -13,10 +13,10 @@ namespace Towers
     public class AllTowers : MonoBehaviour
     {
         public static int TowersCount;
-        
+
         private static List<Tower> _towers = new();
         private static List<TowerData> _towerDatas = new();
-        public static IEnumerable<Tower> Towers  => _towers;
+        public static IEnumerable<Tower> Towers => _towers;
         public static IEnumerable<TowerData> TowerDatas => _towerDatas;
         public static Tower GetTower(int id) => _towers[id];
         public static TowerData GetData(int id) => _towerDatas[id];
@@ -34,8 +34,8 @@ namespace Towers
             InstantiateLevelPrefab();
             ReceiveTowers();
             ReceiveTowerData();
-            
-            LinkingTowers();
+
+            LinkingTowers(_towerDatas);
 
             TowerEvents.OnTowersCreated?.Invoke();
         }
@@ -72,25 +72,24 @@ namespace Towers
         {
             for (int i = 0; i < TowersCount; i++)
             {
-                if(clearPrevious)
+                if (clearPrevious)
                     _towerDatas[i].LinkedTowerIDs.Clear();
-                
+
                 var prevIndex = (i - 1 + TowersCount) % TowersCount;
                 _towerDatas[i].LinkedTowerIDs.Add(prevIndex);
             }
         }
 
-        public static void LinkingTowers() //ters de gelebilir
+        public static void LinkingTowers(List<TowerData> towers) //ters de gelebilir
         {
-            
             for (var i = 0; i < TowersCount; i++)
             {
+                towers[i].LinkedTowerIDs.Clear();
+
+                int next = towers[(i + 1) % TowersCount].UniqID; //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
+                towers[i].LinkedTowerIDs.Add(next);
                 
-                _towerDatas[i].LinkedTowerIDs.Clear();
-                
-                int next = _towerDatas[(i + 1) % TowersCount].UniqID; //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
                 print("index: " + (i + 1) % TowersCount + " id: " + next);
-                _towerDatas[i].LinkedTowerIDs.Add(next);
             }
         }
 

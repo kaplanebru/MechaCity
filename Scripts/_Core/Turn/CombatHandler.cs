@@ -41,8 +41,10 @@ namespace Turn
         public void CreateReverseCombatPairs()
         {
             CombatPairs.Clear();
-            AllTowers.LinkingTowers();
-            foreach (var t in AllTowers.TowerDatas)
+            List<TowerData> tempTowers = AllTowers.TowerDatas.ToList();
+            tempTowers.Reverse();
+            AllTowers.LinkingTowers(tempTowers);
+            foreach (var t in tempTowers)
             {
                 CombatPairByTower(AllTowers.GetData(t.UniqID));
             }
@@ -98,12 +100,11 @@ namespace Turn
         public void ConstantSetup()
         {
             Data.CreateCombatPairs();
-            //Data.CreateReverseCombatPairs();
         }
 
         public override void Setup()
         {
-            //Data.CreateReverseCombatPairs();
+            Data.CreateReverseCombatPairs();
             
             TransferData.AlteredTowers.ForEach(at => AllTowers.GetTower(at).ResetColor());
             StartCoroutine(nameof(FireRoutine));
