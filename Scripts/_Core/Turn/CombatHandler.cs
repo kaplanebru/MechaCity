@@ -19,7 +19,7 @@ namespace Turn
     public class CombatData
     {
         public List<CombatPair> CombatPairs = new();
-        
+
         [ReadOnly] public float afterCombatDelay = .3f;
         public float selectionDelay = 0.3f;
         public float cursorDuration = 0.5f;
@@ -27,35 +27,47 @@ namespace Turn
         public void CreateCombatPairs()
         {
             CombatPairs.Clear();
-            AllTowers.Towers.ForEach(t => CreateCombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
+            AllTowers.Towers.ForEach(t => CombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
         }
         
-        
-         void CreateCombatPairByTower(TowerData tower)
-        {
-            OrderLinkedTowersByDistance(tower);
+        //TODO: CombatPairCreator.cs
 
-            for (var i = 0; i < tower.LinkedTowerIDs.Count; i++)
+        public void CreateReverseCombatPairs()
+        {
+            CombatPairs.Clear();
+            AllTowers.ReverseLink(true);
+            
+            for (int i = AllTowers.TowersCount - 1; i >= 0; i--)
             {
-                var linkedTower = AllTowers.GetData(tower.LinkedTowerIDs[i]);
-                AddToPairs(tower, linkedTower);
+                CombatPairByTower(AllTowers.GetData(i));
+                Debug.Log(i);
             }
         }
+        
+        public void CombatPairByTower(TowerData tower)
+        {
+            OrderLinkedTowersByID(tower);
 
-        void AddToPairs(TowerData tower1, TowerData tower2)
+            foreach (var id in tower.LinkedTowerIDs)
+            {
+                var linkedTower = AllTowers.GetData(id);
+                AddToPair(tower, linkedTower);
+            }
+        }
+        
+      
+
+        void AddToPair(TowerData tower1, TowerData tower2)
         {
             CombatPairs.Add(new CombatPair(tower1, tower2));
         }
 
-       
-
-        void OrderLinkedTowersByDistance(TowerData tower)
+        void OrderLinkedTowersByID(TowerData tower)
         {
             tower.LinkedTowerIDs =
                 tower.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.SlotId - AllTowers.GetData(other).SlotId))
                     .ToList();
         }
-
     }
 
     public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferData>
@@ -67,6 +79,7 @@ namespace Turn
         private readonly CombatData Data = new();
 
 
+        
         public override void OnHandlerEnabled()
         {
             TransferData = new();
@@ -80,18 +93,19 @@ namespace Turn
 
         public void ConstantSetup()
         {
-            Data.CreateCombatPairs();
+           // Data.CreateCombatPairs();
+            Data.CreateReverseCombatPairs();
         }
 
         public override void Setup()
         {
-            TransferData.AlteredTowers.ForEach(at=> AllTowers.GetTower(at).ResetColor());
+            TransferData.AlteredTowers.ForEach(at => AllTowers.GetTower(at).ResetColor());
             StartCoroutine(nameof(FireRoutine));
         }
 
         void Select(CombatPair pair, bool select = true)
         {
-            if(select)
+            if (select)
                 AllTowers.GetTower(pair.MainTowerData.UniqID).SelectColor();
             else
                 AllTowers.GetTower(pair.MainTowerData.UniqID).ResetColor();
@@ -110,8 +124,8 @@ namespace Turn
                 Select(pair);
 
                 yield return new WaitForSeconds(Data.selectionDelay);
-               
-               
+
+
                 pair.Combat(timingData);
 
                 yield return new WaitUntil(() => pair.CombatCompleted);
@@ -121,13 +135,14 @@ namespace Turn
                 yield return new WaitForSeconds(Data.cursorDuration);
                 Select(pair, false);
             }
-            
+
             Eventbus.CombatEvents.OnCombatEnding?.Invoke();
             yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
             CompleteAction();
         }
+
         void DeselectAlteredTowers() //TODO: At the end of animation
         {
             TransferData.AlteredTowers.ForEach(t =>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,16 @@ namespace Turn
         //public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
         BaseTurnHandler[] turnHandlers;
         Dictionary<string, Team> turnTeams;
-
-
+        
         public TeamType currentTeamType = TeamType.Team1;
 
         private BaseTurnHandler currentTurnHandler;
-
+        private bool reverseTowers = false;
 
         private void OnEnable()
         {
             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
+            Eventbus.BlueprintEvents.OnReverseOrder += ReverseOrder;
             
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteActionRequest += CompleteActionByUser;
@@ -38,6 +39,11 @@ namespace Turn
         private void Initialize()
         {
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
+        }
+
+        void ReverseOrder()
+        {
+            reverseTowers = true;
         }
 
 
@@ -66,6 +72,7 @@ namespace Turn
             StartCoroutine(nameof(TurnActionRoutine));
         }
 
+        
         void SetFirstCombatElements()
         {
             var combatHandler = turnHandlers.FirstOrDefault(i => i as CombatHandler != null) as CombatHandler;
@@ -152,6 +159,7 @@ namespace Turn
         private void OnDisable()
         {
             Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
+            Eventbus.BlueprintEvents.OnReverseOrder += ReverseOrder;
             
             NetworkEventbus.RequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
             NetworkEventbus.RequestEvents.OnNewTurnRequest -= NewTurn;

@@ -18,7 +18,6 @@ namespace Towers
 
         [SerializeField] Transform levelPrefab;
         Transform _level;
-        
 
 
         public static Tower GetTower(int id) => Towers[id]; //Towers.FirstOrDefault(t => t.Data.UniqID == id);
@@ -35,7 +34,7 @@ namespace Towers
             InstantiateLevelPrefab();
             ReceiveTowers();
             ReceiveTowerData();
-            SetFirstMatches();
+            LinkTowers();
 
             TowerEvents.OnTowersCreated?.Invoke();
         }
@@ -50,6 +49,7 @@ namespace Towers
             Towers = _level.GetComponentsInChildren<Tower>().ToList();
             TowersCount = Towers.Count;
         }
+
         void ReceiveTowerData()
         {
             for (int i = 0; i < TowersCount; i++)
@@ -58,18 +58,29 @@ namespace Towers
             }
         }
 
-        void SetFirstMatches()
+        void LinkTowers()
         {
-            int dataSize = Datas.Count;
-            for (int i = 0; i < dataSize; i++)
+            for (int i = 0; i < TowersCount; i++)
             {
-                var nextIndex = (i + 1) % dataSize;
-               // var prevIndex = (i - 1 + dataSize) % dataSize;
-                
+                var nextIndex = (i + 1) % TowersCount;
                 Datas[i].LinkedTowerIDs.Add(nextIndex);
-               // Datas[i].LinkedTowerIDs.Add(prevIndex);
             }
         }
+
+        public static void ReverseLink(bool clearPrevious = false)
+        {
+            for (int i = 0; i < TowersCount; i++)
+            {
+                if(clearPrevious)
+                    Datas[i].LinkedTowerIDs.Clear();
+                
+                var prevIndex = (i - 1 + TowersCount) % TowersCount;
+                Datas[i].LinkedTowerIDs.Add(prevIndex);
+            }
+            
+            
+        }
+
 
         public static void RestoreBullets()
         {

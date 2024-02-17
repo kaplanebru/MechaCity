@@ -22,6 +22,11 @@ public static class Eventbus
         public static Action OnCombatTerminated;
     }
 
+    public static class BlueprintEvents
+    {
+        public static Action OnReverseOrder;
+    }
+
 
     // public class SubscriptionModel
     // {
