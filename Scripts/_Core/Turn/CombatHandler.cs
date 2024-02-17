@@ -23,31 +23,19 @@ namespace Turn
         [ReadOnly] public float afterCombatDelay = .3f;
         public float selectionDelay = 0.3f;
         public float cursorDuration = 0.5f;
-
-        public void CreateCombatPairs()
-        {
-            CombatPairs.Clear();
-
-            foreach (var t in AllTowers.TowerDatas)
-            {
-                CombatPairByTower(AllTowers.GetData(t.UniqID));
-            }
-
-           
-        }
+        
         
         //TODO: CombatPairCreator.cs
 
-        public void CreateReverseCombatPairs()
+      
+        public void CreateReverseCombatPairs(List<TowerData> tempTowers, bool isReversed = false)
         {
+            if (isReversed) tempTowers.Reverse();
+            
             CombatPairs.Clear();
-            List<TowerData> tempTowers = AllTowers.TowerDatas.ToList();
-            tempTowers.Reverse();
             AllTowers.LinkingTowers(tempTowers);
-            foreach (var t in tempTowers)
-            {
-                CombatPairByTower(AllTowers.GetData(t.UniqID));
-            }
+            tempTowers.ForEach(CombatPairByTower);
+            
         }
         
         public void CombatPairByTower(TowerData tower)
@@ -99,12 +87,12 @@ namespace Turn
 
         public void ConstantSetup()
         {
-            Data.CreateCombatPairs();
+            Data.CreateReverseCombatPairs(AllTowers.TowerDatas.ToList());
         }
 
         public override void Setup()
         {
-            Data.CreateReverseCombatPairs();
+            //Data.CreateReverseCombatPairs(AllTowers.TowerDatas.ToList(), true);
             
             TransferData.AlteredTowers.ForEach(at => AllTowers.GetTower(at).ResetColor());
             StartCoroutine(nameof(FireRoutine));

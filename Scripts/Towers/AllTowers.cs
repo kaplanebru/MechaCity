@@ -59,27 +59,6 @@ namespace Towers
             }
         }
 
-        void LinkTowers()
-        {
-            for (int i = 0; i < TowersCount; i++)
-            {
-                var nextIndex = (i + 1) % TowersCount;
-                _towerDatas[i].LinkedTowerIDs.Add(nextIndex);
-            }
-        }
-
-        public static void ReverseLink(bool clearPrevious = false)
-        {
-            for (int i = 0; i < TowersCount; i++)
-            {
-                if (clearPrevious)
-                    _towerDatas[i].LinkedTowerIDs.Clear();
-
-                var prevIndex = (i - 1 + TowersCount) % TowersCount;
-                _towerDatas[i].LinkedTowerIDs.Add(prevIndex);
-            }
-        }
-
         public static void LinkingTowers(List<TowerData> towers) //ters de gelebilir
         {
             for (var i = 0; i < TowersCount; i++)
