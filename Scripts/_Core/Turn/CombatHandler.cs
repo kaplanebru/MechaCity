@@ -15,6 +15,7 @@ namespace Turn
         public List<int> AlteredTowers = new();
     }
 
+    
     [Serializable]
     public class CombatData
     {
@@ -23,56 +24,16 @@ namespace Turn
         [ReadOnly] public float afterCombatDelay = .3f;
         public float selectionDelay = 0.3f;
         public float cursorDuration = 0.5f;
-        
-        
-        //TODO: CombatPairCreator.cs
-
-      
-        public void CreateReverseCombatPairs(List<TowerData> tempTowers, bool isReversed = false)
-        {
-            if (isReversed) tempTowers.Reverse();
-            
-            CombatPairs.Clear();
-            AllTowers.LinkingTowers(tempTowers);
-            tempTowers.ForEach(CombatPairByTower);
-            
-        }
-        
-        public void CombatPairByTower(TowerData tower)
-        {
-            OrderLinkedTowersByID(tower);
-
-            foreach (var id in tower.LinkedTowerIDs)
-            {
-                var linkedTower = AllTowers.GetData(id);
-                AddToPair(tower, linkedTower);
-            }
-        }
-        
-      
-
-        void AddToPair(TowerData tower1, TowerData tower2)
-        {
-            CombatPairs.Add(new CombatPair(tower1, tower2));
-        }
-
-        void OrderLinkedTowersByID(TowerData tower)
-        {
-            tower.LinkedTowerIDs =
-                tower.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.SlotId - AllTowers.GetData(other).SlotId))
-                    .ToList();
-        }
     }
 
     public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferData>
     {
         public CombatTransferData TransferData { get; private set; }
         public CombatTimingData timingData;
+        private readonly CombatData Data = new();
+        private CombatPairListCreator combatPairListCreator; 
 
         public override TurnHandlerType HandlerType => TurnHandlerType.Combat;
-        private readonly CombatData Data = new();
-
-
         
         public override void OnHandlerEnabled()
         {
@@ -87,7 +48,8 @@ namespace Turn
 
         public void ConstantSetup()
         {
-            Data.CreateReverseCombatPairs(AllTowers.TowerDatas.ToList());
+            combatPairListCreator = new CombatPairListCreator(Data.CombatPairs);
+            combatPairListCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList());
         }
 
         public override void Setup()
