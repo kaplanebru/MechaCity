@@ -664,7 +664,7 @@ MonoBehaviour:
   NetworkUIController: {fileID: 923155417}
   teams: []
   assetHolder: {fileID: 11400000, guid: a2d96ec40fc3ed3408057310e9159772, type: 2}
-  isMultiplayerOn: 0
+  isMultiplayerOn: 1
 --- !u!1001 &560683655
 PrefabInstance:
   m_ObjectHideFlags: 0

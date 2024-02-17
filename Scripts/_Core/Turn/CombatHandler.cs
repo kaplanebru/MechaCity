@@ -27,7 +27,13 @@ namespace Turn
         public void CreateCombatPairs()
         {
             CombatPairs.Clear();
-            AllTowers.Towers.ForEach(t => CombatPairByTower(AllTowers.GetData(t.Data.UniqID)));
+
+            foreach (var t in AllTowers.TowerDatas)
+            {
+                CombatPairByTower(AllTowers.GetData(t.UniqID));
+            }
+
+           
         }
         
         //TODO: CombatPairCreator.cs
@@ -35,12 +41,10 @@ namespace Turn
         public void CreateReverseCombatPairs()
         {
             CombatPairs.Clear();
-            AllTowers.ReverseLink(true);
-            
-            for (int i = AllTowers.TowersCount - 1; i >= 0; i--)
+            AllTowers.LinkingTowers();
+            foreach (var t in AllTowers.TowerDatas)
             {
-                CombatPairByTower(AllTowers.GetData(i));
-                Debug.Log(i);
+                CombatPairByTower(AllTowers.GetData(t.UniqID));
             }
         }
         
@@ -93,12 +97,14 @@ namespace Turn
 
         public void ConstantSetup()
         {
-           // Data.CreateCombatPairs();
-            Data.CreateReverseCombatPairs();
+            Data.CreateCombatPairs();
+            //Data.CreateReverseCombatPairs();
         }
 
         public override void Setup()
         {
+            //Data.CreateReverseCombatPairs();
+            
             TransferData.AlteredTowers.ForEach(at => AllTowers.GetTower(at).ResetColor());
             StartCoroutine(nameof(FireRoutine));
         }

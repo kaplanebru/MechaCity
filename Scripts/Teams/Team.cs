@@ -19,15 +19,15 @@ namespace Teams
         void GetTeamTowers()
         {
             Data.Towers.Clear(); //TODO: team so olmayabilir
-            
-            AllTowers.Towers.ForEach(t =>
+
+            foreach (var t in AllTowers.Towers)
             {
                 if (t.ConstantData.StartTeam == Data.TeamType)
                 {
                     Data.Towers.Add(t.Data);
                     t.Setup(Data.TeamTowerData);
                 }
-            });
+            }
         }
         
         

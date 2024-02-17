@@ -38,9 +38,6 @@ namespace Core
         }
         
 
-       
-        
-        
         private void AssignPlayers(Player newPlayer, ulong id)
         {
             teams[id].Data.Player = newPlayer;
@@ -70,8 +67,12 @@ namespace Core
                 }
             );
             
-            AllTowers.Towers.ForEach(t=>t.towerParts.ChangeHeight(t.Data.Height));
-            
+            //AllTowers.EveryTower.ForEach(t=>t.towerParts.ChangeHeight(t.Data.Height));
+            foreach (var t in AllTowers.Towers)
+            {
+                t.towerParts.ChangeHeight(t.Data.Height);
+            }
+
             print("Game Started");
         }
         

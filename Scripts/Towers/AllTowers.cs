@@ -13,16 +13,16 @@ namespace Towers
     public class AllTowers : MonoBehaviour
     {
         public static int TowersCount;
-        public static List<Tower> Towers = new();
-        public static List<TowerData> Datas = new();
+        
+        private static List<Tower> _towers = new();
+        private static List<TowerData> _towerDatas = new();
+        public static IEnumerable<Tower> Towers  => _towers;
+        public static IEnumerable<TowerData> TowerDatas => _towerDatas;
+        public static Tower GetTower(int id) => _towers[id];
+        public static TowerData GetData(int id) => _towerDatas[id];
 
         [SerializeField] Transform levelPrefab;
         Transform _level;
-
-
-        public static Tower GetTower(int id) => Towers[id]; //Towers.FirstOrDefault(t => t.Data.UniqID == id);
-        public static TowerData GetData(int id) => Datas[id]; //Towers[id].Data;//Datas[i];
-
 
         private void OnEnable()
         {
@@ -34,7 +34,8 @@ namespace Towers
             InstantiateLevelPrefab();
             ReceiveTowers();
             ReceiveTowerData();
-            LinkTowers();
+            
+            LinkingTowers();
 
             TowerEvents.OnTowersCreated?.Invoke();
         }
@@ -46,15 +47,15 @@ namespace Towers
 
         void ReceiveTowers()
         {
-            Towers = _level.GetComponentsInChildren<Tower>().ToList();
-            TowersCount = Towers.Count;
+            _towers = _level.GetComponentsInChildren<Tower>().ToList();
+            TowersCount = _towers.Count;
         }
 
         void ReceiveTowerData()
         {
             for (int i = 0; i < TowersCount; i++)
             {
-                Datas.Add(Towers[i].Data);
+                _towerDatas.Add(_towers[i].Data);
             }
         }
 
@@ -63,7 +64,7 @@ namespace Towers
             for (int i = 0; i < TowersCount; i++)
             {
                 var nextIndex = (i + 1) % TowersCount;
-                Datas[i].LinkedTowerIDs.Add(nextIndex);
+                _towerDatas[i].LinkedTowerIDs.Add(nextIndex);
             }
         }
 
@@ -72,26 +73,37 @@ namespace Towers
             for (int i = 0; i < TowersCount; i++)
             {
                 if(clearPrevious)
-                    Datas[i].LinkedTowerIDs.Clear();
+                    _towerDatas[i].LinkedTowerIDs.Clear();
                 
                 var prevIndex = (i - 1 + TowersCount) % TowersCount;
-                Datas[i].LinkedTowerIDs.Add(prevIndex);
+                _towerDatas[i].LinkedTowerIDs.Add(prevIndex);
             }
-            
-            
         }
 
+        public static void LinkingTowers() //ters de gelebilir
+        {
+            
+            for (var i = 0; i < TowersCount; i++)
+            {
+                
+                _towerDatas[i].LinkedTowerIDs.Clear();
+                
+                int next = _towerDatas[(i + 1) % TowersCount].UniqID; //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
+                print("index: " + (i + 1) % TowersCount + " id: " + next);
+                _towerDatas[i].LinkedTowerIDs.Add(next);
+            }
+        }
 
         public static void RestoreBullets()
         {
-            Towers.ForEach(t => t.RestoreBullets());
+            _towers.ForEach(t => t.RestoreBullets());
         }
 
 
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
-            foreach (var tower in Towers)
+            foreach (var tower in _towers)
             {
                 foreach (var linkedTowerID in tower.Data.LinkedTowerIDs)
                 {
