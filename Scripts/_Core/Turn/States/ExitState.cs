@@ -6,9 +6,11 @@ using UnityEngine;
 
 public class ExitState : BaseTurnState
 {
-    
+
     public override int StateId { get; set; }
-    public override TurnStateType StateType => TurnStateType.Exit;
+    //public override TurnStateType StateType => TurnStateType.Exit;
+    public override TurnStateType StateType { get; }
+
   
 
     public override void Subscribe()

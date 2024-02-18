@@ -13,7 +13,7 @@ namespace Network
         public static class RequestEvents
         {
             public static Action<Player, ulong> OnPlayerSpawned;
-            public static Action OnCompleteActionRequest;
+            public static Action OnCompleteStateRequestByServer;
             public static Action OnNewTurnRequest;
             public static Action OnTurnButtonsShiftRequest;
 
@@ -22,7 +22,7 @@ namespace Network
         
         public static class TriggerEvents
         {
-            public static Action<TurnStateType> OnCompleteActionRequestByUser;
+            public static Action<TurnStateType> OnCompleteStateRequestByUser;
             public static Action<TeamType> OnGameEnds;
         }
         

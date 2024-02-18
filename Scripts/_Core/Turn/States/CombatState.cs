@@ -29,7 +29,7 @@ namespace Turn
     public class CombatState : BaseTurnState, ITurnTransferHandler<CombatTransferData>
     {
         public CombatTransferData TransferData { get; private set; } = new();
-        public CombatTimingData timingData;
+        //public CombatTimingData timingData;
         private readonly CombatData Data = new();
         private CombatPairListCreator combatPairListCreator; 
 
@@ -38,10 +38,7 @@ namespace Turn
 
        
 
-        public override void Subscribe()
-        {
-            
-        }
+        public override void Subscribe() {}
         
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
@@ -63,6 +60,7 @@ namespace Turn
             
             TransferData.AlteredTowers.ForEach(at => AllTowers.GetTower(at).ResetColor());
             //StartCoroutine(nameof(FireRoutine)); //TODO: FİX LATER
+            turnManager.StartCoroutine(this.FireRoutine());
         }
 
         void Select(CombatPair pair, bool select = true)
@@ -75,8 +73,9 @@ namespace Turn
 
         IEnumerator FireRoutine()
         {
+            Debug.Log("coroutine started");
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
-            yield return new WaitForSeconds(timingData.cameraDelay);
+            yield return new WaitForSeconds(turnManager.timingData.cameraDelay);
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
 
 
@@ -88,7 +87,7 @@ namespace Turn
                 yield return new WaitForSeconds(Data.selectionDelay);
 
 
-                pair.Combat(timingData);
+                pair.Combat(turnManager.timingData);
 
                 yield return new WaitUntil(() => pair.CombatCompleted);
                 yield return new WaitForSeconds(Data.afterCombatDelay);
@@ -102,13 +101,14 @@ namespace Turn
             yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
-            CompleteAction();
+            CompleteState();
+            turnManager.SwitchState(StateId + 1);
         }
 
-        void DeselectAlteredTowers() //TODO: At the end of animation
+        void DeselectAlteredTowers()
         {
-            // TransferData.AlteredTowers.ForEach(t =>
-            //     AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
+            TransferData.AlteredTowers?.ForEach(t =>
+                AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
         }
 
         public override void ResetPreviousTurnData()

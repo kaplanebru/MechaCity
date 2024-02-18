@@ -27,10 +27,11 @@ namespace Turn
 
         public abstract void Subscribe();
 
-        public void EnterState()//(TurnManager turnManager)
+        protected TurnManager turnManager;
+        public void EnterState(TurnManager turnManager = null)
         {
-            //ResetPreviousTurnData();
-
+            this.turnManager = turnManager;
+            
             turnAction = TurnAction.Started;
             Subscribe();
             StartState();
@@ -42,11 +43,11 @@ namespace Turn
     
         public abstract void StartState();
     
-        public void CompleteAction()
+        public void CompleteState()
         {
             turnAction = TurnAction.Completed;
             Unsubscribe();
-            Debug.LogWarning("Unsubscribed from " + StateType);
+            //Debug.LogWarning("Unsubscribed from " + StateType);
         }
         public void SetTeams(Dictionary<string, Team> teams)
         {

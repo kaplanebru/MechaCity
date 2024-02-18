@@ -23,7 +23,7 @@ namespace Enums
         Selection,
         TowerGroup,
         Combat,
-        Exit
+        //Exit
     }
 
     public enum GameEndState
