@@ -21,12 +21,11 @@ namespace Turn
         public TeamType currentTeamType = TeamType.Team1;
 
         private BaseTurnHandler currentTurnHandler;
-        private bool reverseTowers = false;
 
         private void OnEnable()
         {
             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
-            Eventbus.BlueprintEvents.OnReverseOrder += ReverseOrder;
+            SubscribeToBlueprintActions();
             
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteActionRequest += CompleteActionByUser;
@@ -41,9 +40,21 @@ namespace Turn
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
 
-        void ReverseOrder()
+        void SubscribeToBlueprintActions()
         {
-            reverseTowers = true;
+            Eventbus.BlueprintEvents.OnReverseOrderActionBegin += PublishReverseOrderAction;
+        }
+
+        void UnsubscribeToBlueprintActions()
+        {
+            Eventbus.BlueprintEvents.OnReverseOrderActionBegin -= PublishReverseOrderAction;
+        }
+
+        void PublishReverseOrderAction()
+        {
+            //Combata event publish edecek.
+            //selection ve group aç-kapa şeklinde çalışabilir. Ya da state machine yapılır ya. Combat hep açık olabilir.
+            //BP actionları için de action olarak kart oluşturmaya bak
         }
 
 
@@ -159,7 +170,7 @@ namespace Turn
         private void OnDisable()
         {
             Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
-            Eventbus.BlueprintEvents.OnReverseOrder += ReverseOrder;
+            UnsubscribeToBlueprintActions();
             
             NetworkEventbus.RequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
             NetworkEventbus.RequestEvents.OnNewTurnRequest -= NewTurn;
