@@ -14,13 +14,18 @@ namespace Turn
 {
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
-        //public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
-        BaseTurnHandler[] turnHandlers;
+        private BaseTurnState currentState;
+        
+        private SelectionState selectionState = new SelectionState();
+        private TowerGroupState towerGroupState = new TowerGroupState();
+        private CombatState combatState = new CombatState();
+        private ExitState exitState = new ExitState();
+        
+        BaseTurnState[] states = new BaseTurnState[4];
         Dictionary<string, Team> turnTeams;
         
         public TeamType currentTeamType = TeamType.Team1;
-
-        private BaseTurnHandler currentTurnHandler;
+        
 
         private void OnEnable()
         {
@@ -30,13 +35,11 @@ namespace Turn
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteActionRequest += CompleteActionByUser;
             NetworkEventbus.RequestEvents.OnNewTurnRequest += NewTurn;
-
-            turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
-            DisableAllTurnHandlers();
         }
 
         private void Initialize()
         {
+            Setup();
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
 
@@ -56,8 +59,6 @@ namespace Turn
             //selection ve group aç-kapa şeklinde çalışabilir. Ya da state machine yapılır ya. Combat hep açık olabilir.
             //BP actionları için de action olarak kart oluşturmaya bak
         }
-
-
         void SetTurnTeams(Team[] teams)
         {
             turnTeams = new Dictionary<string, Team>()
@@ -66,57 +67,77 @@ namespace Turn
                 {"rivalTeam", teams[1]},
             };
         }
-
-        void DisableAllTurnHandlers()
+        void Setup()
         {
-            foreach (var turnHandler in turnHandlers)
+            states[0] = selectionState;
+            states[1] = towerGroupState;
+            states[2] = combatState;
+            states[3] = exitState;
+
+            for (int i = 0; i < states.Length; i++)
             {
-                turnHandler.enabled = false;
+                states[i].StateId = i;
             }
         }
+
+        public void SwitchState(int currentStateId)
+        {
+            var newState = GetNextState(currentStateId);
+            currentState = newState;
+            newState.EnterState(this);
+        }
+        
+        BaseTurnState GetNextState(int currentStateId)
+        {
+            int nextStateId = (currentStateId + 1) % states.Length;
+            if (nextStateId == states.Length)
+            {
+                if (!GameEnding()) //son state'te eklenebilir
+                    NetworkEventbus.TurnEvents.OnTurnEnding?.Invoke();
+            }
+            return states[nextStateId];
+        }
+
+      
 
 
         void FirstTurn(params object[] args)
         {
             Initialize();
             SetFirstCombatElements();
-            StartCoroutine(nameof(TurnActionRoutine));
+           // StartCoroutine(nameof(TurnActionRoutine));
         }
 
         
         void SetFirstCombatElements()
         {
-            var combatHandler = turnHandlers.FirstOrDefault(i => i as CombatHandler != null) as CombatHandler;
-            combatHandler.enabled = true;
-            combatHandler.ConstantSetup();
+            combatState.ConstantSetup();
+            combatState.CompleteAction();
             
-            foreach (var tower in turnTeams["currentTeam"].Data.Towers)
-            {
-                //combatHandler.CreateCombatPairByTower(tower);
-                var matchHelper = (MatchHelper) combatHandler.TurnHelpers[0];
-                matchHelper.SetGrids(turnTeams.Values.ToArray());
-            }
-            combatHandler.CompleteAction();
+            NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
+            currentState = selectionState;
+            currentState.EnterState(this);
+            
+            currentState.SetTeams(turnTeams);
+            GetIncomingData(currentState.StateId);
+            currentState.Setup();
         }
 
         IEnumerator TurnActionRoutine()
         {
             NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
             
-            for (var i = 0; i < turnHandlers.Length; i++)
+            for (var i = 0; i < states.Length; i++)
             {
-                //print(currentTurnHandler.turnAction);
-                currentTurnHandler = turnHandlers[i];
-                currentTurnHandler.enabled = true;
-                currentTurnHandler.SetTeams(turnTeams);
-
+                currentState = states[i];
+                currentState.SetTeams(turnTeams);
                 GetIncomingData(i);
-                currentTurnHandler.Setup();
+                currentState.Setup();
 
-                yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
+                yield return new WaitUntil(() => currentState.turnAction == TurnAction.Completed);
             }
 
-            if (!GameEnding())
+            if (!GameEnding()) //son state'te eklenebilir
                 NetworkEventbus.TurnEvents.OnTurnEnding?.Invoke();
         }
 
@@ -124,8 +145,8 @@ namespace Turn
         {
             if (turnIndex <= 0) return;
 
-            var transferData = ((ITurnActionHandler<BaseTurnTransferData>) turnHandlers[turnIndex - 1]).TransferData;
-            currentTurnHandler.ProcessIncomingData(transferData);
+            var transferData = ((ITurnActionHandler<BaseTurnTransferData>) states[turnIndex - 1]).TransferData;
+            currentState.ProcessIncomingData(transferData);
         }
 
         void NewTurn()
@@ -137,9 +158,10 @@ namespace Turn
 
         void CompleteActionByUser()
         {
-            currentTurnHandler.CompleteAction();
+            currentState.CompleteAction();
+            SwitchState(currentState.StateId);
         }
-
+        
         void SwitchTeams()
         {
             currentTeamType = turnTeams["rivalTeam"].Data.TeamType;
@@ -147,9 +169,6 @@ namespace Turn
 
             UIEventbus.OnTeamSwitch?.Invoke(currentTeamType);
 
-            // var temp = currentTeam;
-            // currentTeam = rivalTeam;
-            // rivalTeam = temp;
         }
 
         bool GameEnding()

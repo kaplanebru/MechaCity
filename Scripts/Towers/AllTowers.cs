@@ -68,7 +68,7 @@ namespace Towers
                 int next = towers[(i + 1) % TowersCount].UniqID; //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
                 towers[i].LinkedTowerIDs.Add(next);
                 
-                print("index: " + (i + 1) % TowersCount + " id: " + next);
+               // print("index: " + (i + 1) % TowersCount + " id: " + next);
             }
         }
 

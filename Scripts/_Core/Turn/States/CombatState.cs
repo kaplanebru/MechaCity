@@ -26,7 +26,7 @@ namespace Turn
         public float cursorDuration = 0.5f;
     }
 
-    public class CombatHandler : BaseTurnHandler, ITurnActionHandler<CombatTransferData>
+    public class CombatState : BaseTurnState, ITurnActionHandler<CombatTransferData>
     {
         public CombatTransferData TransferData { get; private set; }
         public CombatTimingData timingData;
@@ -34,10 +34,22 @@ namespace Turn
         private CombatPairListCreator combatPairListCreator; 
 
         public override TurnHandlerType HandlerType => TurnHandlerType.Combat;
-        
+        public override int StateId { get; set; }
+
         public override void OnHandlerEnabled()
         {
             TransferData = new();
+        }
+
+        public override void Subscribe()
+        {
+            throw new NotImplementedException();
+        }
+        
+
+        public override void UpdateState(TurnManager turnManager)
+        {
+            throw new NotImplementedException();
         }
 
         public override void ProcessIncomingData(BaseTurnTransferData data)
@@ -57,7 +69,7 @@ namespace Turn
             //Data.CreateReverseCombatPairs(AllTowers.TowerDatas.ToList(), true);
             
             TransferData.AlteredTowers.ForEach(at => AllTowers.GetTower(at).ResetColor());
-            StartCoroutine(nameof(FireRoutine));
+            //StartCoroutine(nameof(FireRoutine)); //TODO: FİX LATER
         }
 
         void Select(CombatPair pair, bool select = true)
@@ -102,8 +114,8 @@ namespace Turn
 
         void DeselectAlteredTowers() //TODO: At the end of animation
         {
-            TransferData.AlteredTowers.ForEach(t =>
-                AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
+            // TransferData.AlteredTowers.ForEach(t =>
+            //     AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
         }
 
         public override void Unsubscribe()

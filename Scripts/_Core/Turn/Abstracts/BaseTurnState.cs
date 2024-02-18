@@ -7,22 +7,35 @@ using Teams;
 
 namespace Turn
 {
-    public abstract class BaseTurnHandler : MonoBehaviour
+    public abstract class BaseTurnState 
     {
         public TurnAction turnAction;
 
         public Dictionary<string, Team> Teams;
         public Dictionary<TeamType, GameGrid> Grids;
         public abstract TurnHandlerType HandlerType { get; }
+        public abstract int StateId { get; set; }
         public abstract void OnHandlerEnabled();
         public List<BaseTurnHelper> TurnHelpers = new();
 
-        private void OnEnable()
+        
+        // public void Subscribe()
+        // {
+        //     //TurnHelpers.ForEach(h=>h.enabled=true);
+        //     turnAction = TurnAction.Started;
+        // }
+
+        public abstract void Subscribe();
+
+        public void EnterState(TurnManager turnManager)
         {
-            TurnHelpers.ForEach(h=>h.enabled=true);
             turnAction = TurnAction.Started;
-            OnHandlerEnabled();
+            Subscribe();
+            Setup();
         }
+        
+        public abstract void UpdateState(TurnManager turnManager);
+        
     
         public virtual void ProcessIncomingData(BaseTurnTransferData data){}
     
@@ -31,7 +44,8 @@ namespace Turn
         public void CompleteAction()
         {
             turnAction = TurnAction.Completed;
-            enabled = false;
+            Unsubscribe();
+            //enabled = false;
         }
         public void SetTeams(Dictionary<string, Team> teams)
         {
@@ -44,10 +58,10 @@ namespace Turn
         }
     
         public abstract void Unsubscribe();
-        private void OnDisable()
-        {
-            TurnHelpers.ForEach(h=>h.enabled=false);
-            Unsubscribe();
-        }
+        // private void OnDisable()
+        // {
+        //     TurnHelpers.ForEach(h=>h.enabled=false);
+        //     Unsubscribe();
+        // }
     }
 }

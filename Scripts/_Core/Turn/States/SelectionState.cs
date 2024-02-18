@@ -5,6 +5,7 @@ using Enums;
 using Network;
 using Towers;
 using GameUI;
+using UnityEngine;
 
 namespace Turn
 {
@@ -15,18 +16,34 @@ namespace Turn
         
     }
 
-    public class SelectionHandler : BaseTurnHandler, ITurnActionHandler<SelectionTransferData>
+    public class SelectionState : BaseTurnState, ITurnActionHandler<SelectionTransferData>
     {
         public SelectionTransferData TransferData { get; private set; }
         public int maxTowersInGroup = 2;
 
         public override TurnHandlerType HandlerType => TurnHandlerType.Selection;
-
+        public override int StateId { get; set; }
         public override void OnHandlerEnabled()
+        {
+        }
+
+
+        public override void Subscribe()
+        {
+            NetworkEventbus.InputEvents.OnObjectClicked += TowerPartClicked;
+        }
+        
+        public override void Setup()
         {
             TransferData = new();
             TransferData.SelectionGroup.Clear();
-            NetworkEventbus.InputEvents.OnObjectClicked += TowerPartClicked;
+            ManageCompleteButton(false);
+        }
+        
+
+        public override void UpdateState(TurnManager turnManager)
+        {
+           
         }
 
         private void TowerPartClicked(params object[] args)
@@ -38,7 +55,6 @@ namespace Turn
             if (tower == null) return;
 
 
-            //if (tower.Data.TeamTowerData.TeamType == teams["rivalTeam"].Data.TeamTowerData.TeamType) return;
             if (SelectedTwice(tower.UniqID)) return;
 
             if (TransferData.SelectionGroup.Count == maxTowersInGroup)
@@ -47,10 +63,7 @@ namespace Turn
             AddToSelection(true, tower.UniqID);
         }
 
-        public override void Setup()
-        {
-            ManageCompleteButton(false);
-        }
+        
 
         void AddToSelection(bool select, int newTower)
         {
@@ -94,6 +107,7 @@ namespace Turn
         public override void Unsubscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerPartClicked;
+            Debug.Log("unsubscribed from selection");
         }
     }
 }
