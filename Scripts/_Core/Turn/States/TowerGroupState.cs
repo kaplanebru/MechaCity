@@ -17,32 +17,31 @@ namespace Turn
     {
         public TowerGroupTransferData TransferData { get; private set; }
     
-        public override TurnHandlerType HandlerType => TurnHandlerType.TowerGroup;
+        public override TurnStateType StateType => TurnStateType.TowerGroup;
         public override int StateId { get; set; }
 
-        public override void OnHandlerEnabled()
-        {
-            TransferData = new();
-            NetworkEventbus.InputEvents.OnObjectClicked += TowerSelected;
-        }
+       
 
         public override void Subscribe()
         {
-            throw new NotImplementedException();
+            NetworkEventbus.InputEvents.OnObjectClicked += TowerSelected;
         }
 
         public override void UpdateState(TurnManager turnManager)
         {
-            throw new NotImplementedException();
         }
 
         public override void ProcessIncomingData(BaseTurnTransferData data) //(params object[] args)
         {
+            TransferData = new();
             var incomingData = (SelectionTransferData) data;
             TransferData.TowerGroup = incomingData.SelectionGroup;
         }
-    
-        public override void Setup() {}
+
+        public override void Setup()
+        {
+            
+        }
     
         private void TowerSelected(params object[] args)
         {

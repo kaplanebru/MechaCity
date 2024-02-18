@@ -13,9 +13,9 @@ namespace Turn
 
         public Dictionary<string, Team> Teams;
         public Dictionary<TeamType, GameGrid> Grids;
-        public abstract TurnHandlerType HandlerType { get; }
+        public abstract TurnStateType StateType { get; }
         public abstract int StateId { get; set; }
-        public abstract void OnHandlerEnabled();
+       
         public List<BaseTurnHelper> TurnHelpers = new();
 
         
@@ -31,6 +31,7 @@ namespace Turn
         {
             turnAction = TurnAction.Started;
             Subscribe();
+            turnManager.SetCurrentState();
             Setup();
         }
         
@@ -54,7 +55,7 @@ namespace Turn
     
         public void ActionCompletedByUser()
         {
-            NetworkEventbus.TriggerEvents.OnCompleteActionRequestByUser?.Invoke(HandlerType);
+            NetworkEventbus.TriggerEvents.OnCompleteActionRequestByUser?.Invoke(StateType);
         }
     
         public abstract void Unsubscribe();

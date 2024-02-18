@@ -18,12 +18,12 @@ namespace Enums
         Completed
     }
 
-    public enum TurnHandlerType
+    public enum TurnStateType
     {
         Selection,
         TowerGroup,
         Combat,
-        Match
+        Exit
     }
 
     public enum GameEndState

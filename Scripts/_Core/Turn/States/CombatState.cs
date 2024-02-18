@@ -33,27 +33,25 @@ namespace Turn
         private readonly CombatData Data = new();
         private CombatPairListCreator combatPairListCreator; 
 
-        public override TurnHandlerType HandlerType => TurnHandlerType.Combat;
+        public override TurnStateType StateType => TurnStateType.Combat;
         public override int StateId { get; set; }
 
-        public override void OnHandlerEnabled()
-        {
-            TransferData = new();
-        }
+       
 
         public override void Subscribe()
         {
-            throw new NotImplementedException();
+            
         }
         
 
         public override void UpdateState(TurnManager turnManager)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void ProcessIncomingData(BaseTurnTransferData data)
         {
+            TransferData = new();
             var incomingData = (TowerGroupTransferData) data;
             TransferData.AlteredTowers = incomingData.TowerGroup;
         }
@@ -66,6 +64,7 @@ namespace Turn
 
         public override void Setup()
         {
+           
             //Data.CreateReverseCombatPairs(AllTowers.TowerDatas.ToList(), true);
             
             TransferData.AlteredTowers.ForEach(at => AllTowers.GetTower(at).ResetColor());

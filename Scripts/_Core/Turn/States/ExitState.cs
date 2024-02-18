@@ -6,16 +6,14 @@ using UnityEngine;
 
 public class ExitState : BaseTurnState
 {
-    public override TurnHandlerType HandlerType { get; }
+    
     public override int StateId { get; set; }
-    public override void OnHandlerEnabled()
-    {
-        
-    }
+    public override TurnStateType StateType => TurnStateType.Exit;
+  
 
     public override void Subscribe()
     {
-        throw new System.NotImplementedException();
+       
     }
 
   

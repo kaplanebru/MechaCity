@@ -98,8 +98,10 @@ namespace Turn
             return states[nextStateId];
         }
 
-      
-
+        public void ActionCompletedByUser()
+        {
+            NetworkEventbus.TriggerEvents.OnCompleteActionRequestByUser?.Invoke(currentState.StateType);
+        }
 
         void FirstTurn(params object[] args)
         {
@@ -118,28 +120,33 @@ namespace Turn
             currentState = selectionState;
             currentState.EnterState(this);
             
+           
+        }
+
+        public void SetCurrentState()
+        {
             currentState.SetTeams(turnTeams);
             GetIncomingData(currentState.StateId);
             currentState.Setup();
         }
 
-        IEnumerator TurnActionRoutine()
-        {
-            NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
-            
-            for (var i = 0; i < states.Length; i++)
-            {
-                currentState = states[i];
-                currentState.SetTeams(turnTeams);
-                GetIncomingData(i);
-                currentState.Setup();
-
-                yield return new WaitUntil(() => currentState.turnAction == TurnAction.Completed);
-            }
-
-            if (!GameEnding()) //son state'te eklenebilir
-                NetworkEventbus.TurnEvents.OnTurnEnding?.Invoke();
-        }
+        // IEnumerator TurnActionRoutine()
+        // {
+        //     NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
+        //     
+        //     for (var i = 0; i < states.Length; i++)
+        //     {
+        //         currentState = states[i];
+        //         currentState.SetTeams(turnTeams);
+        //         GetIncomingData(i);
+        //         currentState.Setup();
+        //
+        //         yield return new WaitUntil(() => currentState.turnAction == TurnAction.Completed);
+        //     }
+        //
+        //     if (!GameEnding()) //son state'te eklenebilir
+        //         NetworkEventbus.TurnEvents.OnTurnEnding?.Invoke();
+        // }
 
         void GetIncomingData(int turnIndex)
         {
@@ -151,9 +158,9 @@ namespace Turn
 
         void NewTurn()
         {
-            StopCoroutine(nameof(TurnActionRoutine));
-            SwitchTeams();
-            StartCoroutine(nameof(TurnActionRoutine));
+            // StopCoroutine(nameof(TurnActionRoutine));
+            // SwitchTeams();
+            // StartCoroutine(nameof(TurnActionRoutine));
         }
 
         void CompleteActionByUser()

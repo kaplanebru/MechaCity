@@ -21,13 +21,10 @@ namespace Turn
         public SelectionTransferData TransferData { get; private set; }
         public int maxTowersInGroup = 2;
 
-        public override TurnHandlerType HandlerType => TurnHandlerType.Selection;
+        public override TurnStateType StateType => TurnStateType.Selection;
         public override int StateId { get; set; }
-        public override void OnHandlerEnabled()
-        {
-        }
-
-
+       
+        
         public override void Subscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked += TowerPartClicked;

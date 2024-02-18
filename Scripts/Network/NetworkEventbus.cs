@@ -22,7 +22,7 @@ namespace Network
         
         public static class TriggerEvents
         {
-            public static Action<TurnHandlerType> OnCompleteActionRequestByUser;
+            public static Action<TurnStateType> OnCompleteActionRequestByUser;
             public static Action<TeamType> OnGameEnds;
         }
         

@@ -8,7 +8,7 @@ namespace Network
 {
     public class TurnNetworkHandler : NetworkBehaviour
     {
-        public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
+        public NetworkVariable<TurnStateType> turnHandlerType = new(TurnStateType.Selection);
         public TeamType ownerTeamType;
 
 
@@ -44,23 +44,23 @@ namespace Network
         #region Complete Turn Handle
 
         [ServerRpc]
-        void CompleteActionSetupServerRpc(TurnHandlerType lastType)
+        void CompleteActionSetupServerRpc(TurnStateType lastType)
         {
-            int nextType = ((int) lastType + 1) % Enum.GetValues(typeof(TurnHandlerType)).Length;
-            turnHandlerType.Value = (TurnHandlerType) nextType;
+            int nextType = ((int) lastType + 1) % Enum.GetValues(typeof(TurnStateType)).Length;
+            turnHandlerType.Value = (TurnStateType) nextType;
         }
 
         [ServerRpc]
         void RequestNewTurnServerRpc()
         {
-            turnHandlerType.Value = TurnHandlerType.Selection;
+            turnHandlerType.Value = TurnStateType.Selection;
         }
 
-        private void CompleteActionSetup(TurnHandlerType previousvalue, TurnHandlerType newvalue)
+        private void CompleteActionSetup(TurnStateType previousvalue, TurnStateType newvalue)
         {
             //print("complete action : " + newvalue);
 
-            if (newvalue != TurnHandlerType.Selection)
+            if (newvalue != TurnStateType.Selection)
                 NetworkEventbus.RequestEvents.OnCompleteActionRequest?.Invoke();
             else
                 NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
