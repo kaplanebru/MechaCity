@@ -18,11 +18,11 @@ namespace Turn
     {
         private BaseTurnState currentState;
         private TurnStateHolder stateHolder = new TurnStateHolder();
-        
+
         Dictionary<string, Team> turnTeams;
 
         public TeamType currentTeamType = TeamType.Team1;
-        public CombatTimingData timingData;
+        public CombatTimingData timingData; //TODO: Turn asset holder
 
 
         private void OnEnable()
@@ -32,7 +32,7 @@ namespace Turn
 
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += CompleteStateBySystem;
-            NetworkEventbus.RequestEvents.OnNewTurnRequest += NewTurn;
+            NetworkEventbus.RequestEvents.OnNewTurnRequest += SetNewTurn;
         }
 
         private void Initialize()
@@ -66,20 +66,18 @@ namespace Turn
                 {"rivalTeam", teams[1]},
             };
         }
-        
+
         void FirstTurn(params object[] args)
         {
             Initialize();
-            SetFirstCombatElements();
+            stateHolder.CombatState.Subscribe(); // temp
+            stateHolder.CombatState.SetCombatPairs(); //TODO: temp? , event?, bp actionlar tek tek stateleri gerektirebilir?
+            NewTurn();
         }
-
-        void SetFirstCombatElements()
+        
+        void NewTurn()
         {
-            stateHolder.CombatState.ConstantSetup();  //TODO: temp
-            stateHolder.CombatState.CompleteState();  //TODO: temp
-
             NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
-
             ConstructCurrentState(stateHolder.States[0]);
         }
 
@@ -96,7 +94,8 @@ namespace Turn
         {
             if (turnIndex <= 0) return;
 
-            var transferData = ((ITurnTransferHandler<BaseTurnTransferData>) stateHolder.States[turnIndex - 1]).TransferData;
+            var transferData = ((ITurnTransferHandler<BaseTurnTransferData>) stateHolder.States[turnIndex - 1])
+                .TransferData;
             currentState.ProcessPreviousStateTransferData(transferData);
         }
 
@@ -114,7 +113,7 @@ namespace Turn
         public void SwitchState(int nextStateID)
         {
             var newState = GetNextState(nextStateID);
-            if(newState == null) return;
+            if (newState == null) return;
             ConstructCurrentState(newState);
         }
 
@@ -139,14 +138,12 @@ namespace Turn
             return stateHolder.States[nextStateID];
         }
 
-        void NewTurn()
+        void SetNewTurn()
         {
             SwitchTeams();
-            NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
-
-            ConstructCurrentState(stateHolder.States[0]);
+            NewTurn();
         }
-
+        
         void SwitchTeams()
         {
             currentTeamType = turnTeams["rivalTeam"].Data.TeamType;
@@ -155,18 +152,17 @@ namespace Turn
             UIEventbus.OnTeamSwitch?.Invoke(currentTeamType);
         }
 
-        bool GameEnding()
+        bool GameEnding() //TODO: temp?
         {
             foreach (var team in turnTeams)
             {
-                if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Health == 0))
+                if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Health == 0)) //TODO: CHECK
                 {
                     NetworkEventbus.TriggerEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
                     print("game ends");
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -176,7 +172,7 @@ namespace Turn
             UnsubscribeToBlueprintActions();
 
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer -= CompleteStateBySystem;
-            NetworkEventbus.RequestEvents.OnNewTurnRequest -= NewTurn;
+            NetworkEventbus.RequestEvents.OnNewTurnRequest -= SetNewTurn;
             NetworkEventbus.OnAllClientsSet -= FirstTurn;
         }
     }

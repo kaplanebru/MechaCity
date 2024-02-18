@@ -10,13 +10,11 @@ using UnityEngine;
 
 namespace Turn
 {
-    public class CombatTransferData : BaseTurnTransferData // = sıfırlanacak data
+    public class CombatTransferData : BaseTurnTransferData
     {
         public List<int> AlteredTowers = new();
     }
-
     
-    [Serializable]
     public class CombatData
     {
         public List<CombatPair> CombatPairs = new();
@@ -29,16 +27,17 @@ namespace Turn
     public class CombatState : BaseTurnState, ITurnTransferHandler<CombatTransferData>
     {
         public CombatTransferData TransferData { get; private set; } = new();
-        //public CombatTimingData timingData;
+        
         private readonly CombatData Data = new();
-        private CombatPairListCreator combatPairListCreator; 
-
+        private CombatPairsCreator combatPairsCreator;
         public override TurnStateType StateType => TurnStateType.Combat;
         public override int StateId { get; set; }
+        
 
-       
-
-        public override void Subscribe() {}
+        public override void Subscribe()
+        {
+            combatPairsCreator = new CombatPairsCreator(Data.CombatPairs);
+        }
         
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
@@ -47,10 +46,9 @@ namespace Turn
             TransferData.AlteredTowers = incomingData.TowerGroup;
         }
 
-        public void ConstantSetup()
+        public void SetCombatPairs()
         {
-            combatPairListCreator = new CombatPairListCreator(Data.CombatPairs);
-            combatPairListCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList());
+            combatPairsCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList());
         }
 
         public override void StartState()

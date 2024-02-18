@@ -5,16 +5,15 @@ using DataModels;
 using Towers;
 using UnityEngine;
 
-public class CombatPairListCreator
+public class CombatPairsCreator
 {
     List<CombatPair> _combatPairs;
 
-    public CombatPairListCreator(List<CombatPair> combatPairs)
+    public CombatPairsCreator(List<CombatPair> combatPairs)
     {
         _combatPairs = combatPairs;
     }
-
-
+    
     public void CreateCombatPairs(List<TowerData> tempTowers, bool isReversed = false)
     {
         if (isReversed) tempTowers.Reverse();
