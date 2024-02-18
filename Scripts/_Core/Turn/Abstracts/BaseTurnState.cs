@@ -27,38 +27,37 @@ namespace Turn
 
         public abstract void Subscribe();
 
-        public void EnterState(TurnManager turnManager)
+        public void EnterState()//(TurnManager turnManager)
         {
+            //ResetPreviousTurnData();
+
             turnAction = TurnAction.Started;
             Subscribe();
-            turnManager.SetCurrentState();
-            Setup();
+            StartState();
         }
         
-        public abstract void UpdateState(TurnManager turnManager);
         
     
-        public virtual void ProcessIncomingData(BaseTurnTransferData data){}
+        public virtual void ProcessPreviousStateTransferData(BaseTurnTransferData data){}
     
-        public abstract void Setup();
+        public abstract void StartState();
     
         public void CompleteAction()
         {
             turnAction = TurnAction.Completed;
             Unsubscribe();
-            //enabled = false;
+            Debug.LogWarning("Unsubscribed from " + StateType);
         }
         public void SetTeams(Dictionary<string, Team> teams)
         {
             Teams = teams;
         }
-    
-        public void ActionCompletedByUser()
-        {
-            NetworkEventbus.TriggerEvents.OnCompleteActionRequestByUser?.Invoke(StateType);
-        }
+
+        public abstract void ResetPreviousTurnData();
+        
     
         public abstract void Unsubscribe();
+        
         // private void OnDisable()
         // {
         //     TurnHelpers.ForEach(h=>h.enabled=false);

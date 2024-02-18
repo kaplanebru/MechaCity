@@ -2,7 +2,7 @@
 
 namespace Turn
 {
-    public interface ITurnActionHandler<out TTurnData>
+    public interface ITurnTransferHandler<out TTurnData>
     {
         public TTurnData TransferData { get; }
     }

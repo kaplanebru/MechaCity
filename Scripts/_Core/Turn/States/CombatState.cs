@@ -26,9 +26,9 @@ namespace Turn
         public float cursorDuration = 0.5f;
     }
 
-    public class CombatState : BaseTurnState, ITurnActionHandler<CombatTransferData>
+    public class CombatState : BaseTurnState, ITurnTransferHandler<CombatTransferData>
     {
-        public CombatTransferData TransferData { get; private set; }
+        public CombatTransferData TransferData { get; private set; } = new();
         public CombatTimingData timingData;
         private readonly CombatData Data = new();
         private CombatPairListCreator combatPairListCreator; 
@@ -44,14 +44,8 @@ namespace Turn
         }
         
 
-        public override void UpdateState(TurnManager turnManager)
+        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
-            
-        }
-
-        public override void ProcessIncomingData(BaseTurnTransferData data)
-        {
-            TransferData = new();
             var incomingData = (TowerGroupTransferData) data;
             TransferData.AlteredTowers = incomingData.TowerGroup;
         }
@@ -62,7 +56,7 @@ namespace Turn
             combatPairListCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList());
         }
 
-        public override void Setup()
+        public override void StartState()
         {
            
             //Data.CreateReverseCombatPairs(AllTowers.TowerDatas.ToList(), true);
@@ -115,6 +109,11 @@ namespace Turn
         {
             // TransferData.AlteredTowers.ForEach(t =>
             //     AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
+        }
+
+        public override void ResetPreviousTurnData()
+        {
+            TransferData.AlteredTowers.Clear();
         }
 
         public override void Unsubscribe()

@@ -16,9 +16,9 @@ namespace Turn
         
     }
 
-    public class SelectionState : BaseTurnState, ITurnActionHandler<SelectionTransferData>
+    public class SelectionState : BaseTurnState, ITurnTransferHandler<SelectionTransferData>
     {
-        public SelectionTransferData TransferData { get; private set; }
+        public SelectionTransferData TransferData { get; private set; } = new();
         public int maxTowersInGroup = 2;
 
         public override TurnStateType StateType => TurnStateType.Selection;
@@ -29,23 +29,18 @@ namespace Turn
         {
             NetworkEventbus.InputEvents.OnObjectClicked += TowerPartClicked;
         }
+
+        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) {}
         
-        public override void Setup()
+        public override void StartState()
         {
-            TransferData = new();
-            TransferData.SelectionGroup.Clear();
             ManageCompleteButton(false);
         }
         
-
-        public override void UpdateState(TurnManager turnManager)
-        {
-           
-        }
+        
 
         private void TowerPartClicked(params object[] args)
         {
-            //var tower = args[0] as Tower;
             int selectedTowerUniqID = (int) args[0];
 
             var tower = Teams["currentTeam"].Data.Towers.FirstOrDefault(t => t.UniqID == selectedTowerUniqID);
@@ -101,10 +96,14 @@ namespace Turn
             }
         }
 
+        public override void ResetPreviousTurnData()
+        {
+            TransferData.SelectionGroup.Clear();
+        }
+
         public override void Unsubscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerPartClicked;
-            Debug.Log("unsubscribed from selection");
         }
     }
 }

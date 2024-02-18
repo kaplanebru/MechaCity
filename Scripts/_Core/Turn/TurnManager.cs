@@ -83,8 +83,24 @@ namespace Turn
         public void SwitchState(int currentStateId)
         {
             var newState = GetNextState(currentStateId);
+            ConstructCurrentState(newState);
+        }
+        
+        public void ConstructCurrentState(BaseTurnState newState)
+        {
             currentState = newState;
-            newState.EnterState(this);
+            currentState.SetTeams(turnTeams);
+            GetPreviousData(currentState.StateId);
+            currentState.EnterState();
+
+        }
+        
+        void GetPreviousData(int turnIndex)
+        {
+            if (turnIndex <= 0) return;
+
+            var transferData = ((ITurnTransferHandler<BaseTurnTransferData>) states[turnIndex - 1]).TransferData;
+            currentState.ProcessPreviousStateTransferData(transferData);
         }
         
         BaseTurnState GetNextState(int currentStateId)
@@ -92,8 +108,14 @@ namespace Turn
             int nextStateId = (currentStateId + 1) % states.Length;
             if (nextStateId == states.Length)
             {
-                if (!GameEnding()) //son state'te eklenebilir
+                if (!GameEnding())
+                {
+                    foreach (var state in states)
+                    {
+                        state.ResetPreviousTurnData();
+                    }
                     NetworkEventbus.TurnEvents.OnTurnEnding?.Invoke();
+                }
             }
             return states[nextStateId];
         }
@@ -117,44 +139,11 @@ namespace Turn
             combatState.CompleteAction();
             
             NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
-            currentState = selectionState;
-            currentState.EnterState(this);
-            
            
+            ConstructCurrentState(selectionState);
         }
 
-        public void SetCurrentState()
-        {
-            currentState.SetTeams(turnTeams);
-            GetIncomingData(currentState.StateId);
-            currentState.Setup();
-        }
-
-        // IEnumerator TurnActionRoutine()
-        // {
-        //     NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
-        //     
-        //     for (var i = 0; i < states.Length; i++)
-        //     {
-        //         currentState = states[i];
-        //         currentState.SetTeams(turnTeams);
-        //         GetIncomingData(i);
-        //         currentState.Setup();
-        //
-        //         yield return new WaitUntil(() => currentState.turnAction == TurnAction.Completed);
-        //     }
-        //
-        //     if (!GameEnding()) //son state'te eklenebilir
-        //         NetworkEventbus.TurnEvents.OnTurnEnding?.Invoke();
-        // }
-
-        void GetIncomingData(int turnIndex)
-        {
-            if (turnIndex <= 0) return;
-
-            var transferData = ((ITurnActionHandler<BaseTurnTransferData>) states[turnIndex - 1]).TransferData;
-            currentState.ProcessIncomingData(transferData);
-        }
+       
 
         void NewTurn()
         {

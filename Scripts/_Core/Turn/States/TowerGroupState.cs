@@ -13,35 +13,26 @@ namespace Turn
         public List<int> TowerGroup = new();
     }
     
-    public class TowerGroupState : BaseTurnState, ITurnActionHandler<TowerGroupTransferData>
+    public class TowerGroupState : BaseTurnState, ITurnTransferHandler<TowerGroupTransferData>
     {
-        public TowerGroupTransferData TransferData { get; private set; }
+        public TowerGroupTransferData TransferData { get; private set; } = new();
     
         public override TurnStateType StateType => TurnStateType.TowerGroup;
         public override int StateId { get; set; }
-
-       
-
+        
         public override void Subscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked += TowerSelected;
         }
+        
 
-        public override void UpdateState(TurnManager turnManager)
+        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
-        }
-
-        public override void ProcessIncomingData(BaseTurnTransferData data) //(params object[] args)
-        {
-            TransferData = new();
             var incomingData = (SelectionTransferData) data;
             TransferData.TowerGroup = incomingData.SelectionGroup;
         }
 
-        public override void Setup()
-        {
-            
-        }
+        public override void StartState() {}
     
         private void TowerSelected(params object[] args)
         {
@@ -68,7 +59,12 @@ namespace Turn
             }
             
         }
-    
+
+        public override void ResetPreviousTurnData()
+        {
+            TransferData.TowerGroup.Clear();
+        }
+
         public override void Unsubscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;

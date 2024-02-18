@@ -18,12 +18,14 @@ public class ExitState : BaseTurnState
 
   
 
-    public override void UpdateState(TurnManager turnManager)
+  
+
+    public override void StartState()
     {
-       
+        
     }
 
-    public override void Setup()
+    public override void ResetPreviousTurnData()
     {
         
     }
