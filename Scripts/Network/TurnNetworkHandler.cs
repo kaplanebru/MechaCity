@@ -18,7 +18,6 @@ namespace Network
             
             if (IsOwner)
             {
-                //NetworkEventbus.TurnEvents.OnTurnEnding += ResetTurnStateServerRpc;
                 NetworkEventbus.TriggerEvents.OnCompleteStateRequestByUser += CompleteStateBeginServerRpc;
                 NetworkEventbus.TurnEvents.OnTurnStarted += TurnButtonsSetup;  //not: player 1'e mi bakıyor 2 pcde de
             }
@@ -49,13 +48,7 @@ namespace Network
             int nextType = ((int) lastType + 1) % Enum.GetValues(typeof(TurnStateType)).Length;
             turnStateType.Value = (TurnStateType) nextType;
         }
-
-        // [ServerRpc]
-        // void ResetTurnStateServerRpc()
-        // {
-        //     turnStateType.Value = TurnStateType.Selection;
-        // }
-
+        
         private void CompleteStateBegin(TurnStateType previousvalue, TurnStateType newvalue)
         {
             //print("complete action : " + newvalue);
@@ -74,7 +67,6 @@ namespace Network
             turnStateType.OnValueChanged -= CompleteStateBegin;
             if (IsOwner)
             {
-                //NetworkEventbus.TurnEvents.OnTurnEnding -= ResetTurnStateServerRpc;
                 NetworkEventbus.TriggerEvents.OnCompleteStateRequestByUser -= CompleteStateBeginServerRpc;
                 NetworkEventbus.TurnEvents.OnTurnStarted -= TurnButtonsSetup;
             }
