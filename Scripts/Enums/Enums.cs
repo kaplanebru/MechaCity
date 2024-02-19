@@ -33,6 +33,13 @@ namespace Enums
         Lose
     }
 
+    public enum BpType
+    {
+        Reverse,
+        Freeze,
+        Double
+    }
+
     
     
 }
