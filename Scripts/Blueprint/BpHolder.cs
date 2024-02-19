@@ -7,17 +7,9 @@ using UnityEngine;
 
 public class BpHolder : MonoBehaviour
 {
+    public Dictionary<BpType, BaseBlueprint> BpActions = new(); //TODO: Silme, drive'a ekle BaseBlueprint üzerinde generic olursa inherit olan classları listeye almıyor
+    //  public Dictionary<BpType, BaseBlueprint<IBpAction>> BpActions = new Dictionary<BpType, BaseBlueprint<IBpAction>>();
     
-    public Dictionary<BpType, BaseBlueprint<IBpAction>> BpActions = new Dictionary<BpType, BaseBlueprint<IBpAction>>();
-    
-    
-  //  public Dictionary<BpType, BaseBlueprint<IBpAction>> BpActions = new Dictionary<BpType, BaseBlueprint<IBpAction>>();
-
-
- 
-    
-    private List<BaseBlueprint<IBpAction>> Test = new List<BaseBlueprint<IBpAction>>();
-
 
 
     private void OnEnable()
@@ -32,17 +24,24 @@ public class BpHolder : MonoBehaviour
 
     void CreateBlueprints()
     {
-        //BpActions.Add(BpType.Reverse, new BpReverse());
-      
-
+        BpActions.Add(BpType.Reverse, new BpReverse());
     }
 }
 
-
-public class BpReverse : BaseBlueprint<ReverseAction>
+public class BpReverse : BaseBlueprint, IBpActionHolder<ReverseAction>
 {
-    public override ReverseAction BpAction { get; set; } = new ();
-    
+    public ReverseAction BpAction { get; set; } = new();
+
     public override BpType Type { get; set; } = BpType.Reverse;
+    public override void TryTakeAction()
+    {
+        BpAction?.Execute();
+    }
 }
 
+public interface IBpActionHolder<out TAction> where TAction : IBpAction
+{
+    public TAction BpAction { get; }
+    public BpType Type { get; set; }
+
+}
