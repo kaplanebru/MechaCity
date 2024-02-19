@@ -1,5 +1,8 @@
 
+using System;
 using DataModels;
+using Enums;
+using Network;
 using TMPro;
 using UnityEngine;
 
@@ -10,7 +13,15 @@ public class BPSlot : MonoBehaviour
 
     public TextMeshPro titleHolder;
     public TextMeshPro descriptionHolder;
-    
+
+
+    public BpType currentBpType;
+
+    private void OnMouseDown() //TODO: Ray'in çarptığı slotun enumından da click enum'ı invoke edilebilir
+    {
+        NetworkEventbus.BlueprintEvents.OnBpSelected?.Invoke(currentBpType); //zaten network event olacak: 2 playerda da uygulanacağı için
+        //TODO: Aslında burda tıklayınca da değil, ortadaki blueprint merkezine götürülünce invoke olacak!
+    }
 
     public void Setup(BlueprintData data)
     {

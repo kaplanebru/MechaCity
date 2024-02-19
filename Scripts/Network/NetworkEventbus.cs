@@ -36,6 +36,11 @@ namespace Network
             public static Action OnTurnEnding;
             public static Action<TeamType> OnTurnStarted;
         }
+        
+        public static class BlueprintEvents
+        {
+            public static Action<BpType> OnBpSelected;
+        }
     }
     
     

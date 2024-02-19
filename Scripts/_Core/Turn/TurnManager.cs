@@ -43,12 +43,10 @@ namespace Turn
 
         void SubscribeToBlueprintActions()
         {
-            Eventbus.BlueprintEvents.OnReverseOrderActionBegin += PublishReverseOrderAction;
         }
 
         void UnsubscribeToBlueprintActions()
         {
-            Eventbus.BlueprintEvents.OnReverseOrderActionBegin -= PublishReverseOrderAction;
         }
 
         void PublishReverseOrderAction()

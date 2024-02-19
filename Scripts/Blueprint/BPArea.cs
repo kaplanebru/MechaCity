@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DataModels;
+using Enums;
 using UnityEngine;
 
 public class BPArea : MonoBehaviour
 {
     public BPHolder bpHolder;
     public BPSlot[] slots;
+   
 
     private void Start() //TODO: Initialize
     {

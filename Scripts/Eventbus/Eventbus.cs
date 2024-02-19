@@ -1,4 +1,5 @@
 using System;
+using Enums;
 using Teams;
 using Towers;
 
@@ -21,11 +22,7 @@ public static class Eventbus
         public static Action OnCombatEnding;
         public static Action OnCombatTerminated;
     }
-
-    public static class BlueprintEvents
-    {
-        public static Action OnReverseOrderActionBegin;
-    }
+    
 
 
     // public class SubscriptionModel
