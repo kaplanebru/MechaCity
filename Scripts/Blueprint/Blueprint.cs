@@ -34,5 +34,13 @@ public class ReverseAction : IBpAction
     }
 }
 
+public class FreezeAction : IBpAction
+{
+    public void Execute()
+    {
+        
+    }
+}
+
 
 //bp türleri: on combat, before combat
