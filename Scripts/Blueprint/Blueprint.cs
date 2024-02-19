@@ -1,12 +1,27 @@
 
+using System;
 using Enums;
 using UnityEngine;
 
 public class Blueprint : MonoBehaviour
 {
-    
+    public BpData __data = new BpData();
+
+    private void Start()
+    {
+         BpExample bpExample = new BpExample(BpType.Reverse,__data, new CombatAction()); 
+    }
+
+   
 }
 
+public class BpExample : BlueprintBase 
+{
+    public BpExample(BpType type, BpData data, IBpAction bpAction) : base(type, data, bpAction)
+    {
+        
+    }
+}
 public class BpData
 {
     
@@ -28,21 +43,22 @@ public abstract class BlueprintBase
     
     public void TryTakeAction()
     {
-        BpAction?.TakeAction();
+        BpAction?.Execute();
     }
 }
 
 public interface IBpAction
 {
-    void TakeAction();
+    void Execute();
 }
 
 public class CombatAction : IBpAction
 {
-    public void TakeAction()
+    public void Execute()
     {
         Debug.Log("Reverse Order Action");
     }
 }
+
 
 //bp türleri: on combat, before combat
