@@ -7,8 +7,10 @@ using UnityEngine;
 
 public class BpHolder : MonoBehaviour
 {
-    public Dictionary<BpType, BaseBlueprint> BpActions = new(); //TODO: Silme, drive'a ekle BaseBlueprint üzerinde generic olursa inherit olan classları listeye almıyor
+    public Dictionary<BpType, BaseBlueprint> Blueprints = new(); //TODO: Silme, drive'a ekle BaseBlueprint üzerinde generic olursa inherit olan classları listeye almıyor
     //  public Dictionary<BpType, BaseBlueprint<IBpAction>> BpActions = new Dictionary<BpType, BaseBlueprint<IBpAction>>();
+    
+    public Dictionary<BpType, IBpAction> BpActions = new(); //alternative
     
     private void OnEnable()
     {
@@ -17,13 +19,17 @@ public class BpHolder : MonoBehaviour
 
     private void ExecuteBpAction(BpType type)
     {
-        BpActions[type].TryTakeAction();
+        Blueprints[type].TryTakeAction();
+        
+        BpActions[type].Execute();//alternative
     }
 
     void CreateBlueprints()
     {
-        BpActions.Add(BpType.Reverse, new BpReverse());
-        BpActions.Add(BpType.Freeze, new BpFreeze());
+        Blueprints.Add(BpType.Reverse, new BpReverse());
+        Blueprints.Add(BpType.Freeze, new BpFreeze());
+        
+        BpActions.Add(BpType.Reverse, new ReverseAction()); //alternative
     }
 }
 
