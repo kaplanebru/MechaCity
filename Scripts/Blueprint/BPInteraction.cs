@@ -1,5 +1,7 @@
 
 using DG.Tweening;
+using Enums;
+using Network;
 using UnityEngine;
 
 namespace Blueprint
@@ -17,8 +19,13 @@ namespace Blueprint
         public float hoverDuration = 1;
         public float selectDuration = 1;
         public float selectY = 0.1f;
-        private void Start()
+
+        private BpType _currentBpType;
+       
+
+        public void Setup(BpType currentType)
         {
+            _currentBpType = currentType;
             Initialize();
         }
     
@@ -64,6 +71,8 @@ namespace Blueprint
             {
                 transform.DOLocalMoveY(startHeight, selectDuration/2);
             });
+            
+            NetworkEventbus.BlueprintEvents.OnBpSelected?.Invoke(_currentBpType);
         }
     }
 

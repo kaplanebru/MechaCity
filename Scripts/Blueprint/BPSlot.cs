@@ -13,14 +13,16 @@ namespace Blueprint
        
         public BpType currentBpType;
         public BlueprintData Data;
+        public BPInteraction bpInteraction;
         public SpriteRenderer spriteHolder;
 
         public TextMeshPro titleHolder;
         public TextMeshPro descriptionHolder;
         private void OnMouseDown() //TODO: Ray'in çarptığı slotun enumından da click enum'ı invoke edilebilir
         {
-            NetworkEventbus.BlueprintEvents.OnBpSelected?.Invoke(currentBpType); //zaten network event olacak: 2 playerda da uygulanacağı için
+            //NetworkEventbus.BlueprintEvents.OnBpSelected?.Invoke(currentBpType); //zaten network event olacak: 2 playerda da uygulanacağı için
             //TODO: Aslında burda tıklayınca da değil, ortadaki blueprint merkezine götürülünce invoke olacak!
+            print(currentBpType);
         }
 
         public void Setup(BlueprintData data)
@@ -28,6 +30,7 @@ namespace Blueprint
             Data = data;
             SetImage();
             SetTexts();
+            bpInteraction.Setup(currentBpType);
         }
 
         public void SetType(BpType type)

@@ -9,6 +9,10 @@ namespace Blueprint
     {
         public DoubleAction BpAction { get; }
         public override BpType Type { get; set; }
+        public override void TryTakeAction()
+        {
+            BpAction.Execute();
+        }
     }
 
 }

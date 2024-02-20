@@ -1104,9 +1104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0043895076b88b944a6160e284e69398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  currentBpType: 0
   Data: {fileID: 0}
+  bpInteraction: {fileID: 5363241987697760159}
   spriteHolder: {fileID: 5525730036665549108}
   titleHolder: {fileID: 9073887720190720403}
   descriptionHolder: {fileID: 3118006852370950014}
-  currentBpType: 0

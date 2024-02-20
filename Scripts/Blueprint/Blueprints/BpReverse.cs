@@ -6,6 +6,11 @@ namespace Blueprint
     {
         public override BpType Type { get; set; } = BpType.Reverse;
         public ReverseAction BpAction { get; } = new();
+        
+        public override void TryTakeAction()
+        {
+            BpAction.Execute();
+        }
     }
 }
 

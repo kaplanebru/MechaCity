@@ -4,7 +4,12 @@ namespace Blueprint
 {
     public class BpFreeze : BaseBlueprint, IBpActionProcessor<FreezeAction>
     {
-        public override BpType Type { get; set; }
         public FreezeAction BpAction { get; }
+        public override BpType Type { get; set; }
+       
+        public override void TryTakeAction()
+        {
+            BpAction.Execute();
+        }
     }
 }

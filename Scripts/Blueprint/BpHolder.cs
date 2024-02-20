@@ -32,7 +32,8 @@ namespace Blueprint
         
         private void ExecuteBpAction(BpType type)
         {
-            AllBlueprints[type].BpAction.Execute();
+            AllBlueprints[type].TryTakeAction();
+            //AllBlueprints[type].BpAction.Execute();
         }
 
         public void GetActiveBlueprints() 
@@ -51,11 +52,13 @@ namespace Blueprint
     }
 
 
-    public abstract class BaseBlueprint: IBpActionProcessor<IBpAction>
+    public abstract class BaseBlueprint
     {
         public abstract BpType Type { get; set; }
-        public IBpAction BpAction { get; }
- 
+
+        public abstract void TryTakeAction();
+
+
     }
 
     public interface IBpActionProcessor<out TAction> where TAction : IBpAction
