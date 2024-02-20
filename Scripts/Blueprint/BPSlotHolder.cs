@@ -5,24 +5,28 @@ using DataModels;
 using Enums;
 using UnityEngine;
 
-public class BPSlotHolder : MonoBehaviour
+namespace Blueprint
 {
-    public BPHolder bpHolder;
-    public BPSlot[] slots;
+    public class BPSlotHolder : MonoBehaviour
+    {
+        public BPDataHolder bpDataHolder;
+        public BPSlot[] slots;
    
 
-    private void Start() //TODO: Initialize
-    {
-        slots = GetComponentsInChildren<BPSlot>();
-        Setup();
-    }
-
-    void Setup()
-    {
-        for (var i = 0; i < slots.Length; i++)
+        private void Start() //TODO: Initialize
         {
-            var slot = slots[i];
-            slot.Setup(bpHolder.BPData[i]);
+            slots = GetComponentsInChildren<BPSlot>();
+            Setup();
+        }
+
+        void Setup()
+        {
+            for (var i = 0; i < slots.Length; i++)
+            {
+                var slot = slots[i];
+                slot.Setup(bpDataHolder.BPData[i]);
+            }
         }
     }
+
 }

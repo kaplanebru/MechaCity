@@ -1,7 +1,11 @@
-public class DoubleAction : IBpAction
+
+namespace Blueprint
 {
-    public void Execute()
+    public class DoubleAction : IBpAction
     {
+        public void Execute()
+        {
         
+        }
     }
 }

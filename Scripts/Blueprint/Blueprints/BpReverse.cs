@@ -1,9 +1,11 @@
 using Enums;
 
-public class BpReverse : BaseBlueprint, IBpActionProcessor<ReverseAction>
+namespace Blueprint
 {
-    public ReverseAction BpAction { get; } = new();
-
-    public override BpType Type { get; set; } = BpType.Reverse;
-   
+    public class BpReverse : BaseBlueprint, IBpActionProcessor<ReverseAction>
+    {
+        public override BpType Type { get; set; } = BpType.Reverse;
+        public ReverseAction BpAction { get; } = new();
+    }
 }
+

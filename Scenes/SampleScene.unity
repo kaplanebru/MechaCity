@@ -1278,7 +1278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 457ded0c3b80fd34487f28e05c4b3b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpHolder: {fileID: 11400000, guid: 3ad40b982c1569f439a4486446dd0309, type: 2}
+  bpDataHolder: {fileID: 11400000, guid: 3ad40b982c1569f439a4486446dd0309, type: 2}
   slots: []
 --- !u!114 &724132465
 MonoBehaviour:
@@ -3475,7 +3475,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: BP (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 214601836918434976, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
 --- !u!1001 &1648217656
 PrefabInstance:
@@ -3532,7 +3533,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: BP (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 214601836918434976, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
 --- !u!1 &1659069457
 GameObject:
@@ -4649,5 +4651,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BP
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 214601836918434976, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}

@@ -1,6 +1,10 @@
-public class FreezeAction : IBpAction
+
+namespace Blueprint
 {
-    public void Execute()
+    public class FreezeAction : IBpAction
     {
+        public void Execute()
+        {
+        }
     }
 }

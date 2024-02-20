@@ -1,7 +1,10 @@
 using Enums;
 
-public class BpFreeze : BaseBlueprint, IBpActionProcessor<FreezeAction>
+namespace Blueprint
 {
-    public FreezeAction BpAction { get; }
-    public override BpType Type { get; set; }
+    public class BpFreeze : BaseBlueprint, IBpActionProcessor<FreezeAction>
+    {
+        public override BpType Type { get; set; }
+        public FreezeAction BpAction { get; }
+    }
 }

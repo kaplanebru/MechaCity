@@ -1,6 +1,10 @@
-public class ReverseAction : IBpAction
+
+namespace Blueprint
 {
-    public void Execute()
+    public class ReverseAction : IBpAction
     {
+        public void Execute()
+        {
+        }
     }
 }

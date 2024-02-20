@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace DataModels
 {
-    [CreateAssetMenu(fileName = nameof(BPHolder))]
-    public class BPHolder : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(BPDataHolder))]
+    public class BPDataHolder : ScriptableObject
     {
         public BlueprintData[] BPData;
     }
