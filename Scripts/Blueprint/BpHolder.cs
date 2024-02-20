@@ -1,34 +1,50 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Enums;
 using Network;
 using UnityEngine;
 
 namespace Blueprint
 {
-    public class BpHolder : MonoBehaviour
+    public class BpHolder 
     {
-        public Dictionary<BpType, BaseBlueprint> Blueprints = new();
+        public Dictionary<BpType, BaseBlueprint> AllBlueprints = new();
+
+        public List<BpType> activeBlueprints = new();
         //public Dictionary<BpType, IBpAction> BpActions = new(); //alternative
     
-        private void OnEnable()
+        public void Subscribe()
         {
             NetworkEventbus.BlueprintEvents.OnBpSelected += ExecuteBpAction;
         }
-
+        public void Initialize()
+        {
+            CreateBlueprints();
+        }
+        void CreateBlueprints() //Burası ortadaki kısımla ilgili
+        {
+            AllBlueprints.Add(BpType.Reverse, new BpReverse());
+            AllBlueprints.Add(BpType.Freeze, new BpFreeze());
+            AllBlueprints.Add(BpType.Double, new BpDouble());
+        }
+        
         private void ExecuteBpAction(BpType type)
         {
-            Blueprints[type].BpAction.Execute();
+            AllBlueprints[type].BpAction.Execute();
         }
 
-        void CreateBlueprints()
+        public void GetActiveBlueprints() 
         {
-            Blueprints.Add(BpType.Reverse, new BpReverse());
-            Blueprints.Add(BpType.Freeze, new BpFreeze());
+            for (int i = 0; i < 3; i++) //TODO: Temp
+            {
+                activeBlueprints.Add(AllBlueprints.Keys.ElementAt(i));
+            }
+         
         }
 
-        private void OnDisable()
+        public void Unsubscribe()
         {
             NetworkEventbus.BlueprintEvents.OnBpSelected -= ExecuteBpAction;
         }

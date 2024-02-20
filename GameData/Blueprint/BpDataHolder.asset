@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e827853553da534caa535a1b3289a89, type: 3}
   m_Name: BpDataHolder
   m_EditorClassIdentifier: 
-  BPData:
-  - {fileID: 11400000, guid: 93869b786a092484385d87df8921d57f, type: 2}
-  - {fileID: 11400000, guid: f2f91face75ad444f93b2c9e89697e93, type: 2}
-  - {fileID: 11400000, guid: 48e9c62b97ac35f4a8309e42dfc7baed, type: 2}
+  SerializedTypeDataPair:
+  - Type: 0
+    Data: {fileID: 11400000, guid: 93869b786a092484385d87df8921d57f, type: 2}
+  - Type: 1
+    Data: {fileID: 11400000, guid: f2f91face75ad444f93b2c9e89697e93, type: 2}
+  - Type: 2
+    Data: {fileID: 11400000, guid: 48e9c62b97ac35f4a8309e42dfc7baed, type: 2}

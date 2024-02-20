@@ -10,16 +10,13 @@ namespace Blueprint
 {
     public class BPSlot : MonoBehaviour
     {
-        public BpType type;
+       
+        public BpType currentBpType;
         public BlueprintData Data;
         public SpriteRenderer spriteHolder;
 
         public TextMeshPro titleHolder;
         public TextMeshPro descriptionHolder;
-
-
-        public BpType currentBpType;
-
         private void OnMouseDown() //TODO: Ray'in çarptığı slotun enumından da click enum'ı invoke edilebilir
         {
             NetworkEventbus.BlueprintEvents.OnBpSelected?.Invoke(currentBpType); //zaten network event olacak: 2 playerda da uygulanacağı için
@@ -31,6 +28,11 @@ namespace Blueprint
             Data = data;
             SetImage();
             SetTexts();
+        }
+
+        public void SetType(BpType type)
+        {
+            currentBpType = type;
         }
 
         void SetImage()
