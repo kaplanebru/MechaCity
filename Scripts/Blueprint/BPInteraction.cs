@@ -15,8 +15,6 @@ public class BPInteraction : MonoBehaviour
     public float hoverDuration = 1;
     public float selectDuration = 1;
     public float selectY = 0.1f;
-    private bool onSlot = false;
-
     private void Start()
     {
         Initialize();

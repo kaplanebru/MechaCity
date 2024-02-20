@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class BPSlot : MonoBehaviour
 {
+    public BpType type;
     public BlueprintData Data;
     public SpriteRenderer spriteHolder;
 

@@ -7,10 +7,8 @@ using UnityEngine;
 
 public class BpHolder : MonoBehaviour
 {
-    public Dictionary<BpType, BaseBlueprint> Blueprints = new(); //TODO: Silme, drive'a ekle BaseBlueprint üzerinde generic olursa inherit olan classları listeye almıyor
-    //  public Dictionary<BpType, BaseBlueprint<IBpAction>> BpActions = new Dictionary<BpType, BaseBlueprint<IBpAction>>();
-    
-    public Dictionary<BpType, IBpAction> BpActions = new(); //alternative
+    public Dictionary<BpType, BaseBlueprint> Blueprints = new();
+    //public Dictionary<BpType, IBpAction> BpActions = new(); //alternative
     
     private void OnEnable()
     {
@@ -19,44 +17,38 @@ public class BpHolder : MonoBehaviour
 
     private void ExecuteBpAction(BpType type)
     {
-        Blueprints[type].TryTakeAction();
-        
-        BpActions[type].Execute();//alternative
+        Blueprints[type].BpAction.Execute();
+        //BpActions[type].Execute();//alternative
     }
 
     void CreateBlueprints()
     {
         Blueprints.Add(BpType.Reverse, new BpReverse());
         Blueprints.Add(BpType.Freeze, new BpFreeze());
-        
-        BpActions.Add(BpType.Reverse, new ReverseAction()); //alternative
+        //BpActions.Add(BpType.Reverse, new ReverseAction()); //alternative
     }
-}
 
-public class BpReverse : BaseBlueprint, IBpActionHolder<ReverseAction>
-{
-    public ReverseAction BpAction { get; } = new();
-
-    public override BpType Type { get; set; } = BpType.Reverse;
-    public override void TryTakeAction()
+    private void OnDisable()
     {
-        BpAction?.Execute();
+        NetworkEventbus.BlueprintEvents.OnBpSelected -= ExecuteBpAction;
     }
 }
 
-public class BpFreeze : BaseBlueprint, IBpActionHolder<FreezeAction>
+
+public abstract class BaseBlueprint: IBpActionProcessor<IBpAction>
 {
-    public FreezeAction BpAction { get; }
-    public override BpType Type { get; set; }
-    public override void TryTakeAction()
-    {
-        BpAction?.Execute();
-    }
+    public IBpAction BpAction { get; }
+    public abstract BpType Type { get; set; }
 }
 
-public interface IBpActionHolder<out TAction> where TAction : IBpAction
+public interface IBpActionProcessor<out TAction> where TAction : IBpAction
 {
     public TAction BpAction { get; }
     public BpType Type { get; set; }
+}
 
+
+public interface IBpAction
+{
+    public void Execute();
 }

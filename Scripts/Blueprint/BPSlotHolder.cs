@@ -5,7 +5,7 @@ using DataModels;
 using Enums;
 using UnityEngine;
 
-public class BPArea : MonoBehaviour
+public class BPSlotHolder : MonoBehaviour
 {
     public BPHolder bpHolder;
     public BPSlot[] slots;
