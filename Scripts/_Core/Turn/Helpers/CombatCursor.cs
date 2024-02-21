@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DataModels;
 using DG.Tweening;
+using Enums;
+using Network;
 using Towers;
 using UnityEngine;
 
@@ -9,9 +12,14 @@ public class CombatCursor : MonoBehaviour
 {
     public float _currentAngle;
     public float intervalAngle;
-    private float _duration;
     public GameObject line;
     public GameObject cursor;
+    public BPDataHolder bpDataHolder;
+
+    private CursorBpHandler cursorBpHandler;
+    private SpriteRenderer spriteRenderer;
+    private float _duration;
+
     
     private void OnEnable()
     {
@@ -23,7 +31,16 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatStarted += EnableCursor;
         Eventbus.CombatEvents.OnCombatEnding += DisableCursor;
 
+        NetworkEventbus.BlueprintEvents.OnBpSelected += SetBpImage;
+
         BpEventbus.SubscriberEvents.OnReverseAction += ReverseAngle;
+
+    }
+
+    void SetReferences()
+    {
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        cursorBpHandler = new CursorBpHandler(spriteRenderer);
     }
 
     void Start()
@@ -34,10 +51,11 @@ public class CombatCursor : MonoBehaviour
 
     void Setup()
     {
+        SetReferences();
+
         _currentAngle = transform.eulerAngles.x;
         intervalAngle = 360f / AllTowers.TowersCount;
     }
-
 
     void ReverseAngle()
     {
@@ -50,6 +68,13 @@ public class CombatCursor : MonoBehaviour
 
         _currentAngle = (_currentAngle + intervalAngle) % 360;
         transform.DORotate(new Vector3(0, _currentAngle, 0), duration).OnComplete(EnableLine);
+    }
+
+    void SetBpImage(BpType type)
+    {
+        print("bp img");
+        var bpData = bpDataHolder.TypeDataPair[type];
+        cursorBpHandler.SetBlueprintImage(bpData);
     }
 
     void EnableLine()
@@ -82,6 +107,8 @@ public class CombatCursor : MonoBehaviour
 
         Eventbus.CombatEvents.OnCombatStarted -= EnableCursor;
         Eventbus.CombatEvents.OnCombatEnding -= DisableCursor;
+        
+        NetworkEventbus.BlueprintEvents.OnBpSelected -= SetBpImage;
         
         BpEventbus.SubscriberEvents.OnReverseAction -= ReverseAngle;
     }
