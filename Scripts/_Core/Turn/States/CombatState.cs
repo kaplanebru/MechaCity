@@ -32,6 +32,8 @@ namespace Turn
         private CombatPairsCreator combatPairsCreator;
         public override TurnStateType StateType => TurnStateType.Combat;
         public override int StateId { get; set; }
+
+        private bool pairsReversed = false;
         
 
         public override void Subscribe()
@@ -48,14 +50,15 @@ namespace Turn
             TransferData.AlteredTowers = incomingData.TowerGroup;
         }
 
-        public void SetCombatPairs(bool reverse = false)
+        public void SetCombatPairs()
         {
-            combatPairsCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList(), reverse);
+            combatPairsCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList(), pairsReversed);
         }
 
         void ReversePairs()
         {
-            SetCombatPairs(true);
+            pairsReversed = !pairsReversed;
+            SetCombatPairs();
         }
 
         public override void StartState()
