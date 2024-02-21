@@ -58,6 +58,7 @@ namespace Turn
         void ReversePairs()
         {
             pairsReversed = !pairsReversed;
+            Debug.Log("pairs reversed: " + pairsReversed);
             SetCombatPairs();
         }
 

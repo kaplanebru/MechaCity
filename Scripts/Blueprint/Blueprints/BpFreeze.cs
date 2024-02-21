@@ -11,5 +11,17 @@ namespace Blueprint
         {
             BpAction.Execute();
         }
+
+        void GetSelectedTower() 
+        {
+            //TODO: tower selection'ı için ayrı modüler class yaz. Selectionda da, towergroupda da, burda da bu çalışsın.
+            //State olarak da çalışabilir.
+            //Networklü ve networksüz çalışma opsiyonları olmalı
+        }
+
+        void ShowInstructionUI()
+        {
+            
+        }
     }
 }
