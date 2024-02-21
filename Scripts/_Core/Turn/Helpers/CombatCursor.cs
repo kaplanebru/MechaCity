@@ -12,16 +12,18 @@ public class CombatCursor : MonoBehaviour
     private float _duration;
     public GameObject line;
     public GameObject cursor;
-
+    
     private void OnEnable()
     {
-        Eventbus.CombatEvents.OnFire += ShiftTarget; 
-        
+        Eventbus.CombatEvents.OnFire += ShiftTarget;
+
         Eventbus.CombatEvents.OnCombatStarted += EnableLine;
         Eventbus.CombatEvents.OnCombatEnding += DisableLine;
-        
+
         Eventbus.CombatEvents.OnCombatStarted += EnableCursor;
         Eventbus.CombatEvents.OnCombatEnding += DisableCursor;
+
+        BpEventbus.SubscriberEvents.OnReverseAction += ReverseAngle;
     }
 
     void Start()
@@ -35,14 +37,19 @@ public class CombatCursor : MonoBehaviour
         _currentAngle = transform.eulerAngles.x;
         intervalAngle = 360f / AllTowers.TowersCount;
     }
-    
-  
-    
+
+
+    void ReverseAngle()
+    {
+        intervalAngle *= -1;
+    }
+
     void ShiftTarget(float duration)
     {
         DisableLine();
+
         _currentAngle = (_currentAngle + intervalAngle) % 360;
-         transform.DORotate(new Vector3(0, _currentAngle, 0), duration).OnComplete(EnableLine);
+        transform.DORotate(new Vector3(0, _currentAngle, 0), duration).OnComplete(EnableLine);
     }
 
     void EnableLine()
@@ -64,16 +71,18 @@ public class CombatCursor : MonoBehaviour
     {
         cursor.SetActive(false);
     }
-    
+
 
     private void OnDisable()
     {
         Eventbus.CombatEvents.OnFire -= ShiftTarget;
-        
+
         Eventbus.CombatEvents.OnCombatStarted -= EnableLine;
         Eventbus.CombatEvents.OnCombatEnding -= DisableLine;
-        
+
         Eventbus.CombatEvents.OnCombatStarted -= EnableCursor;
         Eventbus.CombatEvents.OnCombatEnding -= DisableCursor;
+        
+        BpEventbus.SubscriberEvents.OnReverseAction -= ReverseAngle;
     }
 }
