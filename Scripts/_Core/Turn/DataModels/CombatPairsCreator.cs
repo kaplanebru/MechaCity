@@ -16,7 +16,12 @@ public class CombatPairsCreator
     
     public void CreateCombatPairs(List<TowerData> tempTowers, bool isReversed = false)
     {
-        if (isReversed) tempTowers.Reverse();
+        if (isReversed)
+        {
+            tempTowers.Add(tempTowers[0]);
+            tempTowers.RemoveAt(0);
+            tempTowers.Reverse();
+        }
 
         _combatPairs.Clear();
         AllTowers.LinkingTowers(tempTowers);

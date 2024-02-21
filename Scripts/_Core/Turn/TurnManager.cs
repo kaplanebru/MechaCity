@@ -36,12 +36,7 @@ namespace Turn
 
             
         }
-
-        void Reverse()
-        {
-            stateHolder.CombatState.SetCombatPairs(false);
-        }
-
+        
         private void Initialize()
         {
             stateHolder.Setup();
