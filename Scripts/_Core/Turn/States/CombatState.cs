@@ -37,6 +37,8 @@ namespace Turn
         public override void Subscribe()
         {
             combatPairsCreator = new CombatPairsCreator(Data.CombatPairs);
+
+            BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
         }
         
 
@@ -46,9 +48,14 @@ namespace Turn
             TransferData.AlteredTowers = incomingData.TowerGroup;
         }
 
-        public void SetCombatPairs()
+        public void SetCombatPairs(bool reverse = false)
         {
-            combatPairsCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList());
+            combatPairsCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList(), reverse);
+        }
+
+        void ReversePairs()
+        {
+            SetCombatPairs(true);
         }
 
         public override void StartState()
@@ -117,6 +124,8 @@ namespace Turn
         public override void Unsubscribe()
         {
             DeselectAlteredTowers();
+            BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
+
         }
     }
 }

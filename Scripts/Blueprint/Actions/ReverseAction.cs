@@ -1,4 +1,5 @@
 
+using Network;
 using UnityEngine;
 
 namespace Blueprint
@@ -7,7 +8,7 @@ namespace Blueprint
     {
         public void Execute()
         {
-            Debug.Log("Reverse Action Executed");
+            BpEventbus.ActionEvents.OnReverseActionTriggered?.Invoke();
         }
     }
 }

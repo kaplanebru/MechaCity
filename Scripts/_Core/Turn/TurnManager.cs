@@ -33,6 +33,13 @@ namespace Turn
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += CompleteStateBySystem;
             NetworkEventbus.RequestEvents.OnNewTurnRequest += SetNewTurn;
+
+            
+        }
+
+        void Reverse()
+        {
+            stateHolder.CombatState.SetCombatPairs(false);
         }
 
         private void Initialize()
@@ -43,14 +50,17 @@ namespace Turn
 
         void SubscribeToBlueprintActions()
         {
+            BpEventbus.ActionEvents.OnReverseActionTriggered += PublishReverseOrderAction;
         }
 
-        void UnsubscribeToBlueprintActions()
+        void UnsubscribeFromBlueprintActions()
         {
+            BpEventbus.ActionEvents.OnReverseActionTriggered -= PublishReverseOrderAction;
         }
 
         void PublishReverseOrderAction()
         {
+            BpEventbus.SubscriberEvents.OnReverseAction?.Invoke();
             //Combata event publish edecek.
             //selection ve group aç-kapa şeklinde çalışabilir. Ya da state machine yapılır ya. Combat hep açık olabilir.
             //BP actionları için de action olarak kart oluşturmaya bak
@@ -167,7 +177,7 @@ namespace Turn
         private void OnDisable()
         {
             Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
-            UnsubscribeToBlueprintActions();
+            UnsubscribeFromBlueprintActions();
 
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer -= CompleteStateBySystem;
             NetworkEventbus.RequestEvents.OnNewTurnRequest -= SetNewTurn;

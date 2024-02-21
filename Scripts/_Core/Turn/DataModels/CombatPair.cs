@@ -75,7 +75,7 @@ namespace DataModels
 
             if (victimData.Health <= 0)
             {
-                Debug.Log("tower killed");
+                //Debug.Log("tower killed");
                 Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData);
             }
 
