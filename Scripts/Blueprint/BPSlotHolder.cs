@@ -10,37 +10,22 @@ namespace Blueprint
     {
         public BPDataHolder bpDataHolder;
         public BPSlot[] slots;
-
-        private BpHolder bpHolder = new BpHolder();
-
-
+        private List<BpType> _activeBlueprints = new();
         private void OnEnable()
         {
-            bpHolder.Subscribe();
-        }
-
-        private void Start() //TODO: Initialize
-        {
-            bpHolder.Initialize();
             slots = GetComponentsInChildren<BPSlot>();
-            Setup();
-           
         }
 
-        void Setup()
+        public void Setup(List<BpType> activeBlueprints)
         {
-            bpHolder.GetActiveBlueprints();
+            _activeBlueprints = activeBlueprints;
+
             for (var i = 0; i < slots.Length; i++)
             {
                 var slot = slots[i];
-                slot.SetType(bpHolder.activeBlueprints[i]);
+                slot.SetType(_activeBlueprints[i]);
                 slot.Setup(bpDataHolder.TypeDataPair[slot.currentBpType]);
             }
-        }
-
-        private void OnDisable()
-        {
-            bpHolder.Unsubscribe();
         }
     }
 }

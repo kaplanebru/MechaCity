@@ -12,16 +12,12 @@ namespace Blueprint
     {
         public Dictionary<BpType, BaseBlueprint> AllBlueprints = new();
 
-        public List<BpType> activeBlueprints = new();
-        //public Dictionary<BpType, IBpAction> BpActions = new(); //alternative
     
-        public void Subscribe()
-        {
-            NetworkEventbus.BlueprintEvents.OnBpSelected += ExecuteBpAction;
-        }
+      
         public void Initialize()
         {
             CreateBlueprints();
+           
         }
         void CreateBlueprints() //Burası ortadaki kısımla ilgili
         {
@@ -30,47 +26,14 @@ namespace Blueprint
             AllBlueprints.Add(BpType.Double, new BpDouble());
         }
         
-        private void ExecuteBpAction(BpType type)
-        {
-            AllBlueprints[type].TryTakeAction();
-            //AllBlueprints[type].BpAction.Execute();
-        }
+       
 
-        public void GetActiveBlueprints() 
-        {
-            for (int i = 0; i < 3; i++) //TODO: Temp
-            {
-                activeBlueprints.Add(AllBlueprints.Keys.ElementAt(i));
-            }
-         
-        }
+       
 
-        public void Unsubscribe()
-        {
-            NetworkEventbus.BlueprintEvents.OnBpSelected -= ExecuteBpAction;
-        }
+       
     }
 
 
-    public abstract class BaseBlueprint
-    {
-        public abstract BpType Type { get; set; }
-
-        public abstract void TryTakeAction();
-
-
-    }
-
-    public interface IBpActionProcessor<out TAction> where TAction : IBpAction
-    {
-        public TAction BpAction { get; }
-        public BpType Type { get; set; }
-    }
-
-
-    public interface IBpAction
-    {
-        public void Execute();
-    }
+   
 }
 

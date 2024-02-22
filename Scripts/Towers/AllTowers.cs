@@ -77,6 +77,11 @@ namespace Towers
             _towers.ForEach(t => t.RestoreBullets());
         }
 
+        public static void ResetTowerSelections()
+        {
+            _towers.ForEach(t=>t.ResetColor());
+        }
+
 
         private void OnDrawGizmos()
         {

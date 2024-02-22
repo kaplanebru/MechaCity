@@ -10,6 +10,7 @@ using UnityEngine;
 using Teams;
 using GameUI;
 using JetBrains.Annotations;
+using Towers;
 
 
 namespace Turn
@@ -18,6 +19,7 @@ namespace Turn
     {
         private BaseTurnState currentState;
         private TurnStateHolder stateHolder = new TurnStateHolder();
+        private StateIntruder stateIntruder; // = new StateIntruder();
 
         Dictionary<string, Team> turnTeams;
 
@@ -28,6 +30,9 @@ namespace Turn
         private void OnEnable()
         {
             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
+            
+            NetworkEventbus.BlueprintEvents.OnStateIntrusionAttempt += ActivateStateIntruder;
+            NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd += DeActivateIntrusion;
             SubscribeToBlueprintActions();
 
             NetworkEventbus.OnAllClientsSet += FirstTurn;
@@ -36,10 +41,14 @@ namespace Turn
 
             
         }
-        
+
+       
+
         private void Initialize()
         {
             stateHolder.Setup();
+            stateIntruder = new StateIntruder(stateHolder);
+            
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
 
@@ -60,6 +69,18 @@ namespace Turn
             //selection ve group aç-kapa şeklinde çalışabilir. Ya da state machine yapılır ya. Combat hep açık olabilir.
             //BP actionları için de action olarak kart oluşturmaya bak
         }
+        private void ActivateStateIntruder()
+        {
+            //TODO: current state'teki selection listi clearla, ve selectionları
+            AllTowers.ResetTowerSelections();
+            currentState.ResetPreviousTurnData();
+            stateIntruder.Activate(currentState.StateId);
+        }
+        private void DeActivateIntrusion()
+        {
+            stateIntruder.Unsubscribe();
+        }
+
 
         void SetTurnTeams(Team[] teams)
         {
@@ -123,7 +144,7 @@ namespace Turn
         [CanBeNull]
         BaseTurnState GetNextState(int nextStateID)
         {
-            if (nextStateID == stateHolder.States.Length)
+            if (nextStateID == stateHolder.States.Length) //(nextStateID == stateHolder.CombatState.StateId)
             {
                 if (!GameEnding())
                 {
@@ -132,10 +153,10 @@ namespace Turn
                         state.ResetPreviousTurnData();
                     }
 
-                    NetworkEventbus.TriggerEvents.OnCompleteStateRequestByUser?.Invoke(currentState.StateType);
+                    NetworkEventbus.TriggerEvents.OnCompleteStateRequestByUser?.Invoke(currentState.StateType); //% yaparsak 0'a yani joker state'e gider
                 }
 
-                return null; //states[0];
+                return null;
             }
 
             return stateHolder.States[nextStateID];
@@ -172,6 +193,9 @@ namespace Turn
         private void OnDisable()
         {
             Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
+            
+            NetworkEventbus.BlueprintEvents.OnStateIntrusionAttempt -= ActivateStateIntruder;
+            NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd -= DeActivateIntrusion;
             UnsubscribeFromBlueprintActions();
 
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer -= CompleteStateBySystem;
