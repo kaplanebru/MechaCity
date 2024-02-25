@@ -12,8 +12,7 @@ namespace Turn
     [Serializable]
     public class SelectionTransferData : BaseTurnTransferData
     {
-        public List<int> SelectionGroup = new();
-        
+        public override List<int> Towers { get; set; } = new();
     }
 
     public class SelectionState : BaseTurnState, ITurnTransferHandler<SelectionTransferData>
@@ -49,7 +48,7 @@ namespace Turn
 
             if (SelectedTwice(tower.UniqID)) return;
 
-            if (TransferData.SelectionGroup.Count == maxTowersInGroup)
+            if (TransferData.Towers.Count == maxTowersInGroup)
                 ResetSelectionGroup();
 
             AddToSelection(true, tower.UniqID);
@@ -64,11 +63,11 @@ namespace Turn
                 : Teams["currentTeam"].Data.TeamTowerData.DefaultMaterial);
 
             if (select)
-                TransferData.SelectionGroup.Add(newTower);
+                TransferData.Towers.Add(newTower);
             else
-                TransferData.SelectionGroup.Remove(newTower);
+                TransferData.Towers.Remove(newTower);
 
-            ManageCompleteButton(TransferData.SelectionGroup.Count == maxTowersInGroup);
+            ManageCompleteButton(TransferData.Towers.Count == maxTowersInGroup);
         }
 
         void ManageCompleteButton(bool enable)
@@ -79,7 +78,7 @@ namespace Turn
 
         bool SelectedTwice(int newTower)
         {
-            if (TransferData.SelectionGroup.Contains(newTower))
+            if (TransferData.Towers.Contains(newTower))
             {
                 AddToSelection(false, newTower);
                 return true;
@@ -92,13 +91,18 @@ namespace Turn
         {
             for (int i = 0; i < maxTowersInGroup; i++)
             {
-                AddToSelection(false, TransferData.SelectionGroup[0]);
+                AddToSelection(false, TransferData.Towers[0]);
             }
         }
 
         public override void ResetPreviousTurnData()
         {
-            TransferData.SelectionGroup.Clear();
+            TransferData.Towers.Clear();
+        }
+
+        public override void RestorePreviousSelectionColors()
+        {
+            TransferData.Towers.ForEach(s=>AllTowers.GetTower(s).SelectColor());
         }
 
         public override void Unsubscribe()

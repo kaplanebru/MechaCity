@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed63e7d8df4e4e64b94aab4aa1244594, type: 3}
   m_Name: BPData 1
   m_EditorClassIdentifier: 
+  Type: 0
   Color: {r: 0, g: 0, b: 0, a: 0}
   Sprite: {fileID: 21300000, guid: 602b72d4617c3694aa94419fc1b68e04, type: 3}
   GlowColor: {r: 0.47058824, g: 0.9137255, b: 0.99215686, a: 0}
   Title: Reverse
   Description: Changes combat direction
+  Instruction: From this round the combat rotation will be in reversed order

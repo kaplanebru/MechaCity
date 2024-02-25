@@ -72,7 +72,6 @@ public class CombatCursor : MonoBehaviour
 
     void SetBpImage(BpType type)
     {
-        print("bp img");
         var bpData = bpDataHolder.TypeDataPair[type];
         cursorBpHandler.SetBlueprintImage(bpData);
     }

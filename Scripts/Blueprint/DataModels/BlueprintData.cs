@@ -17,6 +17,7 @@ namespace DataModels
         public Color GlowColor;
         public string Title;
         public string Description;
+        public string Instruction;
 
     }
 

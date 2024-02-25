@@ -32,6 +32,11 @@ public class ExitState : BaseTurnState
         
     }
 
+    public override void RestorePreviousSelectionColors()
+    {
+        
+    }
+
     public override void Unsubscribe()
     {
         

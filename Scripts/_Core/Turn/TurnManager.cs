@@ -38,12 +38,7 @@ namespace Turn
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += CompleteStateBySystem;
             NetworkEventbus.RequestEvents.OnNewTurnRequest += SetNewTurn;
-
-            
         }
-
-       
-
         private void Initialize()
         {
             stateHolder.Setup();
@@ -65,20 +60,16 @@ namespace Turn
         void PublishReverseOrderAction()
         {
             BpEventbus.SubscriberEvents.OnReverseAction?.Invoke();
-            //Combata event publish edecek.
-            //selection ve group aç-kapa şeklinde çalışabilir. Ya da state machine yapılır ya. Combat hep açık olabilir.
-            //BP actionları için de action olarak kart oluşturmaya bak
         }
         private void ActivateStateIntruder()
         {
-            //TODO: current state'teki selection listi clearla, ve selectionları
-            AllTowers.ResetTowerSelections();
-            currentState.ResetPreviousTurnData();
+            AllTowers.ResetTowerSelectionColors();
             stateIntruder.Activate(currentState.StateId);
         }
         private void DeActivateIntrusion()
         {
             stateIntruder.Unsubscribe();
+            currentState.RestorePreviousSelectionColors();
         }
 
 
@@ -118,8 +109,7 @@ namespace Turn
         {
             if (turnIndex <= 0) return;
 
-            var transferData = ((ITurnTransferHandler<BaseTurnTransferData>) stateHolder.States[turnIndex - 1])
-                .TransferData;
+            var transferData = ((ITurnTransferHandler<BaseTurnTransferData>) stateHolder.States[turnIndex - 1]).TransferData;
             currentState.ProcessPreviousStateTransferData(transferData);
         }
 

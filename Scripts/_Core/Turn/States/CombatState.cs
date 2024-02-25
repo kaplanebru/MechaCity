@@ -12,7 +12,7 @@ namespace Turn
 {
     public class CombatTransferData : BaseTurnTransferData
     {
-        public List<int> AlteredTowers = new();
+        public override List<int> Towers { get; set; } = new();
     }
     
     public class CombatData
@@ -47,7 +47,7 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
             var incomingData = (TowerGroupTransferData) data;
-            TransferData.AlteredTowers = incomingData.TowerGroup;
+            TransferData.Towers = incomingData.Towers;
         }
 
         public void SetCombatPairs()
@@ -67,7 +67,7 @@ namespace Turn
            
             //Data.CreateReverseCombatPairs(AllTowers.TowerDatas.ToList(), true);
             
-            TransferData.AlteredTowers.ForEach(at => AllTowers.GetTower(at).ResetColor());
+            TransferData.Towers.ForEach(at => AllTowers.GetTower(at).ResetColor());
             //StartCoroutine(nameof(FireRoutine)); //TODO: FİX LATER
             turnManager.StartCoroutine(this.FireRoutine());
         }
@@ -82,7 +82,6 @@ namespace Turn
 
         IEnumerator FireRoutine()
         {
-            Debug.Log("coroutine started");
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
             yield return new WaitForSeconds(turnManager.timingData.cameraDelay);
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
@@ -116,14 +115,16 @@ namespace Turn
 
         void DeselectAlteredTowers()
         {
-            TransferData.AlteredTowers?.ForEach(t =>
+            TransferData.Towers?.ForEach(t =>
                 AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
         }
 
         public override void ResetPreviousTurnData()
         {
-            TransferData.AlteredTowers.Clear();
+            TransferData.Towers.Clear();
         }
+
+        public override void RestorePreviousSelectionColors() {}
 
         public override void Unsubscribe()
         {

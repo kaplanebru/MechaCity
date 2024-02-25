@@ -10,7 +10,7 @@ namespace Turn
     [Serializable]
     public class TowerGroupTransferData : BaseTurnTransferData
     {
-        public List<int> TowerGroup = new();
+        public override List<int> Towers { get; set; } = new();
     }
     
     public class TowerGroupState : BaseTurnState, ITurnTransferHandler<TowerGroupTransferData>
@@ -29,7 +29,7 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             var incomingData = (SelectionTransferData) data;
-            TransferData.TowerGroup = incomingData.SelectionGroup;
+            TransferData.Towers = incomingData.Towers;
         }
 
         public override void StartState() {}
@@ -37,15 +37,15 @@ namespace Turn
         private void TowerSelected(params object[] args)
         {
             int selectedTowerUniqID = (int)args[0];
-            var towerID = TransferData.TowerGroup.FirstOrDefault(t => t == selectedTowerUniqID);
+            var towerID = TransferData.Towers.FirstOrDefault(t => t == selectedTowerUniqID);
 
-            if (!TransferData.TowerGroup.Contains(towerID)) return;
+            if (!TransferData.Towers.Contains(towerID)) return;
             RiseAndFall(AllTowers.GetTower(towerID), 1, true);
         }
     
         void RiseAndFall(Tower selectedTower, float amount, bool rise)
         {
-            foreach (var towerID in TransferData.TowerGroup)
+            foreach (var towerID in TransferData.Towers)
             {
                 if (towerID == selectedTower.Data.UniqID)
                 {
@@ -54,7 +54,7 @@ namespace Turn
                 else
                 {
                     var otherTower = AllTowers.GetTower(towerID);
-                    otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= amount / (TransferData.TowerGroup.Count - 1));
+                    otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= amount / (TransferData.Towers.Count - 1));
                 }
             }
             
@@ -62,7 +62,13 @@ namespace Turn
 
         public override void ResetPreviousTurnData()
         {
-            TransferData.TowerGroup.Clear();
+            TransferData.Towers.Clear();
+        }
+
+        public override void RestorePreviousSelectionColors()
+        {
+            TransferData.Towers.ForEach(s=>AllTowers.GetTower(s).SelectColor());
+
         }
 
         public override void Unsubscribe()

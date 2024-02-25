@@ -12,19 +12,9 @@ namespace Turn
         public TurnAction turnAction;
 
         public Dictionary<string, Team> Teams;
-        public Dictionary<TeamType, GameGrid> Grids;
         public abstract TurnStateType StateType { get; }
         public abstract int StateId { get; set; }
-       
-        public List<BaseTurnHelper> TurnHelpers = new();
-
         
-        // public void Subscribe()
-        // {
-        //     //TurnHelpers.ForEach(h=>h.enabled=true);
-        //     turnAction = TurnAction.Started;
-        // }
-
         public abstract void Subscribe();
 
         protected TurnManager turnManager;
@@ -37,8 +27,6 @@ namespace Turn
             StartState();
         }
         
-        
-    
         public virtual void ProcessPreviousStateTransferData(BaseTurnTransferData data){}
     
         public abstract void StartState();
@@ -55,14 +43,10 @@ namespace Turn
         }
 
         public abstract void ResetPreviousTurnData();
-        
+
+        public abstract void RestorePreviousSelectionColors();
     
         public abstract void Unsubscribe();
         
-        // private void OnDisable()
-        // {
-        //     TurnHelpers.ForEach(h=>h.enabled=false);
-        //     Unsubscribe();
-        // }
     }
 }
