@@ -2,82 +2,132 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Core;
 using Enums;
 using GameUI;
 using Network;
 using Teams;
 using Towers;
+using Unity.VisualScripting;
 using UnityEngine;
 
-// public interface ISelectableGroup<out TSelectionType> where TSelectionType : 
+
+// public class PlayerSelector : BaseSelector
 // {
-//     public TSelectionType selectionType { get; }
+//
+//     public PlayerSelector(int maxTowersInGroup) 
+//     {
+//         
+//     }
+//     
+//     protected override void SetSelectableTowers()
+//     {
+//         Teams[TeamState.RivalTeam].Data.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).clickHandler.DisableSelection());
+//     }
+//
+//    
+// }
+//
+// public class RivalSelector : BaseSelector
+// {
+//    
+//
+//     public RivalSelector(int maxTowersInGroup)
+//     {
+//         
+//     }
+//     
+//     protected override void SetSelectableTowers()
+//     {
+//         Teams[TeamState.CurrentTeam].Data.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).clickHandler.DisableSelection()); 
+//         //current değil enemy falan yazmalı, en baştan belirli olmalı
+//     }
+//
+//    
 // }
 
-public class PlayerSelector : BaseSelector
-{
-    public override SelectionType selectionType { get; } = SelectionType.PlayerOnly;
 
-    public PlayerSelector(int maxTowersInGroup) 
+
+// public class Selector : BaseSelector<TeamType>
+// {
+//     public TeamState State { get; }
+//
+//     public Selector(int maxTowersInGroup)
+//     {
+//         
+//     }
+//
+//     protected override void SetSelectableTowers()
+//     {
+//         Teams[State].Data.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).clickHandler.DisableSelection());
+//     }
+//     
+// }
+
+
+
+
+
+public interface ISelectionBlocker<out TTeam, out TTTeam> where TTeam : TeamData where TTTeam : TeamData
+{
+    public TTeam SelectingTeam { get; }
+    
+    public TTTeam RivalTeam { get;  }
+    public void SetSelectableTowers();
+
+    public void SetMaterials();
+
+}
+public class Test
+{
+  
+    
+   // private SelfSelector test = new SelfSelector(Team1);
+    private BaseSelector test2 = new BaseSelector();
+}
+
+public class SelfSelector : BaseSelector, ISelectionBlocker<TeamData, TeamData>
+{
+    public TeamData SelectingTeam { get; }
+    public TeamData RivalTeam { get;  }
+    public SelfSelector(TeamData selectingTeam, TeamData rivalTeam)
     {
+        SelectingTeam = selectingTeam;
+        RivalTeam = rivalTeam;
+        SetSelectableTowers();
+        SetMaterials();
         
+        Subscribe();
+    }
+    public void SetSelectableTowers()
+    {
+        // var opponent = Initializer.Teams.FirstOrDefault(t => t != SelectingTeam).Data;
+        // opponent.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).clickHandler.DisableSelection());
+        RivalTeam.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).clickHandler.DisableSelection());
+    }
+
+    public void SetMaterials()
+    {
+        defaultMat = SelectingTeam.TeamTowerData.DefaultMaterial;
+        selectionMat = SelectingTeam.TeamTowerData.SelectedMaterial;
+    }
+}
+
+public  class BaseSelector
+{
+
+    public void Print<T>(T input)
+    {
+        Debug.Log(input);
     }
     
-    protected override void SetSelectableTowers()
-    {
-        Teams[TeamState.RivalTeam].Data.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).clickHandler.DisableSelection());
-    }
 
-   
-}
-
-public class RivalSelector : BaseSelector
-{
-    public override SelectionType selectionType { get; } = SelectionType.RivalOnly;
-   
-
-    public RivalSelector(int maxTowersInGroup)
-    {
-        
-    }
-    
-    protected override void SetSelectableTowers()
-    {
-        Teams[TeamState.CurrentTeam].Data.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).clickHandler.DisableSelection());
-    }
-
-   
-}
-
-public class IndifferentSelector : BaseSelector, ISelectable<bool>
-{
-    public override SelectionType selectionType { get; } = SelectionType.All;
-    
-    public IndifferentSelector(int maxTowersInGroup) 
-    {
-        
-    }
-    protected override void SetSelectableTowers() {}
-
-    public bool ForBp { get; }
-}
-
-public interface ISelectable<out TType> 
-{
-    public TType ForBp { get; }
-}
-
-public abstract class BaseSelector 
-{
-    public abstract SelectionType selectionType { get; }
     public List<int> Towers = new();
     protected Dictionary<TeamState, Team> Teams;
-    private Material selectionMat;
-    private Material defaultMat;
-
+    protected Material selectionMat;
+    protected Material defaultMat;
     
-    private int _maxTowersInGroup;
-    private SelectionType _selectionType;
+    private int _maxTowersInGroup = 2;
     
     public void Subscribe()
     {
@@ -85,21 +135,6 @@ public abstract class BaseSelector
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
     }
     
-    public void SetTeams(Dictionary<TeamState, Team> teams)
-    {
-        Teams = teams;
-        SetSelectableTowers();
-        SetMaterials();
-    }
-
-    protected abstract void SetSelectableTowers();
-
-    protected virtual void SetMaterials()
-    {
-        defaultMat = Teams[TeamState.CurrentTeam].Data.TeamTowerData.DefaultMaterial;
-        selectionMat = Teams[TeamState.CurrentTeam].Data.TeamTowerData.SelectedMaterial;
-    }
- 
     
     private void GetTower(params object[] args)
     {
@@ -159,5 +194,5 @@ public abstract class BaseSelector
         AllTowers.ResetClickability();
     }
 
-    
+
 }

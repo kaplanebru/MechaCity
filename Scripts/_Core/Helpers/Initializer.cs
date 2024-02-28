@@ -13,7 +13,7 @@ namespace Core
     public class Initializer : MonoBehaviour
     {
         public Transform NetworkUIController;
-        public Team[] teams;
+        public static Team[] Teams;
         public TeamsHolder assetHolder;
         public bool isMultiplayerOn = true; //for testing
 
@@ -25,29 +25,29 @@ namespace Core
         }
         void CreateTeams()
         {
-            teams = new Team[assetHolder.Teams.Length];
-            for (int i = 0; i < teams.Length; i++)
+            Teams = new Team[assetHolder.Teams.Length];
+            for (int i = 0; i < Teams.Length; i++)
             {
-                teams[i] = Instantiate(assetHolder.Teams[i], transform);
-                teams[i].Initialize();
+                Teams[i] = Instantiate(assetHolder.Teams[i], transform);
+                Teams[i].Initialize();
             }
             
             NetworkUIController.gameObject.SetActive(true);
             
-            Eventbus.TeamEvents.OnTeamsSet?.Invoke(teams);
+            Eventbus.TeamEvents.OnTeamsSet?.Invoke(Teams);
         }
         
 
         private void AssignPlayers(Player newPlayer, ulong id)
         {
-            teams[id].Data.Player = newPlayer;
-            newPlayer.Setup(teams[id].Data.TeamTowerData.TeamType);
+            Teams[id].Data.Player = newPlayer;
+            newPlayer.Setup(Teams[id].Data.TeamTowerData.TeamType);
 
             if (!isMultiplayerOn)
                 goto startGame;
 
 
-            foreach (var team in teams)
+            foreach (var team in Teams)
             {
                 if (team.Data.Player == null)
                 {
@@ -61,8 +61,8 @@ namespace Core
                 {
                     new Dictionary<TeamType, string>
                     {
-                        {teams[0].Data.TeamType, teams[0].Data.Name},
-                        {teams[1].Data.TeamType, teams[1].Data.Name},
+                        {Teams[0].Data.TeamType, Teams[0].Data.Name},
+                        {Teams[1].Data.TeamType, Teams[1].Data.Name},
                     }
                 }
             );

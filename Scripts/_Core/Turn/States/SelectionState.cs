@@ -26,7 +26,7 @@ namespace Turn
         
         public override void Subscribe()
         {
-            NetworkEventbus.InputEvents.OnObjectClicked += TowerPartClicked;
+           // NetworkEventbus.InputEvents.OnObjectClicked += TowerPartClicked;
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) {}

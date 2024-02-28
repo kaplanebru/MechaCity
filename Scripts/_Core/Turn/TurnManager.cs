@@ -30,6 +30,8 @@ namespace Turn
         public CombatTimingData timingData; //TODO: Turn asset holder
 
 
+        private SelfSelector selector;
+
         private void OnEnable()
         {
             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
@@ -46,6 +48,8 @@ namespace Turn
         {
             stateHolder.Setup();
             stateIntruder = new StateIntruder(stateHolder);
+            selector = new SelfSelector(turnTeams[TeamState.CurrentTeam].Data, turnTeams[TeamState.RivalTeam].Data);
+            
             
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
