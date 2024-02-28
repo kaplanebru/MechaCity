@@ -21,7 +21,9 @@ namespace Turn
             for (int i = 0; i < States.Length; i++)
             {
                 States[i].StateId = i;
+                States[i].Register();
             }
         }
+
     }
 }

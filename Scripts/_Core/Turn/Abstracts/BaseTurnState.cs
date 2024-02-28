@@ -15,6 +15,7 @@ namespace Turn
         public abstract TurnStateType StateType { get; }
         public abstract int StateId { get; set; }
         
+        public virtual void Register(){}
         public abstract void Subscribe();
 
         protected TurnManager turnManager;

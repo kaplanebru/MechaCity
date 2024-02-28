@@ -7,7 +7,6 @@ using Teams;
 using Towers;
 
 
-
 namespace Core
 {
     public class Initializer : MonoBehaviour
@@ -21,8 +20,8 @@ namespace Core
         {
             NetworkEventbus.RequestEvents.OnPlayerSpawned += AssignPlayers;
             TowerEvents.OnTowersCreated += CreateTeams;
-            
         }
+
         void CreateTeams()
         {
             Teams = new Team[assetHolder.Teams.Length];
@@ -31,12 +30,12 @@ namespace Core
                 Teams[i] = Instantiate(assetHolder.Teams[i], transform);
                 Teams[i].Initialize();
             }
-            
+
             NetworkUIController.gameObject.SetActive(true);
-            
+
             Eventbus.TeamEvents.OnTeamsSet?.Invoke(Teams);
         }
-        
+
 
         private void AssignPlayers(Player newPlayer, ulong id)
         {
@@ -55,8 +54,9 @@ namespace Core
                     return;
                 }
             }
+
             startGame:
-            
+
             NetworkEventbus.OnAllClientsSet?.Invoke(new object[]
                 {
                     new Dictionary<TeamType, string>
@@ -66,7 +66,7 @@ namespace Core
                     }
                 }
             );
-            
+
             //AllTowers.EveryTower.ForEach(t=>t.towerParts.ChangeHeight(t.Data.Height));
             foreach (var t in AllTowers.Towers)
             {
@@ -75,7 +75,7 @@ namespace Core
 
             print("Game Started");
         }
-        
+
 
         private void OnDisable()
         {
