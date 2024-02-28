@@ -18,36 +18,30 @@ namespace Turn
 
     public class SelectionState : BaseTurnState, ITurnTransferHandler<SelectionTransferData>
     {
-        private SelfSelector selector1;
-        private SelfSelector selector2;
+        private Dictionary<TeamType, SelfSelector> selectors = new ();
+       
         private SelfSelector mainSelector;
         public SelectionTransferData TransferData { get; private set; } = new();
-        public int maxTowersInGroup = 2;
 
         public override TurnStateType StateType => TurnStateType.Selection;
         public override int StateId { get; set; }
 
         public override void Register()
         {
-            selector1 = new SelfSelector(Initializer.Teams[0].Data, Initializer.Teams[1].Data);
-            selector2 = new SelfSelector(Initializer.Teams[1].Data, Initializer.Teams[0].Data);
+            selectors.Add(TeamType.Team1, new SelfSelector(Initializer.Teams[0].Data, Initializer.Teams[1].Data));
+            selectors.Add(TeamType.Team2, new SelfSelector(Initializer.Teams[1].Data, Initializer.Teams[0].Data));
         }
 
 
         public override void Subscribe()
         {
-            mainSelector = Teams[TeamState.CurrentTeam] == Teams[0] ? selector1 : selector2;
-
+            mainSelector = selectors[Teams[TeamState.CurrentTeam].Data.TeamType];
             mainSelector.Subscribe();
         }
 
-        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
-        {
-        }
+        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) {}
 
-        public override void StartState()
-        {
-        }
+        public override void StartState() {}
 
 
         public override void ResetPreviousTurnData()
