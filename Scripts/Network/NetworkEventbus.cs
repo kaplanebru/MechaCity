@@ -40,6 +40,8 @@ namespace Network
         public static class BlueprintEvents
         {
             public static Action<BpType> OnBpSelected;
+            public static Action<object[]> OnBpReady;
+            
             public static Action OnStateIntrusionAttempt;
             public static Action OnStateIntrusionEnd;
         }

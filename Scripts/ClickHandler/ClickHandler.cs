@@ -28,5 +28,21 @@ namespace Clicks
                 clickable.teamType = teamType;
             }
         }
+
+        public void DisableSelection()
+        {
+            foreach (var clickable in _clickables)
+            {
+                clickable.gameObject.layer = LayerMask.NameToLayer("Default");
+            }
+        }
+
+        public void EnableSelection()
+        {
+            foreach (var clickable in _clickables)
+            {
+                clickable.gameObject.layer = LayerMask.NameToLayer("Clickable");
+            }
+        }
     }
 }

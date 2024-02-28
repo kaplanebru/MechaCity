@@ -82,6 +82,11 @@ namespace Towers
             _towers.ForEach(t=>t.ResetColor());
         }
 
+        public static void ResetClickability()
+        {
+            _towers.ForEach(t=>t.clickHandler.EnableSelection());
+        }
+
 
         private void OnDrawGizmos()
         {

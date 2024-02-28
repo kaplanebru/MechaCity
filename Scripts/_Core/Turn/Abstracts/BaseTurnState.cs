@@ -11,7 +11,7 @@ namespace Turn
     {
         public TurnAction turnAction;
 
-        public Dictionary<string, Team> Teams;
+        public Dictionary<TeamState, Team> Teams;
         public abstract TurnStateType StateType { get; }
         public abstract int StateId { get; set; }
         
@@ -37,7 +37,7 @@ namespace Turn
             Unsubscribe();
             //Debug.LogWarning("Unsubscribed from " + StateType);
         }
-        public void SetTeams(Dictionary<string, Team> teams)
+        public void SetTeams(Dictionary<TeamState, Team> teams)
         {
             Teams = teams;
         }

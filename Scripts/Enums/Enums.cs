@@ -6,6 +6,12 @@ namespace Enums
         Team2
     }
 
+    public enum TeamState
+    {
+        CurrentTeam,
+        RivalTeam
+    }
+
     public enum TurnState
     {
         TurnStarted,
@@ -38,6 +44,13 @@ namespace Enums
         Reverse,
         Freeze,
         Double
+    }
+
+    public enum SelectionType
+    {
+        PlayerOnly,
+        RivalOnly,
+        All
     }
 
     

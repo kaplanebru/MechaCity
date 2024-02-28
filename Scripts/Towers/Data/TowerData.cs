@@ -18,6 +18,20 @@ namespace Towers
         public List<int> LinkedTowerIDs = new();
         public bool CanShoot { get; private set; }
 
+        // private bool isClickable = true;
+        // public bool IsClickable
+        // {
+        //     get => isClickable;
+        //     set
+        //     {
+        //         isClickable = value;
+        //         if (!isClickable)
+        //         {
+        //             Eventbus.
+        //         }
+        //     }
+        // }
+
 
         [SerializeField] private int _bulletAmountt = 1;
         public int BulletAmount

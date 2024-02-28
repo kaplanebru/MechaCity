@@ -17,6 +17,6 @@ namespace Blueprint
 
     public interface IBpAction
     {
-        public void Execute();
+        public void Execute(params object[] obj);
     }
 }

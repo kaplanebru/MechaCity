@@ -17,11 +17,14 @@ namespace Turn
 {
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
+        public static int TurnTracker => _turnTracker;
+        private static int _turnTracker = 0;
+        
         private BaseTurnState currentState;
         private TurnStateHolder stateHolder = new TurnStateHolder();
         private StateIntruder stateIntruder; // = new StateIntruder();
 
-        Dictionary<string, Team> turnTeams;
+        Dictionary<TeamState, Team> turnTeams;
 
         public TeamType currentTeamType = TeamType.Team1;
         public CombatTimingData timingData; //TODO: Turn asset holder
@@ -75,10 +78,10 @@ namespace Turn
 
         void SetTurnTeams(Team[] teams)
         {
-            turnTeams = new Dictionary<string, Team>()
+            turnTeams = new Dictionary<TeamState, Team>()
             {
-                {"currentTeam", teams[0]},
-                {"rivalTeam", teams[1]},
+                {TeamState.CurrentTeam, teams[0]},
+                {TeamState.RivalTeam, teams[1]},
             };
         }
 
@@ -92,6 +95,7 @@ namespace Turn
         
         void NewTurn()
         {
+            _turnTracker++;
             NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
             ConstructCurrentState(stateHolder.States[0]);
         }
@@ -160,8 +164,8 @@ namespace Turn
         
         void SwitchTeams()
         {
-            currentTeamType = turnTeams["rivalTeam"].Data.TeamType;
-            (turnTeams["currentTeam"], turnTeams["rivalTeam"]) = (turnTeams["rivalTeam"], turnTeams["currentTeam"]);
+            currentTeamType = turnTeams[TeamState.RivalTeam].Data.TeamType;
+            (turnTeams[TeamState.CurrentTeam], turnTeams[TeamState.RivalTeam]) = (turnTeams[TeamState.RivalTeam], turnTeams[TeamState.CurrentTeam]);
 
             UIEventbus.OnTeamSwitch?.Invoke(currentTeamType);
         }

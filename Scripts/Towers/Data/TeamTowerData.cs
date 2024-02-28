@@ -9,6 +9,6 @@ namespace Towers
         public TeamType TeamType;
         public Material DefaultMaterial;
         public Material SelectedMaterial;
-        public Material DeadMaterial;
+        public Material BlueprintMaterial;
     }
 }

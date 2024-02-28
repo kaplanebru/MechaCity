@@ -49,7 +49,7 @@ namespace PlayerNetwork
         {
             if (IsOwner && Input.GetMouseButtonDown(0))
             {
-                if (Physics.Raycast(RayFromMouse(), out RaycastHit hit))
+                if (Physics.Raycast(RayFromMouse(), out RaycastHit hit, LayerMask.GetMask("Clickable")))
                 {
                     ClickOnTower(hit);
                 }
