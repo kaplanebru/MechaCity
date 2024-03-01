@@ -38,6 +38,8 @@ namespace Turn
         {
             NetworkEventbus.InputEvents.OnObjectClicked -= Select;
             currentState.Subscribe();
+            var currentTurnData = (ITurnTransferHandler<BaseTurnTransferData>)currentState;
+            currentTurnData.TransferData.RestorePreviousSelectionColors();
         }
     
 

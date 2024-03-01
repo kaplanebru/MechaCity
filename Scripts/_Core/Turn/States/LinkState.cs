@@ -13,10 +13,9 @@ namespace Turn
         public override List<int> Towers { get; set; } = new();
     }
     
-    public class TowerGroupState : BaseTurnState, ITurnTransferHandler<TowerGroupTransferData>
+    public class LinkState : BaseTurnState, ITurnTransferHandler<TowerGroupTransferData>
     {
         public TowerGroupTransferData TransferData { get; private set; } = new();
-    
         public override TurnStateType StateType => TurnStateType.TowerGroup;
         public override int StateId { get; set; }
         
@@ -31,9 +30,7 @@ namespace Turn
             var incomingData = (SelectionTransferData) data;
             TransferData.Towers = incomingData.Towers;
         }
-
-        public override void StartState() {}
-    
+        
         private void TowerSelected(params object[] args)
         {
             int selectedTowerUniqID = (int)args[0];
@@ -60,16 +57,6 @@ namespace Turn
             
         }
 
-        public override void ResetPreviousTurnData()
-        {
-            TransferData.Towers.Clear();
-        }
-
-        public override void RestorePreviousSelectionColors()
-        {
-            TransferData.Towers.ForEach(s=>AllTowers.GetTower(s).SelectColor());
-
-        }
 
         public override void Unsubscribe()
         {

@@ -31,8 +31,7 @@ namespace Turn
             selectors.Add(TeamType.Team1, new SelfSelector(Initializer.Teams[0].Data, Initializer.Teams[1].Data));
             selectors.Add(TeamType.Team2, new SelfSelector(Initializer.Teams[1].Data, Initializer.Teams[0].Data));
         }
-
-
+        
         public override void Subscribe()
         {
             mainSelector = selectors[Teams[TeamState.CurrentTeam].Data.TeamType];
@@ -40,19 +39,8 @@ namespace Turn
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) {}
-
-        public override void StartState() {}
-
-
-        public override void ResetPreviousTurnData()
-        {
-            TransferData.Towers.Clear();
-        }
-
-        public override void RestorePreviousSelectionColors()
-        {
-            TransferData.Towers.ForEach(s => AllTowers.GetTower(s).SelectColor());
-        }
+        
+       
 
         public override void Unsubscribe()
         {

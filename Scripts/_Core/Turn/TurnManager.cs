@@ -72,7 +72,7 @@ namespace Turn
         private void DeActivateIntrusion()
         {
             stateIntruder.Unsubscribe();
-            currentState.RestorePreviousSelectionColors();
+            
         }
 
 
@@ -144,7 +144,8 @@ namespace Turn
                 {
                     foreach (var state in stateHolder.States)
                     {
-                        state.ResetPreviousTurnData();
+                        var turnData = (ITurnTransferHandler<BaseTurnTransferData>)state;
+                        turnData.TransferData.ResetPreviousTurnData();
                     }
 
                     NetworkEventbus.TriggerEvents.OnCompleteStateRequestByUser?.Invoke(currentState.StateType); //% yaparsak 0'a yani joker state'e gider

@@ -25,12 +25,12 @@ namespace Turn
             
             turnAction = TurnAction.Started;
             Subscribe();
-            StartState();
+            GetReady();
         }
         
         public virtual void ProcessPreviousStateTransferData(BaseTurnTransferData data){}
-    
-        public abstract void StartState();
+
+        protected virtual void GetReady() {}
     
         public void CompleteState()
         {
@@ -43,9 +43,7 @@ namespace Turn
             Teams = teams;
         }
 
-        public abstract void ResetPreviousTurnData();
-
-        public abstract void RestorePreviousSelectionColors();
+      
     
         public abstract void Unsubscribe();
         

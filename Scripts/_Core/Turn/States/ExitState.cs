@@ -18,24 +18,7 @@ public class ExitState : BaseTurnState
        
     }
 
-  
-
-  
-
-    public override void StartState()
-    {
-        
-    }
-
-    public override void ResetPreviousTurnData()
-    {
-        
-    }
-
-    public override void RestorePreviousSelectionColors()
-    {
-        
-    }
+   
 
     public override void Unsubscribe()
     {

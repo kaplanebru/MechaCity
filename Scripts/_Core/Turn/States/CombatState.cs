@@ -62,13 +62,9 @@ namespace Turn
             SetCombatPairs();
         }
 
-        public override void StartState()
+        protected override void GetReady()
         {
-           
-            //Data.CreateReverseCombatPairs(AllTowers.TowerDatas.ToList(), true);
-            
             TransferData.Towers.ForEach(at => AllTowers.GetTower(at).ResetColor());
-            //StartCoroutine(nameof(FireRoutine)); //TODO: FİX LATER
             turnManager.StartCoroutine(this.FireRoutine());
         }
 
@@ -118,19 +114,13 @@ namespace Turn
             TransferData.Towers?.ForEach(t =>
                 AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
         }
-
-        public override void ResetPreviousTurnData()
-        {
-            TransferData.Towers.Clear();
-        }
-
-        public override void RestorePreviousSelectionColors() {}
+        
+        
 
         public override void Unsubscribe()
         {
             DeselectAlteredTowers();
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
-
         }
     }
 }
