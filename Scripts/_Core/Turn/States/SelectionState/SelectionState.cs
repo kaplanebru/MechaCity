@@ -55,8 +55,6 @@ namespace Turn
         public override void Unsubscribe()
         {
             TransferData.Towers = mainSelector.Towers;
-            Debug.Log(TransferData.Towers.Count);
-            
             mainSelector.Unsubscribe();
         }
     }

@@ -28,9 +28,10 @@ namespace Enums
     {
         Selection,
         Link,
+        Exit,
         Combat,
         Intruder
-        //Exit
+     
     }
 
     public enum GameEndState

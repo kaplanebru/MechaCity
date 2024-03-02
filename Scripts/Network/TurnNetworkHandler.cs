@@ -50,10 +50,7 @@ namespace Network
 
         private void CompleteStateBegin(TurnStateType previousvalue, TurnStateType newvalue)
         {
-            // if (newvalue != TurnStateType.Selection)
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer?.Invoke(newvalue);
-            // else
-            //     NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
         }
 
         #endregion

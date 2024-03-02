@@ -13,19 +13,19 @@ namespace Turn
 
         public SelectionState SelectionState = new SelectionState();
         public LinkState LinkState = new LinkState();
-        public CombatState CombatState = new CombatState();
+        public ExitState ExitState = new ExitState();
         public IntruderState IntruderState = new IntruderState();
 
         public void Setup()
         {
             StatesByType.Add(TurnStateType.Selection, SelectionState);
             StatesByType.Add(TurnStateType.Link, LinkState);
-            StatesByType.Add(TurnStateType.Combat, CombatState);
+            StatesByType.Add(TurnStateType.Exit, ExitState);
             StatesByType.Add(TurnStateType.Intruder, IntruderState); 
             
             States[0] = SelectionState;
             States[1] = LinkState;
-            States[2] = CombatState;
+            States[2] = ExitState;
             States[3] = IntruderState;
 
             for (int i = 0; i < States.Length; i++)

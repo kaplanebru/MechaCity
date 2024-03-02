@@ -27,8 +27,8 @@ namespace Turn
             turnAction = TurnAction.Started;
             Subscribe();
         }
-        
-        public virtual void ProcessPreviousStateTransferData(BaseTurnTransferData data){}
+
+        public abstract void ProcessPreviousStateTransferData(BaseTurnTransferData data);
 
         public void CompleteState()
         {

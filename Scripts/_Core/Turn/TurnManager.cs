@@ -19,7 +19,7 @@ namespace Turn
     {
         public static int TurnTracker => _turnTracker;
         private static int _turnTracker = 0;
-        
+
         private BaseTurnState currentState;
         private BaseTurnState previousState;
         public TurnStateHolder stateHolder = new TurnStateHolder();
@@ -29,25 +29,27 @@ namespace Turn
 
         public TeamType currentTeamType = TeamType.Team1;
         public CombatTimingData timingData; //TODO: Turn asset holder
-        
+        private CombatHelper _combatHelper;
+
+
         private void OnEnable()
         {
             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
-            
+
             NetworkEventbus.BlueprintEvents.OnStateIntrusionAttempt += ActivateStateIntruder;
             NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd += DeActivateIntrusion;
             SubscribeToBlueprintActions();
 
             NetworkEventbus.OnAllClientsSet += FirstTurn;
-            NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += CompleteStateBySystem;
+            NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += ChangeStateBySystem;
             NetworkEventbus.RequestEvents.OnNewTurnRequest += SetNewTurn;
         }
-        
+
         private void Initialize()
         {
             stateHolder.Setup();
             intruderState = (IntruderState) stateHolder.StatesByType[TurnStateType.Intruder];
-            
+
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
 
@@ -65,15 +67,17 @@ namespace Turn
         {
             BpEventbus.SubscriberEvents.OnReverseAction?.Invoke();
         }
+
         private void ActivateStateIntruder()
         {
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
         }
+
         private void DeActivateIntrusion()
         {
             intruderState.StopIntrusion();
         }
-        
+
         void SetTurnTeams(Team[] teams)
         {
             turnTeams = new Dictionary<TeamState, Team>()
@@ -83,41 +87,41 @@ namespace Turn
             };
         }
 
+        private bool firstTurn = true;
         void FirstTurn(params object[] args)
         {
             Initialize();
-            stateHolder.CombatState.Subscribe(); // temp
-            stateHolder.CombatState.SetCombatPairs(); //TODO: temp? , event?, bp actionlar tek tek stateleri gerektirebilir?
+            _combatHelper = ((ExitState) stateHolder.StatesByType[TurnStateType.Exit]).combatHelper;
+            _combatHelper.Subscribe(null, this);
+            _combatHelper.SetCombatPairs();
+            
             NewTurn();
+            firstTurn = false;
         }
-        
+
         void NewTurn()
         {
             _turnTracker++;
             NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
-            SwitchState(stateHolder.StatesByType[TurnStateType.Selection]);
-        }
-        
 
-        public void CompleteStateRequestByUser()
+            if(firstTurn)
+                SetNewState(stateHolder.StatesByType[TurnStateType.Selection]);
+            else
+                NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection);
+        }
+
+        public void StateChangeRequestByUser()
         {
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(GetNextStateType());
         }
-
-        TurnStateType GetNextStateType()
-        {
-            var nextStateId = (currentState.StateId + 1) % (stateHolder.States.Length - 1);
-            return stateHolder.States[nextStateId].StateType;
-        }
-
-
-        public void CompleteStateBySystem(TurnStateType newType)
+        
+        public void ChangeStateBySystem(TurnStateType newType)
         {
             currentState.CompleteState();
-            SwitchState(stateHolder.StatesByType[newType]);
+            SetNewState(stateHolder.StatesByType[newType]);
         }
 
-        public void SwitchState(BaseTurnState newState)
+        public void SetNewState(BaseTurnState newState)
         {
             previousState = currentState;
             currentState = newState;
@@ -125,71 +129,74 @@ namespace Turn
             currentState.SetTeams(turnTeams);
             currentState.EnterState(this); //TODO: Her defasında turn managerı göndermesi saçma
             GetPreviousStateData();
-
         }
-        
+
         void GetPreviousStateData()
         {
             if (previousState == null) return;
-           
-         
+            
             var previousTransferData = ((ITurnTransferHandler<BaseTurnTransferData>) previousState).TransferData;
             currentState.ProcessPreviousStateTransferData(previousTransferData);
-            print("previous state: " + previousState.StateType + " tower count: " + previousTransferData.Towers.Count + " " + previousTransferData.StateType);
         }
         
+        TurnStateType GetNextStateType()
+        {
+            var nextStateId = (currentState.StateId + 1) % (stateHolder.States.Length - 1);
+            return stateHolder.States[nextStateId].StateType;
+        }
+
         void SetNewTurn()
         {
             SwitchTeams();
             NewTurn();
         }
-        
+
         void SwitchTeams()
         {
             currentTeamType = turnTeams[TeamState.RivalTeam].Data.TeamType;
-            (turnTeams[TeamState.CurrentTeam], turnTeams[TeamState.RivalTeam]) = (turnTeams[TeamState.RivalTeam], turnTeams[TeamState.CurrentTeam]);
+            (turnTeams[TeamState.CurrentTeam], turnTeams[TeamState.RivalTeam]) =
+                (turnTeams[TeamState.RivalTeam], turnTeams[TeamState.CurrentTeam]);
 
             UIEventbus.OnTeamSwitch?.Invoke(currentTeamType);
         }
-        
+
         private void OnDisable()
         {
             Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
-            
+
             NetworkEventbus.BlueprintEvents.OnStateIntrusionAttempt -= ActivateStateIntruder;
             NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd -= DeActivateIntrusion;
             UnsubscribeFromBlueprintActions();
-            
+
             NetworkEventbus.OnAllClientsSet -= FirstTurn;
-            NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer -= CompleteStateBySystem;
+            NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer -= ChangeStateBySystem;
             NetworkEventbus.RequestEvents.OnNewTurnRequest -= SetNewTurn;
-      
         }
-        
-        
-        
+
+
         [CanBeNull]
         BaseTurnState GetNextState(int nextStateID)
         {
-            if (nextStateID == stateHolder.States.Length-1)
+            if (nextStateID == stateHolder.States.Length - 1)
             {
                 if (!GameEnding())
                 {
                     foreach (var state in stateHolder.States)
                     {
-                        var turnData = (ITurnTransferHandler<BaseTurnTransferData>)state;
+                        var turnData = (ITurnTransferHandler<BaseTurnTransferData>) state;
                         turnData.TransferData.ResetPreviousTurnData();
                     }
 
-                    NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(GetNextStateType()); //% yaparsak 0'a yani joker state'e gider
+                    NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser
+                        ?.Invoke(GetNextStateType()); //% yaparsak 0'a yani joker state'e gider
                 }
 
                 return null;
             }
-            
+
             return stateHolder.States[nextStateID];
         }
-        
+
         bool GameEnding() //TODO: temp?
         {
             foreach (var team in turnTeams)
@@ -201,6 +208,7 @@ namespace Turn
                     return true;
                 }
             }
+
             return false;
         }
     }

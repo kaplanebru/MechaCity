@@ -831,7 +831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NetworkUIController: {fileID: 923155417}
   assetHolder: {fileID: 11400000, guid: a2d96ec40fc3ed3408057310e9159772, type: 2}
-  isMultiplayerOn: 0
+  isMultiplayerOn: 1
 --- !u!1001 &560683655
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1392,7 +1392,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 973694561}
         m_TargetAssemblyTypeName: Turn.TurnManager, Assembly-CSharp
-        m_MethodName: CompleteStateRequestByUser
+        m_MethodName: StateChangeRequestByUser
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4822,7 +4822,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 973694561}
         m_TargetAssemblyTypeName: Turn.TurnManager, Assembly-CSharp
-        m_MethodName: CompleteStateRequestByUser
+        m_MethodName: StateChangeRequestByUser
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

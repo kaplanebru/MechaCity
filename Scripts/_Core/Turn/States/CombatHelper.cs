@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using DataModels;
 using Enums;
+using Network;
 using Towers;
 using Unity.Collections;
 using UnityEngine;
 
 namespace Turn
 {
-    public class CombatTransferData : BaseTurnTransferData
-    {
-        public override TurnStateType StateType { get; set; } = TurnStateType.Combat;
-        public override List<int> Towers { get; set; } = new();
-    }
-    
+    // public class CombatTransferData : BaseTurnTransferData
+    // {
+    //     public override TurnStateType StateType { get; set; } = TurnStateType.Combat;
+    //     public override List<int> Towers { get; set; } = new();
+    // }
+
     public class CombatData
     {
         public List<CombatPair> CombatPairs = new();
@@ -25,33 +26,30 @@ namespace Turn
         public float cursorDuration = 0.5f;
     }
 
-    public class CombatState : BaseTurnState, ITurnTransferHandler<CombatTransferData>
+    public class CombatHelper
     {
-        public CombatTransferData TransferData { get; private set; } = new();
-        
         private readonly CombatData Data = new();
         private CombatPairsCreator combatPairsCreator;
-        public override TurnStateType StateType => TurnStateType.Combat;
-        public override int StateId { get; set; }
+        private List<int> _towers;
+        private TurnManager _turnManager;
 
         private bool pairsReversed = false;
-        
 
-        public override void Subscribe()
+
+        public void Subscribe(List<int> towers, TurnManager turnManager) //TODO: TM
         {
             combatPairsCreator = new CombatPairsCreator(Data.CombatPairs);
-
             BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
-        }
-        
-
-        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
-        {
-            var incomingData = data;
-            TransferData.Towers = incomingData.Towers;
+            _towers = towers;
+            _turnManager = turnManager;
             
-            TransferData.Towers.ForEach(at => AllTowers.GetTower(at).ResetColor());
-            turnManager.StartCoroutine(this.FireRoutine());
+            _towers?.ForEach(at => AllTowers.GetTower(at).ResetColor());
+        }
+
+
+        public void Fire()
+        {
+            _turnManager.StartCoroutine(this.FireRoutine());
         }
 
         public void SetCombatPairs()
@@ -62,11 +60,10 @@ namespace Turn
         void ReversePairs()
         {
             pairsReversed = !pairsReversed;
-           // Debug.Log("pairs reversed: " + pairsReversed);
+            // Debug.Log("pairs reversed: " + pairsReversed);
             SetCombatPairs();
         }
 
-      
 
         void Select(CombatPair pair, bool select = true)
         {
@@ -79,7 +76,7 @@ namespace Turn
         IEnumerator FireRoutine()
         {
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
-            yield return new WaitForSeconds(turnManager.timingData.cameraDelay);
+            yield return new WaitForSeconds(_turnManager.timingData.cameraDelay);
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
 
 
@@ -91,7 +88,7 @@ namespace Turn
                 yield return new WaitForSeconds(Data.selectionDelay);
 
 
-                pair.Combat(turnManager.timingData);
+                pair.Combat(_turnManager.timingData);
 
                 yield return new WaitUntil(() => pair.CombatCompleted);
                 yield return new WaitForSeconds(Data.afterCombatDelay);
@@ -107,22 +104,24 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
             // CompleteState();
             // turnManager.SwitchState(StateId + 1);
-            
-            turnManager.CompleteStateBySystem(TurnStateType.Selection);//TODO: DONT FORGET!
+
+            // turnManager.CompleteStateBySystem(TurnStateType.Selection);//TODO: DONT FORGET!
+            Unsubscribe();
+            //state bitimi diye network event at
         }
 
         void DeselectAlteredTowers()
         {
-            TransferData.Towers?.ForEach(t =>
+            _towers?.ForEach(t =>
                 AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
         }
-        
-        
 
-        public override void Unsubscribe()
+
+        public void Unsubscribe()
         {
             DeselectAlteredTowers();
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
+            NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
         }
     }
 }
