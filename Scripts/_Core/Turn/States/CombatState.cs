@@ -12,6 +12,7 @@ namespace Turn
 {
     public class CombatTransferData : BaseTurnTransferData
     {
+        public override TurnStateType StateType { get; set; } = TurnStateType.Combat;
         public override List<int> Towers { get; set; } = new();
     }
     
@@ -46,8 +47,11 @@ namespace Turn
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
-            var incomingData = (TowerGroupTransferData) data;
+            var incomingData = data;
             TransferData.Towers = incomingData.Towers;
+            
+            TransferData.Towers.ForEach(at => AllTowers.GetTower(at).ResetColor());
+            turnManager.StartCoroutine(this.FireRoutine());
         }
 
         public void SetCombatPairs()
@@ -58,15 +62,11 @@ namespace Turn
         void ReversePairs()
         {
             pairsReversed = !pairsReversed;
-            Debug.Log("pairs reversed: " + pairsReversed);
+           // Debug.Log("pairs reversed: " + pairsReversed);
             SetCombatPairs();
         }
 
-        protected override void GetReady()
-        {
-            TransferData.Towers.ForEach(at => AllTowers.GetTower(at).ResetColor());
-            turnManager.StartCoroutine(this.FireRoutine());
-        }
+      
 
         void Select(CombatPair pair, bool select = true)
         {
@@ -105,8 +105,10 @@ namespace Turn
             yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
-            CompleteState();
-            turnManager.SwitchState(StateId + 1);
+            // CompleteState();
+            // turnManager.SwitchState(StateId + 1);
+            
+            turnManager.CompleteStateBySystem(TurnStateType.Selection);//TODO: DONT FORGET!
         }
 
         void DeselectAlteredTowers()

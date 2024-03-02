@@ -34,7 +34,6 @@ namespace Blueprint
             //ortadaki bp'ye basılınca take action with parameters: currentbpnin içindeki datalar dolar params obj datası. Ayrıca parametre olarak almaya gerek yok!
 
             currentBlueprint.TryTakeAction();
-            Debug.Log("execute bp");
             NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd?.Invoke();
         }
 
@@ -43,6 +42,8 @@ namespace Blueprint
             NetworkEventbus.BlueprintEvents.OnStateIntrusionAttempt?.Invoke(); //call intruder event for both players
 
             currentBlueprint = bpHolder.AllBlueprints[type];
+            
+            NetworkEventbus.BlueprintEvents.OnBpReady?.Invoke(new object[1]); //test
         }
 
         void Start()

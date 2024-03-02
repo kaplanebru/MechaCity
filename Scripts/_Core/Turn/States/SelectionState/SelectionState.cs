@@ -6,6 +6,7 @@ using Enums;
 using Network;
 using Towers;
 using GameUI;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Turn
@@ -13,6 +14,7 @@ namespace Turn
     [Serializable]
     public class SelectionTransferData : BaseTurnTransferData
     {
+        public override TurnStateType StateType { get; set; } = TurnStateType.Selection;
         public override List<int> Towers { get; set; } = new();
     }
 
@@ -38,13 +40,24 @@ namespace Turn
             mainSelector.Subscribe();
         }
 
-        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) {}
-        
-       
+        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
+        {
+            var incomingData = data;
+            TransferData.Towers.Clear();
+            TransferData.Towers.AddRange(incomingData.Towers);
+            
+            //Debug.Log(TransferData.Towers.Count);
+            Debug.Log("state: " + StateType + " previous data: "+incomingData.StateType + " " + incomingData.Towers.Count);
 
+            mainSelector.Towers.AddRange(TransferData.Towers);           
+            //mainSelector.Towers = TransferData.Towers;
+            
+        }
+        
         public override void Unsubscribe()
         {
-            TransferData.Towers = mainSelector.Towers;
+            TransferData.Towers.Clear();
+            TransferData.Towers.AddRange(mainSelector.Towers);
             mainSelector.Unsubscribe();
         }
     }

@@ -15,18 +15,18 @@ namespace Network
         public override void OnNetworkSpawn()
         {
             turnStateType.OnValueChanged += CompleteStateBegin; //owner ve clone'u değişir
-            
+
             if (IsOwner)
             {
-                NetworkEventbus.TriggerEvents.OnCompleteStateRequestByUser += CompleteStateBeginServerRpc;
-                NetworkEventbus.TurnEvents.OnTurnStarted += TurnButtonsSetup;  //not: player 1'e mi bakıyor 2 pcde de
+                NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += CompleteStateBeginServerRpc;
+                NetworkEventbus.TurnEvents.OnTurnStarted += TurnButtonsSetup; //not: player 1'e mi bakıyor 2 pcde de
             }
         }
-        
+
 
         private void Start()
         {
-            if(IsOwner)
+            if (IsOwner)
                 ownerTeamType = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>().Data.TeamType;
         }
 
@@ -43,20 +43,17 @@ namespace Network
         #region Complete Turn Handle
 
         [ServerRpc]
-        void CompleteStateBeginServerRpc(TurnStateType lastType)
+        void CompleteStateBeginServerRpc(TurnStateType nextType) //(TurnStateType lastType)
         {
-            int nextType = ((int) lastType + 1) % Enum.GetValues(typeof(TurnStateType)).Length;
-            turnStateType.Value = (TurnStateType) nextType;
+            turnStateType.Value = nextType;
         }
-        
+
         private void CompleteStateBegin(TurnStateType previousvalue, TurnStateType newvalue)
         {
-            //print("complete action : " + newvalue);
-
-            if (newvalue != TurnStateType.Selection)
-                NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer?.Invoke();
-            else
-                NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
+            // if (newvalue != TurnStateType.Selection)
+            NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer?.Invoke(newvalue);
+            // else
+            //     NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
         }
 
         #endregion
@@ -67,7 +64,7 @@ namespace Network
             turnStateType.OnValueChanged -= CompleteStateBegin;
             if (IsOwner)
             {
-                NetworkEventbus.TriggerEvents.OnCompleteStateRequestByUser -= CompleteStateBeginServerRpc;
+                NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser -= CompleteStateBeginServerRpc;
                 NetworkEventbus.TurnEvents.OnTurnStarted -= TurnButtonsSetup;
             }
         }

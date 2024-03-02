@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Enums;
 using Grid;
 using Network;
@@ -19,32 +20,27 @@ namespace Turn
         public abstract void Subscribe();
 
         protected TurnManager turnManager;
-        public void EnterState(TurnManager turnManager = null)
+        public void EnterState(TurnManager tturnManager = null)
         {
-            this.turnManager = turnManager;
+            turnManager = tturnManager;
             
             turnAction = TurnAction.Started;
             Subscribe();
-            GetReady();
         }
         
         public virtual void ProcessPreviousStateTransferData(BaseTurnTransferData data){}
 
-        protected virtual void GetReady() {}
-    
         public void CompleteState()
         {
             turnAction = TurnAction.Completed;
             Unsubscribe();
-            //Debug.LogWarning("Unsubscribed from " + StateType);
+           // Debug.LogWarning("Unsubscribed from " + StateType);
         }
         public void SetTeams(Dictionary<TeamState, Team> teams)
         {
             Teams = teams;
         }
 
-      
-    
         public abstract void Unsubscribe();
         
     }

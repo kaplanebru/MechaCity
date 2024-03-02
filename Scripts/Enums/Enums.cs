@@ -27,8 +27,9 @@ namespace Enums
     public enum TurnStateType
     {
         Selection,
-        TowerGroup,
+        Link,
         Combat,
+        Intruder
         //Exit
     }
 

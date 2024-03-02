@@ -10,13 +10,14 @@ namespace Turn
     [Serializable]
     public class TowerGroupTransferData : BaseTurnTransferData
     {
+        public override TurnStateType StateType { get; set; } = TurnStateType.Link;
         public override List<int> Towers { get; set; } = new();
     }
     
     public class LinkState : BaseTurnState, ITurnTransferHandler<TowerGroupTransferData>
     {
         public TowerGroupTransferData TransferData { get; private set; } = new();
-        public override TurnStateType StateType => TurnStateType.TowerGroup;
+        public override TurnStateType StateType => TurnStateType.Link;
         public override int StateId { get; set; }
         
         public override void Subscribe()
@@ -27,7 +28,7 @@ namespace Turn
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
-            var incomingData = (SelectionTransferData) data;
+            var incomingData =  data; //TODO: Bunu bulduramaz mıyız typetan
             TransferData.Towers = incomingData.Towers;
         }
         
