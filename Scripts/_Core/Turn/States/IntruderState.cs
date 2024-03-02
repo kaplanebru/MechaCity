@@ -28,15 +28,7 @@ namespace Turn
  
         
 
-        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
-        {
-            incomingData = data;
-            TransferData.Towers.Clear();
-            TransferData.Towers.AddRange(incomingData.Towers);
-
-            Debug.Log("state: " + StateType + " previous data: "+incomingData.StateType + " " + incomingData.Towers.Count);
-        }
-
+       
         public override void Register()
         {
             bpSelector = new BaseSelector();
@@ -46,6 +38,19 @@ namespace Turn
         {
             AllTowers.ResetTowerSelectionColors();
             bpSelector.Subscribe();
+        }
+
+        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
+        {
+            incomingData = data;
+            TransferData.Towers = data.Towers;
+            bpSelector.GetTowers(new List<int>());
+
+            
+            // TransferData.Towers.Clear();
+            // TransferData.Towers.AddRange(incomingData.Towers);
+
+            //Debug.Log("state: " + StateType + " previous data: "+incomingData.StateType + " " + incomingData.Towers.Count);
         }
 
 
@@ -59,7 +64,8 @@ namespace Turn
             incomingData.RestorePreviousSelectionColors();
 
             bpSelector.Unsubscribe();
-            Debug.Log(TransferData.Towers.Count());
+            
+            //Debug.Log(TransferData.Towers.Count());
 
         }
 

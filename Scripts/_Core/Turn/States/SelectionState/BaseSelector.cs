@@ -11,13 +11,20 @@ public  class BaseSelector
     
     protected Material selectionMat;
     protected Material defaultMat;
+
+   
     
     public void Subscribe()
     {
-        Towers.Clear();
+        //Towers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
         
         ShowCompleteButton(false);
+    }
+
+    public void GetTowers(List<int> towers)
+    {
+        Towers = towers;
     }
     
     private void GetTower(params object[] args)

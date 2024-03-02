@@ -20,8 +20,8 @@ namespace Turn
 
     public class SelectionState : BaseTurnState, ITurnTransferHandler<SelectionTransferData>
     {
-        private Dictionary<TeamType, SelfSelector> selectors = new ();
-       
+        private Dictionary<TeamType, SelfSelector> selectors = new();
+
         private SelfSelector mainSelector;
         public SelectionTransferData TransferData { get; private set; } = new();
 
@@ -33,7 +33,7 @@ namespace Turn
             selectors.Add(TeamType.Team1, new SelfSelector(Initializer.Teams[0].Data, Initializer.Teams[1].Data));
             selectors.Add(TeamType.Team2, new SelfSelector(Initializer.Teams[1].Data, Initializer.Teams[0].Data));
         }
-        
+
         public override void Subscribe()
         {
             mainSelector = selectors[Teams[TeamState.CurrentTeam].Data.TeamType];
@@ -42,22 +42,21 @@ namespace Turn
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
-            var incomingData = data;
-            TransferData.Towers.Clear();
-            TransferData.Towers.AddRange(incomingData.Towers);
+            TransferData.Towers = data.Towers;
+            mainSelector.GetTowers(TransferData.Towers);
             
-            //Debug.Log(TransferData.Towers.Count);
-            Debug.Log("state: " + StateType + " previous data: "+incomingData.StateType + " " + incomingData.Towers.Count);
+         
+            // TransferData.Towers.AddRange(incomingData.Towers);
+            // Debug.Log("state: " + StateType + " previous data: "+incomingData.StateType + " " + incomingData.Towers.Count);
 
-            mainSelector.Towers.AddRange(TransferData.Towers);           
-            //mainSelector.Towers = TransferData.Towers;
-            
+            // mainSelector.Towers.AddRange(TransferData.Towers);           
         }
-        
+
         public override void Unsubscribe()
         {
-            TransferData.Towers.Clear();
-            TransferData.Towers.AddRange(mainSelector.Towers);
+            TransferData.Towers = mainSelector.Towers;
+            Debug.Log(TransferData.Towers.Count);
+            
             mainSelector.Unsubscribe();
         }
     }
