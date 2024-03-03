@@ -40,6 +40,7 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
             incomingData = data;
+            Debug.Log(incomingData.StateType); //buraya uğramıyor
             TransferData.Towers = data.Towers;
             bpSelector.GetTowers(new List<int>());
         }
@@ -47,6 +48,7 @@ namespace Turn
 
         public void StopIntrusion()
         {
+            //Debug.Log(incomingData.StateType);
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(incomingData.StateType);
         }
 
