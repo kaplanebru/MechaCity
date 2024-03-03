@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Enums;
 using Unity.Netcode;
 using PlayerNetwork;
@@ -20,7 +21,7 @@ namespace Network
             if (IsOwner)
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += CompleteStateBeginServerRpc;
-                NetworkEventbus.TurnEvents.OnTurnStarted += TurnButtonsSetup; //not: player 1'e mi bakıyor 2 pcde de
+                NetworkEventbus.TurnEvents.OnTurnStarted += StartTurnServerRpc; //not: player 1'e mi bakıyor 2 pcde de
             }
         }
 
@@ -31,25 +32,26 @@ namespace Network
             {
                 player = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>();
                 ownerTeamType = player.Data.TeamType;
-                
             }
-
         }
 
-        void TurnButtonsSetup(TeamType currentTeamType)
+        
+        [ServerRpc]
+        void StartTurnServerRpc(TeamType currentTeamType)
         {
-         
+            StartTurnClientRpc(currentTeamType);
+        }
 
-            player.EnableInput(false);
-            print(" stop x " + player.NetworkObjectId); 
+        [ClientRpc]
+        void StartTurnClientRpc(TeamType currentTeamType)
+        {
+            if(!IsOwner) return;
+            if (currentTeamType != ownerTeamType) return;
             
-            if (currentTeamType == ownerTeamType)
-            {
-                print(" start x " + player.NetworkObjectId); //sadece ownerlarda çalışıyor: 2 tarafta da değil gibi
-
-                NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest?.Invoke();
-                player.EnableInput(true);
-            }
+            //print(" start x " + player.NetworkObjectId); //bunu silince sapıtıyor, servera gitse ve serverdan seçilip yollansa belki düzelir
+            
+            NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest?.Invoke();
+            player.EnableInput(true);
         }
 
 
@@ -64,6 +66,12 @@ namespace Network
         private void CompleteStateBegin(TurnStateType previousvalue, TurnStateType newvalue)
         {
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer?.Invoke(newvalue);
+            
+            if (newvalue == TurnStateType.Exit)
+            {
+                if (IsOwner)
+                    player.EnableInput(false);
+            }
         }
 
         #endregion
@@ -75,7 +83,7 @@ namespace Network
             if (IsOwner)
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser -= CompleteStateBeginServerRpc;
-                NetworkEventbus.TurnEvents.OnTurnStarted -= TurnButtonsSetup;
+                NetworkEventbus.TurnEvents.OnTurnStarted -= StartTurnServerRpc;
             }
         }
     }
