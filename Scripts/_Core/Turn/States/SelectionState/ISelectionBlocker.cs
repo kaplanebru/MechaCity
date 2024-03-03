@@ -6,7 +6,7 @@ public interface ISelectionBlocker<out TTeam, out TTTeam> where TTeam : TeamData
     public TTeam SelectingTeam { get; }
     
     public TTTeam RivalTeam { get;  }
-    public void SetSelectableTowers();
+    public void EliminateNonSelectables();
 
     public void SetMaterials();
 

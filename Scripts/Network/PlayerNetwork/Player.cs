@@ -47,9 +47,9 @@ namespace PlayerNetwork
 
         private void Update()
         {
-            if (IsOwner && Input.GetMouseButtonDown(0))
+            if (IsOwner && Input.GetMouseButtonDown(0)) //iki tarafın da owner playerı tıklayabiliyor demek bu
             {
-                if (Physics.Raycast(RayFromMouse(), out RaycastHit hit, LayerMask.GetMask("Clickable")))
+                if (Physics.Raycast(RayFromMouse(), out RaycastHit hit,Mathf.Infinity, LayerMask.GetMask("Clickable")))
                 {
                     ClickOnTower(hit);
                 }
@@ -60,8 +60,9 @@ namespace PlayerNetwork
         {
             if (hit.collider.TryGetComponent(out Clickable clickable))
             {
-                if (clickable.teamType != Data.TeamType) return;
-                SendTowerIdToServerRpc(clickable.id);
+               // if (clickable.teamType != Data.TeamType) return; //todo: Dont!
+               //turn team == player team olmalı ayrıca
+               SendTowerIdToServerRpc(clickable.id);
             }
         }
 
@@ -74,7 +75,7 @@ namespace PlayerNetwork
         [ClientRpc]
         void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
         {
-            NetworkEventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId}); //
+            NetworkEventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId }); //
         }
         
         #region WinFailConditions

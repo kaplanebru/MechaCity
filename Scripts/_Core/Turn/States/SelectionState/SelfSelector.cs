@@ -11,11 +11,11 @@ public class SelfSelector : BaseSelector, ISelectionBlocker<TeamData, TeamData>
         SelectingTeam = selectingTeam;
         RivalTeam = rivalTeam;
         
-        SetSelectableTowers();
+       // SetSelectableTowers();
         SetMaterials();
     }
     
-    public void SetSelectableTowers()
+    public void EliminateNonSelectables()
     {
         RivalTeam.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).clickHandler.DisableSelection());
     }
