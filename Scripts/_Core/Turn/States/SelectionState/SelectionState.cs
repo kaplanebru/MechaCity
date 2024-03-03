@@ -44,12 +44,6 @@ namespace Turn
         {
             TransferData.Towers = data.Towers;
             mainSelector.GetTowers(TransferData.Towers);
-            
-         
-            // TransferData.Towers.AddRange(incomingData.Towers);
-            // Debug.Log("state: " + StateType + " previous data: "+incomingData.StateType + " " + incomingData.Towers.Count);
-
-            // mainSelector.Towers.AddRange(TransferData.Towers);           
         }
 
         public override void Unsubscribe()

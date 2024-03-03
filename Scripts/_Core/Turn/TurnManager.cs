@@ -71,6 +71,7 @@ namespace Turn
         private void ActivateStateIntruder()
         {
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
+            print("Activate");
         }
 
         private void DeActivateIntrusion()
@@ -126,7 +127,7 @@ namespace Turn
         {
             previousState = currentState;
             currentState = newState;
-
+            
             currentState.SetTeams(turnTeams);
             currentState.EnterState(this); //TODO: Her defasında turn managerı göndermesi saçma
             GetPreviousStateData();
@@ -176,13 +177,14 @@ namespace Turn
 
         public void EndTurn()
         {
+            if(GameEnding()) return;
+            NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
+            
             foreach (var state in stateHolder.States)
             {
                 var turnData = (ITurnTransferHandler<BaseTurnTransferData>) state;
                 turnData.TransferData.ResetPreviousTurnData();
             }
-            if(!GameEnding())
-                NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
         }
 
         bool GameEnding()

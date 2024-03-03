@@ -34,7 +34,7 @@ namespace Blueprint
             //ortadaki bp'ye basılınca take action with parameters: currentbpnin içindeki datalar dolar params obj datası. Ayrıca parametre olarak almaya gerek yok!
 
             currentBlueprint.TryTakeAction();
-            NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd?.Invoke();
+            //NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd?.Invoke();
         }
 
         private void GetCurrentBp(BpType type)
@@ -43,7 +43,7 @@ namespace Blueprint
 
             currentBlueprint = bpHolder.AllBlueprints[type];
             
-            NetworkEventbus.BlueprintEvents.OnBpReady?.Invoke(new object[1]); //test
+            //NetworkEventbus.BlueprintEvents.OnBpReady?.Invoke(new object[1]); //test
         }
 
         void Start()
