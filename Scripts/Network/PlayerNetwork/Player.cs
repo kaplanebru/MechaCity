@@ -49,7 +49,8 @@ namespace PlayerNetwork
 
 
         public void EnableInput(bool enable)
-        {
+        { 
+            if(!IsOwner) return;
             if (enable)
                 StartCoroutine(nameof(InputRoutine));
             else
@@ -60,11 +61,13 @@ namespace PlayerNetwork
             
             while (true)
             {
-                if (IsOwner && Input.GetMouseButtonDown(0)) //iki tarafın da owner playerı tıklayabiliyor demek bu
+                //(IsOwner && Input.GetMouseButtonDown(0)) /
+                if (Input.GetMouseButtonDown(0)) //iki tarafın da owner playerı tıklayabiliyor demek bu
                 {
                     if (Physics.Raycast(RayFromMouse(), out RaycastHit hit,Mathf.Infinity, LayerMask.GetMask("Clickable")))
                     {
                         ClickOnTower(hit);
+                       
                     }
                 }
                 yield return null;
@@ -89,6 +92,7 @@ namespace PlayerNetwork
         void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
         {
             NetworkEventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId }); //
+            print(towerId);
         }
         
         #region WinFailConditions

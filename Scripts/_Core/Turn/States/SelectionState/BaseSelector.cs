@@ -82,7 +82,6 @@ public  class BaseSelector
     public void Unsubscribe()
     {
         NetworkEventbus.InputEvents.OnObjectClicked -= GetTower;
-        AllTowers.ResetClickability();
     }
 
 
