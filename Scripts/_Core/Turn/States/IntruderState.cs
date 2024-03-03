@@ -28,7 +28,7 @@ namespace Turn
         
         public override void Register()
         {
-            bpSelector = new BaseSelector();
+            bpSelector = new BpSelector();
         }
 
         public override void Subscribe()

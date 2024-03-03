@@ -4,7 +4,7 @@ using Network;
 using Towers;
 using UnityEngine;
 
-public  class BaseSelector
+public abstract class BaseSelector
 {
     public List<int> Towers = new();
     public int _maxTowersInGroup = 2;
@@ -79,7 +79,7 @@ public  class BaseSelector
         return false;
     }
     
-    public void Unsubscribe()
+    public virtual void Unsubscribe()
     {
         NetworkEventbus.InputEvents.OnObjectClicked -= GetTower;
     }

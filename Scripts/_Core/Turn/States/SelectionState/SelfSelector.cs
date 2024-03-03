@@ -10,8 +10,7 @@ public class SelfSelector : BaseSelector, ISelectionBlocker<TeamData, TeamData>
     {
         SelectingTeam = selectingTeam;
         RivalTeam = rivalTeam;
-        
-       // SetSelectableTowers();
+
         SetMaterials();
     }
     
@@ -24,5 +23,11 @@ public class SelfSelector : BaseSelector, ISelectionBlocker<TeamData, TeamData>
     {
         defaultMat = SelectingTeam.TeamTowerData.DefaultMaterial;
         selectionMat = SelectingTeam.TeamTowerData.SelectedMaterial;
+    }
+
+    public override void Unsubscribe()
+    {
+        base.Unsubscribe();
+        AllTowers.EnableClickability();
     }
 }

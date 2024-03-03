@@ -92,7 +92,7 @@ namespace PlayerNetwork
         void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
         {
             NetworkEventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId }); //
-            print(towerId);
+            //print(towerId);
         }
         
         #region WinFailConditions

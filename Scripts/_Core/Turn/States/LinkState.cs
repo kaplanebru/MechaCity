@@ -28,16 +28,18 @@ namespace Turn
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
-            var incomingData =  data; //TODO: Bunu bulduramaz mıyız typetan
-            TransferData.Towers = incomingData.Towers;
+            TransferData.Towers = data.Towers;
+            AllTowers.DisableClickability();
+            TransferData.Towers.ForEach(t=>AllTowers.GetTower(t).clickHandler.EnableSelection());
+
         }
         
         private void TowerSelected(params object[] args)
         {
-            int selectedTowerUniqID = (int)args[0];
-            var towerID = TransferData.Towers.FirstOrDefault(t => t == selectedTowerUniqID);
-
-            if (!TransferData.Towers.Contains(towerID)) return;
+            int towerID = (int) args[0];
+            //int selectedTowerUniqID = (int)args[0];
+            // var towerID = TransferData.Towers.FirstOrDefault(t => t == selectedTowerUniqID);
+            // if (!TransferData.Towers.Contains(towerID)) return;
             RiseAndFall(AllTowers.GetTower(towerID), 1, true);
         }
     
@@ -62,6 +64,7 @@ namespace Turn
         public override void Unsubscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
+            AllTowers.EnableClickability();
         }
     }
 }
