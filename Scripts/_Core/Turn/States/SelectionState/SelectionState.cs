@@ -39,8 +39,6 @@ namespace Turn
             mainSelector = selectors[Teams[TeamState.CurrentTeam].Data.TeamType];
             mainSelector.Subscribe();
             mainSelector.EliminateNonSelectables();
-            Debug.Log(mainSelector.SelectingTeam.TeamType);
-
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)

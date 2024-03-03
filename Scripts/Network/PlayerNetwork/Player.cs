@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using Clicks;
@@ -45,14 +46,28 @@ namespace PlayerNetwork
 
         Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        private void Update()
+
+
+        public void EnableInput(bool enable)
         {
-            if (IsOwner && Input.GetMouseButtonDown(0)) //iki tarafın da owner playerı tıklayabiliyor demek bu
+            if (enable)
+                StartCoroutine(nameof(InputRoutine));
+            else
+                StopCoroutine(nameof(InputRoutine));
+        }
+        IEnumerator InputRoutine()
+        {
+            
+            while (true)
             {
-                if (Physics.Raycast(RayFromMouse(), out RaycastHit hit,Mathf.Infinity, LayerMask.GetMask("Clickable")))
+                if (IsOwner && Input.GetMouseButtonDown(0)) //iki tarafın da owner playerı tıklayabiliyor demek bu
                 {
-                    ClickOnTower(hit);
+                    if (Physics.Raycast(RayFromMouse(), out RaycastHit hit,Mathf.Infinity, LayerMask.GetMask("Clickable")))
+                    {
+                        ClickOnTower(hit);
+                    }
                 }
+                yield return null;
             }
         }
 
@@ -60,8 +75,6 @@ namespace PlayerNetwork
         {
             if (hit.collider.TryGetComponent(out Clickable clickable))
             {
-               // if (clickable.teamType != Data.TeamType) return; //todo: Dont!
-               //turn team == player team olmalı ayrıca
                SendTowerIdToServerRpc(clickable.id);
             }
         }

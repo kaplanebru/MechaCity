@@ -10,6 +10,7 @@ namespace Network
     {
         public NetworkVariable<TurnStateType> turnStateType = new(TurnStateType.Selection);
         public TeamType ownerTeamType;
+        private Player player;
 
 
         public override void OnNetworkSpawn()
@@ -27,15 +28,27 @@ namespace Network
         private void Start()
         {
             if (IsOwner)
-                ownerTeamType = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>().Data.TeamType;
+            {
+                player = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>();
+                ownerTeamType = player.Data.TeamType;
+                
+            }
+
         }
 
         void TurnButtonsSetup(TeamType currentTeamType)
         {
-            //print("owner team type: " + ownerTeamType + " currentTeamType: " + currentTeamType);
+         
+
+            player.EnableInput(false);
+            print(" stop x " + player.NetworkObjectId); 
+            
             if (currentTeamType == ownerTeamType)
             {
+                print(" start x " + player.NetworkObjectId); //sadece ownerlarda çalışıyor: 2 tarafta da değil gibi
+
                 NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest?.Invoke();
+                player.EnableInput(true);
             }
         }
 
