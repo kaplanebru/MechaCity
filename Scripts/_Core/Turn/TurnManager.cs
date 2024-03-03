@@ -88,13 +88,14 @@ namespace Turn
         }
 
         private bool firstTurn = true;
+
         void FirstTurn(params object[] args)
         {
             Initialize();
             _combatHelper = ((ExitState) stateHolder.StatesByType[TurnStateType.Exit]).combatHelper;
             _combatHelper.Subscribe(null, this);
             _combatHelper.SetCombatPairs();
-            
+
             NewTurn();
             firstTurn = false;
         }
@@ -104,7 +105,7 @@ namespace Turn
             _turnTracker++;
             NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
 
-            if(firstTurn)
+            if (firstTurn)
                 SetNewState(stateHolder.StatesByType[TurnStateType.Selection]);
             else
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection);
@@ -114,7 +115,7 @@ namespace Turn
         {
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(GetNextStateType());
         }
-        
+
         public void ChangeStateBySystem(TurnStateType newType)
         {
             currentState.CompleteState();
@@ -134,11 +135,11 @@ namespace Turn
         void GetPreviousStateData()
         {
             if (previousState == null) return;
-            
+
             var previousTransferData = ((ITurnTransferHandler<BaseTurnTransferData>) previousState).TransferData;
             currentState.ProcessPreviousStateTransferData(previousTransferData);
         }
-        
+
         TurnStateType GetNextStateType()
         {
             var nextStateId = (currentState.StateId + 1) % (stateHolder.States.Length - 1);
@@ -147,6 +148,12 @@ namespace Turn
 
         void SetNewTurn()
         {
+            foreach (var state in stateHolder.States)
+            {
+                var turnData = (ITurnTransferHandler<BaseTurnTransferData>) state;
+                turnData.TransferData.ResetPreviousTurnData();
+            }
+
             SwitchTeams();
             NewTurn();
         }
