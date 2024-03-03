@@ -148,12 +148,6 @@ namespace Turn
 
         void SetNewTurn()
         {
-            foreach (var state in stateHolder.States)
-            {
-                var turnData = (ITurnTransferHandler<BaseTurnTransferData>) state;
-                turnData.TransferData.ResetPreviousTurnData();
-            }
-
             SwitchTeams();
             NewTurn();
         }
@@ -180,31 +174,18 @@ namespace Turn
             NetworkEventbus.RequestEvents.OnNewTurnRequest -= SetNewTurn;
         }
 
-
-        [CanBeNull]
-        BaseTurnState GetNextState(int nextStateID)
+        public void EndTurn()
         {
-            if (nextStateID == stateHolder.States.Length - 1)
+            foreach (var state in stateHolder.States)
             {
-                if (!GameEnding())
-                {
-                    foreach (var state in stateHolder.States)
-                    {
-                        var turnData = (ITurnTransferHandler<BaseTurnTransferData>) state;
-                        turnData.TransferData.ResetPreviousTurnData();
-                    }
-
-                    NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser
-                        ?.Invoke(GetNextStateType()); //% yaparsak 0'a yani joker state'e gider
-                }
-
-                return null;
+                var turnData = (ITurnTransferHandler<BaseTurnTransferData>) state;
+                turnData.TransferData.ResetPreviousTurnData();
             }
-
-            return stateHolder.States[nextStateID];
+            if(!GameEnding())
+                NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
         }
 
-        bool GameEnding() //TODO: temp?
+        bool GameEnding()
         {
             foreach (var team in turnTeams)
             {
@@ -215,7 +196,6 @@ namespace Turn
                     return true;
                 }
             }
-
             return false;
         }
     }

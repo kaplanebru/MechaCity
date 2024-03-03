@@ -18,9 +18,9 @@ public class ExitState : BaseTurnState, ITurnTransferHandler<ExitTransferData>
 
     public CombatHelper combatHelper = new();
 
-    public override void Subscribe()
-    {
-    }
+    public override void Subscribe() {}
+    public override void Unsubscribe() {}
+
 
     public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
     {
@@ -30,7 +30,4 @@ public class ExitState : BaseTurnState, ITurnTransferHandler<ExitTransferData>
     }
 
 
-    public override void Unsubscribe()
-    {
-    }
 }

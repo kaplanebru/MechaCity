@@ -121,7 +121,8 @@ namespace Turn
         {
             DeselectAlteredTowers();
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
-            NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
+
+            _turnManager.EndTurn();
         }
     }
 }
