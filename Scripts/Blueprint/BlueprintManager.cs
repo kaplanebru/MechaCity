@@ -42,8 +42,13 @@ namespace Blueprint
             NetworkEventbus.BlueprintEvents.OnStateIntrusionAttempt?.Invoke(); //call intruder event for both players
 
             currentBlueprint = bpHolder.AllBlueprints[type];
+            PlayBpAnimation();
             
-            //NetworkEventbus.BlueprintEvents.OnBpReady?.Invoke(new object[1]); //test
+        }
+
+        void PlayBpAnimation()
+        {
+            
         }
 
         void Start()

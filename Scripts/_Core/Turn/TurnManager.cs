@@ -17,6 +17,7 @@ namespace Turn
 {
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
+        public static bool IsMultiplayerOn = true; //for testing
         public static int TurnTracker => _turnTracker;
         private static int _turnTracker = 0;
 

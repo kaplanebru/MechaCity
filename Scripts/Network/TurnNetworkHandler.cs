@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
+using System.Threading;
 using Enums;
 using Unity.Netcode;
 using PlayerNetwork;
+using Testing;
 
 
 namespace Network
@@ -11,28 +13,42 @@ namespace Network
     {
         public NetworkVariable<TurnStateType> turnStateType = new(TurnStateType.Selection);
         public TeamType ownerTeamType;
-        private Player player;
+        private Player _player;
 
 
         public override void OnNetworkSpawn()
         {
             turnStateType.OnValueChanged += CompleteStateBegin; //owner ve clone'u değişir
+            
 
             if (IsOwner)
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += CompleteStateBeginServerRpc;
                 NetworkEventbus.TurnEvents.OnTurnStarted += StartTurnServerRpc; //not: player 1'e mi bakıyor 2 pcde de
+                
+                NetworkEventbus.RequestEvents.OnPlayerSpawned += AssignPlayer; // //todo: fix later // playerın daha sonra assign olduğunu varsayıyor
+            }
+        }
+
+        private void AssignPlayer(Player player, ulong arg2)
+        {
+            // _player = player;
+            // ownerTeamType =  _player.Data.TeamType;
+        }
+
+        private void AssignPlayer2()
+        {
+            if (IsOwner)
+            {
+                _player = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>();
+                ownerTeamType = _player.Data.TeamType;
             }
         }
 
 
         private void Start()
         {
-            if (IsOwner)
-            {
-                player = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>();
-                ownerTeamType = player.Data.TeamType;
-            }
+            AssignPlayer2();
         }
 
         
@@ -48,10 +64,10 @@ namespace Network
             if(!IsOwner) return;
             if (currentTeamType != ownerTeamType) return;
             
-            //print(" start x " + player.NetworkObjectId); //bunu silince sapıtıyor, servera gitse ve serverdan seçilip yollansa belki düzelir
-            
             NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest?.Invoke();
-            player.EnableInput(true);
+           
+            if(MultiplayerSetter.IsMultiplayerOn)
+                _player.EnableInput(true);
         }
 
 
@@ -70,7 +86,7 @@ namespace Network
             if (newvalue == TurnStateType.Exit)
             {
                 if (IsOwner)
-                    player.EnableInput(false);
+                    _player.EnableInput(false);
             }
         }
 
@@ -84,6 +100,7 @@ namespace Network
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser -= CompleteStateBeginServerRpc;
                 NetworkEventbus.TurnEvents.OnTurnStarted -= StartTurnServerRpc;
+                NetworkEventbus.RequestEvents.OnPlayerSpawned -= AssignPlayer;
             }
         }
     }

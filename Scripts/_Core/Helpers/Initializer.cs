@@ -4,6 +4,7 @@ using Enums;
 using Network;
 using PlayerNetwork;
 using Teams;
+using Testing;
 using Towers;
 
 
@@ -14,7 +15,6 @@ namespace Core
         public Transform NetworkUIController;
         public static Team[] Teams;
         public TeamsHolder assetHolder;
-        public bool isMultiplayerOn = true; //for testing
 
         private void OnEnable()
         {
@@ -42,10 +42,12 @@ namespace Core
             Teams[id].Data.Player = newPlayer;
             newPlayer.Setup(Teams[id].Data.TeamTowerData.TeamType);
 
-            if (!isMultiplayerOn)
+            if (!MultiplayerSetter.IsMultiplayerOn)
+            {
+                newPlayer.EnableInput(true);
                 goto startGame;
-
-
+            }
+            
             foreach (var team in Teams)
             {
                 if (team.Data.Player == null)
