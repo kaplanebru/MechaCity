@@ -5,14 +5,14 @@ using DataModels;
 using UnityEngine;
 using DG.Tweening;
 
-public class CursorBpHandler 
+public class CursorSpriteHandler 
 {
    private SpriteRenderer _spriteRenderer;
    private BlueprintData currentBpData;
    private Transform _spriteTransform;
    private Vector3 startSize;
 
-   public CursorBpHandler(SpriteRenderer spriteRenderer)
+   public CursorSpriteHandler(SpriteRenderer spriteRenderer)
    {
       _spriteRenderer = spriteRenderer;
       

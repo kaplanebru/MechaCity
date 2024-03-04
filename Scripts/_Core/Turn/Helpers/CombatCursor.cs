@@ -17,7 +17,7 @@ public class CombatCursor : MonoBehaviour
     public BPDataHolder bpDataHolder;
     public BpInstallEffect installEffect;
 
-    private CursorBpHandler cursorBpHandler;
+    private CursorSpriteHandler cursorSpriteHandler;
     private SpriteRenderer spriteRenderer;
     private float _duration;
 
@@ -43,7 +43,7 @@ public class CombatCursor : MonoBehaviour
     void SetReferences()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        cursorBpHandler = new CursorBpHandler(spriteRenderer);
+        cursorSpriteHandler = new CursorSpriteHandler(spriteRenderer);
     }
 
     void Start()
@@ -77,12 +77,12 @@ public class CombatCursor : MonoBehaviour
     {
         var bpData = bpDataHolder.TypeDataPair[type];
         
-        installEffect.ExecuteEffect(()=>cursorBpHandler.SetBlueprintImage(bpData));
+        installEffect.ExecuteEffect(()=>cursorSpriteHandler.SetBlueprintImage(bpData));
     }
 
     void ResetBp()
     {
-        cursorBpHandler.Reset();
+        cursorSpriteHandler.Reset();
     }
 
     void EnableLine()
