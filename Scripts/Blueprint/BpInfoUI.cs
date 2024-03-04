@@ -19,7 +19,7 @@ public class BpInfoUI : MonoBehaviour
     private void OnEnable()
     {
         panelObject.SetActive(false);
-        NetworkEventbus.BlueprintEvents.OnBpSelected += ShowPanel;
+        //NetworkEventbus.BlueprintEvents.OnBpSelected += ShowPanel;
     }
 
     private void ShowPanel(BpType type)

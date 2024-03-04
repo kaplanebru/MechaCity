@@ -13,7 +13,7 @@ namespace Blueprint
         
         private float startHeight;
     
-        public Vector3 rot = new Vector3(0, 360, 0);
+        public Vector3 rot = new Vector3(0, 90, 0);
         private Vector3 startRot;
     
         public float hoverDuration = 1;
@@ -21,8 +21,8 @@ namespace Blueprint
         public float selectY = 0.1f;
 
         private BpType _currentBpType;
-       
-
+        private RotationEffect _rotationEffect;
+        
         public void Setup(BpType currentType)
         {
             _currentBpType = currentType;
@@ -33,6 +33,8 @@ namespace Blueprint
         {
             startHeight = transform.localPosition.y;
             startRot = gear.localEulerAngles;
+            
+            _rotationEffect = new RotationEffect(gear, rot, hoverDuration, startRot);
         }
         private void OnMouseEnter()
         {
@@ -51,19 +53,16 @@ namespace Blueprint
     
         void HoverImage()
         {
-            //imageTransform.DOLocalRotate(rot, duration, RotateMode.FastBeyond360);
-            gear.DOLocalRotate(rot, hoverDuration, RotateMode.FastBeyond360);
+            _rotationEffect.ExecuteRotation();
         }
     
         void ResetImage()
         {
-            gear.DOKill();
-            gear.localEulerAngles = startRot;
+            _rotationEffect.ResetRotation();
             
             // imageTransform.DOKill();
             // imageTransform.localEulerAngles = startRot;
         }
-    
         void Select()
         {
             //ResetImage();

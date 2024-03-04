@@ -15,6 +15,7 @@ public class CombatCursor : MonoBehaviour
     public GameObject line;
     public GameObject cursor;
     public BPDataHolder bpDataHolder;
+    public BpInstallEffect installEffect;
 
     private CursorBpHandler cursorBpHandler;
     private SpriteRenderer spriteRenderer;
@@ -35,6 +36,8 @@ public class CombatCursor : MonoBehaviour
         NetworkEventbus.RequestEvents.OnNewTurnRequest += ResetBp;
         BpEventbus.SubscriberEvents.OnReverseAction += ReverseAngle;
 
+        installEffect = GetComponentInChildren<BpInstallEffect>();
+        installEffect.Initialize();
     }
 
     void SetReferences()
@@ -73,7 +76,9 @@ public class CombatCursor : MonoBehaviour
     void SetBpImage(BpType type)
     {
         var bpData = bpDataHolder.TypeDataPair[type];
+        
         cursorBpHandler.SetBlueprintImage(bpData);
+        installEffect.ExecuteEffect();
     }
 
     void ResetBp()
