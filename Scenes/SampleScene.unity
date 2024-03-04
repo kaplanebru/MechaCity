@@ -1307,7 +1307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a06bb04abf1b0246b17e891853f1a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToSync: {fileID: 1749002394}
+  objectToSync: {fileID: 1222473118}
   referenceCamera: {fileID: 759489880}
   model: {fileID: 4654068071677661833}
 --- !u!1 &691511352
@@ -4423,11 +4423,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1719056375}
   m_CullTransparentMesh: 1
---- !u!4 &1749002394 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8577049889601375360, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
-  m_PrefabInstance: {fileID: 1648217656}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1762771213
 GameObject:
   m_ObjectHideFlags: 0
@@ -5362,7 +5357,7 @@ Transform:
   m_GameObject: {fileID: 300693736015617590}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7941542758516545592}
