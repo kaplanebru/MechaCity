@@ -77,8 +77,7 @@ public class CombatCursor : MonoBehaviour
     {
         var bpData = bpDataHolder.TypeDataPair[type];
         
-        cursorBpHandler.SetBlueprintImage(bpData);
-        installEffect.ExecuteEffect();
+        installEffect.ExecuteEffect(()=>cursorBpHandler.SetBlueprintImage(bpData));
     }
 
     void ResetBp()
