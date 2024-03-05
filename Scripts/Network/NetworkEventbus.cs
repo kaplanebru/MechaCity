@@ -16,7 +16,6 @@ namespace Network
             public static Action<Player, ulong> OnPlayerSpawned;
             public static Action<TurnStateType> OnCompleteStateRequestByServer;
             public static Action<BpType> OnBpSelectionByServer;
-            public static Action OnNewTurnRequest;
             public static Action OnTurnButtonsShiftRequest;
 
             public static Action<GameEndState> OnGameEndScreenRequest;
@@ -33,20 +32,12 @@ namespace Network
         {
             public static Action<object[]> OnObjectClicked;
         }
-
-        public static class TurnEvents
-        {
-            public static Action OnTurnEnding;
-            public static Action<TeamType> OnTurnStarted;
-        }
-
+        
         public static class BlueprintEvents
         {
          
             public static Action<BpType> OnBpInstallBegin;
             public static Action<BpType> OnBpInstalled;
-
-           
             public static Action OnStateIntrusionEnd;
         }
     }

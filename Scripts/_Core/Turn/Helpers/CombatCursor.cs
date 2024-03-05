@@ -33,7 +33,7 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatEnding += DisableCursor;
 
         NetworkEventbus.BlueprintEvents.OnBpInstallBegin += SetupAndInstall;
-        NetworkEventbus.RequestEvents.OnNewTurnRequest += ResetBp;
+        //NetworkEventbus.RequestEvents.OnNewTurnRequest += ResetBp;
         BpEventbus.SubscriberEvents.OnReverseAction += ReverseAngle;
 
         installEffect = GetComponentInChildren<BpInstallEffect>();
@@ -119,7 +119,7 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatEnding -= DisableCursor;
         
         NetworkEventbus.BlueprintEvents.OnBpInstallBegin -= SetupAndInstall;
-        NetworkEventbus.RequestEvents.OnNewTurnRequest -= ResetBp;
+        //NetworkEventbus.RequestEvents.OnNewTurnRequest -= ResetBp;
         
         BpEventbus.SubscriberEvents.OnReverseAction -= ReverseAngle;
     }

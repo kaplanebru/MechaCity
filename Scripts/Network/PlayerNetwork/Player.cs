@@ -49,8 +49,9 @@ namespace PlayerNetwork
 
 
         public void EnableInput(bool enable)
-        { 
+        {
             if(!IsOwner) return;
+            print("enable input: " + NetworkObjectId);
             if (enable)
                 StartCoroutine(nameof(InputRoutine));
             else

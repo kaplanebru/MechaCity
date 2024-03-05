@@ -102,12 +102,9 @@ namespace Turn
             yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
-            // CompleteState();
-            // turnManager.SwitchState(StateId + 1);
-
-            // turnManager.CompleteStateBySystem(TurnStateType.Selection);//TODO: DONT FORGET!
+            
+            // turnManager.CompleteStateBySystem(TurnStateType.Selection);//TODO: DONT FORGET! exit state'e gitmesine gerek yok, selection yapmıyoruz. ama yine de dursun
             Unsubscribe();
-            //state bitimi diye network event at
         }
 
         void DeselectAlteredTowers()

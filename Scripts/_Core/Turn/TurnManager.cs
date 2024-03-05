@@ -32,6 +32,8 @@ namespace Turn
         public TeamType currentTeamType = TeamType.Team1;
         public CombatTimingData timingData; //TODO: Turn asset holder
         private CombatHelper _combatHelper;
+        
+        private bool firstTurn = true;
 
 
         private void OnEnable()
@@ -43,7 +45,6 @@ namespace Turn
 
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += ChangeStateBySystem;
-            NetworkEventbus.RequestEvents.OnNewTurnRequest += SetNewTurn; //todo: networkten 2 kez dönüyor! düzelt
         }
 
         private void Initialize()
@@ -84,7 +85,6 @@ namespace Turn
             };
         }
 
-        private bool firstTurn = true;
 
         void FirstTurn(params object[] args)
         {
@@ -100,10 +100,19 @@ namespace Turn
         void NewTurn()
         {
             _turnTracker++;
-            NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
+         
+            if (MultiplayerSetter.IsMultiplayerOn)
+            {
+                turnTeams[TeamState.CurrentTeam].Data.Player.EnableInput(true);
+                turnTeams[TeamState.RivalTeam].Data.Player.EnableInput(false);
+            }
+            
+            if(turnTeams[TeamState.CurrentTeam].Data.Player.IsOwner)
+                NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest?.Invoke();
 
             if (firstTurn)
-                SetNewState(stateHolder.StatesByType[TurnStateType.Selection]);
+                SetNewState(stateHolder.StatesByType[TurnStateType.Selection]); //eğer first turn ise hala network döngüsündeyiz
+            
             else
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection);
         }
@@ -115,7 +124,7 @@ namespace Turn
 
         public void ChangeStateBySystem(TurnStateType newType)
         {
-            currentState.CompleteState();
+            currentState?.CompleteState();
             SetNewState(stateHolder.StatesByType[newType]);
         }
 
@@ -146,14 +155,6 @@ namespace Turn
         void SetNewTurn()
         {
             SwitchTeams();
-            //new
-            if (MultiplayerSetter.IsMultiplayerOn)
-            {
-                // turnTeams[TeamState.CurrentTeam].Data.Player.EnableInput(true);
-                // turnTeams[TeamState.RivalTeam].Data.Player.EnableInput(false);
-                //selectionlar saçmalıyor
-            }
-            //new
             NewTurn();
         }
 
@@ -175,19 +176,14 @@ namespace Turn
 
             NetworkEventbus.OnAllClientsSet -= FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer -= ChangeStateBySystem;
-            NetworkEventbus.RequestEvents.OnNewTurnRequest -= SetNewTurn;
         }
 
         public void EndTurn()
         {
             if(GameEnding()) return;
-            //NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
-            //new
+           
             SetNewTurn();
-            
-               
-            //new
-            
+           
             foreach (var state in stateHolder.States)
             {
                 var turnData = (ITurnTransferHandler<BaseTurnTransferData>) state;
