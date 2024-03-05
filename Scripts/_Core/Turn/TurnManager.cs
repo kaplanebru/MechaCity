@@ -31,6 +31,7 @@ namespace Turn
         Dictionary<TeamState, Team> turnTeams;
         public TeamType currentTeamType = TeamType.Team1;
         public CombatTimingData timingData; //TODO: Turn asset holder
+        public Material bpMat;
         private CombatHelper _combatHelper;
         
         private bool firstTurn = true;

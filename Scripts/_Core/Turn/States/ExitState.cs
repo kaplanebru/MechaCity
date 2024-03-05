@@ -32,14 +32,6 @@ public class ExitState : BaseTurnState, ITurnTransferHandler<ExitTransferData>
     {
         combatHelper.Fire();
     }
+
     
-    private void EndTurn()
-    {
-        combatHelper.Unsubscribe();
-    }
-    
-   
-
-
-
 }

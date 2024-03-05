@@ -29,14 +29,12 @@ namespace Turn
         
         public override void Register()
         {
-            selectors.Add(TeamType.Team1, new BpSelector(Initializer.Teams[0].Data));
-            selectors.Add(TeamType.Team2, new BpSelector(Initializer.Teams[1].Data));
+            //bpSelector = new BpSelector(turnManager.bpMat);
         }
 
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
-            bpSelector = selectors[Teams[TeamState.CurrentTeam].Data.TeamType];
             bpSelector.Subscribe();
         }
 
@@ -59,12 +57,10 @@ namespace Turn
         public override void Unsubscribe()
         {
             incomingData.RestorePreviousSelectionColors();
-
             bpSelector.Unsubscribe();
-         
-
         }
 
+        
     }
 
 }

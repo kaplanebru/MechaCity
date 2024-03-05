@@ -20,7 +20,9 @@ namespace Turn
         public float cursorDuration = 0.5f;
     }
 
-    public class CombatHelper
+  
+
+    public class CombatHelper: IEnumeratorContainer
     {
         private readonly CombatData Data = new();
         private CombatPairsCreator combatPairsCreator;
@@ -43,7 +45,9 @@ namespace Turn
 
         public void Fire()
         {
-            _turnManager.StartCoroutine(this.FireRoutine());
+            Debug.Log("fire");
+            Eventbus.CombatEvents.OnCoroutineTrigger?.Invoke(this);
+            //CoroutineStarter.Instance.StartGivenCoroutine(this);
         }
 
         public void SetCombatPairs()
@@ -67,7 +71,7 @@ namespace Turn
                 AllTowers.GetTower(pair.MainTowerData.UniqID).ResetColor();
         }
 
-        IEnumerator FireRoutine()
+        public IEnumerator EnumeratorInstance()
         {
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
             yield return new WaitForSeconds(_turnManager.timingData.cameraDelay);
@@ -111,5 +115,7 @@ namespace Turn
             DeselectAlteredTowers();
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
         }
+
+       
     }
 }

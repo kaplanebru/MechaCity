@@ -5,17 +5,16 @@ using UnityEngine;
 
 public class BpSelector : BaseSelector
 {
-    public Material bpSelectionMat;
-    public TeamData SelectingTeam { get; }
-    public BpSelector(TeamData selectingTeam)
+    public Material BpSelectionMat;
+  
+    public BpSelector(Material bpSelectionMat)
     {
-        SelectingTeam = selectingTeam;
-        //SetMaterials();
+        BpSelectionMat = bpSelectionMat;
+        SetMaterials();
     }
     
-    // public sealed override void SetMaterials()
-    // {
-    //     defaultMat = SelectingTeam.TeamTowerData.DefaultMaterial;
-    //     selectionMat = SelectingTeam.TeamTowerData.BlueprintMaterial;
-    // }
+    public sealed override void SetMaterials()
+    {
+        selectionMat = BpSelectionMat;
+    }
 }

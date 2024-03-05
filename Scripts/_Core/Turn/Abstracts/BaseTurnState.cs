@@ -18,7 +18,6 @@ namespace Turn
         
         public virtual void Register(){}
         
-        public virtual void Unregister(){}
         public abstract void Subscribe();
 
         protected TurnManager turnManager;

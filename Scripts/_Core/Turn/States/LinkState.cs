@@ -62,5 +62,6 @@ namespace Turn
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
             AllTowers.EnableClickability();
         }
+        
     }
 }

@@ -52,5 +52,7 @@ namespace Turn
             TransferData.Towers = mainSelector.Towers;
             mainSelector.Unsubscribe();
         }
+
+       
     }
 }

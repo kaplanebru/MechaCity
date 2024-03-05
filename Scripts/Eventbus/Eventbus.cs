@@ -21,6 +21,8 @@ public static class Eventbus
         public static Action OnCombatReady;
         public static Action OnCombatEnding;
         public static Action OnCombatTerminated;
+
+        public static Action<IEnumeratorContainer> OnCoroutineTrigger;
     }
     
 
