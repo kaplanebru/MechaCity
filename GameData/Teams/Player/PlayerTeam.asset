@@ -15,4 +15,4 @@ MonoBehaviour:
   TeamType: 0
   DefaultMaterial: {fileID: 2100000, guid: 4b78a4aacacdaee46927b88db70cc278, type: 2}
   SelectedMaterial: {fileID: 2100000, guid: 56fccc219304f4345a43b6fff7e9b4b9, type: 2}
-  DeadMaterial: {fileID: 2100000, guid: 7ca87e03a1487454d8daf014f8bea09b, type: 2}
+  BlueprintMaterial: {fileID: 2100000, guid: 23b87870668f7cf41b554c78d20a91d4, type: 2}

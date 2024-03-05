@@ -10,20 +10,13 @@ public class SelfSelector : BaseSelector, ISelectionBlocker<TeamData, TeamData>
     {
         SelectingTeam = selectingTeam;
         RivalTeam = rivalTeam;
-
-        SetMaterials();
     }
     
     public void EliminateNonSelectables()
     {
         RivalTeam.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).clickHandler.DisableSelection());
     }
-
-    public sealed override void SetMaterials()
-    {
-        defaultMat = SelectingTeam.TeamTowerData.DefaultMaterial;
-        selectionMat = SelectingTeam.TeamTowerData.SelectedMaterial;
-    }
+    
 
     public override void Unsubscribe()
     {

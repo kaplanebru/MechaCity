@@ -8,8 +8,6 @@ public interface ISelectionBlocker<out TTeam, out TTTeam> where TTeam : TeamData
     public TTTeam RivalTeam { get;  }
     public void EliminateNonSelectables();
 
-    public void SetMaterials();
-
 }
 
 public class Test

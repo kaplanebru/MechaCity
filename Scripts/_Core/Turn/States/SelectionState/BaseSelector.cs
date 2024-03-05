@@ -9,11 +9,6 @@ public abstract class BaseSelector
     public List<int> Towers = new();
     public int _maxTowersInGroup = 2;
     
-    protected Material selectionMat;
-    protected Material defaultMat;
-
-   
-    public abstract void SetMaterials();
     
     public void Subscribe()
     {
@@ -37,24 +32,30 @@ public abstract class BaseSelector
         if (Towers.Count == _maxTowersInGroup)
             ResetSelectionGroup();
 
-        Select(true, towerId);
+        HandleSelection(true, towerId);
     }
     
-    void Select(bool select, int newSelection)
+    void HandleSelection(bool select, int newSelection)
     {
         if (select)
-        {
-            Towers.Add(newSelection);
-            AllTowers.GetTower(newSelection).ToGivenColor(selectionMat); //to pp color: zaten 2 tarafın bp colorı farklı nüansta olur
-        }
+            Select(newSelection);
         else
-        {
-            Towers.Remove(newSelection);
-            AllTowers.GetTower(newSelection).ToOriginalColor();
-            //AllTowers.GetTower(newSelection).towerParts.SetColor(defaultMat);
-        }
-
+            Deselect(newSelection);
+        
         ShowCompleteButton(Towers.Count == _maxTowersInGroup);
+    }
+
+    protected virtual void Select(int newSelection)
+    {
+        Towers.Add(newSelection);
+        AllTowers.GetTower(newSelection).ToSelectionColor();
+        //AllTowers.GetTower(newSelection).ToGivenColor(selectionMat); //to pp color: zaten 2 tarafın bp colorı farklı nüansta olur
+    }
+
+    void Deselect(int newSelection)
+    {
+        Towers.Remove(newSelection);
+        AllTowers.GetTower(newSelection).ToOriginalColor();
     }
     
     void ShowCompleteButton(bool enable)
@@ -66,7 +67,7 @@ public abstract class BaseSelector
     {
         for (int i = 0; i < _maxTowersInGroup; i++)
         {
-            Select(false, Towers[0]);
+            HandleSelection(false, Towers[0]);
         }
     }
     
@@ -74,7 +75,7 @@ public abstract class BaseSelector
     {
         if (Towers.Contains(selectedTower))
         {
-            Select(false, selectedTower);
+            HandleSelection(false, selectedTower);
             return true;
         }
 

@@ -43,9 +43,14 @@ namespace Towers
             clickHandler.SetClickableTeams(teamTowerData.TeamType);
         }
 
-        public void ToGivenColor(Material givenMat)
+        // public void ToGivenColor(Material givenMat)
+        // {
+        //     towerParts.SetColor(givenMat);
+        // }
+
+        public void ToBlueprintColor()
         {
-            towerParts.SetColor(givenMat);
+            towerParts.SetColor(Data.TeamTowerData.BlueprintMaterial);
         }
 
         public void ToSelectionColor()
