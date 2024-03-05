@@ -83,8 +83,7 @@ namespace Turn
                 {TeamState.RivalTeam, teams[1]},
             };
         }
-
-
+        
         void FirstTurn(params object[] args)
         {
             Initialize();
@@ -150,13 +149,7 @@ namespace Turn
             var nextStateId = (currentState.StateId + 1) % (stateHolder.States.Length - 1);
             return stateHolder.States[nextStateId].StateType;
         }
-
-        void SetNewTurn()
-        {
-            SwitchTeams();
-            NewTurn();
-        }
-
+        
         void SwitchTeams()
         {
             currentTeamType = turnTeams[TeamState.RivalTeam].Data.TeamType;
@@ -181,8 +174,9 @@ namespace Turn
         {
             if(GameEnding()) return;
            
-            SetNewTurn();
-           
+            SwitchTeams();
+            NewTurn();
+
             foreach (var state in stateHolder.States)
             {
                 var turnData = (ITurnTransferHandler<BaseTurnTransferData>) state;

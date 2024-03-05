@@ -45,13 +45,11 @@ namespace PlayerNetwork
         }
 
         Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
-
-
-
+        
         public void EnableInput(bool enable)
         {
             if(!IsOwner) return;
-            print("enable input: " + NetworkObjectId);
+            
             if (enable)
                 StartCoroutine(nameof(InputRoutine));
             else

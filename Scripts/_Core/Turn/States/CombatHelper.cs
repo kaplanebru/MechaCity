@@ -10,13 +10,7 @@ using Unity.Collections;
 using UnityEngine;
 
 namespace Turn
-{
-    // public class CombatTransferData : BaseTurnTransferData
-    // {
-    //     public override TurnStateType StateType { get; set; } = TurnStateType.Combat;
-    //     public override List<int> Towers { get; set; } = new();
-    // }
-
+{ 
     public class CombatData
     {
         public List<CombatPair> CombatPairs = new();
@@ -102,8 +96,6 @@ namespace Turn
             yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
-            
-            Unsubscribe();
         }
 
         void DeselectAlteredTowers()
@@ -111,14 +103,11 @@ namespace Turn
             _towers?.ForEach(t =>
                 AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
         }
-
-
+        
         public void Unsubscribe()
         {
             DeselectAlteredTowers();
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
-
-            _turnManager.EndTurn();
         }
     }
 }
