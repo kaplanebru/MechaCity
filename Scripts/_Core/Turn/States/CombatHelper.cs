@@ -43,7 +43,7 @@ namespace Turn
             BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
             _towers = towers;
             
-            _towers?.ForEach(at => AllTowers.GetTower(at).ResetColor());
+            _towers?.ForEach(at => AllTowers.GetTower(at).ToOriginalColor());
         }
 
 
@@ -68,9 +68,9 @@ namespace Turn
         void Select(CombatPair pair, bool select = true)
         {
             if (select)
-                AllTowers.GetTower(pair.MainTowerData.UniqID).SelectColor();
+                AllTowers.GetTower(pair.MainTowerData.UniqID).ToSelectionColor();
             else
-                AllTowers.GetTower(pair.MainTowerData.UniqID).ResetColor();
+                AllTowers.GetTower(pair.MainTowerData.UniqID).ToOriginalColor();
         }
 
         public IEnumerator EnumeratorInstance()
@@ -109,7 +109,8 @@ namespace Turn
         void DeselectAlteredTowers()
         {
             _towers?.ForEach(t =>
-                AllTowers.GetTower(t).towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
+                AllTowers.GetTower(t).ToOriginalColor());
+            //towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
         }
         
         public void Unsubscribe()

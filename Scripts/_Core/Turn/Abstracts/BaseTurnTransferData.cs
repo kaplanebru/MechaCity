@@ -20,7 +20,7 @@ namespace Turn
         
         public void RestorePreviousSelectionColors()
         {
-            Towers.ForEach(s=>AllTowers.GetTower(s).SelectColor());
+            Towers.ForEach(s=>AllTowers.GetTower(s).ToSelectionColor());
         }
 
     }

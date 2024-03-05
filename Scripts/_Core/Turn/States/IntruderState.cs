@@ -22,15 +22,14 @@ namespace Turn
         public override int StateId { get; set; }
         public IntruderTransferData TransferData { get; private set; } = new();
         
-        private BpSelector bpSelector;
+        private BpSelector bpSelector; // = new ();
 
         private BaseTurnTransferData incomingData;
-        private Dictionary<TeamType, BpSelector> selectors = new();
         
         
         public override void Register()
         {
-            //bpSelector = new BpSelector(turnManager.bpMat);
+            bpSelector = new BpSelector();
         }
 
         public override void Subscribe()
@@ -42,8 +41,6 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
             incomingData = data;
-            
-            Debug.Log(incomingData.StateType + " intruder öncesi"); //buraya uğramıyor
             
             TransferData.Towers = data.Towers;
             bpSelector.GetTowers(new List<int>());

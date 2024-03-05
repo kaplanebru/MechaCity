@@ -45,12 +45,13 @@ public abstract class BaseSelector
         if (select)
         {
             Towers.Add(newSelection);
-            AllTowers.GetTower(newSelection).towerParts.SetColor(selectionMat);
+            AllTowers.GetTower(newSelection).ToGivenColor(selectionMat); //to pp color: zaten 2 tarafın bp colorı farklı nüansta olur
         }
         else
         {
             Towers.Remove(newSelection);
-            AllTowers.GetTower(newSelection).towerParts.SetColor(defaultMat);
+            AllTowers.GetTower(newSelection).ToOriginalColor();
+            //AllTowers.GetTower(newSelection).towerParts.SetColor(defaultMat);
         }
 
         ShowCompleteButton(Towers.Count == _maxTowersInGroup);
