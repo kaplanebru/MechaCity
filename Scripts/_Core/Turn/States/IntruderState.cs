@@ -22,18 +22,21 @@ namespace Turn
         public override int StateId { get; set; }
         public IntruderTransferData TransferData { get; private set; } = new();
         
-        private BaseSelector bpSelector;
+        private BpSelector bpSelector;
 
         private BaseTurnTransferData incomingData;
+        private Dictionary<TeamType, BpSelector> selectors = new();
         
         public override void Register()
         {
-            bpSelector = new BpSelector();
+            selectors.Add(TeamType.Team1, new BpSelector(Initializer.Teams[0].Data));
+            selectors.Add(TeamType.Team2, new BpSelector(Initializer.Teams[1].Data));
         }
 
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
+            bpSelector = selectors[Teams[TeamState.CurrentTeam].Data.TeamType];
             bpSelector.Subscribe();
         }
 

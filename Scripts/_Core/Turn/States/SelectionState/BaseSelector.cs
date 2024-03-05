@@ -12,7 +12,7 @@ public abstract class BaseSelector
     protected Material selectionMat;
     protected Material defaultMat;
 
-   
+    public abstract void SetMaterials();
     
     public void Subscribe()
     {
