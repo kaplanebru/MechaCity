@@ -45,15 +45,7 @@ namespace Turn
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += ChangeStateBySystem;
         }
-
-        private void Initialize()
-        {
-            stateHolder.Setup();
-            intruderState = (IntruderState) stateHolder.GetStateByType(TurnStateType.Intruder);
-
-            UIEventbus.TurnEvents.OnInitialize?.Invoke();
-        }
-
+        
         void SubscribeToBlueprintActions()
         {
             BpEventbus.ActionEvents.OnReverseActionTriggered += PublishReverseOrderAction;
@@ -68,11 +60,17 @@ namespace Turn
         {
             BpEventbus.SubscriberEvents.OnReverseAction?.Invoke();
         }
-
-     
         private void DeActivateIntrusion()
         {
             intruderState.StopIntrusion();
+        }
+        
+        private void Initialize()
+        {
+            stateHolder.Setup();
+            intruderState = (IntruderState) stateHolder.GetStateByType(TurnStateType.Intruder);
+
+            UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
 
         void SetTurnTeams(Team[] teams)
@@ -102,17 +100,15 @@ namespace Turn
             if(turnTeams[TeamState.CurrentTeam].Data.Player.IsOwner)
                 UIEventbus.TurnEvents.OnTurnButtonsShiftRequest?.Invoke();
             
+            SetFirstState();
+        }
+
+        void SetFirstState()
+        {
             if (firstTurn)
                 SetNewState(stateHolder.GetStateByType(TurnStateType.Selection)); //eğer first turn ise hala network döngüsündeyiz
             else
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection);
-        }
-
-        void ManageInput()
-        {
-            if (!MultiplayerSetter.IsMultiplayerOn) return;
-            turnTeams[TeamState.CurrentTeam].Data.Player.EnableInput(true);
-            turnTeams[TeamState.RivalTeam].Data.Player.EnableInput(false);
         }
 
         public void StateChangeRequestByUser()
@@ -158,7 +154,14 @@ namespace Turn
 
             UIEventbus.OnTeamSwitch?.Invoke(currentTeamType);
         }
-
+        
+        void ManageInput()
+        {
+            if (!MultiplayerSetter.IsMultiplayerOn) return;
+            turnTeams[TeamState.CurrentTeam].Data.Player.EnableInput(true);
+            turnTeams[TeamState.RivalTeam].Data.Player.EnableInput(false);
+        }
+        
         private void OnDisable()
         {
             Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
