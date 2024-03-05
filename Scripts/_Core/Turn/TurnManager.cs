@@ -43,6 +43,8 @@ namespace Turn
             NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd += DeActivateIntrusion;
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += ChangeStateBySystem;
+            Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
+
             
             bpEventHandler = new BlueprintEventHandler(this);
         }
@@ -178,6 +180,8 @@ namespace Turn
 
             NetworkEventbus.OnAllClientsSet -= FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer -= ChangeStateBySystem;
+            
+            Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
         }
         
         bool GameEnding()

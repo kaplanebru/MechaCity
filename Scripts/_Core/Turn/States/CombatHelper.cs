@@ -96,6 +96,8 @@ namespace Turn
             yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
+            
+            Unsubscribe();
         }
 
         void DeselectAlteredTowers()

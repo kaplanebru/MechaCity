@@ -17,11 +17,9 @@ public class ExitState : BaseTurnState, ITurnTransferHandler<ExitTransferData>
     public override TurnStateType StateType { get; } = TurnStateType.Exit;
 
     public CombatHelper combatHelper = new();
-
-    public override void Subscribe()
-    {
-        Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
-    }
+    
+    public override void Subscribe() {}
+    public override void Unsubscribe() {}
 
     public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
     {
@@ -29,7 +27,7 @@ public class ExitState : BaseTurnState, ITurnTransferHandler<ExitTransferData>
         combatHelper.Subscribe(TransferData.Towers, turnManager);
         ExecuteCombat();
     }
-
+    
     void ExecuteCombat()
     {
         combatHelper.Fire();
@@ -38,13 +36,9 @@ public class ExitState : BaseTurnState, ITurnTransferHandler<ExitTransferData>
     private void EndTurn()
     {
         combatHelper.Unsubscribe();
-        turnManager.EndTurn();
     }
     
-    public override void Unsubscribe()
-    {
-        Eventbus.CombatEvents.OnCombatTerminated -= EndTurn;
-    }
+   
 
 
 
