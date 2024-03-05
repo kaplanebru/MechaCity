@@ -27,6 +27,7 @@ namespace Turn
         private BaseTurnTransferData incomingData;
         private Dictionary<TeamType, BpSelector> selectors = new();
         
+        
         public override void Register()
         {
             //bpSelector = new BpSelector(turnManager.bpMat);

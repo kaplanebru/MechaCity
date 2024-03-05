@@ -21,10 +21,15 @@ public class ExitState : BaseTurnState, ITurnTransferHandler<ExitTransferData>
     public override void Subscribe() {}
     public override void Unsubscribe() {}
 
+    public override void Register()
+    {
+        combatHelper.Register();
+    }
+
     public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
     {
         TransferData.Towers = data.Towers;
-        combatHelper.Subscribe(TransferData.Towers, turnManager);
+        combatHelper.Subscribe(TransferData.Towers);
         ExecuteCombat();
     }
     

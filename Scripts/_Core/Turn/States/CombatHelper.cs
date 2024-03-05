@@ -27,17 +27,21 @@ namespace Turn
         private readonly CombatData Data = new();
         private CombatPairsCreator combatPairsCreator;
         private List<int> _towers;
-        private TurnManager _turnManager;
 
+
+        private CombatTimingData timingData;
         private bool pairsReversed = false;
 
 
-        public void Subscribe(List<int> towers, TurnManager turnManager) //TODO: TM
+        public void Register()
+        {
+            timingData = ScriptableObject.CreateInstance<CombatTimingData>();
+        }
+        public void Subscribe(List<int> towers)
         {
             combatPairsCreator = new CombatPairsCreator(Data.CombatPairs);
             BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
             _towers = towers;
-            _turnManager = turnManager;
             
             _towers?.ForEach(at => AllTowers.GetTower(at).ResetColor());
         }
@@ -45,9 +49,7 @@ namespace Turn
 
         public void Fire()
         {
-            Debug.Log("fire");
             Eventbus.CombatEvents.OnCoroutineTrigger?.Invoke(this);
-            //CoroutineStarter.Instance.StartGivenCoroutine(this);
         }
 
         public void SetCombatPairs()
@@ -74,7 +76,7 @@ namespace Turn
         public IEnumerator EnumeratorInstance()
         {
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
-            yield return new WaitForSeconds(_turnManager.timingData.cameraDelay);
+            yield return new WaitForSeconds(timingData.cameraDelay);
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
 
 
@@ -86,7 +88,7 @@ namespace Turn
                 yield return new WaitForSeconds(Data.selectionDelay);
 
 
-                pair.Combat(_turnManager.timingData);
+                pair.Combat(timingData);
 
                 yield return new WaitUntil(() => pair.CombatCompleted);
                 yield return new WaitForSeconds(Data.afterCombatDelay);

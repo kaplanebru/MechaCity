@@ -78,7 +78,7 @@ namespace Turn
             Initialize();
             
             _combatHelper = ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).combatHelper;
-            _combatHelper.Subscribe(null, this);
+            _combatHelper.Subscribe(null);
             _combatHelper.SetCombatPairs();
 
             NewTurn();
@@ -120,7 +120,7 @@ namespace Turn
             currentState = newState;
             
             currentState.SetTeams(turnTeams);
-            currentState.EnterState(this); //TODO: Her defasında turn managerı göndermesi saçma
+            currentState.EnterState();
             GetPreviousStateData();
         }
         

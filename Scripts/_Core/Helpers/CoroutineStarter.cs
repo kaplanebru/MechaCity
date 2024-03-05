@@ -13,14 +13,12 @@ public class CoroutineStarter : MonoBehaviour
 
    public void StartGivenCoroutine(IEnumeratorContainer enumeratorContainer)
    {
-      print("start co");
       StartCoroutine(enumeratorContainer.EnumeratorInstance());
    }
 
    private void OnDisable()
    {
       Eventbus.CombatEvents.OnCoroutineTrigger -= StartGivenCoroutine;
-
    }
 }
 
