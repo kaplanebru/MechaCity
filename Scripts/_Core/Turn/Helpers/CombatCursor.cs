@@ -32,7 +32,7 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatStarted += EnableCursor;
         Eventbus.CombatEvents.OnCombatEnding += DisableCursor;
 
-        NetworkEventbus.BlueprintEvents.OnBpSelected += SetBpImage;
+        NetworkEventbus.BlueprintEvents.OnBpSelected += SetupAndInstall;
         NetworkEventbus.RequestEvents.OnNewTurnRequest += ResetBp;
         BpEventbus.SubscriberEvents.OnReverseAction += ReverseAngle;
 
@@ -73,11 +73,13 @@ public class CombatCursor : MonoBehaviour
         transform.DORotate(new Vector3(0, _currentAngle, 0), duration).OnComplete(EnableLine);
     }
 
-    void SetBpImage(BpType type)
+    void SetupAndInstall(BpType type)
     {
         var bpData = bpDataHolder.TypeDataPair[type];
         
-        installEffect.ExecuteEffect(()=>cursorSpriteHandler.SetBlueprintImage(bpData));
+        installEffect.ExecuteEffect(
+            ()=> cursorSpriteHandler.SetBlueprintImage(bpData),
+            ()=> NetworkEventbus.BlueprintEvents.OnBpInstalled?.Invoke(type));
     }
 
     void ResetBp()
@@ -116,7 +118,7 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatStarted -= EnableCursor;
         Eventbus.CombatEvents.OnCombatEnding -= DisableCursor;
         
-        NetworkEventbus.BlueprintEvents.OnBpSelected -= SetBpImage;
+        NetworkEventbus.BlueprintEvents.OnBpSelected -= SetupAndInstall;
         NetworkEventbus.RequestEvents.OnNewTurnRequest -= ResetBp;
         
         BpEventbus.SubscriberEvents.OnReverseAction -= ReverseAngle;

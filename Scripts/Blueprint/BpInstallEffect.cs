@@ -29,23 +29,26 @@ public class BpInstallEffect :MonoBehaviour
    }
 
 
-   public void ExecuteEffect(Action extraAction)
+   public void ExecuteEffect(Action contentAction, Action endAction)
    {
-      StartCoroutine(nameof(EffectRoutine), extraAction);
+      StartCoroutine(EffectRoutine(contentAction, endAction));
    }
 
-   IEnumerator EffectRoutine(Action extraAction)
+   IEnumerator EffectRoutine(Action contentAction, Action endAction)
    {
       Stretch(true);
       yield return new WaitForSeconds(stretchDuration);
       
-      extraAction?.Invoke();
+      contentAction?.Invoke();
       
       _rotationEffect.ExecuteRotation();
       yield return new WaitForSeconds(rotationDuration);
 
       Stretch(false);
       _rotationEffect.ResetRotation();
+      yield return new WaitForSeconds(stretchDuration);
+      
+      endAction?.Invoke();
    }
 
    void Stretch(bool stretchUp)
