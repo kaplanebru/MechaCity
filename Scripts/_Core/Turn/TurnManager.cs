@@ -10,6 +10,7 @@ using UnityEngine;
 using Teams;
 using GameUI;
 using JetBrains.Annotations;
+using Testing;
 using Towers;
 
 
@@ -37,13 +38,12 @@ namespace Turn
         {
             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
 
-            NetworkEventbus.BlueprintEvents.OnStateIntrusionAttempt += ActivateStateIntruder;
             NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd += DeActivateIntrusion;
             SubscribeToBlueprintActions();
 
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += ChangeStateBySystem;
-            NetworkEventbus.RequestEvents.OnNewTurnRequest += SetNewTurn;
+            NetworkEventbus.RequestEvents.OnNewTurnRequest += SetNewTurn; //todo: networkten 2 kez dönüyor! düzelt
         }
 
         private void Initialize()
@@ -69,12 +69,7 @@ namespace Turn
             BpEventbus.SubscriberEvents.OnReverseAction?.Invoke();
         }
 
-        private void ActivateStateIntruder()
-        {
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
-            print("Activate");
-        }
-
+     
         private void DeActivateIntrusion()
         {
             intruderState.StopIntrusion();
@@ -151,6 +146,14 @@ namespace Turn
         void SetNewTurn()
         {
             SwitchTeams();
+            //new
+            if (MultiplayerSetter.IsMultiplayerOn)
+            {
+                // turnTeams[TeamState.CurrentTeam].Data.Player.EnableInput(true);
+                // turnTeams[TeamState.RivalTeam].Data.Player.EnableInput(false);
+                //selectionlar saçmalıyor
+            }
+            //new
             NewTurn();
         }
 
@@ -167,7 +170,6 @@ namespace Turn
         {
             Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
 
-            NetworkEventbus.BlueprintEvents.OnStateIntrusionAttempt -= ActivateStateIntruder;
             NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd -= DeActivateIntrusion;
             UnsubscribeFromBlueprintActions();
 
@@ -179,7 +181,12 @@ namespace Turn
         public void EndTurn()
         {
             if(GameEnding()) return;
-            NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
+            //NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
+            //new
+            SetNewTurn();
+            
+               
+            //new
             
             foreach (var state in stateHolder.States)
             {

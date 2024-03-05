@@ -32,7 +32,7 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatStarted += EnableCursor;
         Eventbus.CombatEvents.OnCombatEnding += DisableCursor;
 
-        NetworkEventbus.BlueprintEvents.OnBpSelected += SetupAndInstall;
+        NetworkEventbus.BlueprintEvents.OnBpInstallBegin += SetupAndInstall;
         NetworkEventbus.RequestEvents.OnNewTurnRequest += ResetBp;
         BpEventbus.SubscriberEvents.OnReverseAction += ReverseAngle;
 
@@ -118,7 +118,7 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatStarted -= EnableCursor;
         Eventbus.CombatEvents.OnCombatEnding -= DisableCursor;
         
-        NetworkEventbus.BlueprintEvents.OnBpSelected -= SetupAndInstall;
+        NetworkEventbus.BlueprintEvents.OnBpInstallBegin -= SetupAndInstall;
         NetworkEventbus.RequestEvents.OnNewTurnRequest -= ResetBp;
         
         BpEventbus.SubscriberEvents.OnReverseAction -= ReverseAngle;

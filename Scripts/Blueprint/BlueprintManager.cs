@@ -22,8 +22,7 @@ namespace Blueprint
 
         public void Subscribe()
         {
-            NetworkEventbus.BlueprintEvents.OnBpSelected += GetCurrentBp;
-            NetworkEventbus.BlueprintEvents.OnBpReady += ExecuteBp;
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer += GetCurrentBp;
         }
 
         private void ExecuteBp(object[] obj)
@@ -39,10 +38,8 @@ namespace Blueprint
 
         private void GetCurrentBp(BpType type)
         {
-            NetworkEventbus.BlueprintEvents.OnStateIntrusionAttempt?.Invoke(); //call intruder event for both players
-
-            currentBlueprint = bpHolder.AllBlueprints[type];
-            
+            currentBlueprint = bpHolder.AllBlueprints[type]; //execution için 2 tarafta da bunun set edilmesi gerek
+            NetworkEventbus.BlueprintEvents.OnBpInstallBegin?.Invoke(type);
         }
         
         void Start()
@@ -70,7 +67,7 @@ namespace Blueprint
 
         public void Unsubscribe()
         {
-            NetworkEventbus.BlueprintEvents.OnBpSelected -= GetCurrentBp;
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer -= GetCurrentBp;
         }
 
         private void OnDisable()

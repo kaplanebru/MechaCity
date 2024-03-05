@@ -1,4 +1,5 @@
 
+using System;
 using DG.Tweening;
 using Enums;
 using Network;
@@ -28,7 +29,8 @@ namespace Blueprint
             _currentBpType = currentType;
             Initialize();
         }
-    
+
+      
         void Initialize()
         {
             startHeight = transform.localPosition.y;
@@ -71,8 +73,12 @@ namespace Blueprint
                 transform.DOLocalMoveY(startHeight, selectDuration/2);
             });
             
-            NetworkEventbus.BlueprintEvents.OnBpSelected?.Invoke(_currentBpType);
+            print("select");
+            NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(_currentBpType);
+            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
         }
+
+        
     }
 
 }

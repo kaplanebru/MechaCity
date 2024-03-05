@@ -24,12 +24,14 @@ namespace Network
             if (IsOwner)
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += CompleteStateBeginServerRpc;
-                NetworkEventbus.TurnEvents.OnTurnStarted += StartTurnServerRpc; //not: player 1'e mi bakıyor 2 pcde de
+                NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser += ProcessBpSelectionServerRpc;
                 
+                NetworkEventbus.TurnEvents.OnTurnStarted += StartTurnServerRpc; //not: player 1'e mi bakıyor 2 pcde de
+
                 NetworkEventbus.RequestEvents.OnPlayerSpawned += AssignPlayer; // //todo: fix later // playerın daha sonra assign olduğunu varsayıyor
             }
         }
-
+        
         private void AssignPlayer(Player player, ulong arg2)
         {
             // _player = player;
@@ -61,6 +63,10 @@ namespace Network
         [ClientRpc]
         void StartTurnClientRpc(TeamType currentTeamType)
         {
+            // if (IsOwner)
+            // {
+            //     print("owner"); //TODO: test
+            // }
             if(!IsOwner) return;
             if (currentTeamType != ownerTeamType) return;
             
@@ -68,6 +74,20 @@ namespace Network
            
             if(MultiplayerSetter.IsMultiplayerOn)
                 _player.EnableInput(true);
+        }
+        
+        [ServerRpc]
+        private void ProcessBpSelectionServerRpc(BpType bpType)
+        {
+            ProcessBpSelectionClientRpc(bpType);
+        }
+
+        [ClientRpc]
+        void ProcessBpSelectionClientRpc(BpType bpType)
+        {
+            print("owner");
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer?.Invoke(bpType);
+            //2 ownera da 1 kez gidiyor
         }
 
 
@@ -83,11 +103,11 @@ namespace Network
         {
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer?.Invoke(newvalue);
             
-            if (newvalue == TurnStateType.Exit)
-            {
-                if (IsOwner)
-                    _player.EnableInput(false);
-            }
+            // if (newvalue == TurnStateType.Exit)
+            // {
+            //     if (IsOwner)
+            //         _player.EnableInput(false);
+            // }
         }
 
         #endregion
@@ -99,6 +119,8 @@ namespace Network
             if (IsOwner)
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser -= CompleteStateBeginServerRpc;
+                NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser -= ProcessBpSelectionServerRpc;
+
                 NetworkEventbus.TurnEvents.OnTurnStarted -= StartTurnServerRpc;
                 NetworkEventbus.RequestEvents.OnPlayerSpawned -= AssignPlayer;
             }
