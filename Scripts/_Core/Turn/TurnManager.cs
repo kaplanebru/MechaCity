@@ -18,7 +18,6 @@ namespace Turn
 {
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
-        public static bool IsMultiplayerOn = true; //for testing
         public static int TurnTracker => _turnTracker;
         private static int _turnTracker = 0;
 
@@ -50,7 +49,7 @@ namespace Turn
         private void Initialize()
         {
             stateHolder.Setup();
-            intruderState = (IntruderState) stateHolder.StatesByType[TurnStateType.Intruder];
+            intruderState = (IntruderState) stateHolder.GetStateByType(TurnStateType.Intruder);
 
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
@@ -89,7 +88,7 @@ namespace Turn
         void FirstTurn(params object[] args)
         {
             Initialize();
-            _combatHelper = ((ExitState) stateHolder.StatesByType[TurnStateType.Exit]).combatHelper;
+            _combatHelper = ((ExitState) stateHolder.GetStateByType(TurnStateType.Exit)).combatHelper;
             _combatHelper.Subscribe(null, this);
             _combatHelper.SetCombatPairs();
 
@@ -100,21 +99,21 @@ namespace Turn
         void NewTurn()
         {
             _turnTracker++;
-         
-            if (MultiplayerSetter.IsMultiplayerOn)
-            {
-                turnTeams[TeamState.CurrentTeam].Data.Player.EnableInput(true);
-                turnTeams[TeamState.RivalTeam].Data.Player.EnableInput(false);
-            }
-            
+            ManageInput();
             if(turnTeams[TeamState.CurrentTeam].Data.Player.IsOwner)
-                NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest?.Invoke();
-
-            if (firstTurn)
-                SetNewState(stateHolder.StatesByType[TurnStateType.Selection]); //eğer first turn ise hala network döngüsündeyiz
+                UIEventbus.TurnEvents.OnTurnButtonsShiftRequest?.Invoke();
             
+            if (firstTurn)
+                SetNewState(stateHolder.GetStateByType(TurnStateType.Selection)); //eğer first turn ise hala network döngüsündeyiz
             else
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection);
+        }
+
+        void ManageInput()
+        {
+            if (!MultiplayerSetter.IsMultiplayerOn) return;
+            turnTeams[TeamState.CurrentTeam].Data.Player.EnableInput(true);
+            turnTeams[TeamState.RivalTeam].Data.Player.EnableInput(false);
         }
 
         public void StateChangeRequestByUser()
@@ -125,7 +124,7 @@ namespace Turn
         public void ChangeStateBySystem(TurnStateType newType)
         {
             currentState?.CompleteState();
-            SetNewState(stateHolder.StatesByType[newType]);
+            SetNewState(stateHolder.GetStateByType(newType));
         }
 
         public void SetNewState(BaseTurnState newState)

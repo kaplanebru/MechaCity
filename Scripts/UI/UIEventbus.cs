@@ -16,6 +16,7 @@ namespace GameUI
         public static class TurnEvents
         {
             public static Action OnInitialize;
+            public static Action OnTurnButtonsShiftRequest;
         }
     }
     

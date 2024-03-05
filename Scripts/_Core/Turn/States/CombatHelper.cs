@@ -103,7 +103,6 @@ namespace Turn
             AllTowers.RestoreBullets();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
             
-            // turnManager.CompleteStateBySystem(TurnStateType.Selection);//TODO: DONT FORGET! exit state'e gitmesine gerek yok, selection yapmıyoruz. ama yine de dursun
             Unsubscribe();
         }
 

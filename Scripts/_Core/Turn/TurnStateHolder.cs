@@ -7,21 +7,20 @@ namespace Turn
 {
     public class TurnStateHolder
     {
-        public BaseTurnState[] States = new BaseTurnState[4];
+        public readonly BaseTurnState[] States = new BaseTurnState[4];
+        private readonly Dictionary<TurnStateType, BaseTurnState> _statesByType = new();
+        public BaseTurnState GetStateByType(TurnStateType type) => _statesByType[type];
 
-        public Dictionary<TurnStateType, BaseTurnState> StatesByType = new();
-
-        public SelectionState SelectionState = new SelectionState();
-        public LinkState LinkState = new LinkState();
-        public ExitState ExitState = new ExitState();
-        public IntruderState IntruderState = new IntruderState();
-
+        private SelectionState SelectionState = new SelectionState();
+        private LinkState LinkState = new LinkState();
+        private ExitState ExitState = new ExitState();
+        private IntruderState IntruderState = new IntruderState();
         public void Setup()
         {
-            StatesByType.Add(TurnStateType.Selection, SelectionState);
-            StatesByType.Add(TurnStateType.Link, LinkState);
-            StatesByType.Add(TurnStateType.Exit, ExitState);
-            StatesByType.Add(TurnStateType.Intruder, IntruderState); 
+            _statesByType.Add(TurnStateType.Selection, SelectionState);
+            _statesByType.Add(TurnStateType.Link, LinkState);
+            _statesByType.Add(TurnStateType.Exit, ExitState);
+            _statesByType.Add(TurnStateType.Intruder, IntruderState); 
             
             States[0] = SelectionState;
             States[1] = LinkState;
@@ -34,6 +33,5 @@ namespace Turn
                 States[i].Register();
             }
         }
-
     }
 }

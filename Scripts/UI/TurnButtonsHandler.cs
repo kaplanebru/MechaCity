@@ -25,7 +25,7 @@ namespace GameUI
        // Buttons = GetComponentsInChildren<Button>(); //ownerın butonlarını da alıyor 0 olarak, kendi butonlarından sonra!
         DisableAllButtons();
         
-        NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest += RestartSequence;
+        UIEventbus.TurnEvents.OnTurnButtonsShiftRequest += RestartSequence;
         UIEventbus.OnButtonCall += HandleSpecialCase;
     }
     
@@ -81,7 +81,7 @@ namespace GameUI
     private void OnDisable()
     {
         UIEventbus.TurnEvents.OnInitialize -= Initialize;
-        NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest -= RestartSequence;
+        UIEventbus.TurnEvents.OnTurnButtonsShiftRequest -= RestartSequence;
 
         //Eventbus.TurnEvents.OnTurnEnding -= RestartSequence;
         UIEventbus.OnButtonCall -= HandleSpecialCase;
