@@ -10,12 +10,12 @@ public class BpSelector : BaseSelector
     public BpSelector(TeamData selectingTeam)
     {
         SelectingTeam = selectingTeam;
-        SetMaterials();
+        //SetMaterials();
     }
     
-    public sealed override void SetMaterials()
-    {
-        defaultMat = SelectingTeam.TeamTowerData.DefaultMaterial;
-        selectionMat = SelectingTeam.TeamTowerData.BlueprintMaterial;
-    }
+    // public sealed override void SetMaterials()
+    // {
+    //     defaultMat = SelectingTeam.TeamTowerData.DefaultMaterial;
+    //     selectionMat = SelectingTeam.TeamTowerData.BlueprintMaterial;
+    // }
 }
