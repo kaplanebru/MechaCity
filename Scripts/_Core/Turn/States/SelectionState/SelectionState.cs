@@ -20,9 +20,9 @@ namespace Turn
 
     public class SelectionState : BaseTurnState, ITurnTransferHandler<SelectionTransferData>
     {
-        private Dictionary<TeamType, SelfSelector> selectors = new();
+        private Dictionary<TeamType, SelectionBlocker> selectors = new();
 
-        private SelfSelector mainSelector;
+        private SelectionBlocker mainSelector;
         public SelectionTransferData TransferData { get; private set; } = new();
 
         public override TurnStateType StateType => TurnStateType.Selection;
@@ -30,8 +30,8 @@ namespace Turn
 
         public override void Register()
         {
-            selectors.Add(TeamType.Team1, new SelfSelector(Initializer.Teams[0].Data, Initializer.Teams[1].Data));
-            selectors.Add(TeamType.Team2, new SelfSelector(Initializer.Teams[1].Data, Initializer.Teams[0].Data));
+            selectors.Add(TeamType.Team1, new SelectionBlocker(Initializer.Teams[1].Data));
+            selectors.Add(TeamType.Team2, new SelectionBlocker(Initializer.Teams[0].Data));
         }
 
         public override void Subscribe()

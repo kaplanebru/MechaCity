@@ -2,13 +2,11 @@ using Teams;
 using Towers;
 using UnityEngine;
 
-public class SelfSelector : BaseSelector, ISelectionBlocker<TeamData, TeamData>
+public class SelectionBlocker : BaseSelector, ISelectionBlocker<TeamData, TeamData>
 {
-    public TeamData SelectingTeam { get; }
     public TeamData RivalTeam { get;  }
-    public SelfSelector(TeamData selectingTeam, TeamData rivalTeam)
+    public SelectionBlocker(TeamData rivalTeam)
     {
-        SelectingTeam = selectingTeam;
         RivalTeam = rivalTeam;
     }
     
