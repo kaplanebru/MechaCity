@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Enums;
+using GameUI;
 using Network;
 using Towers;
 
@@ -36,6 +37,8 @@ namespace Turn
         
         private void TowerSelected(params object[] args)
         {
+            UIEventbus.OnButtonCall?.Invoke(true, StateType); //todo: temp
+
             int towerID = (int) args[0];
             RiseAndFall(AllTowers.GetTower(towerID), 1, true);
         }

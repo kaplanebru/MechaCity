@@ -33,10 +33,14 @@ namespace Network
 
         public static class BlueprintEvents
         {
-         
             public static Action<BpType> OnBpInstallBegin;
             public static Action<BpType> OnBpInstalled;
             public static Action OnStateIntrusionEnd;
+        }
+
+        public static class UIEvents
+        {
+            public static Action<bool> OnTurnButtonShiftRequest;
         }
     }
 }

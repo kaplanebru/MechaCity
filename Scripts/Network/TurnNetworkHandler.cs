@@ -12,6 +12,7 @@ namespace Network
     public class TurnNetworkHandler : NetworkBehaviour
     {
         public NetworkVariable<TurnStateType> turnStateType = new(TurnStateType.Exit);
+        //_player = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>();
 
 
         public override void OnNetworkSpawn()
@@ -27,14 +28,6 @@ namespace Network
             }
         }
         
-        
-        private void AssignPlayer2()
-        {
-            //if (IsOwner)
-                //_player = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>();
-        }
-        
-
         [ServerRpc]
         private void ProcessBpSelectionServerRpc(BpType bpType)
         {

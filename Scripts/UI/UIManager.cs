@@ -11,12 +11,21 @@ namespace GameUI
        
         public BaseInfoText turnInfoPopupText;
         public BaseInfoText turnInfoText;
+        public TurnButtonsHandler turnButtonsHandler;
         private void OnEnable()
         {
+            turnButtonsHandler = GetComponentInChildren<TurnButtonsHandler>();
             NetworkEventbus.OnAllClientsSet += ShowInfoText;
+            NetworkEventbus.UIEvents.OnTurnButtonShiftRequest += EnableTurnButton;
             DisableUIs();
         }
-    
+
+        private void EnableTurnButton(bool enable)
+        {
+            //turnButtonsHandler.enabled = enable;
+            turnButtonsHandler.gameObject.SetActive(enable);
+        }
+
         void DisableUIs()
         {
             turnInfoText.gameObject.SetActive(false);
@@ -35,6 +44,7 @@ namespace GameUI
         private void OnDisable()
         {
             NetworkEventbus.OnAllClientsSet -= ShowInfoText;
+            NetworkEventbus.UIEvents.OnTurnButtonShiftRequest -= EnableTurnButton;
     
         }
     

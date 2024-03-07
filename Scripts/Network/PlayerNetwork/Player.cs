@@ -49,6 +49,7 @@ namespace PlayerNetwork
         public void EnableInput(bool enable)
         {
             if(!IsOwner) return;
+            NetworkEventbus.UIEvents.OnTurnButtonShiftRequest?.Invoke(enable);
             
             if (enable)
                 StartCoroutine(nameof(InputRoutine));
@@ -57,7 +58,6 @@ namespace PlayerNetwork
         }
         IEnumerator InputRoutine()
         {
-            
             while (true)
             {
                 //(IsOwner && Input.GetMouseButtonDown(0)) /
