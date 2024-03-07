@@ -22,34 +22,22 @@ namespace Blueprint
 
         public void Subscribe()
         {
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer += GetCurrentBp;
-            BpEventbus.TriggerEvents.OnBpCompletedByButton += BpRequest;
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpForAll;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
         }
-
-        public void BpRequest(List<int> selectedTowers)
+        
+        private void ExecuteBp(int[] selectedElements)
         {
-            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(currentBlueprint.Type, selectedTowers.ToArray());
-            NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd?.Invoke();
-        }
-
-        private void ExecuteBp(BpType type, int[] selectedElements)
-        {
-            //ortaya tıklanabilir!
-            currentBlueprint.Type = type;
             currentBlueprint.SelectedElements = selectedElements;
             print(selectedElements.Length);
 
             currentBlueprint.TryTakeAction(); //selected elements ekle
-            //NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd?.Invoke(); //TODO: Dont! not state değişim yollarsak 2 kez gidecek! yA DA BUTONA TIKLANINCA STATE DEĞİŞİR ZATEN
-            //BELKİ DE BP NETWORK VARİBALE GEREKİR
-
         }
 
-        private void GetCurrentBp(BpType type)
+        private void SetCurrentBpForAll(BpType type) //network function
         {
             currentBlueprint = bpHolder.AllBlueprints[type]; //execution için 2 tarafta da bunun set edilmesi gerek
-            NetworkEventbus.BlueprintEvents.OnBpInstallBegin?.Invoke(type);
+            BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
         }
         
         void Start()
@@ -77,8 +65,8 @@ namespace Blueprint
 
         public void Unsubscribe()
         {
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer -= GetCurrentBp;
-            BpEventbus.TriggerEvents.OnBpCompletedByButton -= BpRequest;
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpForAll;
+            NetworkEventbus.RequestEvents.OnBpExecutionBySystem -= ExecuteBp;
         }
 
         private void OnDisable()

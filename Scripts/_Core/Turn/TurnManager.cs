@@ -40,7 +40,6 @@ namespace Turn
         {
             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
 
-            NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd += DeActivateIntrusion;
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += ChangeStateBySystem;
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
@@ -52,25 +51,24 @@ namespace Turn
             bpEventHandler = new BlueprintEventHandler(this);
         }
 
-        private void HandleClick()
+        private void HandleClick() //currentstate.handleclick olabilir
         {
             if(currentState != intruderState)
                 StateChangeRequestByUser();
             else
-            {
-                BpEventbus.TriggerEvents.OnBpCompletedByButton?.Invoke(intruderState.bpSelector.Towers);
-            }
+                CreateBpRequest(intruderState.bpSelector.Towers.ToArray());
+            
+        }
+        
+        public void CreateBpRequest(int[] selectedTowers)
+        {
+            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(selectedTowers);
+            intruderState.StopIntrusion();
         }
 
         private void ShowButtonRequest(bool enable)
         {
             UIEventbus.OnShowButtonRequest?.Invoke(enable, currentState.StateType);
-        }
-
-
-        private void DeActivateIntrusion()
-        {
-            intruderState.StopIntrusion();
         }
 
         private void Initialize()
@@ -190,7 +188,6 @@ namespace Turn
         {
             Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
 
-            NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd -= DeActivateIntrusion;
             bpEventHandler.UnsubscribeFromBlueprintEvents();
 
             NetworkEventbus.OnAllClientsSet -= FirstTurn;

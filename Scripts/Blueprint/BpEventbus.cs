@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enums;
 using UnityEngine;
 
 public static class BpEventbus 
@@ -17,7 +18,14 @@ public static class BpEventbus
     
     public static class TriggerEvents
     {
-        public static Action<List<int>> OnBpCompletedByButton;
+        public static Action<int[]> OnBpApplied;
+        
+    }
+    
+    public static class UIEvents
+    {
+        public static Action<BpType> OnBpInstalled;
+        public static Action<BpType> OnBpInstallBegin;
     }
     
  

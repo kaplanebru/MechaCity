@@ -12,12 +12,9 @@ namespace Blueprint
     {
         public Dictionary<BpType, BaseBlueprint> AllBlueprints = new();
 
-    
-      
         public void Initialize()
         {
             CreateBlueprints();
-           
         }
         void CreateBlueprints() //Burası ortadaki kısımla ilgili
         {

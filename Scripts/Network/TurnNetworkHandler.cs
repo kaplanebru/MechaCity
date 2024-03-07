@@ -24,21 +24,22 @@ namespace Network
             if (IsOwner)
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += CompleteStateBeginServerRpc;
+                
                 NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser += ProcessBpSelectionServerRpc;
                 NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser += ProcessBpExecutionServerRpc;
             }
         }
 
         [ServerRpc]
-        private void ProcessBpExecutionServerRpc(BpType bpType, int[] selectedTowers)
+        private void ProcessBpExecutionServerRpc(int[] selectedTowers)
         {
-            ProcessBpExecutionClientRpc(bpType, selectedTowers);
+            ProcessBpExecutionClientRpc(selectedTowers);
         }
 
         [ClientRpc]
-        void ProcessBpExecutionClientRpc(BpType bpType,  int[] selectedTowers)
+        void ProcessBpExecutionClientRpc( int[] selectedTowers)
         {
-            NetworkEventbus.RequestEvents.OnBpExecutionBySystem?.Invoke(bpType, selectedTowers);
+            NetworkEventbus.RequestEvents.OnBpExecutionBySystem?.Invoke(selectedTowers);
         }
 
         [ServerRpc]
@@ -78,7 +79,10 @@ namespace Network
             if (IsOwner)
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser -= CompleteStateBeginServerRpc;
+                
                 NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser -= ProcessBpSelectionServerRpc;
+                NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser -= ProcessBpExecutionServerRpc;
+
             }
         }
     }

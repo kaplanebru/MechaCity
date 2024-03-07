@@ -45,7 +45,8 @@ namespace Enums
     {
         Reverse,
         Freeze,
-        Double
+        Double,
+        None
     }
 
     public enum SelectionType

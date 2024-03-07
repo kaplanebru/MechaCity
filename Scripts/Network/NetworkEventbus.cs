@@ -17,14 +17,14 @@ namespace Network
             public static Action<TurnStateType> OnCompleteStateRequestByServer;
             public static Action<BpType> OnBpSelectionByServer;
             public static Action<GameEndState> OnGameEndScreenRequest;
-            public static Action<BpType, int[]> OnBpExecutionBySystem;
+            public static Action<int[]> OnBpExecutionBySystem;
         }
 
         public static class TriggerEvents
         {
             public static Action<TurnStateType> OnStateChangeRequestByUser;
             public static Action<BpType> OnBpSelectionRequestByUser;
-            public static Action<BpType, int[]> OnBpExecutionRequestByUser;
+            public static Action<int[]> OnBpExecutionRequestByUser;
             public static Action<TeamType> OnGameEnds;
         }
 
@@ -33,12 +33,7 @@ namespace Network
             public static Action<object[]> OnObjectClicked;
         }
 
-        public static class BlueprintEvents
-        {
-            public static Action<BpType> OnBpInstallBegin;
-            public static Action<BpType> OnBpInstalled;
-            public static Action OnStateIntrusionEnd;
-        }
+      
 
         public static class UIEvents
         {

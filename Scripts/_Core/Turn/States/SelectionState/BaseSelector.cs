@@ -17,7 +17,6 @@ public abstract class BaseSelector
     {
         //Towers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
-        //ShowCompleteButton(false);
     }
 
     public void StartTowers(List<int> towers)
@@ -51,7 +50,6 @@ public abstract class BaseSelector
     {
         Towers.Add(newSelection);
         AllTowers.GetTower(newSelection).ToSelectionColor();
-        //AllTowers.GetTower(newSelection).ToGivenColor(selectionMat); //to pp color: zaten 2 tarafın bp colorı farklı nüansta olur
     }
 
     void Deselect(int newSelection)
@@ -60,7 +58,7 @@ public abstract class BaseSelector
         AllTowers.GetTower(newSelection).ToOriginalColor();
     }
 
-    void ShowCompleteButton(bool enable) //virtual yapılabilir
+    void ShowCompleteButton(bool enable)
     {
         UIEventbus.OnButtonCall?.Invoke(enable);
     }
