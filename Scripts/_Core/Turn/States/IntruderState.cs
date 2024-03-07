@@ -16,7 +16,7 @@ namespace Turn
         public override List<int> Towers { get; set; } = new();
         
     }
-    public class IntruderState: BaseTurnState, ITurnTransferHandler<IntruderTransferData>
+    public class IntruderState: BaseTurnState, ITransferDataHolder<IntruderTransferData>
     {
         public override TurnStateType StateType { get; } = TurnStateType.Intruder;
         public override int StateId { get; set; }

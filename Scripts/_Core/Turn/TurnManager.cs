@@ -133,7 +133,7 @@ namespace Turn
 
             foreach (var state in _stateHolder.States)
             {
-                var turnData = (ITurnTransferHandler<BaseTurnTransferData>) state;
+                var turnData = (ITransferDataHolder<BaseTurnTransferData>) state;
                 turnData.TransferData.ResetPreviousTurnData();
             }
         }
@@ -146,7 +146,7 @@ namespace Turn
         {
             if (previousState == null) return;
 
-            var previousTransferData = ((ITurnTransferHandler<BaseTurnTransferData>) previousState).TransferData;
+            var previousTransferData = ((ITransferDataHolder<BaseTurnTransferData>) previousState).TransferData;
             currentState.ProcessPreviousStateTransferData(previousTransferData);
         }
 

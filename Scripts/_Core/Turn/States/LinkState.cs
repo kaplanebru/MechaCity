@@ -14,7 +14,7 @@ namespace Turn
         public override List<int> Towers { get; set; } = new();
     }
     
-    public class LinkState : BaseTurnState, ITurnTransferHandler<TowerGroupTransferData>
+    public class LinkState : BaseTurnState, ITransferDataHolder<TowerGroupTransferData>
     {
         public TowerGroupTransferData TransferData { get; private set; } = new();
         public override TurnStateType StateType => TurnStateType.Link;

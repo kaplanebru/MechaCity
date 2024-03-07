@@ -18,7 +18,7 @@ namespace Turn
         public override List<int> Towers { get; set; } = new();
     }
 
-    public class SelectionState : BaseTurnState, ITurnTransferHandler<SelectionTransferData>
+    public class SelectionState : BaseTurnState, ITransferDataHolder<SelectionTransferData>
     {
         private Dictionary<TeamType, SelectionBlocker> selectors = new();
 

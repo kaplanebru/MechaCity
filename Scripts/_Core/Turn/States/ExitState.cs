@@ -10,7 +10,7 @@ public class ExitTransferData : BaseTurnTransferData
     public override List<int> Towers { get; set; } = new();
 }
 
-public class ExitState : BaseTurnState, ITurnTransferHandler<ExitTransferData>
+public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
 {
     public ExitTransferData TransferData { get; } = new();
     public override int StateId { get; set; }
