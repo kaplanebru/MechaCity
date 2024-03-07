@@ -77,7 +77,7 @@ namespace Turn
 
         public IEnumerator EnumeratorInstance()
         {
-            if (MultiplayerSetter.IsTestingWithoutCombat)
+            if (MultiplayerSetter.IsTestingWithoutCombat) //TODO: later
             {
                 yield return new WaitForSeconds(.5f);
                 Eventbus.CombatEvents.OnCombatTerminated?.Invoke();

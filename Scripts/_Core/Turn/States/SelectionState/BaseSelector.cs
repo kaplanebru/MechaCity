@@ -28,7 +28,7 @@ public abstract class BaseSelector
     {
         //Towers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
-        ShowCompleteButton(false);
+        //ShowCompleteButton(false);
     }
 
     public void GetTowers(List<int> towers)
@@ -73,7 +73,8 @@ public abstract class BaseSelector
     
     void ShowCompleteButton(bool enable) //virtual yapılabilir
     {
-        UIEventbus.OnButtonCall?.Invoke(enable, StateType);
+        UIEventbus.OnButtonCall?.Invoke(enable); //turnmanagera gider, ordan da state belirlenirdi
+        
     }
     
     void ResetSelectionGroup()

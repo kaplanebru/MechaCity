@@ -23,12 +23,12 @@ namespace GameUI
         void Subscribe()
         {
             DisableAllButtons();
-            UIEventbus.OnButtonCall += ShowButton;
+            UIEventbus.OnShowButtonRequest += ShowButton;
         }
         
         void ShowButton(bool enable, TurnStateType type)
         {
-            //print("show button on type: " + type);
+            print("show button on type: " + type);
             button.gameObject.SetActive(enable);
         }
         
@@ -37,15 +37,10 @@ namespace GameUI
         {
             button.gameObject.SetActive(false);
         }
-
-        public void Unsubscribe()
-        {
-            UIEventbus.OnButtonCall -= ShowButton;
-        }
-
+        
         private void OnDisable()
         {
-            Unsubscribe();
+            UIEventbus.OnShowButtonRequest -= ShowButton;
         }
     }
 }

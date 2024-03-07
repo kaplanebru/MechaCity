@@ -2533,8 +2533,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTeamType: 0
-  timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
-  bpMat: {fileID: 0}
 --- !u!1 &1042437485
 GameObject:
   m_ObjectHideFlags: 0

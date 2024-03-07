@@ -23,17 +23,16 @@ namespace Turn
 
         private BaseTurnState currentState;
         private BaseTurnState previousState;
-        
-        private TurnStateHolder _stateHolder = new ();
+
+        private TurnStateHolder _stateHolder = new();
         private IntruderState intruderState;
         private BlueprintEventHandler bpEventHandler;
 
         Dictionary<TeamState, Team> turnTeams;
         public TeamType currentTeamType = TeamType.Team1;
-        public CombatTimingData timingData; //TODO: Turn asset holder
-        public Material bpMat;
+
         private CombatHelper _combatHelper;
-        
+
         private bool firstTurn = true;
 
 
@@ -45,17 +44,23 @@ namespace Turn
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += ChangeStateBySystem;
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
+            UIEventbus.OnButtonCall += ShowButtonRequest;
 
-            
+
             bpEventHandler = new BlueprintEventHandler(this);
         }
-        
-        
+
+        private void ShowButtonRequest(bool enable)
+        {
+            UIEventbus.OnShowButtonRequest?.Invoke(enable, currentState.StateType);
+        }
+
+
         private void DeActivateIntrusion()
         {
             intruderState.StopIntrusion();
         }
-        
+
         private void Initialize()
         {
             _stateHolder.Setup();
@@ -72,11 +77,11 @@ namespace Turn
                 {TeamState.RivalTeam, teams[1]},
             };
         }
-        
+
         void FirstTurn(params object[] args)
         {
             Initialize();
-            
+
             _combatHelper = ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).combatHelper;
             _combatHelper.Subscribe(null);
             _combatHelper.SetCombatPairs();
@@ -95,7 +100,9 @@ namespace Turn
         void SetFirstState()
         {
             if (firstTurn)
-                SetNewState(_stateHolder.GetStateByType(TurnStateType.Selection)); //eğer first turn ise hala network döngüsündeyiz
+                SetNewState(
+                    _stateHolder.GetStateByType(TurnStateType
+                        .Selection)); //eğer first turn ise hala network döngüsündeyiz
             else
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection);
         }
@@ -115,16 +122,16 @@ namespace Turn
         {
             previousState = currentState;
             currentState = newState;
-            
+
             currentState.SetTeams(turnTeams);
             currentState.EnterState();
             GetPreviousStateData();
         }
-        
+
         public void EndTurn()
         {
-            if(GameEnding()) return;
-           
+            if (GameEnding()) return;
+
             SwitchTeams();
             NewTurn();
 
@@ -134,11 +141,9 @@ namespace Turn
                 turnData.TransferData.ResetPreviousTurnData();
             }
         }
-        
-       
-        /// /////////////
-     
 
+
+        /// /////////////
         void GetPreviousStateData()
         {
             if (previousState == null) return;
@@ -152,7 +157,7 @@ namespace Turn
             var nextStateId = (currentState.StateId + 1) % (_stateHolder.States.Length - 1);
             return _stateHolder.States[nextStateId].StateType;
         }
-        
+
         void SwitchTeams()
         {
             currentTeamType = turnTeams[TeamState.RivalTeam].Data.TeamType;
@@ -161,14 +166,14 @@ namespace Turn
 
             UIEventbus.OnTeamSwitch?.Invoke(currentTeamType);
         }
-        
+
         void ManageInput()
         {
             if (!MultiplayerSetter.IsMultiplayerOn) return;
             turnTeams[TeamState.CurrentTeam].Data.Player.EnableInput(true);
             turnTeams[TeamState.RivalTeam].Data.Player.EnableInput(false);
         }
-        
+
         private void OnDisable()
         {
             Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
@@ -178,10 +183,11 @@ namespace Turn
 
             NetworkEventbus.OnAllClientsSet -= FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer -= ChangeStateBySystem;
-            
+
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
+            UIEventbus.OnButtonCall -= ShowButtonRequest;
         }
-        
+
         bool GameEnding()
         {
             foreach (var team in turnTeams)
@@ -193,6 +199,7 @@ namespace Turn
                     return true;
                 }
             }
+
             return false;
         }
     }

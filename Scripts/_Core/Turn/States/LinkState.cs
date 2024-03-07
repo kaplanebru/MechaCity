@@ -37,7 +37,7 @@ namespace Turn
         
         private void TowerSelected(params object[] args)
         {
-            UIEventbus.OnButtonCall?.Invoke(true, StateType); //todo: temp
+            UIEventbus.OnButtonCall?.Invoke(true); //todo: temp
 
             int towerID = (int) args[0];
             RiseAndFall(AllTowers.GetTower(towerID), 1, true);
