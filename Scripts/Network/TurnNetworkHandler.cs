@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Enums;
@@ -24,10 +25,22 @@ namespace Network
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += CompleteStateBeginServerRpc;
                 NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser += ProcessBpSelectionServerRpc;
-
+                NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser += ProcessBpExecutionServerRpc;
             }
         }
-        
+
+        [ServerRpc]
+        private void ProcessBpExecutionServerRpc(BpType bpType, int[] selectedTowers)
+        {
+            ProcessBpExecutionClientRpc(bpType, selectedTowers);
+        }
+
+        [ClientRpc]
+        void ProcessBpExecutionClientRpc(BpType bpType,  int[] selectedTowers)
+        {
+            NetworkEventbus.RequestEvents.OnBpExecutionBySystem?.Invoke(bpType, selectedTowers);
+        }
+
         [ServerRpc]
         private void ProcessBpSelectionServerRpc(BpType bpType)
         {

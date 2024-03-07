@@ -73,7 +73,7 @@ namespace Blueprint
                 transform.DOLocalMoveY(startHeight, selectDuration/2);
             });
             
-            print("select");
+            
             NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(_currentBpType);
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
         }

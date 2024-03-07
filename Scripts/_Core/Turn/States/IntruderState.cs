@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Core;
+using DataModels;
 using Enums;
 using Network;
 using Towers;
@@ -22,7 +23,7 @@ namespace Turn
         public override int StateId { get; set; }
         public IntruderTransferData TransferData { get; private set; } = new();
         
-        private BpSelector bpSelector; // = new ();
+        public BpSelector bpSelector; // = new ();
 
         private BaseTurnTransferData incomingData;
         
@@ -41,9 +42,9 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
             incomingData = data;
-            
             TransferData.Towers = data.Towers;
-            bpSelector.GetTowers(new List<int>());
+            
+            bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
         }
 
 

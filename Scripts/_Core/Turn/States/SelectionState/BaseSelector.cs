@@ -20,7 +20,7 @@ public abstract class BaseSelector
         //ShowCompleteButton(false);
     }
 
-    public void GetTowers(List<int> towers)
+    public void StartTowers(List<int> towers)
     {
         Towers = towers;
     }

@@ -58,8 +58,7 @@ namespace Turn
                 StateChangeRequestByUser();
             else
             {
-                print("blueprint");
-                //bpmanagera network eventi
+                BpEventbus.TriggerEvents.OnBpCompletedByButton?.Invoke(intruderState.bpSelector.Towers);
             }
         }
 

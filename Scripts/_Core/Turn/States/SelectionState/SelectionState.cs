@@ -44,7 +44,7 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
             TransferData.Towers = data.Towers;
-            mainSelector.GetTowers(TransferData.Towers);
+            mainSelector.StartTowers(TransferData.Towers);
         }
 
         public override void Unsubscribe()

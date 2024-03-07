@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Enums;
 
 namespace Blueprint
@@ -5,6 +6,8 @@ namespace Blueprint
     public abstract class BaseBlueprint
     {
         public abstract BpType Type { get; set; }
+
+        public int[] SelectedElements;
         public abstract void TryTakeAction();
     }
     

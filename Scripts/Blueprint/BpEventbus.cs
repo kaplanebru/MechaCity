@@ -15,5 +15,10 @@ public static class BpEventbus
         public static Action OnReverseAction;
     }
     
+    public static class TriggerEvents
+    {
+        public static Action<List<int>> OnBpCompletedByButton;
+    }
+    
  
 }

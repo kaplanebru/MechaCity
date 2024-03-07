@@ -23,17 +23,25 @@ namespace Blueprint
         public void Subscribe()
         {
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += GetCurrentBp;
+            BpEventbus.TriggerEvents.OnBpCompletedByButton += BpRequest;
+            NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
         }
 
-        private void ExecuteBp(object[] obj)
+        public void BpRequest(List<int> selectedTowers)
         {
-            //instrucion uygulansın! currentBp.ready olana kadar.
+            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(currentBlueprint.Type, selectedTowers.ToArray());
+        }
 
-            //waitwhile ready
-            //ortadaki bp'ye basılınca take action with parameters: currentbpnin içindeki datalar dolar params obj datası. Ayrıca parametre olarak almaya gerek yok!
+        private void ExecuteBp(BpType type, int[] selectedElements)
+        {
+            //ortaya tıklanabilir!
+            currentBlueprint.Type = type;
+            currentBlueprint.SelectedElements = selectedElements;
 
-            currentBlueprint.TryTakeAction();
-            //NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd?.Invoke();
+            currentBlueprint.TryTakeAction(); //selected elements ekle
+            NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd?.Invoke(); //TODO: Dont! not state değişim yollarsak 2 kez gidecek! yA DA BUTONA TIKLANINCA STATE DEĞİŞİR ZATEN
+            //BELKİ DE BP NETWORK VARİBALE GEREKİR
+
         }
 
         private void GetCurrentBp(BpType type)
@@ -68,6 +76,7 @@ namespace Blueprint
         public void Unsubscribe()
         {
             NetworkEventbus.RequestEvents.OnBpSelectionByServer -= GetCurrentBp;
+            BpEventbus.TriggerEvents.OnBpCompletedByButton -= BpRequest;
         }
 
         private void OnDisable()
