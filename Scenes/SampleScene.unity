@@ -2533,7 +2533,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b66e0b6380d6f843b1394f3d86d88d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTeamType: 0
 --- !u!1 &1042437485
 GameObject:
   m_ObjectHideFlags: 0

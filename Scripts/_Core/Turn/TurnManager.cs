@@ -23,14 +23,12 @@ namespace Turn
 
         private BaseTurnState currentState;
         private BaseTurnState previousState;
-
+        
         private TurnStateHolder _stateHolder = new();
         private BlueprintEventHandler bpEventHandler;
-
-        Dictionary<TeamState, Team> turnTeams;
-        public TeamType currentTeamType = TeamType.Team1;
-
+        
         private CombatHelper _combatHelper;
+        private TurnHelper turnHelper = new();
 
         private bool firstTurn = true;
 
@@ -43,20 +41,13 @@ namespace Turn
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += ChangeStateBySystem;
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
             
-            
             UIEventbus.OnButtonCall += ShowButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
             UIEventbus.OnButtonClicked += StateChangerClick;
             
             bpEventHandler = new BlueprintEventHandler(this);
         }
 
-        private void StateChangerClick() //currentstate.handleclick olabilir
-        {
-            if(currentState.StateType != TurnStateType.Intruder)
-                StateChangeRequestByUser();
-            else
-                currentState.HandleClickByItself();
-        }
+   
         private void ShowButtonRequest(bool enable)
         {
             UIEventbus.OnShowButtonRequest?.Invoke(enable, currentState.StateType);
@@ -64,14 +55,14 @@ namespace Turn
 
         private void Initialize()
         {
-            _stateHolder.Setup();
+            _stateHolder.RegisterStates();
 
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
 
         void SetTurnTeams(Team[] teams)
         {
-            turnTeams = new Dictionary<TeamState, Team>()
+            turnHelper.TurnTeams = new Dictionary<TeamState, Team>()
             {
                 {TeamState.CurrentTeam, teams[0]},
                 {TeamState.RivalTeam, teams[1]},
@@ -93,23 +84,38 @@ namespace Turn
         void NewTurn()
         {
             _turnTracker++;
-            ManageInput();
+            turnHelper.ManageInput();
             SetFirstState();
         }
 
         void SetFirstState()
         {
             if (firstTurn)
-                SetNewState(
-                    _stateHolder.GetStateByType(TurnStateType
-                        .Selection)); //eğer first turn ise hala network döngüsündeyiz
+                SetNewState(_stateHolder.GetStateByType(TurnStateType.Selection)); 
             else
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection);
         }
-
-        public void StateChangeRequestByUser()
+        
+        private void StateChangerClick()
         {
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(GetNextStateType());
+            currentState.SendOutsideSelectedElements();
+            
+            if(currentState.StateType == TurnStateType.Intruder)
+                PreviousStateRequestByUser();
+            else
+                NextStateRequestByUser();
+        }
+
+        public void NextStateRequestByUser()
+        {
+            var nextType = _stateHolder.States[turnHelper.GetNextStateId(currentState.StateId)].StateType;
+            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(nextType);
+        }
+
+        public void PreviousStateRequestByUser()
+        {
+            var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
+            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(previousType);
         }
 
         public void ChangeStateBySystem(TurnStateType newType)
@@ -123,16 +129,16 @@ namespace Turn
             previousState = currentState;
             currentState = newState;
 
-            currentState.SetTeams(turnTeams);
+            currentState.SetTeams(turnHelper.TurnTeams);
             currentState.EnterState();
-            GetPreviousStateData();
+            turnHelper.GetPreviousStateData(previousState, currentState);
         }
 
         public void EndTurn()
         {
-            if (GameEnding()) return;
+            if (turnHelper.GameEnding()) return;
 
-            SwitchTeams();
+            turnHelper.SwitchTeams();
             NewTurn();
 
             foreach (var state in _stateHolder.States)
@@ -140,38 +146,6 @@ namespace Turn
                 var turnData = (ITransferDataHolder<BaseTurnTransferData>) state;
                 turnData.TransferData.ResetPreviousTurnData();
             }
-        }
-
-
-        /// /////////////
-        void GetPreviousStateData()
-        {
-            if (previousState == null) return;
-
-            var previousTransferData = ((ITransferDataHolder<BaseTurnTransferData>) previousState).TransferData;
-            currentState.ProcessPreviousStateTransferData(previousTransferData);
-        }
-
-        TurnStateType GetNextStateType()
-        {
-            var nextStateId = (currentState.StateId + 1) % (_stateHolder.States.Length - 1);
-            return _stateHolder.States[nextStateId].StateType;
-        }
-
-        void SwitchTeams()
-        {
-            currentTeamType = turnTeams[TeamState.RivalTeam].Data.TeamType;
-            (turnTeams[TeamState.CurrentTeam], turnTeams[TeamState.RivalTeam]) =
-                (turnTeams[TeamState.RivalTeam], turnTeams[TeamState.CurrentTeam]);
-
-            UIEventbus.OnTeamSwitch?.Invoke(currentTeamType);
-        }
-
-        void ManageInput()
-        {
-            if (!MultiplayerSetter.IsMultiplayerOn) return;
-            turnTeams[TeamState.CurrentTeam].Data.Player.EnableInput(true);
-            turnTeams[TeamState.RivalTeam].Data.Player.EnableInput(false);
         }
 
         private void OnDisable()
@@ -189,19 +163,6 @@ namespace Turn
 
         }
 
-        bool GameEnding()
-        {
-            foreach (var team in turnTeams)
-            {
-                if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Health == 0)) //TODO: CHECK
-                {
-                    NetworkEventbus.TriggerEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
-                    print("game ends");
-                    return true;
-                }
-            }
-
-            return false;
-        }
+       
     }
 }

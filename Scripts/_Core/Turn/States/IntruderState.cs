@@ -47,10 +47,10 @@ namespace Turn
             bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
         }
 
-        public override void HandleClickByItself()
+        public override void SendOutsideSelectedElements()
         {
             NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(bpSelector.Towers.ToArray());
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(incomingData.StateType);
+           // NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(incomingData.StateType);
         }
 
         public override void Unsubscribe()

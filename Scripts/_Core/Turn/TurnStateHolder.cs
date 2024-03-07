@@ -7,15 +7,22 @@ namespace Turn
 {
     public class TurnStateHolder
     {
-        public readonly BaseTurnState[] States = new BaseTurnState[4];
+        public const int StateCount = 4;
+        public readonly BaseTurnState[] States = new BaseTurnState[StateCount];
         private readonly Dictionary<TurnStateType, BaseTurnState> _statesByType = new();
+        
         public BaseTurnState GetStateByType(TurnStateType type) => _statesByType[type];
 
         private SelectionState SelectionState = new SelectionState();
         private LinkState LinkState = new LinkState();
         private ExitState ExitState = new ExitState();
         private IntruderState IntruderState = new IntruderState();
-        public void Setup()
+
+        public TurnStateHolder()
+        {
+            Setup();
+        }
+        void Setup()
         {
             _statesByType.Add(TurnStateType.Selection, SelectionState);
             _statesByType.Add(TurnStateType.Link, LinkState);
@@ -30,7 +37,15 @@ namespace Turn
             for (int i = 0; i < States.Length; i++)
             {
                 States[i].StateId = i;
-                States[i].Register();
+                //States[i].Register();
+            }
+        }
+
+        public void RegisterStates()
+        {
+            foreach (var state in States)
+            {
+                state.Register();
             }
         }
     }
