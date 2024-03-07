@@ -44,10 +44,23 @@ namespace Turn
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += ChangeStateBySystem;
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
-            UIEventbus.OnButtonCall += ShowButtonRequest;
-
-
+            
+            
+            UIEventbus.OnButtonCall += ShowButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
+            UIEventbus.OnButtonClicked += HandleClick;
+            
             bpEventHandler = new BlueprintEventHandler(this);
+        }
+
+        private void HandleClick()
+        {
+            if(currentState != intruderState)
+                StateChangeRequestByUser();
+            else
+            {
+                print("blueprint");
+                //bpmanagera network eventi
+            }
         }
 
         private void ShowButtonRequest(bool enable)
@@ -186,6 +199,8 @@ namespace Turn
 
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnButtonCall -= ShowButtonRequest;
+            UIEventbus.OnButtonClicked -= HandleClick;
+
         }
 
         bool GameEnding()

@@ -10,20 +10,9 @@ using UnityEngine;
 
 public abstract class BaseSelector
 {
-   
     public List<int> Towers = new();
     public int _maxTowersInGroup = 2;
-    public abstract TurnStateType StateType { get; set; }
-
-
-    public BaseSelector(TurnStateType stateType)
-    {
-        StateType = stateType;
-    }
     
-    
-    
-
     public void Subscribe()
     {
         //Towers.Clear(); //TODO: DONT!
@@ -35,7 +24,7 @@ public abstract class BaseSelector
     {
         Towers = towers;
     }
-    
+
     private void GetTower(params object[] args)
     {
         int towerId = (int) args[0];
@@ -47,14 +36,14 @@ public abstract class BaseSelector
 
         HandleSelection(true, towerId);
     }
-    
+
     void HandleSelection(bool select, int newSelection)
     {
         if (select)
             Select(newSelection);
         else
             Deselect(newSelection);
-        
+
         ShowCompleteButton(Towers.Count == _maxTowersInGroup);
     }
 
@@ -70,13 +59,12 @@ public abstract class BaseSelector
         Towers.Remove(newSelection);
         AllTowers.GetTower(newSelection).ToOriginalColor();
     }
-    
+
     void ShowCompleteButton(bool enable) //virtual yapılabilir
     {
-        UIEventbus.OnButtonCall?.Invoke(enable); //turnmanagera gider, ordan da state belirlenirdi
-        
+        UIEventbus.OnButtonCall?.Invoke(enable);
     }
-    
+
     void ResetSelectionGroup()
     {
         for (int i = 0; i < _maxTowersInGroup; i++)
@@ -84,7 +72,7 @@ public abstract class BaseSelector
             HandleSelection(false, Towers[0]);
         }
     }
-    
+
     bool SelectedTwice(int selectedTower)
     {
         if (Towers.Contains(selectedTower))
@@ -95,11 +83,9 @@ public abstract class BaseSelector
 
         return false;
     }
-    
+
     public virtual void Unsubscribe()
     {
         NetworkEventbus.InputEvents.OnObjectClicked -= GetTower;
     }
-
-
 }

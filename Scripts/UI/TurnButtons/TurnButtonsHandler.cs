@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DataModels;
 using Enums;
 using Network;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,7 @@ namespace GameUI
     {
         
         [SerializeField] private Button button;
+        [SerializeField] private TextMeshProUGUI buttonTextSlot;
         public TurnButtonHolder buttonHolder;
 
         private void OnEnable() //ui daha önce gelmeli turnden
@@ -22,20 +24,24 @@ namespace GameUI
         
         void Subscribe()
         {
-            DisableAllButtons();
+            button.gameObject.SetActive(false);
             UIEventbus.OnShowButtonRequest += ShowButton;
         }
         
         void ShowButton(bool enable, TurnStateType type)
         {
-            print("show button on type: " + type);
+            SetButton(type);
             button.gameObject.SetActive(enable);
         }
-        
 
-        void DisableAllButtons()
+        void SetButton(TurnStateType type)
         {
-            button.gameObject.SetActive(false);
+            buttonTextSlot.text = buttonHolder.ButtonsByType[type].Content;
+        }
+
+        public void ButtonClicked()
+        {
+            UIEventbus.OnButtonClicked?.Invoke();
         }
         
         private void OnDisable()

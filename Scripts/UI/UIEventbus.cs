@@ -10,6 +10,7 @@ namespace GameUI
     {
         public static Action<bool> OnButtonCall;
         public static Action<bool, TurnStateType> OnShowButtonRequest;
+        public static Action OnButtonClicked;
         
         public static Action<float, GameObject> OnTowerHeightChange;
         public static Action<int, GameObject> OnHealthChange;
@@ -18,7 +19,6 @@ namespace GameUI
         public static class TurnEvents
         {
             public static Action OnInitialize;
-            public static Action<bool> OnTurnButtonShiftRequest;
         }
     }
     

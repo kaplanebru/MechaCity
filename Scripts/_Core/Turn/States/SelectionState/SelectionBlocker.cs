@@ -7,10 +7,9 @@ using UnityEngine;
 public class SelectionBlocker : BaseSelector, ISelectionBlocker<TeamData, TeamData>
 {
     public TeamData RivalTeam { get;  }
-    public sealed override TurnStateType StateType { get; set; }
-    public SelectionBlocker(TurnStateType stateType, TeamData rivalTeam) : base(stateType)
+
+    public SelectionBlocker(TeamData rivalTeam) 
     {
-        StateType = stateType;
         RivalTeam = rivalTeam;
     }
 

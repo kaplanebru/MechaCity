@@ -11,7 +11,12 @@ namespace DataModels
     {
         [SerializeField] private ButtonData[] buttonContents;
         public Dictionary<TurnStateType, ButtonData> ButtonsByType = new ();
-        
+
+        private void OnEnable()
+        {
+            Setup();
+        }
+
         public void Setup()
         {
             foreach (var button in buttonContents)

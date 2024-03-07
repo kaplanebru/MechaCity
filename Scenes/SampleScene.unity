@@ -662,6 +662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 1973167173}
+  buttonTextSlot: {fileID: 1617573233}
   buttonHolder: {fileID: 11400000, guid: bb6bb53f8a6cb054484c1c7cd4725a67, type: 2}
 --- !u!1 &474807232
 GameObject:
@@ -860,7 +861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ef5335cecd104ab9ee485fbb0a9e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMultiplayerOn: 1
+  isMultiplayerOn: 0
   isTestingWithoutCombat: 1
 --- !u!4 &521987823
 Transform:
@@ -5190,10 +5191,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 973694561}
-        m_TargetAssemblyTypeName: Turn.TurnManager, Assembly-CSharp
-        m_MethodName: StateChangeRequestByUser
-        m_Mode: 1
+      - m_Target: {fileID: 1973167171}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5202,10 +5203,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1973167171}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 414390603}
+        m_TargetAssemblyTypeName: GameUI.TurnButtonsHandler, Scripts.UI
+        m_MethodName: ButtonClicked
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
