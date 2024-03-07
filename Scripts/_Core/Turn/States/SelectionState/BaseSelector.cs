@@ -7,14 +7,22 @@ using Towers;
 using Turn;
 using UnityEngine;
 
-public abstract class BaseSelector<TType> where TType : BaseTurnTransferData
+public abstract class BaseSelector
 {
-    public abstract TType turnData { get; set; }
+   
     public List<int> Towers = new();
     public int _maxTowersInGroup = 2;
+    public abstract TurnStateType StateType { get; set; }
 
+
+    public BaseSelector(TurnStateType stateType)
+    {
+        StateType = stateType;
+    }
     
     
+    
+
     public void Subscribe()
     {
         //Towers.Clear(); //TODO: DONT!
@@ -64,7 +72,7 @@ public abstract class BaseSelector<TType> where TType : BaseTurnTransferData
     
     void ShowCompleteButton(bool enable) //virtual yapılabilir
     {
-        UIEventbus.OnButtonCall?.Invoke(enable, turnData.StateType);
+        UIEventbus.OnButtonCall?.Invoke(enable, StateType);
     }
     
     void ResetSelectionGroup()

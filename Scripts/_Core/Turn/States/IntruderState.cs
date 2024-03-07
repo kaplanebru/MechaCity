@@ -29,7 +29,7 @@ namespace Turn
         
         public override void Register()
         {
-            bpSelector = new BpSelector();
+            bpSelector = new BpSelector(TurnStateType.Intruder);
         }
 
         public override void Subscribe()

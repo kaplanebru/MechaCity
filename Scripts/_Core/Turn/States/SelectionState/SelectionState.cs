@@ -30,8 +30,8 @@ namespace Turn
 
         public override void Register()
         {
-            selectors.Add(TeamType.Team1, new SelectionBlocker(Initializer.Teams[1].Data));
-            selectors.Add(TeamType.Team2, new SelectionBlocker(Initializer.Teams[0].Data));
+            selectors.Add(TeamType.Team1, new SelectionBlocker( TurnStateType.Selection, Initializer.Teams[1].Data));
+            selectors.Add(TeamType.Team2, new SelectionBlocker(TurnStateType.Selection, Initializer.Teams[0].Data));
         }
 
         public override void Subscribe()
