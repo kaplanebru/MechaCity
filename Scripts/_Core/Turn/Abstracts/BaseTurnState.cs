@@ -41,6 +41,8 @@ namespace Turn
         {
             Teams = teams;
         }
+        
+        public virtual void HandleClickByItself(){}
 
         public abstract void Unsubscribe();
     }

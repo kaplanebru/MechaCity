@@ -25,7 +25,6 @@ namespace Turn
         private BaseTurnState previousState;
 
         private TurnStateHolder _stateHolder = new();
-        private IntruderState intruderState;
         private BlueprintEventHandler bpEventHandler;
 
         Dictionary<TeamState, Team> turnTeams;
@@ -46,26 +45,18 @@ namespace Turn
             
             
             UIEventbus.OnButtonCall += ShowButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
-            UIEventbus.OnButtonClicked += HandleClick;
+            UIEventbus.OnButtonClicked += StateChangerClick;
             
             bpEventHandler = new BlueprintEventHandler(this);
         }
 
-        private void HandleClick() //currentstate.handleclick olabilir
+        private void StateChangerClick() //currentstate.handleclick olabilir
         {
-            if(currentState != intruderState)
+            if(currentState.StateType != TurnStateType.Intruder)
                 StateChangeRequestByUser();
             else
-                CreateBpRequest(intruderState.bpSelector.Towers.ToArray());
-            
+                currentState.HandleClickByItself();
         }
-        
-        public void CreateBpRequest(int[] selectedTowers)
-        {
-            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(selectedTowers);
-            intruderState.StopIntrusion();
-        }
-
         private void ShowButtonRequest(bool enable)
         {
             UIEventbus.OnShowButtonRequest?.Invoke(enable, currentState.StateType);
@@ -74,7 +65,6 @@ namespace Turn
         private void Initialize()
         {
             _stateHolder.Setup();
-            intruderState = (IntruderState) _stateHolder.GetStateByType(TurnStateType.Intruder);
 
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
         }
@@ -195,7 +185,7 @@ namespace Turn
 
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnButtonCall -= ShowButtonRequest;
-            UIEventbus.OnButtonClicked -= HandleClick;
+            UIEventbus.OnButtonClicked -= StateChangerClick;
 
         }
 

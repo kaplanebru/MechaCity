@@ -23,7 +23,7 @@ namespace Turn
         public override int StateId { get; set; }
         public IntruderTransferData TransferData { get; private set; } = new();
         
-        public BpSelector bpSelector; // = new ();
+        private BpSelector bpSelector; // = new ();
 
         private BaseTurnTransferData incomingData;
         
@@ -47,9 +47,9 @@ namespace Turn
             bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
         }
 
-
-        public void StopIntrusion()
+        public override void HandleClickByItself()
         {
+            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(bpSelector.Towers.ToArray());
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(incomingData.StateType);
         }
 
