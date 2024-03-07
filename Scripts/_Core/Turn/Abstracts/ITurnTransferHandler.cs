@@ -1,4 +1,5 @@
 
+using Enums;
 using Towers;
 
 namespace Turn
@@ -8,4 +9,9 @@ namespace Turn
         public TTurnData TransferData { get; }
 
     }
+
+    // public interface ITurnType<out TType> where TType : TurnStateType
+    // {
+    //     
+    // }
 }

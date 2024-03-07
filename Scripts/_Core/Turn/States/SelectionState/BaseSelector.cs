@@ -1,20 +1,24 @@
+using System;
 using System.Collections.Generic;
+using Enums;
 using GameUI;
 using Network;
 using Towers;
+using Turn;
 using UnityEngine;
 
-public abstract class BaseSelector
+public abstract class BaseSelector<TType> where TType : BaseTurnTransferData
 {
+    public abstract TType turnData { get; set; }
     public List<int> Towers = new();
     public int _maxTowersInGroup = 2;
+
     
     
     public void Subscribe()
     {
         //Towers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
-        
         ShowCompleteButton(false);
     }
 
@@ -58,9 +62,9 @@ public abstract class BaseSelector
         AllTowers.GetTower(newSelection).ToOriginalColor();
     }
     
-    void ShowCompleteButton(bool enable)
+    void ShowCompleteButton(bool enable) //virtual yapılabilir
     {
-        UIEventbus.OnButtonCall?.Invoke(enable);
+        UIEventbus.OnButtonCall?.Invoke(enable, turnData.StateType);
     }
     
     void ResetSelectionGroup()

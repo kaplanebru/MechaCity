@@ -1,10 +1,14 @@
 using System.Collections;
+using System.Collections.Generic;
+using DataModels;
+using Enums;
 using Network;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameUI
 {
+    
     public class TurnButtonsHandler : MonoBehaviour
 {
     [SerializeField] private Button[] Buttons;
@@ -12,12 +16,11 @@ namespace GameUI
     private bool buttonFunctionCompleted = false;
     private bool hasSpecialCase = false;
 
+    public TurnButtonHolder buttonHolder;
 
     private void OnEnable() //ui daha önce gelmeli turnden
     {
-      
         UIEventbus.TurnEvents.OnInitialize += Initialize;
-        
     }
 
     private void Initialize()
@@ -26,7 +29,7 @@ namespace GameUI
         DisableAllButtons();
         
         UIEventbus.TurnEvents.OnTurnButtonsShiftRequest += RestartSequence;
-        UIEventbus.OnButtonCall += HandleSpecialCase;
+        UIEventbus.OnButtonCall += ShowButton;
     }
     
 
@@ -52,10 +55,11 @@ namespace GameUI
         }
     }
 
-    void HandleSpecialCase(bool enable)
+    void ShowButton(bool enable, TurnStateType type)
     {
         if(currentButton == null) return;
         
+        print("show button on type: " + type);
         hasSpecialCase = true;
         currentButton.gameObject.SetActive(enable);
     }
@@ -83,8 +87,7 @@ namespace GameUI
         UIEventbus.TurnEvents.OnInitialize -= Initialize;
         UIEventbus.TurnEvents.OnTurnButtonsShiftRequest -= RestartSequence;
 
-        //Eventbus.TurnEvents.OnTurnEnding -= RestartSequence;
-        UIEventbus.OnButtonCall -= HandleSpecialCase;
+        UIEventbus.OnButtonCall -= ShowButton;
     }
 }
 }
