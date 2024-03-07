@@ -30,6 +30,7 @@ namespace Blueprint
         public void BpRequest(List<int> selectedTowers)
         {
             NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(currentBlueprint.Type, selectedTowers.ToArray());
+            NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd?.Invoke();
         }
 
         private void ExecuteBp(BpType type, int[] selectedElements)
@@ -37,9 +38,10 @@ namespace Blueprint
             //ortaya tıklanabilir!
             currentBlueprint.Type = type;
             currentBlueprint.SelectedElements = selectedElements;
+            print(selectedElements.Length);
 
             currentBlueprint.TryTakeAction(); //selected elements ekle
-            NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd?.Invoke(); //TODO: Dont! not state değişim yollarsak 2 kez gidecek! yA DA BUTONA TIKLANINCA STATE DEĞİŞİR ZATEN
+            //NetworkEventbus.BlueprintEvents.OnStateIntrusionEnd?.Invoke(); //TODO: Dont! not state değişim yollarsak 2 kez gidecek! yA DA BUTONA TIKLANINCA STATE DEĞİŞİR ZATEN
             //BELKİ DE BP NETWORK VARİBALE GEREKİR
 
         }

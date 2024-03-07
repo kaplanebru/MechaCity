@@ -50,7 +50,6 @@ namespace Turn
 
         public void Fire()
         {
-            Debug.Log("fire");
             Eventbus.CombatEvents.OnCoroutineTrigger?.Invoke(this);
         }
 
