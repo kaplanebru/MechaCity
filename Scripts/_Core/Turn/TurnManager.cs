@@ -89,9 +89,6 @@ namespace Turn
         {
             _turnTracker++;
             ManageInput();
-            // if(turnTeams[TeamState.CurrentTeam].Data.Player.IsOwner)
-            //     UIEventbus.TurnEvents.OnTurnButtonShiftRequest?.Invoke();
-            
             SetFirstState();
         }
 

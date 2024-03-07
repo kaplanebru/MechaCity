@@ -5,6 +5,7 @@ using System.Linq;
 using DataModels;
 using Enums;
 using Network;
+using Testing;
 using Towers;
 using Unity.Collections;
 using UnityEngine;
@@ -49,6 +50,7 @@ namespace Turn
 
         public void Fire()
         {
+            Debug.Log("fire");
             Eventbus.CombatEvents.OnCoroutineTrigger?.Invoke(this);
         }
 
@@ -75,6 +77,13 @@ namespace Turn
 
         public IEnumerator EnumeratorInstance()
         {
+            if (MultiplayerSetter.IsTestingWithoutCombat)
+            {
+                yield return new WaitForSeconds(.5f);
+                Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
+                Unsubscribe();
+                yield break;
+            }
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
             yield return new WaitForSeconds(timingData.cameraDelay);
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();

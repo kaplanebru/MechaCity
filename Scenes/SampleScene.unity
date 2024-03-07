@@ -861,6 +861,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMultiplayerOn: 1
+  isTestingWithoutCombat: 1
 --- !u!4 &521987823
 Transform:
   m_ObjectHideFlags: 0

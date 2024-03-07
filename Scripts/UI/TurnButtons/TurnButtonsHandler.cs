@@ -28,7 +28,7 @@ namespace GameUI
         
         void ShowButton(bool enable, TurnStateType type)
         {
-            print("show button on type: " + type);
+            //print("show button on type: " + type);
             button.gameObject.SetActive(enable);
         }
         

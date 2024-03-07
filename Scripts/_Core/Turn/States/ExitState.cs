@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Enums;
+using Testing;
 using Turn;
 using UnityEngine;
 
@@ -28,6 +29,7 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
 
     public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
     {
+      
         TransferData.Towers = data.Towers;
         combatHelper.Subscribe(TransferData.Towers);
         ExecuteCombat();
@@ -35,6 +37,12 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     
     void ExecuteCombat()
     {
+        // if (MultiplayerSetter.IsTesting)
+        // {
+        //     Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
+        //     combatHelper.Unsubscribe();
+        //     return;
+        // }
         combatHelper.Fire();
     }
 
