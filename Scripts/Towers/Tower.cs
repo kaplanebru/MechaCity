@@ -48,6 +48,11 @@ namespace Towers
         //     towerParts.SetColor(givenMat);
         // }
 
+        public void ToFreezeColor()
+        {
+            towerParts.SetColor(Data.TeamTowerData.FreezeMaterial);
+        }
+
         public void ToBlueprintColor()
         {
             towerParts.SetColor(Data.TeamTowerData.BlueprintMaterial);

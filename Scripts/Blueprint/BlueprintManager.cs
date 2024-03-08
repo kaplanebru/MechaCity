@@ -31,6 +31,7 @@ namespace Blueprint
             currentBlueprint.SelectedElements = selectedElements;
             print(selectedElements.Length);
 
+           
             currentBlueprint.TryTakeAction(); //selected elements ekle
         }
 

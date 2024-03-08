@@ -5,11 +5,12 @@ namespace Blueprint
     public class BpReverse : BaseBlueprint, IBpActionProcessor<ReverseAction>
     {
         public override BpType Type { get; set; } = BpType.Reverse;
+        public override int[] SelectedElements { get; set; }
         public ReverseAction BpAction { get; } = new();
         
         public override void TryTakeAction()
         {
-            BpAction.Execute();
+            BpAction.Execute(SelectedElements);
         }
     }
 }

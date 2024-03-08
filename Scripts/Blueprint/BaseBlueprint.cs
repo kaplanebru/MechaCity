@@ -7,7 +7,7 @@ namespace Blueprint
     {
         public abstract BpType Type { get; set; }
 
-        public int[] SelectedElements;
+        public abstract int[] SelectedElements { get; set; }
         public abstract void TryTakeAction();
     }
     

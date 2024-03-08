@@ -8,13 +8,12 @@ namespace Blueprint
     public class BpDouble : BaseBlueprint, IBpActionProcessor<DoubleAction>
     {
         public override BpType Type { get; set; } = BpType.Double;
+        public override int[] SelectedElements { get; set; }
         public DoubleAction BpAction { get; } = new DoubleAction();
         
-        public List<object> IncomingObjects;
-
         public override void TryTakeAction()
         {
-            BpAction.Execute(IncomingObjects);
+            BpAction.Execute(SelectedElements);
         }
     }
 

@@ -10,5 +10,6 @@ namespace Towers
         public Material DefaultMaterial;
         public Material SelectedMaterial;
         public Material BlueprintMaterial;
+        public Material FreezeMaterial;
     }
 }

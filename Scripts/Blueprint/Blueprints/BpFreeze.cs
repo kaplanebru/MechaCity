@@ -5,11 +5,12 @@ namespace Blueprint
     public class BpFreeze : BaseBlueprint, IBpActionProcessor<FreezeAction>
     {
         public override BpType Type { get; set; } = BpType.Freeze;
+        public override int[] SelectedElements { get; set; }
         public FreezeAction BpAction { get; } = new FreezeAction();
 
         public override void TryTakeAction()
         {
-            BpAction.Execute();
+            BpAction.Execute(SelectedElements);
         }
 
         void GetSelectedTower() 
