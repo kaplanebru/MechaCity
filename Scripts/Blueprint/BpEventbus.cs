@@ -16,10 +16,9 @@ public static class BpEventbus
         public static Action OnReverseAction;
     }
     
-    public static class TriggerEvents
+    public static class ManagementEvents
     {
-        public static Action<int[]> OnBpApplied;
-        
+        public static Action<BpType> OnBpExpired;
     }
     
     public static class UIEvents
