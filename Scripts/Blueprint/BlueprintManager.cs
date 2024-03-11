@@ -19,14 +19,24 @@ namespace Blueprint
         //public Bp_StateIntruder BpStateIntruder = 
         public BPSlotHolder slotHolder;
         public BPDataHolder bpDataHolder;
+        public BpTrackerCollector[] TrackerCollectors; //id işini ayarla. Towera gitmeden nasıl olacak?
 
         public void Subscribe()
         {
+            TrackerCollectors = FindObjectsOfType<BpTrackerCollector>(); //başka yerde class olarak yartılıp distribute edilebilirler
+            
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpForAll;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
+            BpEventbus.LifespanEvents.OnBpExpired += RemoveExpiredBp;
+
         }
-        
+
+        private void RemoveExpiredBp(BpLifeTracker lifeTracker, int id)
+        {
+            TrackerCollectors[id].RemoveFromCollection(lifeTracker);
+        }
+
         private void ExecuteBp(int[] selectedElements)
         {
             currentBlueprint.SelectedElements = selectedElements;
@@ -34,6 +44,11 @@ namespace Blueprint
             
             currentBlueprint.TryTakeAction(); //selected elements ekle
             BpEventbus.LifespanEvents.OnBpAdded?.Invoke(currentBlueprint.Type);
+            
+            foreach (var element in selectedElements)
+            {
+                TrackerCollectors[element].AddToCollection(currentBlueprint.Type);
+            }
         }
 
         private void RestoreFromBp(BpType type)
@@ -75,6 +90,8 @@ namespace Blueprint
             NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpForAll;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem -= ExecuteBp;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
+            BpEventbus.LifespanEvents.OnBpExpired -= RemoveExpiredBp;
+
         }
 
         private void OnDisable()

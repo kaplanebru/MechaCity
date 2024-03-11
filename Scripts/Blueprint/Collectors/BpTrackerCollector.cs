@@ -12,6 +12,7 @@ namespace Blueprint
         //bütün hepsi dinliyor, sıkıntı. tek bir yerden kule ve event birlikte dinlenebilir
     {
         public List<BpLifeTracker> Collector = new();
+        public int UniqId;
 
         private void OnEnable()
         {
@@ -20,7 +21,11 @@ namespace Blueprint
         public void Subscribe()
         {
             BpEventbus.LifespanEvents.OnBpAdded += AddToCollection;
-            BpEventbus.LifespanEvents.OnBpExpired += RemoveFromCollection;
+        }
+
+        public void SetId(int id)
+        {
+            UniqId = id;
         }
 
         private void Update()
@@ -36,13 +41,13 @@ namespace Blueprint
         }
         
 
-        void AddToCollection(BpType type)
+        public void AddToCollection(BpType type)
         { print("add to coll");
-            BpLifeTracker lifeTracker = new BpLifeTracker(type);
+            BpLifeTracker lifeTracker = new BpLifeTracker(UniqId, type);
             Collector.Add(lifeTracker);
         }
 
-        void RemoveFromCollection(BpLifeTracker lifeTracker)
+        public void RemoveFromCollection(BpLifeTracker lifeTracker)
         {
             Collector.Remove(lifeTracker);
         }
@@ -50,7 +55,6 @@ namespace Blueprint
         public void Unsubscribe()
         {
             BpEventbus.LifespanEvents.OnBpAdded -= AddToCollection;
-            BpEventbus.LifespanEvents.OnBpExpired -= RemoveFromCollection;
         }
 
         private void OnDisable()

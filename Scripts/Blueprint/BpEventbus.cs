@@ -19,7 +19,7 @@ public static class BpEventbus
     
     public static class LifespanEvents
     {
-        public static Action<BpLifeTracker> OnBpExpired;
+        public static Action<BpLifeTracker, int> OnBpExpired;
         public static Action<BpType> OnBpAdded;
         public static Action<BpType> OnRestore;
     }
