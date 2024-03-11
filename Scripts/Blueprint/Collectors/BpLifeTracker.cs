@@ -4,27 +4,31 @@ using System.Collections.Generic;
 using Enums;
 using UnityEngine;
 
+
 namespace Blueprint
 {
-    [Serializable]
-    public class BpLifeTracker
+   [Serializable]
+    public class BpLifeTracker //sadece enum tutabilir, sonra restore deriz
     {
-        public int towerId;
-        public BpType type;
-        public int lifespan;
-        public List<int> relatedTowers;
+        private BpType Type;
+        private int Lifespan;
 
-        public void SetId(int id)
+        public BpLifeTracker(BpType type, int lifespan = 1)
         {
-            towerId = id;
+            Type = type;
+            Lifespan = lifespan;
         }
+
         
         public void ReduceLife()
         {
-            lifespan--;
-            if (lifespan == 0)
+            Debug.Log("lifespan: "+Lifespan);
+            Lifespan--;
+            if (Lifespan < 0)
             {
-                BpEventbus.ManagementEvents.OnBpExpired?.Invoke(type);
+                Debug.Log("expired");
+                BpEventbus.LifespanEvents.OnRestore?.Invoke(Type);
+                BpEventbus.LifespanEvents.OnBpExpired?.Invoke(this);
             }
         }
     }

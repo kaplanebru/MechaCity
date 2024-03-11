@@ -13,6 +13,11 @@ namespace Blueprint
             BpAction.Execute(SelectedElements);
         }
 
+        public override void TryRestoreAction()
+        {
+            BpAction.Restore();
+        }
+
         void GetSelectedTower() 
         {
             //TODO: tower selection'ı için ayrı modüler class yaz. Selectionda da, towergroupda da, burda da bu çalışsın.

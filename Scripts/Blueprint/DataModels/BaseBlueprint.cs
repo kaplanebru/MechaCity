@@ -9,6 +9,8 @@ namespace Blueprint
 
         public abstract int[] SelectedElements { get; set; }
         public abstract void TryTakeAction();
+
+        public abstract void TryRestoreAction();
     }
     
     public interface IBpActionProcessor<out TAction> where TAction : IBpAction

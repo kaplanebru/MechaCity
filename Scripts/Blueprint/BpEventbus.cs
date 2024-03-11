@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Blueprint;
 using Enums;
 using UnityEngine;
 
@@ -16,9 +17,11 @@ public static class BpEventbus
         public static Action OnReverseAction;
     }
     
-    public static class ManagementEvents
+    public static class LifespanEvents
     {
-        public static Action<BpType> OnBpExpired;
+        public static Action<BpLifeTracker> OnBpExpired;
+        public static Action<BpType> OnBpAdded;
+        public static Action<BpType> OnRestore;
     }
     
     public static class UIEvents

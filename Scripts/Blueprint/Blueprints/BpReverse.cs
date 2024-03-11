@@ -12,6 +12,11 @@ namespace Blueprint
         {
             BpAction.Execute(SelectedElements);
         }
+
+        public override void TryRestoreAction()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
 

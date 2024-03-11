@@ -24,15 +24,21 @@ namespace Blueprint
         {
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpForAll;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
+            BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
         }
         
         private void ExecuteBp(int[] selectedElements)
         {
             currentBlueprint.SelectedElements = selectedElements;
-            print(selectedElements.Length);
-
-           
+            //print(selectedElements.Length);
+            
             currentBlueprint.TryTakeAction(); //selected elements ekle
+            BpEventbus.LifespanEvents.OnBpAdded?.Invoke(currentBlueprint.Type);
+        }
+
+        private void RestoreFromBp(BpType type)
+        {
+           bpHolder.AllBlueprints[type].TryRestoreAction();
         }
 
         private void SetCurrentBpForAll(BpType type) //network function
@@ -68,6 +74,7 @@ namespace Blueprint
         {
             NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpForAll;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem -= ExecuteBp;
+            BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
         }
 
         private void OnDisable()
