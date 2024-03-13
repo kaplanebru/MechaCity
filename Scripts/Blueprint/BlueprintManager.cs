@@ -22,22 +22,20 @@ namespace Blueprint
         public BpTrackerList bpTrackerList = new ();
 
         
-        private void Update() //TODO: TEST
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
-                bpTrackerList.ReduceValueForAll();
-            }
-        }
         public void Subscribe()
         {
+            TurnStatusEvents.OnTurnEnding += UpdateBpTrackers;
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpForAll;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
             bpTrackerList.Subscribe();
         }
-        
+
+        private void UpdateBpTrackers()
+        {
+            bpTrackerList.ReduceValueForAll();
+        }
         private void RemoveExpiredBp(ITrackable lifeTracker)
         {
             bpTrackerList.RemoveFromTrackList(lifeTracker);
@@ -90,6 +88,7 @@ namespace Blueprint
 
         public void Unsubscribe()
         {
+            TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
             NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpForAll;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem -= ExecuteBp;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;

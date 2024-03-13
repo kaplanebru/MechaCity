@@ -138,6 +138,7 @@ namespace Turn
         {
             if (turnHelper.GameEnding()) return;
 
+            TurnStatusEvents.OnTurnEnding?.Invoke();
             turnHelper.SwitchTeams();
             NewTurn();
 
