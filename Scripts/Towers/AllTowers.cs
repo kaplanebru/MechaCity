@@ -84,12 +84,12 @@ namespace Towers
 
         public static void EnableClickability()
         {
-            _towers.ForEach(t=>t.clickHandler.EnableSelection());
+            _towers.ForEach(t=>t.EnableSelection());
         }
 
         public static void DisableClickability()
         {
-            _towers.ForEach(t=>t.clickHandler.DisableSelection());
+            _towers.ForEach(t=>t.DisableSelection());
         }
         
 

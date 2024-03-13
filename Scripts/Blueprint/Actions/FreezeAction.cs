@@ -12,15 +12,18 @@ namespace Blueprint
 
             foreach (var selectedTower in selectedTowers)
             {
-                AllTowers.GetTower(selectedTower).ToFreezeColor();
+                var tower = AllTowers.GetTower(selectedTower);
+                tower.ToFreezeColor();
+                tower.DisableSelection();
             }
         }
 
         public void Restore(params object[] obj)
         {
             var selectedTower = (int) obj[0];
-            AllTowers.GetTower(selectedTower).ToSelectionColor();
-            
+            var tower = AllTowers.GetTower(selectedTower);
+            tower.ToSelectionColor();
+            tower.EnableSelection();
         }
     }
 }

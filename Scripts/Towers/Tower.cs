@@ -48,6 +48,16 @@ namespace Towers
         //     towerParts.SetColor(givenMat);
         // }
 
+        public void EnableSelection()
+        {
+            clickHandler.EnableSelection();
+        }
+
+        public void DisableSelection()
+        {
+            clickHandler.DisableSelection();
+        }
+
         public void ToFreezeColor()
         {
             towerParts.SetColor(Data.TeamTowerData.FreezeMaterial);
