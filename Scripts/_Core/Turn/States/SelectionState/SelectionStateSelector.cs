@@ -13,10 +13,7 @@ public class SelectionStateSelector : BaseSelector, ISelectionBlocker<TeamData>
         TeamToBlock = rivalTeam;
     }
 
-    public SelectionStateSelector()
-    {
-        
-    }
+    public SelectionStateSelector() {}
 
     public void EliminateNonSelectables()
     {

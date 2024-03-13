@@ -75,7 +75,7 @@ namespace Blueprint
             
             
             NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(_currentBpType);
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
+            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder); //todo: döngüye sokmadan bp managera nasıl taşınabilir?
         }
 
         

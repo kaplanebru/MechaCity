@@ -25,8 +25,10 @@ namespace Blueprint
         public void Subscribe()
         {
             TurnStatusEvents.OnTurnEnding += UpdateBpTrackers;
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpForAll;
+            
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpForAllClients;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
+            
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
             bpTrackerList.Subscribe();
@@ -57,7 +59,7 @@ namespace Blueprint
            bpHolder.AllBlueprints[type].TryRestoreAction(selectedItem); //todo: bug. sadece 3 tane bp var. ama aynı bpnin birden fazla kullanımı olmalı, ve selected itemlerı farklı olmalı
         }
 
-        private void SetCurrentBpForAll(BpType type) //network function
+        private void SetCurrentBpForAllClients(BpType type) //network function
         {
             currentBlueprint = bpHolder.AllBlueprints[type]; //execution için 2 tarafta da bunun set edilmesi gerek
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
@@ -89,7 +91,7 @@ namespace Blueprint
         public void Unsubscribe()
         {
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpForAll;
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpForAllClients;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem -= ExecuteBp;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
