@@ -51,9 +51,9 @@ namespace Network
         [ClientRpc]
         void ProcessBpSelectionClientRpc(BpType bpType)
         {
-            print("owner");
+           // print("owner");  //2 ownera da 1 kez gidiyor
             NetworkEventbus.RequestEvents.OnBpSelectionByServer?.Invoke(bpType);
-            //2 ownera da 1 kez gidiyor
+           
         }
 
 

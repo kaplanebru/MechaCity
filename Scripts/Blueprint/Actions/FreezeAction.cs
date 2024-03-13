@@ -14,7 +14,7 @@ namespace Blueprint
             {
                 var tower = AllTowers.GetTower(selectedTower);
                 tower.ToFreezeColor();
-                tower.DisableSelection();
+                //tower.DisableSelection();
             }
         }
 
@@ -23,7 +23,7 @@ namespace Blueprint
             var selectedTower = (int) obj[0];
             var tower = AllTowers.GetTower(selectedTower);
             tower.ToSelectionColor();
-            tower.EnableSelection();
+            //tower.EnableSelection();
         }
     }
 }

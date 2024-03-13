@@ -24,19 +24,27 @@ namespace Turn
         public IntruderTransferData TransferData { get; private set; } = new();
         
         private BpSelector bpSelector; // = new ();
+        private Dictionary<SelectionType, BpSelector> selectors = new ();
 
         private BaseTurnTransferData incomingData;
         
         
         public override void Register()
         {
-            bpSelector = new BpSelector();
+            //bpSelector = new BpSelector();
+            
+            selectors.Add(SelectionType.PlayerOnly, new BpRestrictedSelector());
+            selectors.Add(SelectionType.RivalOnly, new BpRestrictedSelector());
+            selectors.Add(SelectionType.All, new BpSelector());
+            selectors.Add(SelectionType.None, null);
         }
 
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
+            bpSelector = selectors[SelectionType.RivalOnly];
             bpSelector.Subscribe();
+            ((BpRestrictedSelector)bpSelector).EliminateSpecificNonSelectables(Teams[TeamState.CurrentTeam].Data);
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)

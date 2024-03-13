@@ -53,7 +53,8 @@ namespace Enums
     {
         PlayerOnly,
         RivalOnly,
-        All
+        All, 
+        None
     }
 
     

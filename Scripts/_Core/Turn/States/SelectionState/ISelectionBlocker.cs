@@ -1,14 +1,17 @@
 using Teams;
 using UnityEngine;
 
-public interface ISelectionBlocker<out TTeam, out TTTeam> where TTeam : TeamData where TTTeam : TeamData
+public interface ISelectionBlocker< out TTeam> where TTeam : TeamData
 {
-    public TTTeam RivalTeam { get;  }
+    public TTeam TeamToBlock { get;  }
+
     public void EliminateNonSelectables();
+    
+    public void EliminateSpecificNonSelectables<TTTeam>(TTTeam teamToBlock) where TTTeam : TeamData;
 
 }
 
-public class Test
+public class Tes
 {
     public void Print<T>(T input)
     {

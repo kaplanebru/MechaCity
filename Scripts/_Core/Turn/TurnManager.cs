@@ -84,6 +84,7 @@ namespace Turn
         void NewTurn()
         {
             _turnTracker++;
+            print("turn track: " + _turnTracker);
             turnHelper.ManageInput();
             SetFirstState();
         }

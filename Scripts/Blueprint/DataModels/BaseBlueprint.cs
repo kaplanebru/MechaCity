@@ -7,6 +7,7 @@ namespace Blueprint
     {
         public abstract BpType Type { get; set; }
 
+        public abstract SelectionType SelectionType { get; set; }
         public abstract int Lifespan {get; set; } //todo: lifespan da değişken olacak burda olmamalı
         public abstract void TryTakeAction(int[] selectedItems);
 

@@ -5,6 +5,7 @@ namespace Blueprint
     public class BpFreeze : BaseBlueprint, IBpActionProcessor<FreezeAction>
     {
         public override BpType Type { get; set; } = BpType.Freeze;
+        public override SelectionType SelectionType { get; set; } = SelectionType.RivalOnly;
         public override int Lifespan { get; set; } = 1;
         public FreezeAction BpAction { get; } = new FreezeAction();
 
