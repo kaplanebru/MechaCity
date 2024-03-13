@@ -10,5 +10,11 @@ namespace Blueprint
         {
             BpEventbus.ActionEvents.OnReverseActionTriggered?.Invoke();
         }
+        
+        public void Restore(params object[] obj)
+        {
+            var selectedTower = (int) obj[0];
+          
+        }
     }
 }

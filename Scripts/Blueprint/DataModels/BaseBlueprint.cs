@@ -7,10 +7,10 @@ namespace Blueprint
     {
         public abstract BpType Type { get; set; }
 
-        public abstract int[] SelectedElements { get; set; }
-        public abstract void TryTakeAction();
+        public abstract int Lifespan {get; set; } //todo: lifespan da değişken olacak burda olmamalı
+        public abstract void TryTakeAction(int[] selectedItems);
 
-        public abstract void TryRestoreAction();
+        public abstract void TryRestoreAction(int selectedItem);
     }
     
     public interface IBpActionProcessor<out TAction> where TAction : IBpAction

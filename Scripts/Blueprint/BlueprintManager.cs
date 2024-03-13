@@ -19,41 +19,44 @@ namespace Blueprint
         //public Bp_StateIntruder BpStateIntruder = 
         public BPSlotHolder slotHolder;
         public BPDataHolder bpDataHolder;
-        public BpTrackerCollector[] TrackerCollectors; //id işini ayarla. Towera gitmeden nasıl olacak?
+        public BpTrackerList bpTrackerList = new ();
 
+        
+        private void Update() //TODO: TEST
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                bpTrackerList.ReduceValueForAll();
+            }
+        }
         public void Subscribe()
         {
-            TrackerCollectors = FindObjectsOfType<BpTrackerCollector>(); //başka yerde class olarak yartılıp distribute edilebilirler
-            
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpForAll;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
-            BpEventbus.LifespanEvents.OnBpExpired += RemoveExpiredBp;
-
+            BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
+            bpTrackerList.Subscribe();
+        }
+        
+        private void RemoveExpiredBp(ITrackable lifeTracker)
+        {
+            bpTrackerList.RemoveFromTrackList(lifeTracker);
         }
 
-        private void RemoveExpiredBp(BpLifeTracker lifeTracker, int id)
+        private void ExecuteBp(int[] selectedItems)
         {
-            TrackerCollectors[id].RemoveFromCollection(lifeTracker);
-        }
+            currentBlueprint.TryTakeAction(selectedItems);
 
-        private void ExecuteBp(int[] selectedElements)
-        {
-            currentBlueprint.SelectedElements = selectedElements;
-            //print(selectedElements.Length);
-            
-            currentBlueprint.TryTakeAction(); //selected elements ekle
-            BpEventbus.LifespanEvents.OnBpAdded?.Invoke(currentBlueprint.Type);
-            
-            foreach (var element in selectedElements)
+            foreach (var item in selectedItems)
             {
-                TrackerCollectors[element].AddToCollection(currentBlueprint.Type);
+                var tracker = bpTrackerList.CreateTracker(currentBlueprint.Lifespan, item, currentBlueprint.Type);
+                BpEventbus.LifespanEvents.OnTrackerRequest?.Invoke(tracker);
             }
         }
 
-        private void RestoreFromBp(BpType type)
+        private void RestoreFromBp(BpType type, int selectedItem)
         {
-           bpHolder.AllBlueprints[type].TryRestoreAction();
+           bpHolder.AllBlueprints[type].TryRestoreAction(selectedItem); //todo: bug. sadece 3 tane bp var. ama aynı bpnin birden fazla kullanımı olmalı, ve selected itemlerı farklı olmalı
         }
 
         private void SetCurrentBpForAll(BpType type) //network function
@@ -90,8 +93,8 @@ namespace Blueprint
             NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpForAll;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem -= ExecuteBp;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
-            BpEventbus.LifespanEvents.OnBpExpired -= RemoveExpiredBp;
-
+            BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
+            bpTrackerList.Unsubscribe();
         }
 
         private void OnDisable()

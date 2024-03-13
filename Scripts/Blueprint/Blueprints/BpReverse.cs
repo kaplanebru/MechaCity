@@ -5,17 +5,17 @@ namespace Blueprint
     public class BpReverse : BaseBlueprint, IBpActionProcessor<ReverseAction>
     {
         public override BpType Type { get; set; } = BpType.Reverse;
-        public override int[] SelectedElements { get; set; }
+        public override int Lifespan { get; set; } = 1;
         public ReverseAction BpAction { get; } = new();
         
-        public override void TryTakeAction()
+        public override void TryTakeAction(int[] selectedItems)
         {
-            BpAction.Execute(SelectedElements);
+            BpAction.Execute(selectedItems);
         }
 
-        public override void TryRestoreAction()
+        public override void TryRestoreAction(int selectedItem)
         {
-            throw new System.NotImplementedException();
+            BpAction.Restore(selectedItem);
         }
     }
 }

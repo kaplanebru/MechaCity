@@ -6,10 +6,9 @@ namespace Blueprint
 {
     public class FreezeAction : IBpAction
     {
-        private int[] selectedTowers;
         public void Execute(params object[] obj)
         {
-            selectedTowers = (int[]) obj[0];
+            var selectedTowers = (int[]) obj[0];
 
             foreach (var selectedTower in selectedTowers)
             {
@@ -17,12 +16,11 @@ namespace Blueprint
             }
         }
 
-        public void Restore()
+        public void Restore(params object[] obj)
         {
-            foreach (var selectedTower in selectedTowers)
-            {
-                AllTowers.GetTower(selectedTower).ToSelectionColor();
-            }
+            var selectedTower = (int) obj[0];
+            AllTowers.GetTower(selectedTower).ToSelectionColor();
+            
         }
     }
 }

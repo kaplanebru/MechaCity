@@ -8,29 +8,29 @@ using UnityEngine;
 namespace Blueprint
 {
    [Serializable]
-    public class BpLifeTracker //sadece enum tutabilir, sonra restore deriz
+    public class BpLifeTracker: ITrackable //sadece enum tutabilir, sonra restore deriz
     {
-        private int Id;
         private BpType Type;
-        private int Lifespan;
-
-        public BpLifeTracker(int id, BpType type, int lifespan = 1)
+        
+        public BpLifeTracker(int lifespan, int relatedTower, BpType type)
         {
-            Id = id;
-            Type = type;
             Lifespan = lifespan;
+            RelatedTower = relatedTower;
+            Type = type;
         }
 
+        public int Lifespan { get; set; }
+        public int RelatedTower { get; set; }
         
-        public void ReduceLife()
+        public void ReduceValue()
         {
             Debug.Log("lifespan: "+Lifespan);
             Lifespan--;
             if (Lifespan < 0)
             {
                 Debug.Log("expired");
-                BpEventbus.LifespanEvents.OnRestore?.Invoke(Type); //managera gidiyor sorun yok
-                BpEventbus.LifespanEvents.OnBpExpired?.Invoke(this, Id); //yine bütün listelerden çıkar bug olur
+                BpEventbus.LifespanEvents.OnRestore?.Invoke(Type, RelatedTower);//bpmanagera gidiyor sorun yok
+                BpEventbus.LifespanEvents.OnExpiredTracker?.Invoke(this);
             }
         }
     }

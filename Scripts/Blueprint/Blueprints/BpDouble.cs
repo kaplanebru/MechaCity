@@ -8,17 +8,17 @@ namespace Blueprint
     public class BpDouble : BaseBlueprint, IBpActionProcessor<DoubleAction>
     {
         public override BpType Type { get; set; } = BpType.Double;
-        public override int[] SelectedElements { get; set; }
+        public override int Lifespan { get; set; } = 1;
         public DoubleAction BpAction { get; } = new DoubleAction();
         
-        public override void TryTakeAction()
+        public override void TryTakeAction(int[] selectedItems)
         {
-            BpAction.Execute(SelectedElements);
+            BpAction.Execute(selectedItems);
         }
 
-        public override void TryRestoreAction()
+        public override void TryRestoreAction(int selectedItem)
         {
-            throw new System.NotImplementedException();
+            BpAction.Restore(selectedItem);
         }
     }
 

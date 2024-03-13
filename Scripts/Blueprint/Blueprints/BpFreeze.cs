@@ -5,29 +5,18 @@ namespace Blueprint
     public class BpFreeze : BaseBlueprint, IBpActionProcessor<FreezeAction>
     {
         public override BpType Type { get; set; } = BpType.Freeze;
-        public override int[] SelectedElements { get; set; }
+        public override int Lifespan { get; set; } = 1;
         public FreezeAction BpAction { get; } = new FreezeAction();
 
-        public override void TryTakeAction()
+        public override void TryTakeAction(int[] selectedItems)
         {
-            BpAction.Execute(SelectedElements);
+            BpAction.Execute(selectedItems);
         }
 
-        public override void TryRestoreAction()
+        public override void TryRestoreAction(int selectedItem)
         {
-            BpAction.Restore();
+            BpAction.Restore(selectedItem);
         }
-
-        void GetSelectedTower() 
-        {
-            //TODO: tower selection'ı için ayrı modüler class yaz. Selectionda da, towergroupda da, burda da bu çalışsın.
-            //State olarak da çalışabilir.
-            //Networklü ve networksüz çalışma opsiyonları olmalı
-        }
-
-        void ShowInstructionUI()
-        {
-            
-        }
+        
     }
 }

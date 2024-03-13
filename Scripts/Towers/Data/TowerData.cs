@@ -17,6 +17,7 @@ namespace Towers
         public TeamTowerData TeamTowerData;
         public List<int> LinkedTowerIDs = new();
         public bool CanShoot { get; private set; }
+     
 
         // private bool isClickable = true;
         // public bool IsClickable
