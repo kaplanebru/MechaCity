@@ -11,7 +11,6 @@ namespace Blueprint
     public class BpLifeTracker: ITrackable //sadece enum tutabilir, sonra restore deriz
     {
         private BpType Type;
-        
         public BpLifeTracker(int lifespan, int relatedTower, BpType type)
         {
             Lifespan = lifespan;
