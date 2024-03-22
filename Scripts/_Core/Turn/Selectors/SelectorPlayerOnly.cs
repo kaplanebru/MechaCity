@@ -4,29 +4,17 @@ using UnityEngine;
 
 namespace _Core.Turn.Selectors
 {
-    public class SelectorPlayerOnly : BaseSelector<StandardSelectionColor>
+    public class SelectorWithBlocker<TBlocker> : Selector<StandardSelectionColor> where TBlocker : ITeamBlocker, new()
     {
-        public SelectionBlocker<RivalBlocker> SelectionBlocker = new ();
+        public TBlocker Blocker = new TBlocker();
     }
     
-    public class SelectorRivalOnly : BaseSelector<StandardSelectionColor>
+    public class BpSelectorWithBlocker<TBlocker>:  Selector<BpSelectionColor> where TBlocker : ITeamBlocker, new()
     {
-        public SelectionBlocker<PlayerBlocker> SelectionBlocker = new();
-    }
-
-    public class BpSelectorPlayerOnly: BaseSelector<BpSelectionColor>
-    {
-        public SelectionBlocker<RivalBlocker> SelectionBlocker = new();
-    }
-
-    public class BpSelectorRivalOnly : BaseSelector<BpSelectionColor>
-    {
-        public SelectionBlocker<PlayerBlocker> SelectionBlocker = new();
+        public TBlocker Blocker = new TBlocker();
     }
     
-    
-    
-    public class SelectorBoth : BaseSelector<StandardSelectionColor>
+    public class SelectorBoth : Selector<StandardSelectionColor>
     {
         //bunun kuralları daha farklı olacak zaten
     }

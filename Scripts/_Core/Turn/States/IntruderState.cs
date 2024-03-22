@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _Core.Turn.Selectors;
 using Core;
 using DataModels;
 using Enums;
@@ -23,19 +24,17 @@ namespace Turn
         public override int StateId { get; set; }
         public IntruderTransferData TransferData { get; private set; } = new();
         
-        protected BpSelector bpSelector; // = new ();
-        private Dictionary<SelectionType, BpSelector> selectors = new ();
+        protected Selector<BpSelectionColor> bpSelector; // = new ();
+        private Dictionary<SelectionType, Selector<BpSelectionColor>> selectors = new ();
 
         private BaseTurnTransferData incomingData;
         
         
         public override void Register()
         {
-            //bpSelector = new BpSelector();
-            
-            selectors.Add(SelectionType.PlayerOnly, new BpSelector());
-            selectors.Add(SelectionType.RivalOnly, new BpSelector());
-            selectors.Add(SelectionType.All, new BpSelector());
+            selectors.Add(SelectionType.PlayerOnly, new BpSelectorWithBlocker<RivalBlocker>());
+            selectors.Add(SelectionType.RivalOnly, new BpSelectorWithBlocker<PlayerBlocker>());
+            selectors.Add(SelectionType.All, new Selector<BpSelectionColor>());
             selectors.Add(SelectionType.None, null);
         }
 

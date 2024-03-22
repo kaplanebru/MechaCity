@@ -10,7 +10,7 @@ using Turn;
 using UnityEngine;
 
 
-public abstract class BaseSelector<T> where T : ISelectionColorSetter, new()
+public class Selector<T> where T : ISelectionColorSetter, new()
 {
     public List<int> Towers = new();
     public int _maxTowersInGroup = 2;
