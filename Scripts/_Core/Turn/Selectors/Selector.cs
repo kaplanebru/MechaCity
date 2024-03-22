@@ -84,9 +84,10 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         return false;
     }
 
-    public virtual void Unsubscribe()
+    public void Unsubscribe()
     {
         NetworkEventbus.InputEvents.OnObjectClicked -= GetTower;
+       // AllTowers.ResetTowerSelectionColors(); //todo: test, dont
         AllTowers.EnableClickability(); //todo: eğer eliminated ise
     }
 }

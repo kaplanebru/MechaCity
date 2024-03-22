@@ -42,7 +42,7 @@ namespace Turn
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
-            BpEventbus.SettingEvents.OnBpTypeSet += GetBpSelector;
+            BpEventbus.SettingEvents.OnBpTypeSet += GetBpSelector; //permanent de olabilir
         }
 
         private void GetBpSelector(SelectionType selectionType)
@@ -51,7 +51,7 @@ namespace Turn
             if(bpSelector==null) return;
             
             bpSelector.Subscribe();
-            SetSelectionMethod();
+            SetBlocking();
             bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
         }
 
@@ -63,7 +63,7 @@ namespace Turn
            // bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
         }
         
-        void SetSelectionMethod() //bunu bp selectora taşı
+        void SetBlocking() 
         {
             IBlockable blockable = (IBlockable) bpSelector;
             if(blockable == null) return;
@@ -80,8 +80,8 @@ namespace Turn
         public override void Unsubscribe()
         {
             BpEventbus.SettingEvents.OnBpTypeSet -= GetBpSelector;
-            incomingData.RestorePreviousSelectionColors();
             bpSelector.Unsubscribe();
+            incomingData.RestorePreviousSelectionColors();
         }
 
         

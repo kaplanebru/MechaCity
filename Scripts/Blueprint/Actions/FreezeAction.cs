@@ -22,7 +22,7 @@ namespace Blueprint
         {
             var selectedTower = (int) obj[0];
             var tower = AllTowers.GetTower(selectedTower);
-            tower.ToSelectionColor();
+            tower.ToOriginalColor();
             //tower.EnableSelection();
         }
     }
