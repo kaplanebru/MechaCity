@@ -1,17 +1,29 @@
+using System.Collections.Generic;
 using Enums;
+using Teams;
 using Towers;
 using UnityEngine;
 
 namespace _Core.Turn.Selectors
 {
-    public class SelectorWithBlocker<TBlocker> : Selector<StandardSelectionColor> where TBlocker : ITeamBlocker, new()
+    public class SelectorWithBlocker<TBlocker> : Selector<StandardSelectionColor>, IBlockable where TBlocker : ITeamBlocker, new()
     {
         public TBlocker Blocker = new TBlocker();
+        public void TryBlock(Dictionary<TeamState, Team> teams)
+        {
+            Blocker.BlockSelection(teams);
+        }
+
+       
     }
     
-    public class BpSelectorWithBlocker<TBlocker>:  Selector<BpSelectionColor> where TBlocker : ITeamBlocker, new()
+    public class BpSelectorWithBlocker<TBlocker>:  Selector<BpSelectionColor>, IBlockable where TBlocker : ITeamBlocker, new()
     {
         public TBlocker Blocker = new TBlocker();
+        public void TryBlock(Dictionary<TeamState, Team> teams)
+        {
+            Blocker.BlockSelection(teams);
+        }
     }
     
     public class SelectorBoth : Selector<StandardSelectionColor>

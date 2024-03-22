@@ -36,7 +36,7 @@ namespace Turn
         public override void Subscribe()
         {
             mainSelector.Subscribe();
-            mainSelector.Blocker.BlockSelection(Teams);
+            mainSelector.TryBlock(Teams);
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)

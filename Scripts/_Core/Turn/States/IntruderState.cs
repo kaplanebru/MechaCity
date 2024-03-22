@@ -40,7 +40,9 @@ namespace Turn
 
         void SetSelectionMethod() //bunu bp selectora taşı
         {
-            ((BpSelectorWithBlocker<PlayerBlocker>) bpSelector).Blocker.BlockSelection(Teams);
+            IBlockable blockable = (IBlockable) bpSelector;
+            if(blockable == null) return;
+            ((IBlockable) bpSelector).TryBlock(Teams);
         }
 
         public override void Subscribe()

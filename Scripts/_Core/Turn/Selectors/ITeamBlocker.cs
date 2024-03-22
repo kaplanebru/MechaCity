@@ -5,6 +5,10 @@ using Towers;
 
 namespace _Core.Turn.Selectors
 {
+    public interface IBlockable
+    {
+        public void TryBlock(Dictionary<TeamState, Team> teams);
+    }
     public interface ITeamBlocker
     {
         public TeamState BlockedTeamState { get; set; }
