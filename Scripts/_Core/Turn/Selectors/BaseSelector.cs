@@ -1,24 +1,26 @@
 using System;
 using System.Collections.Generic;
+using _Core.Turn.Selectors;
 using Enums;
 using GameUI;
 using Network;
+using Teams;
 using Towers;
 using Turn;
 using UnityEngine;
 
 
-public abstract class BaseSelector
+public abstract class BaseSelector<T> where T : ISelectionColorSetter, new()
 {
     public List<int> Towers = new();
     public int _maxTowersInGroup = 2;
-    
+    private T selectionColorSetter = new T();
     public void Subscribe()
     {
         //Towers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
     }
-
+    
     public void StartTowers(List<int> towers)
     {
         Towers = towers;
@@ -45,11 +47,11 @@ public abstract class BaseSelector
 
         ShowCompleteButton(Towers.Count == _maxTowersInGroup);
     }
-
-    protected virtual void Select(int newSelection)
+    
+    private void Select(int newSelection)
     {
         Towers.Add(newSelection);
-        AllTowers.GetTower(newSelection).ToSelectionColor();
+        selectionColorSetter.SetColor(newSelection);
     }
 
     void Deselect(int newSelection)
@@ -85,5 +87,6 @@ public abstract class BaseSelector
     public virtual void Unsubscribe()
     {
         NetworkEventbus.InputEvents.OnObjectClicked -= GetTower;
+        AllTowers.EnableClickability(); //todo: eğer eliminated ise
     }
 }

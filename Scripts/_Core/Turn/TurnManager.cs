@@ -38,7 +38,7 @@ namespace Turn
             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
 
             NetworkEventbus.OnAllClientsSet += FirstTurn;
-            NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer += ChangeStateBySystem;
+            NetworkEventbus.RequestEvents.OnStateChangeRequestByServer += ChangeStateBySystem;
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
             
             UIEventbus.OnButtonCall += ShowButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
@@ -157,7 +157,7 @@ namespace Turn
             bpEventHandler.UnsubscribeFromBlueprintEvents();
 
             NetworkEventbus.OnAllClientsSet -= FirstTurn;
-            NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer -= ChangeStateBySystem;
+            NetworkEventbus.RequestEvents.OnStateChangeRequestByServer -= ChangeStateBySystem;
 
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnButtonCall -= ShowButtonRequest;

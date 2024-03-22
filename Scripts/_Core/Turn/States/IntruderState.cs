@@ -23,7 +23,7 @@ namespace Turn
         public override int StateId { get; set; }
         public IntruderTransferData TransferData { get; private set; } = new();
         
-        private BpSelector bpSelector; // = new ();
+        protected BpSelector bpSelector; // = new ();
         private Dictionary<SelectionType, BpSelector> selectors = new ();
 
         private BaseTurnTransferData incomingData;
@@ -33,18 +33,23 @@ namespace Turn
         {
             //bpSelector = new BpSelector();
             
-            selectors.Add(SelectionType.PlayerOnly, new BpRestrictedSelector());
-            selectors.Add(SelectionType.RivalOnly, new BpRestrictedSelector());
+            selectors.Add(SelectionType.PlayerOnly, new BpSelector());
+            selectors.Add(SelectionType.RivalOnly, new BpSelector());
             selectors.Add(SelectionType.All, new BpSelector());
             selectors.Add(SelectionType.None, null);
+        }
+
+        void SetSelectionMethod() //bunu bp selectora taşı
+        {
+           //bpSelector.BlockNonSelectables(Teams[TeamState.CurrentTeam].Data);
         }
 
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
-            bpSelector = selectors[SelectionType.RivalOnly];
+            bpSelector = selectors[SelectionType.RivalOnly]; //TODO: test
             bpSelector.Subscribe();
-            ((BpRestrictedSelector)bpSelector).EliminateSpecificNonSelectables(Teams[TeamState.CurrentTeam].Data);
+            SetSelectionMethod();
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)

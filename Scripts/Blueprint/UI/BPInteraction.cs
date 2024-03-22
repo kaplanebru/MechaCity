@@ -73,9 +73,9 @@ namespace Blueprint
                 transform.DOLocalMoveY(startHeight, selectDuration/2);
             });
             
-            
-            NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(_currentBpType);
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder); //todo: döngüye sokmadan bp managera nasıl taşınabilir?
+            BpEventbus.UIEvents.OnInteraction?.Invoke(_currentBpType);
+            // NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(_currentBpType);
+            // NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder); //todo: döngüye sokmadan bp managera nasıl taşınabilir?
         }
 
         

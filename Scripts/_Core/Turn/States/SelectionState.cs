@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Core.Turn.Selectors;
 using Core;
 using Enums;
 using Network;
@@ -21,7 +22,7 @@ namespace Turn
     public class SelectionState : BaseTurnState, ITransferDataHolder<SelectionTransferData>
     {
         
-        private SelectionStateSelector mainSelector;
+        private SelectorPlayerOnly mainSelector;
         public SelectionTransferData TransferData { get; private set; } = new();
 
         public override TurnStateType StateType => TurnStateType.Selection;
@@ -29,13 +30,13 @@ namespace Turn
 
         public override void Register()
         {
-            mainSelector =  new SelectionStateSelector();
+            mainSelector = new SelectorPlayerOnly();
         }
 
         public override void Subscribe()
         {
             mainSelector.Subscribe();
-            mainSelector.EliminateSpecificNonSelectables(Teams[TeamState.RivalTeam].Data);
+            mainSelector.SelectionBlocker.BlockSelection(Teams);
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)

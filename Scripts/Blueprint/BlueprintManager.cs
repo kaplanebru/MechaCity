@@ -25,6 +25,8 @@ namespace Blueprint
         public void Subscribe()
         {
             TurnStatusEvents.OnTurnEnding += UpdateBpTrackers;
+
+            BpEventbus.UIEvents.OnInteraction += StartBpSelection;
             
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpForAllClients;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
@@ -34,6 +36,19 @@ namespace Blueprint
             bpTrackerList.Subscribe();
         }
 
+        private void StartBpSelection(BpType type)
+        {
+            NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type);
+            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
+        }
+        
+        private void SetCurrentBpForAllClients(BpType type) //network function
+        {
+            currentBlueprint = bpHolder.AllBlueprints[type]; //execution için 2 tarafta da bunun set edilmesi gerek
+            BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
+        }
+
+       
         private void UpdateBpTrackers()
         {
             bpTrackerList.ReduceValueForAll();
@@ -59,11 +74,7 @@ namespace Blueprint
            bpHolder.AllBlueprints[type].TryRestoreAction(selectedItem); //todo: bug. sadece 3 tane bp var. ama aynı bpnin birden fazla kullanımı olmalı, ve selected itemlerı farklı olmalı
         }
 
-        private void SetCurrentBpForAllClients(BpType type) //network function
-        {
-            currentBlueprint = bpHolder.AllBlueprints[type]; //execution için 2 tarafta da bunun set edilmesi gerek
-            BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
-        }
+      
         
         void Start()
         {
@@ -90,6 +101,7 @@ namespace Blueprint
 
         public void Unsubscribe()
         {
+            BpEventbus.UIEvents.OnInteraction -= StartBpSelection;
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
             NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpForAllClients;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem -= ExecuteBp;

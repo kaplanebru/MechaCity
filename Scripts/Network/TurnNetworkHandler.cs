@@ -18,12 +18,12 @@ namespace Network
 
         public override void OnNetworkSpawn()
         {
-            turnStateType.OnValueChanged += CompleteStateBegin; //owner ve clone'u değişir
+            turnStateType.OnValueChanged += StateChangeBegin; //owner ve clone'u değişir
             
 
             if (IsOwner)
             {
-                NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += CompleteStateBeginServerRpc;
+                NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += StateChangeBeginServerRpc;
                 
                 NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser += ProcessBpSelectionServerRpc;
                 NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser += ProcessBpExecutionServerRpc;
@@ -60,14 +60,14 @@ namespace Network
         #region Complete Turn Handle
 
         [ServerRpc]
-        void CompleteStateBeginServerRpc(TurnStateType nextType) //(TurnStateType lastType)
+        void StateChangeBeginServerRpc(TurnStateType nextType) //(TurnStateType lastType)
         {
             turnStateType.Value = nextType;
         }
 
-        private void CompleteStateBegin(TurnStateType previousvalue, TurnStateType newvalue)
+        private void StateChangeBegin(TurnStateType previousvalue, TurnStateType newvalue)
         {
-            NetworkEventbus.RequestEvents.OnCompleteStateRequestByServer?.Invoke(newvalue);
+            NetworkEventbus.RequestEvents.OnStateChangeRequestByServer?.Invoke(newvalue);
         }
 
         #endregion
@@ -75,10 +75,10 @@ namespace Network
 
         public override void OnNetworkDespawn()
         {
-            turnStateType.OnValueChanged -= CompleteStateBegin;
+            turnStateType.OnValueChanged -= StateChangeBegin;
             if (IsOwner)
             {
-                NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser -= CompleteStateBeginServerRpc;
+                NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser -= StateChangeBeginServerRpc;
                 
                 NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser -= ProcessBpSelectionServerRpc;
                 NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser -= ProcessBpExecutionServerRpc;

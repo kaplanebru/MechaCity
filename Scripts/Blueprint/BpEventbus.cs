@@ -29,6 +29,7 @@ public static class BpEventbus
     
     public static class UIEvents
     {
+        public static Action<BpType> OnInteraction;
         public static Action<BpType> OnBpInstalled;
         public static Action<BpType> OnBpInstallBegin;
     }
