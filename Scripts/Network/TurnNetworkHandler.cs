@@ -10,6 +10,22 @@ using Testing;
 
 namespace Network
 {
+    public class TurnStateData
+    {
+        public TurnStateType StateType;
+        public BpType BpType;
+
+        public TurnStateData(TurnStateType stateType, BpType bpType)
+        {
+            StateType = stateType;
+            BpType = bpType;
+        }
+
+        public TurnStateData(TurnStateType stateType)
+        {
+            StateType = stateType;
+        }
+    }
     public class TurnNetworkHandler : NetworkBehaviour
     {
         public NetworkVariable<TurnStateType> turnStateType = new(TurnStateType.Exit);

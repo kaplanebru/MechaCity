@@ -7,6 +7,10 @@ using UnityEngine;
 
 public static class BpEventbus 
 {
+    public class SettingEvents
+    {
+        public static Action<SelectionType> OnBpTypeSet;
+    }
     public class ActionEvents
     {
         public static Action OnReverseActionTriggered;

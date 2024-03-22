@@ -14,7 +14,6 @@ public class TurnHelper
     public Dictionary<TeamState, Team> TurnTeams;
     
     public TeamType CurrentTeamType = TeamType.Team1;
-
     
     public void GetPreviousStateData(BaseTurnState previousState, BaseTurnState currentState)
     {

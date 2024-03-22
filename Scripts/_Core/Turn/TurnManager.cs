@@ -33,6 +33,7 @@ namespace Turn
         private bool firstTurn = true;
 
 
+
         private void OnEnable()
         {
             Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
@@ -42,7 +43,7 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
             
             UIEventbus.OnButtonCall += ShowButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
-            UIEventbus.OnButtonClicked += StateChangerClick;
+            UIEventbus.OnButtonClicked += StateChangeRequestByUser;
             
             bpEventHandler = new BlueprintEventHandler(this);
         }
@@ -72,7 +73,7 @@ namespace Turn
         void FirstTurn(params object[] args)
         {
             Initialize();
-
+            
             _combatHelper = ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).combatHelper;
             _combatHelper.Subscribe(null);
             _combatHelper.SetCombatPairs();
@@ -92,28 +93,29 @@ namespace Turn
         void SetFirstState()
         {
             if (firstTurn)
-                SetNewState(_stateHolder.GetStateByType(TurnStateType.Selection)); 
+                SetNewState(_stateHolder.GetStateByType(TurnStateType.Selection));
             else
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection);
+            
         }
         
-        private void StateChangerClick()
+        private void StateChangeRequestByUser()
         {
             currentState.SendOutsideSelectedElements();
             
             if(currentState.StateType == TurnStateType.Intruder)
-                PreviousStateRequestByUser();
+                GetPreviousState();
             else
-                NextStateRequestByUser();
+                GetNextState();
         }
 
-        public void NextStateRequestByUser()
+        public void GetNextState()
         {
             var nextType = _stateHolder.States[turnHelper.GetNextStateId(currentState.StateId)].StateType;
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(nextType);
-        }
 
-        public void PreviousStateRequestByUser()
+        }
+        public void GetPreviousState()
         {
             var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(previousType);
@@ -161,7 +163,7 @@ namespace Turn
 
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnButtonCall -= ShowButtonRequest;
-            UIEventbus.OnButtonClicked -= StateChangerClick;
+            UIEventbus.OnButtonClicked -= StateChangeRequestByUser;
 
         }
 

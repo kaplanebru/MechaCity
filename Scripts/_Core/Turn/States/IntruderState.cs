@@ -38,19 +38,21 @@ namespace Turn
             selectors.Add(SelectionType.None, null);
         }
 
-        void SetSelectionMethod() //bunu bp selectora taşı
-        {
-            IBlockable blockable = (IBlockable) bpSelector;
-            if(blockable == null) return;
-            ((IBlockable) bpSelector).TryBlock(Teams);
-        }
-
+    
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
-            bpSelector = selectors[SelectionType.RivalOnly]; //TODO: test
+            BpEventbus.SettingEvents.OnBpTypeSet += GetBpSelector;
+        }
+
+        private void GetBpSelector(SelectionType selectionType)
+        {
+            bpSelector = selectors[selectionType];
+            if(bpSelector==null) return;
+            
             bpSelector.Subscribe();
             SetSelectionMethod();
+            bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
@@ -58,8 +60,16 @@ namespace Turn
             incomingData = data;
             TransferData.Towers = data.Towers;
             
-            bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
+           // bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
         }
+        
+        void SetSelectionMethod() //bunu bp selectora taşı
+        {
+            IBlockable blockable = (IBlockable) bpSelector;
+            if(blockable == null) return;
+            ((IBlockable) bpSelector).TryBlock(Teams);
+        }
+
 
         public override void SendOutsideSelectedElements()
         {
@@ -69,6 +79,7 @@ namespace Turn
 
         public override void Unsubscribe()
         {
+            BpEventbus.SettingEvents.OnBpTypeSet -= GetBpSelector;
             incomingData.RestorePreviousSelectionColors();
             bpSelector.Unsubscribe();
         }

@@ -28,7 +28,7 @@ namespace Blueprint
 
             BpEventbus.UIEvents.OnInteraction += StartBpSelection;
             
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpForAllClients;
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
             
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
@@ -38,14 +38,16 @@ namespace Blueprint
 
         private void StartBpSelection(BpType type)
         {
+           // NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type);
+            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder); //new TurnStateData(TurnStateType.Intruder, type)
             NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type);
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
         }
         
-        private void SetCurrentBpForAllClients(BpType type) //network function
+        private void SetCurrentBpByServer(BpType type) //network function
         {
             currentBlueprint = bpHolder.AllBlueprints[type]; //execution için 2 tarafta da bunun set edilmesi gerek
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
+            BpEventbus.SettingEvents.OnBpTypeSet?.Invoke(currentBlueprint.SelectionType);
         }
 
        
@@ -103,7 +105,7 @@ namespace Blueprint
         {
             BpEventbus.UIEvents.OnInteraction -= StartBpSelection;
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpForAllClients;
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem -= ExecuteBp;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
