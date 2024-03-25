@@ -20,17 +20,29 @@ namespace Blueprint
 
         public int Lifespan { get; set; }
         public int RelatedTower { get; set; }
+
+        private bool skipMainTurn = true;
         
         public void ReduceValue()
         {
-            Debug.Log("lifespan: "+Lifespan);
-            Lifespan--;
-            if (Lifespan < 0)
+            //todo: bp'in playerı mı rivali mi etkilediğine göre lifespan geri sayılır - player oriented-rival oriented-both
+            if (skipMainTurn)
+            {
+                skipMainTurn = false;
+            }
+            else
+            {
+                skipMainTurn = true;
+                Lifespan--;
+            }
+
+            if (Lifespan <= 0)
             {
                 Debug.Log("expired");
                 BpEventbus.LifespanEvents.OnRestore?.Invoke(Type, RelatedTower);//bpmanagera gidiyor sorun yok
                 BpEventbus.LifespanEvents.OnExpiredTracker?.Invoke(this);
             }
+            Debug.Log("lifespan: "+Lifespan);
         }
     }
 }
