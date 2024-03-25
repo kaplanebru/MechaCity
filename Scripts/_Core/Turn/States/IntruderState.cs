@@ -42,7 +42,7 @@ namespace Turn
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
-            BpEventbus.SettingEvents.OnBpTypeSet += GetBpSelector; //permanent de olabilir
+            BpEventbus.SettingEvents.OnCurrentBpSet += GetBpSelector; //permanent de olabilir
         }
         
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
@@ -78,7 +78,7 @@ namespace Turn
 
         public override void Unsubscribe()
         {
-            BpEventbus.SettingEvents.OnBpTypeSet -= GetBpSelector;
+            BpEventbus.SettingEvents.OnCurrentBpSet -= GetBpSelector;
             bpSelector.Unsubscribe();
             incomingData.RestorePreviousSelectionColors();
         }

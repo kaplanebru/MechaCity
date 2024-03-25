@@ -9,7 +9,7 @@ public static class BpEventbus
 {
     public class SettingEvents
     {
-        public static Action<SelectionType, int> OnBpTypeSet;
+        public static Action<SelectionType, int> OnCurrentBpSet;
     }
     public class ActionEvents
     {
@@ -33,7 +33,7 @@ public static class BpEventbus
     
     public static class UIEvents
     {
-        public static Action<BpType, int, int> OnInteraction;
+        public static Action<BpType, int> OnInteraction;
         public static Action<BpType> OnBpInstalled;
         public static Action<BpType> OnBpInstallBegin;
     }

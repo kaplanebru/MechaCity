@@ -13,6 +13,8 @@ namespace Blueprint
        
         public BpType currentBpType;
         public BlueprintData Data;
+        public int level = 1;
+        
         public BPInteraction bpInteraction;
         public SpriteRenderer spriteHolder;
 
@@ -30,6 +32,7 @@ namespace Blueprint
             Data = data;
             SetImage();
             SetTexts();
+            Data.Level = level; //todo: check, ref type diye burdan yapılabilir diye düşündüm
             bpInteraction.Setup(data);
         }
 

@@ -36,21 +36,22 @@ namespace Blueprint
             bpTrackerList.Subscribe();
         }
 
-        private void StartBpSelection(BpType type, int maxTowerSelection, int lifespan)
+        private void StartBpSelection(BpType type, int level)
         {
            // NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type);
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder); //new TurnStateData(TurnStateType.Intruder, type)
-            NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type, maxTowerSelection, lifespan);
+            NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type, level);
         }
         
-        private void SetCurrentBpByServer(BpType type,int maxTowerSelection, int lifespan) //network function
+        private void SetCurrentBpByServer(BpType type,int level) //network function
         {
             currentBlueprint = bpHolder.AllBlueprints[type]; //execution için 2 tarafta da bunun set edilmesi gerek
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
 
-            currentBlueprint.MaxSelectionAmount = maxTowerSelection;
-            currentBlueprint.Lifespan = lifespan;
-            BpEventbus.SettingEvents.OnBpTypeSet?.Invoke(currentBlueprint.SelectionType, currentBlueprint.MaxSelectionAmount);
+            currentBlueprint.Level = level;
+            // currentBlueprint.MaxSelectionAmount = maxTowerSelection;
+            // currentBlueprint.Lifespan = lifespan;
+            BpEventbus.SettingEvents.OnCurrentBpSet?.Invoke(currentBlueprint.SelectionType, currentBlueprint.MaxSelectionAmount);
         }
 
        

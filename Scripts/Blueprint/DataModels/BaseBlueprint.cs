@@ -8,6 +8,13 @@ namespace Blueprint
         public abstract BpType Type { get; set; }
 
         public abstract SelectionType SelectionType { get; set; }
+
+        public virtual int Level
+        {
+            
+            set => Lifespan = value; //duruma göre value+1 override
+        }
+
         public abstract int Lifespan {get; set; } //todo: lifespan da değişken olacak burda olmamalı
         
         public abstract int MaxSelectionAmount { get; set; }

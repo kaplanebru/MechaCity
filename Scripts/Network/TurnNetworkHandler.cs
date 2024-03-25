@@ -59,16 +59,16 @@ namespace Network
         }
 
         [ServerRpc]
-        private void ProcessBpSelectionServerRpc(BpType bpType, int maxTowerSelection, int lifespan)
+        private void ProcessBpSelectionServerRpc(BpType bpType, int level)
         {
-            ProcessBpSelectionClientRpc(bpType, maxTowerSelection,lifespan);
+            ProcessBpSelectionClientRpc(bpType, level);
         }
 
         [ClientRpc]
-        void ProcessBpSelectionClientRpc(BpType bpType, int maxTowerSelection, int lifespan)
+        void ProcessBpSelectionClientRpc(BpType bpType, int level)
         {
            // print("owner");  //2 ownera da 1 kez gidiyor
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer?.Invoke(bpType, maxTowerSelection, lifespan);
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer?.Invoke(bpType, level);
            
         }
 

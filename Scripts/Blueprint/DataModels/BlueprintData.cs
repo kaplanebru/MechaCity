@@ -25,6 +25,7 @@ namespace DataModels
         [Header("Turn Related Data")]
         public int Lifespan = 1;
         public int MaxTower = 1;
+        public int Level = 1;
 
     }
 
