@@ -47,7 +47,7 @@ namespace Blueprint
         {
             currentBlueprint = bpHolder.AllBlueprints[type]; //execution için 2 tarafta da bunun set edilmesi gerek
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
-            BpEventbus.SettingEvents.OnBpTypeSet?.Invoke(currentBlueprint.SelectionType);
+            BpEventbus.SettingEvents.OnBpTypeSet?.Invoke(currentBlueprint.SelectionType, currentBlueprint.MaxSelectionAmount);
         }
 
        

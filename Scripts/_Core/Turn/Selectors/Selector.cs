@@ -13,17 +13,21 @@ using UnityEngine;
 public class Selector<T> where T : ISelectionColorSetter, new()
 {
     public List<int> Towers = new();
-    public int _maxTowersInGroup = 2;
+    public int MaxTowersInGroup = 2;
     private T selectionColorSetter = new T();
     public void Subscribe()
     {
         //Towers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
     }
-    
     public void StartTowers(List<int> towers)
     {
         Towers = towers;
+    }
+    
+    public void SetMaxTowers(int amount)
+    {
+        MaxTowersInGroup = amount;
     }
 
     private void GetTower(params object[] args)
@@ -32,7 +36,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
 
         if (SelectedTwice(towerId)) return;
 
-        if (Towers.Count == _maxTowersInGroup)
+        if (Towers.Count == MaxTowersInGroup)
             ResetSelectionGroup();
 
         HandleSelection(true, towerId);
@@ -45,7 +49,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         else
             Deselect(newSelection);
 
-        ShowCompleteButton(Towers.Count == _maxTowersInGroup);
+        ShowCompleteButton(Towers.Count == MaxTowersInGroup);
     }
     
     private void Select(int newSelection)
@@ -67,7 +71,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
 
     void ResetSelectionGroup()
     {
-        for (int i = 0; i < _maxTowersInGroup; i++)
+        for (int i = 0; i < MaxTowersInGroup; i++)
         {
             HandleSelection(false, Towers[0]);
         }

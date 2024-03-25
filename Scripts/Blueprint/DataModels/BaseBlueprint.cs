@@ -9,6 +9,8 @@ namespace Blueprint
 
         public abstract SelectionType SelectionType { get; set; }
         public abstract int Lifespan {get; set; } //todo: lifespan da değişken olacak burda olmamalı
+        
+        public abstract int MaxSelectionAmount { get; set; }
         public abstract void TryTakeAction(int[] selectedItems);
 
         public abstract void TryRestoreAction(int selectedItem);

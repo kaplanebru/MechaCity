@@ -9,7 +9,7 @@ public static class BpEventbus
 {
     public class SettingEvents
     {
-        public static Action<SelectionType> OnBpTypeSet;
+        public static Action<SelectionType, int> OnBpTypeSet;
     }
     public class ActionEvents
     {

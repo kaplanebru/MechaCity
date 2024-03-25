@@ -44,23 +44,24 @@ namespace Turn
             AllTowers.ResetTowerSelectionColors();
             BpEventbus.SettingEvents.OnBpTypeSet += GetBpSelector; //permanent de olabilir
         }
-
-        private void GetBpSelector(SelectionType selectionType)
+        
+        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
+        {
+            incomingData = data;
+            TransferData.Towers = data.Towers;
+            
+            // bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
+        }
+        
+        private void GetBpSelector(SelectionType selectionType, int maxSelectionAmount)
         {
             bpSelector = selectors[selectionType];
             if(bpSelector==null) return;
             
             bpSelector.Subscribe();
             SetBlocking();
+            bpSelector.SetMaxTowers(maxSelectionAmount);
             bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
-        }
-
-        public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
-        {
-            incomingData = data;
-            TransferData.Towers = data.Towers;
-            
-           // bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
         }
         
         void SetBlocking() 
@@ -69,8 +70,7 @@ namespace Turn
             if(blockable == null) return;
             ((IBlockable) bpSelector).TryBlock(Teams);
         }
-
-
+        
         public override void SendOutsideSelectedElements()
         {
             NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(bpSelector.Towers.ToArray());
