@@ -13,8 +13,9 @@ namespace Blueprint
             foreach (var selectedTower in selectedTowers)
             {
                 var tower = AllTowers.GetTower(selectedTower);
+                
                 tower.ToFreezeColor();
-                //tower.DisableSelection();
+                tower.Data.BpTowerData.IsFreezing = true;
             }
         }
 
@@ -22,8 +23,9 @@ namespace Blueprint
         {
             var selectedTower = (int) obj[0];
             var tower = AllTowers.GetTower(selectedTower);
+            
             tower.ToOriginalColor();
-            //tower.EnableSelection();
+            tower.Data.BpTowerData.IsFreezing = false;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Blueprint
         public override void TryTakeAction(int[] selectedItems)
         {
             BpAction.Execute(selectedItems);
+            
         }
 
         public override void TryRestoreAction(int selectedItem)

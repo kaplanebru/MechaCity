@@ -1,3 +1,4 @@
+using Blueprint;
 using Clicks;
 using GameUI;
 using UnityEngine;
@@ -15,7 +16,6 @@ namespace Towers
         public TowerParts towerParts;
         public ClickHandler clickHandler;
 
-        
 
         private void OnEnable()
         {
@@ -29,27 +29,23 @@ namespace Towers
             Data.Health = ConstantData.StartHealth;
             Data.DamagePower = ConstantData.DamagePower;
             RestoreBullets();
-            
+
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
             clickHandler.SetClickables(Data.UniqID);
-            SetTeam(teamTowerData);//for tower and clickables
+            Data.BpTowerData = new BpTowerData(Data.UniqID);
+            SetTeam(teamTowerData); //for tower and clickables
         }
 
         public void SetTeam(TeamTowerData teamTowerData)
         {
             Data.TeamTowerData = teamTowerData;
-            //towerParts.SetColor(teamTowerData.DefaultMaterial);
             ToOriginalColor();
             clickHandler.SetClickableTeams(teamTowerData.TeamType);
         }
 
-        // public void ToGivenColor(Material givenMat)
-        // {
-        //     towerParts.SetColor(givenMat);
-        // }
-
         public void EnableSelection()
         {
+            if(!Data.IsClickable) return;
             clickHandler.EnableSelection();
         }
 
@@ -82,5 +78,10 @@ namespace Towers
         {
             Data.BulletAmount = ConstantData.MaxBullet;
         }
+        
+        // public void ToGivenColor(Material givenMat)
+        // {
+        //     towerParts.SetColor(givenMat);
+        // }
     }
 }

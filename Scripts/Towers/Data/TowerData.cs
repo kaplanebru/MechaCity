@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Blueprint;
 using UnityEngine;
 
 
@@ -17,23 +18,7 @@ namespace Towers
         public TeamTowerData TeamTowerData;
         public List<int> LinkedTowerIDs = new();
         public bool CanShoot { get; private set; }
-     
-
-        // private bool isClickable = true;
-        // public bool IsClickable
-        // {
-        //     get => isClickable;
-        //     set
-        //     {
-        //         isClickable = value;
-        //         if (!isClickable)
-        //         {
-        //             Eventbus.
-        //         }
-        //     }
-        // }
-
-
+        
         [SerializeField] private int _bulletAmountt = 1;
         public int BulletAmount
         {
@@ -55,25 +40,16 @@ namespace Towers
         }
 
         public int DamagePower;
-
-        public TowerData(int uniqID)// float height, int health, int bulletAmount, int damagePower) //damage amount later
-        {
-            UniqID = uniqID;
-            // Height = fightData.height;
-            // Health = fightData.health;
-            // BulletAmount = fightData.bulletAmount;
-            // DamagePower = fightData.damagePower;
-        }
+        public bool IsClickable = true;
+        public BpTowerData BpTowerData;
+        
+        // public TowerData(int uniqID)
+        // {
+        //     UniqID = uniqID;
+        //     BpTowerData = new BpTowerData(uniqID);
+        //     Debug.Log(BpTowerData);
+        // }
     }
-    
-    // [Serializable]
-    // public class TowerFightData
-    // {
-    //     public float height;
-    //     public int health;
-    //     public int bulletAmount;
-    //     public int damagePower;
-    // }
 
     
 }

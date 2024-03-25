@@ -61,6 +61,7 @@ MonoBehaviour:
     _bulletAmountt: 0
     _health: 1
     DamagePower: 0
+    IsClickable: 1
   towerParts: {fileID: 0}
   clickHandler: {fileID: 0}
 --- !u!114 &7676847151417115740
