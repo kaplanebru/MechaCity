@@ -15,9 +15,16 @@ namespace DataModels
         public Color Color;
         public Sprite Sprite;
         public Color GlowColor;
-        public string Title;
+        
+        //TODO: değişken dataya göre belirlenir
+        public string Title; //örn 2 tur 1 tower freeze
         public string Description;
         public string Instruction;
+        
+        //Değişken Data
+        [Header("Turn Related Data")]
+        public int Lifespan = 1;
+        public int MaxTower = 1;
 
     }
 

@@ -1,5 +1,6 @@
 
 using System;
+using DataModels;
 using DG.Tweening;
 using Enums;
 using Network;
@@ -21,12 +22,12 @@ namespace Blueprint
         public float selectDuration = 1;
         public float selectY = 0.1f;
 
-        private BpType _currentBpType;
+        private BlueprintData _currentBpData;
         private RotationEffect _rotationEffect;
         
-        public void Setup(BpType currentType)
+        public void Setup(BlueprintData currentData) //belki de burda olmamalı
         {
-            _currentBpType = currentType;
+            _currentBpData = currentData;
             Initialize();
         }
 
@@ -73,9 +74,8 @@ namespace Blueprint
                 transform.DOLocalMoveY(startHeight, selectDuration/2);
             });
             
-            BpEventbus.UIEvents.OnInteraction?.Invoke(_currentBpType);
-            // NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(_currentBpType);
-            // NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder); //todo: döngüye sokmadan bp managera nasıl taşınabilir?
+            BpEventbus.UIEvents.OnInteraction?.Invoke(_currentBpData.Type, _currentBpData.MaxTower, _currentBpData.Lifespan); //sadece manager dinliyor, slota event atamaz bütün slotlara gider
+            
         }
 
         

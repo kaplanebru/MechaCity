@@ -49,8 +49,6 @@ namespace Turn
         {
             incomingData = data;
             TransferData.Towers = data.Towers;
-            
-            // bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
         }
         
         private void GetBpSelector(SelectionType selectionType, int maxSelectionAmount)
@@ -61,7 +59,8 @@ namespace Turn
             bpSelector.Subscribe();
             SetBlocking();
             bpSelector.SetMaxTowers(maxSelectionAmount);
-            bpSelector.StartTowers(new List<int>()); //TODO : BU towerları bir şekilde manager'a göndermesi lazım
+            bpSelector.StartTowers(new List<int>());
+            //TODO: bp towers için resetlenen bir list tutulabilir
         }
         
         void SetBlocking() 

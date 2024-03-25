@@ -30,7 +30,7 @@ namespace Blueprint
             Data = data;
             SetImage();
             SetTexts();
-            bpInteraction.Setup(currentBpType);
+            bpInteraction.Setup(data);
         }
 
         public void SetType(BpType type)

@@ -26,7 +26,7 @@ namespace Blueprint
         {
             TurnStatusEvents.OnTurnEnding += UpdateBpTrackers;
 
-            BpEventbus.UIEvents.OnInteraction += StartBpSelection;
+            BpEventbus.UIEvents.OnInteraction += StartBpSelection; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
             
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer;
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
@@ -36,17 +36,20 @@ namespace Blueprint
             bpTrackerList.Subscribe();
         }
 
-        private void StartBpSelection(BpType type)
+        private void StartBpSelection(BpType type, int maxTowerSelection, int lifespan)
         {
            // NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type);
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder); //new TurnStateData(TurnStateType.Intruder, type)
-            NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type);
+            NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type, maxTowerSelection, lifespan);
         }
         
-        private void SetCurrentBpByServer(BpType type) //network function
+        private void SetCurrentBpByServer(BpType type,int maxTowerSelection, int lifespan) //network function
         {
             currentBlueprint = bpHolder.AllBlueprints[type]; //execution için 2 tarafta da bunun set edilmesi gerek
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
+
+            currentBlueprint.MaxSelectionAmount = maxTowerSelection;
+            currentBlueprint.Lifespan = lifespan;
             BpEventbus.SettingEvents.OnBpTypeSet?.Invoke(currentBlueprint.SelectionType, currentBlueprint.MaxSelectionAmount);
         }
 
