@@ -36,6 +36,7 @@ public static class BpEventbus
         public static Action<BpType, int> OnInteraction;
         public static Action<BpType> OnBpInstalled;
         public static Action<BpType> OnBpInstallBegin;
+        public static Action OnBpReset;
     }
     
  

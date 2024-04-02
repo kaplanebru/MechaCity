@@ -33,6 +33,8 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatEnding += DisableCursor;
 
         BpEventbus.UIEvents.OnBpInstallBegin += SetupAndInstall;
+        BpEventbus.UIEvents.OnBpReset += ResetBpImage;
+        
         BpEventbus.SubscriberEvents.OnReverseAction += ReverseAngle;
 
         installEffect = GetComponentInChildren<BpInstallEffect>();
@@ -81,9 +83,9 @@ public class CombatCursor : MonoBehaviour
             ()=> BpEventbus.UIEvents.OnBpInstalled?.Invoke(type));
     }
 
-    void ResetBp()
+    public void ResetBpImage()
     {
-        cursorSpriteHandler.Reset();
+        cursorSpriteHandler.ResetBpImage();
     }
 
     void EnableLine()
@@ -118,6 +120,8 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatEnding -= DisableCursor;
         
         BpEventbus.UIEvents.OnBpInstallBegin -= SetupAndInstall;
+        BpEventbus.UIEvents.OnBpReset -= ResetBpImage;
+        
         BpEventbus.SubscriberEvents.OnReverseAction -= ReverseAngle;
     }
 }

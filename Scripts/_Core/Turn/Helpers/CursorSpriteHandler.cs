@@ -32,9 +32,12 @@ public class CursorSpriteHandler
    
   
 
-   public void Reset()
+   public void ResetBpImage()
    {
-      currentBpData = null;
-      _spriteRenderer.sprite = null;
+      _spriteTransform.DOScale(Vector3.zero, .4f).OnComplete(() =>
+      {
+         currentBpData = null;
+         _spriteRenderer.sprite = null;
+      });
    }
 }

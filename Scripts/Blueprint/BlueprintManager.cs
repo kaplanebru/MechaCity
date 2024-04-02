@@ -73,6 +73,8 @@ namespace Blueprint
                 var tracker = bpTrackerList.CreateTracker(currentBlueprint.Lifespan, item, currentBlueprint.Type);
                 BpEventbus.LifespanEvents.OnTrackerRequest?.Invoke(tracker);
             }
+            
+            BpEventbus.UIEvents.OnBpReset?.Invoke();
         }
 
         private void RestoreFromBp(BpType type, int selectedItem)
