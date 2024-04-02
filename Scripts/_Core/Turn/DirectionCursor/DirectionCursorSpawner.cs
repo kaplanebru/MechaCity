@@ -10,7 +10,8 @@ public class DirectionCursorSpawner : MonoBehaviour
 {
     public DirectionCursor cursorPrefab;
     public List<DirectionCursor> directionCursors;
-
+    
+    public int heightOffset = 0;
     private void OnEnable()
     {
         TowerEvents.OnTowersCreated += Initialize;
@@ -26,7 +27,7 @@ public class DirectionCursorSpawner : MonoBehaviour
     {
         for (int i = 0; i < AllTowers.TowersCount; i++)
         {
-            directionCursors.Add(Instantiate(cursorPrefab));
+            directionCursors.Add(Instantiate(cursorPrefab, transform));
             directionCursors.Last().id = i;
         }
     }
@@ -39,9 +40,9 @@ public class DirectionCursorSpawner : MonoBehaviour
             var pos1 = AllTowers.GetTower(i).transform.position;
             var pos2 = AllTowers.GetTower((i + 1) % AllTowers.TowersCount).transform.position;
             
-            cursor.transform.position = (pos1 + pos2) / 2;
+            cursor.transform.localPosition = (pos1 + pos2) / 2;
             cursor.transform.rotation = Quaternion.LookRotation((pos2 - pos1).normalized);
-            cursor.transform.position += Vector3.up * 0.5f; //temp
+            cursor.transform.localPosition += Vector3.up * heightOffset; //temp
         }
     }
 
