@@ -48,6 +48,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4363584586811309161}
+  - component: {fileID: 201240100367994110}
   m_Layer: 0
   m_Name: DirectionCursorSpawner
   m_TagString: Untagged
@@ -70,6 +71,20 @@ Transform:
   m_Father: {fileID: 5579547957973982615}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &201240100367994110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837179663960497143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20949ca840647a849a66a69b28faf374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorPrefab: {fileID: 1534569427719832472, guid: 4429a3e1104a9184aabcd77481d67666, type: 3}
+  directionCursors: []
 --- !u!1001 &286488164957942564
 PrefabInstance:
   m_ObjectHideFlags: 0
