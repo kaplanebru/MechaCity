@@ -15,12 +15,13 @@ public class DirectionCursorSpawner : MonoBehaviour
     private void OnEnable()
     {
         TowerEvents.OnTowersCreated += Initialize;
+        Eventbus.CombatEvents.OnPairsSet += SetPositions;
     }
 
     public void Initialize()
     {
         CreateCursors();
-        SetPositions();
+        //SetPositions();
     }
 
     void CreateCursors()
@@ -34,6 +35,7 @@ public class DirectionCursorSpawner : MonoBehaviour
 
     void SetPositions()
     {
+        print("set cursors");
         for (int i = 0; i < AllTowers.TowersCount; i++)
         {
             var cursor = directionCursors[i];
@@ -45,10 +47,12 @@ public class DirectionCursorSpawner : MonoBehaviour
             cursor.transform.localPosition += Vector3.up * heightOffset; //temp
         }
     }
+    
 
     private void OnDisable()
     {
         TowerEvents.OnTowersCreated -= Initialize;
+        Eventbus.CombatEvents.OnPairsSet -= SetPositions;
     }
 
     //o zaman cursorların towerlardan haberi olmalı

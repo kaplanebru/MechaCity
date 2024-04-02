@@ -49,8 +49,6 @@ namespace Blueprint
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
 
             currentBlueprint.Level = level;
-            // currentBlueprint.MaxSelectionAmount = maxTowerSelection;
-            // currentBlueprint.Lifespan = lifespan;
             BpEventbus.SettingEvents.OnCurrentBpSet?.Invoke(currentBlueprint.SelectionType, currentBlueprint.MaxSelectionAmount);
         }
 
@@ -66,15 +64,21 @@ namespace Blueprint
 
         private void ExecuteBp(int[] selectedItems)
         {
+            print("execute");
             currentBlueprint.TryTakeAction(selectedItems);
 
+            SetTracker(selectedItems);
+            
+            //BpEventbus.UIEvents.OnBpReset?.Invoke();
+        }
+
+        void SetTracker(int[] selectedItems)
+        {
             foreach (var item in selectedItems)
             {
                 var tracker = bpTrackerList.CreateTracker(currentBlueprint.Lifespan, item, currentBlueprint.Type);
                 BpEventbus.LifespanEvents.OnTrackerRequest?.Invoke(tracker);
             }
-            
-            BpEventbus.UIEvents.OnBpReset?.Invoke();
         }
 
         private void RestoreFromBp(BpType type, int selectedItem)

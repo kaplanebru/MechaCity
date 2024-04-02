@@ -861,7 +861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ef5335cecd104ab9ee485fbb0a9e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMultiplayerOn: 0
+  isMultiplayerOn: 1
   isTestingWithoutCombat: 1
 --- !u!4 &521987823
 Transform:

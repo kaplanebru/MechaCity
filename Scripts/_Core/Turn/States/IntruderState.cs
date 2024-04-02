@@ -79,7 +79,8 @@ namespace Turn
         public override void Unsubscribe()
         {
             BpEventbus.SettingEvents.OnCurrentBpSet -= GetBpSelector;
-            bpSelector.Unsubscribe();
+            if(bpSelector != null) //TODO: CHECK MİGHT CAUSE TROUBLE FOR MP
+                bpSelector.Unsubscribe();
             incomingData.RestorePreviousSelectionColors();
         }
 

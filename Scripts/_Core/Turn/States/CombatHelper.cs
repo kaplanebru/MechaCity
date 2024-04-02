@@ -56,12 +56,13 @@ namespace Turn
         public void SetCombatPairs()
         {
             combatPairsCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList(), pairsReversed);
+            Eventbus.CombatEvents.OnPairsSet?.Invoke();
         }
 
-        void ReversePairs()
+        void ReversePairs() //todo: bug, buraya uğramıyor
         {
             pairsReversed = !pairsReversed;
-            // Debug.Log("pairs reversed: " + pairsReversed);
+            Debug.Log("pairs reversed: " + pairsReversed);
             SetCombatPairs();
         }
 
