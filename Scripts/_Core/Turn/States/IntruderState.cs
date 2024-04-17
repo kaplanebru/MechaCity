@@ -5,7 +5,6 @@ using _Core.Turn.Selectors;
 using Core;
 using DataModels;
 using Enums;
-using GameUI;
 using Network;
 using Towers;
 using Turn;
@@ -58,7 +57,7 @@ namespace Turn
             
             if (selectionType == SelectionType.None)
             {
-                UIEventbus.OnButtonClicked?.Invoke();
+                Eventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
                 return;
             }
             
@@ -78,16 +77,9 @@ namespace Turn
         
         public override void ProcessExecutionWithSelection()
         {
-            if(bpSelector == null)
-                ExecutionWithoutSelection();
-            else
-                NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(bpSelector.Towers.ToArray());
+            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(bpSelector?.Towers.ToArray());
         }
-
-        void ExecutionWithoutSelection()
-        {
-            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(null);
-        }
+        
 
         public override void Unsubscribe()
         {

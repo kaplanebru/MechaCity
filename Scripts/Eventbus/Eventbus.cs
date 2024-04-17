@@ -25,7 +25,11 @@ public static class Eventbus
 
         public static Action<IEnumeratorContainer> OnCoroutineTrigger;
     }
-    
+
+    public static class StateEvents
+    {
+        public static Action OnStateChangeWithoutInteraction;
+    }
 
 
 

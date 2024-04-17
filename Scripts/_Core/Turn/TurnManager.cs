@@ -44,6 +44,7 @@ namespace Turn
             
             UIEventbus.OnButtonCall += ShowButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
             UIEventbus.OnButtonClicked += StateChangeRequestByUser;
+            Eventbus.StateEvents.OnStateChangeWithoutInteraction += StateChangeRequestByUser;
             
             bpEventHandler = new BlueprintEventHandler(this);
         }
@@ -164,7 +165,7 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnButtonCall -= ShowButtonRequest;
             UIEventbus.OnButtonClicked -= StateChangeRequestByUser;
-
+            Eventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeRequestByUser;
         }
 
        
