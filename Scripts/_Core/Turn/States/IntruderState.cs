@@ -5,6 +5,7 @@ using _Core.Turn.Selectors;
 using Core;
 using DataModels;
 using Enums;
+using GameUI;
 using Network;
 using Towers;
 using Turn;
@@ -54,7 +55,12 @@ namespace Turn
         private void GetBpSelector(SelectionType selectionType, int maxSelectionAmount)
         {
             bpSelector = selectors[selectionType];
-            if(bpSelector==null) return;
+            
+            if (selectionType == SelectionType.None)
+            {
+                UIEventbus.OnButtonClicked?.Invoke();
+                return;
+            }
             
             bpSelector.Subscribe();
             SetBlocking();
@@ -70,10 +76,17 @@ namespace Turn
             ((IBlockable) bpSelector).TryBlock(Teams);
         }
         
-        public override void SendOutsideSelectedElements()
+        public override void ProcessExecutionWithSelection()
         {
-            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(bpSelector.Towers.ToArray());
-           // NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(incomingData.StateType);
+            if(bpSelector == null)
+                ExecutionWithoutSelection();
+            else
+                NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(bpSelector.Towers.ToArray());
+        }
+
+        void ExecutionWithoutSelection()
+        {
+            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(null);
         }
 
         public override void Unsubscribe()

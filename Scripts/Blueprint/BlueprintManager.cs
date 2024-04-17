@@ -64,16 +64,14 @@ namespace Blueprint
 
         private void ExecuteBp(int[] selectedItems)
         {
-            print("execute");
             currentBlueprint.TryTakeAction(selectedItems);
-
             SetTracker(selectedItems);
-            
-            //BpEventbus.UIEvents.OnBpReset?.Invoke();
         }
 
         void SetTracker(int[] selectedItems)
         {
+            if(selectedItems == null) return;
+            
             foreach (var item in selectedItems)
             {
                 var tracker = bpTrackerList.CreateTracker(currentBlueprint.Lifespan, item, currentBlueprint.Type);

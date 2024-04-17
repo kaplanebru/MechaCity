@@ -14,7 +14,6 @@ namespace Blueprint
         public void Restore(params object[] obj)
         {
             var selectedTower = (int) obj[0];
-          
         }
     }
 }

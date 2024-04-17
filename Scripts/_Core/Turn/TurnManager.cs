@@ -101,7 +101,7 @@ namespace Turn
         
         private void StateChangeRequestByUser()
         {
-            currentState.SendOutsideSelectedElements();
+            currentState.ProcessExecutionWithSelection(); //execute bp
             
             if(currentState.StateType == TurnStateType.Intruder)
                 GetPreviousState();
