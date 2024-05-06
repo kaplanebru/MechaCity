@@ -20,6 +20,12 @@ namespace ChainInGame
         {
             ChainEvents.InGameEvents.OnOptionSet += SelectMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkedTowers += FillMachinery;
+            CommunEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
+        }
+
+        private void ResetMachinery()
+        {
+            _currentMachineryInGame.EmptyMachinery();
         }
 
         private void FillMachinery(int[] ids)
@@ -29,7 +35,7 @@ namespace ChainInGame
                 var gear = gears.FirstOrDefault(g => g.id == id);
                 if (gear != null)
                 {
-                    _currentMachineryInGame.AddToMachinery(gear.GetComponent<Interactable>());
+                    _currentMachineryInGame.AddToMachinery(gear);
                 }
             }
         }
@@ -45,17 +51,12 @@ namespace ChainInGame
             ChainEvents.InGameEvents.OnMachineriesSet?.Invoke(machineries);
             
             SetInGameMachineries();
-            CreateInteractables();
+            //CreateInteractables();
 
             _currentMachineryInGame = _machineriesInGame.First();
         }
         
-        Ray RayFromCamera() => Camera.main.ScreenPointToRay(Input.mousePosition);
-  
-        // private void Update()
-        // {
-        //     ControlInputs();
-        // }
+      
 
         void SetInGameMachineries()
         {
@@ -65,19 +66,52 @@ namespace ChainInGame
             }
         }
 
-        void CreateInteractables()
+       
+        
+        void SelectMachinery(int i)
         {
-            foreach (var gear in gears)
-            {
-                var interactable = gear.gameObject.AddComponent<Interactable>();
-                
-                int id = gear.GetComponentInChildren<GearIdentifier>().id; //temp
-                
-                interactable.Setup(gear, id);
-                interactable.gameObject.layer = LayerMask.NameToLayer("InteractableGear");
-            }
+            _currentMachineryInGame = _machineriesInGame[i];
         }
 
+        public void StopMotion()
+        {
+            _currentMachineryInGame.StopMotion();
+        }
+
+        public void StartMotion()
+        {
+            _currentMachineryInGame.StartMotion();
+        }
+
+        private void OnDisable()
+        {
+            ChainEvents.InGameEvents.OnOptionSet -= SelectMachinery;
+            CommunEventbus.ChainTurnEvents.OnLinkedTowers -= FillMachinery;
+            CommunEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
+        }
+
+        #region AvecInput
+        
+        // void CreateInteractables()
+        // {
+        //     foreach (var gear in gears)
+        //     {
+        //         var interactable = gear.gameObject.AddComponent<Interactable>();
+        //         
+        //         int id = gear.GetComponentInChildren<GearIdentifier>().id; //temp
+        //         
+        //         interactable.Setup(gear, id);
+        //         interactable.gameObject.layer = LayerMask.NameToLayer("InteractableGear");
+        //     }
+        // }
+        
+        Ray RayFromCamera() => Camera.main.ScreenPointToRay(Input.mousePosition);
+  
+        // private void Update()
+        // {
+        //     ControlInputs();
+        // }
+        
         // void ControlInputs()
         // {
         //     if (Input.GetMouseButtonDown(0))
@@ -101,27 +135,7 @@ namespace ChainInGame
         //         }
         //     }
         // }
-
-        void SelectMachinery(int i)
-        {
-            _currentMachineryInGame = _machineriesInGame[i];
-        }
-
-        public void StopMotion()
-        {
-            _currentMachineryInGame.StopMotion();
-        }
-
-        public void StartMotion()
-        {
-            _currentMachineryInGame.StartMotion();
-        }
-
-        private void OnDisable()
-        {
-            ChainEvents.InGameEvents.OnOptionSet -= SelectMachinery;
-            CommunEventbus.ChainTurnEvents.OnLinkedTowers -= FillMachinery;
-        }
+        #endregion
     }
 }
 

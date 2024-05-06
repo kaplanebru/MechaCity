@@ -63,6 +63,7 @@ namespace Turn
 
         public override void Unsubscribe()
         {
+            CommunEventbus.ChainTurnEvents.OnLinkBroken?.Invoke();
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
             AllTowers.EnableClickability();
         }

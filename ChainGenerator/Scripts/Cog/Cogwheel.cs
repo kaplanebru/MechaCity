@@ -9,6 +9,7 @@ namespace Chain
     public class Cogwheel : MonoBehaviour, CogComponent, IMachinePart
     {
         public int id;
+        public Transform parent;
         public GearData Data;
         public bool drawGizmos = false;
         public Transform cogObject;
@@ -23,6 +24,7 @@ namespace Chain
 
         private void OnEnable()
         {
+            parent = transform.parent;
 #if UNITY_EDITOR
             if (!EditorApplication.isPlaying)
             {

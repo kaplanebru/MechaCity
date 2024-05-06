@@ -18,9 +18,9 @@ namespace ChainInGame
             }
         }
         
-        public void AddToMachinery(Interactable interactable)
+        public void AddToMachinery(Cogwheel _gear)
         {
-            var gear = interactable._gear;
+            var gear = _gear;
             if(_cogHolder.cogs.Contains(gear)) return;
             
             gear.transform.SetParent(_cogHolder.transform);
@@ -29,14 +29,27 @@ namespace ChainInGame
             Regenerate();
         }
 
-        public void RemoveFromMachinery(Interactable interactable)
+        public void RemoveFromMachinery(Cogwheel _gear)
         {
-            var gear = interactable._gear;
+            var gear = _gear;
             
             gear.transform.SetParent(null);
             _cogHolder.cogs.Remove(gear);
             
             Regenerate();
+        }
+
+        public void EmptyMachinery()
+        {
+            for (var i = _cogHolder.cogs.Count - 1; i >= 0; i--)
+            {
+                var gear = _cogHolder.cogs[i];
+                gear.transform.SetParent(gear.parent);
+                _cogHolder.cogs.Remove(gear);
+            }
+
+            Regenerate();
+            //gear'ın parenti meselesi ve id'sini ayrı scriptte verebiliriz
         }
         
         void GenerateChain()
