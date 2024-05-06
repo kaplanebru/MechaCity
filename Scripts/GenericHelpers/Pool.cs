@@ -39,6 +39,7 @@ namespace GenericHelper
                 item.transform.SetParent(transform);
                 pool.Enqueue(item);
             }
+            print(pool.Count);
         }
         
 
@@ -55,17 +56,3 @@ namespace GenericHelper
         }
     }
 }
-
-//public static Pool<T> instance;
-
-//public static Pool<T> Instance;
-// {
-//     get
-//     {
-//         if (instance == null)
-//         {
-//             instance = FindObjectOfType<Pool<T>>();
-//         }
-//         return instance;
-//     }
-// }

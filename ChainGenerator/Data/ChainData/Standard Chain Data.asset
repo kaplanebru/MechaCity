@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a4bff152c3eea74589670c92100d647, type: 3}
+  m_Name: Standard Chain Data
+  m_EditorClassIdentifier: 
+  LinkInterval: 0.78
+  LinkSize: {x: 0.5, y: 0.5, z: 0.6}
+  RadiusOffset: 0.21
+  Tension: 0
+  LinksPoolPrefab: {fileID: 1126759308703328118, guid: 05814eac66f6d6c498ee860fda0ec243, type: 3}
+  SpeedMultiplier: 0.005
+  LinkRotationMultiplier: 3
+  motionDirection: 1
+  SetRadiusByGear: 1
+  SetMotionByGear: 0
+  IsMoving: 1
+  LinkRotationEffect: 1
+  OnTesting: 0

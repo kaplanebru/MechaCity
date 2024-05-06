@@ -223,6 +223,10 @@ PrefabInstance:
       propertyPath: Data.TeamTowerData
       value: 
       objectReference: {fileID: 11400000, guid: bbc84b53b875dfb4c9ba3a5ea1d7bc66, type: 2}
+    - target: {fileID: 3893642542629452098, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: id
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -266,6 +270,10 @@ PrefabInstance:
     - target: {fileID: 6095367932178840500, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8478454695056217680, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: id
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
@@ -421,6 +429,10 @@ PrefabInstance:
       propertyPath: Data.TeamTowerData
       value: 
       objectReference: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
+    - target: {fileID: 3893642542629452098, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: id
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -464,6 +476,10 @@ PrefabInstance:
     - target: {fileID: 6095367932178840500, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8478454695056217680, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: id
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
@@ -519,6 +535,10 @@ PrefabInstance:
       propertyPath: Data.TeamTowerData
       value: 
       objectReference: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
+    - target: {fileID: 3893642542629452098, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: id
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -562,6 +582,10 @@ PrefabInstance:
     - target: {fileID: 6095367932178840500, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8478454695056217680, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: id
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
@@ -613,6 +637,10 @@ PrefabInstance:
       propertyPath: Data.TeamTowerData
       value: 
       objectReference: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
+    - target: {fileID: 3893642542629452098, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: id
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -656,6 +684,10 @@ PrefabInstance:
     - target: {fileID: 6095367932178840500, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8478454695056217680, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: id
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
@@ -707,6 +739,10 @@ PrefabInstance:
       propertyPath: Data.TeamTowerData
       value: 
       objectReference: {fileID: 11400000, guid: bbc84b53b875dfb4c9ba3a5ea1d7bc66, type: 2}
+    - target: {fileID: 3893642542629452098, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: id
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -750,6 +786,10 @@ PrefabInstance:
     - target: {fileID: 6095367932178840500, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8478454695056217680, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: id
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}

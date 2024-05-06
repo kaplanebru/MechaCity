@@ -30,6 +30,7 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             TransferData.Towers = data.Towers;
+            CommunEventbus.ChainTurnEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
             
             AllTowers.DisableClickability();
             TransferData.Towers.ForEach(t=>AllTowers.GetTower(t).clickHandler.EnableSelection());
