@@ -1,10 +1,12 @@
-﻿using Chain;
+﻿using System.Collections;
+using Chain;
 using UnityEngine;
 
 namespace ChainInGame
 {
     public class MachineryInGame
     {
+        public bool isMoving;
         private Machinery _machinery;
         private CogHolder _cogHolder;
         public MachineryInGame(Machinery machinery)
@@ -44,8 +46,8 @@ namespace ChainInGame
             for (var i = _cogHolder.cogs.Count - 1; i >= 0; i--)
             {
                 var gear = _cogHolder.cogs[i];
-                gear.transform.SetParent(gear.parent);
-                _cogHolder.cogs.Remove(gear);
+                gear.transform.SetParent(gear.parent); //!!important
+                _cogHolder.cogs.Remove(gear); 
             }
 
             Regenerate();
@@ -54,7 +56,6 @@ namespace ChainInGame
         
         void GenerateChain()
         {
-            
             _machinery.chainGenerator.GenerateChain(null, _machinery.cogHolder.GetChainRelatedCogs());
         }
         
@@ -88,7 +89,9 @@ namespace ChainInGame
            
             if (_machinery.cogHolder.cogs.Count > 1)
             {
-                GenerateAndMove();
+                //GenerateAndMove();
+                GenerateChain();
+                _machinery.SetMovers();
             }
         }
     }

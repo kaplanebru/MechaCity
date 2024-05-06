@@ -42,6 +42,7 @@ namespace Turn
 
             int towerID = (int) args[0];
             RiseAndFall(AllTowers.GetTower(towerID), 1, true);
+            CommunEventbus.ChainTurnEvents.OnRising?.Invoke(1);
         }
     
         void RiseAndFall(Tower selectedTower, float amount, bool rise)

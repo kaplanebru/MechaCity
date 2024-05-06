@@ -19,9 +19,18 @@ namespace ChainInGame
         private void OnEnable()
         {
             ChainEvents.InGameEvents.OnOptionSet += SelectMachinery;
+            
             CommunEventbus.ChainTurnEvents.OnLinkedTowers += FillMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
+            CommunEventbus.ChainTurnEvents.OnRising += MoveWithRise;
         }
+
+        private void MoveWithRise(float duration)
+        {
+            _currentMachineryInGame.StartMotion();
+            Invoke(nameof(StopMotion),duration);
+        }
+        
 
         private void ResetMachinery()
         {
@@ -40,6 +49,8 @@ namespace ChainInGame
             }
         }
 
+       
+
         private void Start()
         {
             if(machineries.Length == 0)
@@ -56,8 +67,6 @@ namespace ChainInGame
             _currentMachineryInGame = _machineriesInGame.First();
         }
         
-      
-
         void SetInGameMachineries()
         {
             foreach (var machinery in machineries)
@@ -87,7 +96,8 @@ namespace ChainInGame
         {
             ChainEvents.InGameEvents.OnOptionSet -= SelectMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkedTowers -= FillMachinery;
-            CommunEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
+            CommunEventbus.ChainTurnEvents.OnLinkBroken -= ResetMachinery;
+            CommunEventbus.ChainTurnEvents.OnRising -= MoveWithRise;
         }
 
         #region AvecInput

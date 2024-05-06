@@ -9,5 +9,6 @@ public static class CommunEventbus
     {
         public static Action<int[]> OnLinkedTowers;
         public static Action OnLinkBroken;
+        public static Action<float> OnRising;
     }
 }
