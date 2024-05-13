@@ -33,29 +33,21 @@ namespace Chain
         [SerializeField] private List<Vector3> _points = new();
         private List<Quaternion> _rotations = new();
         private List<Coroutine> runningCoroutines = new List<Coroutine>();
-
-
+        
         public float LinearSpeed = 0;
-        private int counter = 0;
-        private float totalCogSpeed = 0;
+        private int _counter = 0;
+        private float _totalCogSpeed = 0;
         private float _rotationExtentPerLink;
         
+        private bool _speedSet = false;
+        private float _speed;
+        
+        private int _oldCogAmount = 0;
+        private bool _pause = false;
+
         private void OnEnable()
         {
             ChainEvents.OnCogSpeedSet += GetTotalCogSpeed;
-            StopCoroutine(MoveRoutine());
-        }
-
-        public void StartMotion()
-        {
-            StartCoroutine(nameof(MoveRoutine));
-        }
-
-        public void StopMotion()
-        {
-            StopCoroutine(nameof(MoveRoutine));
-            runningCoroutines.ForEach(StopCoroutine);
-            runningCoroutines.Clear(); // Clear the list of running coroutines
         }
 
         public void MachinerySetup(float machinerySpeed, int machineryId, IMachinePartData machinePartData,
@@ -65,7 +57,6 @@ namespace Chain
             MachineryId = machineryId;
             Data = machinePartData as ChainData;
             MachineryDirection = direction;
-            
         }
 
         public void Setup(List<ChainLink> links, int cogAmount)
@@ -74,51 +65,33 @@ namespace Chain
             _cogAmount = cogAmount;
         }
 
-        public IEnumerator MoveRoutine()
-        {
-            if (!Data.IsMoving) yield break;
-            if (!Data.SetMotionByGear) _speedSet = true;
-
-            yield return new WaitUntil(() => _speedSet);
-            _speedSet = false;
-
-            MoveChain();
-        }
-
-
         private void GetTotalCogSpeed(float cogSpeed, int machineryId)
         {
-           
             if (MachineryId != machineryId) return;
             if (!Data.SetMotionByGear) return;
-            
-            totalCogSpeed += cogSpeed;
-            counter++;
 
-            if (counter != _cogAmount) return;
-            counter = 0;
+            _totalCogSpeed += cogSpeed;
+            _counter++;
+
+            if (_counter != _cogAmount) return;
+            _counter = 0;
             SetSpeed();
         }
 
         void ResetCogValues()
         {
-            totalCogSpeed = 0;
-            counter = 0;
+            _totalCogSpeed = 0;
+            _counter = 0;
         }
-
-
-        private bool _speedSet = false;
-        private float speed;
-
+        
         void SetSpeed()
         {
-            LinearSpeed = totalCogSpeed / _cogAmount / _links.Count; // * 1.3f; 
+            LinearSpeed = _totalCogSpeed / _cogAmount / _links.Count; // * 1.3f; 
 
             _speedSet = true;
             ResetCogValues();
         }
-
-
+        
         void GetRotationPoints()
         {
             _points.Clear();
@@ -130,66 +103,148 @@ namespace Chain
             }
         }
 
+        public void StartMotion()
+        {
+            _pause = false;
+            StopCoroutine(nameof(MoveRoutine));
+            
+            if (_cogAmount > 1 && _oldCogAmount == _cogAmount)
+                PauseLinkRoutines();
+            else
+                StopLinkRoutines();
+            
+            if(_cogAmount > 1)
+                StartCoroutine(nameof(MoveRoutine));
+        }
+
+        void PauseLinkRoutines()
+        {
+            var lastPointIndex = _links[0].pointIndex;
+            for (var i = 0; i < _links.Count; i++) 
+            {
+                var link = _links[i];
+                link.transform.localPosition = _points[(lastPointIndex + i) % _points.Count];
+                link.transform.localRotation = _rotations[(lastPointIndex + i) % _points.Count];
+            }
+        }
+
+        void StopLinkRoutines()
+        {
+            runningCoroutines.ForEach(StopCoroutine);
+            runningCoroutines.Clear();
+        }
+
+        public void StopMotion()
+        {
+            _pause = true;
+            _oldCogAmount = _cogAmount;
+            
+            if(_cogAmount <= 1)
+                StopLinkRoutines();
+        }
+        
+        public IEnumerator MoveRoutine()
+        {
+            if (!Data.IsMoving) yield break;
+            if (!Data.SetMotionByGear) _speedSet = true;
+
+            yield return new WaitUntil(() => _speedSet);
+            _speedSet = false;
+
+            MoveChain();
+        }
+        
         void MoveChain()
         {
+            _pause = false;
             if (Data.motionDirection == ChainEnums.ChainDirection.None)
             {
                 Debug.LogWarning("Motion Direction is set to None");
                 return;
             }
+
             GetRotationPoints();
-            speed = Data.SetMotionByGear ? LinearSpeed * Data.SpeedMultiplier : Data.SpeedMultiplier;
 
-            _rotationExtentPerLink = speed * Data.LinkRotationMultiplier;
+            _speed = Data.SetMotionByGear ? LinearSpeed * Data.SpeedMultiplier : Data.SpeedMultiplier;
+            _rotationExtentPerLink = _speed * Data.LinkRotationMultiplier;
 
-            
+
             for (int i = 0; i < _links.Count; i++)
             {
-                Coroutine coroutine = StartCoroutine(LinkMotionRoutine(i, speed));
+                Coroutine coroutine = StartCoroutine(LinkMotionRoutine(i, _speed));
                 runningCoroutines.Add(coroutine);
             }
         }
-
-        IEnumerator LinkMotionRoutine(int startIndex, float speed)
+        
+        IEnumerator LinkMotionRoutine(int Index, float speed)
         {
-            int j = startIndex;
+            int pointIndex = Index;
 
             while (true)
             {
+                if (_pause) yield break;
+
                 switch (Data.motionDirection)
                 {
                     case ChainEnums.ChainDirection.Clockwise:
-                        j++;
-                        j %= _points.Count;
+                        pointIndex++;
+                        pointIndex %= _points.Count;
                         break;
                     case ChainEnums.ChainDirection.ReverseClock:
-                        j--;
-                        if (j < 0)
-                            j = _points.Count - 1;
+                        pointIndex--;
+                        if (pointIndex < 0)
+                            pointIndex = _points.Count - 1;
                         break;
                 }
-                while (Vector3.Distance(_links[startIndex].transform.localPosition, _points[j]) > 0.001f) //0.1f
+
+                _links[Index].pointIndex = pointIndex;
+
+                if (pointIndex >= _points.Count) //for debug
+                    yield break;
+                
+                
+                while (Vector3.Distance(_links[Index].transform.localPosition, _points[pointIndex]) > 0.001f) //link takip offseti  0.001f
                 {
-                    _links[startIndex].transform.localPosition = Vector3.MoveTowards(
-                        _links[startIndex].transform.localPosition,
-                        _points[j], speed);
+                    if (_pause) yield break;
 
-                    _links[startIndex].transform.localRotation = Quaternion.Slerp(
-                        _links[startIndex].transform.localRotation,
-                        _rotations[j], _rotationExtentPerLink);
+                    _links[Index].transform.localPosition = Vector3.MoveTowards(
+                        _links[Index].transform.localPosition,
+                        _points[pointIndex], speed);
 
+                    _links[Index].transform.localRotation = Quaternion.Slerp(
+                        _links[Index].transform.localRotation,
+                        _rotations[pointIndex], _rotationExtentPerLink);
+                    
                     yield return new WaitForFixedUpdate();
                 }
 
-                _links[startIndex].transform.localPosition = _points[j];
-                //_links[startIndex].transform.rotation = _rotations[j];
-            }
-        }
+                if (!_pause)
+                {
+                    _links[Index].transform.localPosition = _points[pointIndex];
+                }
 
+                if (_pause) yield break;
+            }
+        }//varacağı yere ulaşamadan durdurunca sıkıntı çıkıyor.
+        
         private void OnDisable()
         {
             ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;
             StopCoroutine(MoveRoutine());
         }
+
+        #region Reset
+
+        /* void ResetLinkPositions()
+       {
+           if (_points.Count == 0) return;
+           for (var i = 0; i < _links.Count; i++)
+           {
+               _links[i].transform.position = _points[(i + 1) % _links.Count];
+               _links[i].transform.rotation = _rotations[(i + 1) % _links.Count];
+           }
+       }*/
+
+        #endregion
     }
 }

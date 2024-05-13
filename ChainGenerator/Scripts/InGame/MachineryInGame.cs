@@ -6,7 +6,6 @@ namespace ChainInGame
 {
     public class MachineryInGame
     {
-        public bool isMoving;
         private Machinery _machinery;
         private CogHolder _cogHolder;
         public MachineryInGame(Machinery machinery)
@@ -86,13 +85,9 @@ namespace ChainInGame
         {
             StopMotion();
             ResetChain();
-           
-            if (_machinery.cogHolder.cogs.Count > 1)
-            {
-                //GenerateAndMove();
-                GenerateChain();
-                _machinery.SetMovers();
-            }
+
+            GenerateChain();
+            _machinery.SetMovers();
         }
     }
 }

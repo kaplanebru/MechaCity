@@ -85,6 +85,7 @@ namespace ChainInGame
         public void StopMotion()
         {
             _currentMachineryInGame.StopMotion();
+            print("stop");
         }
 
         public void StartMotion()
@@ -95,6 +96,7 @@ namespace ChainInGame
         private void OnDisable()
         {
             ChainEvents.InGameEvents.OnOptionSet -= SelectMachinery;
+            
             CommunEventbus.ChainTurnEvents.OnLinkedTowers -= FillMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkBroken -= ResetMachinery;
             CommunEventbus.ChainTurnEvents.OnRising -= MoveWithRise;
