@@ -96,7 +96,7 @@ MonoBehaviour:
     Middle: {fileID: 2376249443096567679}
     Down: {fileID: 1779011856716829447}
     MiddleMeshes:
-    - {fileID: 8813387237234399871}
+    - {fileID: 2492782670632203243}
     - {fileID: 2833042357563619058}
     TopMesh: {fileID: 0}
 --- !u!114 &1183604849590895228
@@ -162,6 +162,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7208686841812399667, guid: 4a7d223ed95d8cd418a96d55ab59710e, type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 6095367932178840500}
     - target: {fileID: 7208686841812399668, guid: 4a7d223ed95d8cd418a96d55ab59710e, type: 3}
       propertyPath: m_Name
       value: Gear
@@ -305,14 +309,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 572170347073532317, guid: 3155f4b6e7ff0854f8cefd9951ddafd3, type: 3}
   m_PrefabInstance: {fileID: 2813311199505673954}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &2492782670632203243 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 401602123099397385, guid: 3155f4b6e7ff0854f8cefd9951ddafd3, type: 3}
+  m_PrefabInstance: {fileID: 2813311199505673954}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &2833042357563619058 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 25366433284167696, guid: 3155f4b6e7ff0854f8cefd9951ddafd3, type: 3}
-  m_PrefabInstance: {fileID: 2813311199505673954}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &8813387237234399871 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 6720940052307293341, guid: 3155f4b6e7ff0854f8cefd9951ddafd3, type: 3}
   m_PrefabInstance: {fileID: 2813311199505673954}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3645978011645814625
