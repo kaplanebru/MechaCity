@@ -545,7 +545,7 @@ namespace ChainEditor
                 chainData.SpeedMultiplier = EditorGUILayout.FloatField("Speed Multiplier", chainData.SpeedMultiplier);
                 chainData.LinkRotationMultiplier =
                     EditorGUILayout.FloatField("Link Rotation Amount While Moving", chainData.LinkRotationMultiplier);
-
+                chainData.LinkLagAmount = EditorGUILayout.FloatField("Link Lag Amount", chainData.LinkLagAmount);
                 chainData.motionDirection =
                     (ChainEnums.ChainDirection) EditorGUILayout.EnumPopup("Motion Direction",
                         chainData.motionDirection);

@@ -75,8 +75,6 @@ namespace ChainInGame
             }
         }
 
-       
-        
         void SelectMachinery(int i)
         {
             _currentMachineryInGame = _machineriesInGame[i];
@@ -85,7 +83,6 @@ namespace ChainInGame
         public void StopMotion()
         {
             _currentMachineryInGame.StopMotion();
-            print("stop");
         }
 
         public void StartMotion()

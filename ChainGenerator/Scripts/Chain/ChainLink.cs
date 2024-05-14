@@ -2,8 +2,5 @@ using UnityEngine;
 
 namespace Chain
 {
-    public class ChainLink : MonoBehaviour
-    {
-        public int pointIndex;
-    }
+    public class ChainLink : MonoBehaviour{ }
 }

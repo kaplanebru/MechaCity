@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ChainInGame
 {
-    public class Interactable : MonoBehaviour
+    public class InteractableGear : MonoBehaviour
     {
         public Cogwheel _gear;
         int _id;

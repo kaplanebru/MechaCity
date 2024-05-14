@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ChainInGame;
 using UnityEngine;
 
 namespace Chain
@@ -27,7 +28,12 @@ namespace Chain
 
         public ChainData Data;
 
-        private int _cogAmount;
+        public int _cogAmount;
+        
+        public AlteredState AlteredState;
+        public OngoingState OngoingState;
+        private BaseMovingChainState _currentState;
+
 
         [SerializeField] private List<ChainLink> _links = new();
         [SerializeField] private List<Vector3> _points = new();
@@ -43,11 +49,13 @@ namespace Chain
         private float _speed;
         
         private int _oldCogAmount = 0;
-        private bool _pause = false;
+        public bool pause = false;
 
         private void OnEnable()
         {
             ChainEvents.OnCogSpeedSet += GetTotalCogSpeed;
+            AlteredState = new AlteredState(this);
+            OngoingState = new OngoingState(this);
         }
 
         public void MachinerySetup(float machinerySpeed, int machineryId, IMachinePartData machinePartData,
@@ -61,8 +69,15 @@ namespace Chain
 
         public void Setup(List<ChainLink> links, int cogAmount)
         {
+            SwitchState(AlteredState);
             _links = links;
             _cogAmount = cogAmount;
+        }
+        
+        public void SwitchState(BaseMovingChainState newMovingChainState)
+        {
+            _currentState = newMovingChainState;
+            _currentState.EnterState();
         }
 
         private void GetTotalCogSpeed(float cogSpeed, int machineryId)
@@ -92,7 +107,7 @@ namespace Chain
             ResetCogValues();
         }
         
-        void GetRotationPoints()
+        void GetPointsAndRotations()
         {
             _points.Clear();
             _rotations.Clear();
@@ -105,30 +120,10 @@ namespace Chain
 
         public void StartMotion()
         {
-            _pause = false;
-            StopCoroutine(nameof(MoveRoutine));
-            
-            if (_cogAmount > 1 && _oldCogAmount == _cogAmount)
-                PauseLinkRoutines();
-            else
-                StopLinkRoutines();
-            
-            if(_cogAmount > 1)
-                StartCoroutine(nameof(MoveRoutine));
+            _currentState.StartMotion();
         }
-
-        void PauseLinkRoutines()
-        {
-            var lastPointIndex = _links[0].pointIndex;
-            for (var i = 0; i < _links.Count; i++) 
-            {
-                var link = _links[i];
-                link.transform.localPosition = _points[(lastPointIndex + i) % _points.Count];
-                link.transform.localRotation = _rotations[(lastPointIndex + i) % _points.Count];
-            }
-        }
-
-        void StopLinkRoutines()
+        
+        public void StopLinkRoutines()
         {
             runningCoroutines.ForEach(StopCoroutine);
             runningCoroutines.Clear();
@@ -136,11 +131,7 @@ namespace Chain
 
         public void StopMotion()
         {
-            _pause = true;
-            _oldCogAmount = _cogAmount;
-            
-            if(_cogAmount <= 1)
-                StopLinkRoutines();
+            _currentState.StopMotion();
         }
         
         public IEnumerator MoveRoutine()
@@ -156,19 +147,18 @@ namespace Chain
         
         void MoveChain()
         {
-            _pause = false;
+            pause = false;
             if (Data.motionDirection == ChainEnums.ChainDirection.None)
             {
                 Debug.LogWarning("Motion Direction is set to None");
                 return;
             }
 
-            GetRotationPoints();
+            GetPointsAndRotations();
 
             _speed = Data.SetMotionByGear ? LinearSpeed * Data.SpeedMultiplier : Data.SpeedMultiplier;
             _rotationExtentPerLink = _speed * Data.LinkRotationMultiplier;
-
-
+            
             for (int i = 0; i < _links.Count; i++)
             {
                 Coroutine coroutine = StartCoroutine(LinkMotionRoutine(i, _speed));
@@ -182,8 +172,6 @@ namespace Chain
 
             while (true)
             {
-                if (_pause) yield break;
-
                 switch (Data.motionDirection)
                 {
                     case ChainEnums.ChainDirection.Clockwise:
@@ -197,15 +185,9 @@ namespace Chain
                         break;
                 }
 
-                _links[Index].pointIndex = pointIndex;
-
-                if (pointIndex >= _points.Count) //for debug
-                    yield break;
-                
-                
-                while (Vector3.Distance(_links[Index].transform.localPosition, _points[pointIndex]) > 0.001f) //link takip offseti  0.001f
+                while (Vector3.Distance(_links[Index].transform.localPosition, _points[pointIndex]) > Data.LinkLagAmount) //link takip offseti  0.001f
                 {
-                    if (_pause) yield break;
+                    if(pause) yield return new WaitWhile(() => pause);
 
                     _links[Index].transform.localPosition = Vector3.MoveTowards(
                         _links[Index].transform.localPosition,
@@ -218,33 +200,16 @@ namespace Chain
                     yield return new WaitForFixedUpdate();
                 }
 
-                if (!_pause)
+                if (!pause)
                 {
                     _links[Index].transform.localPosition = _points[pointIndex];
                 }
-
-                if (_pause) yield break;
             }
-        }//varacağı yere ulaşamadan durdurunca sıkıntı çıkıyor.
+        }
         
         private void OnDisable()
         {
             ChainEvents.OnCogSpeedSet -= GetTotalCogSpeed;
-            StopCoroutine(MoveRoutine());
         }
-
-        #region Reset
-
-        /* void ResetLinkPositions()
-       {
-           if (_points.Count == 0) return;
-           for (var i = 0; i < _links.Count; i++)
-           {
-               _links[i].transform.position = _points[(i + 1) % _links.Count];
-               _links[i].transform.rotation = _rotations[(i + 1) % _links.Count];
-           }
-       }*/
-
-        #endregion
     }
 }

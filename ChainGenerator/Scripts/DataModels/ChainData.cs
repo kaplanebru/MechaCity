@@ -20,6 +20,7 @@ namespace Chain
         public bool SetRadiusByGear = true;
         public bool SetMotionByGear = true;
         public bool IsMoving = true;
+        public float LinkLagAmount = 0.001f;
         public bool LinkRotationEffect;
 
 
