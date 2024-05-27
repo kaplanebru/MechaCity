@@ -39,7 +39,7 @@ namespace GenericHelper
                 item.transform.SetParent(transform);
                 pool.Enqueue(item);
             }
-            print(pool.Count);
+           // print(pool.Count);
         }
         
 

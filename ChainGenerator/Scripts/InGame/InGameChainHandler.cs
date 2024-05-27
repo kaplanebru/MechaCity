@@ -10,7 +10,7 @@ namespace ChainInGame
     public class InGameChainHandler : MonoBehaviour
     {
         public Machinery[] machineries;
-        public Cogwheel[] gears;
+        public List<Cogwheel> gears;
         
         private List<MachineryInGame> _machineriesInGame = new();
 
@@ -23,6 +23,8 @@ namespace ChainInGame
             CommunEventbus.ChainTurnEvents.OnLinkedTowers += FillMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
             CommunEventbus.ChainTurnEvents.OnRising += MoveWithRise;
+            
+            
         }
 
         private void MoveWithRise(float duration)
@@ -55,9 +57,16 @@ namespace ChainInGame
         {
             if(machineries.Length == 0)
                 machineries = FindObjectsOfType<Machinery>();
-            
-            if(gears.Length == 0)
-                gears = FindObjectsOfType<Cogwheel>();
+
+            if (gears.Count == 0)
+            {
+                var spawnedGears = FindObjectsOfType<Cogwheel>(); //TODO: TEMP
+                foreach (var gear in spawnedGears)
+                {
+                    if(gear.transform.CompareTag("Cosmetic")) continue;
+                    gears.Add(gear);
+                }
+            }
             
             ChainEvents.InGameEvents.OnMachineriesSet?.Invoke(machineries);
             
