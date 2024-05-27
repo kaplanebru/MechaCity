@@ -14170,7 +14170,7 @@ Transform:
   - {fileID: 215147748}
   - {fileID: 1405106302}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &299263243
 GameObject:
@@ -14744,7 +14744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &313220142
 Transform:
   m_ObjectHideFlags: 0
@@ -14752,8 +14752,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 313220141}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.06, y: 2.62, z: -3.19}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.16, y: 4.08, z: -3.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14762,7 +14762,7 @@ Transform:
   - {fileID: 423600092}
   - {fileID: 83939558}
   - {fileID: 2021233070}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 384127586}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &315529841
@@ -18228,6 +18228,7 @@ Transform:
   - {fileID: 1876027400}
   - {fileID: 236039216}
   - {fileID: 1725785283}
+  - {fileID: 313220142}
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -43097,7 +43098,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3391689499282966834, guid: 9952ba1a93912d847accc10de93d89dd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4295904563564052102, guid: 9952ba1a93912d847accc10de93d89dd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -65977,7 +65978,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1438921567
 GameObject:
@@ -92557,7 +92558,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1998729589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99467,7 +99468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3391689499282966834, guid: 9952ba1a93912d847accc10de93d89dd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5412154519958730903, guid: 9952ba1a93912d847accc10de93d89dd, type: 3}
       propertyPath: parent
