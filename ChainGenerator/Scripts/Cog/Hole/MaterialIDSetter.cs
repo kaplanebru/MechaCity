@@ -16,6 +16,7 @@ namespace Chain
         {
             Setup();
             SetID();
+            SetID();
         }
         
         void Setup()
@@ -31,19 +32,25 @@ namespace Chain
             var id = GetInstanceID();
             _gearMat.SetFloat(_materialID, id);
             
-            //_gearMat.renderQueue += gear.sortingOrder;
-            _gearMat.renderQueue = 2000 + gear.sortingOrder;
+           
             
+            if(gear.holeHolder == null) return;
             foreach (var hole in gear.holeHolder.holes)
             {
                 var currentHoleMesh = hole.GetComponentsInChildren<MeshRenderer>()
                     .FirstOrDefault(m => m.material.shader.name == "Custom/Hole");
-            
-                if (currentHoleMesh == null) continue;
+
+                if (currentHoleMesh == null)
+                {
+                    print("null");
+                    continue;
+                }
                 currentHoleMesh.material.SetFloat(_materialID, id);
             
-                //currentHoleMesh.material.renderQueue += gear.sortingOrder;
+                
+               
                 currentHoleMesh.material.renderQueue = 2000 + gear.sortingOrder;
+                //print(currentHoleMesh.material.renderQueue);
             }
         }
     }
