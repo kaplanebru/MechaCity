@@ -2592,6 +2592,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.08
       objectReference: {fileID: 0}
+    - target: {fileID: 7918091862922794338, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8057269156755544137, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
       propertyPath: m_CastShadows
       value: 0
