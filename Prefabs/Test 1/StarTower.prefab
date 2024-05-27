@@ -1762,6 +1762,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gear (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7208686841812399668, guid: 4a7d223ed95d8cd418a96d55ab59710e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7208686842014042952, guid: 4a7d223ed95d8cd418a96d55ab59710e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
