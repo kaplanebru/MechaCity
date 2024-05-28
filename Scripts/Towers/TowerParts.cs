@@ -37,7 +37,7 @@ namespace Towers
                 UIEventbus.OnTowerHeightChange?.Invoke(newHeight, gameObject);
             });
 
-            Data.Top.transform.DOLocalMoveY(newHeight, 1);
+            Data.Top.transform.DOLocalMoveY(newHeight, 1); //newHeight + 1 de olur
             //down rotate
         }
     }
