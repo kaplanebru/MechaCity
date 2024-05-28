@@ -45,6 +45,7 @@ namespace GameUI
         void SetButton(TurnStateType type)
         {
             buttonTextSlot.text = buttonHolder.ButtonsByType[type].Content;
+            buttonTextSlot.fontSizeMax = 40;
             buttonTextSlot.enableAutoSizing = true;
         }
 
