@@ -66345,9 +66345,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconPrefab: {fileID: 6761605423090564005, guid: 31459ae6eb1d30540b026fd21cd36c8d, type: 3}
   icons: []
-  currentHealth: 5
   gap: 0.55
   maxHealth: 5
+  parent: {fileID: 6095367932178840500}
 --- !u!1 &5185492559598847084
 GameObject:
   m_ObjectHideFlags: 0
@@ -119776,6 +119776,10 @@ PrefabInstance:
     - target: {fileID: 1048886893071270433, guid: 2fdf8d2aad4557240878244222a25245, type: 3}
       propertyPath: m_Name
       value: HealthUIDown
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048886893071270433, guid: 2fdf8d2aad4557240878244222a25245, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1256720464846607769, guid: 2fdf8d2aad4557240878244222a25245, type: 3}
       propertyPath: m_Pivot.x

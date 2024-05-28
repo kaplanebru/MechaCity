@@ -11,7 +11,7 @@ namespace GameUI
         private void OnEnable() //TODO: tower scriptinden yönet
         {
             UIEventbus.OnTowerHeightChange += ChangeHeightUI;
-            UIEventbus.OnHealthChange += AdjustHealthUI;
+            //UIEventbus.OnHealthChange += AdjustHealthUI;
         }
 
         private void AdjustHealthUI(int health, GameObject towerGameObject)
@@ -32,7 +32,7 @@ namespace GameUI
         private void OnDisable()
         {
             UIEventbus.OnTowerHeightChange -= ChangeHeightUI;
-            UIEventbus.OnHealthChange -= AdjustHealthUI;
+            //UIEventbus.OnHealthChange -= AdjustHealthUI;
         }
 
         // void AdjustHealthIndicatorPosition(float height)

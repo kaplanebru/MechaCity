@@ -1,39 +1,60 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameUI;
 using UnityEngine;
 
 public class HealthIcon : MonoBehaviour
 {
     public Transform iconPrefab;
     public List<Transform> icons;
-    public int currentHealth;
+    private int _currentHealth;
     [SerializeField] public float gap = 0.3f;
     public int maxHealth = 3;
-    public int startHealth = 3;
+    [SerializeField] private Transform parent;
 
 
-    private void Start()
+    private void OnEnable()
     {
-        CreateIcon();
+        CreateIcons();
+        UIEventbus.OnHealthChange += AdjustIcons;
     }
 
-    public void CreateIcon() //int maxHealth
+    private void OnDisable()
+    {
+        UIEventbus.OnHealthChange -= AdjustIcons;
+    }
+
+    private void AdjustIcons(int health, GameObject towerGameObject)
+    {
+        if (towerGameObject != parent.gameObject) return;
+        
+        _currentHealth = health;
+        OrderIcons();
+    }
+
+    // private void Start()
+    // {
+    //     CreateIcon();
+    // }
+
+    public void CreateIcons() //int maxHealth
     {
         for (int i = 0; i < maxHealth; i++)
         {
             icons.Add(Instantiate(iconPrefab, transform));
         }
-        OrderIcons();
+        
+        //OrderIcons();
     }
 
     public void OrderIcons()
     {
         DisableAll();
         ResetAll();
-        if(currentHealth == 0) return;
+        if(_currentHealth == 0) return;
 
-        if (currentHealth % 2 == 1)
+        if (_currentHealth % 2 == 1)
         {
             OddOrder();
         }
@@ -48,9 +69,9 @@ public class HealthIcon : MonoBehaviour
         int counter = 0;
         icons[0].gameObject.SetActive(true);
         
-        if(currentHealth <= 1) return;
+        if(_currentHealth <= 1) return;
         
-        for (int i = 1; i < currentHealth; i++)
+        for (int i = 1; i < _currentHealth; i++)
         {
             var icon = icons[i];
             icon.gameObject.SetActive(true);
@@ -78,9 +99,9 @@ public class HealthIcon : MonoBehaviour
         icons[0].gameObject.SetActive(true);
         icons[1].gameObject.SetActive(true);
         
-        if(currentHealth <= 2) return;
+        if(_currentHealth <= 2) return;
         
-        for (int i = 2; i < currentHealth; i++)
+        for (int i = 2; i < _currentHealth; i++)
         {
             var icon = icons[i];
             icon.gameObject.SetActive(true);
