@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LinkInterval: 0.66
   LinkSize: {x: 0.3, y: 0.4, z: 0.3}
-  RadiusOffset: 0.2
+  RadiusOffset: 0.1
   Tension: 0.8
   LinksPoolPrefab: {fileID: 6962783941987750660, guid: 89824a9a8ff77a440ae7e6a474f075bc, type: 3}
   SpeedMultiplier: 1
