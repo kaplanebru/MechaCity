@@ -51,29 +51,39 @@ namespace ChainInGame
             }
         }
 
-       
-
-        private void Start()
+        void Setup()
         {
             if(machineries.Length == 0)
                 machineries = FindObjectsOfType<Machinery>();
+            
+            SetInGameMachineries();
+            ChainEvents.InGameEvents.OnMachineriesSet?.Invoke(machineries);
+
+            
+            _currentMachineryInGame = _machineriesInGame.First();
 
             if (gears.Count == 0)
             {
                 var spawnedGears = FindObjectsOfType<Cogwheel>(); //TODO: TEMP
                 foreach (var gear in spawnedGears)
                 {
-                    if(gear.transform.CompareTag("Cosmetic")) continue;
+                    if (gear.transform.CompareTag("Cosmetic"))
+                    {
+                        continue;
+                    }
                     gears.Add(gear);
                 }
             }
             
-            ChainEvents.InGameEvents.OnMachineriesSet?.Invoke(machineries);
             
-            SetInGameMachineries();
-            //CreateInteractables();
+          
 
-            _currentMachineryInGame = _machineriesInGame.First();
+
+        }
+
+        private void Start()
+        {
+            Setup();
         }
         
         void SetInGameMachineries()
