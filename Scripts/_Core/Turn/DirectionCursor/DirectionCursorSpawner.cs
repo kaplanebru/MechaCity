@@ -35,7 +35,6 @@ public class DirectionCursorSpawner : MonoBehaviour
 
     void SetPositions()
     {
-        print("set cursors");
         for (int i = 0; i < AllTowers.TowersCount; i++)
         {
             var cursor = directionCursors[i];
