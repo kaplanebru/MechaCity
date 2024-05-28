@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Enums;
+using GameUI;
 using Grid;
 using Teams;
 using Towers;
@@ -31,6 +32,10 @@ namespace Turn
             
             _deadTower = deadTower;
             SwitchSides();
+            // var towerObject = AllTowers.GetTower(_deadTower.UniqID);
+            // _deadTower.Health = towerObject.ConstantData.StartHealth;
+            // UIEventbus.OnHealthChange.Invoke(deadTower.Health, towerObject.gameObject);
+            
             Eventbus.CombatEvents.OnMatchesRestored?.Invoke();
         }
 

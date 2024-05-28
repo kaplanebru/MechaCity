@@ -78,6 +78,12 @@ namespace Towers
         {
             Data.BulletAmount = ConstantData.MaxBullet;
         }
+
+        public void ResetHealth()
+        {
+            Data.Health = ConstantData.StartHealth;
+            UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
+        }
         
         // public void ToGivenColor(Material givenMat)
         // {
