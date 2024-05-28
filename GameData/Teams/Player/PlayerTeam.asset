@@ -13,7 +13,15 @@ MonoBehaviour:
   m_Name: PlayerTeam
   m_EditorClassIdentifier: 
   TeamType: 0
-  DefaultMaterial: {fileID: 2100000, guid: 4b78a4aacacdaee46927b88db70cc278, type: 2}
-  SelectedMaterial: {fileID: 2100000, guid: 56fccc219304f4345a43b6fff7e9b4b9, type: 2}
-  BlueprintMaterial: {fileID: 2100000, guid: 23b87870668f7cf41b554c78d20a91d4, type: 2}
-  FreezeMaterial: {fileID: 2100000, guid: 7ca87e03a1487454d8daf014f8bea09b, type: 2}
+  DefaultMaterial:
+  - {fileID: 2100000, guid: 16c9cbbd3fd1faf44883e4c9e120ec5c, type: 2}
+  - {fileID: 2100000, guid: 4b78a4aacacdaee46927b88db70cc278, type: 2}
+  SelectedMaterial:
+  - {fileID: 2100000, guid: 56fccc219304f4345a43b6fff7e9b4b9, type: 2}
+  - {fileID: 2100000, guid: e83b7cd4718d2ec4d8d5b3d4075eb66b, type: 2}
+  BlueprintMaterial:
+  - {fileID: 2100000, guid: 0aa7bef47f2ac83499a077f51f6fb1f5, type: 2}
+  - {fileID: 2100000, guid: 23b87870668f7cf41b554c78d20a91d4, type: 2}
+  FreezeMaterial:
+  - {fileID: 2100000, guid: 306b62ebcdc1d0a499a07cf2090c2c7a, type: 2}
+  - {fileID: 2100000, guid: d08eb1a31bcba044d9a4236488ca3efe, type: 2}

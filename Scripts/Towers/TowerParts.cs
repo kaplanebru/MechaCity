@@ -20,11 +20,13 @@ namespace Towers
         public TowerPartsData Data;
 
 
-        public void SetColor(Material mat)
+        public void SetColor(Material[] mats)
         {
-            foreach (var mesh in Data.MiddleMeshes)
+            Data.MiddleMeshes[0].material = mats[0];
+            for (var i = 1; i < Data.MiddleMeshes.Length; i++)
             {
-                mesh.material = mat;
+                var mesh = Data.MiddleMeshes[i];
+                mesh.material = mats[1];
             }
         }
 

@@ -7,9 +7,9 @@ namespace Towers
     public class TeamTowerData : ScriptableObject
     {
         public TeamType TeamType;
-        public Material DefaultMaterial;
-        public Material SelectedMaterial;
-        public Material BlueprintMaterial;
-        public Material FreezeMaterial;
+        public Material[] DefaultMaterial;
+        public Material[] SelectedMaterial;
+        public Material[] BlueprintMaterial;
+        public Material[] FreezeMaterial;
     }
 }
