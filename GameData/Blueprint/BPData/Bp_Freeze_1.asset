@@ -18,4 +18,5 @@ MonoBehaviour:
   GlowColor: {r: 0.47058824, g: 0.9137255, b: 0.99215686, a: 0}
   Title: Freeze Tower
   Description: Disables opponent's selected towers motion for the next round
-  Instruction: Select one of the opponent's towers to free it for next round
+  Instruction: Select one of the opponent's towers to freeze it for next round
+  Level: 1
