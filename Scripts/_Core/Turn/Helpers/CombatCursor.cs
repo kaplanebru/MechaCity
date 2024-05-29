@@ -19,6 +19,11 @@ public class CombatCursor : MonoBehaviour
     private CursorSpriteHandler cursorSpriteHandler;
     private SpriteRenderer spriteRenderer;
     private float _duration;
+    
+    public List<Transform> transforms;
+    public List<Vector3> directions;
+    private Vector3 center;
+    public float directionOffset = 1;
 
     
     private void OnEnable()
@@ -56,10 +61,7 @@ public class CombatCursor : MonoBehaviour
     }
     
 
-    public List<Transform> transforms;
-    public List<Vector3> directions;
-    private Vector3 center;
-    public float directionOffset = 1;
+    
 
 
   
