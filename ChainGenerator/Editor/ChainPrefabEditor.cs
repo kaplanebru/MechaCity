@@ -187,6 +187,7 @@ namespace ChainEditor
                     {
                         machinery.chainGenerator.ResetLinks();
                     }
+                    //machinery.ro
                 }
             }
 
