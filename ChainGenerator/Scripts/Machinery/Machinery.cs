@@ -72,6 +72,9 @@ namespace Chain
             if(!_isMoving) return;
             foreach (var mover in _movers)
             {
+                if (mover is ChainMover)
+                    if (!isChainRelated)
+                        continue;
                 mover.StopMotion();
             }
 

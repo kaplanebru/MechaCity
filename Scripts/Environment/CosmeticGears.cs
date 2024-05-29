@@ -18,16 +18,14 @@ namespace Environment
 
         private void StopGears()
         {
-            print("stop");
             foreach (var machinery in machineries)
             {
-                machinery.SetMovers();
+                machinery.StopMovers();
             }
         }
 
         private void MoveGears()
         {
-            print("move");
             foreach (var machinery in machineries)
             {
                 machinery.Move();

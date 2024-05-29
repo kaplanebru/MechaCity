@@ -431,7 +431,7 @@ MonoBehaviour:
   cogHolder: {fileID: 3227555929788419940}
   holeAssetHolder: {fileID: 11400000, guid: b6a7cd6113e3661498315203974669c6, type: 2}
   sortingOrder: 0
-  movingAtStart: 1
+  movingAtStart: 0
 --- !u!1 &4435400020827987122
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,7 +1170,7 @@ MonoBehaviour:
   cogHolder: {fileID: 3934200160216267556}
   holeAssetHolder: {fileID: 11400000, guid: b6a7cd6113e3661498315203974669c6, type: 2}
   sortingOrder: 0
-  movingAtStart: 1
+  movingAtStart: 0
 --- !u!1 &7735945228927108025
 GameObject:
   m_ObjectHideFlags: 0
