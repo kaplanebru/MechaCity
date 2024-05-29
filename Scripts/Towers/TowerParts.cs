@@ -34,6 +34,7 @@ namespace Towers
         {
             Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
             {
+                print(newHeight);
                 UIEventbus.OnTowerHeightChange?.Invoke(newHeight, gameObject);
             });
 

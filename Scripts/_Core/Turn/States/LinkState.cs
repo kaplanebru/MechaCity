@@ -59,6 +59,8 @@ namespace Turn
                     otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= amount / (TransferData.Towers.Count - 1));
                 }
             }
+            
+            //todo: tam tersi olmalı: amount * (TransferData.Towers.Count - 1) yükselmeli
         }
 
 

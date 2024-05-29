@@ -25,7 +25,7 @@ namespace GameUI
         {
             if (obj != gameObject) return;
 
-            int heightInt = Mathf.RoundToInt(height);
+            int heightInt = Mathf.FloorToInt(height); //todo: temporary
             heightText.text = heightInt.ToString();
         }
 
