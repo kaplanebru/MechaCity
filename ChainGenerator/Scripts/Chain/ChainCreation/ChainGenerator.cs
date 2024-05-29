@@ -35,18 +35,9 @@ namespace Chain
                 Debug.LogWarning("Please Add Chain Data");
                 return;
             }
-
-            if (ChainData.LinkInterval <= 0)
-            {
-                print("3");
-                return;
-            }
+            if(ChainData.LinkInterval <= 0) return;
                 cogAmount = chainRelatedCogs.Length;
-                if (ChainData == null)
-                {
-                    print("2");
-                    return;
-                }
+            if(ChainData == null) return;
             if (ChainData.LinksPoolPrefab == null)
             {
                 Debug.LogWarning("Add Link Pool");
@@ -57,7 +48,6 @@ namespace Chain
             {
                 if(!PoolNull())
                     ResetLinks();
-                print("1");
                 return;
             }
 
