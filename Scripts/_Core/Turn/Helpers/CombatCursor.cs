@@ -33,8 +33,9 @@ public class CombatCursor : MonoBehaviour
 
         Eventbus.CombatEvents.OnCombatStarted += StartCursor;
         Eventbus.CombatEvents.OnCombatEnding += EndCursor;
-        
 
+        Eventbus.StateEvents.OnLinkStateBegin += Swallow;
+        
         BpEventbus.UIEvents.OnBpInstallBegin += SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset += ResetBpImage;
         
@@ -43,6 +44,8 @@ public class CombatCursor : MonoBehaviour
         installEffect = GetComponentInChildren<BpInstallEffect>();
         installEffect.Initialize();
     }
+
+
 
     private void GetTransforms(Team[] obj)
     {
@@ -59,12 +62,6 @@ public class CombatCursor : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         cursorSpriteHandler = new CursorSpriteHandler(spriteRenderer);
     }
-    
-
-    
-
-
-  
     void SetDirections()
     {
         foreach (var towerTransform in transforms)
@@ -109,15 +106,20 @@ public class CombatCursor : MonoBehaviour
 
     void StartCursor()
     {
-        //EnableLine();
-        transform.DOMove(directions[0], .3f); //todo
+        transform.DOMove(center, .1f).OnComplete(() =>
+        {
+            transform.DOMove(directions[0], .3f); //todo
+        });
     }
 
     void EndCursor()
     {
     }
 
-    
+    private void Swallow()
+    {
+        transform.DOMoveY(center.y - 1, 1);
+    }
    
 
   
@@ -130,7 +132,7 @@ public class CombatCursor : MonoBehaviour
 
         Eventbus.CombatEvents.OnCombatStarted -= StartCursor;
         Eventbus.CombatEvents.OnCombatEnding -= EndCursor;
-        
+        Eventbus.StateEvents.OnLinkStateBegin -= Swallow;
         
         BpEventbus.UIEvents.OnBpInstallBegin -= SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset -= ResetBpImage;

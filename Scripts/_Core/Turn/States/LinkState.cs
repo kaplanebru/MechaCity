@@ -26,6 +26,7 @@ namespace Turn
         public override void Subscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked += TowerSelected;
+            Eventbus.StateEvents.OnLinkStateBegin?.Invoke();
         }
         
 
