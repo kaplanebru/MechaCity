@@ -13,6 +13,7 @@ namespace Towers
         public int UniqID;
         
         public float Height;
+        public float AlteringSize;
         
         public int SlotId; 
         public TeamTowerData TeamTowerData;

@@ -5,6 +5,8 @@ using Enums;
 using GameUI;
 using Network;
 using Towers;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace Turn
 {
@@ -45,32 +47,74 @@ namespace Turn
             CommunEventbus.ChainTurnEvents.OnRising?.Invoke(1);
         }
     
-        void RiseAndFall(Tower selectedTower, float amount, bool rise)
+        void RiseAndFall(Tower selectedTower, float size, bool rise)
         {
+            if(!CheckHeights(selectedTower, size)) return;
+
+            selectedTower.towerParts.ChangeHeight(selectedTower.Data.Height += size * (TransferData.Towers.Count - 1));
+            
+            foreach (var tower in safeGroup)
+            {
+                var otherTower = AllTowers.GetTower(tower.UniqID);
+                
+                otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= tower.AlteringSize);
+            }
+            
+            // foreach (var towerID in TransferData.Towers)
+            // {
+            //     if (towerID == selectedTower.Data.UniqID)
+            //     {
+            //         selectedTower.towerParts.ChangeHeight(selectedTower.Data.Height += size * (TransferData.Towers.Count - 1));
+            //     }
+            //     else
+            //     {
+            //         var otherTower = AllTowers.GetTower(towerID);
+            //         otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= size);
+            //     }
+            // }
+        }
+
+
+        private List<TowerData> safeGroup = new List<TowerData>();
+        bool CheckHeights(Tower selectedTower, float size)
+        {
+            safeGroup.Clear();
             foreach (var towerID in TransferData.Towers)
             {
-                if (towerID == selectedTower.Data.UniqID)
+                if(towerID == selectedTower.Data.UniqID)
+                    continue;
+                
+                var tower = AllTowers.GetData(towerID);
+                tower.AlteringSize = size;
+                
+                if (tower.Height > size)
                 {
-                    selectedTower.towerParts.ChangeHeight(selectedTower.Data.Height += amount * (TransferData.Towers.Count - 1));
-                }
-                else
-                {
-                    var otherTower = AllTowers.GetTower(towerID);
-                    otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= amount);
+                    safeGroup.Add(tower);
                 }
             }
             
-            // if (towerID == selectedTower.Data.UniqID)
-            // {
-            //     selectedTower.towerParts.ChangeHeight(selectedTower.Data.Height += amount);
-            // }
-            // else
-            // {
-            //     var otherTower = AllTowers.GetTower(towerID);
-            //     otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= amount / (TransferData.Towers.Count - 1));
-            // }
+            Empty:
+            if (safeGroup.Count == 0)
+            {
+                Debug.Log("Not enough resource to lift that tower!");
+                return false;
+            }
+               
+            if (safeGroup.Count == TransferData.Towers.Count - 1)
+                return true;
+
+            for (var i = safeGroup.Count - 1; i >= 0; i--)
+            {
+                var tower = safeGroup[i];
+                if (tower.Height <= size * 2)
+                    safeGroup.Remove(tower);
+            }
+
+            if (safeGroup.Count == 0)
+               goto Empty;
             
-            //todo: tam tersi olmalı: amount * (TransferData.Towers.Count - 1) yükselmeli
+            safeGroup.First().AlteringSize = size * 2;
+            return true;
         }
 
 
