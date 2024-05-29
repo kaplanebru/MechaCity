@@ -13,7 +13,7 @@ namespace Turn
         public abstract TurnStateType StateType { get; set; }
         public abstract List<int> Towers { get; set; }
         
-        public void ResetPreviousTurnData()
+        public virtual void ResetPreviousTurnData()
         {
             Towers.Clear();
         }

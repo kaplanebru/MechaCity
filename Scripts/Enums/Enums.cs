@@ -46,6 +46,7 @@ namespace Enums
         Reverse,
         Freeze,
         Double,
+        SelectionIncrement,
         None
     }
 

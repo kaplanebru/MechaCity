@@ -33,6 +33,14 @@ namespace Turn
         private bool firstTurn = true;
 
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                var selectionState = _stateHolder.GetStateByType(TurnStateType.Selection) as SelectionState;
+                selectionState.ResetSelection();
+            }
+        }
 
         private void OnEnable()
         {

@@ -14,11 +14,15 @@ public static class BpEventbus
     public class ActionEvents
     {
         public static Action OnReverseActionTriggered;
+        public static Action OnSelectionIncrementTriggered;
+        public static Action OnRestoreSelectionAmount;
     }
 
     public static class SubscriberEvents
     {
         public static Action OnReverseAction;
+        public static Action OnSelectionIncrease;
+        public static Action OnSelectionRestoration;
     }
     
     public static class LifespanEvents

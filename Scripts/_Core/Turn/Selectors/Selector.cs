@@ -13,21 +13,25 @@ using UnityEngine;
 public class Selector<T> where T : ISelectionColorSetter, new()
 {
     public List<int> Towers = new();
-    public int MaxTowersInGroup = 2;
+    public int SelectionTowerAmount = 2;
+    public int MinTowersInGroup = 2;
     private T selectionColorSetter = new T();
     public void Subscribe()
     {
         //Towers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
     }
+    
+
     public void StartTowers(List<int> towers)
     {
+        //SelectionTowerAmount = MinTowersInGroup; //temp
         Towers = towers;
     }
     
     public void SetMaxTowers(int amount)
     {
-        MaxTowersInGroup = amount;
+        SelectionTowerAmount = amount;
     }
 
     private void GetTower(params object[] args)
@@ -36,7 +40,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
 
         if (SelectedTwice(towerId)) return;
 
-        if (Towers.Count == MaxTowersInGroup)
+        if (Towers.Count == SelectionTowerAmount)
             ResetSelectionGroup();
 
         HandleSelection(true, towerId);
@@ -49,7 +53,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         else
             Deselect(newSelection);
 
-        ShowCompleteButton(Towers.Count == MaxTowersInGroup);
+        ShowCompleteButton(Towers.Count == SelectionTowerAmount);
     }
     
     private void Select(int newSelection)
@@ -71,7 +75,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
 
     void ResetSelectionGroup()
     {
-        for (int i = 0; i < MaxTowersInGroup; i++)
+        for (int i = 0; i < SelectionTowerAmount; i++)
         {
             HandleSelection(false, Towers[0]);
         }
@@ -88,10 +92,15 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         return false;
     }
 
+    public void ResetSelector()
+    {
+        SelectionTowerAmount = MinTowersInGroup;
+    }
+
     public void Unsubscribe()
     {
         NetworkEventbus.InputEvents.OnObjectClicked -= GetTower;
-       // AllTowers.ResetTowerSelectionColors(); //todo: test, dont
+        // AllTowers.ResetTowerSelectionColors(); //todo: test, dont
         AllTowers.EnableClickability(); //todo: eğer eliminated ise
     }
 }
