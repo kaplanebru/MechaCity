@@ -13,7 +13,7 @@ using UnityEngine;
 public class Selector<T> where T : ISelectionColorSetter, new()
 {
     public List<int> Towers = new();
-    public int MaxTowersInGroup = 3;
+    public int MaxTowersInGroup = 2;
     private T selectionColorSetter = new T();
     public void Subscribe()
     {

@@ -51,14 +51,24 @@ namespace Turn
             {
                 if (towerID == selectedTower.Data.UniqID)
                 {
-                    selectedTower.towerParts.ChangeHeight(selectedTower.Data.Height += amount);
+                    selectedTower.towerParts.ChangeHeight(selectedTower.Data.Height += amount * (TransferData.Towers.Count - 1));
                 }
                 else
                 {
                     var otherTower = AllTowers.GetTower(towerID);
-                    otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= amount / (TransferData.Towers.Count - 1));
+                    otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= amount);
                 }
             }
+            
+            // if (towerID == selectedTower.Data.UniqID)
+            // {
+            //     selectedTower.towerParts.ChangeHeight(selectedTower.Data.Height += amount);
+            // }
+            // else
+            // {
+            //     var otherTower = AllTowers.GetTower(towerID);
+            //     otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= amount / (TransferData.Towers.Count - 1));
+            // }
             
             //todo: tam tersi olmalı: amount * (TransferData.Towers.Count - 1) yükselmeli
         }
