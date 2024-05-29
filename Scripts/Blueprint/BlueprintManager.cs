@@ -70,7 +70,7 @@ namespace Blueprint
 
         void SetTracker(int[] selectedItems)
         {
-            if(selectedItems == null) return;
+            if(selectedItems == null) return; //TODO: ya des trackers sans items
             
             foreach (var item in selectedItems)
             {

@@ -35,7 +35,7 @@ public class BlueprintEventHandler
 
     void PublishSelectionRestoration()
     {
-        Debug.Log("publish restore");
+        //Debug.Log("publish restore");
         BpEventbus.SubscriberEvents.OnSelectionRestoration?.Invoke();
     }
     

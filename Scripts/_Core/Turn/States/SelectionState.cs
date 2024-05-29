@@ -33,15 +33,18 @@ namespace Turn
         {
             mainSelector = new();
         }
-        
+
+        public override void SubscribeToConstantEvents()
+        {
+            BpEventbus.SubscriberEvents.OnSelectionIncrease += UpdateSelectionAmount;
+            BpEventbus.SubscriberEvents.OnSelectionRestoration += ResetSelection;
+        }
+
 
         public override void Subscribe()
         {
             mainSelector.Subscribe();
             mainSelector.TryBlock(Teams);
-            BpEventbus.SubscriberEvents.OnSelectionIncrease += UpdateSelectionAmount;
-            BpEventbus.SubscriberEvents.OnSelectionRestoration += ResetSelection;
-
         }
 
         private void UpdateSelectionAmount()
@@ -55,21 +58,26 @@ namespace Turn
             TransferData.Towers = data.Towers;
             mainSelector.StartTowers(TransferData.Towers);
         }
-
-        public override void Unsubscribe()
-        {
-            TransferData.Towers = mainSelector.Towers;
-            //BpEventbus.SubscriberEvents.OnSelectionRestoration -= RestoreSelection;
-            mainSelector.Unsubscribe();
-        }
-
+        
         public void ResetSelection()
         {
-            Debug.Log("reset selection");
+           // Debug.Log("reset selection");
             mainSelector.ResetSelector(); 
             BpEventbus.SubscriberEvents.OnSelectionIncrease -= UpdateSelectionAmount;
         }
 
-       
+
+        public override void Unsubscribe()
+        {
+            TransferData.Towers = mainSelector.Towers;
+            mainSelector.Unsubscribe();
+        }
+
+        public override void UnsubscribeFromConstantEvents()
+        {
+            BpEventbus.SubscriberEvents.OnSelectionIncrease -= UpdateSelectionAmount;
+            BpEventbus.SubscriberEvents.OnSelectionRestoration -= ResetSelection;
+        }
+
     }
 }

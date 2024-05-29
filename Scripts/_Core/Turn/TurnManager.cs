@@ -68,6 +68,7 @@ namespace Turn
             _stateHolder.RegisterStates();
 
             UIEventbus.TurnEvents.OnInitialize?.Invoke();
+            _stateHolder.SubscribeToConstantEvents();
         }
 
         void SetTurnTeams(Team[] teams)
@@ -166,6 +167,7 @@ namespace Turn
             Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
 
             bpEventHandler.UnsubscribeFromBlueprintEvents();
+            _stateHolder.UnsubscribeFromConstantEvents();
 
             NetworkEventbus.OnAllClientsSet -= FirstTurn;
             NetworkEventbus.RequestEvents.OnStateChangeRequestByServer -= ChangeStateBySystem;

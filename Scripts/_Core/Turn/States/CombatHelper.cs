@@ -125,6 +125,7 @@ namespace Turn
         {
             DeselectAlteredTowers();
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
+            BpEventbus.ActionEvents.OnRestoreSelectionAmount?.Invoke();
         }
 
        

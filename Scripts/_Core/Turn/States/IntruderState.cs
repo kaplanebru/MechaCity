@@ -38,7 +38,8 @@ namespace Turn
             selectors.Add(SelectionType.None, null);
         }
 
-    
+        public override void SubscribeToConstantEvents() {}
+        
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
@@ -89,6 +90,7 @@ namespace Turn
             incomingData.RestorePreviousSelectionColors();
         }
 
+        public override void UnsubscribeFromConstantEvents() {}
         
     }
 

@@ -22,7 +22,9 @@ namespace Turn
         public TowerGroupTransferData TransferData { get; private set; } = new();
         public override TurnStateType StateType => TurnStateType.Link;
         public override int StateId { get; set; }
-        
+
+        public override void SubscribeToConstantEvents() {}
+
         public override void Subscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked += TowerSelected;
@@ -125,6 +127,7 @@ namespace Turn
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
             AllTowers.EnableClickability();
         }
-        
+
+        public override void UnsubscribeFromConstantEvents() {}
     }
 }

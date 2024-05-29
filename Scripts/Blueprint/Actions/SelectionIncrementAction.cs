@@ -13,7 +13,7 @@ namespace Blueprint
     
         public void Restore(params object[] obj)
         {
-            BpEventbus.ActionEvents.OnRestoreSelectionAmount?.Invoke();
+            //BpEventbus.ActionEvents.OnRestoreSelectionAmount?.Invoke();
         }
     }
 

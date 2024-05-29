@@ -48,5 +48,21 @@ namespace Turn
                 state.Register();
             }
         }
+
+        public void SubscribeToConstantEvents()
+        {
+            foreach (var state in States)
+            {
+                state.SubscribeToConstantEvents();
+            }
+        }
+
+        public void UnsubscribeFromConstantEvents()
+        {
+            foreach (var state in States)
+            {
+                state.UnsubscribeFromConstantEvents();
+            }
+        }
     }
 }

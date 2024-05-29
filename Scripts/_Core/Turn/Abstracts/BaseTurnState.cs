@@ -20,6 +20,7 @@ namespace Turn
         {
         }
 
+        public abstract void SubscribeToConstantEvents();
         public abstract void Subscribe();
 
         public void EnterState(TurnManager tturnManager = null)
@@ -45,5 +46,7 @@ namespace Turn
         public virtual void ProcessExecutionWithSelection(){}
 
         public abstract void Unsubscribe();
+        
+        public abstract void UnsubscribeFromConstantEvents();
     }
 }
