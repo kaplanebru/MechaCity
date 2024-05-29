@@ -410,7 +410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isChainRelated: 0
-  machinerySpeed: 3
+  machinerySpeed: 4
   chainGenerator: {fileID: 9081718873028005764}
   cogHolder: {fileID: 3227555929788419940}
   holeAssetHolder: {fileID: 11400000, guid: b6a7cd6113e3661498315203974669c6, type: 2}
