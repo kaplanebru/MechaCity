@@ -35,8 +35,6 @@ public static class Eventbus
 
 
 
-    
-
 
     // public class SubscriptionModel
     // {
