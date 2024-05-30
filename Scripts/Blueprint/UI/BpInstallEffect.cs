@@ -40,15 +40,18 @@ public class BpInstallEffect :MonoBehaviour
       yield return new WaitForSeconds(stretchDuration);
       
       contentAction?.Invoke();
-      
       _rotationEffect.ExecuteRotation();
-      yield return new WaitForSeconds(rotationDuration);
+      
+      yield return new WaitForSeconds(.2f);
+      endAction?.Invoke();
 
+      yield return new WaitForSeconds(rotationDuration-.2f);
+      
       Stretch(false);
       _rotationEffect.ResetRotation();
       yield return new WaitForSeconds(stretchDuration);
       
-      endAction?.Invoke();
+      //endAction?.Invoke();
    }
 
    void Stretch(bool stretchUp)
