@@ -15,6 +15,8 @@ namespace GameUI
         public static Action<float, GameObject> OnTowerHeightChange;
         public static Action<int, GameObject> OnHealthChange;
         public static Action<TeamType> OnTeamSwitch;
+
+        public static Action<string> OnPlayerSet;
         
         public static class TurnEvents
         {

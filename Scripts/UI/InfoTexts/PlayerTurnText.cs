@@ -8,7 +8,7 @@ namespace GameUI
         }
 
 
-        protected override void SetInfoText(string teamName)
+        public override void SetInfoText(string teamName)
         {
             InfoText.text = "Turn: " + teamName;
         }

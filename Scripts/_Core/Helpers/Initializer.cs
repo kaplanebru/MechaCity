@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Enums;
+using GameUI;
 using Network;
 using PlayerNetwork;
 using Teams;
@@ -41,6 +42,7 @@ namespace Core
         {
             Teams[id].Data.Player = newPlayer;
             newPlayer.Setup(Teams[id].Data.TeamTowerData.TeamType);
+            UIEventbus.OnPlayerSet?.Invoke(Teams[id].Data.Name);
 
             if (!MultiplayerSetter.IsMultiplayerOn)
             {

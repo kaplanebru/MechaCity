@@ -29,11 +29,10 @@ namespace GameUI
 
         public void UpdateInfoText(TeamType currentTeamType)
         {
-            SetInfoText(
-                TeamNamesByType[currentTeamType]); //(_teams.FirstOrDefault(t => t.Data.TeamType == currentTeamType).Data.Name);
+            SetInfoText(TeamNamesByType[currentTeamType]);
         }
 
-        protected abstract void SetInfoText(string teamName);
+        public abstract void SetInfoText(string teamName);
 
         protected virtual void Unsubscribe()
         {
