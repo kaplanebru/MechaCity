@@ -25,22 +25,24 @@ public class HealthIcon : MonoBehaviour
     
     void Move()
     {
-        transform.Rotate(new Vector3(_eulers[0], 0, 0) * speed * Time.deltaTime);
+        transform.Rotate(new Vector3(_eulers[0], 0, 0).normalized * speed * Time.deltaTime);
+        
     }
 
     public void SetRotation(Vector2 eulers)
     {
         _eulers = eulers;
+       
     }
     
-    // float GetRandomAngle()
-    // {
-    //     float random;
-    //     do
-    //     {
-    //         random = Random.Range(-range, range);
-    //     } while (range == 0);
-    //
-    //     return random;
-    // }
+    float GetRandomAngle()
+    {
+        float random;
+        do
+        {
+            random = Random.Range(-range, range);
+        } while (range == 0);
+    
+        return random;
+    }
 }
