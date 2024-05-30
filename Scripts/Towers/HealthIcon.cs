@@ -24,6 +24,12 @@ public class HealthIcon : MonoBehaviour
     {
         UIEventbus.OnHealthChange -= AdjustIcons;
     }
+    
+    void Activate(Transform icon)
+    {
+        icon.gameObject.SetActive(true);
+        activeIcons.Add(icon);
+    }
 
     private void AdjustIcons(int health, GameObject towerGameObject)
     {
@@ -32,20 +38,13 @@ public class HealthIcon : MonoBehaviour
         _currentHealth = health;
         OrderIcons();
     }
-
-    // private void Start()
-    // {
-    //     CreateIcon();
-    // }
-
+    
     public void CreateIcons() //int maxHealth
     {
         for (int i = 0; i < maxHealth; i++)
         {
             icons.Add(Instantiate(iconPrefab, transform));
         }
-        
-        //OrderIcons();
     }
 
     public void OrderIcons()
@@ -64,17 +63,18 @@ public class HealthIcon : MonoBehaviour
         }
     }
 
+    private List<Transform> activeIcons = new();
     void OddOrder()
     {
         int counter = 0;
-        icons[0].gameObject.SetActive(true);
-        
+        Activate(icons[0]);
+
         if(_currentHealth <= 1) return;
         
         for (int i = 1; i < _currentHealth; i++)
         {
             var icon = icons[i];
-            icon.gameObject.SetActive(true);
+            Activate(icon);
             
             if (i % 2 == 1)
             {
@@ -87,25 +87,25 @@ public class HealthIcon : MonoBehaviour
             }
         }
     }
-    
 
+    
     void PairOrder()
     {
         int counter = 0;
-
-      
+        
         icons[0].transform.localPosition += Vector3.right * gap / 2;
         icons[1].transform.localPosition -= Vector3.right * gap / 2;
-        icons[0].gameObject.SetActive(true);
-        icons[1].gameObject.SetActive(true);
         
+        Activate(icons[0]);
+        Activate(icons[1]);
+
         if(_currentHealth <= 2) return;
         
         for (int i = 2; i < _currentHealth; i++)
         {
             var icon = icons[i];
-            icon.gameObject.SetActive(true);
-            
+            Activate(icon);
+
             if (i % 2 == 0)
             {
                 counter++;
@@ -119,9 +119,18 @@ public class HealthIcon : MonoBehaviour
         
     }
 
+    // void MoveIcons()
+    // {
+    //     foreach (var icon in activeIcons)
+    //     {
+    //         
+    //     }
+    // }
+
     void DisableAll()
     {
         icons.ForEach(i => i.gameObject.SetActive(false));
+        activeIcons.Clear();
     }
 
     void ResetAll()
