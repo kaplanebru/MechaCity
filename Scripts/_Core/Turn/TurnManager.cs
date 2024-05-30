@@ -37,8 +37,7 @@ namespace Turn
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                var selectionState = _stateHolder.GetStateByType(TurnStateType.Selection) as SelectionState;
-                selectionState.ResetSelection();
+                NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection); //todo: test
             }
         }
 
@@ -52,7 +51,7 @@ namespace Turn
             
             UIEventbus.OnButtonCall += ShowButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
             UIEventbus.OnButtonClicked += StateChangeRequestByUser;
-            Eventbus.StateEvents.OnStateChangeWithoutInteraction += StateChangeRequestByUser;
+            BpEventbus.StateEvents.OnStateChangeWithoutInteraction += StateChangeAfterIntruder;
             
             bpEventHandler = new BlueprintEventHandler(this);
         }
@@ -108,15 +107,18 @@ namespace Turn
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection);
             
         }
-        
-        private void StateChangeRequestByUser()
+
+        void StateChangeAfterIntruder()
         {
             currentState.ProcessExecutionWithSelection(); //execute bp
             
             if(currentState.StateType == TurnStateType.Intruder)
                 GetPreviousState();
-            else
-                GetNextState();
+        }
+        
+        private void StateChangeRequestByUser()
+        {
+            GetNextState();
         }
 
         public void GetNextState()
@@ -129,6 +131,7 @@ namespace Turn
         {
             var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(previousType);
+            print("previous state: " + previousType);
         }
 
         public void ChangeStateBySystem(TurnStateType newType)
@@ -175,7 +178,7 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnButtonCall -= ShowButtonRequest;
             UIEventbus.OnButtonClicked -= StateChangeRequestByUser;
-            Eventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeRequestByUser;
+            BpEventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeRequestByUser;
         }
 
        

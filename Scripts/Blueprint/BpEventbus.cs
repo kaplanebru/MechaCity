@@ -5,11 +5,18 @@ using Blueprint;
 using Enums;
 using UnityEngine;
 
-public static class BpEventbus 
+public static class BpEventbus
 {
-    public class SettingEvents
+
+    public static Action<int[]> OnBpExecution;
+    public class SelectionEvents
     {
         public static Action<SelectionType, int> OnCurrentBpSet;
+    }
+
+    public class StateEvents
+    {
+        public static Action OnStateChangeWithoutInteraction;
     }
     public class ActionEvents
     {

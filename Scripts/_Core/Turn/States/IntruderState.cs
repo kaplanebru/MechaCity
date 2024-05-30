@@ -43,7 +43,7 @@ namespace Turn
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
-            BpEventbus.SettingEvents.OnCurrentBpSet += GetBpSelector; //permanent de olabilir
+            BpEventbus.SelectionEvents.OnCurrentBpSet += GetBpSelector; //permanent de olabilir
         }
         
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
@@ -56,9 +56,10 @@ namespace Turn
         {
             bpSelector = selectors[selectionType];
             
+            //return; //test
             if (selectionType == SelectionType.None)
             {
-                Eventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
+                BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
                 return;
             }
             
@@ -78,13 +79,15 @@ namespace Turn
         
         public override void ProcessExecutionWithSelection()
         {
-            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(bpSelector?.Towers.ToArray());
+            Debug.Log("process exe");
+            BpEventbus.OnBpExecution?.Invoke(bpSelector?.Towers.ToArray()); //burda tekrar networke gitmeye gerek yok!!
+           // NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(bpSelector?.Towers.ToArray());
         }
         
 
         public override void Unsubscribe()
         {
-            BpEventbus.SettingEvents.OnCurrentBpSet -= GetBpSelector;
+            BpEventbus.SelectionEvents.OnCurrentBpSet -= GetBpSelector;
             if(bpSelector != null) //TODO: CHECK MİGHT CAUSE TROUBLE FOR MP
                 bpSelector.Unsubscribe();
             incomingData.RestorePreviousSelectionColors();

@@ -49,8 +49,8 @@ namespace Turn
 
         private void UpdateSelectionAmount()
         {
-            Debug.Log("update selection");
             mainSelector.SelectionTowerAmount++;
+            Debug.Log(mainSelector.SelectionTowerAmount);
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)

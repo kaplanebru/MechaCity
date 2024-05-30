@@ -83,6 +83,8 @@ namespace Network
 
         private void StateChangeBegin(TurnStateType previousvalue, TurnStateType newvalue)
         {
+            print("new state: " + newvalue);
+
             NetworkEventbus.RequestEvents.OnStateChangeRequestByServer?.Invoke(newvalue);
         }
 

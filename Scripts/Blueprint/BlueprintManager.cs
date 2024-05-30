@@ -28,8 +28,10 @@ namespace Blueprint
 
             BpEventbus.UIEvents.OnInteraction += StartBpSelection; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
             
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer;
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer; //1: current bp set ediliyor
+            
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
+            BpEventbus.OnBpExecution += ExecuteBp;
             
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
@@ -38,9 +40,17 @@ namespace Blueprint
 
         private void StartBpSelection(BpType type, int level)
         {
-           // NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type);
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder); //new TurnStateData(TurnStateType.Intruder, type)
+            StartCoroutine(BpSelectionDelay(type, level));
+            // NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
+            // NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type, level);
+        }
+
+        IEnumerator BpSelectionDelay(BpType type, int level)
+        {
+            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
+            yield return new WaitForSeconds(.2f);
             NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type, level);
+
         }
         
         private void SetCurrentBpByServer(BpType type,int level) //network function
@@ -49,7 +59,10 @@ namespace Blueprint
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
 
             currentBlueprint.Level = level;
-            BpEventbus.SettingEvents.OnCurrentBpSet?.Invoke(currentBlueprint.SelectionType, currentBlueprint.MaxSelectionAmount);
+            
+            print(currentBlueprint);
+
+            BpEventbus.SelectionEvents.OnCurrentBpSet?.Invoke(currentBlueprint.SelectionType, currentBlueprint.MaxSelectionAmount);
         }
 
        
@@ -64,6 +77,7 @@ namespace Blueprint
 
         private void ExecuteBp(int[] selectedItems)
         {
+            print("EXECUTE BP");
             currentBlueprint.TryTakeAction(selectedItems);
             SetTracker(selectedItems);
         }
@@ -111,6 +125,8 @@ namespace Blueprint
 
         public void Unsubscribe()
         {
+            BpEventbus.OnBpExecution -= ExecuteBp;
+
             BpEventbus.UIEvents.OnInteraction -= StartBpSelection;
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
             NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpByServer;

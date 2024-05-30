@@ -15,6 +15,7 @@ namespace Blueprint
         public SelectionIncrementAction BpAction { get; } = new();
         public override void TryTakeAction(int[] selectedItems)
         {
+            Debug.Log("EXECUTE");
             BpAction.Execute();
         }
 

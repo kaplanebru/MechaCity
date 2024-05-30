@@ -28,7 +28,6 @@ public static class Eventbus
 
     public static class StateEvents
     {
-        public static Action OnStateChangeWithoutInteraction;
         public static Action OnLinkStateBegin;
     }
 
