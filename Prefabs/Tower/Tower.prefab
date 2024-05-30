@@ -89108,7 +89108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69190dfbee8ad0e4b8c2b6b436fea32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconPrefab: {fileID: 6761605423090564005, guid: 31459ae6eb1d30540b026fd21cd36c8d, type: 3}
+  iconPrefab: {fileID: 8368343531887232909, guid: 31459ae6eb1d30540b026fd21cd36c8d, type: 3}
   icons: []
   gap: 0.44
   maxHealth: 5

@@ -258,6 +258,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6761605423090564005}
+  - component: {fileID: 8368343531887232909}
   m_Layer: 0
   m_Name: HealthIcon
   m_TagString: Untagged
@@ -282,6 +283,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8368343531887232909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5206359618706065322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e87c86696ba582946bb5a069c4f67a4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 2
+  speed: 20
 --- !u!1 &5803094435587749310
 GameObject:
   m_ObjectHideFlags: 0
