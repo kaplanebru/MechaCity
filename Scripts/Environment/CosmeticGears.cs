@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Chain;
+using Network;
 using UnityEngine;
 
 namespace Environment
@@ -14,6 +15,14 @@ namespace Environment
         {
             Eventbus.CombatEvents.OnCombatStarted += MoveGears;
             Eventbus.CombatEvents.OnCombatEnding += StopGears;
+
+            NetworkEventbus.OnAllClientsSet += FirstMotion;
+        }
+
+        private void FirstMotion(object[] obj)
+        {
+            MoveGears();
+            Invoke(nameof(StopGears), 1.2f);
         }
 
         private void StopGears()
@@ -36,6 +45,8 @@ namespace Environment
         {
             Eventbus.CombatEvents.OnCombatStarted -= MoveGears;
             Eventbus.CombatEvents.OnCombatEnding -= StopGears;
+            NetworkEventbus.OnAllClientsSet -= FirstMotion;
+
         }
     }
 }
