@@ -63,7 +63,6 @@ namespace Turn
         {
            // Debug.Log("reset selection");
             mainSelector.ResetSelector(); 
-            BpEventbus.SubscriberEvents.OnSelectionIncrease -= UpdateSelectionAmount;
         }
 
 
