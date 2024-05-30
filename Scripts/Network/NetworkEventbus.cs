@@ -24,7 +24,6 @@ namespace Network
         {
             public static Action<TurnStateType> OnStateChangeRequestByUser;
             public static Action<BpType, int> OnBpSelectionRequestByUser;
-            public static Action<int[]> OnBpExecutionRequestByUser;
             public static Action<TeamType> OnGameEnds;
         }
 

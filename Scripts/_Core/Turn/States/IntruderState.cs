@@ -81,7 +81,6 @@ namespace Turn
         {
             Debug.Log("process exe");
             BpEventbus.OnBpExecution?.Invoke(bpSelector?.Towers.ToArray()); //burda tekrar networke gitmeye gerek yok!!
-           // NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(bpSelector?.Towers.ToArray());
         }
         
 

@@ -16,7 +16,6 @@ namespace Blueprint
 
         private BpHolder bpHolder = new BpHolder();
 
-        //public Bp_StateIntruder BpStateIntruder = 
         public BPSlotHolder slotHolder;
         public BPDataHolder bpDataHolder;
         public BpTrackerList bpTrackerList = new ();
@@ -28,7 +27,7 @@ namespace Blueprint
 
             BpEventbus.UIEvents.OnInteraction += StartBpSelection; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
             
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer; //1: current bp set ediliyor
+            NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer;
             
             NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
             BpEventbus.OnBpExecution += ExecuteBp;
@@ -41,11 +40,9 @@ namespace Blueprint
         private void StartBpSelection(BpType type, int level)
         {
             StartCoroutine(BpSelectionDelay(type, level));
-            // NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
-            // NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type, level);
         }
 
-        IEnumerator BpSelectionDelay(BpType type, int level)
+        IEnumerator BpSelectionDelay(BpType type, int level) //On Interaction : calls network
         {
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
             yield return new WaitForSeconds(.2f);
@@ -53,9 +50,9 @@ namespace Blueprint
 
         }
         
-        private void SetCurrentBpByServer(BpType type,int level) //network function
+        private void SetCurrentBpByServer(BpType type,int level) //network call
         {
-            currentBlueprint = bpHolder.AllBlueprints[type]; //execution için 2 tarafta da bunun set edilmesi gerek
+            currentBlueprint = bpHolder.AllBlueprints[type];
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
 
             currentBlueprint.Level = level;
@@ -77,7 +74,6 @@ namespace Blueprint
 
         private void ExecuteBp(int[] selectedItems)
         {
-            print("EXECUTE BP");
             currentBlueprint.TryTakeAction(selectedItems);
             SetTracker(selectedItems);
         }

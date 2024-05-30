@@ -131,7 +131,6 @@ namespace Turn
         {
             var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(previousType);
-            print("previous state: " + previousType);
         }
 
         public void ChangeStateBySystem(TurnStateType newType)

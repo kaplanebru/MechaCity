@@ -42,22 +42,9 @@ namespace Network
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += StateChangeBeginServerRpc;
                 
                 NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser += ProcessBpSelectionServerRpc;
-                NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser += ProcessBpExecutionServerRpc;
             }
         }
-
-        [ServerRpc]
-        private void ProcessBpExecutionServerRpc(int[] selectedTowers)
-        {
-            ProcessBpExecutionClientRpc(selectedTowers);
-        }
-
-        [ClientRpc]
-        void ProcessBpExecutionClientRpc( int[] selectedTowers)
-        {
-            NetworkEventbus.RequestEvents.OnBpExecutionBySystem?.Invoke(selectedTowers);
-        }
-
+        
         [ServerRpc]
         private void ProcessBpSelectionServerRpc(BpType bpType, int level)
         {
@@ -83,8 +70,6 @@ namespace Network
 
         private void StateChangeBegin(TurnStateType previousvalue, TurnStateType newvalue)
         {
-            print("new state: " + newvalue);
-
             NetworkEventbus.RequestEvents.OnStateChangeRequestByServer?.Invoke(newvalue);
         }
 
@@ -99,8 +84,6 @@ namespace Network
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser -= StateChangeBeginServerRpc;
                 
                 NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser -= ProcessBpSelectionServerRpc;
-                NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser -= ProcessBpExecutionServerRpc;
-
             }
         }
     }
