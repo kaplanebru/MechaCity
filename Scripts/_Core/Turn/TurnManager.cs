@@ -37,7 +37,7 @@ namespace Turn
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection); //todo: test
+                //todo: test
             }
         }
 
