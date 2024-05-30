@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TowerAssetHolder: {fileID: 11400000, guid: 5a6ab34051a43b7448f07f21f6378188, type: 2}
   StartHeight: 2
-  StartHealth: 1
+  StartHealth: 3
   DamagePower: 1
   MaxBullet: 1
   StartTeam: 1
