@@ -100,7 +100,7 @@ namespace Chain
             
             while (true)
             {
-                transform.Rotate(direction, _speed); 
+                transform.Rotate(direction, _speed* 100 * Time.deltaTime); //todo: delta time and 100 added for test
                 // transform.rotation =
                 //     Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(direction), Data.Speed);
                 yield return null;

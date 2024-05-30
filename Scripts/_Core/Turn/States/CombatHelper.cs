@@ -85,7 +85,7 @@ namespace Turn
             }
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
             yield return new WaitForSeconds(timingData.cameraDelay);
-            Eventbus.CombatEvents.OnCombatStarted?.Invoke();
+            //Eventbus.CombatEvents.OnCombatStarted?.Invoke();
 
 
             for (int i = 0; i < AllTowers.TowersCount; i++)

@@ -10,7 +10,7 @@ namespace Environment
     public class CosmeticGears : MonoBehaviour
     {
         public Machinery[] machineries;
-
+        
         private void OnEnable()
         {
             Eventbus.CombatEvents.OnCombatStarted += MoveGears;
@@ -18,6 +18,8 @@ namespace Environment
 
             NetworkEventbus.OnAllClientsSet += FirstMotion;
         }
+
+       
 
         private void FirstMotion(object[] obj)
         {
@@ -46,7 +48,6 @@ namespace Environment
             Eventbus.CombatEvents.OnCombatStarted -= MoveGears;
             Eventbus.CombatEvents.OnCombatEnding -= StopGears;
             NetworkEventbus.OnAllClientsSet -= FirstMotion;
-
         }
     }
 }
