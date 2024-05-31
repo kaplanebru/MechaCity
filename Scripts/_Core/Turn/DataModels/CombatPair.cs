@@ -60,7 +60,7 @@ namespace DataModels
         void SendProjectile(Tower perpetrator, Tower victim, float duration)
         {
             var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = perpetrator.towerParts.Data.Top.transform.position);
-            projectile.Setup(duration, victim.towerParts.Data.Top.transform.position-Vector3.up);
+            projectile.Setup(duration, victim.towerParts.Data.Top.transform.position-Vector3.up *.5f); //-Vector3.up
 
             perpetrator.Data.BulletAmount--;
             

@@ -25,7 +25,7 @@ namespace ProjectileHandler
         public void Move(Action callback)
         {
             var projectileLookRotation =
-                Quaternion.LookRotation(new Vector3(targetPos.x, 0, targetPos.z) - transform.position);
+                Quaternion.LookRotation(new Vector3(targetPos.x, targetPos.y, targetPos.z) - transform.position);
             transform.rotation = projectileLookRotation;
 
             transform.DOMove(targetPos, duration).OnComplete(() =>
