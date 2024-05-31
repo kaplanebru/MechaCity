@@ -24,13 +24,12 @@ namespace ProjectileHandler
 
         public void Move(Action callback)
         {
-            var projectileLookRotation =
-                Quaternion.LookRotation(new Vector3(targetPos.x, targetPos.y, targetPos.z) - transform.position);
+            var direction = (targetPos - transform.position).normalized;
+            var projectileLookRotation = Quaternion.LookRotation(direction);
             transform.rotation = projectileLookRotation;
 
-            transform.DOMove(targetPos, duration).OnComplete(() =>
+            transform.DOMove(targetPos-direction*0.6f, duration).SetEase(Ease.InSine).OnComplete(() =>
             {
-                //Destroy(gameObject);
                 ProjectilePool.Instance.ReleaseItem(this);
                 callback?.Invoke();
             });

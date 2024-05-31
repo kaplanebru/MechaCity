@@ -65,13 +65,13 @@ namespace DataModels
             perpetrator.Data.BulletAmount--;
             
             projectile.Move(()=>RemoveHealth(victim.Data));
-            //sırf pozisyon için tower taşıma, dataya ekle! Ama top pozisyonu vs değişken
         }
 
         void RemoveHealth(TowerData victimData)
         {
             victimData.Health -= OtherTowerData.DamagePower;
             UIEventbus.OnHealthChange.Invoke(victimData.Health, _nextTower.gameObject);
+            AllTowers.GetTower(victimData.UniqID).towerParts.Shake();
 
             if (victimData.Health <= 0)
             {
