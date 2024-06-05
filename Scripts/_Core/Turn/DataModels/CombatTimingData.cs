@@ -10,5 +10,6 @@ namespace DataModels
         public float shootDuration = 1;
         public float skipDelay = 0.3f;
         public float cameraDelay = 1;
+        public float deathTime = 5f;
     }
 }

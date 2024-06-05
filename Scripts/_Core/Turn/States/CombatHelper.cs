@@ -32,16 +32,24 @@ namespace Turn
 
         public void Register()
         {
-            timingData = ScriptableObject.CreateInstance<CombatTimingData>();
+            timingData = ScriptableObject.CreateInstance<CombatTimingData>(); //todo: bunu dışardan almalı
         }
 
         public void Subscribe(List<int> towers)
         {
             combatPairsCreator = new CombatPairsCreator(Data.CombatPairs);
+            
+            Eventbus.CombatEvents.OnTowerKilled += TowerDeath;
             BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
+            
             _towers = towers;
-
             _towers?.ForEach(at => AllTowers.GetTower(at).ToOriginalColor());
+        }
+
+        private bool _hasDeathTower = false;
+        private void TowerDeath(TowerData obj)
+        {
+            _hasDeathTower = true;
         }
 
 
@@ -96,7 +104,13 @@ namespace Turn
                 if (pair.Combat())
                 {
                     yield return new WaitUntil(() => pair.CombatCompleted);
-                    //death?
+                    if (_hasDeathTower)
+                    {
+                       
+                        _hasDeathTower = false;
+                        yield return new WaitForSeconds(timingData.deathTime);
+                        Debug.Log("Death tower");
+                    }
                 }
                 else
                 {
@@ -132,6 +146,7 @@ namespace Turn
         {
             DeselectAlteredTowers();
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
+            Eventbus.CombatEvents.OnTowerKilled -= TowerDeath;
             BpEventbus.ActionEvents.OnRestoreSelectionAmount?.Invoke();
         }
     }

@@ -29,9 +29,6 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     {
         combatHelper.Register();
     }
-
-   
-
     public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
     {
       
@@ -42,12 +39,6 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     
     void ExecuteCombat()
     {
-        // if (MultiplayerSetter.IsTesting)
-        // {
-        //     Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
-        //     combatHelper.Unsubscribe();
-        //     return;
-        // }
         combatHelper.Fire();
     }
     
