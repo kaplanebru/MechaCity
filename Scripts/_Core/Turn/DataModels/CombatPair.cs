@@ -79,7 +79,8 @@ namespace DataModels
 
             if (victimData.Health <= 0)
             {
-                Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData);
+                AllTowers.GetTower(victimData.UniqID).HandleDeath();
+                //Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData);
             }
 
             CompleteCombat();
@@ -88,10 +89,6 @@ namespace DataModels
         void SkipCombat()
         {
             CompleteCombat();
-            // Task.Delay(TimeSpan.FromSeconds(duration)).ContinueWith(task =>
-            // {
-            //     CompleteCombat();
-            // }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         void CompleteCombat()

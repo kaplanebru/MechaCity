@@ -11,5 +11,7 @@ namespace Towers
         public Material[] SelectedMaterial;
         public Material[] BlueprintMaterial;
         public Material[] FreezeMaterial;
+        public Material[] DeadMaterial;
+        public Material[] RegenerationMaterial;
     }
 }

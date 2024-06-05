@@ -25,3 +25,9 @@ MonoBehaviour:
   FreezeMaterial:
   - {fileID: 2100000, guid: 306b62ebcdc1d0a499a07cf2090c2c7a, type: 2}
   - {fileID: 2100000, guid: d08eb1a31bcba044d9a4236488ca3efe, type: 2}
+  DeadMaterial:
+  - {fileID: 2100000, guid: bc44098db507d4149b39367e3d3c3a3d, type: 2}
+  - {fileID: 2100000, guid: bc44098db507d4149b39367e3d3c3a3d, type: 2}
+  RegenerationMaterial:
+  - {fileID: 2100000, guid: ea1ff7162735c684cbb10f437142291e, type: 2}
+  - {fileID: 2100000, guid: ea1ff7162735c684cbb10f437142291e, type: 2}

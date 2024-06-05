@@ -54,6 +54,12 @@ namespace Towers
             clickHandler.DisableSelection();
         }
 
+        public void HandleDeath()
+        {
+            ToDeadColor();
+           // Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData);
+        }
+
         public void ToFreezeColor()
         {
             towerParts.SetColor(Data.TeamTowerData.FreezeMaterial);
@@ -72,6 +78,17 @@ namespace Towers
         public void ToOriginalColor()
         {
             towerParts.SetColor(Data.TeamTowerData.DefaultMaterial);
+        }
+
+        public void ToDeadColor()
+        {
+            print("dead mat");
+            towerParts.SetColor(Data.TeamTowerData.DeadMaterial);
+        }
+
+        public void ToRegenerationColor()
+        {
+            towerParts.SetColor(Data.TeamTowerData.RegenerationMaterial);
         }
 
         public void RestoreBullets() //Todo: name change: bullet hakkı
