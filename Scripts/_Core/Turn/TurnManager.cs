@@ -19,6 +19,8 @@ namespace Turn
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         public static int TurnTracker => _turnTracker; //no setter
+        public CombatTimingData combatTimingData;
+
         private static int _turnTracker = 0;
 
         private BaseTurnState currentState;
@@ -27,7 +29,7 @@ namespace Turn
         private TurnStateHolder _stateHolder = new();
         private BlueprintEventHandler bpEventHandler;
         
-        private CombatHelper _combatHelper;
+        private CombatHelper _combatHelper = new();
         private TurnHelper turnHelper = new();
 
         private bool firstTurn = true;
@@ -83,8 +85,10 @@ namespace Turn
         {
             Initialize();
             
-            _combatHelper = ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).combatHelper;
+            ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).GetCombatHelper(_combatHelper);
+            
             _combatHelper.Subscribe(null);
+            _combatHelper.GetTimingData(combatTimingData);
             _combatHelper.SetCombatPairs();
 
             NewTurn();

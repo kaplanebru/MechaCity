@@ -26740,6 +26740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b66e0b6380d6f843b1394f3d86d88d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combatTimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
 --- !u!1 &980733670
 GameObject:
   m_ObjectHideFlags: 0

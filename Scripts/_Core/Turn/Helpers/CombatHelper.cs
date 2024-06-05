@@ -27,12 +27,13 @@ namespace Turn
         private CombatPairsCreator combatPairsCreator;
         private List<int> _towers;
 
-        private CombatTimingData timingData;
+        private CombatTimingData _timingData;
         private bool pairsReversed = false;
+        
 
-        public void Register()
+        public void GetTimingData(CombatTimingData combatTimingData)
         {
-            timingData = ScriptableObject.CreateInstance<CombatTimingData>(); //todo: bunu dışardan almalı
+            _timingData = combatTimingData;
         }
 
         public void Subscribe(List<int> towers)
@@ -89,7 +90,7 @@ namespace Turn
             }
 
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
-            yield return new WaitForSeconds(timingData.cameraDelay);
+            yield return new WaitForSeconds(_timingData.cameraDelay);
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
 
 
@@ -108,13 +109,13 @@ namespace Turn
                     {
                        
                         _hasDeathTower = false;
-                        yield return new WaitForSeconds(timingData.deathTime);
+                        yield return new WaitForSeconds(_timingData.deathTime);
                         Debug.Log("Death tower");
                     }
                 }
                 else
                 {
-                    yield return new WaitForSeconds(timingData.skipDelay);
+                    yield return new WaitForSeconds(_timingData.skipDelay);
                 }
                 
                 yield return new WaitForSeconds(Data.afterCombatDelay);

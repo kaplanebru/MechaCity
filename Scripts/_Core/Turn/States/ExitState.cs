@@ -17,29 +17,25 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     public override int StateId { get; set; }
     public override TurnStateType StateType { get; } = TurnStateType.Exit;
 
-    public CombatHelper combatHelper = new();
-
-   
-
+    public CombatHelper _combatHelper;
     public override void Subscribe() {}
-    
     public override void SubscribeToConstantEvents() {}
+    public override void Register() {}
 
-    public override void Register()
+    public void GetCombatHelper(CombatHelper combatHelper)
     {
-        combatHelper.Register();
+        _combatHelper = combatHelper;
     }
     public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
     {
-      
         TransferData.Towers = data.Towers;
-        combatHelper.Subscribe(TransferData.Towers);
+        _combatHelper.Subscribe(TransferData.Towers);
         ExecuteCombat();
     }
     
     void ExecuteCombat()
     {
-        combatHelper.Fire();
+        _combatHelper.Fire();
     }
     
     public override void UnsubscribeFromConstantEvents() { }
