@@ -30,30 +30,34 @@ namespace DataModels
             return OtherTowerData.UniqID == newTower || MainTowerData.UniqID == newTower;
         }
 
-        public void Combat(CombatTimingData timingData)
+        public bool Combat()
         {
-            //Debug.Log(MainTowerData.UniqID + " " + OtherTowerData.UniqID);
-
             if (OtherTowerData.TeamTowerData.TeamType == MainTowerData.TeamTowerData.TeamType)
             {
-                SkipCombat(timingData.skipDelay);
-                return;
+                SkipCombat();
+                return false;
             }
 
             if (OtherTowerData.Health <= 0 || MainTowerData.Health <= 0)
             {
-                SkipCombat(timingData.skipDelay);
-                return;
+                SkipCombat();
+                return false;
             }
 
             if (MainTowerData.Height > OtherTowerData.Height)
             {
-                if(MainTowerData.CanShoot)
-                    SendProjectile(_mainTower, _nextTower, timingData.shootDuration);
+                if (MainTowerData.CanShoot)
+                {
+                    SendProjectile(_mainTower, _nextTower, 1); //timingData.shootDuration
+                    return true;
+                }
+               
+                return false;
             }
             else
             {
-               SkipCombat(timingData.skipDelay);
+               SkipCombat();
+               return false;
             }
         }
 
@@ -81,12 +85,13 @@ namespace DataModels
             CompleteCombat();
         }
 
-        void SkipCombat(float duration)
+        void SkipCombat()
         {
-            Task.Delay(TimeSpan.FromSeconds(duration)).ContinueWith(task =>
-            {
-                CompleteCombat();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            CompleteCombat();
+            // Task.Delay(TimeSpan.FromSeconds(duration)).ContinueWith(task =>
+            // {
+            //     CompleteCombat();
+            // }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         void CompleteCombat()

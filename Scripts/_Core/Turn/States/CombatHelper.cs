@@ -11,7 +11,7 @@ using Unity.Collections;
 using UnityEngine;
 
 namespace Turn
-{ 
+{
     public class CombatData
     {
         public List<CombatPair> CombatPairs = new();
@@ -21,29 +21,26 @@ namespace Turn
         public float cursorDuration = 0.5f;
     }
 
-  
-
-    public class CombatHelper: IEnumeratorContainer
+    public class CombatHelper : IEnumeratorContainer
     {
         private readonly CombatData Data = new();
         private CombatPairsCreator combatPairsCreator;
         private List<int> _towers;
 
-
         private CombatTimingData timingData;
         private bool pairsReversed = false;
-
 
         public void Register()
         {
             timingData = ScriptableObject.CreateInstance<CombatTimingData>();
         }
+
         public void Subscribe(List<int> towers)
         {
             combatPairsCreator = new CombatPairsCreator(Data.CombatPairs);
             BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
             _towers = towers;
-            
+
             _towers?.ForEach(at => AllTowers.GetTower(at).ToOriginalColor());
         }
 
@@ -66,7 +63,7 @@ namespace Turn
         }
 
 
-        void Select(CombatPair pair, bool select = true)
+        void SetSelectionColor(CombatPair pair, bool select = true)
         {
             if (select)
                 AllTowers.GetTower(pair.MainTowerData.UniqID).ToSelectionColor();
@@ -74,15 +71,15 @@ namespace Turn
                 AllTowers.GetTower(pair.MainTowerData.UniqID).ToOriginalColor();
         }
 
-        public IEnumerator EnumeratorInstance()
+        public IEnumerator FightRoutine()
         {
-            if (MultiplayerSetter.IsTestingWithoutCombat) //TODO: later
+            if (MultiplayerSetter.IsTestingWithoutCombat)
             {
                 yield return new WaitForSeconds(.5f);
-                Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
-                Unsubscribe();
+                EndCombat();
                 yield break;
             }
+
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
             yield return new WaitForSeconds(timingData.cameraDelay);
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
@@ -91,43 +88,51 @@ namespace Turn
             for (int i = 0; i < AllTowers.TowersCount; i++)
             {
                 var pair = Data.CombatPairs[i];
-                Select(pair);
+                SetSelectionColor(pair);
 
                 yield return new WaitForSeconds(Data.selectionDelay);
 
 
-                pair.Combat(timingData);
-
-                yield return new WaitUntil(() => pair.CombatCompleted);
+                if (pair.Combat())
+                {
+                    yield return new WaitUntil(() => pair.CombatCompleted);
+                    //death?
+                }
+                else
+                {
+                    yield return new WaitForSeconds(timingData.skipDelay);
+                }
+                
                 yield return new WaitForSeconds(Data.afterCombatDelay);
 
                 Eventbus.CombatEvents.OnFire?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
-                Select(pair, false);
+                SetSelectionColor(pair, false);
             }
 
             Eventbus.CombatEvents.OnCombatEnding?.Invoke();
             yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
+
+            EndCombat();
+        }
+
+        void EndCombat()
+        {
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
-            
             Unsubscribe();
         }
 
         void DeselectAlteredTowers()
         {
-            _towers?.ForEach(t =>
-                AllTowers.GetTower(t).ToOriginalColor());
-            //towerParts.SetColor(AllTowers.GetTower(t).Data.TeamTowerData.DefaultMaterial));
+            _towers?.ForEach(t => AllTowers.GetTower(t).ToOriginalColor());
         }
-        
+
         public void Unsubscribe()
         {
             DeselectAlteredTowers();
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
             BpEventbus.ActionEvents.OnRestoreSelectionAmount?.Invoke();
         }
-
-       
     }
 }

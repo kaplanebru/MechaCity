@@ -13,7 +13,7 @@ public class CoroutineStarter : MonoBehaviour
 
    public void StartGivenCoroutine(IEnumeratorContainer enumeratorContainer)
    {
-      StartCoroutine(enumeratorContainer.EnumeratorInstance());
+      StartCoroutine(enumeratorContainer.FightRoutine());
    }
 
    private void OnDisable()
@@ -24,5 +24,5 @@ public class CoroutineStarter : MonoBehaviour
 
 public interface IEnumeratorContainer
 {
-   IEnumerator EnumeratorInstance();
+   IEnumerator FightRoutine();
 }
