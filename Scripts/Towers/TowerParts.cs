@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DataModels;
 using DG.Tweening;
 using GameUI;
 using UnityEngine;
@@ -20,10 +21,10 @@ namespace Towers
     public class TowerParts : MonoBehaviour
     {
         public TowerPartsData Data;
+        public CombatTimingData timingData;
         
         [Header("Shake")]
-         float duration = .2f;
-         float magnitude = 0.03f;
+        float shakeMagnitude = 0.03f;
 
 
 
@@ -58,11 +59,11 @@ namespace Towers
             Vector3 originalPosition = middleTransform.localPosition;
             float elapsed = 0.0f;
 
-            while (elapsed < duration)
+            while (elapsed < timingData.shakeDuration)
             {
-                float x = originalPosition.x + Random.Range(-1f, 1f) * magnitude;
-                float y = originalPosition.y + Random.Range(-1f, 1f) * magnitude;
-                float z = originalPosition.z + Random.Range(-1f, 1f) * magnitude;
+                float x = originalPosition.x + Random.Range(-1f, 1f) * shakeMagnitude;
+                float y = originalPosition.y + Random.Range(-1f, 1f) * shakeMagnitude;
+                float z = originalPosition.z + Random.Range(-1f, 1f) * shakeMagnitude;
 
                 middleTransform.localPosition = new Vector3(x, y, z);
 

@@ -40,19 +40,11 @@ namespace Turn
         {
             combatPairsCreator = new CombatPairsCreator(Data.CombatPairs);
             
-            //Eventbus.CombatEvents.OnTowerKilled += TowerDeath;
             BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
             
             _towers = towers;
             _towers?.ForEach(at => AllTowers.GetTower(at).ToOriginalColor());
         }
-
-        // private bool _hasDeathTower = false;
-        // private void TowerDeath(int obj)
-        // {
-        //     _hasDeathTower = true;
-        // }
-
 
         public void Fire()
         {
@@ -105,12 +97,6 @@ namespace Turn
                 if (pair.Combat())
                 {
                     yield return new WaitUntil(() => pair.CombatCompleted);
-                    
-                    // if (_hasDeathTower)
-                    // {
-                    //     _hasDeathTower = false;
-                    //     yield return new WaitForSeconds(_timingData.deathTime);
-                    // }
                 }
                 else
                 {
@@ -146,7 +132,6 @@ namespace Turn
         {
             DeselectAlteredTowers();
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
-            //Eventbus.CombatEvents.OnTowerKilled -= TowerDeath;
             BpEventbus.ActionEvents.OnRestoreSelectionAmount?.Invoke();
         }
     }

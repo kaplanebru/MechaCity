@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Blueprint;
 using Clicks;
+using DataModels;
 using GameUI;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace Towers
 
         public TowerConstantData ConstantData;
         public TowerData Data;
+        public CombatTimingData timingData;
         public TowerParts towerParts;
         public ClickHandler clickHandler;
 
@@ -63,6 +65,7 @@ namespace Towers
 
         IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat)
         {
+            yield return new WaitForSeconds(timingData.shakeDuration);
             ToDeadColor();
 
             yield return new WaitForSeconds(1);

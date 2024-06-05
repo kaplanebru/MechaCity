@@ -14861,6 +14861,7 @@ MonoBehaviour:
     _health: 1
     DamagePower: 0
     IsClickable: 1
+  timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
   towerParts: {fileID: 0}
   clickHandler: {fileID: 0}
 --- !u!114 &7676847151417115740
@@ -14907,6 +14908,7 @@ MonoBehaviour:
     - {fileID: 5295027402672241883}
     - {fileID: 6409204325026999676}
     TopMesh: {fileID: 0}
+  timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
 --- !u!114 &1183604849590895228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89113,6 +89115,7 @@ MonoBehaviour:
   gap: 0.44
   maxHealth: 5
   parent: {fileID: 6095367932178840500}
+  range: 5
 --- !u!1 &5184880492463206532
 GameObject:
   m_ObjectHideFlags: 0
