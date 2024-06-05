@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using Blueprint;
 using Clicks;
 using GameUI;
@@ -54,10 +56,22 @@ namespace Towers
             clickHandler.DisableSelection();
         }
 
-        public void HandleDeath()
+        public void HandleDeath(Action teamSwitchCallback, Action completeCombat)
+        {
+            StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat));
+        }
+
+        IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat)
         {
             ToDeadColor();
-           // Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData);
+
+            yield return new WaitForSeconds(1);
+            
+            teamSwitchCallback.Invoke();
+            
+            yield return new WaitForSeconds(1);
+
+            completeCombat.Invoke();
         }
 
         public void ToFreezeColor()

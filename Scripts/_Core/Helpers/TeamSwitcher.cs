@@ -24,14 +24,14 @@ namespace Turn
          Team GetTeamDataByTeamType(TeamType type) => _teams.First(team => team.Data.TeamType == type);
 
          private TowerData _deadTower;
-         private void ExchangeTower(TowerData deadTower)
+         private void ExchangeTower(int deadTowerId)
          {
-             _deadTower = deadTower;
-            Team oldTeam = GetTeamDataByTeamType(deadTower.TeamTowerData.TeamType);
+             _deadTower = AllTowers.GetData(deadTowerId);
+            Team oldTeam = GetTeamDataByTeamType(_deadTower.TeamTowerData.TeamType);
             Team newTeam = _teams.FirstOrDefault(t => t != oldTeam);
 
-            oldTeam.RemoveTower(deadTower);
-            newTeam.TakeTowerFromRival(deadTower);
+            oldTeam.RemoveTower(_deadTower);
+            newTeam.TakeTowerFromRival(_deadTower);
             
             
             Invoke(nameof(ResetDeadTower), 1f); //todo: temporary

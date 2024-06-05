@@ -8,13 +8,11 @@ public static class Eventbus
     public static class TeamEvents
     {
         public static Action<Team[]> OnTeamsSet;
-        public static Action<TowerData> OnTeamChange;
     }
 
     public static class CombatEvents
     {
-        public static Action<TowerData> OnTowerKilled;
-        public static Action OnMatchesRestored;
+        public static Action<int> OnTowerKilled;
         public static Action <float> OnFire;
         public static Action OnCombatStarted;
         public static Action OnCombatReady;

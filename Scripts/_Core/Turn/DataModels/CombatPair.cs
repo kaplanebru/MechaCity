@@ -14,13 +14,14 @@ namespace DataModels
 
         private Tower _mainTower;
         private Tower _nextTower;
-       
+
         public bool CombatCompleted { get; private set; } = false;
+
         public CombatPair(TowerData mainTowerData, TowerData otherTowerData)
         {
             MainTowerData = mainTowerData;
             OtherTowerData = otherTowerData;
-            
+
             _mainTower = AllTowers.GetTower(MainTowerData.UniqID);
             _nextTower = AllTowers.GetTower(OtherTowerData.UniqID);
         }
@@ -51,39 +52,51 @@ namespace DataModels
                     SendProjectile(_mainTower, _nextTower, 1); //timingData.shootDuration
                     return true;
                 }
-               
+
                 return false;
             }
             else
             {
-               SkipCombat();
-               return false;
+                SkipCombat();
+                return false;
             }
         }
 
         void SendProjectile(Tower perpetrator, Tower victim, float duration)
         {
-            var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = perpetrator.towerParts.Data.Top.transform.position);
-            projectile.Setup(duration, victim.towerParts.Data.Top.transform.position-Vector3.up *.5f); //-Vector3.up
+            var projectile = ProjectilePool.Instance.GetItem(p =>
+                p.transform.position = perpetrator.towerParts.Data.Top.transform.position);
+            projectile.Setup(duration, victim.towerParts.Data.Top.transform.position - Vector3.up * .5f); //-Vector3.up
 
             perpetrator.Data.BulletAmount--;
-            
-            projectile.Move(()=>RemoveHealth(victim.Data));
+
+            projectile.Move(() => RemoveHealth(victim.Data));
         }
 
         void RemoveHealth(TowerData victimData)
         {
             victimData.Health -= OtherTowerData.DamagePower;
             UIEventbus.OnHealthChange.Invoke(victimData.Health, _nextTower.gameObject);
-            AllTowers.GetTower(victimData.UniqID).towerParts.Shake();
 
+            var victim = AllTowers.GetTower(victimData.UniqID);
+            victim.towerParts.Shake();
+
+            if(IsVictimDead(victimData, victim))
+                return;
+            
+            CompleteCombat();
+        }
+
+        bool IsVictimDead(TowerData victimData, Tower victim)
+        {
             if (victimData.Health <= 0)
             {
-                AllTowers.GetTower(victimData.UniqID).HandleDeath();
-                //Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData);
+                victim.HandleDeath(() =>
+                        Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData.UniqID),
+                    CompleteCombat);
+                return true;
             }
-
-            CompleteCombat();
+            return false;
         }
 
         void SkipCombat()
@@ -95,6 +108,5 @@ namespace DataModels
         {
             CombatCompleted = true;
         }
-        
     }
 }
