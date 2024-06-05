@@ -21,7 +21,7 @@ namespace Towers
         public TowerParts towerParts;
         public ClickHandler clickHandler;
 
-        public TowerColorHandler colorHandler;
+        public TowerColorHandler ColorHandler;
 
 
         private void OnEnable()
@@ -29,7 +29,7 @@ namespace Towers
             towerParts = GetComponent<TowerParts>();
             clickHandler = GetComponent<ClickHandler>();
 
-            colorHandler = new TowerColorHandler(Data, towerParts);
+            ColorHandler = new TowerColorHandler(Data, towerParts);
         }
 
         public void Setup(TeamTowerData teamTowerData)
@@ -42,13 +42,14 @@ namespace Towers
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
             clickHandler.SetClickables(Data.UniqID);
             Data.BpTowerData = new BpTowerData(Data.UniqID);
+            ColorHandler.ToOriginalColor(); //todo later
             SetTeam(teamTowerData); //for tower and clickables
         }
 
         public void SetTeam(TeamTowerData teamTowerData)
         {
             Data.TeamTowerData = teamTowerData;
-            colorHandler.ToOriginalColor();
+            towerParts.FadeColor(teamTowerData.RegenerationMaterial, teamTowerData.DefaultMaterial);
             clickHandler.SetClickableTeams(teamTowerData.TeamType);
         }
 
@@ -71,13 +72,15 @@ namespace Towers
         IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat)
         {
             yield return new WaitForSeconds(timingData.shakeDuration);
-            colorHandler.ToDeadColor();
-
-            yield return new WaitForSeconds(1);
+            
+            //efekt de eklenebilir
+            yield return new WaitForSeconds(.3f);
             
             teamSwitchCallback.Invoke();
+            //rotate
             
-            yield return new WaitForSeconds(1);
+            
+            yield return new WaitForSeconds(timingData.colorFadeDuration + 5);
 
             completeCombat.Invoke();
         }

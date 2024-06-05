@@ -22,10 +22,8 @@ namespace Towers
     {
         public TowerPartsData Data;
         public CombatTimingData timingData;
-        
-        [Header("Shake")]
-        float shakeMagnitude = 0.03f;
 
+        [Header("Shake")] float shakeMagnitude = 0.03f;
 
 
         public void SetColor(Material[] mats)
@@ -35,6 +33,23 @@ namespace Towers
             {
                 var mesh = Data.MiddleMeshes[i];
                 mesh.material = mats[1];
+            }
+        }
+
+        public void FadeColor(Material[] regenMats, Material[] teamMats)
+        {
+            // for (var i = 0; i < regenMats.Length; i++)
+            // {
+            //     regenMats[i].color = Data.MiddleMeshes[i].material.color;
+            // }
+            //
+            // SetColor(regenMats);
+
+            Data.MiddleMeshes[0].material.DOColor(teamMats[0].color, timingData.colorFadeDuration);
+            for (var i = 1; i < Data.MiddleMeshes.Length; i++)
+            {
+                var mesh = Data.MiddleMeshes[i];
+                mesh.material.DOColor(teamMats[1].color, timingData.colorFadeDuration);
             }
         }
 
@@ -53,7 +68,7 @@ namespace Towers
         {
             StartCoroutine(ShakeCoroutine(Data.Middle.transform));
         }
-        
+
         private IEnumerator ShakeCoroutine(Transform middleTransform)
         {
             Vector3 originalPosition = middleTransform.localPosition;

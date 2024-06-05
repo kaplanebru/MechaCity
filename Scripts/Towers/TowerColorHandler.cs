@@ -35,6 +35,11 @@ namespace Towers
             _towerParts.SetColor(Data.TeamTowerData.DefaultMaterial);
         }
 
+        public void FadeToDeadColor()
+        {
+            //_towerParts.FadeColor(Data.TeamTowerData.DeadMaterial);
+        }
+
         public void ToDeadColor()
         {
             _towerParts.SetColor(Data.TeamTowerData.DeadMaterial);

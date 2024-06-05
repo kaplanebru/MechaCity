@@ -38,10 +38,14 @@ namespace Teams
 
         public void TakeTowerFromRival(TowerData tower)
         {
-            //print("old team: " + tower.TeamTowerData.TeamType);
             Data.Towers.Add(tower);
-            AllTowers.GetTower(tower.UniqID).SetTeam(Data.TeamTowerData);
-            //print("new Team: " + tower.TeamTowerData.TeamType);
+
+            Tower towerObj = AllTowers.GetTower(tower.UniqID);
+            towerObj.SetTeam(Data.TeamTowerData);
+            // towerObj.towerParts.FadeColor(
+            //     towerObj.Data.TeamTowerData.RegenerationMaterial,Data.TeamTowerData.DefaultMaterial,
+            //     ()=>  towerObj.SetTeam(Data.TeamTowerData));
+           
         }
 
         public void RemoveTower(TowerData tower)

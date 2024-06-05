@@ -29,5 +29,5 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bc44098db507d4149b39367e3d3c3a3d, type: 2}
   - {fileID: 2100000, guid: bc44098db507d4149b39367e3d3c3a3d, type: 2}
   RegenerationMaterial:
-  - {fileID: 2100000, guid: ea1ff7162735c684cbb10f437142291e, type: 2}
-  - {fileID: 2100000, guid: ea1ff7162735c684cbb10f437142291e, type: 2}
+  - {fileID: 2100000, guid: 3d0faa8d9b06b3f40955b5fb339541a5, type: 2}
+  - {fileID: 2100000, guid: c41279f5abfa14a40a123756f5da5283, type: 2}

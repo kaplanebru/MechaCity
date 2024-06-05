@@ -15,7 +15,7 @@ namespace DataModels
         private Tower _mainTower;
         private Tower _nextTower;
 
-        public bool CombatCompleted { get; private set; } = false;
+        public bool CombatCompleted { get; set; } = false;
 
         public CombatPair(TowerData mainTowerData, TowerData otherTowerData)
         {
