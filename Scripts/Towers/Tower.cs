@@ -17,14 +17,19 @@ namespace Towers
         public TowerConstantData ConstantData;
         public TowerData Data;
         public CombatTimingData timingData;
+        
         public TowerParts towerParts;
         public ClickHandler clickHandler;
+
+        public TowerColorHandler colorHandler;
 
 
         private void OnEnable()
         {
             towerParts = GetComponent<TowerParts>();
             clickHandler = GetComponent<ClickHandler>();
+
+            colorHandler = new TowerColorHandler(Data, towerParts);
         }
 
         public void Setup(TeamTowerData teamTowerData)
@@ -43,7 +48,7 @@ namespace Towers
         public void SetTeam(TeamTowerData teamTowerData)
         {
             Data.TeamTowerData = teamTowerData;
-            ToOriginalColor();
+            colorHandler.ToOriginalColor();
             clickHandler.SetClickableTeams(teamTowerData.TeamType);
         }
 
@@ -66,7 +71,7 @@ namespace Towers
         IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat)
         {
             yield return new WaitForSeconds(timingData.shakeDuration);
-            ToDeadColor();
+            colorHandler.ToDeadColor();
 
             yield return new WaitForSeconds(1);
             
@@ -77,36 +82,7 @@ namespace Towers
             completeCombat.Invoke();
         }
 
-        public void ToFreezeColor()
-        {
-            towerParts.SetColor(Data.TeamTowerData.FreezeMaterial);
-        }
-
-        public void ToBlueprintColor()
-        {
-            towerParts.SetColor(Data.TeamTowerData.BlueprintMaterial);
-        }
-
-        public void ToSelectionColor()
-        {
-            towerParts.SetColor(Data.TeamTowerData.SelectedMaterial);
-        }
-
-        public void ToOriginalColor()
-        {
-            towerParts.SetColor(Data.TeamTowerData.DefaultMaterial);
-        }
-
-        public void ToDeadColor()
-        {
-            print("dead mat");
-            towerParts.SetColor(Data.TeamTowerData.DeadMaterial);
-        }
-
-        public void ToRegenerationColor()
-        {
-            towerParts.SetColor(Data.TeamTowerData.RegenerationMaterial);
-        }
+       
 
         public void RestoreBullets() //Todo: name change: bullet hakkı
         {

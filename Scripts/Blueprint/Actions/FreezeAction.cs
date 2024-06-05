@@ -14,7 +14,7 @@ namespace Blueprint
             {
                 var tower = AllTowers.GetTower(selectedTower);
                 
-                tower.ToFreezeColor();
+                tower.colorHandler.ToFreezeColor();
                 tower.Data.BpTowerData.IsFreezing = true;
             }
         }
@@ -24,7 +24,7 @@ namespace Blueprint
             var selectedTower = (int) obj[0];
             var tower = AllTowers.GetTower(selectedTower);
             
-            tower.ToOriginalColor();
+            tower.colorHandler.ToOriginalColor();
             tower.Data.BpTowerData.IsFreezing = false;
         }
     }

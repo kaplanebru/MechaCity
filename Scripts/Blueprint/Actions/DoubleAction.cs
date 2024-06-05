@@ -12,7 +12,7 @@ namespace Blueprint
             foreach (var selectedTower in selectedTowers)
             {
                 var tower = AllTowers.GetTower(selectedTower);
-                tower.ToOriginalColor();
+                tower.colorHandler.ToOriginalColor();
                 //tower.DisableSelection();
             }
         }

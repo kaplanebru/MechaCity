@@ -65,7 +65,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
     void Deselect(int newSelection)
     {
         Towers.Remove(newSelection);
-        AllTowers.GetTower(newSelection).ToOriginalColor();
+        AllTowers.GetTower(newSelection).colorHandler.ToOriginalColor();
     }
 
     void ShowCompleteButton(bool enable)
