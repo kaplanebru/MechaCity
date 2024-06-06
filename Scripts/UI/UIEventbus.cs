@@ -18,10 +18,7 @@ namespace GameUI
 
         public static Action<string> OnPlayerSet;
         
-        public static class TurnEvents
-        {
-            public static Action OnInitialize;
-        }
+        
     }
     
     

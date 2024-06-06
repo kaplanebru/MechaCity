@@ -67,8 +67,6 @@ namespace Turn
         private void Initialize()
         {
             _stateHolder.RegisterStates();
-
-            UIEventbus.TurnEvents.OnInitialize?.Invoke();
             _stateHolder.SubscribeToConstantEvents();
         }
 

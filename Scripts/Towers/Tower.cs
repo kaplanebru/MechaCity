@@ -9,11 +9,8 @@ using UnityEngine;
 
 namespace Towers
 {
-    //[RequireComponent(typeof(TowerParts))]
     public class Tower : MonoBehaviour
     {
-        //Shooter, RiserFall, Selectable Components diye 3'e ayrılabilir
-
         public TowerConstantData ConstantData;
         public TowerData Data;
         public CombatTimingData timingData;
@@ -28,7 +25,6 @@ namespace Towers
         {
             towerParts = GetComponent<TowerParts>();
             clickHandler = GetComponent<ClickHandler>();
-
             ColorHandler = new TowerColorHandler(Data, towerParts);
         }
 
@@ -43,7 +39,7 @@ namespace Towers
             clickHandler.SetClickables(Data.UniqID);
             Data.BpTowerData = new BpTowerData(Data.UniqID);
             ColorHandler.ToOriginalColor(); //todo later
-            SetTeam(teamTowerData); //for tower and clickables
+            SetTeam(teamTowerData); 
         }
 
         public void SetTeam(TeamTowerData teamTowerData)
@@ -73,20 +69,18 @@ namespace Towers
         {
             yield return new WaitForSeconds(timingData.shakeDuration);
             
-            //efekt de eklenebilir
+            //efekt eklenebilir + death ui
             yield return new WaitForSeconds(.3f);
             
+            CommunEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
+
             teamSwitchCallback.Invoke();
-            //rotate
             
-            
-            yield return new WaitForSeconds(timingData.colorFadeDuration + 5);
+            yield return new WaitForSeconds(timingData.colorFadeDuration + 1);
 
             completeCombat.Invoke();
         }
-
-       
-
+        
         public void RestoreBullets() //Todo: name change: bullet hakkı
         {
             Data.BulletAmount = ConstantData.MaxBullet;
@@ -98,9 +92,6 @@ namespace Towers
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
         }
         
-        // public void ToGivenColor(Material givenMat)
-        // {
-        //     towerParts.SetColor(givenMat);
-        // }
+      
     }
 }

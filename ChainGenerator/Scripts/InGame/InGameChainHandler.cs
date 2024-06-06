@@ -22,35 +22,14 @@ namespace ChainInGame
             
             CommunEventbus.ChainTurnEvents.OnLinkedTowers += FillMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
-            CommunEventbus.ChainTurnEvents.OnRising += MoveWithRise;
-            
-            
-        }
-
-        private void MoveWithRise(float duration)
-        {
-            _currentMachineryInGame.StartMotion();
-            Invoke(nameof(StopMotion),duration);
+            CommunEventbus.ChainTurnEvents.OnRising += MoveWithChain;
         }
         
-
-        private void ResetMachinery()
+        private void Start()
         {
-            _currentMachineryInGame.EmptyMachinery();
+            Setup();
         }
-
-        private void FillMachinery(int[] ids)
-        {
-            foreach (var id in ids)
-            {
-                var gear = gears.FirstOrDefault(g => g.id == id);
-                if (gear != null)
-                {
-                    _currentMachineryInGame.AddToMachinery(gear);
-                }
-            }
-        }
-
+        
         void Setup()
         {
             if(machineries.Length == 0)
@@ -74,16 +53,6 @@ namespace ChainInGame
                     gears.Add(gear);
                 }
             }
-            
-            
-          
-
-
-        }
-
-        private void Start()
-        {
-            Setup();
         }
         
         void SetInGameMachineries()
@@ -94,6 +63,31 @@ namespace ChainInGame
             }
         }
 
+
+        private void MoveWithChain(float duration)
+        {
+            _currentMachineryInGame.StartMotion();
+            Invoke(nameof(StopMotion),duration);
+        }
+        
+
+        private void ResetMachinery()
+        {
+            _currentMachineryInGame.EmptyMachinery();
+        }
+
+        private void FillMachinery(int[] ids)
+        {
+            foreach (var id in ids)
+            {
+                var gear = gears.FirstOrDefault(g => g.id == id);
+                if (gear != null)
+                {
+                    _currentMachineryInGame.AddToMachinery(gear);
+                }
+            }
+        }
+        
         void SelectMachinery(int i)
         {
             _currentMachineryInGame = _machineriesInGame[i];
@@ -115,7 +109,7 @@ namespace ChainInGame
             
             CommunEventbus.ChainTurnEvents.OnLinkedTowers -= FillMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkBroken -= ResetMachinery;
-            CommunEventbus.ChainTurnEvents.OnRising -= MoveWithRise;
+            CommunEventbus.ChainTurnEvents.OnRising -= MoveWithChain;
         }
 
         #region AvecInput

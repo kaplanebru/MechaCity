@@ -49,6 +49,11 @@ namespace Towers
         {
             _towerParts.SetColor(Data.TeamTowerData.RegenerationMaterial);
         }
+        
+        // public void ToGivenColor(Material givenMat)
+        // {
+        //     towerParts.SetColor(givenMat);
+        // }
     }
 
 }
