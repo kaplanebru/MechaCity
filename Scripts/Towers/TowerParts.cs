@@ -22,10 +22,15 @@ namespace Towers
     {
         public TowerPartsData Data;
         public CombatTimingData timingData;
+        private RotationHelper rotater;
 
         [Header("Shake")] float shakeMagnitude = 0.03f;
 
 
+        public void Setup()
+        {
+            rotater = new RotationHelper(Data.Middle.transform, 360);
+        }
         public void SetColor(Material[] mats)
         {
             Data.MiddleMeshes[0].material = mats[0];
@@ -88,6 +93,11 @@ namespace Towers
             }
 
             middleTransform.localPosition = originalPosition;
+        }
+        
+        public void RotateMiddle()
+        {
+           rotater.Rotate();
         }
     }
 }

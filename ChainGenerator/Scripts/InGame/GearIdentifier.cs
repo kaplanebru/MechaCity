@@ -11,10 +11,12 @@ public class GearIdentifier : MonoBehaviour //temp
     public int id;
     public float rotateAngle = 90;
     private float _yAngle;
+    private RotationHelper rotater;
 
     private void OnEnable()
     {
-        _yAngle = transform.localEulerAngles.y;
+        rotater = new RotationHelper(transform, 90);
+        
         CommunEventbus.ChainTurnEvents.OnInitialize += Rotate;
         CommunEventbus.EffectEvents.OnDeathEffect += IndividualRotate;
     }
@@ -27,10 +29,7 @@ public class GearIdentifier : MonoBehaviour //temp
 
     void Rotate()
     {
-        _yAngle += rotateAngle;
-        _yAngle %= 360;
-        Quaternion newRot = Quaternion.Euler(0, _yAngle, 0);
-        transform.DOLocalRotateQuaternion(newRot, 1.1f);
+        rotater.Rotate();
     }
 
     private void OnDisable()

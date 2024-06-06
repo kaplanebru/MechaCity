@@ -3,6 +3,7 @@ using System.Collections;
 using Blueprint;
 using Clicks;
 using DataModels;
+using DG.Tweening;
 using GameUI;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace Towers
         public ClickHandler clickHandler;
 
         public TowerColorHandler ColorHandler;
+        
 
 
         private void OnEnable()
@@ -39,7 +41,9 @@ namespace Towers
             clickHandler.SetClickables(Data.UniqID);
             Data.BpTowerData = new BpTowerData(Data.UniqID);
             ColorHandler.ToOriginalColor(); //todo later
-            SetTeam(teamTowerData); 
+            
+            towerParts.Setup();
+            SetTeam(teamTowerData);
         }
 
         public void SetTeam(TeamTowerData teamTowerData)
@@ -72,8 +76,8 @@ namespace Towers
             //efekt eklenebilir + death ui
             yield return new WaitForSeconds(.3f);
             
-            CommunEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
-
+            //CommunEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
+            towerParts.RotateMiddle();
             teamSwitchCallback.Invoke();
             
             yield return new WaitForSeconds(timingData.colorFadeDuration + 1);
@@ -91,7 +95,9 @@ namespace Towers
             Data.Health = ConstantData.StartHealth;
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
         }
+
         
-      
+        
+
     }
 }
