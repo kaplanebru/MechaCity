@@ -5,20 +5,18 @@ using UnityEngine;
 
 public class RotationHelper
 {
-    private float _rotateAngle;
     private Transform _transform;
+    private Vector3 _incrementEulerAngles;
 
     public RotationHelper(Transform transform, float rotateAngle)
     {
         _transform = transform;
-        _rotateAngle = rotateAngle;
+        _incrementEulerAngles = new Vector3(0, rotateAngle, 0);
     }
 
     public void Rotate()
     {
-        Vector3 incrementEulerAngles = new Vector3(0, _rotateAngle, 0);
-        
-       Quaternion target = _transform.localRotation * Quaternion.Euler(incrementEulerAngles);
-       _transform.DOLocalRotateQuaternion(target, 1.1f);
+        Vector3 target = _transform.localEulerAngles + _incrementEulerAngles;
+        _transform.DOLocalRotate(target, 1.1f, RotateMode.FastBeyond360);
     }
 }
