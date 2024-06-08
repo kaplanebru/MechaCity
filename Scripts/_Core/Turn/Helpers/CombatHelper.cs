@@ -82,12 +82,14 @@ namespace Turn
             }
 
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
-            yield return new WaitForSeconds(_timingData.cameraDelay);
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
-
+            yield return new WaitForSeconds(_timingData.cameraDelay);
 
             for (int i = 0; i < AllTowers.TowersCount; i++)
             {
+                Eventbus.CombatEvents.OnNextTower?.Invoke(Data.cursorDuration);
+                yield return new WaitForSeconds(Data.cursorDuration);
+                
                 var pair = Data.CombatPairs[i];
                 SetSelectionColor(pair);
 
@@ -103,9 +105,6 @@ namespace Turn
                     yield return new WaitForSeconds(Data.afterCombatDelay);
                     SetSelectionColor(pair, false);
                 }
-                
-                Eventbus.CombatEvents.OnNextTower?.Invoke(Data.cursorDuration);
-                yield return new WaitForSeconds(Data.cursorDuration);
             }
 
             Eventbus.CombatEvents.OnCombatEnding?.Invoke();

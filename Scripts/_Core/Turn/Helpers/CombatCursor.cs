@@ -44,12 +44,9 @@ public class CombatCursor : MonoBehaviour
         installEffect = GetComponentInChildren<BpInstallEffect>();
         installEffect.Initialize();
     }
-
-
-
+    
     private void GetTransforms(Team[] obj)
     {
-        
         for (int i = 0; i < AllTowers.TowersCount; i++)
         {
             transforms.Add(AllTowers.GetTower(i).transform);
@@ -77,19 +74,35 @@ public class CombatCursor : MonoBehaviour
         SetDirections();
     }
 
-    void ReverseAngle()
-    {
-        directions.Reverse();
-    }
-
+   
     private int index = 0;
     void ShiftTarget(float duration)
     {
+        transform.DOMove(directions[index], duration);
+        //transform.DOMove(index == 0 ? center : directions[index], duration);
         index++;
         index %= directions.Count;
-        transform.DOMove(index == 0 ? center : directions[index], duration); //.OnComplete(EnableLine);
     }
 
+    void ToCenter()
+    {
+        transform.DOMove(center, .3f);
+    }
+    void StartCursor()
+    {
+       ToCenter();
+    }
+
+    void EndCursor()
+    {
+        ToCenter();
+    }
+
+    private void Swallow()
+    {
+        transform.DOMoveY(center.y - 1, 1);
+    }
+   
     void SetupAndInstall(BpType type)
     {
         var bpData = bpDataHolder.TypeDataPair[type];
@@ -98,33 +111,19 @@ public class CombatCursor : MonoBehaviour
             ()=> cursorSpriteHandler.SetBlueprintImage(bpData),
             ()=> BpEventbus.UIEvents.OnBpInstalled?.Invoke(type));
     }
-
+    
+    void ReverseAngle()
+    {
+        var first = directions.First();
+        directions.Remove(first);
+        directions.Reverse();
+        directions.Insert(0, first);
+    }
     public void ResetBpImage()
     {
         cursorSpriteHandler.ResetBpImage();
     }
-
-    void StartCursor()
-    {
-        transform.DOMove(center, .1f).OnComplete(() =>
-        {
-            transform.DOMove(directions[0], .3f); //todo
-        });
-    }
-
-    void EndCursor()
-    {
-    }
-
-    private void Swallow()
-    {
-        transform.DOMoveY(center.y - 1, 1);
-    }
-   
-
-  
-
-
+    
     private void OnDisable()
     {
         Eventbus.TeamEvents.OnTeamsSet -= GetTransforms;

@@ -79,7 +79,6 @@ namespace Turn
         
         public override void ProcessExecutionWithSelection()
         {
-            Debug.Log("process exe");
             BpEventbus.OnBpExecution?.Invoke(bpSelector?.Towers.ToArray()); //burda tekrar networke gitmeye gerek yok!!
         }
         
