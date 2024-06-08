@@ -92,8 +92,7 @@ namespace Turn
                 SetSelectionColor(pair);
 
                 yield return new WaitForSeconds(Data.selectionDelay);
-
-
+                
                 if (pair.Combat())
                 {
                     yield return new WaitUntil(() => pair.CombatCompleted);
@@ -101,13 +100,12 @@ namespace Turn
                 else
                 {
                     yield return new WaitForSeconds(_timingData.skipDelay);
+                    yield return new WaitForSeconds(Data.afterCombatDelay);
+                    SetSelectionColor(pair, false);
                 }
                 
-                yield return new WaitForSeconds(Data.afterCombatDelay);
-
-                Eventbus.CombatEvents.OnFire?.Invoke(Data.cursorDuration);
+                Eventbus.CombatEvents.OnNextTower?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
-                SetSelectionColor(pair, false);
             }
 
             Eventbus.CombatEvents.OnCombatEnding?.Invoke();

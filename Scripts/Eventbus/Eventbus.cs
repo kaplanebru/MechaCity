@@ -13,7 +13,7 @@ public static class Eventbus
     public static class CombatEvents
     {
         public static Action<int> OnTowerKilled;
-        public static Action <float> OnFire;
+        public static Action <float> OnNextTower;
         public static Action OnCombatStarted;
         public static Action OnCombatReady;
         public static Action OnCombatEnding;

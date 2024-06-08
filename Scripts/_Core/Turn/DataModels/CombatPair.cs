@@ -70,7 +70,11 @@ namespace DataModels
 
             perpetrator.Data.BulletAmount--;
 
-            projectile.Move(() => RemoveHealth(victim.Data));
+            projectile.Move(() =>
+            {
+                perpetrator.ColorHandler.ToOriginalColor();
+                RemoveHealth(victim.Data);
+            });
         }
 
         void RemoveHealth(TowerData victimData)

@@ -29,7 +29,7 @@ public class CombatCursor : MonoBehaviour
     private void OnEnable()
     {
         Eventbus.TeamEvents.OnTeamsSet += GetTransforms;
-        Eventbus.CombatEvents.OnFire += ShiftTarget;
+        Eventbus.CombatEvents.OnNextTower += ShiftTarget;
 
         Eventbus.CombatEvents.OnCombatStarted += StartCursor;
         Eventbus.CombatEvents.OnCombatEnding += EndCursor;
@@ -128,7 +128,7 @@ public class CombatCursor : MonoBehaviour
     private void OnDisable()
     {
         Eventbus.TeamEvents.OnTeamsSet -= GetTransforms;
-        Eventbus.CombatEvents.OnFire -= ShiftTarget;
+        Eventbus.CombatEvents.OnNextTower -= ShiftTarget;
 
         Eventbus.CombatEvents.OnCombatStarted -= StartCursor;
         Eventbus.CombatEvents.OnCombatEnding -= EndCursor;

@@ -80,7 +80,7 @@ namespace Towers
             towerParts.RotateMiddle();
             teamSwitchCallback.Invoke();
             
-            yield return new WaitForSeconds(timingData.colorFadeDuration + 1);
+            yield return new WaitForSeconds(timingData.colorFadeDuration);
 
             completeCombat.Invoke();
         }
