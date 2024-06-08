@@ -9,27 +9,25 @@ public class GearIdentifier : MonoBehaviour //temp
 {
     //public GearData gearData; //hepsi aynı geardata, burdan olmaz
     public int id;
-    public float rotateAngle = 90;
-    private float _yAngle;
-    private RotationHelper rotater;
+    private Rotater _rotater;
 
     private void OnEnable()
     {
-        rotater = new RotationHelper(transform, 90);
+        _rotater = new Rotater(transform);
         
         CommunEventbus.ChainTurnEvents.OnInitialize += Rotate;
         CommunEventbus.EffectEvents.OnDeathEffect += IndividualRotate;
     }
 
-    void IndividualRotate(int Id) //tüm kule dönecekse buna gerek yok ayrıca
+    void IndividualRotate(int Id)
     {
         if(id != Id) return;
-        Rotate();
+        _rotater.Rotate(360);
     }
 
     void Rotate()
     {
-        rotater.Rotate();
+        _rotater.Rotate(90);
     }
 
     private void OnDisable()

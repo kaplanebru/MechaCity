@@ -76,7 +76,7 @@ namespace Towers
             //efekt eklenebilir + death ui
             yield return new WaitForSeconds(.3f);
             
-            //CommunEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
+            CommunEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
             towerParts.RotateMiddle();
             teamSwitchCallback.Invoke();
             
