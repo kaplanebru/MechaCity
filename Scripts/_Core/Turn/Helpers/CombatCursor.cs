@@ -23,8 +23,10 @@ public class CombatCursor : MonoBehaviour
     
     public List<Transform> transforms;
     public List<Vector3> directions;
+    public List<Vector3> targetPositions;
+
     private Vector3 center;
-    public float directionOffset = 1;
+    public float distance = 1;
 
     
     private void OnEnable()
@@ -60,34 +62,50 @@ public class CombatCursor : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         cursorSpriteHandler = new CursorSpriteHandler(spriteRenderer);
     }
+
     void SetDirections()
     {
         foreach (var towerTransform in transforms)
         {
             var dir = (towerTransform.position - center).normalized;
-            directions.Add(center + new Vector3(dir.x * directionOffset, 0, dir.z * directionOffset));
+            //directions.Add(dir);
+            directions.Add(new Vector3(dir.x, 0, dir.z).normalized);
+        }
+    }
+    void SetPositions()
+    {
+        foreach (var dir in directions)
+        {
+            targetPositions.Add(center + new Vector3(dir.x * distance, 0, dir.z * distance));
         }
     }
     void Setup()
     {
         SetReferences();
-        center = transform.position;
         SetDirections();
+        center = transform.position;
+        SetPositions();
     }
 
    
     private int index = 0;
     void ShiftTarget(float duration)
     {
-        transform.DOMove(directions[index], duration);
-        gargouille.transform.DORotateQuaternion(Quaternion.LookRotation((transforms[index].position - center).normalized), duration);
+        //transform.DOMove(targetPositions[index], duration); //.OnComplete(() => RotateGargouille(duration));
+        RotateGargouille(duration);
         index++;
-        index %= directions.Count;
+        index %= targetPositions.Count;
+    }
+
+    void RotateGargouille(float duration)
+    {
+        gargouille.transform.DORotateQuaternion(Quaternion.LookRotation(directions[index]), duration);
     }
 
     void ToCenter()
     {
         transform.DOMove(center, .3f);
+        gargouille.transform.DORotate(Vector3.zero, 1f);
     }
     void StartCursor()
     {
@@ -115,10 +133,10 @@ public class CombatCursor : MonoBehaviour
     
     void ReverseAngle()
     {
-        var first = directions.First();
-        directions.Remove(first);
-        directions.Reverse();
-        directions.Insert(0, first);
+        var first = targetPositions.First();
+        targetPositions.Remove(first);
+        targetPositions.Reverse();
+        targetPositions.Insert(0, first);
     }
     public void ResetBpImage()
     {

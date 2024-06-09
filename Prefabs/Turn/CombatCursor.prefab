@@ -334,7 +334,8 @@ MonoBehaviour:
   gargouille: {fileID: 7701285230165964265}
   transforms: []
   directions: []
-  directionOffset: 1
+  targetPositions: []
+  distance: 1
 --- !u!1 &2961212669077943431
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,11 +795,23 @@ PrefabInstance:
     m_TransformParent: {fileID: 5871677002969701547}
     m_Modifications:
     - target: {fileID: 182667786396398294, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 182667786396398294, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 182667786396398294, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 182667786396398294, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
       propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 182667786396398294, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
+      propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 182667786396398294, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
@@ -819,7 +832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1906951151215811932, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.18
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1906951151215811932, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
       propertyPath: m_LocalPosition.z
