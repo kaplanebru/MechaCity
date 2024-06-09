@@ -15,6 +15,7 @@ public class CombatCursor : MonoBehaviour
     
     public BPDataHolder bpDataHolder;
     public BpInstallEffect installEffect;
+    public Transform gargouille;
 
     private CursorSpriteHandler cursorSpriteHandler;
     private SpriteRenderer spriteRenderer;
@@ -79,7 +80,7 @@ public class CombatCursor : MonoBehaviour
     void ShiftTarget(float duration)
     {
         transform.DOMove(directions[index], duration);
-        //transform.DOMove(index == 0 ? center : directions[index], duration);
+        gargouille.transform.DORotateQuaternion(Quaternion.LookRotation((transforms[index].position - center).normalized), duration);
         index++;
         index %= directions.Count;
     }
