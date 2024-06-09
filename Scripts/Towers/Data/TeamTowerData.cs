@@ -15,5 +15,6 @@ namespace Towers
         public Material[] RegenerationMaterial;
 
         public Color GargouilleColor;
+        public Color UiColor;
     }
 }

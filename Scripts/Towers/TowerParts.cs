@@ -19,6 +19,7 @@ namespace Towers
         public MeshRenderer TopMesh;
 
         public float TopOffset = 0;
+        public SpriteRenderer Sun;
     }
 
     public class TowerParts : MonoBehaviour
@@ -59,7 +60,9 @@ namespace Towers
                 var mesh = Data.GargouilleMeshes[i];
                 mesh.material.DOColor(gargouilleColor, timingData.colorFadeDuration);
             }
-            
+
+            Data.Sun.color = Color.cyan;
+
         }
 
         public void ChangeHeight(float newHeight)
