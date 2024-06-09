@@ -13,5 +13,7 @@ namespace Towers
         public Material[] FreezeMaterial;
         public Material[] DeadMaterial;
         public Material[] RegenerationMaterial;
+
+        public Color GargouilleColor;
     }
 }

@@ -49,7 +49,7 @@ namespace Towers
         public void SetTeam(TeamTowerData teamTowerData)
         {
             Data.TeamTowerData = teamTowerData;
-            towerParts.FadeColor(teamTowerData.RegenerationMaterial, teamTowerData.DefaultMaterial);
+            towerParts.FadeColor(teamTowerData.DefaultMaterial, teamTowerData.GargouilleColor);
             clickHandler.SetClickableTeams(teamTowerData.TeamType);
         }
 

@@ -31,3 +31,4 @@ MonoBehaviour:
   RegenerationMaterial:
   - {fileID: 2100000, guid: adc576eda7011a747971cdd7e0b89ea5, type: 2}
   - {fileID: 2100000, guid: 3dac57b41accb1e47af4b46b2066ffe7, type: 2}
+  GargouilleColor: {r: 0.59618956, g: 0.8784314, b: 0.5411765, a: 0}

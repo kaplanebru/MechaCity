@@ -15,7 +15,10 @@ namespace Towers
         public Transform Middle;
         public Transform Down;
         public MeshRenderer[] MiddleMeshes;
+        public SkinnedMeshRenderer[] GargouilleMeshes;
         public MeshRenderer TopMesh;
+
+        public float TopOffset = 0;
     }
 
     public class TowerParts : MonoBehaviour
@@ -41,14 +44,8 @@ namespace Towers
             }
         }
 
-        public void FadeColor(Material[] regenMats, Material[] teamMats)
+        public void FadeColor(Material[] teamMats, Color gargouilleColor)
         {
-            // for (var i = 0; i < regenMats.Length; i++)
-            // {
-            //     regenMats[i].color = Data.MiddleMeshes[i].material.color;
-            // }
-            //
-            // SetColor(regenMats);
 
             Data.MiddleMeshes[0].material.DOColor(teamMats[0].color, timingData.colorFadeDuration);
             for (var i = 1; i < Data.MiddleMeshes.Length; i++)
@@ -56,6 +53,13 @@ namespace Towers
                 var mesh = Data.MiddleMeshes[i];
                 mesh.material.DOColor(teamMats[1].color, timingData.colorFadeDuration);
             }
+
+            for (int i = 0; i < Data.GargouilleMeshes.Length; i++)
+            {
+                var mesh = Data.GargouilleMeshes[i];
+                mesh.material.DOColor(gargouilleColor, timingData.colorFadeDuration);
+            }
+            
         }
 
         public void ChangeHeight(float newHeight)
@@ -65,8 +69,7 @@ namespace Towers
                 UIEventbus.OnTowerHeightChange?.Invoke(newHeight, gameObject);
             });
 
-            Data.Top.transform.DOLocalMoveY(newHeight, 1); //newHeight + 1 de olur
-            //down rotate
+            Data.Top.transform.DOLocalMoveY(newHeight + Data.TopOffset, 1); //newHeight + 1 de olur
         }
 
         public void Shake()
