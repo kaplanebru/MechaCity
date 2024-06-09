@@ -15,18 +15,21 @@ public class CombatCursor : MonoBehaviour
     
     public BPDataHolder bpDataHolder;
     public BpInstallEffect installEffect;
-    public Transform gargouille;
+    public Transform cursorObj;
+    public List<Transform> transforms;
+    public Transform tubeHolder;
+    public Transform tubeObj;
+    public float distance = 1;
 
     private CursorSpriteHandler cursorSpriteHandler;
     private SpriteRenderer spriteRenderer;
     private float _duration;
     
-    public List<Transform> transforms;
     public List<Vector3> directions;
     public List<Vector3> targetPositions;
 
     private Vector3 center;
-    public float distance = 1;
+    
 
     
     private void OnEnable()
@@ -50,10 +53,10 @@ public class CombatCursor : MonoBehaviour
     
     private void GetTransforms(Team[] obj)
     {
-        for (int i = 0; i < AllTowers.TowersCount; i++)
-        {
-            transforms.Add(AllTowers.GetTower(i).transform);
-        }
+        // for (int i = 0; i < AllTowers.TowersCount; i++)
+        // {
+        //     transforms.Add(AllTowers.GetTower(i).transform);
+        // }
         Setup(); 
     }
 
@@ -68,8 +71,8 @@ public class CombatCursor : MonoBehaviour
         foreach (var towerTransform in transforms)
         {
             var dir = (towerTransform.position - center).normalized;
-            //directions.Add(dir);
-            directions.Add(new Vector3(dir.x, 0, dir.z).normalized);
+            directions.Add(dir);
+            //directions.Add(new Vector3(dir.x, 0, dir.z).normalized);
         }
     }
     void SetPositions()
@@ -79,11 +82,21 @@ public class CombatCursor : MonoBehaviour
             targetPositions.Add(center + new Vector3(dir.x * distance, 0, dir.z * distance));
         }
     }
+
+    void SetTubes()
+    {
+        foreach (var dir in directions)
+        {
+            var tube = Instantiate(tubeObj, tubeHolder);
+            tube.transform.rotation = Quaternion.LookRotation(dir);
+        }
+    }
     void Setup()
     {
+        center = cursorObj.transform.position;
         SetReferences();
         SetDirections();
-        center = transform.position;
+        SetTubes();
         SetPositions();
     }
 
@@ -91,21 +104,21 @@ public class CombatCursor : MonoBehaviour
     private int index = 0;
     void ShiftTarget(float duration)
     {
-        transform.DOMove(targetPositions[index], duration); //.OnComplete(() => RotateGargouille(duration));
-        //RotateGargouille(duration);
+        cursorObj.transform.DOMove(targetPositions[index], duration); //.OnComplete(() => RotateGargouille(duration));
+        //RotateCursorObj(duration);
         index++;
         index %= targetPositions.Count;
     }
 
-    void RotateGargouille(float duration)
+    void RotateCursorObj(float duration)
     {
-        gargouille.transform.DORotateQuaternion(Quaternion.LookRotation(directions[index]), duration);
+        cursorObj.transform.DORotateQuaternion(Quaternion.LookRotation(directions[index]), duration);
     }
 
     void ToCenter()
     {
-        transform.DOMove(center, .3f);
-        gargouille.transform.DORotate(Vector3.zero, 1f);
+        cursorObj.transform.DOMove(center, .3f);
+        cursorObj.transform.DORotate(Vector3.zero, 1f);
     }
     void StartCursor()
     {
@@ -119,7 +132,7 @@ public class CombatCursor : MonoBehaviour
 
     private void Swallow()
     {
-        transform.DOMoveY(center.y - 1, 1);
+        cursorObj.transform.DOMoveY(center.y - 1, 1);
     }
    
     void SetupAndInstall(BpType type)
