@@ -95,7 +95,7 @@ public class CombatCursor : MonoBehaviour
     void ShiftTarget(float duration)
     {
         cursorObj.transform.DOMove(targetPositions[index], duration); //.OnComplete(() => RotateGargouille(duration));
-        //RotateCursorObj(duration);
+        RotateCursorObj(duration);
         index++;
         index %= targetPositions.Count;
     }

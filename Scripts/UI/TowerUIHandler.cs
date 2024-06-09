@@ -5,7 +5,7 @@ namespace GameUI
 {
     public class TowerUIHandler : MonoBehaviour
     {
-        public TextMeshPro heightText;
+        public TextMeshPro[] heightTexts;
         public TextMeshPro healthIndicator;
 
         private void OnEnable() //TODO: tower scriptinden yönet
@@ -26,7 +26,12 @@ namespace GameUI
             if (obj != gameObject) return;
 
             int heightInt = Mathf.FloorToInt(height); //todo: temporary
-            heightText.text = heightInt.ToString();
+            foreach (var heightText in heightTexts)
+            {
+                if(heightText != null)
+                    heightText.text = heightInt.ToString();
+            }
+           
         }
 
         private void OnDisable()
