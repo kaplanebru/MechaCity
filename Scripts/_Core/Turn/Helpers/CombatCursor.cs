@@ -17,8 +17,6 @@ public class CombatCursor : MonoBehaviour
     public BpInstallEffect installEffect;
     public Transform cursorObj;
     public List<Transform> transforms;
-    public Transform tubeHolder;
-    public Transform tubeObj;
     public float distance = 1;
 
     private CursorSpriteHandler cursorSpriteHandler;
@@ -71,8 +69,8 @@ public class CombatCursor : MonoBehaviour
         foreach (var towerTransform in transforms)
         {
             var dir = (towerTransform.position - center).normalized;
-            directions.Add(dir);
-            //directions.Add(new Vector3(dir.x, 0, dir.z).normalized);
+            //directions.Add(dir);
+            directions.Add(new Vector3(dir.x, 0, dir.z).normalized);
         }
     }
     void SetPositions()
@@ -83,20 +81,12 @@ public class CombatCursor : MonoBehaviour
         }
     }
 
-    void SetTubes()
-    {
-        foreach (var dir in directions)
-        {
-            var tube = Instantiate(tubeObj, tubeHolder);
-            tube.transform.rotation = Quaternion.LookRotation(dir);
-        }
-    }
+   
     void Setup()
     {
         center = cursorObj.transform.position;
         SetReferences();
         SetDirections();
-        SetTubes();
         SetPositions();
     }
 

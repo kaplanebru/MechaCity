@@ -31,7 +31,7 @@ Transform:
   - {fileID: 2130312272800896888}
   - {fileID: 7437957262869946735}
   m_Father: {fileID: 1210685737447715139}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3452607922184959757
 GameObject:
@@ -1514,6 +1514,34 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5599627951633204010, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
+      propertyPath: towerTransforms.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599627951633204010, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
+      propertyPath: towerTransforms.Array.data[0]
+      value: 
+      objectReference: {fileID: 6300210015973689488}
+    - target: {fileID: 5599627951633204010, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
+      propertyPath: towerTransforms.Array.data[1]
+      value: 
+      objectReference: {fileID: 1871687205380861016}
+    - target: {fileID: 5599627951633204010, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
+      propertyPath: towerTransforms.Array.data[2]
+      value: 
+      objectReference: {fileID: 8057390765870810844}
+    - target: {fileID: 5599627951633204010, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
+      propertyPath: towerTransforms.Array.data[3]
+      value: 
+      objectReference: {fileID: 1871687206136705513}
+    - target: {fileID: 5599627951633204010, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
+      propertyPath: towerTransforms.Array.data[4]
+      value: 
+      objectReference: {fileID: 3634139566220654499}
+    - target: {fileID: 5599627951633204010, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
+      propertyPath: towerTransforms.Array.data[5]
+      value: 
+      objectReference: {fileID: 1871687205011616180}
     - target: {fileID: 5871677002969701547, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
       propertyPath: m_RootOrder
       value: 6
