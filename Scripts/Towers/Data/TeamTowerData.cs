@@ -12,11 +12,11 @@ namespace Towers
         public Material[] SelectedMaterial;
         public Material[] BlueprintMaterial;
         public Material[] FreezeMaterial;
+        
         public Material[] DeadMaterial;
         public Material[] RegenerationMaterial;
 
-        public Color UiColor;
-        public Sprite[] TeamSprite;
+        public Sprite TeamSprite;
         public Color[] TeamColors { get; set; }
 
         private void OnEnable()

@@ -72,7 +72,7 @@ namespace DataModels
 
             projectile.Move(() =>
             {
-                perpetrator.visuals.ToOriginalColor();
+                perpetrator.colorHandler.ToOriginalColor();
                 RemoveHealth(victim.Data);
             });
         }

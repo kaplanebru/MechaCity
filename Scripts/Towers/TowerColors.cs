@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DataModels;
+using DG.Tweening;
 using UnityEngine;
 
 
@@ -12,9 +13,10 @@ namespace Towers
     public class TowerVisualData
     {
         public TeamTowerData TeamData;
+        public SpriteRenderer Logo;
         public MeshRenderer[] MiddleMeshes;
     }
-    public class TowerVisuals : MonoBehaviour
+    public class TowerColors : MonoBehaviour
     {
         public TowerVisualData Data;
         public CombatTimingData timingData;
@@ -28,12 +30,28 @@ namespace Towers
             colorChanger.SetMats(Data.MiddleMeshes, mats);
         }
 
-        public void FadeColor()
+        public void SetTeamVisuals()
+        {
+            FadeColor();
+            SetTeamLogo();
+        }
+            
+        void FadeColor()
         {
             colorChanger.FadeColors(Data.MiddleMeshes, Data.TeamData.TeamColors);
-            // Data.Sun.color = Color.cyan;
         }
-        
+
+        void SetTeamLogo()
+        {
+            Data.Logo.transform.DOScale(Vector3.zero, timingData.colorFadeDuration / 2).
+                OnComplete(() =>
+            {
+                Data.Logo.sprite = Data.TeamData.TeamSprite;
+                Data.Logo.transform.DOScale(Vector3.one, timingData.colorFadeDuration / 2);
+            });
+           
+        }
+
         public void ToFreezeColor()
         {
             SetMats(Data.TeamData.FreezeMaterial);

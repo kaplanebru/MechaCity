@@ -6,8 +6,7 @@ namespace GameUI
     public class TowerUIHandler : MonoBehaviour
     {
         public TextMeshPro[] heightTexts;
-        public SpriteRenderer Sun;
-        
+
         private void OnEnable() //TODO: tower scriptinden yönet
         {
             UIEventbus.OnTowerHeightChange += ChangeHeightUI;

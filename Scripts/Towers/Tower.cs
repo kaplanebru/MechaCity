@@ -17,14 +17,9 @@ namespace Towers
         public CombatTimingData timingData;
 
         public TowerMover mover;
-        public TowerVisuals visuals;
+        public TowerColors colorHandler;
         public ClickHandler clickHandler;
-
-        private void OnEnable()
-        {
-            //GeneralEventbus.OnTeamChange += FadeColor;
-        }
-
+        
         public void Setup(TeamTowerData teamTowerData)
         {
             Data.Height = ConstantData.StartHeight;
@@ -38,25 +33,19 @@ namespace Towers
             Data.BpTowerData = new BpTowerData(Data.UniqID);
 
             mover.Initialize();
-            visuals.Initialize();
+            colorHandler.Initialize();
             SetTeam(teamTowerData);
         }
 
-        public void SetTeam(TeamTowerData teamTowerData)
+        public void SetTeam(TeamTowerData teamData)
         {
-            visuals.Data.TeamData = teamTowerData;
-            Data.TeamType = teamTowerData.TeamType;
-            // GeneralEventbus.OnTeamChange.Invoke(Data.UniqID); 
-            visuals.FadeColor();
-
-            clickHandler.SetClickableTeams(teamTowerData.TeamType);
+            colorHandler.Data.TeamData = teamData;
+            Data.TeamType = teamData.TeamType;
+            
+            colorHandler.SetTeamVisuals();
+            clickHandler.SetClickableTeams(teamData.TeamType);
         }
-
-        // void FadeColor(int id)
-        // {
-        //     if (id != Data.UniqID) return;
-        //     visuals.FadeColor();
-        // }
+        
 
         public void EnableSelection()
         {
@@ -98,11 +87,6 @@ namespace Towers
         {
             Data.Health = ConstantData.StartHealth;
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
-        }
-
-        private void OnDisable()
-        {
-            //GeneralEventbus.OnTeamChange -= FadeColor;
         }
     }
 }

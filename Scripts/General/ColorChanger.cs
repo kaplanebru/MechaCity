@@ -27,11 +27,6 @@ public class ColorChanger
     {
         mesh.material.DOColor(newColor, _timingData.colorFadeDuration);
     }
-
-    public void ChangeSpriteColor(SpriteRenderer sprite)
-    {
-        sprite.color = Color.cyan;
-    }
     
     public void SetMats(MeshRenderer[] meshes, Material[] mats)
     {

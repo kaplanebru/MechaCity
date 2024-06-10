@@ -18,6 +18,8 @@ namespace GameUI
 
         public static Action<string> OnPlayerSet;
         
+        public static Action<GameObject> OnTeamChange;
+        
         
     }
     
