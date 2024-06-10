@@ -51,10 +51,6 @@ public class CombatCursor : MonoBehaviour
     
     private void GetTransforms(Team[] obj)
     {
-        // for (int i = 0; i < AllTowers.TowersCount; i++)
-        // {
-        //     transforms.Add(AllTowers.GetTower(i).transform);
-        // }
         Setup(); 
     }
 

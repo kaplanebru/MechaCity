@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d57a5971f7cb24cb0c43c2a96206b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tubeObj: {fileID: 4102888333763657764, guid: 93902a052bccaec40bd4a1d2fed5a177, type: 3}
-  towerTransforms: []
-  directions: []
+  tubeObj: {fileID: 8961349520496918617, guid: 93902a052bccaec40bd4a1d2fed5a177, type: 3}
+  selectionColor: {r: 0.9339623, g: 0.9256453, b: 0.6291029, a: 1}
+  defaultColor: {r: 0.74509805, g: 0.64705884, b: 0.5568628, a: 1}

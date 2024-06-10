@@ -14,11 +14,16 @@ public static class Eventbus
     {
         public static Action<int> OnTowerKilled;
         public static Action <float> OnNextTower;
+        public static Action OnPairsSet;
+        
         public static Action OnCombatStarted;
         public static Action OnCombatReady;
         public static Action OnCombatEnding;
         public static Action OnCombatTerminated;
-        public static Action OnPairsSet;
+
+        public static Action<int> OnTurnTowerSelection;
+        public static Action OnTurnTowerDeselect;
+
 
         public static Action<IEnumeratorContainer> OnCoroutineTrigger;
     }

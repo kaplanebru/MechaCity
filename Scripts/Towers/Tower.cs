@@ -17,7 +17,7 @@ namespace Towers
         public CombatTimingData timingData;
 
         public TowerMover mover;
-        public TowerColors colorHandler;
+        public ColorHandler colorHandler;
         public ClickHandler clickHandler;
         
         public void Setup(TeamTowerData teamTowerData)
@@ -27,13 +27,12 @@ namespace Towers
             Data.DamagePower = ConstantData.DamagePower;
             RestoreBullets();
 
-
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
             clickHandler.SetClickables(Data.UniqID);
             Data.BpTowerData = new BpTowerData(Data.UniqID);
 
             mover.Initialize();
-            colorHandler.Initialize();
+            colorHandler.Initialize(Data.UniqID);
             SetTeam(teamTowerData);
         }
 

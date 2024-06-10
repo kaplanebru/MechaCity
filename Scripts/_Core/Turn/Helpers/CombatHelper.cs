@@ -67,9 +67,15 @@ namespace Turn
         void SetSelectionColor(CombatPair pair, bool select = true)
         {
             if (select)
+            {
                 AllTowers.GetTower(pair.MainTowerData.UniqID).colorHandler.ToSelectionColor();
+                Eventbus.CombatEvents.OnTurnTowerSelection?.Invoke(pair.MainTowerData.UniqID);
+            }
             else
+            {
                 AllTowers.GetTower(pair.MainTowerData.UniqID).colorHandler.ToOriginalColor();
+                Eventbus.CombatEvents.OnTurnTowerDeselect?.Invoke();
+            }
         }
 
         public IEnumerator FightRoutine()

@@ -12,17 +12,19 @@ namespace Towers
     [Serializable]
     public class TowerVisualData
     {
+        public int UniqId;
         public TeamTowerData TeamData;
         public SpriteRenderer Logo;
         public MeshRenderer[] MiddleMeshes;
     }
-    public class TowerColors : MonoBehaviour
+    public class ColorHandler : MonoBehaviour
     {
         public TowerVisualData Data;
         public CombatTimingData timingData;
         private ColorChanger colorChanger;
-        public void Initialize()
+        public void Initialize(int id)
         {
+            Data.UniqId = id;
             colorChanger = new ColorChanger(timingData);
         }
        
@@ -70,11 +72,13 @@ namespace Towers
         public void ToSelectionColor()
         {
             SetMats(Data.TeamData.SelectedMaterial);
+            GeneralEventbus.OnTurnTowerSelection?.Invoke(Data.UniqId);
         }
 
         public void ToOriginalColor()
         {
             SetMats(Data.TeamData.DefaultMaterial);
+            GeneralEventbus.OnTurnTowerDeselect?.Invoke(Data.UniqId);
         }
     }
 
