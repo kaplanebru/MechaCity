@@ -26,8 +26,10 @@ namespace Teams
                 {
                     Data.Towers.Add(t.Data);
                     t.Setup(Data.TeamTowerData);
+                    
                 }
             }
+           // GeneralEventbus.OnTeamChange.Invoke(); x12 :Bütün towerların teamlerini aynı anda değiştirmiyoruz ki
         }
         
         

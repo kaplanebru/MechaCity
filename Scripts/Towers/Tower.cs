@@ -28,6 +28,8 @@ namespace Towers
             towerParts = GetComponent<TowerParts>();
             clickHandler = GetComponent<ClickHandler>();
             ColorHandler = new TowerColorHandler(Data, towerParts);
+            
+            GeneralEventbus.OnTeamChange += FadeColor;
         }
 
         public void Setup(TeamTowerData teamTowerData)
@@ -36,21 +38,29 @@ namespace Towers
             Data.Health = ConstantData.StartHealth;
             Data.DamagePower = ConstantData.DamagePower;
             RestoreBullets();
+            
 
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
             clickHandler.SetClickables(Data.UniqID);
             Data.BpTowerData = new BpTowerData(Data.UniqID);
-            ColorHandler.ToOriginalColor(); //todo later
-            
-            towerParts.Setup();
+
+            towerParts.Initialize();
             SetTeam(teamTowerData);
         }
 
         public void SetTeam(TeamTowerData teamTowerData)
         {
+            
             Data.TeamTowerData = teamTowerData;
-            towerParts.FadeColor(teamTowerData.DefaultMaterial, teamTowerData.GargouilleColor);
             clickHandler.SetClickableTeams(teamTowerData.TeamType);
+            
+            GeneralEventbus.OnTeamChange.Invoke(Data.UniqID);  //x36 oluyor
+        }
+
+        void FadeColor(int id)
+        {
+            if(id != Data.UniqID) return;
+            towerParts.FadeColor(Data.TeamTowerData);
         }
 
         public void EnableSelection()
@@ -95,9 +105,10 @@ namespace Towers
             Data.Health = ConstantData.StartHealth;
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
         }
-
         
-        
-
+        private void OnDisable()
+        {
+            GeneralEventbus.OnTeamChange -= FadeColor;
+        }
     }
 }

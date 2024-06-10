@@ -17,22 +17,22 @@ namespace Towers
         
         public void ToFreezeColor()
         {
-            _towerParts.SetColor(Data.TeamTowerData.FreezeMaterial);
+            _towerParts.SetMats(Data.TeamTowerData.FreezeMaterial);
         }
 
         public void ToBlueprintColor()
         {
-            _towerParts.SetColor(Data.TeamTowerData.BlueprintMaterial);
+            _towerParts.SetMats(Data.TeamTowerData.BlueprintMaterial);
         }
 
         public void ToSelectionColor()
         {
-            _towerParts.SetColor(Data.TeamTowerData.SelectedMaterial);
+            _towerParts.SetMats(Data.TeamTowerData.SelectedMaterial);
         }
 
         public void ToOriginalColor()
         {
-            _towerParts.SetColor(Data.TeamTowerData.DefaultMaterial);
+            _towerParts.SetMats(Data.TeamTowerData.DefaultMaterial);
         }
 
         public void FadeToDeadColor()
@@ -42,12 +42,12 @@ namespace Towers
 
         public void ToDeadColor()
         {
-            _towerParts.SetColor(Data.TeamTowerData.DeadMaterial);
+            _towerParts.SetMats(Data.TeamTowerData.DeadMaterial);
         }
 
         public void ToRegenerationColor()
         {
-            _towerParts.SetColor(Data.TeamTowerData.RegenerationMaterial);
+            _towerParts.SetMats(Data.TeamTowerData.RegenerationMaterial);
         }
         
         // public void ToGivenColor(Material givenMat)

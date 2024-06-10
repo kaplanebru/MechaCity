@@ -24,44 +24,49 @@ namespace Towers
 
     public class TowerParts : MonoBehaviour
     {
+        public ColorChanger colorChanger;
         public TowerPartsData Data;
         public CombatTimingData timingData;
         private Rotater rotater;
 
         [Header("Shake")] float shakeMagnitude = 0.03f;
-
-
-        public void Setup()
+        
+        public void Initialize()
         {
             rotater = new Rotater(Data.Middle.transform);
+            colorChanger = new ColorChanger(timingData);
         }
-        public void SetColor(Material[] mats)
+        public void SetMats(Material[] mats)
         {
-            Data.MiddleMeshes[0].material = mats[0];
-            for (var i = 1; i < Data.MiddleMeshes.Length; i++)
-            {
-                var mesh = Data.MiddleMeshes[i];
-                mesh.material = mats[1];
-            }
+          
+            colorChanger.SetMats(Data.MiddleMeshes, mats);
+            // Data.MiddleMeshes[0].material = mats[0];
+            // for (var i = 1; i < Data.MiddleMeshes.Length; i++)
+            // {
+            //     var mesh = Data.MiddleMeshes[i];
+            //     mesh.material = mats[1];
+            // }
         }
 
-        public void FadeColor(Material[] teamMats, Color gargouilleColor)
+        public void FadeColor(ITeamColorSetter teamColorSetter)
         {
-
-            Data.MiddleMeshes[0].material.DOColor(teamMats[0].color, timingData.colorFadeDuration);
-            for (var i = 1; i < Data.MiddleMeshes.Length; i++)
-            {
-                var mesh = Data.MiddleMeshes[i];
-                mesh.material.DOColor(teamMats[1].color, timingData.colorFadeDuration);
-            }
-
-            for (int i = 0; i < Data.GargouilleMeshes.Length; i++)
-            {
-                var mesh = Data.GargouilleMeshes[i];
-                mesh.material.DOColor(gargouilleColor, timingData.colorFadeDuration);
-            }
-
-            Data.Sun.color = Color.cyan;
+            colorChanger.FadeColors(Data.MiddleMeshes, teamColorSetter);
+            
+            
+            // Data.MiddleMeshes[0].material.DOColor(teamMats[0].color, timingData.colorFadeDuration);
+            // for (var i = 1; i < Data.MiddleMeshes.Length; i++)
+            // {
+            //     var mesh = Data.MiddleMeshes[i];
+            //     mesh.material.DOColor(teamMats[1].color, timingData.colorFadeDuration);
+            // }
+            //
+            // for (int i = 0; i < Data.GargouilleMeshes.Length; i++)
+            // {
+            //     var mesh = Data.GargouilleMeshes[i];
+            //     mesh.material.DOColor(gargouilleColor, timingData.colorFadeDuration);
+            // }
+            //
+            // Data.Sun.color = Color.cyan;
 
         }
 
