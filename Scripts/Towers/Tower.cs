@@ -39,10 +39,9 @@ namespace Towers
 
         public void SetTeam(TeamTowerData teamData)
         {
-            colorHandler.Data.TeamData = teamData;
             Data.TeamType = teamData.TeamType;
             
-            colorHandler.SetTeamVisuals();
+            colorHandler.SetTeamVisuals(teamData);
             clickHandler.SetClickableTeams(teamData.TeamType);
         }
         

@@ -17,6 +17,7 @@ namespace Towers
         public Material[] RegenerationMaterial;
 
         public Sprite TeamSprite;
+        public Color SpriteColor;
         public Color[] TeamColors { get; set; }
 
         private void OnEnable()
