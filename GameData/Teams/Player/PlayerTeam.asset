@@ -31,5 +31,5 @@ MonoBehaviour:
   RegenerationMaterial:
   - {fileID: 2100000, guid: adc576eda7011a747971cdd7e0b89ea5, type: 2}
   - {fileID: 2100000, guid: 3dac57b41accb1e47af4b46b2066ffe7, type: 2}
-  TeamSprite: {fileID: 21300000, guid: f653ac8ab6e5c804aa770d6b9b3047c6, type: 3}
-  SpriteColor: {r: 0, g: 0, b: 0, a: 0}
+  TeamLogo: {fileID: 21300000, guid: f653ac8ab6e5c804aa770d6b9b3047c6, type: 3}
+  LogoMat: {fileID: 2100000, guid: 6a01262b66370f14fb977c50628dbb7c, type: 2}

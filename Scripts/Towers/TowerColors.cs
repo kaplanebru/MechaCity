@@ -39,8 +39,8 @@ namespace Towers
             Data.Logo.transform.DOScale(Vector3.zero, timingData.colorFadeDuration / 2).
                 OnComplete(() =>
             {
-                Data.Logo.sprite = Data.TeamData.TeamSprite;
-                //Data.Logo.color = Data.TeamData.SpriteColor;
+                Data.Logo.sprite = Data.TeamData.TeamLogo;
+                Data.Logo.color = Data.TeamData.LogoMat.color;
                
                 Data.Logo.transform.DOScale(Vector3.one, timingData.colorFadeDuration / 2);
             });
