@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Towers
 {
     [CreateAssetMenu(fileName = nameof(TeamTowerData))]
-    public class TeamTowerData : ScriptableObject, ITeamColorSetter
+    public class TeamTowerData : ScriptableObject
     {
         public TeamType TeamType;
         public Material[] DefaultMaterial;
@@ -15,9 +15,8 @@ namespace Towers
         public Material[] DeadMaterial;
         public Material[] RegenerationMaterial;
 
-        public Color GargouilleColor;
         public Color UiColor;
-
+        public Sprite[] TeamSprite;
         public Color[] TeamColors { get; set; }
 
         private void OnEnable()

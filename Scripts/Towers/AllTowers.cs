@@ -79,7 +79,7 @@ namespace Towers
 
         public static void ResetTowerSelectionColors()
         {
-            _towers.ForEach(t=>t.ColorHandler.ToOriginalColor());
+            _towers.ForEach(t=>t.visuals.ToOriginalColor());
         }
 
         public static void EnableClickability()

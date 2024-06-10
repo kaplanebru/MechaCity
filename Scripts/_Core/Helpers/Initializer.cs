@@ -73,7 +73,7 @@ namespace Core
             
             foreach (var t in AllTowers.Towers)
             {
-                t.towerParts.ChangeHeight(t.Data.Height);
+                t.mover.ChangeHeight(t.Data.Height);
             }
             CommunEventbus.ChainTurnEvents.OnInitialize?.Invoke();
 

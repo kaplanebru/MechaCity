@@ -33,7 +33,7 @@ namespace DataModels
 
         public bool Combat()
         {
-            if (OtherTowerData.TeamTowerData.TeamType == MainTowerData.TeamTowerData.TeamType)
+            if (OtherTowerData.TeamType == MainTowerData.TeamType)
             {
                 SkipCombat();
                 return false;
@@ -65,14 +65,14 @@ namespace DataModels
         void SendProjectile(Tower perpetrator, Tower victim, float duration)
         {
             var projectile = ProjectilePool.Instance.GetItem(p =>
-                p.transform.position = perpetrator.towerParts.Data.Top.transform.position);
-            projectile.Setup(duration, victim.towerParts.Data.Top.transform.position - Vector3.up * .5f); //-Vector3.up
+                p.transform.position = perpetrator.mover.Data.Top.transform.position);
+            projectile.Setup(duration, victim.mover.Data.Top.transform.position - Vector3.up * .5f); //-Vector3.up
 
             perpetrator.Data.BulletAmount--;
 
             projectile.Move(() =>
             {
-                perpetrator.ColorHandler.ToOriginalColor();
+                perpetrator.visuals.ToOriginalColor();
                 RemoveHealth(victim.Data);
             });
         }
@@ -83,7 +83,7 @@ namespace DataModels
             UIEventbus.OnHealthChange.Invoke(victimData.Health, _nextTower.gameObject);
 
             var victim = AllTowers.GetTower(victimData.UniqID);
-            victim.towerParts.Shake();
+            victim.mover.Shake();
 
             if(IsVictimDead(victimData, victim))
                 return;

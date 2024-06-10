@@ -5,15 +5,6 @@ using DG.Tweening;
 using UnityEngine;
 
 
-public interface ISelectionColors
-{
-     public Color SelectionColor {get; set; }
-}
-
-public interface ITeamColorSetter //teamdatada mı eklenecek
-{
-    public Color[] TeamColors {get; set; }
-}
 public class ColorChanger
 {
     private CombatTimingData _timingData;
@@ -22,14 +13,14 @@ public class ColorChanger
         _timingData = timingData;
     }
     
-    public void FadeColors(MeshRenderer[] meshes, ITeamColorSetter teamColorSetter)
+    public void FadeColors(MeshRenderer[] meshes, Color[] teamColors)
     {
-        FadeColor(meshes[0], teamColorSetter.TeamColors[0]);
+        FadeColor(meshes[0], teamColors[0]);
         if(meshes.Length < 2) return;
         
         for (var i = 1; i < meshes.Length; i++)
         {
-            FadeColor(meshes[i], teamColorSetter.TeamColors[1]);
+            FadeColor(meshes[i], teamColors[1]);
         }
     }
     private void FadeColor(MeshRenderer mesh, Color newColor)

@@ -54,13 +54,13 @@ namespace Turn
         {
             if(!CheckHeights(selectedTower, size)) return;
 
-            selectedTower.towerParts.ChangeHeight(selectedTower.Data.Height += size * (TransferData.Towers.Count - 1));
+            selectedTower.mover.ChangeHeight(selectedTower.Data.Height += size * (TransferData.Towers.Count - 1));
             
             foreach (var tower in safeGroup)
             {
                 var otherTower = AllTowers.GetTower(tower.UniqID);
                 
-                otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= tower.AlteringSize);
+                otherTower.mover.ChangeHeight(otherTower.Data.Height -= tower.AlteringSize);
             }
             
             // foreach (var towerID in TransferData.Towers)

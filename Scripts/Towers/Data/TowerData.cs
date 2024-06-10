@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Blueprint;
+using Enums;
 using UnityEngine;
 
 
@@ -15,8 +16,8 @@ namespace Towers
         public float Height;
         public float AlteringSize;
         
-        public int SlotId; 
-        public TeamTowerData TeamTowerData;
+        public int SlotId;
+        public TeamType TeamType;
         public List<int> LinkedTowerIDs = new();
         public bool CanShoot { get; private set; }
         
@@ -44,12 +45,6 @@ namespace Towers
         public bool IsClickable = true;
         public BpTowerData BpTowerData;
         
-        // public TowerData(int uniqID)
-        // {
-        //     UniqID = uniqID;
-        //     BpTowerData = new BpTowerData(uniqID);
-        //     Debug.Log(BpTowerData);
-        // }
     }
 
     

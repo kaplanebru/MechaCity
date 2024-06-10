@@ -27,7 +27,7 @@ namespace Turn
          private void ExchangeTower(int deadTowerId)
          {
              _deadTower = AllTowers.GetData(deadTowerId);
-            Team oldTeam = GetTeamDataByTeamType(_deadTower.TeamTowerData.TeamType);
+            Team oldTeam = GetTeamDataByTeamType(_deadTower.TeamType);
             Team newTeam = _teams.FirstOrDefault(t => t != oldTeam);
 
             oldTeam.RemoveTower(_deadTower);

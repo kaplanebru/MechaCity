@@ -9,7 +9,6 @@ namespace Teams
     {
         public TeamData Data;
         
-
         public void Initialize()
         {
             GetTeamTowers();
@@ -26,12 +25,9 @@ namespace Teams
                 {
                     Data.Towers.Add(t.Data);
                     t.Setup(Data.TeamTowerData);
-                    
                 }
             }
-           // GeneralEventbus.OnTeamChange.Invoke(); x12 :Bütün towerların teamlerini aynı anda değiştirmiyoruz ki
         }
-        
         
         void SetGrid()
         {
@@ -44,10 +40,6 @@ namespace Teams
 
             Tower towerObj = AllTowers.GetTower(tower.UniqID);
             towerObj.SetTeam(Data.TeamTowerData);
-            // towerObj.towerParts.FadeColor(
-            //     towerObj.Data.TeamTowerData.RegenerationMaterial,Data.TeamTowerData.DefaultMaterial,
-            //     ()=>  towerObj.SetTeam(Data.TeamTowerData));
-           
         }
 
         public void RemoveTower(TowerData tower)

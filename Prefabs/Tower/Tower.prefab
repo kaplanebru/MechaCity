@@ -7961,6 +7961,7 @@ GameObject:
   - component: {fileID: 2432366265923635597}
   - component: {fileID: 7676847151417115740}
   - component: {fileID: 7245258543351846034}
+  - component: {fileID: 3010546060444765526}
   - component: {fileID: 1183604849590895228}
   m_Layer: 0
   m_Name: Tower
@@ -8015,8 +8016,9 @@ MonoBehaviour:
     DamagePower: 0
     IsClickable: 1
   timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
-  towerParts: {fileID: 0}
-  clickHandler: {fileID: 0}
+  mover: {fileID: 7245258543351846034}
+  visuals: {fileID: 3010546060444765526}
+  clickHandler: {fileID: 1183604849590895228}
 --- !u!114 &7676847151417115740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8032,7 +8034,6 @@ MonoBehaviour:
   heightTexts:
   - {fileID: 946658457554171825}
   - {fileID: 6709602262555693998}
-  healthIndicator: {fileID: 1025984692389384366}
 --- !u!114 &7245258543351846034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8048,7 +8049,21 @@ MonoBehaviour:
   Data:
     Top: {fileID: 16387687648852039}
     Middle: {fileID: 2376249443096567679}
-    Down: {fileID: 1779011856716829447}
+    TopOffset: 0
+  timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
+--- !u!114 &3010546060444765526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836925315153596545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c90cdae7e3b19f4f9cb5344858b4575, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data:
     MiddleMeshes:
     - {fileID: 3495958136158807492}
     - {fileID: 3720603860554045678}
@@ -8062,11 +8077,6 @@ MonoBehaviour:
     - {fileID: 4304824555197733096}
     - {fileID: 5295027402672241883}
     - {fileID: 6409204325026999676}
-    GargouilleMeshes:
-    - {fileID: 7503501331621616791}
-    - {fileID: 2186243597493231347}
-    TopMesh: {fileID: 0}
-    TopOffset: 0
     Sun: {fileID: 6072226709376358539}
   timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
 --- !u!114 &1183604849590895228
@@ -80958,17 +80968,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2fdf8d2aad4557240878244222a25245, type: 3}
---- !u!114 &1025984692389384366 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4431139208333399651, guid: 2fdf8d2aad4557240878244222a25245, type: 3}
-  m_PrefabInstance: {fileID: 3693961070577125069}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &2464404264105694036 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1256720464846607769, guid: 2fdf8d2aad4557240878244222a25245, type: 3}
@@ -81067,16 +81066,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 951e0668985c98045a34b3d2c1f5e8a4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
---- !u!137 &2186243597493231347 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 6694556600078443412, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
-  m_PrefabInstance: {fileID: 4805568632457428327}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &7503501331621616791 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 3067238874495869424, guid: 90b5110b862836f4fb97f920d0dcf42f, type: 3}
-  m_PrefabInstance: {fileID: 4805568632457428327}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6294791864183281527
 PrefabInstance:
   m_ObjectHideFlags: 0
