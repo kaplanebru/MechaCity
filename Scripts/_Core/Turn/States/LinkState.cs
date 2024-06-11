@@ -46,40 +46,13 @@ namespace Turn
             UIEventbus.OnButtonCall?.Invoke(true); //todo: temp
 
             int towerID = (int) args[0];
-            RiseAndFall(AllTowers.GetTower(towerID), 1, true);
+            RiseAndFall(AllTowers.GetTower(towerID), 1);
             CommunEventbus.ChainTurnEvents.OnRising?.Invoke(1);
         }
     
-        void RiseAndFall(Tower selectedTower, float size, bool rise)
-        {
-            if(!CheckHeights(selectedTower, size)) return;
-
-            selectedTower.mover.ChangeHeight(selectedTower.Data.Height += size * (TransferData.Towers.Count - 1));
-            
-            foreach (var tower in safeGroup)
-            {
-                var otherTower = AllTowers.GetTower(tower.UniqID);
-                
-                otherTower.mover.ChangeHeight(otherTower.Data.Height -= tower.AlteringSize);
-            }
-            
-            // foreach (var towerID in TransferData.Towers)
-            // {
-            //     if (towerID == selectedTower.Data.UniqID)
-            //     {
-            //         selectedTower.towerParts.ChangeHeight(selectedTower.Data.Height += size * (TransferData.Towers.Count - 1));
-            //     }
-            //     else
-            //     {
-            //         var otherTower = AllTowers.GetTower(towerID);
-            //         otherTower.towerParts.ChangeHeight(otherTower.Data.Height -= size);
-            //     }
-            // }
-        }
-
-
         private List<TowerData> safeGroup = new List<TowerData>();
-        bool CheckHeights(Tower selectedTower, float size)
+
+        int GetRiseHeight(Tower selectedTower, int step)
         {
             safeGroup.Clear();
             foreach (var towerID in TransferData.Towers)
@@ -88,37 +61,39 @@ namespace Turn
                     continue;
                 
                 var tower = AllTowers.GetData(towerID);
-                tower.AlteringSize = size;
-                
-                if (tower.Height > size)
+
+                if (tower.Height > step)
                 {
                     safeGroup.Add(tower);
                 }
             }
-            
-            Empty:
-            if (safeGroup.Count == 0)
+
+            return safeGroup.Count * step;
+        }
+        void RiseAndFall(Tower selectedTower, int step)
+        {
+            int riseStep = GetRiseHeight(selectedTower, step);
+            if (riseStep == 0)
             {
                 Debug.Log("Not enough resource to lift that tower!");
-                return false;
+                return;
             }
-               
-            if (safeGroup.Count == TransferData.Towers.Count - 1)
-                return true;
-
-            for (var i = safeGroup.Count - 1; i >= 0; i--)
-            {
-                var tower = safeGroup[i];
-                if (tower.Height <= size * 2)
-                    safeGroup.Remove(tower);
-            }
-
-            if (safeGroup.Count == 0)
-               goto Empty;
             
-            safeGroup.First().AlteringSize = size * 2;
-            return true;
+            selectedTower.mover.ChangeHeight(selectedTower.Data.Height += riseStep);
+
+            foreach (var tower in safeGroup)
+            {
+                var otherTower = AllTowers.GetTower(tower.UniqID);
+                otherTower.mover.ChangeHeight(otherTower.Data.Height -= step);
+            }
+            
         }
+
+        void FallAndRise(Tower selectedTower, float size) 
+        {
+            selectedTower.mover.ChangeHeight(selectedTower.Data.Height -= size);
+        }
+        
 
 
         public override void Unsubscribe()
