@@ -9,28 +9,32 @@ using Random = UnityEngine.Random;
 namespace Towers
 {
     [Serializable]
-    public class TowerMoverData
+    public class TowerMoverData : TowerSegmentData
     {
         public Transform Top;
         public Transform Middle;
         public float TopOffset = 0;
         public float HeightOffset = 1.5f;
-        public int Id;
+        
+        public float ShakeMagnitude = 0.03f;
+        public CombatTimingData TimingData;
     }
 
-    public class TowerMover : MonoBehaviour, ITowerSegment
+    public class TowerMover : ITowerSegment
     {
         public TowerMoverData Data;
-        public CombatTimingData timingData;
         private Rotater rotater;
         private ShakeEffect shaker;
+        public int Id { get; set; }
 
-        [Header("Shake")] public float shakeMagnitude = 0.03f;
-
-
+        public TowerMover(TowerSegmentData data)
+        {
+            Data = data as TowerMoverData;
+        }
+        
         public void SetId(int id)
         {
-            Data.Id = id;
+            Id = id;
         }
 
         public void Initialize()
@@ -38,8 +42,8 @@ namespace Towers
             rotater = new Rotater(Data.Middle.transform);
             shaker = new ShakeEffect(new ShakeData(
                 Data.Middle.transform,
-                timingData.shakeDuration,
-                shakeMagnitude));
+                Data.TimingData.shakeDuration,
+                Data.ShakeMagnitude));
         }
 
         public void ChangeHeight(float newHeight)
@@ -47,7 +51,7 @@ namespace Towers
             newHeight *= Data.HeightOffset;
             Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
             {
-                UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.HeightOffset, Data.Id);
+                UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.HeightOffset, Id);
             });
 
             Data.Top.transform.DOLocalMoveY(newHeight + Data.TopOffset, 1);
@@ -66,12 +70,13 @@ namespace Towers
             Data.Middle.transform.localScale = scale;
             Data.Top.transform.localPosition = pos;
 
-            UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.HeightOffset, Data.Id);
+            UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.HeightOffset, Id);
         }
 
         public void Shake()
         {
-            StartCoroutine(shaker.ShakeCoroutine());
+            //StartCoroutine(shaker.ShakeCoroutine());
+            GeneralEventbus.OnCoroutineTrigger?.Invoke(shaker);
         }
 
 

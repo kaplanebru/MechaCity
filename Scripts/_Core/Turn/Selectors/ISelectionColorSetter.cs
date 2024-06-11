@@ -11,7 +11,7 @@ namespace _Core.Turn.Selectors
     {
         public void SetColor(int selection)
         {
-            AllTowers.GetData(selection).colorHandler.ToSelectionColor();
+            AllTowers.GetData(selection).ColorHandler.ToSelectionColor();
         }
     }
     
@@ -19,7 +19,7 @@ namespace _Core.Turn.Selectors
     {
         public void SetColor(int selection)
         {
-            AllTowers.GetData(selection).colorHandler.ToBlueprintColor();
+            AllTowers.GetData(selection).ColorHandler.ToBlueprintColor();
         }
     }
 }

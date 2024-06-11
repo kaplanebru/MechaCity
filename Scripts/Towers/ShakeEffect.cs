@@ -17,7 +17,7 @@ namespace Towers
             Magnitude = magnitude;
         }
     }
-    public class ShakeEffect
+    public class ShakeEffect: IEnumeratorContainer
     {
         private ShakeData Data;
         public ShakeEffect(ShakeData data)
@@ -25,8 +25,9 @@ namespace Towers
             Data = data;
         }
         
-        public IEnumerator ShakeCoroutine()
+        public IEnumerator LeCoroutine()
         {
+            Debug.Log("shake");
             Vector3 originalPosition = Data.Transform.localPosition;
             float elapsed = 0.0f;
 

@@ -37,7 +37,7 @@ namespace Core
             Eventbus.TeamEvents.OnTeamsSet?.Invoke(Teams);
             foreach (var t in AllTowers.TowerDatas) 
             {
-                t.mover.SetHeight(1);
+                t.Mover.SetHeight(1);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Core
             
             foreach (var t in AllTowers.TowerDatas)
             {
-                t.mover.ChangeHeight(t.Height);
+                t.Mover.ChangeHeight(t.Height);
             }
             CommunEventbus.ChainTurnEvents.OnInitialize?.Invoke();
 

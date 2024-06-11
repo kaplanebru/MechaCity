@@ -31,7 +31,7 @@ namespace Towers
         public void SetTeam(TeamTowerData teamData)
         {
             Data.TeamType = teamData.TeamType;
-            Data.colorHandler.SetTeamVisuals(teamData);
+            Data.ColorHandler.SetTeamVisuals(teamData);
             Data.clickHandler.SetClickableTeams(teamData.TeamType);
         }
         public void EnableSelection()
@@ -57,7 +57,7 @@ namespace Towers
             yield return new WaitForSeconds(.3f);
 
             CommunEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
-            Data.mover.RotateMiddle();
+            Data.Mover.RotateMiddle();
             teamSwitchCallback.Invoke();
 
             yield return new WaitForSeconds(Data.timingData.colorFadeDuration);
@@ -79,7 +79,7 @@ namespace Towers
         private void UIHeightChangeRequest(float height, int id)
         {
             if(Data.UniqID != id) return;
-            Data.uiHandler.ChangeHeightUI(height);
+            Data.UIHandler.ChangeHeightUI(height);
         }
         
         private void OnDisable()

@@ -25,7 +25,7 @@ public static class Eventbus
         public static Action OnTurnTowerDeselect;
 
 
-        public static Action<IEnumeratorContainer> OnCoroutineTrigger;
+       
     }
 
     public static class StateEvents

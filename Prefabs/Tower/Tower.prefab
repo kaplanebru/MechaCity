@@ -7990,9 +7990,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6095367932178840500}
   - component: {fileID: 2432366265923635597}
-  - component: {fileID: 7676847151417115740}
-  - component: {fileID: 7245258543351846034}
-  - component: {fileID: 3010546060444765526}
   - component: {fileID: 1183604849590895228}
   m_Layer: 0
   m_Name: Tower
@@ -8044,75 +8041,35 @@ MonoBehaviour:
     DamagePower: 0
     IsClickable: 1
     timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
-    mover: {fileID: 7245258543351846034}
-    colorHandler: {fileID: 3010546060444765526}
     clickHandler: {fileID: 1183604849590895228}
-    uiHandler: {fileID: 7676847151417115740}
---- !u!114 &7676847151417115740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 836925315153596545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fb19773540a98e48bc40ef9d2400a14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heightTexts:
-  - {fileID: 946658457554171825}
-  - {fileID: 6709602262555693998}
---- !u!114 &7245258543351846034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 836925315153596545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c2914f59bce88c4fbad5dfbb3c1ff0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Data:
-    Top: {fileID: 16387687648852039}
-    Middle: {fileID: 2376249443096567679}
-    TopOffset: 0.5
-    HeightOffset: 1.5
-    Id: 0
-  timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
-  shakeMagnitude: 0.03
---- !u!114 &3010546060444765526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 836925315153596545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c90cdae7e3b19f4f9cb5344858b4575, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Data:
-    UniqId: 0
-    TeamData: {fileID: 0}
-    Logo: {fileID: 6072226709376358539}
-    MiddleMeshes:
-    - {fileID: 3495958136158807492}
-    - {fileID: 3720603860554045678}
-    - {fileID: 2748346537966036960}
-    - {fileID: 3654718616248628938}
-    - {fileID: 6906407738949686291}
-    - {fileID: 5535207812814937487}
-    - {fileID: 2576612191932836168}
-    - {fileID: 4952676002529118048}
-    - {fileID: 4112385867761917385}
-    - {fileID: 4304824555197733096}
-    - {fileID: 5295027402672241883}
-    - {fileID: 6409204325026999676}
-  timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
+    SegmentData:
+      MoverData:
+        Top: {fileID: 16387687648852039}
+        Middle: {fileID: 2376249443096567679}
+        TopOffset: 0.5
+        HeightOffset: 1.5
+        ShakeMagnitude: 0.03
+        TimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
+      ColorData:
+        TeamData: {fileID: 0}
+        Logo: {fileID: 6072226709376358539}
+        MiddleMeshes:
+        - {fileID: 3495958136158807492}
+        - {fileID: 3720603860554045678}
+        - {fileID: 2748346537966036960}
+        - {fileID: 3654718616248628938}
+        - {fileID: 6906407738949686291}
+        - {fileID: 5535207812814937487}
+        - {fileID: 2576612191932836168}
+        - {fileID: 4952676002529118048}
+        - {fileID: 4112385867761917385}
+        - {fileID: 4304824555197733096}
+        - {fileID: 5295027402672241883}
+        - {fileID: 6409204325026999676}
+        TimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
+      UIData:
+        HeightTexts:
+        - {fileID: 946658457554171825}
 --- !u!114 &1183604849590895228
 MonoBehaviour:
   m_ObjectHideFlags: 0

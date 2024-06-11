@@ -65,14 +65,14 @@ namespace DataModels
         void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
         {
             var projectile = ProjectilePool.Instance.GetItem(p =>
-                p.transform.position = perpetrator.mover.Data.Top.transform.position);
-            projectile.Setup(duration, victim.mover.Data.Top.transform.position - Vector3.up * .5f); //-Vector3.up
+                p.transform.position = perpetrator.Mover.Data.Top.transform.position);
+            projectile.Setup(duration, victim.Mover.Data.Top.transform.position - Vector3.up * .5f); //-Vector3.up
 
             perpetrator.BulletAmount--;
 
             projectile.Move(() =>
             {
-                perpetrator.colorHandler.ToOriginalColor();
+                perpetrator.ColorHandler.ToOriginalColor();
                 RemoveHealth(victim);
             });
         }
@@ -82,7 +82,7 @@ namespace DataModels
             victimData.Health -= OtherTowerData.DamagePower;
             UIEventbus.OnHealthChange.Invoke(victimData.Health, AllTowers.GetTower(OtherTowerData.UniqID).gameObject);
             
-            victimData.mover.Shake();
+            victimData.Mover.Shake();
 
             if(IsVictimDead(victimData,  AllTowers.GetTower(victimData.UniqID)))
                 return;

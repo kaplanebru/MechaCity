@@ -15,9 +15,7 @@ namespace Towers
     public class TowerData
     {
         public int UniqID;
-        
         public float Height;
-
         public int SlotId;
         public TeamType TeamType;
         public List<int> LinkedTowerIDs = new();
@@ -40,25 +38,41 @@ namespace Towers
         {
             get => _health;
             set => _health = value;
-            //CanShoot = value > 0;
         }
 
         public int DamagePower;
         public bool IsClickable = true;
         public BpTowerData BpTowerData;
         public CombatTimingData timingData;
-
-        
-        public TowerMover mover;
-        public ColorHandler colorHandler;
         public ClickHandler clickHandler;
-        public TowerUIHandler uiHandler;
         
-        public ITowerSegment[] TowerSegments;
+        public TowerSegmentDataHolder SegmentData = new();
+        public List<ITowerSegment> TowerSegments = new();
+        
+        public TowerMover Mover;
+        public ColorHandler ColorHandler;
+        public TowerUIHandler UIHandler;
+        
+        public void CreateSegments()
+        {
+            Mover = new TowerMover(SegmentData.MoverData);
+            ColorHandler = new ColorHandler(SegmentData.ColorData);
+            UIHandler = new TowerUIHandler(SegmentData.UIData);
 
+            TowerSegments.Add(Mover);
+            TowerSegments.Add(ColorHandler);
+            TowerSegments.Add(UIHandler);
+        }
+        
     }
 
-    
+    [Serializable]
+    public class TowerSegmentDataHolder
+    {
+        public TowerMoverData MoverData;
+        public TowerColorData ColorData;
+        public TowerUIData UIData;
+    }
 }
 
 

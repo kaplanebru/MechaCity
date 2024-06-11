@@ -43,12 +43,12 @@ namespace Turn
             BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
             
             _towers = towers;
-            _towers?.ForEach(at => AllTowers.GetData(at).colorHandler.ToOriginalColor());
+            _towers?.ForEach(at => AllTowers.GetData(at).ColorHandler.ToOriginalColor());
         }
 
         public void Fire()
         {
-            Eventbus.CombatEvents.OnCoroutineTrigger?.Invoke(this);
+            GeneralEventbus.OnCoroutineTrigger?.Invoke(this);
         }
 
         public void SetCombatPairs()
@@ -68,18 +68,19 @@ namespace Turn
         {
             if (select)
             {
-                pair.MainTowerData.colorHandler.ToSelectionColor();
+                pair.MainTowerData.ColorHandler.ToSelectionColor();
                 Eventbus.CombatEvents.OnTurnTowerSelection?.Invoke(pair.MainTowerData.UniqID);
             }
             else
             {
-                pair.MainTowerData.colorHandler.ToOriginalColor();
+                pair.MainTowerData.ColorHandler.ToOriginalColor();
                 Eventbus.CombatEvents.OnTurnTowerDeselect?.Invoke();
             }
         }
 
-        public IEnumerator FightRoutine()
+        public IEnumerator LeCoroutine()
         {
+            Debug.Log("Fight");
             if (MultiplayerSetter.IsTestingWithoutCombat)
             {
                 yield return new WaitForSeconds(.5f);
@@ -130,7 +131,7 @@ namespace Turn
 
         void DeselectAlteredTowers()
         {
-            _towers?.ForEach(t => AllTowers.GetData(t).colorHandler.ToOriginalColor());
+            _towers?.ForEach(t => AllTowers.GetData(t).ColorHandler.ToOriginalColor());
         }
 
         public void Unsubscribe()

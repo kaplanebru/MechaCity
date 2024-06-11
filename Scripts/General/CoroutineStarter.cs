@@ -8,21 +8,21 @@ public class CoroutineStarter : MonoBehaviour
 {
    private void OnEnable()
    {
-      Eventbus.CombatEvents.OnCoroutineTrigger += StartGivenCoroutine;
+      GeneralEventbus.OnCoroutineTrigger += StartGivenCoroutine;
    }
 
    public void StartGivenCoroutine(IEnumeratorContainer enumeratorContainer)
    {
-      StartCoroutine(enumeratorContainer.FightRoutine());
+      StartCoroutine(enumeratorContainer.LeCoroutine());
    }
 
    private void OnDisable()
    {
-      Eventbus.CombatEvents.OnCoroutineTrigger -= StartGivenCoroutine;
+      GeneralEventbus.OnCoroutineTrigger -= StartGivenCoroutine;
    }
 }
 
 public interface IEnumeratorContainer
 {
-   IEnumerator FightRoutine();
+   IEnumerator LeCoroutine();
 }

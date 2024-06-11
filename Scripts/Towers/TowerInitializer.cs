@@ -24,18 +24,19 @@ namespace Towers
             Data.Height = ConstantData.StartHeight;
             Data.Health = ConstantData.StartHealth;
             Data.DamagePower = ConstantData.DamagePower;
+            
             _tower.RestoreBullets();
-
-            UIEventbus.OnHealthChange.Invoke(Data.Health, _tower.gameObject);
             Data.clickHandler.SetClickables(Data.UniqID);
             Data.BpTowerData = new BpTowerData(Data.UniqID);
+            
+            Data.CreateSegments();
+            UIEventbus.OnHealthChange.Invoke(Data.Health, _tower.gameObject);
             
             SetSegments();
             _tower.SetTeam(teamData);
         }
         void SetSegments()
         {
-            Data.TowerSegments = _tower.gameObject.GetComponentsInChildren<ITowerSegment>();
             foreach (var segment in Data.TowerSegments )
             {
                 segment.SetId(Data.UniqID);

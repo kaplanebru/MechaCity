@@ -10,28 +10,31 @@ using UnityEngine;
 namespace Towers
 {
     [Serializable]
-    public class TowerVisualData
+    public class TowerColorData : TowerSegmentData
     {
-        public int UniqId;
+        
         public TeamTowerData TeamData;
         public SpriteRenderer Logo;
         public MeshRenderer[] MiddleMeshes;
+        public CombatTimingData TimingData;
     }
-    public class ColorHandler : MonoBehaviour, ITowerSegment
+    public class ColorHandler : ITowerSegment
     {
-        public TowerVisualData Data;
-        public CombatTimingData timingData;
+        public int Id { get; set; }
+        private TowerColorData Data;
+        public ColorHandler(TowerSegmentData data)
+        {
+            Data = data as TowerColorData;
+        }
         private ColorChanger colorChanger;
-
-       
-
+        
         public void SetId(int id)
         {
-            Data.UniqId = id;
+            Id = id;
         }
         public void Initialize()
         {
-            colorChanger = new ColorChanger(timingData);
+            colorChanger = new ColorChanger(Data.TimingData);
         }
        
         public void SetTeamVisuals(TeamTowerData teamData)
@@ -44,13 +47,13 @@ namespace Towers
         void SetTeamLogo()
         {
             
-            Data.Logo.transform.DOScale(Vector3.zero, timingData.colorFadeDuration / 2).
+            Data.Logo.transform.DOScale(Vector3.zero, Data.TimingData.colorFadeDuration / 2).
                 OnComplete(() =>
             {
                 Data.Logo.sprite = Data.TeamData.TeamLogo;
                 Data.Logo.color = Data.TeamData.LogoMat.color;
                
-                Data.Logo.transform.DOScale(Vector3.one, timingData.colorFadeDuration / 2);
+                Data.Logo.transform.DOScale(Vector3.one, Data.TimingData.colorFadeDuration / 2);
             });
         }
         
@@ -63,7 +66,6 @@ namespace Towers
         {
             colorChanger.SetMats(Data.MiddleMeshes, mats);
         }
-
 
         public void ToFreezeColor()
         {
@@ -78,13 +80,13 @@ namespace Towers
         public void ToSelectionColor()
         {
             SetMats(Data.TeamData.SelectedMaterial);
-            GeneralEventbus.OnTurnTowerSelection?.Invoke(Data.UniqId);
+            GeneralEventbus.OnTurnTowerSelection?.Invoke(Id);
         }
 
         public void ToOriginalColor()
         {
             SetMats(Data.TeamData.DefaultMaterial);
-            GeneralEventbus.OnTurnTowerDeselect?.Invoke(Data.UniqId);
+            GeneralEventbus.OnTurnTowerDeselect?.Invoke(Id);
         }
         
     }

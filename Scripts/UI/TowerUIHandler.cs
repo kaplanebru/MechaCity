@@ -1,11 +1,22 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 namespace GameUI
 {
-    public class TowerUIHandler : MonoBehaviour, ITowerSegment
+    [Serializable]
+    public class TowerUIData : TowerSegmentData
     {
-        public TextMeshPro[] heightTexts;
+        public TextMeshPro[] HeightTexts;
+    }
+    public class TowerUIHandler : ITowerSegment
+    {
+        private TowerUIData Data;
+        public TowerUIHandler(TowerSegmentData data)
+        {
+            Data = data as TowerUIData;
+        }
+        
         public int Id { get; set; }
 
         public void SetId(int id)
@@ -14,12 +25,11 @@ namespace GameUI
         }
 
         public void Initialize() {}
-
-       
+        
         public void ChangeHeightUI(float height) 
         {
             int heightInt = Mathf.FloorToInt(height); //todo: temporary
-            foreach (var heightText in heightTexts)
+            foreach (var heightText in Data.HeightTexts)
             {
                 if(heightText != null)
                     heightText.text = heightInt.ToString();
