@@ -14,6 +14,7 @@ namespace Towers
         public Transform Top;
         public Transform Middle;
         public float TopOffset = 0;
+        public float HeightOffset = 1.5f;
     }
 
     public class TowerMover : MonoBehaviour
@@ -28,15 +29,33 @@ namespace Towers
         {
             rotater = new Rotater(Data.Middle.transform);
         }
-        
+
+       
         public void ChangeHeight(float newHeight)
         {
+            newHeight *= Data.HeightOffset;
             Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
             {
-                UIEventbus.OnTowerHeightChange?.Invoke(newHeight, gameObject);
+                UIEventbus.OnTowerHeightChange?.Invoke(newHeight/Data.HeightOffset, gameObject);
             });
 
-            Data.Top.transform.DOLocalMoveY(newHeight + Data.TopOffset, 1); //newHeight + 1 de olur
+            Data.Top.transform.DOLocalMoveY(newHeight + Data.TopOffset, 1);
+        }
+        
+        public void SetHeight(float newHeight)
+        {
+            newHeight *= Data.HeightOffset;
+            
+            var scale = Data.Middle.transform.localScale;
+            var pos = Data.Top.transform.localPosition;
+            
+            scale.y = newHeight;
+            pos.y = newHeight;
+            
+            Data.Middle.transform.localScale = scale;
+            Data.Top.transform.localPosition = pos;
+            
+            UIEventbus.OnTowerHeightChange?.Invoke(newHeight/Data.HeightOffset, gameObject);
         }
 
         public void Shake()

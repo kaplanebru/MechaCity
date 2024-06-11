@@ -8078,7 +8078,8 @@ MonoBehaviour:
   Data:
     Top: {fileID: 16387687648852039}
     Middle: {fileID: 2376249443096567679}
-    TopOffset: 0
+    TopOffset: 0.5
+    HeightOffset: 1.5
   timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
 --- !u!114 &3010546060444765526
 MonoBehaviour:
@@ -8093,6 +8094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data:
+    UniqId: 0
     TeamData: {fileID: 0}
     Logo: {fileID: 6072226709376358539}
     MiddleMeshes:
@@ -44377,7 +44379,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5182085160254058919}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
