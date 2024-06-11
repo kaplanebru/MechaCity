@@ -15,10 +15,6 @@ namespace Towers
         public TowerConstantData ConstantData;
         public TowerData Data;
         public CombatTimingData timingData;
-
-        
-       
-        
         public void Setup(TeamTowerData teamTowerData)
         {
             Data.Height = ConstantData.StartHeight;

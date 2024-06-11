@@ -48,6 +48,8 @@ namespace Towers
         public TowerMover mover;
         public ColorHandler colorHandler;
         public ClickHandler clickHandler;
+        //todo: hepsine id'si burdan verilebilir
+        //towerpart interface'i + id eklenir
 
     }
 
