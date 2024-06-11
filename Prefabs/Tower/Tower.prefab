@@ -8045,8 +8045,8 @@ MonoBehaviour:
     IsClickable: 1
     mover: {fileID: 7245258543351846034}
     colorHandler: {fileID: 3010546060444765526}
+    clickHandler: {fileID: 1183604849590895228}
   timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
-  clickHandler: {fileID: 1183604849590895228}
 --- !u!114 &7676847151417115740
 MonoBehaviour:
   m_ObjectHideFlags: 0

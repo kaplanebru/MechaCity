@@ -38,7 +38,7 @@ namespace Turn
             CommunEventbus.ChainTurnEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
             
             AllTowers.DisableClickability();
-            TransferData.Towers.ForEach(t=>AllTowers.GetTower(t).clickHandler.EnableSelection());
+            TransferData.Towers.ForEach(t=>AllTowers.GetData(t).clickHandler.EnableSelection());
         }
         
         private void TowerSelected(params object[] args)

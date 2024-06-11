@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Blueprint;
+using Clicks;
 using Enums;
 using UnityEngine;
 
@@ -46,6 +47,7 @@ namespace Towers
         
         public TowerMover mover;
         public ColorHandler colorHandler;
+        public ClickHandler clickHandler;
 
     }
 

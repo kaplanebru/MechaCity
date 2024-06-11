@@ -17,7 +17,7 @@ namespace Towers
         public CombatTimingData timingData;
 
         
-        public ClickHandler clickHandler;
+       
         
         public void Setup(TeamTowerData teamTowerData)
         {
@@ -27,7 +27,7 @@ namespace Towers
             RestoreBullets();
 
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
-            clickHandler.SetClickables(Data.UniqID);
+            Data.clickHandler.SetClickables(Data.UniqID);
             Data.BpTowerData = new BpTowerData(Data.UniqID);
 
             Data.mover.Initialize();
@@ -40,19 +40,19 @@ namespace Towers
             Data.TeamType = teamData.TeamType;
             
             Data.colorHandler.SetTeamVisuals(teamData);
-            clickHandler.SetClickableTeams(teamData.TeamType);
+            Data.clickHandler.SetClickableTeams(teamData.TeamType);
         }
         
 
         public void EnableSelection()
         {
             if (!Data.IsClickable) return;
-            clickHandler.EnableSelection();
+            Data.clickHandler.EnableSelection();
         }
 
         public void DisableSelection()
         {
-            clickHandler.DisableSelection();
+            Data.clickHandler.DisableSelection();
         }
 
         public void HandleDeath(Action teamSwitchCallback, Action completeCombat)
