@@ -17,14 +17,20 @@ namespace Towers
         public SpriteRenderer Logo;
         public MeshRenderer[] MiddleMeshes;
     }
-    public class ColorHandler : MonoBehaviour
+    public class ColorHandler : MonoBehaviour, ITowerSegment
     {
         public TowerVisualData Data;
         public CombatTimingData timingData;
         private ColorChanger colorChanger;
-        public void Initialize(int id)
+
+       
+
+        public void SetId(int id)
         {
             Data.UniqId = id;
+        }
+        public void Initialize()
+        {
             colorChanger = new ColorChanger(timingData);
         }
        
@@ -80,6 +86,7 @@ namespace Towers
             SetMats(Data.TeamData.DefaultMaterial);
             GeneralEventbus.OnTurnTowerDeselect?.Invoke(Data.UniqId);
         }
+        
     }
 
 }

@@ -6,6 +6,7 @@ namespace Clicks
     public class ClickHandler : MonoBehaviour
     {
         private Clickable[] _clickables;
+        private int Id;
 
         public void SetClickables(int id)
         {

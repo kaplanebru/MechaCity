@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using Blueprint;
 using Clicks;
 using DataModels;
@@ -15,6 +16,17 @@ namespace Towers
         public TowerConstantData ConstantData;
         public TowerData Data;
         public CombatTimingData timingData;
+
+        private void OnEnable()
+        {
+            UIEventbus.OnTowerHeightChange += UIHeightChangeRequest;
+        }
+
+        private void UIHeightChangeRequest(float height, int id)
+        {
+            if(Data.UniqID != id) return;
+            Data.uiHandler.ChangeHeightUI(height);
+        }
         public void Setup(TeamTowerData teamTowerData)
         {
             Data.Height = ConstantData.StartHeight;
@@ -25,10 +37,20 @@ namespace Towers
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
             Data.clickHandler.SetClickables(Data.UniqID);
             Data.BpTowerData = new BpTowerData(Data.UniqID);
-
-            Data.mover.Initialize();
-            Data.colorHandler.Initialize(Data.UniqID);
+            
+            SetSegments();
             SetTeam(teamTowerData);
+        }
+        
+        void SetSegments()
+        {
+            Data.TowerSegments = GetComponentsInChildren<ITowerSegment>();
+
+            foreach (var segment in Data.TowerSegments )
+            {
+                segment.SetId(Data.UniqID);
+                segment.Initialize();
+            }
         }
 
         public void SetTeam(TeamTowerData teamData)
@@ -38,8 +60,6 @@ namespace Towers
             Data.colorHandler.SetTeamVisuals(teamData);
             Data.clickHandler.SetClickableTeams(teamData.TeamType);
         }
-        
-
         public void EnableSelection()
         {
             if (!Data.IsClickable) return;
@@ -80,6 +100,11 @@ namespace Towers
         {
             Data.Health = ConstantData.StartHealth;
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
+        }
+        
+        private void OnDisable()
+        {
+            UIEventbus.OnTowerHeightChange -= UIHeightChangeRequest;
         }
     }
 }

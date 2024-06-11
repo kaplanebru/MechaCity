@@ -3,30 +3,27 @@ using UnityEngine;
 
 namespace GameUI
 {
-    public class TowerUIHandler : MonoBehaviour
+    public class TowerUIHandler : MonoBehaviour, ITowerSegment
     {
         public TextMeshPro[] heightTexts;
+        public int Id { get; set; }
 
-        private void OnEnable() //TODO: tower scriptinden yönet
+        public void SetId(int id)
         {
-            UIEventbus.OnTowerHeightChange += ChangeHeightUI;
+            Id = id;
         }
 
-        void ChangeHeightUI(float height, GameObject obj) //DoTween
-        {
-            if (obj != gameObject) return;
+        public void Initialize() {}
 
+       
+        public void ChangeHeightUI(float height) 
+        {
             int heightInt = Mathf.FloorToInt(height); //todo: temporary
             foreach (var heightText in heightTexts)
             {
                 if(heightText != null)
                     heightText.text = heightInt.ToString();
             }
-        }
-
-        private void OnDisable()
-        {
-            UIEventbus.OnTowerHeightChange -= ChangeHeightUI;
         }
     }
 }

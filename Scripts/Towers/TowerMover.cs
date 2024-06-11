@@ -15,9 +15,10 @@ namespace Towers
         public Transform Middle;
         public float TopOffset = 0;
         public float HeightOffset = 1.5f;
+        public int Id;
     }
 
-    public class TowerMover : MonoBehaviour
+    public class TowerMover : MonoBehaviour, ITowerSegment
     {
         public TowerMoverData Data;
         public CombatTimingData timingData;
@@ -25,6 +26,12 @@ namespace Towers
         private ShakeEffect shaker;
 
         [Header("Shake")] public float shakeMagnitude = 0.03f;
+
+
+        public void SetId(int id)
+        {
+            Data.Id = id;
+        }
 
         public void Initialize()
         {
@@ -40,7 +47,7 @@ namespace Towers
             newHeight *= Data.HeightOffset;
             Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
             {
-                UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.HeightOffset, gameObject);
+                UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.HeightOffset, Data.Id);
             });
 
             Data.Top.transform.DOLocalMoveY(newHeight + Data.TopOffset, 1);
@@ -59,7 +66,7 @@ namespace Towers
             Data.Middle.transform.localScale = scale;
             Data.Top.transform.localPosition = pos;
 
-            UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.HeightOffset, gameObject);
+            UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.HeightOffset, Data.Id);
         }
 
         public void Shake()
@@ -72,5 +79,6 @@ namespace Towers
         {
             rotater.Rotate(360);
         }
+        
     }
 }

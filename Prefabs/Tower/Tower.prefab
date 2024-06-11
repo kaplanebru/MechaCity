@@ -8046,6 +8046,7 @@ MonoBehaviour:
     mover: {fileID: 7245258543351846034}
     colorHandler: {fileID: 3010546060444765526}
     clickHandler: {fileID: 1183604849590895228}
+    uiHandler: {fileID: 7676847151417115740}
   timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
 --- !u!114 &7676847151417115740
 MonoBehaviour:
@@ -8079,6 +8080,7 @@ MonoBehaviour:
     Middle: {fileID: 2376249443096567679}
     TopOffset: 0.5
     HeightOffset: 1.5
+    Id: 0
   timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
   shakeMagnitude: 0.03
 --- !u!114 &3010546060444765526
