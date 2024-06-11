@@ -16,8 +16,7 @@ namespace Towers
         public TowerData Data;
         public CombatTimingData timingData;
 
-        public TowerMover mover;
-        public ColorHandler colorHandler;
+        
         public ClickHandler clickHandler;
         
         public void Setup(TeamTowerData teamTowerData)
@@ -31,8 +30,8 @@ namespace Towers
             clickHandler.SetClickables(Data.UniqID);
             Data.BpTowerData = new BpTowerData(Data.UniqID);
 
-            mover.Initialize();
-            colorHandler.Initialize(Data.UniqID);
+            Data.mover.Initialize();
+            Data.colorHandler.Initialize(Data.UniqID);
             SetTeam(teamTowerData);
         }
 
@@ -40,7 +39,7 @@ namespace Towers
         {
             Data.TeamType = teamData.TeamType;
             
-            colorHandler.SetTeamVisuals(teamData);
+            Data.colorHandler.SetTeamVisuals(teamData);
             clickHandler.SetClickableTeams(teamData.TeamType);
         }
         
@@ -68,7 +67,7 @@ namespace Towers
             yield return new WaitForSeconds(.3f);
 
             CommunEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
-            mover.RotateMiddle();
+            Data.mover.RotateMiddle();
             teamSwitchCallback.Invoke();
 
             yield return new WaitForSeconds(timingData.colorFadeDuration);

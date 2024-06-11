@@ -44,6 +44,9 @@ namespace Towers
         public bool IsClickable = true;
         public BpTowerData BpTowerData;
         
+        public TowerMover mover;
+        public ColorHandler colorHandler;
+
     }
 
     

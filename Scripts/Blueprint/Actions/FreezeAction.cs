@@ -12,20 +12,20 @@ namespace Blueprint
 
             foreach (var selectedTower in selectedTowers)
             {
-                var tower = AllTowers.GetTower(selectedTower);
+                var tower = AllTowers.GetData(selectedTower);
                 
                 tower.colorHandler.ToFreezeColor();
-                tower.Data.BpTowerData.IsFreezing = true;
+                tower.BpTowerData.IsFreezing = true;
             }
         }
 
         public void Restore(params object[] obj)
         {
             var selectedTower = (int) obj[0];
-            var tower = AllTowers.GetTower(selectedTower);
+            var tower = AllTowers.GetData(selectedTower);
             
             tower.colorHandler.ToOriginalColor();
-            tower.Data.BpTowerData.IsFreezing = false;
+            tower.BpTowerData.IsFreezing = false;
         }
     }
 }

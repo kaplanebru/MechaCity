@@ -46,18 +46,18 @@ namespace Turn
             UIEventbus.OnButtonCall?.Invoke(true); //todo: temp
 
             int towerID = (int) args[0];
-            RiseAndFall(AllTowers.GetTower(towerID), 1);
+            RiseAndFall(AllTowers.GetData(towerID), 1);
             CommunEventbus.ChainTurnEvents.OnRising?.Invoke(1);
         }
     
         private List<TowerData> safeGroup = new List<TowerData>();
 
-        int GetRiseHeight(Tower selectedTower, int step)
+        int GetRiseHeight(TowerData selectedTower, int step)
         {
             safeGroup.Clear();
             foreach (var towerID in TransferData.Towers)
             {
-                if(towerID == selectedTower.Data.UniqID)
+                if(towerID == selectedTower.UniqID)
                     continue;
                 
                 var tower = AllTowers.GetData(towerID);
@@ -70,7 +70,7 @@ namespace Turn
 
             return safeGroup.Count * step;
         }
-        void RiseAndFall(Tower selectedTower, int step)
+        void RiseAndFall(TowerData selectedTower, int step)
         {
             int riseStep = GetRiseHeight(selectedTower, step);
             if (riseStep == 0)
@@ -79,19 +79,19 @@ namespace Turn
                 return;
             }
             
-            selectedTower.mover.ChangeHeight(selectedTower.Data.Height += riseStep);
+            selectedTower.mover.ChangeHeight(selectedTower.Height += riseStep);
 
             foreach (var tower in safeGroup)
             {
-                var otherTower = AllTowers.GetTower(tower.UniqID);
-                otherTower.mover.ChangeHeight(otherTower.Data.Height -= step);
+               
+                tower.mover.ChangeHeight(tower.Height -= step);
             }
             
         }
 
-        void FallAndRise(Tower selectedTower, float size) 
+        void FallAndRise(TowerData selectedTower, float size) 
         {
-            selectedTower.mover.ChangeHeight(selectedTower.Data.Height -= size);
+            selectedTower.mover.ChangeHeight(selectedTower.Height -= size);
         }
         
 

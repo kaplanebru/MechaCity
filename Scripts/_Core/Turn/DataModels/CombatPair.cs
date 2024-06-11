@@ -12,8 +12,8 @@ namespace DataModels
         public TowerData MainTowerData { get; }
         public TowerData OtherTowerData { get; }
 
-        private Tower _mainTower;
-        private Tower _nextTower;
+        // private Tower _mainTower;
+        // private Tower _nextTower;
 
         public bool CombatCompleted { get; set; } = false;
 
@@ -22,8 +22,8 @@ namespace DataModels
             MainTowerData = mainTowerData;
             OtherTowerData = otherTowerData;
 
-            _mainTower = AllTowers.GetTower(MainTowerData.UniqID);
-            _nextTower = AllTowers.GetTower(OtherTowerData.UniqID);
+            // _mainTower = AllTowers.GetTower(MainTowerData.UniqID);
+            // _nextTower = AllTowers.GetTower(OtherTowerData.UniqID);
         }
 
         public bool Contains(int newTower)
@@ -49,7 +49,7 @@ namespace DataModels
             {
                 if (MainTowerData.CanShoot)
                 {
-                    SendProjectile(_mainTower, _nextTower, 1); //timingData.shootDuration
+                    SendProjectile(MainTowerData, OtherTowerData, 1); //timingData.shootDuration
                     return true;
                 }
 
@@ -62,30 +62,29 @@ namespace DataModels
             }
         }
 
-        void SendProjectile(Tower perpetrator, Tower victim, float duration)
+        void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
         {
             var projectile = ProjectilePool.Instance.GetItem(p =>
                 p.transform.position = perpetrator.mover.Data.Top.transform.position);
             projectile.Setup(duration, victim.mover.Data.Top.transform.position - Vector3.up * .5f); //-Vector3.up
 
-            perpetrator.Data.BulletAmount--;
+            perpetrator.BulletAmount--;
 
             projectile.Move(() =>
             {
                 perpetrator.colorHandler.ToOriginalColor();
-                RemoveHealth(victim.Data);
+                RemoveHealth(victim);
             });
         }
 
         void RemoveHealth(TowerData victimData)
         {
             victimData.Health -= OtherTowerData.DamagePower;
-            UIEventbus.OnHealthChange.Invoke(victimData.Health, _nextTower.gameObject);
+            UIEventbus.OnHealthChange.Invoke(victimData.Health, AllTowers.GetTower(OtherTowerData.UniqID).gameObject);
+            
+            victimData.mover.Shake();
 
-            var victim = AllTowers.GetTower(victimData.UniqID);
-            victim.mover.Shake();
-
-            if(IsVictimDead(victimData, victim))
+            if(IsVictimDead(victimData,  AllTowers.GetTower(victimData.UniqID)))
                 return;
             
             CompleteCombat();
