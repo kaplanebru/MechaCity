@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Blueprint;
 using Clicks;
+using DataModels;
 using Enums;
 using GameUI;
 using UnityEngine;
@@ -45,12 +46,14 @@ namespace Towers
         public int DamagePower;
         public bool IsClickable = true;
         public BpTowerData BpTowerData;
+        public CombatTimingData timingData;
+
         
         public TowerMover mover;
         public ColorHandler colorHandler;
         public ClickHandler clickHandler;
         public TowerUIHandler uiHandler;
-
+        
         public ITowerSegment[] TowerSegments;
 
     }

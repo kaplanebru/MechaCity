@@ -15,48 +15,22 @@ namespace Towers
     {
         public TowerConstantData ConstantData;
         public TowerData Data;
-        public CombatTimingData timingData;
+        private TowerInitializer initializer;
 
         private void OnEnable()
         {
+            initializer = new TowerInitializer(this);
             UIEventbus.OnTowerHeightChange += UIHeightChangeRequest;
         }
 
-        private void UIHeightChangeRequest(float height, int id)
+        public void Setup(TeamTowerData teamData)
         {
-            if(Data.UniqID != id) return;
-            Data.uiHandler.ChangeHeightUI(height);
-        }
-        public void Setup(TeamTowerData teamTowerData)
-        {
-            Data.Height = ConstantData.StartHeight;
-            Data.Health = ConstantData.StartHealth;
-            Data.DamagePower = ConstantData.DamagePower;
-            RestoreBullets();
-
-            UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
-            Data.clickHandler.SetClickables(Data.UniqID);
-            Data.BpTowerData = new BpTowerData(Data.UniqID);
-            
-            SetSegments();
-            SetTeam(teamTowerData);
+            initializer.Setup(teamData);
         }
         
-        void SetSegments()
-        {
-            Data.TowerSegments = GetComponentsInChildren<ITowerSegment>();
-
-            foreach (var segment in Data.TowerSegments )
-            {
-                segment.SetId(Data.UniqID);
-                segment.Initialize();
-            }
-        }
-
         public void SetTeam(TeamTowerData teamData)
         {
             Data.TeamType = teamData.TeamType;
-            
             Data.colorHandler.SetTeamVisuals(teamData);
             Data.clickHandler.SetClickableTeams(teamData.TeamType);
         }
@@ -78,7 +52,7 @@ namespace Towers
 
         IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat)
         {
-            yield return new WaitForSeconds(timingData.shakeDuration);
+            yield return new WaitForSeconds(Data.timingData.shakeDuration);
 
             yield return new WaitForSeconds(.3f);
 
@@ -86,7 +60,7 @@ namespace Towers
             Data.mover.RotateMiddle();
             teamSwitchCallback.Invoke();
 
-            yield return new WaitForSeconds(timingData.colorFadeDuration);
+            yield return new WaitForSeconds(Data.timingData.colorFadeDuration);
 
             completeCombat.Invoke();
         }
@@ -100,6 +74,12 @@ namespace Towers
         {
             Data.Health = ConstantData.StartHealth;
             UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
+        }
+        
+        private void UIHeightChangeRequest(float height, int id)
+        {
+            if(Data.UniqID != id) return;
+            Data.uiHandler.ChangeHeightUI(height);
         }
         
         private void OnDisable()
