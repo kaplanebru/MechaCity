@@ -5,20 +5,19 @@ using System.Linq;
 using DataModels;
 using UnityEngine;
 
-public class ShootersEventListener : MonoBehaviour
+public class ShootersEventListener : TowerRelatedEventListener<Shooter>
 {
-    public Shooter[] shooters;
     public CombatTimingData timingData;
-    private void OnEnable()
+    protected override Shooter[] RelatedItems { get; set; }
+    public override void Subscribe()
     {
-        GeneralEventbus.OnTowersCreated += GetShooters;
         CombatPairEvents.OnShoot += ShootByGivenShooter;
     }
-    
-    private void GetShooters()
+
+    public override void Initialize()
     {
-        shooters = GetComponentsInChildren<Shooter>();
-        foreach (var shooter in shooters)
+        print(RelatedItems.Length);
+        foreach (var shooter in RelatedItems)
         {
             shooter.SetDuration(timingData.shooterMotionDuration, timingData.ProjectileDuration);
         }
@@ -26,13 +25,12 @@ public class ShootersEventListener : MonoBehaviour
 
     private void ShootByGivenShooter(CombatPair pair)
     {
-        var shooter = shooters.FirstOrDefault(s => s.Id == pair.MainTowerData.UniqID);
+        var shooter = RelatedItems.FirstOrDefault(s => s.Id == pair.MainTowerData.UniqID);
         shooter.Shoot(pair);
     }
     
-    private void OnDisable()
+    public override void Unsubscribe()
     {
-        GeneralEventbus.OnTowersCreated -= GetShooters;
         CombatPairEvents.OnShoot -= ShootByGivenShooter;
     }
 }
