@@ -23,10 +23,6 @@ namespace Towers
         void GetTowers()
         {
             towers = AllTowers.TowerDatas.ToList();
-            foreach (var t in AllTowers.TowerDatas) //TODO event atılabilir
-            {
-                t.Mover.SetHeight(1);
-            }
         }
         
         private void AdjustIcons(int health, int id)

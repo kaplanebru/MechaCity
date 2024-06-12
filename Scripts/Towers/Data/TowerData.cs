@@ -42,6 +42,8 @@ namespace Towers
 
         public int DamagePower;
         public bool IsClickable = true;
+        public LockStatus LockStatus;
+        
         public BpTowerData BpTowerData;
         public CombatTimingData timingData;
         public ClickHandler clickHandler;
@@ -63,7 +65,6 @@ namespace Towers
             TowerSegments.Add(ColorHandler);
             TowerSegments.Add(UIHandler);
         }
-        
     }
 
     [Serializable]

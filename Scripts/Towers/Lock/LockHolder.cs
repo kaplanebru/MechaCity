@@ -15,17 +15,8 @@ public class LockHolder : MonoBehaviour, ITowerRelated
         _currentLock = locks[0];
         LockTower();
     }
-
-    void DisableAll()
-    {
-        foreach (var llock in locks)
-        {
-            llock.gameObject.SetActive(false);
-        }
-    }
     void LockTower()
     {
-        DisableAll();
         SetPosition();
         _currentLock.gameObject.SetActive(true);
     }
@@ -34,6 +25,18 @@ public class LockHolder : MonoBehaviour, ITowerRelated
     {
         _currentLock.transform.localPosition += Vector3.up * _currentLock.limit * commonData.TowerHeightPerStep;
     }
+
+    void UnlockTower()
+    {
+        _currentLock.gameObject.SetActive(false);
+    }
     
+    void DisableAll()
+    {
+        foreach (var llock in locks)
+        {
+            llock.gameObject.SetActive(false);
+        }
+    }
     
 }

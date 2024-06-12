@@ -24,6 +24,12 @@ namespace Towers
 
         public void Setup(TeamTowerData teamData)
         {
+            StartCoroutine(LoadDelay(teamData));
+        }
+
+        IEnumerator LoadDelay(TeamTowerData teamData)
+        {
+            yield return new WaitForSeconds(1);
             initializer.Setup(teamData);
         }
         
