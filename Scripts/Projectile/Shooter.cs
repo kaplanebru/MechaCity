@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class Shooter : MonoBehaviour
+public class Shooter : MonoBehaviour, ITowerRelated
 {
     public float motionDistance = 1;
     public float duration = 1;
     
     private float hiddenPosY;
+    public int Id { get; set; }
+    public void Initialize(int id)
+    {
+        Id = id;
+    }
 
     public void Initialize()
     {
@@ -24,4 +29,6 @@ public class Shooter : MonoBehaviour
     {
         transform.DOLocalMoveY(hiddenPosY, duration);
     }
+
+   
 }

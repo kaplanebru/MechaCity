@@ -80,7 +80,7 @@ namespace DataModels
         void RemoveHealth(TowerData victimData)
         {
             victimData.Health -= OtherTowerData.DamagePower;
-            UIEventbus.OnHealthChange.Invoke(victimData.Health, AllTowers.GetTower(OtherTowerData.UniqID).gameObject);
+            UIEventbus.OnHealthChange.Invoke(victimData.Health, OtherTowerData.UniqID);
             
             victimData.Mover.Shake();
 

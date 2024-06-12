@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public static class TowerEvents
-{
-    public static Action OnTowersCreated;
-}
 
 namespace Towers
 {
@@ -23,8 +19,8 @@ namespace Towers
 
         [SerializeField] Transform levelPrefab;
         Transform _level;
-
-        private void OnEnable()
+        
+        private void Start()
         {
             CreateTowers();
         }
@@ -37,7 +33,7 @@ namespace Towers
 
             LinkingTowers(_towerDatas);
 
-            TowerEvents.OnTowersCreated?.Invoke();
+            GeneralEventbus.OnTowersCreated?.Invoke();
         }
 
         void InstantiateLevelPrefab()

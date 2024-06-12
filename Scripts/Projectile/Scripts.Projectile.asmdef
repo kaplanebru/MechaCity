@@ -2,7 +2,8 @@
     "name": "Scripts.Projectile",
     "rootNamespace": "",
     "references": [
-        "GUID:b18e4d249f4d12844ae2fdcd52fda70a"
+        "GUID:b18e4d249f4d12844ae2fdcd52fda70a",
+        "GUID:c64b13ec877346c48a1158d0e05eb30e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

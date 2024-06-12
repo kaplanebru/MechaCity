@@ -20,7 +20,7 @@ namespace Core
         private void OnEnable()
         {
             NetworkEventbus.RequestEvents.OnPlayerSpawned += AssignPlayers;
-            TowerEvents.OnTowersCreated += CreateTeams;
+            GeneralEventbus.OnTowersCreated += CreateTeams;
         }
 
         void CreateTeams()
@@ -35,10 +35,12 @@ namespace Core
             NetworkUIController.gameObject.SetActive(true);
 
             Eventbus.TeamEvents.OnTeamsSet?.Invoke(Teams);
-            foreach (var t in AllTowers.TowerDatas) 
-            {
-                t.Mover.SetHeight(1);
-            }
+            
+            
+            // foreach (var t in AllTowers.TowerDatas) 
+            // {
+            //     t.Mover.SetHeight(1);
+            // }
         }
 
 
@@ -89,7 +91,7 @@ namespace Core
         private void OnDisable()
         {
             NetworkEventbus.RequestEvents.OnPlayerSpawned -= AssignPlayers;
-            TowerEvents.OnTowersCreated -= CreateTeams;
+            GeneralEventbus.OnTowersCreated -= CreateTeams;
         }
     }
 }

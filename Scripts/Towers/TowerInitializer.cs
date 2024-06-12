@@ -26,13 +26,15 @@ namespace Towers
             Data.DamagePower = ConstantData.DamagePower;
             
             _tower.RestoreBullets();
-            Data.clickHandler.SetClickables(Data.UniqID);
+            //Data.clickHandler.SetClickables(Data.UniqID);
             Data.BpTowerData = new BpTowerData(Data.UniqID);
             
             Data.CreateSegments();
-            UIEventbus.OnHealthChange.Invoke(Data.Health, _tower.gameObject);
-            
             SetSegments();
+            SetTowerRelatedIds();
+            
+            //UIEventbus.OnHealthChange.Invoke(Data.Health, Data.UniqID);
+            
             _tower.SetTeam(teamData);
         }
         void SetSegments()
@@ -41,6 +43,15 @@ namespace Towers
             {
                 segment.SetId(Data.UniqID);
                 segment.Initialize();
+            }
+        }
+
+        void SetTowerRelatedIds()
+        {
+            var towerRelations =_tower.GetComponentsInChildren<ITowerRelated>();
+            foreach (var related in towerRelations)
+            {
+                related.Initialize(Data.UniqID);
             }
         }
     }

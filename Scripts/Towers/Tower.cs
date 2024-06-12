@@ -20,7 +20,6 @@ namespace Towers
         private void OnEnable()
         {
             initializer = new TowerInitializer(this);
-            UIEventbus.OnTowerHeightChange += UIHeightChangeRequest;
         }
 
         public void Setup(TeamTowerData teamData)
@@ -73,18 +72,7 @@ namespace Towers
         public void ResetHealth()
         {
             Data.Health = ConstantData.StartHealth;
-            UIEventbus.OnHealthChange.Invoke(Data.Health, gameObject);
-        }
-        
-        private void UIHeightChangeRequest(float height, int id)
-        {
-            if(Data.UniqID != id) return;
-            Data.UIHandler.ChangeHeightUI(height);
-        }
-        
-        private void OnDisable()
-        {
-            UIEventbus.OnTowerHeightChange -= UIHeightChangeRequest;
+            UIEventbus.OnHealthChange.Invoke(Data.Health, Data.UniqID);
         }
     }
 }

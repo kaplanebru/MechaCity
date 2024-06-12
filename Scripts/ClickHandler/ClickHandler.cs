@@ -3,10 +3,20 @@ using UnityEngine;
 
 namespace Clicks
 {
-    public class ClickHandler : MonoBehaviour
+    public class ClickHandler : MonoBehaviour, ITowerRelated
     {
         private Clickable[] _clickables;
-        private int Id;
+        
+        public int Id { get; set; }
+        public void Initialize(int id)
+        {
+            _clickables = GetComponentsInChildren<Clickable>();
+            Id = id;
+            foreach (var clickable in _clickables)
+            {
+                clickable.id = Id;
+            }
+        }
 
         public void SetClickables(int id)
         {
@@ -45,5 +55,7 @@ namespace Clicks
                 clickable.gameObject.layer = LayerMask.NameToLayer("Clickable");
             }
         }
+
+       
     }
 }

@@ -10,3 +10,9 @@ public interface ITowerSegment
 
     public void Initialize();
 }
+
+public interface ITowerRelated
+{
+    public int Id { get; set; }
+    public void Initialize(int id);
+}

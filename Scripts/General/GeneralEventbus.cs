@@ -7,6 +7,9 @@ using UnityEngine;
 public static class GeneralEventbus
 {
 
+
+    public static Action OnTowersCreated;
+    public static Action<int, int> OnHealthIconChangeRequest;
     public static Action<IEnumeratorContainer> OnCoroutineTrigger;
     
     public static Action<int> OnTurnTowerSelection;

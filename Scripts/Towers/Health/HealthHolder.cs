@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using GameUI;
 using UnityEngine;
 
-public class HealthHolder : MonoBehaviour
+public class HealthHolder : MonoBehaviour, ITowerRelated
 {
     public HealthIcon iconPrefab;
     public List<HealthIcon> icons;
@@ -13,16 +13,14 @@ public class HealthHolder : MonoBehaviour
     public int maxHealth = 3;
     [SerializeField] private Transform parent;
 
-
+    public int Id { get; set; }
+    public void Initialize(int id)
+    {
+        Id = id;
+    }
     private void OnEnable()
     {
         CreateIcons();
-        UIEventbus.OnHealthChange += AdjustIcons;
-    }
-
-    private void OnDisable()
-    {
-        UIEventbus.OnHealthChange -= AdjustIcons;
     }
     
     void Activate(HealthIcon icon)
@@ -46,10 +44,8 @@ public class HealthHolder : MonoBehaviour
     Vector2 GetRandomEulers() => new Vector2(GetRandomAngle(), GetRandomAngle());
     
 
-    private void AdjustIcons(int health, GameObject towerGameObject)
+    public void AdjustIcons(int health)
     {
-        if (towerGameObject != parent.gameObject) return;
-        
         _currentHealth = health;
         OrderIcons();
     }
@@ -136,16 +132,8 @@ public class HealthHolder : MonoBehaviour
                 icon.transform.localPosition -= new Vector3((counter * gap) + gap/2, 0, 0);
             }
         }
-        
     }
 
-    // void MoveIcons()
-    // {
-    //     foreach (var icon in activeIcons)
-    //     {
-    //         
-    //     }
-    // }
 
     void DisableAll()
     {
@@ -162,4 +150,6 @@ public class HealthHolder : MonoBehaviour
             icon.transform.localPosition = pos;
         }
     }
+
+   
 }

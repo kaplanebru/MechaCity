@@ -61,7 +61,6 @@ namespace Turn
         
         public void ResetSelection()
         {
-           // Debug.Log("reset selection");
             mainSelector.ResetSelector(); 
         }
 
