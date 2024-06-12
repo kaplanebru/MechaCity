@@ -7,7 +7,8 @@ namespace DataModels
     [CreateAssetMenu(fileName = nameof(CombatTimingData))]
     public class CombatTimingData : ScriptableObject
     {
-        public float shooterDuration = 1;
+        public float ProjectileDuration = 1;
+        public float shooterMotionDuration = .5f;
         public float skipDelay = 0.3f;
         public float cameraDelay = 1;
         public float shakeDuration = .2f;

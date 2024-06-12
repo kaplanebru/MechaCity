@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1973078573011339236}
   m_Layer: 0
-  m_Name: ShootPoint
+  m_Name: ShootingSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,3 +161,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motionDistance: 1
+  shootingSlot: {fileID: 1973078573011339236}

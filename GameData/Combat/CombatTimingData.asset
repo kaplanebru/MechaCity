@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b6731d299c17ac4397b7c2c532b0202, type: 3}
   m_Name: CombatTimingData
   m_EditorClassIdentifier: 
-  shootDuration: 1
+  shooterDuration: 0.5
   skipDelay: 0
   cameraDelay: 1
-  deathTime: 5
+  shakeDuration: 0.2
+  colorFadeDuration: 1

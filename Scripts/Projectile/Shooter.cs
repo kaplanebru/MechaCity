@@ -10,7 +10,11 @@ using UnityEngine;
 public class Shooter : MonoBehaviour, ITowerRelated
 {
     public float motionDistance = 1;
-     float _duration = .5f;
+    public Transform shootingSlot;
+    
+    private CombatPair _pair;
+    private float _motionDuration;
+    private float _projectileDuration;
     
     private float hiddenPosY;
     public int Id { get; set; }
@@ -20,11 +24,11 @@ public class Shooter : MonoBehaviour, ITowerRelated
         hiddenPosY = transform.localPosition.y;
     }
 
-    private CombatPair _pair;
 
-    public void SetDuration(float duration)
+    public void SetDuration(float motionDuration, float projectileDuration)
     {
-        _duration = duration;
+        _motionDuration = motionDuration;
+        _projectileDuration = projectileDuration;
     }
 
     public void Shoot(CombatPair pair)
@@ -35,22 +39,21 @@ public class Shooter : MonoBehaviour, ITowerRelated
 
     public void RevealSelf()
     {
-        transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _duration).OnComplete(() => 
+        transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration).OnComplete(() => 
         {
-            SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, 1);
+            SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, _projectileDuration);
         });
     }
 
     private void Hide()
     {
-        transform.DOLocalMoveY(hiddenPosY, _duration);
+        transform.DOLocalMoveY(hiddenPosY, _motionDuration);
     }
     
     void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
     {
-        var projectile = ProjectilePool.Instance.GetItem(p =>
-            p.transform.position = perpetrator.Mover.Data.Top.transform.position);
-        projectile.Setup(duration, victim.Mover.Data.Top.transform.position - Vector3.up * .5f); //-Vector3.up
+        var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = shootingSlot.position);
+        projectile.Setup(duration, victim.Mover.Data.Top.transform.position - Vector3.up * 1.5f); 
 
         perpetrator.BulletAmount--;
 
@@ -58,6 +61,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
         {
             perpetrator.ColorHandler.ToOriginalColor();
             RemoveHealth(victim);
+            Hide();
         });
     }
     

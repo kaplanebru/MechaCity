@@ -20,7 +20,7 @@ public class ShootersEventListener : MonoBehaviour
         shooters = GetComponentsInChildren<Shooter>();
         foreach (var shooter in shooters)
         {
-            shooter.SetDuration(timingData.shooterDuration);
+            shooter.SetDuration(timingData.shooterMotionDuration, timingData.ProjectileDuration);
         }
     }
 
