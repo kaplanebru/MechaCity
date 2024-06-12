@@ -4,6 +4,8 @@ using UnityEngine;
 using ProjectileHandler;
 using Towers;
 using GameUI;
+using UnityEditor.Timeline.Actions;
+using Object = UnityEngine.Object;
 
 namespace DataModels
 {
@@ -49,7 +51,9 @@ namespace DataModels
             {
                 if (MainTowerData.CanShoot)
                 {
+                    GeneralEventbus.OnShoot?.Invoke(MainTowerData.UniqID); //direkt pair de yollanabilir.
                     SendProjectile(MainTowerData, OtherTowerData, 1); //timingData.shootDuration
+                    //TODO: invoke repeating: shoot duration + shooter duration, combat
                     return true;
                 }
 

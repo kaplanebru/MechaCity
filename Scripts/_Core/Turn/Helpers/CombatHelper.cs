@@ -80,7 +80,6 @@ namespace Turn
 
         public IEnumerator LeCoroutine()
         {
-            Debug.Log("Fight");
             if (MultiplayerSetter.IsTestingWithoutCombat)
             {
                 yield return new WaitForSeconds(.5f);

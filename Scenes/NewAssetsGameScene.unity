@@ -39378,6 +39378,7 @@ GameObject:
   - component: {fileID: 1484794543}
   - component: {fileID: 1484794545}
   - component: {fileID: 1484794546}
+  - component: {fileID: 1484794547}
   m_Layer: 0
   m_Name: AllTowers
   m_TagString: Untagged
@@ -39439,6 +39440,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthHolders: []
+--- !u!114 &1484794547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1484794542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4daa4e1f38026849b8432127c2f7c55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shooters: []
+  timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
 --- !u!1 &1487177229
 GameObject:
   m_ObjectHideFlags: 0

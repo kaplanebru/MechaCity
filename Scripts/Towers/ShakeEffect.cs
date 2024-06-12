@@ -27,7 +27,6 @@ namespace Towers
         
         public IEnumerator LeCoroutine()
         {
-            Debug.Log("shake");
             Vector3 originalPosition = Data.Transform.localPosition;
             float elapsed = 0.0f;
 

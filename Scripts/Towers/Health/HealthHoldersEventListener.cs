@@ -16,7 +16,6 @@ public class HealthHoldersEventListener : MonoBehaviour
     private void GetHealthHolders()
     {
         healthHolders = GetComponentsInChildren<HealthHolder>(); //todo: bunalr level prefabından da halledilebilir
-        print(healthHolders.Length);
     }
 
     private void AdjustHealthIcon(int health, int id)
