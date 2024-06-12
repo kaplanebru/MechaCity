@@ -45,7 +45,7 @@ namespace Turn
 
         private void OnEnable()
         {
-            Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
+            TeamEvents.OnTeamsSet += SetTurnTeams;
 
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.RequestEvents.OnStateChangeRequestByServer += ChangeStateBySystem;
@@ -168,7 +168,7 @@ namespace Turn
 
         private void OnDisable()
         {
-            Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
+            TeamEvents.OnTeamsSet -= SetTurnTeams;
 
             bpEventHandler.UnsubscribeFromBlueprintEvents();
             _stateHolder.UnsubscribeFromConstantEvents();

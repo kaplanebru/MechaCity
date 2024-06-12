@@ -12,7 +12,7 @@ public class ShootersEventListener : MonoBehaviour
     private void OnEnable()
     {
         GeneralEventbus.OnTowersCreated += GetShooters;
-        GeneralEventbus.OnShoot += RevealShooter;
+        CombatPairEvents.OnShoot += ShootByGivenShooter;
     }
     
     private void GetShooters()
@@ -24,16 +24,15 @@ public class ShootersEventListener : MonoBehaviour
         }
     }
 
-    private void RevealShooter(int id)
+    private void ShootByGivenShooter(CombatPair pair)
     {
-        var shooter = shooters.FirstOrDefault(s => s.Id == id);
-        shooter.RevealSelf();
+        var shooter = shooters.FirstOrDefault(s => s.Id == pair.MainTowerData.UniqID);
+        shooter.Shoot(pair);
     }
     
     private void OnDisable()
     {
         GeneralEventbus.OnTowersCreated -= GetShooters;
-        GeneralEventbus.OnShoot -= RevealShooter;
-
+        CombatPairEvents.OnShoot -= ShootByGivenShooter;
     }
 }

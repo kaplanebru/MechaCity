@@ -34,13 +34,7 @@ namespace Core
 
             NetworkUIController.gameObject.SetActive(true);
 
-            Eventbus.TeamEvents.OnTeamsSet?.Invoke(Teams);
-            
-            
-            // foreach (var t in AllTowers.TowerDatas) 
-            // {
-            //     t.Mover.SetHeight(1);
-            // }
+            TeamEvents.OnTeamsSet?.Invoke(Teams);
         }
 
 

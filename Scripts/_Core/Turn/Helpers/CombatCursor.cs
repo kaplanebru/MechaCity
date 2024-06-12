@@ -32,7 +32,7 @@ public class CombatCursor : MonoBehaviour
     
     private void OnEnable()
     {
-        Eventbus.TeamEvents.OnTeamsSet += GetTransforms;
+        GeneralEventbus.OnTowersCreated += GetTransforms;
         Eventbus.CombatEvents.OnNextTower += ShiftTarget;
 
         Eventbus.CombatEvents.OnCombatStarted += StartCursor;
@@ -49,7 +49,7 @@ public class CombatCursor : MonoBehaviour
         installEffect.Initialize();
     }
     
-    private void GetTransforms(Team[] obj)
+    private void GetTransforms()
     {
         Setup(); 
     }
@@ -144,7 +144,7 @@ public class CombatCursor : MonoBehaviour
     
     private void OnDisable()
     {
-        Eventbus.TeamEvents.OnTeamsSet -= GetTransforms;
+        GeneralEventbus.OnTowersCreated -= GetTransforms;
         Eventbus.CombatEvents.OnNextTower -= ShiftTarget;
 
         Eventbus.CombatEvents.OnCombatStarted -= StartCursor;

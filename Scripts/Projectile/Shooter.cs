@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using DataModels;
 using DG.Tweening;
+using GameUI;
 using ProjectileHandler;
 using Towers;
 using UnityEngine;
@@ -18,14 +20,25 @@ public class Shooter : MonoBehaviour, ITowerRelated
         hiddenPosY = transform.localPosition.y;
     }
 
+    private CombatPair _pair;
+
     public void SetDuration(float duration)
     {
         _duration = duration;
     }
 
+    public void Shoot(CombatPair pair)
+    {
+        _pair = pair;
+        RevealSelf();
+    }
+
     public void RevealSelf()
     {
-        transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _duration).OnComplete(Hide);
+        transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _duration).OnComplete(() => 
+        {
+            SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, 1);
+        });
     }
 
     private void Hide()
@@ -44,8 +57,33 @@ public class Shooter : MonoBehaviour, ITowerRelated
         projectile.Move(() =>
         {
             perpetrator.ColorHandler.ToOriginalColor();
-            //RemoveHealth(victim);
+            RemoveHealth(victim);
         });
+    }
+    
+    void RemoveHealth(TowerData victimData)
+    {
+        victimData.Health -= _pair.OtherTowerData.DamagePower;
+        UIEventbus.OnHealthChange.Invoke(victimData.Health, _pair.OtherTowerData.UniqID);
+            
+        victimData.Mover.Shake();
+
+        if(IsVictimDead(victimData,  AllTowers.GetTower(victimData.UniqID)))
+            return;
+            
+        _pair.CompleteCombat();
+    }
+
+    bool IsVictimDead(TowerData victimData, Tower victim)
+    {
+        if (victimData.Health <= 0)
+        {
+            victim.HandleDeath(() =>
+                    Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData.UniqID),
+                _pair.CompleteCombat);
+            return true;
+        }
+        return false;
     }
 
    

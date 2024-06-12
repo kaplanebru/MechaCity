@@ -20,14 +20,14 @@ public class TubeSpawner : MonoBehaviour
 
    private void OnEnable()
    {
-      Eventbus.TeamEvents.OnTeamsSet += GetTowers;
+      GeneralEventbus.OnTowersCreated += GetTowers;
       Eventbus.StateEvents.OnLinkStateBegin += DeselectAll;
       
       GeneralEventbus.OnTurnTowerSelection += ToSelection;
       GeneralEventbus.OnTurnTowerDeselect += Deselect;
    }
 
-   private void GetTowers(Team[] obj)
+   private void GetTowers()
    {
       for (int i = 0; i < AllTowers.TowersCount; i++)
       {
@@ -78,7 +78,7 @@ public class TubeSpawner : MonoBehaviour
 
    private void OnDisable()
    {
-      Eventbus.TeamEvents.OnTeamsSet -= GetTowers;
+      GeneralEventbus.OnTowersCreated -= GetTowers;
       Eventbus.StateEvents.OnLinkStateBegin -= DeselectAll;
    
       GeneralEventbus.OnTurnTowerSelection -= ToSelection;

@@ -12,7 +12,7 @@ namespace Turn
 
         private void OnEnable()
         {
-            Eventbus.TeamEvents.OnTeamsSet += GetTeams;
+            TeamEvents.OnTeamsSet += GetTeams;
             Eventbus.CombatEvents.OnTowerKilled += ExchangeTower;
         }
 
@@ -44,7 +44,7 @@ namespace Turn
 
         private void OnDisable()
         {
-            Eventbus.TeamEvents.OnTeamsSet -= GetTeams;
+            TeamEvents.OnTeamsSet -= GetTeams;
             Eventbus.CombatEvents.OnTowerKilled -= ExchangeTower;
         }
     }

@@ -1,15 +1,6 @@
 using System;
-using Teams;
-using Towers;
-
 public static class Eventbus
 {
-   
-    public static class TeamEvents
-    {
-        public static Action<Team[]> OnTeamsSet;
-    }
-
     public static class CombatEvents
     {
         public static Action<int> OnTowerKilled;
@@ -23,9 +14,8 @@ public static class Eventbus
 
         public static Action<int> OnTurnTowerSelection;
         public static Action OnTurnTowerDeselect;
-
-
-       
+        
+        // public static Action<int, CombatPair> OnShoot;
     }
 
     public static class StateEvents
