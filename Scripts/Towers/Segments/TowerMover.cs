@@ -14,10 +14,10 @@ namespace Towers
         public Transform Top;
         public Transform Middle;
         public float TopOffset = 0;
-        public float HeightOffset = 1.5f;
         
         public float ShakeMagnitude = 0.03f;
         public CombatTimingData TimingData;
+        public CommonData CommonData;
     }
 
     public class TowerMover : ITowerSegment
@@ -48,10 +48,10 @@ namespace Towers
 
         public void ChangeHeight(float newHeight)
         {
-            newHeight *= Data.HeightOffset;
+            newHeight *= Data.CommonData.TowerHeightPerStep;
             Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
             {
-                UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.HeightOffset, Id);
+                UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.CommonData.TowerHeightPerStep, Id);
             });
 
             Data.Top.transform.DOLocalMoveY(newHeight + Data.TopOffset, 1);
@@ -59,7 +59,7 @@ namespace Towers
 
         public void SetHeight(float newHeight)
         {
-            newHeight *= Data.HeightOffset;
+            newHeight *= Data.CommonData.TowerHeightPerStep;
 
             var scale = Data.Middle.transform.localScale;
             var pos = Data.Top.transform.localPosition;
@@ -70,7 +70,7 @@ namespace Towers
             Data.Middle.transform.localScale = scale;
             Data.Top.transform.localPosition = pos;
 
-            UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.HeightOffset, Id);
+            UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.CommonData.TowerHeightPerStep, Id);
         }
 
         public void Shake()
