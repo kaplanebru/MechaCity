@@ -4,29 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class HealthHoldersEventListener : MonoBehaviour
+public class HealthHoldersEventListener : TowerRelatedEventListener<HealthHolder>
 {
-    public HealthHolder[] healthHolders;
-    private void OnEnable()
+    protected override HealthHolder[] RelatedItems { get; set; }
+    public override void Subscribe()
     {
-        GeneralEventbus.OnTowersCreated += GetHealthHolders;
         GeneralEventbus.OnHealthIconChangeRequest += AdjustHealthIcon;
     }
 
-    private void GetHealthHolders()
-    {
-        healthHolders = GetComponentsInChildren<HealthHolder>(); //todo: bunalr level prefabından da halledilebilir
-    }
-
+    public override void Initialize() { }
+    
     private void AdjustHealthIcon(int health, int id)
     {
-        var healthHolder = healthHolders.FirstOrDefault(h => h.Id == id);
+        var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == id) as HealthHolder;
         healthHolder.AdjustIcons(health);
     }
 
-    private void OnDisable()
+    public override void Unsubscribe()
     {
-        GeneralEventbus.OnTowersCreated -= GetHealthHolders;
         GeneralEventbus.OnHealthIconChangeRequest -= AdjustHealthIcon;
     }
 }

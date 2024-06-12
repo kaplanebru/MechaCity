@@ -12,15 +12,6 @@ namespace Towers
     {
         public List<TowerData> towers = new();
 
-        void GetTowers()
-        {
-            towers = AllTowers.TowerDatas.ToList();
-            foreach (var t in AllTowers.TowerDatas) //TODO event atılabilir
-            {
-                t.Mover.SetHeight(1);
-            }
-        }
-
         private void OnEnable()
         {
             GeneralEventbus.OnTowersCreated += GetTowers;
@@ -29,7 +20,15 @@ namespace Towers
             UIEventbus.OnHealthChange += AdjustIcons;
             
         }
-
+        void GetTowers()
+        {
+            towers = AllTowers.TowerDatas.ToList();
+            foreach (var t in AllTowers.TowerDatas) //TODO event atılabilir
+            {
+                t.Mover.SetHeight(1);
+            }
+        }
+        
         private void AdjustIcons(int health, int id)
         {
             GeneralEventbus.OnHealthIconChangeRequest?.Invoke(health, id);

@@ -16,7 +16,6 @@ public class ShootersEventListener : TowerRelatedEventListener<Shooter>
 
     public override void Initialize()
     {
-        print(RelatedItems.Length);
         foreach (var shooter in RelatedItems)
         {
             shooter.SetDuration(timingData.shooterMotionDuration, timingData.ProjectileDuration);
