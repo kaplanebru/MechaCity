@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LocksEventListener : TowerRelatedEventListener<Lock>
+public class LocksEventListener : TowerRelatedEventListener<LockHolder>
 {
-    protected override Lock[] RelatedItems { get; set; }
+    protected override LockHolder[] RelatedItems { get; set; }
     public override void Subscribe()
     {
         
