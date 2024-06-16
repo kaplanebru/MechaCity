@@ -8041,6 +8041,9 @@ MonoBehaviour:
     _health: 1
     DamagePower: 0
     IsClickable: 1
+    LockStatus:
+      Locked: 0
+      Limit: 1
     timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
     clickHandler: {fileID: 1183604849590895228}
     SegmentData:
@@ -79952,6 +79955,10 @@ PrefabInstance:
     - target: {fileID: 6762727055543672279, guid: 2818b69d307935346979388d813d85ac, type: 3}
       propertyPath: m_Name
       value: Lock
+      objectReference: {fileID: 0}
+    - target: {fileID: 6762727055543672279, guid: 2818b69d307935346979388d813d85ac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2818b69d307935346979388d813d85ac, type: 3}

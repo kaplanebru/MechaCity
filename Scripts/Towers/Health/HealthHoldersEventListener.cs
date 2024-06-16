@@ -10,8 +10,6 @@ public class HealthHoldersEventListener : TowerRelatedEventListener<HealthHolder
     protected override HealthHolder[] RelatedItems { get; set; }
     public override void Subscribe()
     {
-       
-
         GeneralEventbus.OnHealthIconChangeRequest += AdjustHealthIcon;
     }
 

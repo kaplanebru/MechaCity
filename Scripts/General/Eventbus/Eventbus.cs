@@ -15,13 +15,19 @@ public static class Eventbus
         public static Action<int> OnTurnTowerSelection;
         public static Action OnTurnTowerDeselect;
         
-        // public static Action<int, CombatPair> OnShoot;
     }
 
     public static class StateEvents
     {
         public static Action OnLinkStateBegin;
     }
+    
+    public static class TowerEvents
+    {
+        public static Action<int, int> OnLock;
+    }
+    
+    
 
 
 

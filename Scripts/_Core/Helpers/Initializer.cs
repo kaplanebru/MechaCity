@@ -74,6 +74,8 @@ namespace Core
             foreach (var t in AllTowers.TowerDatas)
             {
                 t.Mover.ChangeHeight(t.Height);
+                if(t.LockStatus.Locked)
+                    Eventbus.TowerEvents.OnLock?.Invoke(t.LockStatus.Limit, t.UniqID);
             }
             CommunEventbus.ChainTurnEvents.OnInitialize?.Invoke();
 

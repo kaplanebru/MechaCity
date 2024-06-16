@@ -56,7 +56,6 @@ namespace DataModels
                 if (MainTowerData.CanShoot)
                 {
                     CombatPairEvents.OnShoot?.Invoke(this);
-                    //SendProjectile(MainTowerData, OtherTowerData, 1); //timingData.shootDuration
                     return true;
                 }
 
@@ -68,46 +67,7 @@ namespace DataModels
                 return false;
             }
         }
-
-        // void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
-        // {
-        //     var projectile = ProjectilePool.Instance.GetItem(p =>
-        //         p.transform.position = perpetrator.Mover.Data.Top.transform.position);
-        //     projectile.Setup(duration, victim.Mover.Data.Top.transform.position - Vector3.up * .5f); //-Vector3.up
-        //
-        //     perpetrator.BulletAmount--;
-        //
-        //     projectile.Move(() =>
-        //     {
-        //         perpetrator.ColorHandler.ToOriginalColor();
-        //         RemoveHealth(victim);
-        //     });
-        // }
-        //
-        // void RemoveHealth(TowerData victimData)
-        // {
-        //     victimData.Health -= OtherTowerData.DamagePower;
-        //     UIEventbus.OnHealthChange.Invoke(victimData.Health, OtherTowerData.UniqID);
-        //     
-        //     victimData.Mover.Shake();
-        //
-        //     if(IsVictimDead(victimData,  AllTowers.GetTower(victimData.UniqID)))
-        //         return;
-        //     
-        //     CompleteCombat();
-        // }
-        //
-        // bool IsVictimDead(TowerData victimData, Tower victim)
-        // {
-        //     if (victimData.Health <= 0)
-        //     {
-        //         victim.HandleDeath(() =>
-        //                 Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData.UniqID),
-        //             CompleteCombat);
-        //         return true;
-        //     }
-        //     return false;
-        // }
+        
 
         void SkipCombat()
         {

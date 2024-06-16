@@ -15,7 +15,7 @@ namespace Towers
     public class TowerData
     {
         public int UniqID;
-        public float Height;
+        public int Height;
         public int SlotId;
         public TeamType TeamType;
         public List<int> LinkedTowerIDs = new();
@@ -30,6 +30,15 @@ namespace Towers
                 _bulletAmountt = value;
                 CanShoot = value > 0;
             }
+        }
+        
+ 
+
+        private int _combatStep;
+        public int CombatStep
+        {
+            get;
+            set;
         }
 
         [SerializeField] int _health = 1;

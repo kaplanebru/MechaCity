@@ -13,20 +13,21 @@ public class LockHolder : MonoBehaviour, ITowerRelated
     {
         Id = id;
         _currentLock = locks[0];
-        LockTower();
+        //DisableAll();
     }
-    void LockTower()
+    
+    public void LockTower(int limit)
     {
-        SetPosition();
+        SetPosition(limit);
         _currentLock.gameObject.SetActive(true);
     }
 
-    void SetPosition()
+    void SetPosition(int limit)
     {
-        _currentLock.transform.localPosition += Vector3.up * _currentLock.limit * commonData.TowerHeightPerStep;
+        _currentLock.transform.localPosition += Vector3.up * limit * commonData.TowerHeightPerStep;
     }
 
-    void UnlockTower()
+    public void UnlockTower()
     {
         _currentLock.gameObject.SetActive(false);
     }
