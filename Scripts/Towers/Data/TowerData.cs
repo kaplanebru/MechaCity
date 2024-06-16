@@ -15,7 +15,27 @@ namespace Towers
     public class TowerData
     {
         public int UniqID;
-        public int Height;
+
+        public int height;
+        public int Height
+        {
+            get => height;
+            set
+            {
+                height = value;
+                if (!LockStatus.Locked)
+                {
+                    AvailableHeight = value;
+                }
+                else
+                {
+                    AvailableHeight = value - LockStatus.Limit + 1; //+1 limiti sıfırlayabilmek için
+                }
+            }
+        }
+        
+        public int AvailableHeight;
+        
         public int SlotId;
         public TeamType TeamType;
         public List<int> LinkedTowerIDs = new();
@@ -32,14 +52,8 @@ namespace Towers
             }
         }
         
- 
-
-        private int _combatStep;
-        public int CombatStep
-        {
-            get;
-            set;
-        }
+      
+            
 
         [SerializeField] int _health = 1;
 

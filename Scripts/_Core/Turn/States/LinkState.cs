@@ -92,12 +92,8 @@ namespace Turn
 
                 var tower = AllTowers.GetData(towerID);
 
-                if (tower.Height > step) //tower.AwailableHeight desek?
+                if (tower.AvailableHeight > step)
                 {
-                    if (tower.LockStatus.Locked)
-                    {
-                        
-                    }
                     safeGroup.Add(tower);
                 }
             }
