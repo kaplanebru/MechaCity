@@ -277,7 +277,7 @@ MonoBehaviour:
   - {fileID: 940410736}
   activeParts:
   - {fileID: 1590186523}
-  targetHeight: 3
+  targetHeight: 0
 --- !u!4 &886371521
 Transform:
   m_ObjectHideFlags: 0

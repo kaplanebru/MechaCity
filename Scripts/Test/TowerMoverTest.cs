@@ -19,14 +19,50 @@ public class TowerMoverTest : MonoBehaviour
     {
         DisableAll();
         
-        Rise();
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            targetHeight++;
+            Rise();
+        }
     }
 
     void Rise()
     {
         int step = targetHeight - Mathf.RoundToInt(activeHolder.transform.localPosition.y);
+        if (step == 1)
+        {
+            RiseOneStep();
+            return;
+        }
+        
+        RiseMultipleSteps(step);
+        
+        
+    }
 
-        RiseRoutine(step);
+    void RiseMultipleSteps(int step)
+    {
+        GetNextPart();
+        float duration = 1 * step;
+        activeHolder.DOLocalMoveY(targetHeight, duration).OnUpdate(() =>
+        {
+            if (activeHolder.transform.localPosition.y > targetHeight - step + 1)
+            {
+                step--;
+                GetNextPart();
+            }
+        });
+      
+    }
+
+    void RiseOneStep()
+    {
+        GetNextPart();
+        activeHolder.DOLocalMoveY(targetHeight, 1);
     }
 
     void RiseRoutine(int step)
@@ -38,6 +74,14 @@ public class TowerMoverTest : MonoBehaviour
             if(step > 0)
                 RiseRoutine(step);
         });
+        
+        // Sequence sequence = DOTween.Sequence();
+        //
+        // for (int i = 0; i < step; i++)
+        // {
+        //     sequence.AppendCallback(() => GetNextPart());
+        //     sequence.Append(activeHolder.DOLocalMoveY( i+1, 1));
+        // }
     }
 
     void GetNextPart()
