@@ -21,12 +21,39 @@ public class TowerMoverTest : MonoBehaviour
         
     }
 
+    private int click = 0;
+
+    IEnumerator RiseCheckRoutine()
+    {
+        while (true)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                click++;
+                if (!isMoving)
+                {
+                    
+                    Rise();
+                }
+                else
+                {
+                
+                }
+            }
+        }
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            targetHeight++;
-            Rise();
+            click++;
+            if (!isMoving)
+            {
+                targetHeight = click;
+                Rise();
+            }
+            
         }
     }
 
@@ -59,10 +86,21 @@ public class TowerMoverTest : MonoBehaviour
       
     }
 
+    private bool isMoving = false;
     void RiseOneStep()
     {
+        isMoving = true;
         GetNextPart();
-        activeHolder.DOLocalMoveY(targetHeight, 1);
+        activeHolder.DOLocalMoveY(targetHeight, 1).OnComplete(() =>
+        {
+            isMoving = false;
+            if (click > targetHeight)
+            {
+                targetHeight = click;
+                Rise();
+            }
+                
+        });
     }
 
     void RiseRoutine(int step)
