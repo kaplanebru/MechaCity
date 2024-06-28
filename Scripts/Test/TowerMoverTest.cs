@@ -15,7 +15,7 @@ public class TowerMoverTest : MonoBehaviour
 
     [SerializeField] private int targetHeight = 0;
     private bool isMoving = false;
-    private int step = 0;
+  
 
     private void Start()
     {
@@ -29,8 +29,6 @@ public class TowerMoverTest : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             targetHeight++;
-            isMoving = true;
-
             //step = targetHeight - Mathf.RoundToInt(activeHolder.transform.localPosition.y);
         }
     }
@@ -39,30 +37,27 @@ public class TowerMoverTest : MonoBehaviour
 
     IEnumerator MoveRoutine()
     {
+        int step = 0;
         while (true)
         {
-            
-                while (activeHolder.localPosition.y < targetHeight)
+            while (activeHolder.localPosition.y < targetHeight)
+            {
+                Vector3 pos = activeHolder.localPosition;
+                pos.y = Mathf.MoveTowards(pos.y, targetHeight, 0.025f);
+                activeHolder.localPosition = pos;
+
+                if (pos.y >= step)
                 {
-                    activeHolder.localPosition = new Vector3(activeHolder.localPosition.x,
-                        Mathf.MoveTowards(activeHolder.localPosition.y, targetHeight, 0.025f),
-                        activeHolder.localPosition.z);
-
-                    if (activeHolder.localPosition.y >= step)
-                    {
-                        step++;
-                        if(passiveParts.Count == 0) yield break;
-                        GetNextPart();
-                    }
-
-                    yield return null;
+                    step++;
+                    if (passiveParts.Count == 0) yield break;
+                    GetNextPart();
                 }
 
                 yield return null;
+            }
+            yield return null;
         }
     }
-
-    
 
 
     void GetNextPart()
