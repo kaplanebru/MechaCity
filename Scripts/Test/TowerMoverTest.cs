@@ -41,9 +41,7 @@ public class TowerMoverTest : MonoBehaviour
     {
         while (true)
         {
-            if (isMoving)
-            {
-                
+            
                 while (activeHolder.localPosition.y < targetHeight)
                 {
                     activeHolder.localPosition = new Vector3(activeHolder.localPosition.x,
@@ -59,12 +57,7 @@ public class TowerMoverTest : MonoBehaviour
                     yield return null;
                 }
 
-                isMoving = false;
-            }
-            else
-            {
-                yield return new WaitUntil(() => isMoving);
-            }
+                yield return null;
         }
     }
 
