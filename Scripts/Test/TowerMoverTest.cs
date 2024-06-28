@@ -18,13 +18,19 @@ public class TowerMoverTest : MonoBehaviour
     public float speed = 0.025f;
 
 
-   
     public class MotionData
     {
         public bool IsRising;
         public int TargetHeight;
-        public int StepAmount;
+
+
+        public MotionData(bool isRising, int targetHeight)
+        {
+            IsRising = isRising;
+            TargetHeight = targetHeight;
+        }
     }
+
     private void OnEnable()
     {
         //targetheight güncellemesini dinleyebilir
@@ -34,7 +40,7 @@ public class TowerMoverTest : MonoBehaviour
     private void Start()
     {
         DisableAll();
-        StartCoroutine(MoveRoutine(0));
+        StartCoroutine(MoveRoutine(new MotionData(true, 0)));
     }
 
 
@@ -46,31 +52,63 @@ public class TowerMoverTest : MonoBehaviour
         }
     }
 
-    IEnumerator MoveRoutine(int height)
+    IEnumerator MoveRoutine(MotionData data)
     {
-        targetHeight = height;
+        targetHeight = data.TargetHeight;
+
         int step = 0;
-        
         while (true)
         {
-            while (Mathf.Abs(activeHolder.localPosition.y - targetHeight) > 0.001f) // "<" yapmadım lowering ise diye
+            if (data.IsRising)
             {
-                Vector3 pos = activeHolder.localPosition;
-                pos.y = Mathf.MoveTowards(pos.y, targetHeight, speed);
-                activeHolder.localPosition = pos;
-
-                if (pos.y >= step)
+                //int step = 0;
+                while (activeHolder.localPosition.y < targetHeight)
                 {
-                    step++;
-                    if (passiveParts.Count == 0) yield break;
-                    GetNextPart();
+                    Vector3 pos = activeHolder.localPosition;
+                    Move(pos);
+
+                    if (pos.y >= step)
+                    {
+                        step++;
+                        if (passiveParts.Count == 0) yield break;
+
+                        GetNextPart();
+                    }
+
+                    yield return null;
                 }
-                yield return null;
             }
 
-            activeHolder.localPosition = new Vector3(activeHolder.localPosition.x, targetHeight, activeHolder.localPosition.z);
+            else
+            {
+                float startHeight = activeHolder.localPosition.y;
+                while (activeHolder.localPosition.y > targetHeight)
+                {
+                    Vector3 pos = activeHolder.localPosition;
+                    Move(pos);
+
+                    if (pos.y <= startHeight - step)
+                    {
+                        step++;
+                        if (activeParts.Count == 0) yield break;
+
+                        LoseLastPart();
+                    }
+
+                    yield return null;
+                }
+            }
+            
             yield return null;
         }
+    }
+    
+    
+
+    void Move(Vector3 pos)
+    {
+        pos.y = Mathf.MoveTowards(pos.y, targetHeight, speed);
+        activeHolder.localPosition = pos;
     }
 
 
