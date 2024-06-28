@@ -15,12 +15,26 @@ public class TowerMoverTest : MonoBehaviour
 
     [SerializeField] private int targetHeight = 0;
     private bool isMoving = false;
-  
+    public float speed = 0.025f;
+
+
+   
+    public class MotionData
+    {
+        public bool IsRising;
+        public int TargetHeight;
+        public int StepAmount;
+    }
+    private void OnEnable()
+    {
+        //targetheight güncellemesini dinleyebilir
+        //coroutine link state'de başlatılır, state sonu kapatılır
+    }
 
     private void Start()
     {
         DisableAll();
-        StartCoroutine(MoveRoutine());
+        StartCoroutine(MoveRoutine(0));
     }
 
 
@@ -29,21 +43,20 @@ public class TowerMoverTest : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             targetHeight++;
-            //step = targetHeight - Mathf.RoundToInt(activeHolder.transform.localPosition.y);
         }
     }
 
-    public float duration = 1f;
-
-    IEnumerator MoveRoutine()
+    IEnumerator MoveRoutine(int height)
     {
+        targetHeight = height;
         int step = 0;
+        
         while (true)
         {
-            while (activeHolder.localPosition.y < targetHeight)
+            while (Mathf.Abs(activeHolder.localPosition.y - targetHeight) > 0.001f) // "<" yapmadım lowering ise diye
             {
                 Vector3 pos = activeHolder.localPosition;
-                pos.y = Mathf.MoveTowards(pos.y, targetHeight, 0.025f);
+                pos.y = Mathf.MoveTowards(pos.y, targetHeight, speed);
                 activeHolder.localPosition = pos;
 
                 if (pos.y >= step)
@@ -52,9 +65,10 @@ public class TowerMoverTest : MonoBehaviour
                     if (passiveParts.Count == 0) yield break;
                     GetNextPart();
                 }
-
                 yield return null;
             }
+
+            activeHolder.localPosition = new Vector3(activeHolder.localPosition.x, targetHeight, activeHolder.localPosition.z);
             yield return null;
         }
     }
@@ -102,58 +116,35 @@ public class TowerMoverTest : MonoBehaviour
         }
     }
 
-    #region Multiple
+    #region Lerp
 
-// void RiseOneStep()
-// {
-//     //isMoving = true;
-//     GetNextPart();
-//     activeHolder.DOLocalMoveY(targetHeight, 1).OnComplete(() =>
-//     {
-//         // isMoving = false;
-//         // if (click > targetHeight)
-//         // {
-//         //     targetHeight = click;
-//         //     Rise();
-//         // }
-//             
-//     });
-//     
-//     //TODO: ASLINDA ORDERDA SORUN ÇIKIYOR. ORDER KISMINA ŞERH DÜŞMEK LAZIM İS MOVİNG FALAN DİYE
-// }
-
-    void RiseRoutine(int step)
+    /* LERP
+ IEnumerator MoveRoutine()
     {
-        GetNextPart();
-        activeHolder.DOLocalMoveY(targetHeight - step + 1, 1).OnComplete(() =>
+        int step = 0;
+        while (true)
         {
-            step--;
-            if (step > 0)
-                RiseRoutine(step);
-        });
-
-        // Sequence sequence = DOTween.Sequence();
-        //
-        // for (int i = 0; i < step; i++)
-        // {
-        //     sequence.AppendCallback(() => GetNextPart());
-        //     sequence.Append(activeHolder.DOLocalMoveY( i+1, 1));
-        // }
-    }
-
-    void RiseMultipleSteps(int step)
-    {
-        GetNextPart();
-        float duration = 1 * step;
-        activeHolder.DOLocalMoveY(targetHeight, duration).OnUpdate(() =>
-        {
-            if (activeHolder.transform.localPosition.y > targetHeight - step + 1)
+            while ((Mathf.Abs(targetHeight - activeHolder.localPosition.y) > 0.001f)) //activeHolder.localPosition.y < targetHeight
             {
-                step--;
-                GetNextPart();
+                Vector3 pos = activeHolder.localPosition;
+                pos.y = Mathf.Lerp(pos.y, targetHeight, 0.025f);
+                activeHolder.localPosition = pos;
+
+                if (pos.y >= step)
+                {
+                    step++;
+                    if (passiveParts.Count == 0) yield break;
+                    GetNextPart();
+                }
+
+                yield return null;
             }
-        });
-    }
+
+            activeHolder.localPosition =
+                new Vector3(activeHolder.localPosition.x, targetHeight, activeHolder.localPosition.z);
+            yield return null;
+        }
+    }*/
 
     #endregion
 }
