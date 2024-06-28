@@ -51,6 +51,7 @@ public class TowerMoverTest : MonoBehaviour
                     if (activeHolder.localPosition.y >= step)
                     {
                         step++;
+                        if(passiveParts.Count == 0) yield break;
                         GetNextPart();
                     }
 
