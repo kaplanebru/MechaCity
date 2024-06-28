@@ -40,7 +40,7 @@ public class TowerMoverTest : MonoBehaviour
     private void Start()
     {
         DisableAll();
-        StartCoroutine(MoveRoutine(new MotionData(true, 0)));
+        StartCoroutine(RiseRoutine(new MotionData(false, 0)));
     }
 
 
@@ -50,9 +50,14 @@ public class TowerMoverTest : MonoBehaviour
         {
             targetHeight++;
         }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            targetHeight--;
+        }
     }
 
-    IEnumerator MoveRoutine(MotionData data)
+    IEnumerator RiseRoutine(MotionData data)
     {
         targetHeight = data.TargetHeight;
 
@@ -61,7 +66,6 @@ public class TowerMoverTest : MonoBehaviour
         {
             if (data.IsRising)
             {
-                //int step = 0;
                 while (activeHolder.localPosition.y < targetHeight)
                 {
                     Vector3 pos = activeHolder.localPosition;
@@ -69,12 +73,11 @@ public class TowerMoverTest : MonoBehaviour
 
                     if (pos.y >= step)
                     {
-                        step++;
+                        step += 1; //todo: 1 aslında birim
                         if (passiveParts.Count == 0) yield break;
 
                         GetNextPart();
                     }
-
                     yield return null;
                 }
             }
@@ -87,14 +90,13 @@ public class TowerMoverTest : MonoBehaviour
                     Vector3 pos = activeHolder.localPosition;
                     Move(pos);
 
-                    if (pos.y <= startHeight - step)
+                    if (pos.y <= startHeight + step -1) //todo: 1 aslında birim
                     {
-                        step++;
+                        step--;
                         if (activeParts.Count == 0) yield break;
 
                         LoseLastPart();
                     }
-
                     yield return null;
                 }
             }
@@ -102,8 +104,7 @@ public class TowerMoverTest : MonoBehaviour
             yield return null;
         }
     }
-    
-    
+
 
     void Move(Vector3 pos)
     {
