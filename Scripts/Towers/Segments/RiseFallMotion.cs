@@ -39,8 +39,7 @@ public class RiseFallMotion
     public IEnumerator RiseRoutine()
     {
         DisableAll();
-
-        int step = 1;
+        
         while (true)
         {
             if (Data.IsRising)
@@ -55,8 +54,6 @@ public class RiseFallMotion
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
                     {
                         startHeight = Data.ActiveHolder.localPosition.y + 1;
-                        step += 1; //todo: 1 aslında birim
-                       
                         if (Data.PassiveParts.Count == 0) break;
 
                         GetNextPart();
@@ -67,7 +64,7 @@ public class RiseFallMotion
 
             else
             {
-                step = 1;
+               
                 float startHeight = Data.ActiveHolder.localPosition.y;
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
