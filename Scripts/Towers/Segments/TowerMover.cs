@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DataModels;
 using DG.Tweening;
 using GameUI;
@@ -18,6 +19,8 @@ namespace Towers
         public float ShakeMagnitude = 0.03f;
         public CombatTimingData TimingData;
         public CommonData CommonData;
+
+        public RiseFallData RiseFallData;
     }
 
     public class TowerMover : ITowerSegment
@@ -25,11 +28,13 @@ namespace Towers
         public TowerMoverData Data;
         private Rotater rotater;
         private ShakeEffect shaker;
+        public RiseFallMotion riseFallMotion;
         public int Id { get; set; }
 
         public TowerMover(TowerSegmentData data)
         {
             Data = data as TowerMoverData;
+            riseFallMotion = new RiseFallMotion(Data.RiseFallData);
         }
         
         public void SetId(int id)
@@ -46,13 +51,18 @@ namespace Towers
                 Data.ShakeMagnitude));
         }
 
-        public void ChangeHeight(float newHeight)
+      
+
+        public void ChangeHeight(float newHeight, bool isRising)
         {
             newHeight *= Data.CommonData.TowerHeightPerStep;
-            Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
-            {
-                UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.CommonData.TowerHeightPerStep, Id);
-            });
+            riseFallMotion.UpdateData(newHeight, isRising);
+          
+
+            // Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
+            // {
+            //     UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.CommonData.TowerHeightPerStep, Id); //coroutine while loop bitimine
+            // });
 
             Data.Top.transform.DOLocalMoveY(newHeight + Data.TopOffset, 1);
         }

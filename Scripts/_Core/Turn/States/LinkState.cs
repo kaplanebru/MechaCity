@@ -39,7 +39,11 @@ namespace Turn
             CommunEventbus.ChainTurnEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
 
             AllTowers.DisableClickability();
-            TransferData.Towers.ForEach(t => AllTowers.GetData(t).clickHandler.EnableSelection());
+            TransferData.Towers.ForEach(t =>
+            {
+                AllTowers.GetData(t).clickHandler.EnableSelection();
+                AllTowers.GetTower(t).StartRiseFallRoutine();
+            });
         }
 
         private void TowerSelected(params object[] args)
@@ -60,11 +64,11 @@ namespace Turn
                 return;
             }
 
-            selectedTower.Mover.ChangeHeight(selectedTower.Height += riseStep);
+            selectedTower.Mover.ChangeHeight(selectedTower.Height += riseStep, true);
 
             foreach (var tower in safeGroup)
             {
-                tower.Mover.ChangeHeight(tower.Height -= step);
+                tower.Mover.ChangeHeight(tower.Height -= step, false);
             }
         }
 
@@ -72,10 +76,10 @@ namespace Turn
         {
             if (selectedTower.Height > step)
             {
-                selectedTower.Mover.ChangeHeight(selectedTower.Height -= step);
+                selectedTower.Mover.ChangeHeight(selectedTower.Height -= step, false);
                 
                 var randomTower = GetRandomOtherTower(selectedTower.UniqID);
-                randomTower.Mover.ChangeHeight(randomTower.Height += step);
+                randomTower.Mover.ChangeHeight(randomTower.Height += step, true);
             }
             else
             {
@@ -116,6 +120,10 @@ namespace Turn
         
         public override void Unsubscribe()
         {
+            TransferData.Towers.ForEach(t =>
+            {
+                AllTowers.GetTower(t).StopRiseFallRoutine();
+            });
             CommunEventbus.ChainTurnEvents.OnLinkBroken?.Invoke();
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
             AllTowers.EnableClickability();

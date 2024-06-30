@@ -70,6 +70,16 @@ namespace Towers
             completeCombat.Invoke();
         }
 
+        public void StartRiseFallRoutine()
+        {
+            StartCoroutine(Data.Mover.riseFallMotion.RiseRoutine());
+        }
+
+        public void StopRiseFallRoutine()
+        {
+            StopCoroutine(Data.Mover.riseFallMotion.RiseRoutine());
+        }
+
         public void RestoreBullets() //Todo: name change: bullet hakkı
         {
             Data.BulletAmount = ConstantData.MaxBullet;
