@@ -53,7 +53,8 @@ public class RiseFallMotion
                     
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
                     {
-                        startHeight = Data.ActiveHolder.localPosition.y + 1;
+                        startHeight = Data.ActiveHolder.localPosition.y + 1; //startHeight+=1 yapınca bug çıkıyor, neden?
+                        Debug.Log(startHeight);
                         if (Data.PassiveParts.Count == 0) break;
 
                         GetNextPart();
@@ -72,8 +73,7 @@ public class RiseFallMotion
                     Debug.Log("start: " + startHeight);
                     if (Data.ActiveHolder.localPosition.y <= startHeight - 1)
                     {
-                        startHeight = Data.ActiveHolder.localPosition.y;
-                        Debug.Log("start: " + startHeight + " target: " + Data.TargetHeight);
+                        startHeight -= 1;
                         if (Data.ActiveParts.Count == 0) break;
                         
                         LoseLastPart();
@@ -81,9 +81,7 @@ public class RiseFallMotion
                     
                     yield return null;
                 }
-                
             }
-
             yield return null;
         }
     }
