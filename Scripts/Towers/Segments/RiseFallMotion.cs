@@ -45,17 +45,18 @@ public class RiseFallMotion
         {
             if (Data.IsRising)
             {
+                float startHeight = Data.ActiveHolder.localPosition.y;
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
                 {
                     Vector3 pos = Data.ActiveHolder.localPosition;
                     Move(pos);
                    
 
-                    if (Data.ActiveHolder.localPosition.y >= step)
+                    if (Data.ActiveHolder.localPosition.y >= startHeight)
                     {
-                       
+                        startHeight = Data.ActiveHolder.localPosition.y + 1;
                         step += 1; //todo: 1 aslında birim
-                        Debug.Log(step);
+                       
                         if (Data.PassiveParts.Count == 0) break;
 
                         GetNextPart();
