@@ -40,7 +40,7 @@ public class RiseFallMotion
     {
         DisableAll();
 
-        int step = 0;
+        int step = 1;
         while (true)
         {
             if (Data.IsRising)
@@ -53,21 +53,20 @@ public class RiseFallMotion
 
                     if (Data.ActiveHolder.localPosition.y >= step)
                     {
+                       
                         step += 1; //todo: 1 aslında birim
+                        Debug.Log(step);
                         if (Data.PassiveParts.Count == 0) break;
 
                         GetNextPart();
                     }
-
                     yield return null;
                 }
-
-                
             }
 
             else
             {
-                step = 0;
+                step = 1;
                 float startHeight = Data.ActiveHolder.localPosition.y;
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
@@ -76,17 +75,11 @@ public class RiseFallMotion
 
                     if (Data.ActiveHolder.localPosition.y <= startHeight - 1) //başladığı height - 1 birim //todo: 1 aslında birim
                     {
-                        Debug.Log("lose");
+                        startHeight = Data.ActiveHolder.localPosition.y;
                         if (Data.ActiveParts.Count == 0) break;
                         LoseLastPart();
                     }
-                    // if (pos.y <= startHeight + step -1) //todo: 1 aslında birim
-                    // {
-                    //     step--;
-                    //     if (Data.ActiveParts.Count == 0) yield break;
-                    //
-                    //     LoseLastPart();
-                    // }
+                    
                     yield return null;
                 }
                 
