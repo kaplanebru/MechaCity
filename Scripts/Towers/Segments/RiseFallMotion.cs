@@ -36,21 +36,21 @@ public class RiseFallMotion
         Data.IsRising = isRising;
     }
 
+    private float startHeight;
     public IEnumerator RiseRoutine()
     {
         DisableAll();
         
         while (true)
         {
+            startHeight = Data.ActiveHolder.localPosition.y;
             if (Data.IsRising)
             {
-                float startHeight = Data.ActiveHolder.localPosition.y;
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
                 {
                     Vector3 pos = Data.ActiveHolder.localPosition;
                     Move(pos);
-                   
-
+                    
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
                     {
                         startHeight = Data.ActiveHolder.localPosition.y + 1;
@@ -64,17 +64,18 @@ public class RiseFallMotion
 
             else
             {
-               
-                float startHeight = Data.ActiveHolder.localPosition.y;
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
                     Vector3 pos = Data.ActiveHolder.localPosition;
                     Move(pos);
 
-                    if (Data.ActiveHolder.localPosition.y <= startHeight - 1) //başladığı height - 1 birim //todo: 1 aslında birim
+                    Debug.Log("start: " + startHeight);
+                    if (Data.ActiveHolder.localPosition.y <= startHeight - 1)
                     {
                         startHeight = Data.ActiveHolder.localPosition.y;
+                        Debug.Log("start: " + startHeight + " target: " + Data.TargetHeight);
                         if (Data.ActiveParts.Count == 0) break;
+                        
                         LoseLastPart();
                     }
                     
