@@ -47,11 +47,12 @@ public class RiseFallMotion
     }
 
     private float startHeight;
+
     public IEnumerator RiseRoutine()
     {
         DisableAll();
         startHeight = Data.ActiveHolder.localPosition.y;
-        
+
         while (true)
         {
             startHeight = Data.ActiveHolder.localPosition.y;
@@ -59,32 +60,34 @@ public class RiseFallMotion
             {
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
                 {
-                    
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
                     {
                         if (Data.PassiveParts.Count == 0)
                             break;
-                        
+
                         startHeight += unit;
                         GetNextPart();
                     }
+
                     Move(Data.ActiveHolder.localPosition);
 
                     yield return null;
                 }
+
                 Data.RiseState = RiseState.None;
             }
 
-            else if(Data.RiseState == RiseState.Falling)
+            else if (Data.RiseState == RiseState.Falling)
             {
-                var differance = Data.ActiveHolder.localPosition.y - Data.TargetHeight;
+                // var differance = Mathf.FloorToInt(Data.ActiveHolder.localPosition.y / unit) - Data.TargetHeight;
+                int totalStep = Mathf.FloorToInt((Data.ActiveHolder.localPosition.y - Data.TargetHeight) / unit);
                 int step = 1;
-                
+
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
                     Move(Data.ActiveHolder.localPosition);
 
-                    if (Data.ActiveHolder.localPosition.y <= Data.TargetHeight + (differance - step))
+                    if (Data.ActiveHolder.localPosition.y <= Data.TargetHeight + (totalStep - step))
                     {
                         if (Data.ActiveParts.Count == 0)
                             break;
@@ -92,7 +95,7 @@ public class RiseFallMotion
                         step++;
                         LoseLastPart();
                     }
-                    
+
                     // if (Data.ActiveHolder.localPosition.y <= startHeight - unit) 
                     // {
                     //     if (Data.ActiveParts.Count == 0)
@@ -101,16 +104,17 @@ public class RiseFallMotion
                     //     startHeight -= 1;
                     //     LoseLastPart();
                     // }
-                    
+
                     yield return null;
                 }
+
                 Data.RiseState = RiseState.None;
             }
 
             else
             {
-                
             }
+
             yield return null;
         }
     }
