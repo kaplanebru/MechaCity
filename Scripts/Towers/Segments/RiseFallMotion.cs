@@ -14,8 +14,16 @@ public class RiseFallData
     public List<Transform> PassiveParts = new();
     public List<Transform> ActiveParts = new();
 
-    public bool IsRising;
+    //public bool IsRising;
+    public RiseState RiseState;
     public float TargetHeight;
+}
+
+public enum RiseState
+{
+    Rising,
+    Falling,
+    None
 }
 
 public class RiseFallMotion
@@ -23,6 +31,7 @@ public class RiseFallMotion
     private RiseFallData Data;
 
     public float speed = 0.025f;
+    public int unit = 1;
 
 
     public RiseFallMotion(RiseFallData data)
@@ -33,54 +42,74 @@ public class RiseFallMotion
     public void UpdateData(float newHeight, bool isRising)
     {
         Data.TargetHeight = newHeight;
-        Data.IsRising = isRising;
+        //Data.IsRising = isRising;
+        Data.RiseState = isRising ? RiseState.Rising : RiseState.Falling;
     }
 
     private float startHeight;
     public IEnumerator RiseRoutine()
     {
         DisableAll();
+        startHeight = Data.ActiveHolder.localPosition.y;
         
         while (true)
         {
             startHeight = Data.ActiveHolder.localPosition.y;
-            if (Data.IsRising)
+            if (Data.RiseState == RiseState.Rising)
             {
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
                 {
-                    Vector3 pos = Data.ActiveHolder.localPosition;
-                    Move(pos);
                     
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
                     {
-                        startHeight = Data.ActiveHolder.localPosition.y + 1; //startHeight+=1 yapınca bug çıkıyor, neden?
-                        Debug.Log(startHeight);
-                        if (Data.PassiveParts.Count == 0) break;
-
+                        if (Data.PassiveParts.Count == 0)
+                            break;
+                        
+                        startHeight += unit;
                         GetNextPart();
                     }
+                    Move(Data.ActiveHolder.localPosition);
+
                     yield return null;
                 }
+                Data.RiseState = RiseState.None;
+            }
+
+            else if(Data.RiseState == RiseState.Falling)
+            {
+                var differance = Data.ActiveHolder.localPosition.y - Data.TargetHeight;
+                int step = 1;
+                
+                while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
+                {
+                    Move(Data.ActiveHolder.localPosition);
+
+                    if (Data.ActiveHolder.localPosition.y <= Data.TargetHeight + (differance - step))
+                    {
+                        if (Data.ActiveParts.Count == 0)
+                            break;
+
+                        step++;
+                        LoseLastPart();
+                    }
+                    
+                    // if (Data.ActiveHolder.localPosition.y <= startHeight - unit) 
+                    // {
+                    //     if (Data.ActiveParts.Count == 0)
+                    //         break;
+                    //     
+                    //     startHeight -= 1;
+                    //     LoseLastPart();
+                    // }
+                    
+                    yield return null;
+                }
+                Data.RiseState = RiseState.None;
             }
 
             else
             {
-                while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
-                {
-                    Vector3 pos = Data.ActiveHolder.localPosition;
-                    Move(pos);
-
-                    Debug.Log("start: " + startHeight);
-                    if (Data.ActiveHolder.localPosition.y <= startHeight - 1)
-                    {
-                        startHeight -= 1;
-                        if (Data.ActiveParts.Count == 0) break;
-                        
-                        LoseLastPart();
-                    }
-                    
-                    yield return null;
-                }
+                
             }
             yield return null;
         }
