@@ -51,11 +51,10 @@ public class RiseFallMotion
     public IEnumerator RiseRoutine()
     {
         DisableAll();
-        startHeight = Data.ActiveHolder.localPosition.y;
 
         while (true)
         {
-            startHeight = Data.ActiveHolder.localPosition.y;
+            startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
             if (Data.RiseState == RiseState.Rising)
             {
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
@@ -63,7 +62,11 @@ public class RiseFallMotion
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
                     {
                         if (Data.PassiveParts.Count == 0)
+                        {
+                            Data.RiseState = RiseState.None;
                             break;
+                        }
+                           
 
                         startHeight += unit;
                         GetNextPart();
@@ -71,44 +74,59 @@ public class RiseFallMotion
 
                     Move(Data.ActiveHolder.localPosition);
 
+                    //todo: bu loop'un içindeyken state değişimini kaçırıyor.target height değiştiği için looptan çıkılıyor ama riseState check edilemiyordu.
                     yield return null;
                 }
 
-                Data.RiseState = RiseState.None;
+                if(Data.RiseState != RiseState.Falling)
+                    Data.RiseState = RiseState.None;
             }
 
             else if (Data.RiseState == RiseState.Falling)
             {
-                // var differance = Mathf.FloorToInt(Data.ActiveHolder.localPosition.y / unit) - Data.TargetHeight;
-                int totalStep = Mathf.FloorToInt((Data.ActiveHolder.localPosition.y - Data.TargetHeight) / unit);
-                int step = 1;
-
+                
+                // int totalStep = Mathf.FloorToInt((Data.ActiveHolder.localPosition.y - Data.TargetHeight) / unit);
+                // int step = 1;
+                //
+                 startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
+                 Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " startHeight: " + startHeight);
+                // Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " target: " + Data.TargetHeight);
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
+                    
                     Move(Data.ActiveHolder.localPosition);
 
-                    if (Data.ActiveHolder.localPosition.y <= Data.TargetHeight + (totalStep - step))
-                    {
-                        if (Data.ActiveParts.Count == 0)
-                            break;
-
-                        step++;
-                        LoseLastPart();
-                    }
-
-                    // if (Data.ActiveHolder.localPosition.y <= startHeight - unit) 
+                    // if (Data.ActiveHolder.localPosition.y <= Data.TargetHeight + (totalStep - step))
                     // {
+                    //     Debug.Log("lose");
                     //     if (Data.ActiveParts.Count == 0)
+                    //     {
+                    //         Data.RiseState = RiseState.None;
                     //         break;
-                    //     
-                    //     startHeight -= 1;
+                    //     }
+                    //
+                    //     step++;
                     //     LoseLastPart();
                     // }
+
+                    if (Data.ActiveHolder.localPosition.y <= startHeight - unit) 
+                    {
+                        Debug.Log("lose");
+                        if (Data.ActiveParts.Count == 0)
+                        {
+                            Data.RiseState = RiseState.None;
+                            break;
+                        }
+                        
+                        startHeight -= unit;
+                        LoseLastPart();
+                    }
 
                     yield return null;
                 }
 
-                Data.RiseState = RiseState.None;
+                if(Data.RiseState != RiseState.Rising)
+                    Data.RiseState = RiseState.None;
             }
 
             else
