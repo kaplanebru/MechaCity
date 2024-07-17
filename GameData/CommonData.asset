@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5713b418cea9f4db01e1996a0b5774, type: 3}
   m_Name: CommonData
   m_EditorClassIdentifier: 
-  TowerHeightPerStep: 1
+  TowerHeightPerStep: 2

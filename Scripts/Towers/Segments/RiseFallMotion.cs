@@ -31,7 +31,7 @@ public class RiseFallMotion
     private RiseFallData Data;
 
     public float speed = 0.025f;
-    public int unit = 1;
+    public int unit = 2;
 
 
     public RiseFallMotion(RiseFallData data)
@@ -42,7 +42,6 @@ public class RiseFallMotion
     public void UpdateData(float newHeight, bool isRising)
     {
         Data.TargetHeight = newHeight;
-        //Data.IsRising = isRising;
         Data.RiseState = isRising ? RiseState.Rising : RiseState.Falling;
     }
 
@@ -89,7 +88,7 @@ public class RiseFallMotion
                 // int step = 1;
                 //
                  startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
-                // Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " startHeight: " + startHeight);
+                Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " startHeight: " + startHeight);
                 // Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " target: " + Data.TargetHeight);
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
@@ -111,7 +110,7 @@ public class RiseFallMotion
 
                     if (Data.ActiveHolder.localPosition.y <= startHeight - unit) 
                     {
-                        Debug.Log("lose");
+                        //Debug.Log("lose");
                         if (Data.ActiveParts.Count == 0)
                         {
                             Data.RiseState = RiseState.None;
@@ -173,7 +172,7 @@ public class RiseFallMotion
         {
             var part = Data.ActiveParts[i];
             var pos = part.transform.localPosition;
-            pos.y = 0 - i;
+            pos.y = 0 - i * unit;
             part.transform.localPosition = pos;
         }
 
