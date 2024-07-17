@@ -181,7 +181,7 @@ public class RiseFallMotion
         {
             var part = Data.ActiveParts[i];
             var pos = part.transform.localPosition;
-            pos.y = 0 - i * unit;
+            pos.y = 0 - i * unit; //TODO: İlki hep sabit kalır (0 olacağından) ama diğerleri ters sıralanır, dikkat!
             part.transform.localPosition = pos;
         }
 
