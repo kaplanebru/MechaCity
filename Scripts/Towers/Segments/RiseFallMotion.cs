@@ -33,6 +33,8 @@ public class RiseFallMotion
     public float speed = 0.025f;
     public int unit = 2;
 
+    private float startHeight;
+
 
     public RiseFallMotion(RiseFallData data)
     {
@@ -45,15 +47,20 @@ public class RiseFallMotion
         Data.RiseState = isRising ? RiseState.Rising : RiseState.Falling;
     }
 
-    private float startHeight;
-
+    float RoundByCustomUnit(float number)
+    {
+        float residue = number % unit;
+        var result = residue > 0 ? number - residue + unit : number;
+        return result;
+    }
     public IEnumerator RiseRoutine()
     {
         DisableAll();
 
         while (true)
         {
-            startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
+            //startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
+            startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
             if (Data.RiseState == RiseState.Rising)
             {
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
@@ -87,7 +94,8 @@ public class RiseFallMotion
                 // int totalStep = Mathf.FloorToInt((Data.ActiveHolder.localPosition.y - Data.TargetHeight) / unit);
                 // int step = 1;
                 //
-                 startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
+                 //startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
+                 startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
                 Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " startHeight: " + startHeight);
                 // Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " target: " + Data.TargetHeight);
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
