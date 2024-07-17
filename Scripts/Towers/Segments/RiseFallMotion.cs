@@ -116,10 +116,10 @@ public class RiseFallMotion
                     //     LoseLastPart();
                     // }
 
-                    Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " start-1: " + (startHeight - unit));
+                    //Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " start-1: " + (startHeight - unit));
                     if ((Data.ActiveHolder.localPosition.y - (startHeight - unit)) <= tolerance) //( Data.ActiveHolder.localPosition.y  <= startHeight - unit) 
                     {
-                        Debug.Log("lose");
+                        //Debug.Log("lose");
                         if (Data.ActiveParts.Count == 0)
                         {
                             Data.RiseState = RiseState.None;
