@@ -31,7 +31,8 @@ public class RiseFallMotion
     private RiseFallData Data;
 
     public float speed = 0.025f;
-    public int unit = 2;
+    public float unit = 1.8f;
+    float tolerance = 0.0001f;
 
     private float startHeight;
 
@@ -50,7 +51,7 @@ public class RiseFallMotion
     float RoundByCustomUnit(float number)
     {
         float residue = number % unit;
-        var result = residue > 0 ? number - residue + unit : number;
+        float result = residue > 0 ? number - residue + unit : number;
         return result;
     }
     public IEnumerator RiseRoutine()
@@ -59,7 +60,6 @@ public class RiseFallMotion
 
         while (true)
         {
-            //startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
             startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
             if (Data.RiseState == RiseState.Rising)
             {
@@ -95,9 +95,9 @@ public class RiseFallMotion
                 // int step = 1;
                 //
                  //startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
-                 startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
-                Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " startHeight: " + startHeight);
-                // Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " target: " + Data.TargetHeight);
+                startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
+                
+                //Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " startHeight: " + startHeight);
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
                     
@@ -116,9 +116,10 @@ public class RiseFallMotion
                     //     LoseLastPart();
                     // }
 
-                    if (Data.ActiveHolder.localPosition.y <= startHeight - unit) 
+                    Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " start-1: " + (startHeight - unit));
+                    if ((Data.ActiveHolder.localPosition.y - (startHeight - unit)) <= tolerance) //( Data.ActiveHolder.localPosition.y  <= startHeight - unit) 
                     {
-                        //Debug.Log("lose");
+                        Debug.Log("lose");
                         if (Data.ActiveParts.Count == 0)
                         {
                             Data.RiseState = RiseState.None;
