@@ -89,7 +89,7 @@ public class RiseFallMotion
                 // int step = 1;
                 //
                  startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
-                 Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " startHeight: " + startHeight);
+                // Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " startHeight: " + startHeight);
                 // Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " target: " + Data.TargetHeight);
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
