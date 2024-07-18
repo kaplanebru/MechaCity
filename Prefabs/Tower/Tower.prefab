@@ -81880,6 +81880,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlienTower5
       objectReference: {fileID: 0}
+    - target: {fileID: 1627365464274131505, guid: 5439d42ed97292c48a44a33875897c78, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083804227116642390, guid: 5439d42ed97292c48a44a33875897c78, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791575348630840212, guid: 5439d42ed97292c48a44a33875897c78, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6806591826613039179, guid: 5439d42ed97292c48a44a33875897c78, type: 3}
       propertyPath: m_RootOrder
       value: 5
