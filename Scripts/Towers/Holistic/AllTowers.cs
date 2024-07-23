@@ -25,6 +25,16 @@ namespace Towers
             CreateTowers();
         }
 
+        private void OnEnable()
+        {
+            
+        }
+
+        private void OnDisable()
+        {
+            
+        }
+
         void CreateTowers()
         {
             InstantiateLevelPrefab();
