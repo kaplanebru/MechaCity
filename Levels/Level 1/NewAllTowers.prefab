@@ -143,6 +143,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5579547957973982615}
+  - component: {fileID: 4235908246992779681}
   m_Layer: 0
   m_Name: NewAllTowers
   m_TagString: Untagged
@@ -172,10 +173,26 @@ Transform:
   - {fileID: 534859534852522750}
   - {fileID: 4550135943380476049}
   - {fileID: 565645687897232154}
-  - {fileID: 4480057483963829108}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4235908246992779681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579547957973982614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81db6eebfd3f2004daccb1322fc032bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Data:
+    Cables: []
+    Floors: []
+    CableSelectionColor: {r: 0.8962264, g: 0.4895143, b: 0.16402629, a: 0}
+    CableDefaultColor: {r: 0.27953008, g: 0.49056602, b: 0.45310616, a: 0}
 --- !u!1 &6588253414135678055
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,52 +260,6 @@ MonoBehaviour:
   _points: []
   LinearSpeed: 0
   pause: 0
---- !u!1 &6613264333635162289
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4480057483963829108}
-  - component: {fileID: 1908085409412637277}
-  m_Layer: 0
-  m_Name: FloorGroups
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4480057483963829108
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6613264333635162289}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5579547957973982615}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1908085409412637277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6613264333635162289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2072e79b9e3d424585d35ed5152ce59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 0.5
-  openAmount: 0.4
 --- !u!1 &7026633889508432453
 GameObject:
   m_ObjectHideFlags: 0
@@ -1717,7 +1688,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5599627951633204010, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c3bf1793c55ef96438eacf3449af35a1, type: 3}
 --- !u!4 &1210685737447715139 stripped
 Transform:
@@ -2362,7 +2334,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: CableGroups 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3245424277508196338, guid: 8cdd4279bb44a9143bab1203eef60531, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8cdd4279bb44a9143bab1203eef60531, type: 3}
 --- !u!4 &565645687897232154 stripped
 Transform:

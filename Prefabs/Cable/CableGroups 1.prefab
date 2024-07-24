@@ -8738,7 +8738,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5258305847396454762}
-  - component: {fileID: 3245424277508196338}
   m_Layer: 0
   m_Name: CableGroups 1
   m_TagString: Untagged
@@ -8767,27 +8766,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3245424277508196338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6770653092109988703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c568e4bdc77160f488c2d3090900c711, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cables:
-  - {fileID: 5106066224078473678}
-  - {fileID: 5689124674255596549}
-  - {fileID: 2176024055341809512}
-  - {fileID: 4133188251009450490}
-  - {fileID: 6581159585926577403}
-  - {fileID: 4074880847604913968}
-  selectionColor: {r: 0, g: 0, b: 0, a: 0}
-  defaultColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &6793478735807840044
 GameObject:
   m_ObjectHideFlags: 0

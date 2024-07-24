@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8921718878238235156}
-  - component: {fileID: 6882485182776282854}
   m_Layer: 0
   m_Name: TubeSpawner
   m_TagString: Untagged
@@ -32,18 +31,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6882485182776282854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7184922880868091405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54d57a5971f7cb24cb0c43c2a96206b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tubeObj: {fileID: 8961349520496918617, guid: 93902a052bccaec40bd4a1d2fed5a177, type: 3}
-  selectionColor: {r: 0.9339623, g: 0.9256453, b: 0.6291029, a: 1}
-  defaultColor: {r: 0.74509805, g: 0.64705884, b: 0.5568628, a: 1}

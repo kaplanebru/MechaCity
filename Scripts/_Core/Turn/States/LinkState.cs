@@ -36,14 +36,13 @@ namespace Turn
         public override void Subscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked += TowerSelected;
-            
             Eventbus.LinkEvents.OnLinkStateBegin?.Invoke();
-            Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.Towers);
         }
         
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             TransferData.Towers = data.Towers;
+            Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.Towers);
         }
         
         private void StartLink()

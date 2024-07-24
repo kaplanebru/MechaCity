@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Cable : MonoBehaviour
+public class Tube : MonoBehaviour
 {
     public int id;
-    
-    private SkinnedMeshRenderer[] meshes;
+
+    private MeshRenderer[] meshes;
    
     private void Awake()
     {
-        meshes = GetComponentsInChildren<SkinnedMeshRenderer>();
+        meshes = GetComponentsInChildren<MeshRenderer>();
     }
 
     public void SetColor(Color color)
