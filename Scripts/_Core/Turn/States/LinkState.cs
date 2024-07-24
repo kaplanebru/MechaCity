@@ -7,6 +7,7 @@ using Network;
 using Towers;
 using Unity.VisualScripting;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Turn
@@ -25,22 +26,33 @@ namespace Turn
         public override int StateId { get; set; }
         
         private List<TowerData> safeGroup = new ();
-        public override void SubscribeToConstantEvents() { }
 
+        public override void SubscribeToConstantEvents()
+        {
+            Eventbus.LinkEvents.OnFloorsOpened += StartLink;
+
+        }
+        
         public override void Subscribe()
         {
             NetworkEventbus.InputEvents.OnObjectClicked += TowerSelected;
-            Eventbus.StateEvents.OnLinkStateBegin?.Invoke();
+            
+            Eventbus.LinkEvents.OnLinkStateBegin?.Invoke();
+            Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.Towers);
         }
         
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             TransferData.Towers = data.Towers;
-            
-            CommunEventbus.ChainTurnEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
-            AllTowers.DisableClickability();
-            Eventbus.CombatEvents.OnLink?.Invoke(TransferData.Towers);
         }
+        
+        private void StartLink()
+        {
+            AllTowers.DisableClickability();
+            Eventbus.LinkEvents.OnLink?.Invoke(TransferData.Towers);
+            CommunEventbus.ChainTurnEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
+        }
+
 
         private void TowerSelected(params object[] args)
         {
@@ -116,7 +128,7 @@ namespace Turn
         
         public override void Unsubscribe()
         {
-            Eventbus.CombatEvents.OnUnlink?.Invoke(TransferData.Towers);
+            Eventbus.LinkEvents.OnUnlink?.Invoke(TransferData.Towers);
             CommunEventbus.ChainTurnEvents.OnLinkBroken?.Invoke();
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
             AllTowers.EnableClickability();
@@ -124,6 +136,7 @@ namespace Turn
 
         public override void UnsubscribeFromConstantEvents()
         {
+            Eventbus.LinkEvents.OnFloorsOpened -= StartLink;
         }
     }
 }

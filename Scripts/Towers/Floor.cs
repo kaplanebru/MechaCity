@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class Floor : MonoBehaviour
+public class Floor : MonoBehaviour, ITowerRelated
 {
     public Transform[] parts;
-    public float decreasedHeight = 0.6f;
     public Transform gear;
 
     private float startHeight;
@@ -16,28 +15,29 @@ public class Floor : MonoBehaviour
         startHeight = parts[0].localScale.y;
     }
 
-    public void DecreaseHeight()
+    public void Open(float height, float duration)
     {
         gear.gameObject.SetActive(true);
         
         foreach (var part in parts)
         {
-            part.DOScaleY(decreasedHeight, 0.5f);
+            part.DOScaleY(height, duration);
         }
     }
 
-    public void RestoreHeight()
+    public void RestoreHeight(float duration)
     {
         gear.gameObject.SetActive(false);
         
         foreach (var part in parts)
         {
-            part.DOScaleY(startHeight, 0.5f);
+            part.DOScaleY(startHeight, duration);
         }
     }
 
-    private void OnDisable()
+    public int Id { get; set; }
+    public void Initialize(int id)
     {
-        
+        Id = id;
     }
 }

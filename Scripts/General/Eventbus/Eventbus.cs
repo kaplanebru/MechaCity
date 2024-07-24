@@ -17,14 +17,17 @@ public static class Eventbus
         public static Action<int> OnTurnTowerSelection;
         public static Action OnTurnTowerDeselect;
 
-        public static Action<List<int>> OnLink;
-        public static Action<List<int>> OnUnlink;
+       
 
     }
 
-    public static class StateEvents
+    public static class LinkEvents
     {
         public static Action OnLinkStateBegin;
+        public static Action<List<int>> OnLinkLoading;
+        public static Action<List<int>> OnLink;
+        public static Action<List<int>> OnUnlink;
+        public static Action OnFloorsOpened;
     }
     
     public static class TowerEvents

@@ -21,7 +21,7 @@ namespace ChainInGame
             CommunEventbus.ChainTurnEvents.OnInitialize += Initialize;
             ChainEvents.InGameEvents.OnOptionSet += SelectMachinery;
             
-            CommunEventbus.ChainTurnEvents.OnLinkedTowers += FillMachinery;
+            CommunEventbus.ChainTurnEvents.OnLinkedTowers += ShowMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
             CommunEventbus.ChainTurnEvents.OnRising += MoveWithChain;
         }
@@ -77,7 +77,7 @@ namespace ChainInGame
             _currentMachineryInGame.EmptyMachinery();
         }
 
-        private void FillMachinery(int[] ids)
+        private void ShowMachinery(int[] ids)
         {
             foreach (var id in ids)
             {
@@ -109,7 +109,7 @@ namespace ChainInGame
             CommunEventbus.ChainTurnEvents.OnInitialize -= Initialize;
             ChainEvents.InGameEvents.OnOptionSet -= SelectMachinery;
             
-            CommunEventbus.ChainTurnEvents.OnLinkedTowers -= FillMachinery;
+            CommunEventbus.ChainTurnEvents.OnLinkedTowers -= ShowMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkBroken -= ResetMachinery;
             CommunEventbus.ChainTurnEvents.OnRising -= MoveWithChain;
         }

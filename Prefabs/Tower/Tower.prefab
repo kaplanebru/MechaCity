@@ -82555,7 +82555,7 @@ MonoBehaviour:
   parts:
   - {fileID: 9200425670448586980}
   - {fileID: 9132393093036413494}
-  decreasedHeight: 0.6
+  decreasedHeight: 0.4
   gear: {fileID: 8478454695056217681}
 --- !u!4 &6409681217529868635 stripped
 Transform:

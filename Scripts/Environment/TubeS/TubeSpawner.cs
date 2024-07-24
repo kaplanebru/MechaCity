@@ -79,7 +79,7 @@ public class TubeSpawner : MonoBehaviour
    private void OnDisable()
    {
       GeneralEventbus.OnTowersCreated -= GetTowers;
-      Eventbus.StateEvents.OnLinkStateBegin -= DeselectAll;
+      Eventbus.LinkEvents.OnLinkStateBegin -= DeselectAll;
    
       GeneralEventbus.OnTurnTowerSelection -= ToSelection;
       GeneralEventbus.OnTurnTowerDeselect -= Deselect;

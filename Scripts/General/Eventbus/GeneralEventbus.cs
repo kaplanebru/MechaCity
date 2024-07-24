@@ -9,6 +9,7 @@ public static class GeneralEventbus
 
 
     public static Action OnTowersCreated;
+    public static Action OnTowersAndTeamsReady;
     public static Action<int, int> OnHealthIconChangeRequest;
     public static Action<IEnumeratorContainer> OnCoroutineTrigger;
     

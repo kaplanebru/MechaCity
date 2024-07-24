@@ -77,8 +77,6 @@ namespace Towers
         public TowerMover Mover;
         public ColorHandler ColorHandler;
         public TowerUIHandler UIHandler;
-
-        public Floor floor;
         
         public void CreateSegments()
         {

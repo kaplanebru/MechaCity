@@ -27,8 +27,8 @@ namespace Towers
 
         private void OnEnable()
         {
-            Eventbus.CombatEvents.OnLink += SetLinkedTowers;
-            Eventbus.CombatEvents.OnUnlink += ResetLinkedTowers;
+            Eventbus.LinkEvents.OnLink += SetLinkedTowers;
+            Eventbus.LinkEvents.OnUnlink += ResetLinkedTowers;
         }
 
         private void ResetLinkedTowers(List<int> towerIds)
@@ -36,18 +36,9 @@ namespace Towers
             foreach (var id in towerIds)
             {
                 var tower = GetTower(id);
-                tower.Data.floor.RestoreHeight();
                 tower.StopRiseFallRoutine();
             }
         }
-
-        private void OnDisable()
-        {
-            Eventbus.CombatEvents.OnLink -= SetLinkedTowers;
-            Eventbus.CombatEvents.OnUnlink -= ResetLinkedTowers;
-
-        }
-
 
         private void SetLinkedTowers(List<int> towerIds)
         {
@@ -55,12 +46,9 @@ namespace Towers
             {
                 var tower = GetTower(id);
                 tower.Data.clickHandler.EnableSelection();
-                tower.Data.floor.DecreaseHeight();
                 tower.StartRiseFallRoutine();
             }
         }
-
-     
         
 
         void CreateTowers()
@@ -139,6 +127,12 @@ namespace Towers
                     Gizmos.DrawLine(tower.transform.position, GetTower(linkedTowerID).transform.position);
                 }
             }
+        }
+        
+        private void OnDisable()
+        {
+            Eventbus.LinkEvents.OnLink -= SetLinkedTowers;
+            Eventbus.LinkEvents.OnUnlink -= ResetLinkedTowers;
         }
     }
 }

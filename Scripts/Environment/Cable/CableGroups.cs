@@ -13,7 +13,7 @@ public class CableGroups : MonoBehaviour
 
     private void OnEnable()
     {
-        Eventbus.StateEvents.OnLinkStateBegin += DeselectAll;
+        Eventbus.LinkEvents.OnLinkStateBegin += DeselectAll;
         GeneralEventbus.OnTurnTowerSelection += ToSelection;
         GeneralEventbus.OnTurnTowerDeselect += Deselect;
     }
@@ -40,7 +40,7 @@ public class CableGroups : MonoBehaviour
     
     private void OnDisable()
     {
-        Eventbus.StateEvents.OnLinkStateBegin -= DeselectAll;
+        Eventbus.LinkEvents.OnLinkStateBegin -= DeselectAll;
         GeneralEventbus.OnTurnTowerSelection -= ToSelection;
         GeneralEventbus.OnTurnTowerDeselect -= Deselect;
     }

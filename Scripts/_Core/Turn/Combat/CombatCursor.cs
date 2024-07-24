@@ -38,7 +38,7 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatStarted += StartCursor;
         Eventbus.CombatEvents.OnCombatEnding += EndCursor;
 
-        Eventbus.StateEvents.OnLinkStateBegin += Swallow;
+        Eventbus.LinkEvents.OnLinkStateBegin += Swallow;
         
         BpEventbus.UIEvents.OnBpInstallBegin += SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset += ResetBpImage;
@@ -149,7 +149,7 @@ public class CombatCursor : MonoBehaviour
 
         Eventbus.CombatEvents.OnCombatStarted -= StartCursor;
         Eventbus.CombatEvents.OnCombatEnding -= EndCursor;
-        Eventbus.StateEvents.OnLinkStateBegin -= Swallow;
+        Eventbus.LinkEvents.OnLinkStateBegin -= Swallow;
         
         BpEventbus.UIEvents.OnBpInstallBegin -= SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset -= ResetBpImage;

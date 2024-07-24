@@ -24,7 +24,8 @@ namespace Towers
 
         public void Setup(TeamTowerData teamData)
         {
-            StartCoroutine(LoadDelay(teamData));
+            //StartCoroutine(LoadDelay(teamData));
+            initializer.Setup(teamData);
         }
 
         IEnumerator LoadDelay(TeamTowerData teamData)
