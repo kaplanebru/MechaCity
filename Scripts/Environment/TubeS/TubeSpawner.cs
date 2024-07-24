@@ -18,14 +18,14 @@ public class TubeSpawner : MonoBehaviour
    private List<Tube> _tubes = new();
    private Tube _currentTube;
 
-   private void OnEnable()
-   {
-      GeneralEventbus.OnTowersCreated += GetTowers;
-      //Eventbus.StateEvents.OnLinkStateBegin += DeselectAll;
-      
-      GeneralEventbus.OnTurnTowerSelection += ToSelection;
-      GeneralEventbus.OnTurnTowerDeselect += Deselect;
-   }
+   // private void OnEnable()
+   // {
+   //    GeneralEventbus.OnTowersCreated += GetTowers;
+   //    Eventbus.StateEvents.OnLinkStateBegin += DeselectAll;
+   //    
+   //    GeneralEventbus.OnTurnTowerSelection += ToSelection;
+   //    GeneralEventbus.OnTurnTowerDeselect += Deselect;
+   // }
 
    private void GetTowers()
    {
