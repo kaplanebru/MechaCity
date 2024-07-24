@@ -14,7 +14,5 @@ public static class GeneralEventbus
     
     public static Action<int> OnTurnTowerSelection;
     public static Action<int> OnTurnTowerDeselect;
-    //public static Action<int> OnShoot;
 
-    
 }

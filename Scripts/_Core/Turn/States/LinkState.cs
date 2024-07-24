@@ -36,17 +36,10 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             TransferData.Towers = data.Towers;
+            
             CommunEventbus.ChainTurnEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
-
             AllTowers.DisableClickability();
             Eventbus.CombatEvents.OnLink?.Invoke(TransferData.Towers);
-            
-            
-            // TransferData.Towers.ForEach(t =>
-            // {
-            //     AllTowers.GetData(t).clickHandler.EnableSelection();
-            //     AllTowers.GetTower(t).StartRiseFallRoutine();
-            // });
         }
 
         private void TowerSelected(params object[] args)
@@ -55,7 +48,7 @@ namespace Turn
 
             int towerID = (int) args[0];
             RiseAndFall(AllTowers.GetData(towerID), 1);
-            CommunEventbus.ChainTurnEvents.OnRising?.Invoke(1);
+            CommunEventbus.ChainTurnEvents.OnRising?.Invoke(1); //todo: buraya step sayısı kadar duration girmek lazım
         }
         
         void RiseAndFall(TowerData selectedTower, int step)
@@ -124,11 +117,6 @@ namespace Turn
         public override void Unsubscribe()
         {
             Eventbus.CombatEvents.OnUnlink?.Invoke(TransferData.Towers);
-            // TransferData.Towers.ForEach(t =>
-            // {
-            //     AllTowers.GetTower(t).StopRiseFallRoutine();
-            // });
-            
             CommunEventbus.ChainTurnEvents.OnLinkBroken?.Invoke();
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
             AllTowers.EnableClickability();

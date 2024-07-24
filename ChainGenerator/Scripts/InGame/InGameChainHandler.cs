@@ -18,18 +18,19 @@ namespace ChainInGame
 
         private void OnEnable()
         {
+            CommunEventbus.ChainTurnEvents.OnInitialize += Initialize;
             ChainEvents.InGameEvents.OnOptionSet += SelectMachinery;
             
             CommunEventbus.ChainTurnEvents.OnLinkedTowers += FillMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
             CommunEventbus.ChainTurnEvents.OnRising += MoveWithChain;
         }
-        
-        private void Start()
+
+        public void Initialize()
         {
             Setup();
         }
-        
+
         void Setup()
         {
             if(machineries.Length == 0)
@@ -105,6 +106,7 @@ namespace ChainInGame
 
         private void OnDisable()
         {
+            CommunEventbus.ChainTurnEvents.OnInitialize -= Initialize;
             ChainEvents.InGameEvents.OnOptionSet -= SelectMachinery;
             
             CommunEventbus.ChainTurnEvents.OnLinkedTowers -= FillMachinery;
