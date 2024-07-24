@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+
 public static class Eventbus
 {
     public static class CombatEvents
@@ -14,7 +16,10 @@ public static class Eventbus
 
         public static Action<int> OnTurnTowerSelection;
         public static Action OnTurnTowerDeselect;
-        
+
+        public static Action<List<int>> OnLink;
+        public static Action<List<int>> OnUnlink;
+
     }
 
     public static class StateEvents

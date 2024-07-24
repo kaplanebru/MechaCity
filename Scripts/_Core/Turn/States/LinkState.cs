@@ -39,11 +39,14 @@ namespace Turn
             CommunEventbus.ChainTurnEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
 
             AllTowers.DisableClickability();
-            TransferData.Towers.ForEach(t =>
-            {
-                AllTowers.GetData(t).clickHandler.EnableSelection();
-                AllTowers.GetTower(t).StartRiseFallRoutine();
-            });
+            Eventbus.CombatEvents.OnLink?.Invoke(TransferData.Towers);
+            
+            
+            // TransferData.Towers.ForEach(t =>
+            // {
+            //     AllTowers.GetData(t).clickHandler.EnableSelection();
+            //     AllTowers.GetTower(t).StartRiseFallRoutine();
+            // });
         }
 
         private void TowerSelected(params object[] args)
@@ -120,10 +123,12 @@ namespace Turn
         
         public override void Unsubscribe()
         {
-            TransferData.Towers.ForEach(t =>
-            {
-                AllTowers.GetTower(t).StopRiseFallRoutine();
-            });
+            Eventbus.CombatEvents.OnUnlink?.Invoke(TransferData.Towers);
+            // TransferData.Towers.ForEach(t =>
+            // {
+            //     AllTowers.GetTower(t).StopRiseFallRoutine();
+            // });
+            
             CommunEventbus.ChainTurnEvents.OnLinkBroken?.Invoke();
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
             AllTowers.EnableClickability();

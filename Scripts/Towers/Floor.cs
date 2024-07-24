@@ -16,7 +16,7 @@ public class Floor : MonoBehaviour
         startHeight = parts[0].localScale.y;
     }
 
-    void Decrease()
+    public void DecreaseHeight()
     {
         gear.gameObject.SetActive(true);
         
@@ -26,7 +26,7 @@ public class Floor : MonoBehaviour
         }
     }
 
-    void RestoreHeight()
+    public void RestoreHeight()
     {
         gear.gameObject.SetActive(false);
         
