@@ -9083,7 +9083,6 @@ MonoBehaviour:
       UIData:
         HeightTexts:
         - {fileID: 946658457554171825}
-    floor: {fileID: 9179300744825821708}
 --- !u!114 &1183604849590895228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82107,6 +82106,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 458587706314466722}
     m_Modifications:
+    - target: {fileID: 457789124579723271, guid: 5439d42ed97292c48a44a33875897c78, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1627365464274131505, guid: 5439d42ed97292c48a44a33875897c78, type: 3}
       propertyPath: m_Name
       value: AlienTower5
@@ -82186,6 +82189,10 @@ PrefabInstance:
     - target: {fileID: 6806591826613039179, guid: 5439d42ed97292c48a44a33875897c78, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7261745572173520148, guid: 5439d42ed97292c48a44a33875897c78, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5439d42ed97292c48a44a33875897c78, type: 3}
@@ -82555,7 +82562,6 @@ MonoBehaviour:
   parts:
   - {fileID: 9200425670448586980}
   - {fileID: 9132393093036413494}
-  decreasedHeight: 0.4
   gear: {fileID: 8478454695056217681}
 --- !u!4 &6409681217529868635 stripped
 Transform:
