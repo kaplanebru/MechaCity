@@ -7,11 +7,27 @@ namespace TowerExternal
 {
     public class GearGroup 
     {
-        [SerializeField]private GearIdentifier[] _group;
+        [SerializeField]private IGear[] _group;
+        [SerializeField] private List<GearIdentifier> _gearIdentifiers = new();
 
-        public GearGroup(GearIdentifier[] group)
+        public GearGroup(IGear[] group)
         {
             _group = group;
+            Setup();
+        }
+
+        void Setup()
+        {
+            GetGearIdentifiers();
+            CommunEventbus.SetupEvents.OnGearsReady?.Invoke(_group);
+        }
+
+        void GetGearIdentifiers()
+        {
+            foreach (var gear in _group)
+            {
+                _gearIdentifiers.Add(gear.GameObject.GetComponent<GearIdentifier>());
+            }
         }
 
         public void Subscribe()
@@ -22,7 +38,7 @@ namespace TowerExternal
 
         private void RotateAll()
         {
-            foreach (var gear in _group)
+            foreach (var gear in _gearIdentifiers)
             {
                 gear.Rotate(90);
             }
@@ -30,7 +46,7 @@ namespace TowerExternal
 
         private void Rotate(int id)
         {
-            _group.FirstOrDefault(g=>g.Id == id)?.Rotate(360);
+            _gearIdentifiers.FirstOrDefault(g=>g.Id == id)?.Rotate(360);
         }
 
         public void Unsubscribe()
@@ -38,11 +54,7 @@ namespace TowerExternal
             CommunEventbus.EffectEvents.OnDeathEffect -= Rotate;
             GeneralEventbus.InitializerEvents.OnExternalElementsReady -= RotateAll;
         }
-
-        void SendGears()
-        {
-            //CommunEventbus.SetupEvents.OnGearsReady?.Invoke(_group);
-        }
+        
     }
 }
 

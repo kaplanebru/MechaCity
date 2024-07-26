@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace TowerExternal
@@ -24,14 +25,23 @@ namespace TowerExternal
         {
             Data.Cables = GetComponentsInChildren<Cable>();
             Data.Floors = GetComponentsInChildren<Floor>();
-            Data.GearIdentifiers = GetComponentsInChildren<GearIdentifier>();
+            Data.Gears = GetComponentsInChildren<IGear>().ToList();
+          
+            for (int i = Data.Gears.Count - 1; i >= 0; i--)
+            {
+                var tag = Data.Gears[i].GameObject.tag;
+                if (tag == "Cosmetic")
+                {
+                    Data.Gears.Remove(Data.Gears[i]);
+                }
+            }
         }
 
         void CreateAndSetGroups()
         {
             CableGroups = new CableGroups(Data.Cables);
             FloorGroups = new FloorGroups(Data.Floors);
-            GearGroup = new GearGroup(Data.GearIdentifiers);
+            GearGroup = new GearGroup(Data.Gears.ToArray());
             
             CableGroups.SetColor(Data.CableSelectionColor, Data.CableDefaultColor);
             SubscribeToGroups();

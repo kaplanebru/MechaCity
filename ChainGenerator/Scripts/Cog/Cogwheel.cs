@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Chain
 {
     [ExecuteInEditMode]
-    public class Cogwheel : MonoBehaviour, CogComponent, IMachinePart
+    public class Cogwheel : MonoBehaviour, CogComponent, IMachinePart, IGear
     {
         public int id;
         public Transform parent;
@@ -21,10 +21,12 @@ namespace Chain
         [SerializeField] List<Tooth> teeth = new();
         [SerializeField] private TeethPool pool;
         public int CogId { get; set; }
+        public GameObject GameObject { get; set; }
 
         private void OnEnable()
         {
             parent = transform.parent;
+            GameObject = gameObject;
 #if UNITY_EDITOR
             if (!EditorApplication.isPlaying)
             {
@@ -183,5 +185,7 @@ namespace Chain
             if (drawGizmos)
                 DrawGizmos();
         }
+
+        
     }
 }

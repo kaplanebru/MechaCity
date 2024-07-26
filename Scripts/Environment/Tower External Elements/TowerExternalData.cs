@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TowerExternal
@@ -8,7 +9,7 @@ namespace TowerExternal
     {
         public Cable[] Cables;
         public Floor[] Floors;
-        public GearIdentifier[] GearIdentifiers;
+        public List<IGear> Gears = new();
         
         public Color CableSelectionColor;
         public Color CableDefaultColor;

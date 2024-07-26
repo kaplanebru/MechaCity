@@ -20,6 +20,12 @@ public static class CommunEventbus
 
     public static class SetupEvents
     {
-        //public static Action<GearIdentifier[]> OnGearsReady;
+        public static Action<IGear[]> OnGearsReady;
     }
+}
+
+
+public interface IGear
+{
+    public GameObject GameObject { get; set; }
 }

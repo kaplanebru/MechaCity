@@ -10,20 +10,31 @@ namespace ChainInGame
     public class InGameChainHandler : MonoBehaviour
     {
         public Machinery[] machineries;
-        public List<Cogwheel> gears;
-        
+        public List<Cogwheel> gears = new();
+
         private List<MachineryInGame> _machineriesInGame = new();
 
         private MachineryInGame _currentMachineryInGame;
 
         private void OnEnable()
         {
-            CommunEventbus.ChainTurnEvents.OnTowersAndTeamsReady += Initialize;
+            CommunEventbus.SetupEvents.OnGearsReady += GetGears;
+            // CommunEventbus.ChainTurnEvents.OnTowersAndTeamsReady += Initialize;
             ChainEvents.InGameEvents.OnOptionSet += SelectMachinery;
-            
+
             CommunEventbus.ChainTurnEvents.OnLinkedTowers += ShowMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
             CommunEventbus.ChainTurnEvents.OnRising += MoveWithChain;
+        }
+
+        private void GetGears(IGear[] iGear)
+        {
+            print(iGear.Length);
+            SetMachinery();
+            foreach (var gear in iGear)
+            {
+                gears.Add(gear as Cogwheel);
+            }
         }
 
         public void Initialize()
@@ -31,15 +42,27 @@ namespace ChainInGame
             Setup();
         }
 
-        void Setup()
+        void SetMachinery()
         {
-            if(machineries.Length == 0)
+            if (machineries.Length == 0)
                 machineries = FindObjectsOfType<Machinery>();
-            
+
             SetInGameMachineries();
             ChainEvents.InGameEvents.OnMachineriesSet?.Invoke(machineries);
 
-            
+
+            _currentMachineryInGame = _machineriesInGame.First();
+        }
+
+        void Setup()
+        {
+            if (machineries.Length == 0)
+                machineries = FindObjectsOfType<Machinery>();
+
+            SetInGameMachineries();
+            ChainEvents.InGameEvents.OnMachineriesSet?.Invoke(machineries);
+
+
             _currentMachineryInGame = _machineriesInGame.First();
 
             if (gears.Count == 0)
@@ -51,11 +74,12 @@ namespace ChainInGame
                     {
                         continue;
                     }
+
                     gears.Add(gear);
                 }
             }
         }
-        
+
         void SetInGameMachineries()
         {
             foreach (var machinery in machineries)
@@ -68,9 +92,9 @@ namespace ChainInGame
         private void MoveWithChain(float duration)
         {
             _currentMachineryInGame.StartMotion();
-            Invoke(nameof(StopMotion),duration);
+            Invoke(nameof(StopMotion), duration);
         }
-        
+
 
         private void ResetMachinery()
         {
@@ -88,7 +112,7 @@ namespace ChainInGame
                 }
             }
         }
-        
+
         void SelectMachinery(int i)
         {
             _currentMachineryInGame = _machineriesInGame[i];
@@ -106,16 +130,17 @@ namespace ChainInGame
 
         private void OnDisable()
         {
-            CommunEventbus.ChainTurnEvents.OnTowersAndTeamsReady -= Initialize;
+            CommunEventbus.SetupEvents.OnGearsReady -= GetGears;
+            //CommunEventbus.ChainTurnEvents.OnTowersAndTeamsReady -= Initialize;
             ChainEvents.InGameEvents.OnOptionSet -= SelectMachinery;
-            
+
             CommunEventbus.ChainTurnEvents.OnLinkedTowers -= ShowMachinery;
             CommunEventbus.ChainTurnEvents.OnLinkBroken -= ResetMachinery;
             CommunEventbus.ChainTurnEvents.OnRising -= MoveWithChain;
         }
 
         #region AvecInput
-        
+
         // void CreateInteractables()
         // {
         //     foreach (var gear in gears)
@@ -128,14 +153,14 @@ namespace ChainInGame
         //         interactable.gameObject.layer = LayerMask.NameToLayer("InteractableGear");
         //     }
         // }
-        
+
         Ray RayFromCamera() => Camera.main.ScreenPointToRay(Input.mousePosition);
-  
+
         // private void Update()
         // {
         //     ControlInputs();
         // }
-        
+
         // void ControlInputs()
         // {
         //     if (Input.GetMouseButtonDown(0))
@@ -159,7 +184,7 @@ namespace ChainInGame
         //         }
         //     }
         // }
+
         #endregion
     }
 }
-
