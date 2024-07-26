@@ -10,7 +10,8 @@ public static class MediatorEventbus
         public static Action OnTowersAndTeamsReady;
         public static Action<int[]> OnLinkedTowers;
         public static Action OnLinkBroken;
-        public static Action<float> OnRising;
+        public static Action OnRising;
+        public static Action OnStop;
     }
 
     public static class EffectEvents

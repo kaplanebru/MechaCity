@@ -27,7 +27,7 @@ namespace Towers
 
         private void OnEnable()
         {
-            Eventbus.LinkEvents.OnLink += SetLinkedTowers;
+            Eventbus.LinkEvents.OnLinkingTowers += SetLinkedTowers;
             Eventbus.LinkEvents.OnUnlink += ResetLinkedTowers;
         }
 
@@ -131,7 +131,7 @@ namespace Towers
         
         private void OnDisable()
         {
-            Eventbus.LinkEvents.OnLink -= SetLinkedTowers;
+            Eventbus.LinkEvents.OnLinkingTowers -= SetLinkedTowers;
             Eventbus.LinkEvents.OnUnlink -= ResetLinkedTowers;
         }
     }

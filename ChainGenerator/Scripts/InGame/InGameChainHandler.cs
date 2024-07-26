@@ -23,7 +23,9 @@ namespace ChainInGame
 
             MediatorEventbus.ChainTurnEvents.OnLinkedTowers += ShowMachinery;
             MediatorEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
+            
             MediatorEventbus.ChainTurnEvents.OnRising += MoveWithChain;
+            MediatorEventbus.ChainTurnEvents.OnStop += StopMotion;
         }
 
         private void GetGears(IGear[] iGear)
@@ -56,10 +58,9 @@ namespace ChainInGame
         }
 
 
-        private void MoveWithChain(float duration)
+        private void MoveWithChain()
         {
             _currentMachineryInGame.StartMotion();
-            Invoke(nameof(StopMotion), duration);
         }
 
 
@@ -102,7 +103,9 @@ namespace ChainInGame
 
             MediatorEventbus.ChainTurnEvents.OnLinkedTowers -= ShowMachinery;
             MediatorEventbus.ChainTurnEvents.OnLinkBroken -= ResetMachinery;
+            
             MediatorEventbus.ChainTurnEvents.OnRising -= MoveWithChain;
+            MediatorEventbus.ChainTurnEvents.OnStop -= StopMotion;
         }
 
         #region AvecInput

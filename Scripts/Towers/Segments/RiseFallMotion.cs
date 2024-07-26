@@ -54,6 +54,7 @@ public class RiseFallMotion
         float result = residue > 0 ? number - residue + unit : number;
         return result;
     }
+
     public IEnumerator RiseRoutine()
     {
         DisableAll();
@@ -72,60 +73,39 @@ public class RiseFallMotion
                             Data.RiseState = RiseState.None;
                             break;
                         }
-                           
 
                         startHeight += unit;
                         GetNextPart();
                     }
 
                     Move(Data.ActiveHolder.localPosition);
-
-                    //todo: bu loop'un içindeyken state değişimini kaçırıyor.target height değiştiği için looptan çıkılıyor ama riseState check edilemiyordu.
+                    //not: bu loop'un içindeyken state değişimini kaçırıyor.target height değiştiği için looptan çıkılıyor ama riseState check edilemiyordu.
                     yield return null;
                 }
 
-                if(Data.RiseState != RiseState.Falling)
+                if (Data.RiseState != RiseState.Falling)
+                {
                     Data.RiseState = RiseState.None;
+                    MediatorEventbus.ChainTurnEvents.OnStop?.Invoke();
+                }
             }
 
             else if (Data.RiseState == RiseState.Falling)
             {
-                
-                // int totalStep = Mathf.FloorToInt((Data.ActiveHolder.localPosition.y - Data.TargetHeight) / unit);
-                // int step = 1;
-                //
-                 //startHeight = Mathf.CeilToInt(Data.ActiveHolder.localPosition.y/unit);
                 startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
-                
-                //Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " startHeight: " + startHeight);
+
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
-                    
                     Move(Data.ActiveHolder.localPosition);
-
-                    // if (Data.ActiveHolder.localPosition.y <= Data.TargetHeight + (totalStep - step))
-                    // {
-                    //     Debug.Log("lose");
-                    //     if (Data.ActiveParts.Count == 0)
-                    //     {
-                    //         Data.RiseState = RiseState.None;
-                    //         break;
-                    //     }
-                    //
-                    //     step++;
-                    //     LoseLastPart();
-                    // }
-
-                    //Debug.Log("pos: " + Data.ActiveHolder.localPosition.y + " start-1: " + (startHeight - unit));
-                    if ((Data.ActiveHolder.localPosition.y - (startHeight - unit)) <= tolerance) //( Data.ActiveHolder.localPosition.y  <= startHeight - unit) 
+                    
+                    if ((Data.ActiveHolder.localPosition.y - (startHeight - unit)) <= tolerance)
                     {
-                        //Debug.Log("lose");
                         if (Data.ActiveParts.Count == 0)
                         {
                             Data.RiseState = RiseState.None;
                             break;
                         }
-                        
+
                         startHeight -= unit;
                         LoseLastPart();
                     }
@@ -133,13 +113,14 @@ public class RiseFallMotion
                     yield return null;
                 }
 
-                if(Data.RiseState != RiseState.Rising)
+                if (Data.RiseState != RiseState.Rising)
+                {
                     Data.RiseState = RiseState.None;
+                    MediatorEventbus.ChainTurnEvents.OnStop?.Invoke();
+                }
             }
 
-            else
-            {
-            }
+            else {}
 
             yield return null;
         }

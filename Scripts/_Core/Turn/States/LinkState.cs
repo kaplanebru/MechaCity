@@ -29,7 +29,7 @@ namespace Turn
 
         public override void SubscribeToConstantEvents()
         {
-            Eventbus.LinkEvents.OnFloorsOpened += StartLink;
+            Eventbus.LinkEvents.OnFloorsOpened += LinkTowers;
 
         }
         
@@ -45,10 +45,10 @@ namespace Turn
             Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.Towers);
         }
         
-        private void StartLink()
+        private void LinkTowers()
         {
             AllTowers.DisableClickability();
-            Eventbus.LinkEvents.OnLink?.Invoke(TransferData.Towers);
+            Eventbus.LinkEvents.OnLinkingTowers?.Invoke(TransferData.Towers);
             MediatorEventbus.ChainTurnEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
         }
 
@@ -59,7 +59,7 @@ namespace Turn
 
             int towerID = (int) args[0];
             RiseAndFall(AllTowers.GetData(towerID), 1);
-            MediatorEventbus.ChainTurnEvents.OnRising?.Invoke(1); //todo: buraya step sayısı kadar duration girmek lazım
+            MediatorEventbus.ChainTurnEvents.OnRising?.Invoke();
         }
         
         void RiseAndFall(TowerData selectedTower, int step)
@@ -135,7 +135,7 @@ namespace Turn
 
         public override void UnsubscribeFromConstantEvents()
         {
-            Eventbus.LinkEvents.OnFloorsOpened -= StartLink;
+            Eventbus.LinkEvents.OnFloorsOpened -= LinkTowers;
         }
     }
 }

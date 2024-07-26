@@ -25,7 +25,7 @@ public static class Eventbus
     {
         public static Action OnLinkStateBegin;
         public static Action<List<int>> OnLinkLoading;
-        public static Action<List<int>> OnLink;
+        public static Action<List<int>> OnLinkingTowers;
         public static Action<List<int>> OnUnlink;
         public static Action OnFloorsOpened;
     }
