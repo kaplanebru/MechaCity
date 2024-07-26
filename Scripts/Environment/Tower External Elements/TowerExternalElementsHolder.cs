@@ -25,23 +25,17 @@ namespace TowerExternal
         {
             Data.Cables = GetComponentsInChildren<Cable>();
             Data.Floors = GetComponentsInChildren<Floor>();
-            Data.Gears = GetComponentsInChildren<IGear>().ToList();
-          
-            for (int i = Data.Gears.Count - 1; i >= 0; i--)
-            {
-                var tagg = Data.Gears[i].GameObject.tag;
-                if (tagg == "Cosmetic")
-                {
-                    Data.Gears.Remove(Data.Gears[i]);
-                }
-            }
+            
+            Data.IGears = GetComponentsInChildren<IGear>()
+                .Where(g => g.GameObject.tag != "Cosmetic").
+                ToArray();
         }
 
         void CreateAndSetGroups()
         {
             CableGroups = new CableGroups(Data.Cables);
             FloorGroups = new FloorGroups(Data.Floors);
-            GearGroup = new GearGroup(Data.Gears.ToArray());
+            GearGroup = new GearGroup(Data.IGears.ToArray());
             
             CableGroups.SetColor(Data.CableSelectionColor, Data.CableDefaultColor);
             SubscribeToGroups();

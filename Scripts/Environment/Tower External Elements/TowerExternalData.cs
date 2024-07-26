@@ -9,7 +9,7 @@ namespace TowerExternal
     {
         public Cable[] Cables;
         public Floor[] Floors;
-        public List<IGear> Gears = new();
+        public IGear[] IGears;
         
         public Color CableSelectionColor;
         public Color CableDefaultColor;
