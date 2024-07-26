@@ -49,7 +49,7 @@ namespace Turn
         {
             AllTowers.DisableClickability();
             Eventbus.LinkEvents.OnLinkingTowers?.Invoke(TransferData.Towers);
-            MediatorEventbus.ChainTurnEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
+            MediatorEventbus.ChainLinkEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
         }
 
 
@@ -59,7 +59,7 @@ namespace Turn
 
             int towerID = (int) args[0];
             RiseAndFall(AllTowers.GetData(towerID), 1);
-            MediatorEventbus.ChainTurnEvents.OnRising?.Invoke();
+            MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
         
         void RiseAndFall(TowerData selectedTower, int step)
@@ -128,7 +128,7 @@ namespace Turn
         public override void Unsubscribe()
         {
             Eventbus.LinkEvents.OnUnlink?.Invoke(TransferData.Towers);
-            MediatorEventbus.ChainTurnEvents.OnLinkBroken?.Invoke();
+            MediatorEventbus.ChainLinkEvents.OnLinkBroken?.Invoke();
             NetworkEventbus.InputEvents.OnObjectClicked -= TowerSelected;
             AllTowers.EnableClickability();
         }

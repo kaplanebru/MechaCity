@@ -86,7 +86,7 @@ public class RiseFallMotion
                 if (Data.RiseState != RiseState.Falling)
                 {
                     Data.RiseState = RiseState.None;
-                    MediatorEventbus.ChainTurnEvents.OnStop?.Invoke();
+                    MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                 }
             }
 
@@ -116,7 +116,7 @@ public class RiseFallMotion
                 if (Data.RiseState != RiseState.Rising)
                 {
                     Data.RiseState = RiseState.None;
-                    MediatorEventbus.ChainTurnEvents.OnStop?.Invoke();
+                    MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                 }
             }
 

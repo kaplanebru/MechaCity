@@ -5,11 +5,14 @@ using UnityEngine;
 
 public static class MediatorEventbus 
 {
-    public static class ChainTurnEvents
+    public static class ChainLinkEvents
     {
-        public static Action OnTowersAndTeamsReady;
         public static Action<int[]> OnLinkedTowers;
         public static Action OnLinkBroken;
+    }
+    
+    public static class ChainMotionEvents
+    {
         public static Action OnRising;
         public static Action OnStop;
     }
