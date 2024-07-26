@@ -7,24 +7,24 @@ namespace TowerExternal
 {
     public class GearGroup 
     {
-        [SerializeField]private IGear[] _group;
+        [SerializeField]private IGear[] IGears;
         [SerializeField] private List<GearIdentifier> _gearIdentifiers = new();
 
-        public GearGroup(IGear[] group)
+        public GearGroup(IGear[] gears)
         {
-            _group = group;
+            IGears = gears;
             Setup();
         }
 
         void Setup()
         {
             GetGearIdentifiers();
-            MediatorEventbus.SetupEvents.OnGearsReady?.Invoke(_group);
+            MediatorEventbus.SetupEvents.OnGearsReady?.Invoke(IGears);
         }
 
         void GetGearIdentifiers()
         {
-            foreach (var gear in _group)
+            foreach (var gear in IGears)
             {
                 _gearIdentifiers.Add(gear.GameObject.GetComponent<GearIdentifier>());
             }

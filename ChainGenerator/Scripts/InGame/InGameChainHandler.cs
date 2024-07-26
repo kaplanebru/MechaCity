@@ -28,7 +28,6 @@ namespace ChainInGame
 
         private void GetGears(IGear[] iGear)
         {
-            print(iGear.Length);
             SetMachinery();
             foreach (var gear in iGear)
             {
