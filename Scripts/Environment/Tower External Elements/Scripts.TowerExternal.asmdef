@@ -2,7 +2,8 @@
     "name": "Scripts.TowerExternal",
     "rootNamespace": "",
     "references": [
-        "GUID:c64b13ec877346c48a1158d0e05eb30e"
+        "GUID:c64b13ec877346c48a1158d0e05eb30e",
+        "GUID:fc028956e2236734ab8e2531e3359589"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

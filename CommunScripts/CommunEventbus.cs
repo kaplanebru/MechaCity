@@ -17,4 +17,9 @@ public static class CommunEventbus
     {
         public static Action<int> OnDeathEffect;
     }
+
+    public static class SetupEvents
+    {
+        //public static Action<GearIdentifier[]> OnGearsReady;
+    }
 }

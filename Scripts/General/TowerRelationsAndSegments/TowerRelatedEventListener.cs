@@ -8,7 +8,7 @@ public abstract class TowerRelatedEventListener<TRelated> : MonoBehaviour where 
     protected abstract TRelated[] RelatedItems { get; set; }
     private void OnEnable()
     {
-        GeneralEventbus.OnTowersCreated += GetItems;
+        GeneralEventbus.InitializerEvents.OnTowersCreated += GetItems;
         Subscribe();
     }
     public abstract void Subscribe();
@@ -25,7 +25,7 @@ public abstract class TowerRelatedEventListener<TRelated> : MonoBehaviour where 
 
     private void OnDisable()
     {
-        GeneralEventbus.OnTowersCreated -= GetItems;
+        GeneralEventbus.InitializerEvents.OnTowersCreated -= GetItems;
         Unsubscribe();
 
     }

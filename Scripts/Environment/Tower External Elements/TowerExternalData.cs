@@ -8,8 +8,7 @@ namespace TowerExternal
     {
         public Cable[] Cables;
         public Floor[] Floors;
-        
-        //public GearIdentifier[] Gears;
+        public GearIdentifier[] GearIdentifiers;
         
         public Color CableSelectionColor;
         public Color CableDefaultColor;

@@ -27,7 +27,6 @@ namespace TowerExternal
     
         private void OpenFloors(List<int> ids)
         {
-            Debug.Log("open");
             foreach (var id in ids)
             {
                 var floor = _group.FirstOrDefault(f => f.Id == id);
@@ -36,8 +35,6 @@ namespace TowerExternal
             }
     
             GeneralEventbus.OnCoroutineTrigger?.Invoke(this); //todo: temp
-            //DelayHelper.Instance.Invoker(nameof(FloorsOpenedCall), duration);
-            //Invoke(nameof(FloorsOpenedCall), duration);
         }
     
         void FloorsOpenedCall()

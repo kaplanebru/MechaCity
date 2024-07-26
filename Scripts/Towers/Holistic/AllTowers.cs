@@ -59,7 +59,7 @@ namespace Towers
 
             LinkingTowers(_towerDatas);
 
-            GeneralEventbus.OnTowersCreated?.Invoke();
+            GeneralEventbus.InitializerEvents.OnTowersCreated?.Invoke();
         }
 
         void InstantiateLevelPrefab()

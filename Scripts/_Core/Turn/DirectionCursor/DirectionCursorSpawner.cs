@@ -14,7 +14,7 @@ public class DirectionCursorSpawner : MonoBehaviour
     public int heightOffset = 0;
     private void OnEnable()
     {
-        GeneralEventbus.OnTowersCreated += Initialize;
+        GeneralEventbus.InitializerEvents.OnTowersCreated += Initialize;
         Eventbus.CombatEvents.OnPairsSet += SetPositions;
     }
 
@@ -50,7 +50,7 @@ public class DirectionCursorSpawner : MonoBehaviour
 
     private void OnDisable()
     {
-        GeneralEventbus.OnTowersCreated -= Initialize;
+        GeneralEventbus.InitializerEvents.OnTowersCreated -= Initialize;
         Eventbus.CombatEvents.OnPairsSet -= SetPositions;
     }
 

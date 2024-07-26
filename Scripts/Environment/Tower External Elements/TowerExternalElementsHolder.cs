@@ -7,10 +7,11 @@ namespace TowerExternal
         public TowerExternalData Data;
         public CableGroups CableGroups;
         public FloorGroups FloorGroups;
+        public GearGroup GearGroup;
 
         private void OnEnable()
         {
-            GeneralEventbus.OnTowersAndTeamsReady += Initialize;
+            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += Initialize;
         }
 
         private void Initialize()
@@ -23,32 +24,42 @@ namespace TowerExternal
         {
             Data.Cables = GetComponentsInChildren<Cable>();
             Data.Floors = GetComponentsInChildren<Floor>();
+            Data.GearIdentifiers = GetComponentsInChildren<GearIdentifier>();
         }
 
         void CreateAndSetGroups()
         {
             CableGroups = new CableGroups(Data.Cables);
             FloorGroups = new FloorGroups(Data.Floors);
+            GearGroup = new GearGroup(Data.GearIdentifiers);
             
             CableGroups.SetColor(Data.CableSelectionColor, Data.CableDefaultColor);
             SubscribeToGroups();
+            ReadyCall();
+        }
+
+        void ReadyCall()
+        {
+            GeneralEventbus.InitializerEvents.OnExternalElementsReady?.Invoke();
         }
 
         void SubscribeToGroups()
         {
             CableGroups.Subscribe();
             FloorGroups.Subscribe();
+            GearGroup.Subscribe();
         }
 
         void UnsubscribeFromGroups()
         {
             CableGroups.Unsubscribe();
             FloorGroups.Unsubscribe();
+            GearGroup.Unsubscribe();
         }
 
         private void OnDisable()
         {
-            GeneralEventbus.OnTowersAndTeamsReady -= Initialize;
+            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= Initialize;
             UnsubscribeFromGroups();
         }
     }
