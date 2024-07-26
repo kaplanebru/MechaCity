@@ -25,10 +25,8 @@ namespace TowerExternal
         {
             Data.Cables = GetComponentsInChildren<Cable>();
             Data.Floors = GetComponentsInChildren<Floor>();
-            
-            Data.IGears = GetComponentsInChildren<IGear>()
-                .Where(g => g.GameObject.tag != "Cosmetic").
-                ToArray();
+            Data.IGears = GetComponentsInChildren<IGear>();
+            //.Where(g => g.GameObject.tag != "Cosmetic").ToArray();
         }
 
         void CreateAndSetGroups()
