@@ -8,9 +8,6 @@ namespace TowerExternal
     public class FloorGroups: IEnumeratorContainer
     {
         [SerializeField]private Floor[] _group;
-        public float duration = 0.5f;
-        public float openSize = 0.4f;
-    
         private List<Floor> selectedFloors = new();
 
         public FloorGroups(Floor[] group)
@@ -22,6 +19,8 @@ namespace TowerExternal
         {
             Eventbus.LinkEvents.OnLinkLoading += OpenFloors;
             Eventbus.LinkEvents.OnUnlink += ResetFloors;
+
+            GeneralEventbus.InitializerEvents.OnExternalElementsReady += OpenAll;
         }
         
     
@@ -31,10 +30,18 @@ namespace TowerExternal
             {
                 var floor = _group.FirstOrDefault(f => f.Id == id);
                 selectedFloors.Add(floor);
-                floor.Open(openSize, duration);
+                floor.Open();
             }
     
             GeneralEventbus.OnCoroutineTrigger?.Invoke(this); //todo: temp
+        }
+
+        void OpenAll()
+        {
+            foreach (var floor in _group)
+            {
+                floor.Open(true);
+            }
         }
     
         void FloorsOpenedCall()
@@ -46,7 +53,7 @@ namespace TowerExternal
         {
             foreach (var floor in selectedFloors)
             {
-                floor.RestoreHeight(duration);
+                floor.RestoreHeight();
             }
             selectedFloors.Clear();
         }
@@ -55,12 +62,14 @@ namespace TowerExternal
         {
             Eventbus.LinkEvents.OnLinkLoading -= OpenFloors;
             Eventbus.LinkEvents.OnUnlink -= ResetFloors;
+            
+            GeneralEventbus.InitializerEvents.OnExternalElementsReady -= OpenAll;
         }
 
 
         public IEnumerator LeCoroutine()
         {
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(0.5f);
             FloorsOpenedCall();
         }
     }

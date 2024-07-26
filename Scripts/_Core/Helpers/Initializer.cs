@@ -40,6 +40,7 @@ namespace Core
             NetworkUIController.gameObject.SetActive(true);
 
             TeamEvents.OnTeamsSet?.Invoke(Teams);
+            CommunEventbus.ChainTurnEvents.OnTowersAndTeamsReady?.Invoke();
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady?.Invoke();
         }
 
@@ -83,7 +84,6 @@ namespace Core
                 if(t.LockStatus.Locked)
                     Eventbus.TowerEvents.OnLock?.Invoke(t.LockStatus.Limit, t.UniqID);
             }
-            CommunEventbus.ChainTurnEvents.OnInitialize?.Invoke();
 
 
             print("Game Started");

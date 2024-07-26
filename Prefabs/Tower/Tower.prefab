@@ -76967,7 +76967,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696f320be591d514692941fa3dffd687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
 --- !u!1 &8485585411377249533
 GameObject:
   m_ObjectHideFlags: 0
@@ -83963,6 +83962,7 @@ MonoBehaviour:
   - {fileID: 9200425670448586980}
   - {fileID: 9132393093036413494}
   gear: {fileID: 8478454695056217681}
+  Data: {fileID: 11400000, guid: 689413a7e0ac91343b98344717ba1b7a, type: 2}
 --- !u!4 &6409681217529868635 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4427385179146351779, guid: b198109290d594146b0504b36b673a9a, type: 3}

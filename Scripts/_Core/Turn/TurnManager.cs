@@ -46,8 +46,8 @@ namespace Turn
         private void OnEnable()
         {
             TeamEvents.OnTeamsSet += SetTurnTeams;
-
             NetworkEventbus.OnAllClientsSet += FirstTurn;
+            
             NetworkEventbus.RequestEvents.OnStateChangeRequestByServer += ChangeStateBySystem;
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
             

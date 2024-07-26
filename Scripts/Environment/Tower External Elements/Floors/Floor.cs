@@ -7,6 +7,7 @@ namespace TowerExternal
     {
         public Transform[] parts;
         public Transform gear;
+        public FloorData Data;
 
         private float startHeight;
         private void OnEnable()
@@ -14,23 +15,29 @@ namespace TowerExternal
             startHeight = parts[0].localScale.y;
         }
 
-        public void Open(float height, float duration)
+        public void Open( bool closeAtTheEnd = false)
         {
             gear.gameObject.SetActive(true);
         
             foreach (var part in parts)
             {
-                part.DOScaleY(height, duration);
+                part.DOScaleY(Data.OpenSize, Data.Duration).OnComplete(() =>
+                    {
+                        if (closeAtTheEnd)
+                        {
+                            DOVirtual.DelayedCall(Data.CloseDelay, () => RestoreHeight()); //todo: belki game started yazısı gelir
+                        }
+                    });
             }
         }
 
-        public void RestoreHeight(float duration)
+        public void RestoreHeight()
         {
             gear.gameObject.SetActive(false);
         
             foreach (var part in parts)
             {
-                part.DOScaleY(startHeight, duration);
+                part.DOScaleY(startHeight, Data.Duration);
             }
         }
 

@@ -18,7 +18,7 @@ namespace ChainInGame
 
         private void OnEnable()
         {
-            CommunEventbus.ChainTurnEvents.OnInitialize += Initialize;
+            CommunEventbus.ChainTurnEvents.OnTowersAndTeamsReady += Initialize;
             ChainEvents.InGameEvents.OnOptionSet += SelectMachinery;
             
             CommunEventbus.ChainTurnEvents.OnLinkedTowers += ShowMachinery;
@@ -106,7 +106,7 @@ namespace ChainInGame
 
         private void OnDisable()
         {
-            CommunEventbus.ChainTurnEvents.OnInitialize -= Initialize;
+            CommunEventbus.ChainTurnEvents.OnTowersAndTeamsReady -= Initialize;
             ChainEvents.InGameEvents.OnOptionSet -= SelectMachinery;
             
             CommunEventbus.ChainTurnEvents.OnLinkedTowers -= ShowMachinery;
