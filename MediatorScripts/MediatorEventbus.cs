@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class CommunEventbus 
+public static class MediatorEventbus 
 {
     public static class ChainTurnEvents
     {

@@ -40,7 +40,7 @@ namespace Core
             NetworkUIController.gameObject.SetActive(true);
 
             TeamEvents.OnTeamsSet?.Invoke(Teams);
-            CommunEventbus.ChainTurnEvents.OnTowersAndTeamsReady?.Invoke();
+            MediatorEventbus.ChainTurnEvents.OnTowersAndTeamsReady?.Invoke();
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady?.Invoke();
         }
 

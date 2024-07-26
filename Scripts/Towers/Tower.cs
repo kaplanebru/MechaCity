@@ -62,7 +62,7 @@ namespace Towers
 
             yield return new WaitForSeconds(.3f);
 
-            CommunEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
+            MediatorEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
             Data.Mover.RotateMiddle();
             teamSwitchCallback.Invoke();
 

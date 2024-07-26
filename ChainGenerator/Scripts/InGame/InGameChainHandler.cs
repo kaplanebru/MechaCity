@@ -18,13 +18,12 @@ namespace ChainInGame
 
         private void OnEnable()
         {
-            CommunEventbus.SetupEvents.OnGearsReady += GetGears;
-            // CommunEventbus.ChainTurnEvents.OnTowersAndTeamsReady += Initialize;
+            MediatorEventbus.SetupEvents.OnGearsReady += GetGears;
             ChainEvents.InGameEvents.OnOptionSet += SelectMachinery;
 
-            CommunEventbus.ChainTurnEvents.OnLinkedTowers += ShowMachinery;
-            CommunEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
-            CommunEventbus.ChainTurnEvents.OnRising += MoveWithChain;
+            MediatorEventbus.ChainTurnEvents.OnLinkedTowers += ShowMachinery;
+            MediatorEventbus.ChainTurnEvents.OnLinkBroken += ResetMachinery;
+            MediatorEventbus.ChainTurnEvents.OnRising += MoveWithChain;
         }
 
         private void GetGears(IGear[] iGear)
@@ -37,11 +36,6 @@ namespace ChainInGame
             }
         }
 
-        public void Initialize()
-        {
-            Setup();
-        }
-
         void SetMachinery()
         {
             if (machineries.Length == 0)
@@ -52,32 +46,6 @@ namespace ChainInGame
 
 
             _currentMachineryInGame = _machineriesInGame.First();
-        }
-
-        void Setup()
-        {
-            if (machineries.Length == 0)
-                machineries = FindObjectsOfType<Machinery>();
-
-            SetInGameMachineries();
-            ChainEvents.InGameEvents.OnMachineriesSet?.Invoke(machineries);
-
-
-            _currentMachineryInGame = _machineriesInGame.First();
-
-            if (gears.Count == 0)
-            {
-                var spawnedGears = FindObjectsOfType<Cogwheel>(); //TODO: TEMP
-                foreach (var gear in spawnedGears)
-                {
-                    if (gear.transform.CompareTag("Cosmetic"))
-                    {
-                        continue;
-                    }
-
-                    gears.Add(gear);
-                }
-            }
         }
 
         void SetInGameMachineries()
@@ -130,13 +98,12 @@ namespace ChainInGame
 
         private void OnDisable()
         {
-            CommunEventbus.SetupEvents.OnGearsReady -= GetGears;
-            //CommunEventbus.ChainTurnEvents.OnTowersAndTeamsReady -= Initialize;
+            MediatorEventbus.SetupEvents.OnGearsReady -= GetGears;
             ChainEvents.InGameEvents.OnOptionSet -= SelectMachinery;
 
-            CommunEventbus.ChainTurnEvents.OnLinkedTowers -= ShowMachinery;
-            CommunEventbus.ChainTurnEvents.OnLinkBroken -= ResetMachinery;
-            CommunEventbus.ChainTurnEvents.OnRising -= MoveWithChain;
+            MediatorEventbus.ChainTurnEvents.OnLinkedTowers -= ShowMachinery;
+            MediatorEventbus.ChainTurnEvents.OnLinkBroken -= ResetMachinery;
+            MediatorEventbus.ChainTurnEvents.OnRising -= MoveWithChain;
         }
 
         #region AvecInput

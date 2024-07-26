@@ -19,7 +19,7 @@ namespace TowerExternal
         void Setup()
         {
             GetGearIdentifiers();
-            CommunEventbus.SetupEvents.OnGearsReady?.Invoke(_group);
+            MediatorEventbus.SetupEvents.OnGearsReady?.Invoke(_group);
         }
 
         void GetGearIdentifiers()
@@ -32,7 +32,7 @@ namespace TowerExternal
 
         public void Subscribe()
         {
-            CommunEventbus.EffectEvents.OnDeathEffect += Rotate;
+            MediatorEventbus.EffectEvents.OnDeathEffect += Rotate;
             GeneralEventbus.InitializerEvents.OnExternalElementsReady += RotateAll;
         }
 
@@ -51,7 +51,7 @@ namespace TowerExternal
 
         public void Unsubscribe()
         {
-            CommunEventbus.EffectEvents.OnDeathEffect -= Rotate;
+            MediatorEventbus.EffectEvents.OnDeathEffect -= Rotate;
             GeneralEventbus.InitializerEvents.OnExternalElementsReady -= RotateAll;
         }
         
