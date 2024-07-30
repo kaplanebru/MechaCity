@@ -85034,7 +85034,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 4e69fbdd44f6dc741b1c13462925eb6f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: e480c4b879225dd4bad924674a335d20, type: 2}
+      objectReference: {fileID: 2100000, guid: ab7698d847d5eda4fbe8edc3e8df877f, type: 2}
     - target: {fileID: 919132149155446097, guid: 4e69fbdd44f6dc741b1c13462925eb6f, type: 3}
       propertyPath: m_Name
       value: newGlasses5
