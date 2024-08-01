@@ -12,26 +12,30 @@ using UnityEngine;
 
 public class Selector<T> where T : ISelectionColorSetter, new()
 {
-    public List<int> Towers = new();
-    public int SelectionTowerAmount = 2;
+    public List<int> SelectedTowers = new();
+    public int MaxTowerAmount = 2;
     public int MinTowersInGroup = 2;
     private T selectionColorSetter = new T();
     public void Subscribe()
     {
-        //Towers.Clear(); //TODO: DONT!
+        //SelectedTowers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
     }
     
 
-    public void StartTowers(List<int> towers)
+    public void ContinueTowers(List<int> towers) //önceki state'ten kalan varsa takip edebilelim diye
     {
-        //SelectionTowerAmount = MinTowersInGroup; //temp
-        Towers = towers;
+        SelectedTowers = towers;
+    }
+
+    public void StartWithNewTowers()
+    {
+        SelectedTowers.Clear();
     }
     
     public void SetMaxTowers(int amount)
     {
-        SelectionTowerAmount = amount;
+        MaxTowerAmount = amount;
     }
 
     private void GetTower(params object[] args)
@@ -40,7 +44,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
 
         if (SelectedTwice(towerId)) return;
 
-        if (Towers.Count == SelectionTowerAmount)
+        if (SelectedTowers.Count == MaxTowerAmount)
             ResetSelectionGroup();
 
         HandleSelection(true, towerId);
@@ -53,18 +57,18 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         else
             Deselect(newSelection);
 
-        ShowCompleteButton(Towers.Count == SelectionTowerAmount);
+        ShowCompleteButton(SelectedTowers.Count == MaxTowerAmount);
     }
     
     private void Select(int newSelection)
     {
-        Towers.Add(newSelection);
+        SelectedTowers.Add(newSelection);
         selectionColorSetter.SetColor(newSelection);
     }
 
     void Deselect(int newSelection)
     {
-        Towers.Remove(newSelection);
+        SelectedTowers.Remove(newSelection);
         AllTowers.GetData(newSelection).ColorHandler.ToOriginalColor();
     }
 
@@ -75,15 +79,15 @@ public class Selector<T> where T : ISelectionColorSetter, new()
 
     void ResetSelectionGroup()
     {
-        for (int i = 0; i < SelectionTowerAmount; i++)
+        for (int i = 0; i < MaxTowerAmount; i++)
         {
-            HandleSelection(false, Towers[0]);
+            HandleSelection(false, SelectedTowers[0]);
         }
     }
 
     bool SelectedTwice(int selectedTower)
     {
-        if (Towers.Contains(selectedTower))
+        if (SelectedTowers.Contains(selectedTower))
         {
             HandleSelection(false, selectedTower);
             return true;
@@ -94,7 +98,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
 
     public void ResetSelector()
     {
-        SelectionTowerAmount = MinTowersInGroup;
+        MaxTowerAmount = MinTowersInGroup;
     }
 
     public void Unsubscribe()

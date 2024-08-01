@@ -65,7 +65,7 @@ namespace Turn
             bpSelector.Subscribe();
             SetBlocking();
             bpSelector.SetMaxTowers(maxSelectionAmount);
-            bpSelector.StartTowers(new List<int>());
+            bpSelector.StartWithNewTowers();//ContinueTowers(new List<int>());
             //TODO: bp towers için resetlenen bir list tutulabilir
         }
         
@@ -78,7 +78,7 @@ namespace Turn
         
         public override void ExecuteSelection()
         {
-            BpEventbus.OnBpExecution?.Invoke(bpSelector?.Towers.ToArray()); //burda tekrar networke gitmeye gerek yok!!
+            BpEventbus.OnBpExecution?.Invoke(bpSelector?.SelectedTowers.ToArray()); //burda tekrar networke gitmeye gerek yok!!
         }
         
 
