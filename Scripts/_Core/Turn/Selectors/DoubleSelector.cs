@@ -46,9 +46,9 @@ public class DoubleSelector : Selector<BpSelectionColor>
     protected override void GetTower(params object[] args)
     {
         int towerId = (int) args[0];
-        //if (!CheckType(towerId)) return;
+      
         
-        if (SelectedTwice(towerId)) return; //buna da bakmak lazım
+        if (SelectedTwice(towerId)) return; //TODO: buna da bakmak lazım + 1 geriye gidince önceki selection grupa düşülebilir
 
         if (_currentSelectionGroup.SelectedTowers.Count == _currentSelectionGroup.MaxTowers)
         {
@@ -82,26 +82,30 @@ public class DoubleSelector : Selector<BpSelectionColor>
         _currentSelectionGroup.SelectedTowers.Remove(newSelection);
         AllTowers.GetData(newSelection).ColorHandler.ToOriginalColor();
     }
+
+    private PlayerBlocker playerBlocker = new PlayerBlocker();
+    private RivalBlocker rivalBlocker = new RivalBlocker();
     void Block()
     {
-        TeamData teamToBlock = _teams[_currentSelectionGroup.BlockType].Data;
         AllTowers.EnableClickability();
-        foreach (var tower in teamToBlock.Towers)
-        {
-            tower.clickHandler.DisableSelection();
-        }
+        
+        if (_currentSelectionGroup.BlockType == TeamState.CurrentTeam)
+            playerBlocker.BlockSelection(_teams);
+        else
+            rivalBlocker.BlockSelection(_teams);
+        
+        
+        // TeamData teamToBlock = _teams[_currentSelectionGroup.BlockType].Data;
+        // foreach (var tower in teamToBlock.Towers)
+        // {
+        //     tower.clickHandler.DisableSelection();
+        // }
     }
     
     void ResetSelectionGroups()
     {
         
     }
-
-
-    // bool CheckType(int id)
-    // {
-    //     return AllTowers.GetData(id).TeamType == _currentSelectionGroup.Type;
-    // }
 }
 
 public class SelectionGroup

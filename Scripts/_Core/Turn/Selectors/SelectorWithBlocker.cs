@@ -24,9 +24,4 @@ namespace _Core.Turn.Selectors
         }
     }
     
-
-    public class SelectorBoth : Selector<StandardSelectionColor>
-    {
-        //bunun kuralları daha farklı olacak zaten
-    }
 }
