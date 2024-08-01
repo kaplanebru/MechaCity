@@ -20,11 +20,11 @@ namespace Towers
         private void OnEnable()
         {
             initializer = new TowerInitializer(this);
+            Eventbus.TowerEvents.OnTurnBegin += FirstMotion;
         }
-
+        
         public void Setup(TeamTowerData teamData)
         {
-            //StartCoroutine(LoadDelay(teamData));
             initializer.Setup(teamData);
         }
 
@@ -71,6 +71,13 @@ namespace Towers
             completeCombat.Invoke();
         }
 
+        void FirstMotion()
+        {
+           Data.Mover.ChangeHeight(Data.Height, true);
+           StartRiseFallRoutine();
+           Invoke(nameof(StopRiseFallRoutine), 1); //TODO: add start time
+        }
+
         public void StartRiseFallRoutine()
         {
             StartCoroutine(Data.Mover.riseFallMotion.RiseRoutine());
@@ -90,6 +97,11 @@ namespace Towers
         {
             Data.Health = ConstantData.StartHealth;
             UIEventbus.OnHealthChange.Invoke(Data.Health, Data.UniqID);
+        }
+
+        private void OnDisable()
+        {
+            Eventbus.TowerEvents.OnTurnBegin -= FirstMotion;
         }
     }
 }

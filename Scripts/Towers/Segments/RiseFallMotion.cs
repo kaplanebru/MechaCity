@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using GameUI;
 using UnityEngine;
 
 [Serializable]
 public class RiseFallData
 {
+    public int Id;
     public Transform ActiveHolder;
     public Transform PassiveHolder;
 
@@ -55,6 +57,13 @@ public class RiseFallMotion
         return result;
     }
 
+    public void SetZeroHeight(int y)
+    {
+        var pos = Data.ActiveHolder.localPosition;
+        pos.y = y;
+        Data.ActiveHolder.localPosition = pos;
+    }
+
     public IEnumerator RiseRoutine()
     {
         DisableAll();
@@ -88,6 +97,8 @@ public class RiseFallMotion
                     Data.RiseState = RiseState.None;
                     MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                 }
+                
+                UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
             }
 
             else if (Data.RiseState == RiseState.Falling)
@@ -118,6 +129,8 @@ public class RiseFallMotion
                     Data.RiseState = RiseState.None;
                     MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                 }
+                
+                UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
             }
 
             else {}

@@ -18,18 +18,12 @@ namespace DataModels
         public TowerData MainTowerData { get; }
         public TowerData OtherTowerData { get; }
 
-        // private Tower _mainTower;
-        // private Tower _nextTower;
-
         public bool CombatCompleted { get; set; } = false;
 
         public CombatPair(TowerData mainTowerData, TowerData otherTowerData)
         {
             MainTowerData = mainTowerData;
             OtherTowerData = otherTowerData;
-
-            // _mainTower = AllTowers.GetTower(MainTowerData.UniqID);
-            // _nextTower = AllTowers.GetTower(OtherTowerData.UniqID);
         }
 
         public bool Contains(int newTower)

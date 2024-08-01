@@ -30,6 +30,7 @@ namespace Turn
         private BlueprintEventHandler bpEventHandler;
         
         private CombatHelper _combatHelper = new();
+        private CombatPairController pairController = new();
         private TurnHelper turnHelper = new();
 
         private bool firstTurn = true;
@@ -68,6 +69,15 @@ namespace Turn
         {
             _stateHolder.RegisterStates();
             _stateHolder.SubscribeToConstantEvents();
+            
+            pairController.Subscribe();
+            pairController.SetCombatPairs();
+            
+            ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).GetCombatHelper(_combatHelper);
+            _combatHelper.GetElements(combatTimingData, pairController);
+            
+            Eventbus.TowerEvents.OnTurnBegin?.Invoke();
+            
         }
 
         void SetTurnTeams(Team[] teams)
@@ -82,13 +92,6 @@ namespace Turn
         void FirstTurn(params object[] args)
         {
             Initialize();
-            
-            ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).GetCombatHelper(_combatHelper);
-            
-            _combatHelper.Subscribe(null);
-            _combatHelper.GetTimingData(combatTimingData);
-            _combatHelper.SetCombatPairs();
-
             NewTurn();
             firstTurn = false;
         }
@@ -180,6 +183,8 @@ namespace Turn
             UIEventbus.OnButtonCall -= ShowButtonRequest;
             UIEventbus.OnButtonClicked -= StateChangeRequestByUser;
             BpEventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeRequestByUser;
+            
+            pairController.Unsubscribe();
         }
 
        

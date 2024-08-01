@@ -36,7 +36,7 @@ namespace Towers
             _tower.SetTeam(teamData);
             
             UIEventbus.OnHealthChange.Invoke(Data.Health, Data.UniqID);
-            Data.Mover.SetHeight(1);
+            Data.Mover.riseFallMotion.SetZeroHeight(0);
         }
         void SetSegments()
         {
@@ -55,6 +55,7 @@ namespace Towers
                 related.Initialize(Data.UniqID);
             }
         }
+        
     }
 
 }

@@ -8,6 +8,7 @@ namespace GameUI
     public class TowerUIData : TowerSegmentData
     {
         public TextMeshPro[] HeightTexts;
+        public CommonData CommonData;
     }
     public class TowerUIHandler : ITowerSegment
     {
@@ -26,9 +27,9 @@ namespace GameUI
 
         public void Initialize() {}
         
-        public void ChangeHeightUI(float height) 
+        public void ChangeHeightUI(float height)
         {
-            int heightInt = Mathf.FloorToInt(height); //todo: temporary
+            int heightInt = Mathf.FloorToInt(height / Data.CommonData.TowerHeightPerStep); //todo: later
             foreach (var heightText in Data.HeightTexts)
             {
                 if(heightText != null)

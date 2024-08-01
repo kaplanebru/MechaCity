@@ -66,22 +66,23 @@ namespace Towers
 
             Data.Top.transform.DOLocalMoveY(newHeight + Data.TopOffset, 1);
         }
+        
 
-        public void SetHeight(float newHeight)
-        {
-            newHeight *= Data.CommonData.TowerHeightPerStep;
-
-            var scale = Data.Middle.transform.localScale;
-            var pos = Data.Top.transform.localPosition;
-
-            scale.y = newHeight;
-            pos.y = newHeight;
-
-            Data.Middle.transform.localScale = scale;
-            Data.Top.transform.localPosition = pos;
-
-            UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.CommonData.TowerHeightPerStep, Id);
-        }
+        // public void SetHeight(float newHeight)
+        // {
+        //     newHeight *= Data.CommonData.TowerHeightPerStep;
+        //
+        //     var scale = Data.Middle.transform.localScale;
+        //     var pos = Data.Top.transform.localPosition;
+        //
+        //     scale.y = newHeight;
+        //     pos.y = newHeight;
+        //
+        //     Data.Middle.transform.localScale = scale;
+        //     Data.Top.transform.localPosition = pos;
+        //
+        //     UIEventbus.OnTowerHeightChange?.Invoke(newHeight, Id);
+        // }
 
         public void Shake()
         {

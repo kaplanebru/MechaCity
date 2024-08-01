@@ -702,6 +702,10 @@ PrefabInstance:
       propertyPath: Data.TeamTowerData
       value: 
       objectReference: {fileID: 11400000, guid: bbc84b53b875dfb4c9ba3a5ea1d7bc66, type: 2}
+    - target: {fileID: 2432366265923635597, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: Data.SegmentData.MoverData.RiseFallData.Id
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3893642542629452098, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: id
       value: 2
@@ -1447,6 +1451,10 @@ PrefabInstance:
       propertyPath: Data.TeamTowerData
       value: 
       objectReference: {fileID: 11400000, guid: bbc84b53b875dfb4c9ba3a5ea1d7bc66, type: 2}
+    - target: {fileID: 2432366265923635597, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: Data.SegmentData.MoverData.RiseFallData.Id
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3893642542629452098, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: id
       value: 4
@@ -1873,6 +1881,10 @@ PrefabInstance:
       propertyPath: Data.TeamTowerData
       value: 
       objectReference: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
+    - target: {fileID: 2432366265923635597, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: Data.SegmentData.MoverData.RiseFallData.Id
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3893642542629452098, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: id
       value: 5
@@ -2044,6 +2056,10 @@ PrefabInstance:
       propertyPath: Data.TeamTowerData
       value: 
       objectReference: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
+    - target: {fileID: 2432366265923635597, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: Data.SegmentData.MoverData.RiseFallData.Id
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3893642542629452098, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: id
       value: 3
@@ -2211,6 +2227,10 @@ PrefabInstance:
       propertyPath: Data.TeamTowerData
       value: 
       objectReference: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
+    - target: {fileID: 2432366265923635597, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
+      propertyPath: Data.SegmentData.MoverData.RiseFallData.Id
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3893642542629452098, guid: 11c03781b9e38254b9854cc94c07f951, type: 3}
       propertyPath: id
       value: 1

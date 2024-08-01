@@ -14,7 +14,6 @@ namespace Turn
 {
     public class CombatData
     {
-        public List<CombatPair> CombatPairs = new();
 
         [ReadOnly] public float afterCombatDelay = .3f;
         public float selectionDelay = 0.3f;
@@ -24,23 +23,24 @@ namespace Turn
     public class CombatHelper : IEnumeratorContainer
     {
         private readonly CombatData Data = new();
-        private CombatPairsCreator combatPairsCreator;
+        private CombatPairController _pairController;
         private List<int> _towers;
 
         private CombatTimingData _timingData;
-        private bool pairsReversed = false;
         
 
-        public void GetTimingData(CombatTimingData combatTimingData)
+        public void GetElements(CombatTimingData combatTimingData, CombatPairController pairController)
         {
             _timingData = combatTimingData;
+            _pairController = pairController;
         }
 
         public void Subscribe(List<int> towers)
         {
-            combatPairsCreator = new CombatPairsCreator(Data.CombatPairs);
-            
-            BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
+            // combatPairsCreator = new CombatPairsCreator(Data.CombatPairs);
+            //
+            // BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
+           
             
             _towers = towers;
             _towers?.ForEach(at => AllTowers.GetData(at).ColorHandler.ToOriginalColor());
@@ -51,19 +51,7 @@ namespace Turn
             GeneralEventbus.OnCoroutineTrigger?.Invoke(this);
         }
 
-        public void SetCombatPairs()
-        {
-            combatPairsCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList(), pairsReversed);
-            Eventbus.CombatEvents.OnPairsSet?.Invoke();
-        }
-
-        void ReversePairs() //todo: bug, buraya uğramıyor
-        {
-            pairsReversed = !pairsReversed;
-            SetCombatPairs();
-        }
-
-
+        
         void SetSelectionColor(CombatPair pair, bool select = true)
         {
             if (select)
@@ -95,8 +83,8 @@ namespace Turn
             {
                 Eventbus.CombatEvents.OnNextTower?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
-                
-                var pair = Data.CombatPairs[i];
+
+                var pair = _pairController.GetPairByIndex(i);//Data.CombatPairs[i];
                 SetSelectionColor(pair);
 
                 yield return new WaitForSeconds(Data.selectionDelay);
@@ -122,7 +110,7 @@ namespace Turn
 
         void EndCombat()
         {
-            Data.CombatPairs.ForEach(p=> p.CombatCompleted = false);
+            _pairController.CombatPairs.ForEach(p=> p.CombatCompleted = false);
             
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
             Unsubscribe();
@@ -136,7 +124,6 @@ namespace Turn
         public void Unsubscribe()
         {
             DeselectAlteredTowers();
-            BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
             BpEventbus.ActionEvents.OnRestoreSelectionAmount?.Invoke();
         }
     }
