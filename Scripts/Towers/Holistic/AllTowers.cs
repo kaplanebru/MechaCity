@@ -60,6 +60,7 @@ namespace Towers
             ReceiveTowerData();
 
             LinkingTowers(_towerDatas);
+            SettingNeighbours();
 
             GeneralEventbus.InitializerEvents.OnTowersCreated?.Invoke();
         }
@@ -93,6 +94,24 @@ namespace Towers
                 towers[i].LinkedTowerIDs.Add(next);
                 
                // print("index: " + (i + 1) % TowersCount + " id: " + next);
+            }
+        }
+
+        public void SettingNeighbours()
+        {
+            for (var i = 0; i < TowersCount; i++)
+            {
+                _towerDatas[i].NeighbourIDs.Clear();
+                
+                int previousID = i - 1;
+                if (previousID < 0)
+                    previousID = TowersCount - 1;
+                int previous =  _towerDatas[previousID].UniqID;
+                
+                int next = _towerDatas[(i + 1) % TowersCount].UniqID;
+                
+                _towerDatas[i].NeighbourIDs.Add(previous);
+                _towerDatas[i].NeighbourIDs.Add(next);
             }
         }
 

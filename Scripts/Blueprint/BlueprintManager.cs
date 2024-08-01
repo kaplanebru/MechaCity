@@ -29,7 +29,6 @@ namespace Blueprint
             
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer;
             
-            NetworkEventbus.RequestEvents.OnBpExecutionBySystem += ExecuteBp;
             BpEventbus.OnBpExecution += ExecuteBp;
             
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
@@ -112,7 +111,7 @@ namespace Blueprint
 
         public void GetActiveBlueprints()
         {
-            for (int i = 0; i < 3; i++) //TODO: Temp
+            for (int i = 0; i <bpHolder.AllBlueprints.Count; i++) //TODO: Temp
             {
                 activeBlueprints.Add(bpHolder.AllBlueprints.Keys.ElementAt(i));
             }
@@ -126,7 +125,6 @@ namespace Blueprint
             BpEventbus.UIEvents.OnInteraction -= StartBpSelection;
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
             NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
-            NetworkEventbus.RequestEvents.OnBpExecutionBySystem -= ExecuteBp;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
             bpTrackerList.Unsubscribe();

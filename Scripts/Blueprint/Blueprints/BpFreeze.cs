@@ -1,4 +1,5 @@
 using Enums;
+using UnityEngine;
 
 namespace Blueprint
 {
@@ -12,6 +13,7 @@ namespace Blueprint
 
         public override void TryTakeAction(int[] selectedItems)
         {
+            Debug.Log("EXECUTE");
             BpAction.Execute(selectedItems);
             
         }

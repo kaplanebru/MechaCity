@@ -39,6 +39,7 @@ namespace Towers
         public int SlotId;
         public TeamType TeamType;
         public List<int> LinkedTowerIDs = new();
+        public List<int> NeighbourIDs = new ();
         public bool CanShoot { get; private set; }
         
         [SerializeField] private int _bulletAmountt = 1;

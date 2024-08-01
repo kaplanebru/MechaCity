@@ -56,7 +56,6 @@ namespace Turn
         {
             bpSelector = selectors[selectionType];
             
-            //return; //test
             if (selectionType == SelectionType.None)
             {
                 BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();

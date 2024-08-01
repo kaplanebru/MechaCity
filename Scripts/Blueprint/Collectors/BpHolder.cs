@@ -21,16 +21,8 @@ namespace Blueprint
             AllBlueprints.Add(BpType.Reverse, new BpReverse());
             AllBlueprints.Add(BpType.Freeze, new BpFreeze());
             AllBlueprints.Add(BpType.SelectionIncrement, new BpSelectionIncrement());
-            //AllBlueprints.Add(BpType.Double, new BpDouble());
+            AllBlueprints.Add(BpType.Double, new BpDouble());
         }
-        
-        
-        
-       
-
-       
-
-       
     }
 
 

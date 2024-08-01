@@ -123,7 +123,15 @@ namespace Turn
         
         private void StateChangeRequestByUser()
         {
-            GetNextState();
+            if (currentState.StateType == TurnStateType.Intruder)
+            {
+                StateChangeAfterIntruder();
+            }
+            else
+            {
+                GetNextState();
+            }
+           
         }
 
         public void GetNextState()
