@@ -71,7 +71,7 @@ namespace Turn
         
         void SetBlocking() 
         {
-            IBlockable blockable = (IBlockable) bpSelector;
+            IBlockable blockable =  bpSelector as IBlockable;
             if(blockable == null) return;
             ((IBlockable) bpSelector).TryBlock(Teams);
         }
