@@ -54,7 +54,7 @@ namespace Turn
             
             UIEventbus.OnButtonCall += ShowButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
             UIEventbus.OnButtonClicked += StateChangeRequestByUser;
-            BpEventbus.StateEvents.OnStateChangeWithoutInteraction += StateChangeAfterIntruder;
+            BpEventbus.StateEvents.OnStateChangeWithoutInteraction += StateChangeByIntruder;
             
             bpEventHandler = new BlueprintEventHandler(this);
         }
@@ -113,19 +113,17 @@ namespace Turn
             
         }
 
-        void StateChangeAfterIntruder()
+        void StateChangeByIntruder()
         {
-            currentState.ProcessExecutionWithSelection(); //execute bp
-            
-            if(currentState.StateType == TurnStateType.Intruder)
-                GetPreviousState();
+            currentState.ExecuteSelection();
+            GetPreviousState();
         }
         
         private void StateChangeRequestByUser()
         {
-            if (currentState.StateType == TurnStateType.Intruder)
+            if (currentState.StateType == TurnStateType.Intruder) //apply yapılan yerde enum olabilir
             {
-                StateChangeAfterIntruder();
+                StateChangeByIntruder();
             }
             else
             {
@@ -190,7 +188,7 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnButtonCall -= ShowButtonRequest;
             UIEventbus.OnButtonClicked -= StateChangeRequestByUser;
-            BpEventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeRequestByUser;
+            BpEventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeByIntruder;
             
             pairController.Unsubscribe();
         }

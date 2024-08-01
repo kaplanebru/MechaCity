@@ -76,7 +76,7 @@ namespace Turn
             ((IBlockable) bpSelector).TryBlock(Teams);
         }
         
-        public override void ProcessExecutionWithSelection()
+        public override void ExecuteSelection()
         {
             BpEventbus.OnBpExecution?.Invoke(bpSelector?.Towers.ToArray()); //burda tekrar networke gitmeye gerek yok!!
         }
