@@ -21,7 +21,7 @@ namespace _Core.Turn.Selectors
         public void BlockSelection(Dictionary<TeamState, Team> teams)
         {
             TeamData teamToBlock = teams[BlockedTeamState].Data;
-            teamToBlock.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).DisableSelection());
+            teamToBlock.Towers.ForEach(t=>t.DisableSelection());
         }
     }
 
@@ -31,7 +31,7 @@ namespace _Core.Turn.Selectors
         public void BlockSelection(Dictionary<TeamState, Team> teams)
         {
             TeamData teamToBlock = teams[BlockedTeamState].Data;
-            teamToBlock.Towers.ForEach(t=>AllTowers.GetTower(t.UniqID).DisableSelection());
+            teamToBlock.Towers.ForEach(t=>t.DisableSelection());
         }
     }
 }

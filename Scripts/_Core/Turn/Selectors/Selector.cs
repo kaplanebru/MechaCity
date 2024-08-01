@@ -13,9 +13,9 @@ using UnityEngine;
 public class Selector<T> where T : ISelectionColorSetter, new()
 {
     public List<int> SelectedTowers = new();
-    public int MaxTowerAmount = 2;
-    public int MinTowersInGroup = 2;
-    private T selectionColorSetter = new T();
+    public int MaxTowerAmount = 2; //Array yollarız
+    public int MinTowersInGroup = 2; //Todo selection artınca tekrar resetlemek için kullanılıyor
+    protected T selectionColorSetter = new T();
     public void Subscribe()
     {
         //SelectedTowers.Clear(); //TODO: DONT!
@@ -28,7 +28,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         SelectedTowers = towers;
     }
 
-    public void StartWithNewTowers()
+    public virtual void StartWithNewTowers()
     {
         SelectedTowers.Clear();
     }
@@ -38,7 +38,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         MaxTowerAmount = amount;
     }
 
-    private void GetTower(params object[] args)
+    protected virtual void GetTower(params object[] args)
     {
         int towerId = (int) args[0];
 
@@ -50,7 +50,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         HandleSelection(true, towerId);
     }
 
-    void HandleSelection(bool select, int newSelection)
+    protected void HandleSelection(bool select, int newSelection)
     {
         if (select)
             Select(newSelection);
@@ -60,13 +60,13 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         ShowCompleteButton(SelectedTowers.Count == MaxTowerAmount);
     }
     
-    private void Select(int newSelection)
+    protected virtual void Select(int newSelection)
     {
         SelectedTowers.Add(newSelection);
         selectionColorSetter.SetColor(newSelection);
     }
 
-    void Deselect(int newSelection)
+    protected virtual void Deselect(int newSelection)
     {
         SelectedTowers.Remove(newSelection);
         AllTowers.GetData(newSelection).ColorHandler.ToOriginalColor();
@@ -85,7 +85,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         }
     }
 
-    bool SelectedTwice(int selectedTower)
+    protected bool SelectedTwice(int selectedTower)
     {
         if (SelectedTowers.Contains(selectedTower))
         {

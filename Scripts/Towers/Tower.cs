@@ -40,16 +40,7 @@ namespace Towers
             Data.ColorHandler.SetTeamVisuals(teamData);
             Data.clickHandler.SetClickableTeams(teamData.TeamType);
         }
-        public void EnableSelection()
-        {
-            if (!Data.IsClickable) return;
-            Data.clickHandler.EnableSelection();
-        }
-
-        public void DisableSelection()
-        {
-            Data.clickHandler.DisableSelection();
-        }
+     
 
         public void HandleDeath(Action teamSwitchCallback, Action completeCombat)
         {

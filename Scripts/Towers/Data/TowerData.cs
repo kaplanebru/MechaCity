@@ -89,6 +89,18 @@ namespace Towers
             TowerSegments.Add(ColorHandler);
             TowerSegments.Add(UIHandler);
         }
+        
+        public void EnableSelection()
+        {
+            if (!IsClickable) return;
+           clickHandler.EnableSelection();
+        }
+
+        public void DisableSelection()
+        {
+            clickHandler.DisableSelection();
+        }
+
     }
 
     [Serializable]
