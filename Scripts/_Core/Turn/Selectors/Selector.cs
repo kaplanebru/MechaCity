@@ -16,12 +16,18 @@ public class Selector<T> where T : ISelectionColorSetter, new()
     public int MaxTowerAmount = 2; //Array yollarız
     public int MinTowersInGroup = 2; //Todo selection artınca tekrar resetlemek için kullanılıyor
     protected T selectionColorSetter = new T();
+    protected Dictionary<TeamState, Team> _teams = new();
+
     public void Subscribe()
     {
         //SelectedTowers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
+        Register();
     }
-    
+
+     protected virtual void Register(){}
+     protected virtual void Unregister(){}
+
 
     public void ContinueTowers(List<int> towers) //önceki state'ten kalan varsa takip edebilelim diye
     {
@@ -72,7 +78,7 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         AllTowers.GetData(newSelection).ColorHandler.ToOriginalColor();
     }
 
-    void ShowCompleteButton(bool enable)
+    protected void ShowCompleteButton(bool enable)
     {
         UIEventbus.OnButtonCall?.Invoke(enable);
     }
@@ -106,5 +112,6 @@ public class Selector<T> where T : ISelectionColorSetter, new()
         NetworkEventbus.InputEvents.OnObjectClicked -= GetTower;
         // AllTowers.ResetTowerSelectionColors(); //todo: test, dont
         AllTowers.EnableClickability(); //todo: eğer eliminated ise
+        Unregister();
     }
 }

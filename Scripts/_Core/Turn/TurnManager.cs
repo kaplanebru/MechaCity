@@ -16,6 +16,7 @@ using Towers;
 
 namespace Turn
 {
+    
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
         public static int TurnTracker => _turnTracker; //no setter
@@ -35,6 +36,7 @@ namespace Turn
 
         private bool firstTurn = true;
 
+       
 
         private void Update()
         {
@@ -59,7 +61,7 @@ namespace Turn
             bpEventHandler = new BlueprintEventHandler(this);
         }
 
-   
+
         private void ShowButtonRequest(bool enable)
         {
             UIEventbus.OnShowButtonRequest?.Invoke(enable, currentState.StateType);
@@ -72,6 +74,8 @@ namespace Turn
             
             pairController.Subscribe();
             pairController.SetCombatPairs();
+            
+            turnHelper.Subscribe();
             
             ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).GetCombatHelper(_combatHelper);
             _combatHelper.GetElements(combatTimingData, pairController);
@@ -191,6 +195,7 @@ namespace Turn
             BpEventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeByIntruder;
             
             pairController.Unsubscribe();
+            turnHelper.Unsubscribe();
         }
 
        

@@ -34,7 +34,7 @@ namespace Turn
         {
             selectors.Add(SelectionType.PlayerOnly, new BpSelectorWithBlocker<RivalBlocker>());
             selectors.Add(SelectionType.RivalOnly, new BpSelectorWithBlocker<PlayerBlocker>());
-            selectors.Add(SelectionType.All, new Selector<BpSelectionColor>());
+            selectors.Add(SelectionType.All,new DoubleSelector());  //new Selector<BpSelectionColor>()
             selectors.Add(SelectionType.None, null);
         }
 
@@ -61,7 +61,7 @@ namespace Turn
                 BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
                 return;
             }
-            
+
             bpSelector.Subscribe();
             SetBlocking();
             bpSelector.SetMaxTowers(maxSelectionAmount);

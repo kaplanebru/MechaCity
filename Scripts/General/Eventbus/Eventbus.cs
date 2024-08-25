@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Enums;
 
 public static class Eventbus
 {
@@ -16,9 +17,6 @@ public static class Eventbus
 
         public static Action<int> OnTurnTowerSelection;
         public static Action OnTurnTowerDeselect;
-
-       
-
     }
 
     public static class LinkEvents
@@ -35,6 +33,9 @@ public static class Eventbus
         public static Action<int, int> OnLock;
         public static Action OnTurnBegin;
     }
+
+ 
+    
     
     
 

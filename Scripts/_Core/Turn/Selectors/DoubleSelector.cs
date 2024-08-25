@@ -5,31 +5,50 @@ using Enums;
 using Network;
 using Teams;
 using Towers;
+using Turn;
 using UnityEngine;
 
 public class DoubleSelector : Selector<BpSelectionColor>
 {
+    private PlayerBlocker playerBlocker = new PlayerBlocker();
+    private RivalBlocker rivalBlocker = new RivalBlocker();
+    
     public int groupAmount = 2;
     public SelectionGroup[] SelectionGroups;
-    public int[] MaxTowerAmounts; //eventle gelir
-    private Dictionary<TeamState, Team> _teams = new();
-
+    private bool isFull = false;
+    
 
     private SelectionGroup _currentSelectionGroup;
+
+    protected override void Register()
+    {
+        TurnHelper.TurnEvents.OnTeamsSent += GetTeamsData;
+    }
+
+    protected override void Unregister()
+    {
+        TurnHelper.TurnEvents.OnTeamsSent -= GetTeamsData;
+    }
     
     public override void StartWithNewTowers()
     {
+        TurnHelper.TurnEvents.OnTeamsRequest?.Invoke();
         SelectionGroups = new SelectionGroup[groupAmount];
-        // foreach (var group in SelectionGroup)
-        // {
-        //    group.SelectedTowers.Clear();
-        // }
+        for (int i = 0; i < groupAmount; i++)
+        {
+            SelectionGroups[i] = new SelectionGroup();
+            SelectionGroups[i].Index = i;
+            
+        }
         
+        SelectionGroups[0].BlockType = TeamState.RivalTeam;
+        SelectionGroups[1].BlockType = TeamState.CurrentTeam;
+
         Setup();
         _currentSelectionGroup = SelectionGroups[0];
     }
 
-    void GetTeamsData(Dictionary<TeamState, Team> teams) //sürekli değiştiği için, burda almakta fayda var
+    public void GetTeamsData(Dictionary<TeamState, Team> teams) //sürekli değiştiği için, burda almakta fayda var
     {
         _teams = teams;
     }
@@ -38,38 +57,61 @@ public class DoubleSelector : Selector<BpSelectionColor>
     {
         for (int i = 0; i < groupAmount; i++)
         {
-            SelectionGroups[i].Index = i;
-            SelectionGroups[i].MaxTowers = MaxTowerAmounts[i];
+            SelectionGroups[i].MaxTowers = 1; 
         }
     }
     
     protected override void GetTower(params object[] args)
     {
         int towerId = (int) args[0];
-      
         
-        if (SelectedTwice(towerId)) return; //TODO: buna da bakmak lazım + 1 geriye gidince önceki selection grupa düşülebilir
-
-        if (_currentSelectionGroup.SelectedTowers.Count == _currentSelectionGroup.MaxTowers)
+        if (isFull)
         {
-            int nextIndex = _currentSelectionGroup.Index + 1;
-            if (nextIndex == groupAmount - 1)
-            {
-                ResetSelectionGroups();
-                return;
-            }
-
-            ToNextGroup(nextIndex);
+            ResetSelectionGroups(); //hepsi deselect olur
+            isFull = false;
+            ShowCompleteButton(false);
         }
         
+        if(SelectedTwice(towerId)) return; //sadece seçili olan deselect olur. TODO: tıklanamaz olduğu için sıkıntı
+        
         HandleSelection(true, towerId);
+        
+        if (_currentSelectionGroup.SelectedTowers.Count == _currentSelectionGroup.MaxTowers)
+        {
+            ShiftGroup();
+        }
     }
 
-    void ToNextGroup(int nextIndex)
+    void ShiftGroup()
     {
-        _currentSelectionGroup = SelectionGroups[nextIndex];
+        int nextGroupIndex = _currentSelectionGroup.Index + 1; // % groupAmount - 1;
+
+        if (nextGroupIndex == groupAmount)
+        {
+            FullSituation();
+            nextGroupIndex = 0;
+        }
+            
+        _currentSelectionGroup = SelectionGroups[nextGroupIndex];
         Block();
     }
+    
+    void Block()
+    {
+        AllTowers.EnableClickability();
+        
+        if (_currentSelectionGroup.BlockType == TeamState.CurrentTeam)
+            playerBlocker.BlockSelection(_teams);
+        else
+            rivalBlocker.BlockSelection(_teams);
+    }
+
+    void FullSituation()
+    {
+        ShowCompleteButton(true);
+        isFull = true;
+    }
+  
     
     protected override void Select(int newSelection)
     {
@@ -83,28 +125,15 @@ public class DoubleSelector : Selector<BpSelectionColor>
         AllTowers.GetData(newSelection).ColorHandler.ToOriginalColor();
     }
 
-    private PlayerBlocker playerBlocker = new PlayerBlocker();
-    private RivalBlocker rivalBlocker = new RivalBlocker();
-    void Block()
-    {
-        AllTowers.EnableClickability();
-        
-        if (_currentSelectionGroup.BlockType == TeamState.CurrentTeam)
-            playerBlocker.BlockSelection(_teams);
-        else
-            rivalBlocker.BlockSelection(_teams);
-        
-        
-        // TeamData teamToBlock = _teams[_currentSelectionGroup.BlockType].Data;
-        // foreach (var tower in teamToBlock.Towers)
-        // {
-        //     tower.clickHandler.DisableSelection();
-        // }
-    }
+
+  
     
     void ResetSelectionGroups()
     {
-        
+        foreach (var group in SelectionGroups)
+        {
+            group.ResetTowers();
+        }
     }
 }
 
@@ -113,8 +142,14 @@ public class SelectionGroup
     public int Index;
     public List<int> SelectedTowers = new();
     public int MaxTowers = 1;
-    public TeamState Type;
     public TeamState BlockType;
 
-
+    public void ResetTowers()
+    {
+        foreach (var tower in SelectedTowers)
+        {
+            AllTowers.GetData(tower).ColorHandler.ToOriginalColor();
+        }
+        SelectedTowers.Clear();
+    }
 }

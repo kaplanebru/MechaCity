@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,26 @@ public class TurnHelper
     public Dictionary<TeamState, Team> TurnTeams;
     
     public TeamType CurrentTeamType = TeamType.Team1;
+
+    public void Subscribe()
+    {
+        TurnEvents.OnTeamsRequest += SendTeams;
+    }
+
+    public void Unsubscribe()
+    {
+        TurnEvents.OnTeamsRequest -= SendTeams;
+    }
     
+    void SendTeams()
+    {
+        TurnEvents.OnTeamsSent?.Invoke(TurnTeams);
+    }
+    public static class TurnEvents
+    {
+        public static Action<Dictionary<TeamState, Team>> OnTeamsSent;
+        public static Action OnTeamsRequest;
+    }
     public void GetPreviousStateData(BaseTurnState previousState, BaseTurnState currentState)
     {
         if (previousState == null) return;
