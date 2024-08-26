@@ -125,31 +125,11 @@ public class DoubleSelector : Selector<BpSelectionColor>
         AllTowers.GetData(newSelection).ColorHandler.ToOriginalColor();
     }
 
-
-  
-    
     void ResetSelectionGroups()
     {
         foreach (var group in SelectionGroups)
         {
             group.ResetTowers();
         }
-    }
-}
-
-public class SelectionGroup
-{
-    public int Index;
-    public List<int> SelectedTowers = new();
-    public int MaxTowers = 1;
-    public TeamState BlockType;
-
-    public void ResetTowers()
-    {
-        foreach (var tower in SelectedTowers)
-        {
-            AllTowers.GetData(tower).ColorHandler.ToOriginalColor();
-        }
-        SelectedTowers.Clear();
     }
 }

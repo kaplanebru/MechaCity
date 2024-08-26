@@ -34,6 +34,7 @@ namespace Turn
         {
             selectors.Add(SelectionType.PlayerOnly, new BpSelectorWithBlocker<RivalBlocker>());
             selectors.Add(SelectionType.RivalOnly, new BpSelectorWithBlocker<PlayerBlocker>());
+            
             selectors.Add(SelectionType.All,new DoubleSelector());  //new Selector<BpSelectionColor>()
             selectors.Add(SelectionType.None, null);
         }
