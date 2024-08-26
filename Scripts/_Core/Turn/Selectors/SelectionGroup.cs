@@ -9,7 +9,7 @@ public class SelectionGroup
 {
     public int Index;
     public int MaxTowers = 1;
-    public Selections.BlockState BlockState;
+    public Selections.BlockType BlockType;
     public Selections.ColorType SelectionColorType;
     public List<int> SelectedTowers { get; set; } = new();
     public void ResetTowers()
@@ -20,4 +20,18 @@ public class SelectionGroup
         }
         SelectedTowers.Clear();
     }
+    
+    // public TeamState BlockedTeamState
+    // {
+    //     get
+    //     {
+    //         return blockType switch
+    //         {
+    //             Selections.BlockType.BlockCurrent => TeamState.CurrentTeam,
+    //             Selections.BlockType.BlockRival => TeamState.RivalTeam,
+    //             _ => throw new InvalidOperationException("Invalid BlockState value.")
+    //         };
+    //     }
+    // }
+    
 }

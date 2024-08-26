@@ -12,7 +12,7 @@ using UnityEngine;
 
 public class TurnHelper 
 {
-    public Dictionary<TeamState, Team> TurnTeams;
+    public Dictionary<TeamState, Team> TeamsByTurn;
     
     public TeamType CurrentTeamType = TeamType.Team1;
 
@@ -28,7 +28,7 @@ public class TurnHelper
     
     void SendTeams()
     {
-        TurnEvents.OnTeamsSent?.Invoke(TurnTeams);
+        TurnEvents.OnTeamsSent?.Invoke(TeamsByTurn);
     }
     public static class TurnEvents
     {
@@ -52,10 +52,10 @@ public class TurnHelper
 
     public void SwitchTeams()
     {
-        CurrentTeamType = TurnTeams[TeamState.RivalTeam].Data.TeamType;
+        CurrentTeamType = TeamsByTurn[TeamState.RivalTeam].Data.TeamType;
         
-        (TurnTeams[TeamState.CurrentTeam], TurnTeams[TeamState.RivalTeam]) =
-            (TurnTeams[TeamState.RivalTeam], TurnTeams[TeamState.CurrentTeam]);
+        (TeamsByTurn[TeamState.CurrentTeam], TeamsByTurn[TeamState.RivalTeam]) =
+            (TeamsByTurn[TeamState.RivalTeam], TeamsByTurn[TeamState.CurrentTeam]);
 
         UIEventbus.OnTeamSwitch?.Invoke(CurrentTeamType);
     }
@@ -63,13 +63,13 @@ public class TurnHelper
     public void ManageInput()
     {
         if (!MultiplayerSetter.IsMultiplayerOn) return;
-        TurnTeams[TeamState.CurrentTeam].Data.Player.EnableInput(true);
-        TurnTeams[TeamState.RivalTeam].Data.Player.EnableInput(false);
+        TeamsByTurn[TeamState.CurrentTeam].Data.Player.EnableInput(true);
+        TeamsByTurn[TeamState.RivalTeam].Data.Player.EnableInput(false);
     }
     
     public bool GameEnding()
     {
-        foreach (var team in TurnTeams)
+        foreach (var team in TeamsByTurn)
         {
             if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Health == 0)) //TODO: CHECK
             {

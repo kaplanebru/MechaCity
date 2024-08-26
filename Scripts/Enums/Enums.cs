@@ -14,7 +14,7 @@ namespace Enums
 
     public class Selections
     {
-        public enum BlockState
+        public enum BlockType
         {
             BlockCurrent,
             BlockRival,

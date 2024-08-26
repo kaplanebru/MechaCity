@@ -23,7 +23,8 @@ namespace Turn
     public class SelectionState : BaseTurnState, ITransferDataHolder<SelectionTransferData>
     {
         
-        private SelectorWithBlocker<RivalBlocker> mainSelector;
+        //private SelectorWithBlocker<RivalBlocker> mainSelector;
+        private SingleTypeSelector mainSelector;
         public SelectionTransferData TransferData { get; private set; } = new();
 
         public override TurnStateType StateType => TurnStateType.Selection;
@@ -44,7 +45,7 @@ namespace Turn
         public override void Subscribe()
         {
             mainSelector.Subscribe();
-            mainSelector.TryBlock(Teams);
+            mainSelector.TryBlock(TeamsByTurn);
         }
 
         private void UpdateSelectionAmount()

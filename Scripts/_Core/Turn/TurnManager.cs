@@ -86,7 +86,7 @@ namespace Turn
 
         void SetTurnTeams(Team[] teams)
         {
-            turnHelper.TurnTeams = new Dictionary<TeamState, Team>()
+            turnHelper.TeamsByTurn = new Dictionary<TeamState, Team>()
             {
                 {TeamState.CurrentTeam, teams[0]},
                 {TeamState.RivalTeam, teams[1]},
@@ -159,7 +159,7 @@ namespace Turn
             previousState = currentState;
             currentState = newState;
 
-            currentState.SetTeams(turnHelper.TurnTeams);
+            currentState.SetTeams(turnHelper.TeamsByTurn);
             currentState.EnterState();
             turnHelper.GetPreviousStateData(previousState, currentState);
         }

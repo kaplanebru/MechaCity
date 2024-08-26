@@ -1,7 +1,7 @@
 using Enums;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = nameof(SelectionData), fileName = nameof(SelectionData))]
+[CreateAssetMenu(menuName = "Selection/" + nameof(SelectionData), fileName = nameof(SelectionData))]
 
 public class SelectionData : ScriptableObject
 {

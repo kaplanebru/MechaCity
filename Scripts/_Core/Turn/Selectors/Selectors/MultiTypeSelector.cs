@@ -8,12 +8,13 @@ using Towers;
 using Turn;
 using UnityEngine;
 
-public class MultiTypeSelector : Selector<BpSelectionColor>
+public class MultiTypeSelector : Selector, IBlockable
 {
-    private PlayerBlocker playerBlocker = new PlayerBlocker();
-    private RivalBlocker rivalBlocker = new RivalBlocker();
-
-    public SelectionData Data;
+    // private PlayerBlocker playerBlocker = new PlayerBlocker();
+    // private RivalBlocker rivalBlocker = new RivalBlocker();
+    
+    private Dictionary<TeamState, Team> _teamsByTurn = new();
+    
     private bool isFull = false;
 
     protected override void Register()
@@ -30,13 +31,13 @@ public class MultiTypeSelector : Selector<BpSelectionColor>
     {
         CurrentGroup = Data.Groups[0];
 
-        if (CurrentGroup.BlockState != Selections.BlockState.None) //bunu sileriz
+        if (CurrentGroup.BlockType != Selections.BlockType.None) //bunu sileriz
             TurnHelper.TurnEvents.OnTeamsRequest?.Invoke();
     }
 
     private void GetTeamsData(Dictionary<TeamState, Team> teams) //sürekli değiştiği için, burda almakta fayda var
     {
-        _teams = teams;
+        _teamsByTurn = teams;
     }
 
     protected override void GetTower(params object[] args)
@@ -78,21 +79,34 @@ public class MultiTypeSelector : Selector<BpSelectionColor>
         Block();
     }
 
+    public void TryBlock(Dictionary<TeamState, Team> teamsByTurn)
+    {
+        _teamsByTurn = teamsByTurn;
+        Block();
+    }
+
     void Block()
     {
-        AllTowers.EnableClickability();
-
-        switch (CurrentGroup.BlockState)
-        {
-            case Selections.BlockState.BlockCurrent:
-                playerBlocker.BlockSelection(_teams);
-                break;
-
-            case Selections.BlockState.BlockRival:
-                rivalBlocker.BlockSelection(_teams);
-                break;
-        }
+        //Blocker.BlockedTeamState = CurrentGroup.BlockedTeamState;
+        Blocker.BlockType = CurrentGroup.BlockType;
+        Blocker.BlockSelection(_teamsByTurn);
     }
+
+    // void Block()
+    // {
+    //     AllTowers.EnableClickability();
+    //
+    //     switch (CurrentGroup.BlockState)
+    //     {
+    //         case Selections.BlockState.BlockCurrent:
+    //             playerBlocker.BlockSelection(_teams);
+    //             break;
+    //
+    //         case Selections.BlockState.BlockRival:
+    //             rivalBlocker.BlockSelection(_teams);
+    //             break;
+    //     }
+    // }
 
     void FullSituation()
     {
@@ -124,4 +138,6 @@ public class MultiTypeSelector : Selector<BpSelectionColor>
 
         return towers;
     }
+
+   
 }

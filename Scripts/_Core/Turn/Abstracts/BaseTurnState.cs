@@ -12,7 +12,7 @@ namespace Turn
     {
         public TurnAction turnAction;
 
-        public Dictionary<TeamState, Team> Teams;
+        public Dictionary<TeamState, Team> TeamsByTurn; //todo: güncelleniyor mu?
         public abstract TurnStateType StateType { get; }
         public abstract int StateId { get; set; }
 
@@ -40,7 +40,7 @@ namespace Turn
 
         public void SetTeams(Dictionary<TeamState, Team> teams)
         {
-            Teams = teams;
+            TeamsByTurn = teams;
         }
         
         public virtual void ExecuteSelection(){}

@@ -24,16 +24,17 @@ namespace Turn
         public override int StateId { get; set; }
         public IntruderTransferData TransferData { get; private set; } = new();
         
-        protected Selector<BpSelectionColor> bpSelector; // = new ();
-        private Dictionary<SelectionType, Selector<BpSelectionColor>> selectors = new ();
+        protected Selector bpSelector; // = new ();
+        private Dictionary<SelectionType, Selector> selectors = new ();
+        //private Dictionary<SelectionType, Selector<BpSelectionColor>> selectors = new ();
 
         private BaseTurnTransferData incomingData;
         
         
         public override void Register()
         {
-            selectors.Add(SelectionType.PlayerOnly, new BpSelectorWithBlocker<RivalBlocker>());
-            selectors.Add(SelectionType.RivalOnly, new BpSelectorWithBlocker<PlayerBlocker>());
+            selectors.Add(SelectionType.PlayerOnly, new SingleTypeSelector());// new BpSelectorWithBlocker<RivalBlocker>());
+            selectors.Add(SelectionType.RivalOnly,  new SingleTypeSelector());//new BpSelectorWithBlocker<PlayerBlocker>());
             
             selectors.Add(SelectionType.All,new MultiTypeSelector());  //new Selector<BpSelectionColor>()
             selectors.Add(SelectionType.None, null);
@@ -74,7 +75,7 @@ namespace Turn
         {
             IBlockable blockable =  bpSelector as IBlockable;
             if(blockable == null) return;
-            ((IBlockable) bpSelector).TryBlock(Teams);
+            ((IBlockable) bpSelector).TryBlock(TeamsByTurn);
         }
         
         public override void ExecuteSelection()

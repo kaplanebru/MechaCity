@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using _Core.Turn.Selectors;
+using Enums;
+using Teams;
 using Towers;
 using UnityEngine;
 
-public class SingleTypeSelector : Selector<StandardSelectionColor>
+public class SingleTypeSelector : Selector, IBlockable
 {
    
     private int _maxTowerConstant;
@@ -41,6 +43,13 @@ public class SingleTypeSelector : Selector<StandardSelectionColor>
             return true;
         }
         return false;
+    }
+
+    public void TryBlock(Dictionary<TeamState, Team> teamsByTurn)
+    {
+        //Blocker.Setup(Data.Groups[0].BlockState);
+        Blocker.BlockType = Data.Groups[0].BlockType;
+        Blocker.BlockSelection(teamsByTurn);
     }
     
     public override void ContinueTowers(List<int> towers) //önceki state'ten kalan varsa takip edebilelim diye

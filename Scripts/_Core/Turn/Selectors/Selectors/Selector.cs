@@ -10,12 +10,14 @@ using Turn;
 using UnityEngine;
 
 
-public abstract class Selector<T> where T : ISelectionColorSetter, new()
+public abstract class Selector //Selector<T> where T : ISelectionColorSetter, new()
 {
     protected SelectionGroup CurrentGroup;
     protected SelectionData Data;
+    protected Blocker Blocker = new();
 
-    protected T selectionColorSetter = new T();
+
+    //protected T selectionColorSetter = new T();
     protected Dictionary<TeamState, Team> _teams = new();
     
     public void Subscribe()
@@ -47,7 +49,7 @@ public abstract class Selector<T> where T : ISelectionColorSetter, new()
     private void Select(int newSelection)
     {
         CurrentGroup.SelectedTowers.Add(newSelection);
-        selectionColorSetter.SetColor(newSelection); //todo: change
+        //selectionColorSetter.SetColor(newSelection); //todo: change
     }
     private void Deselect(int newSelection)
     {

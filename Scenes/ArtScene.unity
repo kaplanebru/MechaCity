@@ -42155,7 +42155,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1519174825}
-  - component: {fileID: 1519174824}
+  - component: {fileID: 1519174826}
   m_Layer: 0
   m_Name: SelectionAssetHolder
   m_TagString: Untagged
@@ -42163,20 +42163,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1519174824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519174823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98a5e830c592caa488372131ef6c131f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selections:
-  - {fileID: 11400000, guid: 8e5056890b4635344bce702ed6e962c0, type: 2}
 --- !u!4 &1519174825
 Transform:
   m_ObjectHideFlags: 0
@@ -42192,6 +42178,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1519174826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519174823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7dfdfd92c7f48309a7adceaa1596bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetHolder: {fileID: 0}
 --- !u!1 &1528184032
 GameObject:
   m_ObjectHideFlags: 0
