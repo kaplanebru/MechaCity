@@ -33,6 +33,7 @@ namespace Turn
         public override void Register()
         {
             mainSelector = new();
+            mainSelector.SetData(SelectionReferences.Instance.GetData(SelectionType.PlayerOnly));
         }
 
         public override void SubscribeToConstantEvents()

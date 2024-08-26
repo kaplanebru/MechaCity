@@ -1,3 +1,4 @@
+using Enums;
 using UnityEngine;
 
 public class SelectionReferences : MonoBehaviour //TODO: TEMP
@@ -10,4 +11,8 @@ public class SelectionReferences : MonoBehaviour //TODO: TEMP
         Instance = this;
         assetHolder.Setup();
     }
+
+    public SelectionData GetData(SelectionType type) => assetHolder.DataByType[type];
+
+   
 }

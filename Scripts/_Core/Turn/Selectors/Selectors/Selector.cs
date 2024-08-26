@@ -27,6 +27,11 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
         Register();
     }
 
+    public void SetData(SelectionData data)
+    {
+        Data = data;
+    }
+
     protected abstract void Register(); 
     protected abstract void Unregister();
     public abstract void StartWithNewTowers();
