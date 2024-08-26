@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using Enums;
 using Towers;
 
+
 [Serializable]
 public class SelectionGroup
 {
     public int Index;
     public int MaxTowers = 1;
-    public TeamState BlockType;
+    public Selections.BlockState BlockState;
+    public Selections.ColorType SelectionColorType;
     public List<int> SelectedTowers { get; set; } = new();
     public void ResetTowers()
     {

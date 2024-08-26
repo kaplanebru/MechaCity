@@ -12,6 +12,25 @@ namespace Enums
         RivalTeam
     }
 
+    public class Selections
+    {
+        public enum BlockState
+        {
+            BlockCurrent,
+            BlockRival,
+            None
+        }
+
+        public enum ColorType
+        {
+            Standard,
+            Blueprint,
+            Freeze
+        }
+    }
+
+   
+
     public enum TurnState
     {
         TurnStarted,

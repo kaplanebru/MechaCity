@@ -35,7 +35,7 @@ namespace Turn
             selectors.Add(SelectionType.PlayerOnly, new BpSelectorWithBlocker<RivalBlocker>());
             selectors.Add(SelectionType.RivalOnly, new BpSelectorWithBlocker<PlayerBlocker>());
             
-            selectors.Add(SelectionType.All,new DoubleSelector());  //new Selector<BpSelectionColor>()
+            selectors.Add(SelectionType.All,new MultiTypeSelector());  //new Selector<BpSelectionColor>()
             selectors.Add(SelectionType.None, null);
         }
 
@@ -79,7 +79,7 @@ namespace Turn
         
         public override void ExecuteSelection()
         {
-            BpEventbus.OnBpExecution?.Invoke(bpSelector?.SelectedTowers.ToArray()); //burda tekrar networke gitmeye gerek yok!!
+            BpEventbus.OnBpExecution?.Invoke(bpSelector?.SendAllTowers().ToArray()); //burda tekrar networke gitmeye gerek yok!!
         }
         
 

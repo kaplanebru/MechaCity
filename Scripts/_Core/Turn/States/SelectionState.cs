@@ -49,8 +49,7 @@ namespace Turn
 
         private void UpdateSelectionAmount()
         {
-            mainSelector.MaxTowerAmount++;
-            Debug.Log(mainSelector.MaxTowerAmount);
+            mainSelector.IncreaseMaxTowers();
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
@@ -61,13 +60,13 @@ namespace Turn
         
         public void ResetSelection()
         {
-            mainSelector.ResetSelector(); 
+            mainSelector.ResetMaxSelection(); 
         }
 
 
         public override void Unsubscribe()
         {
-            TransferData.Towers = mainSelector.SelectedTowers;
+            TransferData.Towers = mainSelector.SendAllTowers();
             mainSelector.Unsubscribe();
         }
 
