@@ -42190,7 +42190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7dfdfd92c7f48309a7adceaa1596bb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assetHolder: {fileID: 11400000, guid: d1e9e8e69b9301948ba26b5a8fd39b9a, type: 2}
+  dataHolder: {fileID: 11400000, guid: d1e9e8e69b9301948ba26b5a8fd39b9a, type: 2}
 --- !u!1 &1528184032
 GameObject:
   m_ObjectHideFlags: 0
