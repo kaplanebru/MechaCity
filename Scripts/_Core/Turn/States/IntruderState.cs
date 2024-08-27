@@ -17,51 +17,36 @@ namespace Turn
     {
         public override TurnStateType StateType { get; set; } = TurnStateType.Intruder;
         public override List<int> Towers { get; set; } = new();
-        
     }
-    public class IntruderState: BaseTurnState, ITransferDataHolder<IntruderTransferData>
+
+    public class IntruderState : BaseTurnState, ITransferDataHolder<IntruderTransferData>
     {
         public override TurnStateType StateType { get; } = TurnStateType.Intruder;
         public override int StateId { get; set; }
         public IntruderTransferData TransferData { get; private set; } = new();
-        
+
         protected Selector bpSelector; // = new ();
-        private Dictionary<SelectionType, Selector> selectors = new ();
-        //private Dictionary<SelectionType, Selector<BpSelectionColor>> selectors = new ();
 
         private BaseTurnTransferData incomingData;
         
-        
-        public override void Register()
-        {
-            //todo: sadece bp olanları almak istiyoruz
-            //selectors = 
-                var x = SelectionReferences.Instance.dataHolder.DataByType;
-            // selectors.Add(Selections.SelectionType.PlayerOnly, new SingleTypeSelector());// new BpSelectorWithBlocker<RivalBlocker>());
-            // selectors.Add(Selections.SelectionType.RivalOnly,  new SingleTypeSelector());//new BpSelectorWithBlocker<PlayerBlocker>());
-            //
-            // selectors.Add(Selections.SelectionType.All,new MultiTypeSelector());  //new Selector<BpSelectionColor>()
-            // selectors.Add(Selections.SelectionType.None, null);
-        }
-
+        public override void Register() {}
         public override void SubscribeToConstantEvents() {}
-        
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
             BpEventbus.SelectionEvents.OnCurrentBpSet += GetBpSelector; //permanent de olabilir
         }
-        
+
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
             incomingData = data;
             TransferData.Towers = data.Towers;
         }
-        
+
         private void GetBpSelector(SelectionType selectionType, int maxSelectionAmount)
         {
-            bpSelector = selectors[selectionType];
-            
+            bpSelector = SelectionReferences.Instance.GetSelector(selectionType);
+
             if (selectionType == SelectionType.None)
             {
                 BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
@@ -69,35 +54,36 @@ namespace Turn
             }
 
             bpSelector.Subscribe();
-            SetBlocking();
-            bpSelector.SetMaxTowers(maxSelectionAmount);
-            bpSelector.StartWithNewTowers();//ContinueTowers(new List<int>());
+            // SetBlocking();
+            //bpSelector.SetMaxTowers(maxSelectionAmount);
+            bpSelector.StartWithNewTowers(); //ContinueTowers(new List<int>());
             //TODO: bp towers için resetlenen bir list tutulabilir
         }
-        
-        void SetBlocking() 
-        {
-            IBlockable blockable =  bpSelector as IBlockable;
-            if(blockable == null) return;
-            ((IBlockable) bpSelector).TryBlock(TeamsByTurn);
-        }
-        
+
+        // void SetBlocking() //kendinden bloklu olması lazım?
+        // {
+        //     IBlockable blockable = bpSelector as IBlockable;
+        //     if (blockable == null) return;
+        //     ((IBlockable) bpSelector).TryBlock(TeamsByTurn);
+        // }
+
         public override void ExecuteSelection()
         {
-            BpEventbus.OnBpExecution?.Invoke(bpSelector?.SendAllTowers().ToArray()); //burda tekrar networke gitmeye gerek yok!!
+            BpEventbus.OnBpExecution?.Invoke(bpSelector?.SendAllTowers()
+                .ToArray()); //burda tekrar networke gitmeye gerek yok!!
         }
-        
+
 
         public override void Unsubscribe()
         {
             BpEventbus.SelectionEvents.OnCurrentBpSet -= GetBpSelector;
-            if(bpSelector != null) //TODO: CHECK MİGHT CAUSE TROUBLE FOR MP
+            if (bpSelector != null) //TODO: CHECK MİGHT CAUSE TROUBLE FOR MP
                 bpSelector.Unsubscribe();
             incomingData.RestorePreviousSelectionColors();
         }
 
-        public override void UnsubscribeFromConstantEvents() {}
-        
+        public override void UnsubscribeFromConstantEvents()
+        {
+        }
     }
-
 }

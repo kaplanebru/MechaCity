@@ -40,6 +40,7 @@ namespace _Core.Turn.Selectors
 
         public void BlockSelection(Dictionary<TeamState, Team> teams)
         {
+            if(BlockType == BlockType.None) return;
             TeamData teamToBlock = teams[BlockedTeamByTurn].Data;
             teamToBlock.Towers.ForEach(t => t.DisableSelection());
         }

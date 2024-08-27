@@ -24,7 +24,7 @@ public class SelectionReferences : MonoBehaviour //TODO: TEMP
     void SetSelectors()
     {
         _selectors[SelectionType.PlayerOnlyStd].SetData(GetData(SelectionType.PlayerOnlyStd));
-        _selectors[SelectionType.PlayerOnlyStd].SetData(GetData(SelectionType.PlayerOnlyBp));
+        _selectors[SelectionType.PlayerOnlyBp].SetData(GetData(SelectionType.PlayerOnlyBp));
         _selectors[SelectionType.All].SetData(GetData(SelectionType.All));
     }
 
