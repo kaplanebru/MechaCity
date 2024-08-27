@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Enums;
+using Enums.Selections;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Selection/" + nameof(SelectionDataHolder), fileName = nameof(SelectionDataHolder))]
 public class SelectionDataHolder : ScriptableObject
 {
     public SelectionTypeDataCouple[] TypeDataCouples;
-    public Dictionary<Selections.SelectionType, SelectionData> DataByType = new();
+    public Dictionary<SelectionType, SelectionData> DataByType = new();
 
     public void Setup()
     {
@@ -20,6 +21,6 @@ public class SelectionDataHolder : ScriptableObject
 }
 
 [Serializable]
-public class SelectionTypeDataCouple : TypeDataCouple<Selections.SelectionType, SelectionData>
+public class SelectionTypeDataCouple : TypeDataCouple<SelectionType, SelectionData>
 {
 }

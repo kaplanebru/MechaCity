@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Enums;
+using Enums.Selections;
 using Towers;
 
 
@@ -9,8 +10,8 @@ public class SelectionGroup
 {
     public int Index;
     public int MaxTowers = 1;
-    public Selections.BlockType BlockType;
-    public Selections.ColorType SelectionColorType;
+    public BlockType BlockType;
+    public ColorType SelectionColorType;
     public List<int> SelectedTowers { get; set; } = new();
     public void ResetTowers()
     {

@@ -12,7 +12,7 @@ namespace Enums
         RivalTeam
     }
 
-    public class Selections
+    namespace Selections
     {
         public enum SelectionType
         {

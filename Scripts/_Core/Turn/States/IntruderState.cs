@@ -5,6 +5,7 @@ using _Core.Turn.Selectors;
 using Core;
 using DataModels;
 using Enums;
+using Enums.Selections;
 using Network;
 using Towers;
 using Turn;
@@ -25,7 +26,7 @@ namespace Turn
         public IntruderTransferData TransferData { get; private set; } = new();
         
         protected Selector bpSelector; // = new ();
-        private Dictionary<Selections.SelectionType, Selector> selectors = new ();
+        private Dictionary<SelectionType, Selector> selectors = new ();
         //private Dictionary<SelectionType, Selector<BpSelectionColor>> selectors = new ();
 
         private BaseTurnTransferData incomingData;
@@ -56,11 +57,11 @@ namespace Turn
             TransferData.Towers = data.Towers;
         }
         
-        private void GetBpSelector(Selections.SelectionType selectionType, int maxSelectionAmount)
+        private void GetBpSelector(SelectionType selectionType, int maxSelectionAmount)
         {
             bpSelector = selectors[selectionType];
             
-            if (selectionType == Selections.SelectionType.None)
+            if (selectionType == SelectionType.None)
             {
                 BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
                 return;

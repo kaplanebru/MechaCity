@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Core.Turn.Selectors;
 using Enums;
+using Enums.Selections;
 using Network;
 using Teams;
 using Towers;
@@ -31,7 +32,7 @@ public class MultiTypeSelector : Selector, IBlockable
     {
         CurrentGroup = Data.Groups[0];
 
-        if (CurrentGroup.BlockType != Selections.BlockType.None) //bunu sileriz
+        if (CurrentGroup.BlockType != BlockType.None) //bunu sileriz
             TurnHelper.TurnEvents.OnTeamsRequest?.Invoke();
     }
 

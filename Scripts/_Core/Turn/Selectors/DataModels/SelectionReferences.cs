@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using Enums;
+using Enums.Selections;
 using UnityEngine;
 
 public class SelectionReferences : MonoBehaviour //TODO: TEMP
 {
     public static SelectionReferences Instance;
     public SelectionDataHolder dataHolder;
-    public Dictionary<Selections.SelectionType, Selector> Selectors = new();
+    public Dictionary<SelectionType, Selector> Selectors = new();
     
     
-    public SelectionData GetData(Selections.SelectionType type) => dataHolder.DataByType[type];
+    public SelectionData GetData(SelectionType type) => dataHolder.DataByType[type];
     private void Awake()
     {
         Instance = this;
@@ -21,16 +22,16 @@ public class SelectionReferences : MonoBehaviour //TODO: TEMP
 
     void SetSelectors()
     {
-        Selectors[Selections.SelectionType.PlayerOnlyStd].SetData(GetData(Selections.SelectionType.PlayerOnlyStd));
-        Selectors[Selections.SelectionType.PlayerOnlyStd].SetData(GetData(Selections.SelectionType.PlayerOnlyBp));
-        Selectors[Selections.SelectionType.All].SetData(GetData(Selections.SelectionType.All));
+        Selectors[SelectionType.PlayerOnlyStd].SetData(GetData(SelectionType.PlayerOnlyStd));
+        Selectors[SelectionType.PlayerOnlyStd].SetData(GetData(SelectionType.PlayerOnlyBp));
+        Selectors[SelectionType.All].SetData(GetData(SelectionType.All));
     }
 
     void CreateSelectors()
     {
-        Selectors.Add(Selections.SelectionType.PlayerOnlyStd, new SingleTypeSelector());
-        Selectors.Add(Selections.SelectionType.PlayerOnlyBp, new SingleTypeSelector());
-        Selectors.Add(Selections.SelectionType.All, new MultiTypeSelector());
+        Selectors.Add(SelectionType.PlayerOnlyStd, new SingleTypeSelector());
+        Selectors.Add(SelectionType.PlayerOnlyBp, new SingleTypeSelector());
+        Selectors.Add(SelectionType.All, new MultiTypeSelector());
     }
 
 

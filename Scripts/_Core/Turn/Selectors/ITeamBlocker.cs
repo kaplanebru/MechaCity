@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Enums;
+using Enums.Selections;
 using Teams;
 using Towers;
 
@@ -10,26 +11,28 @@ namespace _Core.Turn.Selectors
     {
         public void TryBlock(Dictionary<TeamState, Team> teamsByTurn);
     }
+
     public interface ITeamBlocker
     {
-        public Selections.BlockType BlockType { get; set; }
-        
-        public TeamState BlockedTeamByTurn { get;}
+        public BlockType BlockType { get; set; }
+
+        public TeamState BlockedTeamByTurn { get; }
         public void BlockSelection(Dictionary<TeamState, Team> teams);
     }
 
 
     public class Blocker : ITeamBlocker // where TBlocker : ITeamBlocker
     {
-        public Selections.BlockType BlockType { get; set; }
+        public BlockType BlockType { get; set; }
+
         public TeamState BlockedTeamByTurn
         {
             get
             {
                 return BlockType switch
                 {
-                    Selections.BlockType.BlockCurrent => TeamState.CurrentTeam,
-                    Selections.BlockType.BlockRival => TeamState.RivalTeam,
+                    BlockType.BlockCurrent => TeamState.CurrentTeam,
+                    BlockType.BlockRival => TeamState.RivalTeam,
                     _ => throw new InvalidOperationException("Invalid BlockState value.")
                 };
             }
@@ -38,9 +41,9 @@ namespace _Core.Turn.Selectors
         public void BlockSelection(Dictionary<TeamState, Team> teams)
         {
             TeamData teamToBlock = teams[BlockedTeamByTurn].Data;
-            teamToBlock.Towers.ForEach(t=>t.DisableSelection());
+            teamToBlock.Towers.ForEach(t => t.DisableSelection());
         }
-        
+
         // public void Setup(Selections.BlockState blockState)
         // {
         //     BlockState = blockState;
@@ -52,7 +55,7 @@ namespace _Core.Turn.Selectors
         //     };
         // }
     }
-    
+
     // public class PlayerBlocker : ITeamBlocker
     // {
     //     public Selections.BlockState BlockState { get; set; }
@@ -74,5 +77,4 @@ namespace _Core.Turn.Selectors
     //         teamToBlock.Towers.ForEach(t=>t.DisableSelection());
     //     }
     // }
-
 }

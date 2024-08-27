@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DataModels;
 using DG.Tweening;
 using Enums;
+using Enums.Selections;
 using UnityEngine;
 
 
@@ -70,7 +71,7 @@ namespace Towers
 
        
 
-        public void SetColorByColorType(Selections.ColorType type)
+        public void SetColorByColorType(ColorType type)
         {
             SetMats(Data.TeamData.GetColorByType(type));
             GeneralEventbus.OnTowerColorChange?.Invoke(Id);

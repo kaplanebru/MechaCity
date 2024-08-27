@@ -4,6 +4,7 @@ using System.Linq;
 using _Core.Turn.Selectors;
 using Core;
 using Enums;
+using Enums.Selections;
 using Network;
 using Towers;
 using GameUI;
@@ -33,7 +34,7 @@ namespace Turn
         public override void Register()
         {
             mainSelector = new();
-            mainSelector.SetData(SelectionReferences.Instance.GetData(Selections.SelectionType.PlayerOnlyStd));
+            mainSelector.SetData(SelectionReferences.Instance.GetData(SelectionType.PlayerOnlyStd));
         }
 
         public override void SubscribeToConstantEvents()

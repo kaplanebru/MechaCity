@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Enums;
+using Enums.Selections;
 using UnityEngine;
 
 namespace Towers
@@ -21,8 +22,8 @@ namespace Towers
         public Material LogoMat;
         public Color[] TeamColors { get; set; }
 
-        private Dictionary<Selections.ColorType, Material[]> ColorByType = new ();
-        public Material[] GetColorByType(Selections.ColorType type) => ColorByType[type];
+        private Dictionary<ColorType, Material[]> ColorByType = new ();
+        public Material[] GetColorByType(ColorType type) => ColorByType[type];
         private void OnEnable() //todo: fix
         {
             SetTeamColors();
@@ -42,10 +43,10 @@ namespace Towers
 
         private void SetColorsByType()
         {
-            ColorByType.Add(Selections.ColorType.Default, DefaultMaterial);
-            ColorByType.Add(Selections.ColorType.Selection, SelectedMaterial);
-            ColorByType.Add(Selections.ColorType.Blueprint, BlueprintMaterial);
-            ColorByType.Add(Selections.ColorType.Freeze, FreezeMaterial);
+            ColorByType.Add(ColorType.Default, DefaultMaterial);
+            ColorByType.Add(ColorType.Selection, SelectedMaterial);
+            ColorByType.Add(ColorType.Blueprint, BlueprintMaterial);
+            ColorByType.Add(ColorType.Freeze, FreezeMaterial);
         }
     }
  
