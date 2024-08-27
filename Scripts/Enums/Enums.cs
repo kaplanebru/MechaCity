@@ -23,7 +23,8 @@ namespace Enums
 
         public enum ColorType
         {
-            Standard,
+            Default,
+            Selection,
             Blueprint,
             Freeze
         }

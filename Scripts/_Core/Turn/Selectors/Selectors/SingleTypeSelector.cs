@@ -23,6 +23,7 @@ public class SingleTypeSelector : Selector, IBlockable
         CurrentGroup.SelectedTowers.Clear();
     }
     
+ 
     protected override void GetTower(params object[] args)
     {
         int towerId = (int) args[0];
@@ -34,7 +35,7 @@ public class SingleTypeSelector : Selector, IBlockable
 
         HandleSelection(true, towerId);
     }
-    
+
     protected override bool SelectedTwice(int selectedTower)
     {
         if (CurrentGroup.SelectedTowers.Contains(selectedTower))
@@ -47,7 +48,6 @@ public class SingleTypeSelector : Selector, IBlockable
 
     public void TryBlock(Dictionary<TeamState, Team> teamsByTurn)
     {
-        //Blocker.Setup(Data.Groups[0].BlockState);
         Blocker.BlockType = Data.Groups[0].BlockType;
         Blocker.BlockSelection(teamsByTurn);
     }

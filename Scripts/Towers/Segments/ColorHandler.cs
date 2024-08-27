@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DataModels;
 using DG.Tweening;
+using Enums;
 using UnityEngine;
 
 
@@ -62,9 +63,18 @@ namespace Towers
             colorChanger.FadeColors(Data.MiddleMeshes, Data.TeamData.TeamColors);
         }
         
-        public void SetMats(Material[] mats)
+        private void SetMats(Material[] mats)
         {
             colorChanger.SetMats(Data.MiddleMeshes, mats);
+        }
+
+       
+
+        public void SetColorByType(Selections.ColorType type)
+        {
+            SetMats(Data.TeamData.GetColorByType(type));
+            GeneralEventbus.OnTurnTowerSelection?.Invoke(Id); //TODO: bunun yeri color değil selection
+
         }
 
         public void ToFreezeColor()

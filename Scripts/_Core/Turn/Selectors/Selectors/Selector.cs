@@ -39,7 +39,6 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
     protected abstract void HandleUI();
     public abstract List<int> SendAllTowers();
     protected abstract void DeselectAll();
-
     protected abstract bool SelectedTwice(int selectedTower);
 
     protected void HandleSelection(bool select, int newSelection)
@@ -51,15 +50,24 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
 
         HandleUI();
     }
+
+  
     private void Select(int newSelection)
     {
         CurrentGroup.SelectedTowers.Add(newSelection);
-        //selectionColorSetter.SetColor(newSelection); //todo: change
+        SetSelectionColor(newSelection);
+       
     }
     private void Deselect(int newSelection)
     {
         CurrentGroup.SelectedTowers.Remove(newSelection);
         AllTowers.GetData(newSelection).ColorHandler.ToOriginalColor();
+    }
+    
+    private void SetSelectionColor(int newSelection)
+    {
+        AllTowers.GetData(newSelection).ColorHandler.SetColorByType(CurrentGroup.SelectionColorType);
+        //selectionColorSetter.SetColor(newSelection);
     }
     protected void ShowCompleteButton(bool enable)
     {
