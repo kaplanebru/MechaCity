@@ -15,5 +15,7 @@ MonoBehaviour:
   TypeDataCouples:
   - Type: 0
     Data: {fileID: 11400000, guid: 6beb69eb512287b45b13f982f6510945, type: 2}
-  - Type: 2
+  - Type: 1
+    Data: {fileID: 11400000, guid: 0265a5c0142577d49b0b931cc4e3257f, type: 2}
+  - Type: 3
     Data: {fileID: 11400000, guid: 48dbd661766b6794bb04c835a47659d9, type: 2}

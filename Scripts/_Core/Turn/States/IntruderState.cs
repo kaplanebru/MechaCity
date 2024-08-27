@@ -33,11 +33,13 @@ namespace Turn
         
         public override void Register()
         {
-            selectors.Add(Selections.SelectionType.PlayerOnly, new SingleTypeSelector());// new BpSelectorWithBlocker<RivalBlocker>());
-            selectors.Add(Selections.SelectionType.RivalOnly,  new SingleTypeSelector());//new BpSelectorWithBlocker<PlayerBlocker>());
-            
-            selectors.Add(Selections.SelectionType.All,new MultiTypeSelector());  //new Selector<BpSelectionColor>()
-            selectors.Add(Selections.SelectionType.None, null);
+            //selectors = 
+                var x = SelectionReferences.Instance.dataHolder.DataByType;
+            // selectors.Add(Selections.SelectionType.PlayerOnly, new SingleTypeSelector());// new BpSelectorWithBlocker<RivalBlocker>());
+            // selectors.Add(Selections.SelectionType.RivalOnly,  new SingleTypeSelector());//new BpSelectorWithBlocker<PlayerBlocker>());
+            //
+            // selectors.Add(Selections.SelectionType.All,new MultiTypeSelector());  //new Selector<BpSelectionColor>()
+            // selectors.Add(Selections.SelectionType.None, null);
         }
 
         public override void SubscribeToConstantEvents() {}

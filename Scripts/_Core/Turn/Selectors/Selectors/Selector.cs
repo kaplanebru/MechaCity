@@ -17,7 +17,6 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
     protected Blocker Blocker = new();
 
 
-    //protected T selectionColorSetter = new T();
     protected Dictionary<TeamState, Team> _teams = new();
     
     public void Subscribe()
@@ -67,7 +66,6 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
     private void SetSelectionColor(int newSelection)
     {
         AllTowers.GetData(newSelection).ColorHandler.SetColorByColorType(CurrentGroup.SelectionColorType);
-        //selectionColorSetter.SetColor(newSelection);
     }
     protected void ShowCompleteButton(bool enable)
     {

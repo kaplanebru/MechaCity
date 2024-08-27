@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using Enums;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Selection/" + nameof(SelectionAssetHolder), fileName = nameof(SelectionAssetHolder))]
-public class SelectionAssetHolder : ScriptableObject
+[CreateAssetMenu(menuName = "Selection/" + nameof(SelectionDataHolder), fileName = nameof(SelectionDataHolder))]
+public class SelectionDataHolder : ScriptableObject
 {
     public SelectionTypeDataCouple[] TypeDataCouples;
     public Dictionary<Selections.SelectionType, SelectionData> DataByType = new();

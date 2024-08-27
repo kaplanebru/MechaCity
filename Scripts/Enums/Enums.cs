@@ -16,8 +16,9 @@ namespace Enums
     {
         public enum SelectionType
         {
-            PlayerOnly,
-            RivalOnly,
+            PlayerOnlyStd,
+            PlayerOnlyBp,
+            RivalOnlyBp,
             All, 
             None
         }
