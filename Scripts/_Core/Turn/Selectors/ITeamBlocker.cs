@@ -44,38 +44,5 @@ namespace _Core.Turn.Selectors
             TeamData teamToBlock = teams[BlockedTeamByTurn].Data;
             teamToBlock.Towers.ForEach(t => t.DisableSelection());
         }
-
-        // public void Setup(Selections.BlockState blockState)
-        // {
-        //     BlockState = blockState;
-        //     BlockedTeamState = BlockState switch
-        //     {
-        //         Selections.BlockState.BlockCurrent => TeamState.CurrentTeam,
-        //         Selections.BlockState.BlockRival => TeamState.RivalTeam,
-        //         _ => BlockedTeamState
-        //     };
-        // }
     }
-
-    // public class PlayerBlocker : ITeamBlocker
-    // {
-    //     public Selections.BlockState BlockState { get; set; }
-    //     public TeamState BlockedTeamState { get; set; } = TeamState.CurrentTeam;
-    //     public void BlockSelection(Dictionary<TeamState, Team> teams)
-    //     {
-    //         TeamData teamToBlock = teams[BlockedTeamState].Data;
-    //         teamToBlock.Towers.ForEach(t=>t.DisableSelection());
-    //     }
-    // }
-    //
-    // public class RivalBlocker : ITeamBlocker
-    // {
-    //     public Selections.BlockState BlockState { get; set; }
-    //     public TeamState BlockedTeamState { get; set; } = TeamState.RivalTeam;
-    //     public void BlockSelection(Dictionary<TeamState, Team> teams)
-    //     {
-    //         TeamData teamToBlock = teams[BlockedTeamState].Data;
-    //         teamToBlock.Towers.ForEach(t=>t.DisableSelection());
-    //     }
-    // }
 }

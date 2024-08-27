@@ -58,7 +58,7 @@ namespace Blueprint
             
             print(currentBlueprint);
 
-            BpEventbus.SelectionEvents.OnCurrentBpSet?.Invoke(currentBlueprint.SelectionType, currentBlueprint.MaxSelectionAmount);
+            BpEventbus.SelectionEvents.OnCurrentBpSet?.Invoke(currentBlueprint.SelectionType);
         }
 
        

@@ -21,18 +21,4 @@ public class SelectionGroup
         }
         SelectedTowers.Clear();
     }
-    
-    // public TeamState BlockedTeamState
-    // {
-    //     get
-    //     {
-    //         return blockType switch
-    //         {
-    //             Selections.BlockType.BlockCurrent => TeamState.CurrentTeam,
-    //             Selections.BlockType.BlockRival => TeamState.RivalTeam,
-    //             _ => throw new InvalidOperationException("Invalid BlockState value.")
-    //         };
-    //     }
-    // }
-    
 }

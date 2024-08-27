@@ -43,7 +43,7 @@ namespace Turn
             TransferData.Towers = data.Towers;
         }
 
-        private void GetBpSelector(SelectionType selectionType, int maxSelectionAmount)
+        private void GetBpSelector(SelectionType selectionType)
         {
             bpSelector = SelectionReferences.Instance.GetSelector(selectionType);
 
@@ -54,26 +54,16 @@ namespace Turn
             }
 
             bpSelector.Subscribe();
-            // SetBlocking();
-            //bpSelector.SetMaxTowers(maxSelectionAmount);
             bpSelector.StartWithNewTowers(); //ContinueTowers(new List<int>());
             //TODO: bp towers için resetlenen bir list tutulabilir
         }
-
-        // void SetBlocking() //kendinden bloklu olması lazım?
-        // {
-        //     IBlockable blockable = bpSelector as IBlockable;
-        //     if (blockable == null) return;
-        //     ((IBlockable) bpSelector).TryBlock(TeamsByTurn);
-        // }
-
+        
         public override void ExecuteSelection()
         {
             BpEventbus.OnBpExecution?.Invoke(bpSelector?.SendAllTowers()
                 .ToArray()); //burda tekrar networke gitmeye gerek yok!!
         }
-
-
+        
         public override void Unsubscribe()
         {
             BpEventbus.SelectionEvents.OnCurrentBpSet -= GetBpSelector;
