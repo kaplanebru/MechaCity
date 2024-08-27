@@ -34,6 +34,7 @@ namespace Turn
         
         public override void Register()
         {
+            //todo: sadece bp olanları almak istiyoruz
             //selectors = 
                 var x = SelectionReferences.Instance.dataHolder.DataByType;
             // selectors.Add(Selections.SelectionType.PlayerOnly, new SingleTypeSelector());// new BpSelectorWithBlocker<RivalBlocker>());
