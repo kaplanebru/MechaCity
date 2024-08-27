@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using Enums;
 using Towers;
 using UnityEngine;
 
@@ -46,5 +49,11 @@ namespace Teams
         {
             Data.Towers.Remove(tower);
         }
+    }
+    
+    public static class TeamEvents
+    {
+        public static Action<Dictionary<TeamState, Team>> OnTeamsSent;
+        public static Action OnTeamsRequest;
     }
 }

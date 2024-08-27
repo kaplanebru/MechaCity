@@ -6,21 +6,18 @@ using Teams;
 
 public class MultiTypeSelector : Selector, IBlockable
 {
-    // private PlayerBlocker playerBlocker = new PlayerBlocker();
-    // private RivalBlocker rivalBlocker = new RivalBlocker();
-    
     private Dictionary<TeamState, Team> _teamsByTurn = new();
     
     private bool isFull = false;
 
     protected override void Register()
     {
-        TurnHelper.TurnEvents.OnTeamsSent += GetTeamsData;
+        TeamEvents.OnTeamsSent += GetTeamsData;
     }
 
     protected override void Unregister()
     {
-        TurnHelper.TurnEvents.OnTeamsSent -= GetTeamsData;
+        TeamEvents.OnTeamsSent -= GetTeamsData;
     }
 
     public override void StartWithNewTowers()
@@ -28,7 +25,7 @@ public class MultiTypeSelector : Selector, IBlockable
         CurrentGroup = Data.Groups[0];
 
         if (CurrentGroup.BlockType != BlockType.None) //bunu sileriz
-            TurnHelper.TurnEvents.OnTeamsRequest?.Invoke();
+            TeamEvents.OnTeamsRequest?.Invoke();
     }
 
     private void GetTeamsData(Dictionary<TeamState, Team> teams) //sürekli değiştiği için, burda almakta fayda var

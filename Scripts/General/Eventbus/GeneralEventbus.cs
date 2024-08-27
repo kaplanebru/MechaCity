@@ -13,7 +13,7 @@ public static class GeneralEventbus
         public static Action OnTowersAndTeamsReady;
         public static Action OnExternalElementsReady;
     }
-    
+
     public static Action<int, int> OnHealthIconChangeRequest;
     public static Action<IEnumeratorContainer> OnCoroutineTrigger;
     
