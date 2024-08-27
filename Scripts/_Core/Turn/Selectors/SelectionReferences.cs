@@ -3,7 +3,7 @@ using Enums;
 using Enums.Selections;
 using UnityEngine;
 
-public class SelectionReferences : MonoBehaviour //TODO: TEMP
+public class SelectionReferences : MonoBehaviour
 {
     public static SelectionReferences Instance;
     public SelectionDataHolder dataHolder;
