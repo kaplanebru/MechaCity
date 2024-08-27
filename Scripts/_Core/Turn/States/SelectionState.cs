@@ -1,15 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using _Core.Turn.Selectors;
-using Core;
 using Enums;
 using Enums.Selections;
-using Network;
-using Towers;
-using GameUI;
-using Unity.VisualScripting;
-using UnityEngine;
 
 namespace Turn
 {

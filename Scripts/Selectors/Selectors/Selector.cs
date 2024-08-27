@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using _Core.Turn.Selectors;
 using Enums;
@@ -6,8 +5,6 @@ using GameUI;
 using Network;
 using Teams;
 using Towers;
-using Turn;
-using UnityEngine;
 
 
 public abstract class Selector //Selector<T> where T : ISelectionColorSetter, new()

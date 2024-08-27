@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using Enums;
-using Testing;
 using Turn;
-using UnityEngine;
 
 public class ExitTransferData : BaseTurnTransferData
 {

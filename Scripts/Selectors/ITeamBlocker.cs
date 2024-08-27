@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Enums;
 using Enums.Selections;
 using Teams;
-using Towers;
 
 namespace _Core.Turn.Selectors
 {
