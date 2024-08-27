@@ -8,7 +8,7 @@ namespace Blueprint
     public class BpSelectionIncrement: BaseBlueprint, IBpActionProcessor<SelectionIncrementAction>
     {
         public override BpType Type { get; set; } = BpType.SelectionIncrement;
-        public override SelectionType SelectionType { get; set; } = SelectionType.None;
+        public override Selections.SelectionType SelectionType { get; set; } = Selections.SelectionType.None;
         public override int Lifespan { get; set; } = 1;
         public override int MaxSelectionAmount { get; set; } = 0;
     

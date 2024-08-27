@@ -5,6 +5,6 @@ using UnityEngine;
 
 public class SelectionData : ScriptableObject
 {
-    public SelectionType Type;
+    public Selections.SelectionType Type;
     public SelectionGroup[] Groups;
 }

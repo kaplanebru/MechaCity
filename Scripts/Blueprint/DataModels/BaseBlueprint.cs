@@ -7,7 +7,7 @@ namespace Blueprint
     {
         public abstract BpType Type { get; set; }
 
-        public abstract SelectionType SelectionType { get; set; }
+        public abstract Selections.SelectionType SelectionType { get; set; }
 
         public virtual int Level
         {

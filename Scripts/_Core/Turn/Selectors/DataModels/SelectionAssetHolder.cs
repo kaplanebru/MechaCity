@@ -8,7 +8,7 @@ using UnityEngine;
 public class SelectionAssetHolder : ScriptableObject
 {
     public SelectionTypeDataCouple[] TypeDataCouples;
-    public Dictionary<SelectionType, SelectionData> DataByType = new();
+    public Dictionary<Selections.SelectionType, SelectionData> DataByType = new();
 
     public void Setup()
     {
@@ -20,6 +20,6 @@ public class SelectionAssetHolder : ScriptableObject
 }
 
 [Serializable]
-public class SelectionTypeDataCouple : TypeDataCouple<SelectionType, SelectionData>
+public class SelectionTypeDataCouple : TypeDataCouple<Selections.SelectionType, SelectionData>
 {
 }

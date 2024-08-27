@@ -70,11 +70,10 @@ namespace Towers
 
        
 
-        public void SetColorByType(Selections.ColorType type)
+        public void SetColorByColorType(Selections.ColorType type)
         {
             SetMats(Data.TeamData.GetColorByType(type));
-            GeneralEventbus.OnTurnTowerSelection?.Invoke(Id); //TODO: bunun yeri color değil selection
-
+            GeneralEventbus.OnTowerColorChange?.Invoke(Id);
         }
 
         public void ToFreezeColor()
@@ -90,7 +89,7 @@ namespace Towers
         public void ToSelectionColor()
         {
             SetMats(Data.TeamData.SelectedMaterial);
-            GeneralEventbus.OnTurnTowerSelection?.Invoke(Id);
+            GeneralEventbus.OnTowerColorChange?.Invoke(Id);
         }
 
         public void ToOriginalColor()

@@ -12,7 +12,7 @@ public class SelectionReferences : MonoBehaviour //TODO: TEMP
         assetHolder.Setup();
     }
 
-    public SelectionData GetData(SelectionType type) => assetHolder.DataByType[type];
+    public SelectionData GetData(Selections.SelectionType type) => assetHolder.DataByType[type];
 
    
 }

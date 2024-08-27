@@ -25,7 +25,7 @@ namespace Turn
         public IntruderTransferData TransferData { get; private set; } = new();
         
         protected Selector bpSelector; // = new ();
-        private Dictionary<SelectionType, Selector> selectors = new ();
+        private Dictionary<Selections.SelectionType, Selector> selectors = new ();
         //private Dictionary<SelectionType, Selector<BpSelectionColor>> selectors = new ();
 
         private BaseTurnTransferData incomingData;
@@ -33,11 +33,11 @@ namespace Turn
         
         public override void Register()
         {
-            selectors.Add(SelectionType.PlayerOnly, new SingleTypeSelector());// new BpSelectorWithBlocker<RivalBlocker>());
-            selectors.Add(SelectionType.RivalOnly,  new SingleTypeSelector());//new BpSelectorWithBlocker<PlayerBlocker>());
+            selectors.Add(Selections.SelectionType.PlayerOnly, new SingleTypeSelector());// new BpSelectorWithBlocker<RivalBlocker>());
+            selectors.Add(Selections.SelectionType.RivalOnly,  new SingleTypeSelector());//new BpSelectorWithBlocker<PlayerBlocker>());
             
-            selectors.Add(SelectionType.All,new MultiTypeSelector());  //new Selector<BpSelectionColor>()
-            selectors.Add(SelectionType.None, null);
+            selectors.Add(Selections.SelectionType.All,new MultiTypeSelector());  //new Selector<BpSelectionColor>()
+            selectors.Add(Selections.SelectionType.None, null);
         }
 
         public override void SubscribeToConstantEvents() {}
@@ -54,11 +54,11 @@ namespace Turn
             TransferData.Towers = data.Towers;
         }
         
-        private void GetBpSelector(SelectionType selectionType, int maxSelectionAmount)
+        private void GetBpSelector(Selections.SelectionType selectionType, int maxSelectionAmount)
         {
             bpSelector = selectors[selectionType];
             
-            if (selectionType == SelectionType.None)
+            if (selectionType == Selections.SelectionType.None)
             {
                 BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
                 return;

@@ -14,6 +14,13 @@ namespace Enums
 
     public class Selections
     {
+        public enum SelectionType
+        {
+            PlayerOnly,
+            RivalOnly,
+            All, 
+            None
+        }
         public enum BlockType
         {
             BlockCurrent,
@@ -70,13 +77,7 @@ namespace Enums
         None
     }
 
-    public enum SelectionType
-    {
-        PlayerOnly,
-        RivalOnly,
-        All, 
-        None
-    }
+   
 
     
     

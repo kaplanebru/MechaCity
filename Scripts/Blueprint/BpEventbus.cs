@@ -11,7 +11,7 @@ public static class BpEventbus
     public static Action<int[]> OnBpExecution;
     public class SelectionEvents
     {
-        public static Action<SelectionType, int> OnCurrentBpSet;
+        public static Action<Selections.SelectionType, int> OnCurrentBpSet;
     }
 
     public class StateEvents

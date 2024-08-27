@@ -66,7 +66,7 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
     
     private void SetSelectionColor(int newSelection)
     {
-        AllTowers.GetData(newSelection).ColorHandler.SetColorByType(CurrentGroup.SelectionColorType);
+        AllTowers.GetData(newSelection).ColorHandler.SetColorByColorType(CurrentGroup.SelectionColorType);
         //selectionColorSetter.SetColor(newSelection);
     }
     protected void ShowCompleteButton(bool enable)

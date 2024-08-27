@@ -17,7 +17,7 @@ public static class GeneralEventbus
     public static Action<int, int> OnHealthIconChangeRequest;
     public static Action<IEnumeratorContainer> OnCoroutineTrigger;
     
-    public static Action<int> OnTurnTowerSelection;
+    public static Action<int> OnTowerColorChange;
     public static Action<int> OnTurnTowerDeselect;
 
 }

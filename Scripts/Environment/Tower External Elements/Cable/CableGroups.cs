@@ -19,7 +19,7 @@ namespace TowerExternal
         public void Subscribe()
         {
             Eventbus.LinkEvents.OnLinkStateBegin += DeselectAll;
-            GeneralEventbus.OnTurnTowerSelection += ToSelection;
+            GeneralEventbus.OnTowerColorChange += ToSelection;
             GeneralEventbus.OnTurnTowerDeselect += Deselect;
         }
 
@@ -52,7 +52,7 @@ namespace TowerExternal
         public void Unsubscribe()
         {
             Eventbus.LinkEvents.OnLinkStateBegin -= DeselectAll;
-            GeneralEventbus.OnTurnTowerSelection -= ToSelection;
+            GeneralEventbus.OnTowerColorChange -= ToSelection;
             GeneralEventbus.OnTurnTowerDeselect -= Deselect;
         }
     }
