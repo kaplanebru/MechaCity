@@ -31,7 +31,7 @@ namespace Turn
         public override void SubscribeToConstantEvents()
         {
             BpEventbus.SubscriberEvents.OnSelectionIncrease += UpdateSelectionAmount;
-            BpEventbus.SubscriberEvents.OnSelectionRestoration += ResetSelection;
+            BpEventbus.SubscriberEvents.OnSelectionRestoration += ResetMaxSelection;
         }
 
 
@@ -52,11 +52,15 @@ namespace Turn
             mainSelector.ContinueTowers(TransferData.Towers);
         }
         
-        public void ResetSelection()
+        public void ResetMaxSelection()
         {
             mainSelector.ResetMaxSelection(); 
         }
 
+        public void ResetSelector()
+        {
+            mainSelector.StartWithNewTowers();
+        }
 
         public override void Unsubscribe()
         {
@@ -67,7 +71,7 @@ namespace Turn
         public override void UnsubscribeFromConstantEvents()
         {
             BpEventbus.SubscriberEvents.OnSelectionIncrease -= UpdateSelectionAmount;
-            BpEventbus.SubscriberEvents.OnSelectionRestoration -= ResetSelection;
+            BpEventbus.SubscriberEvents.OnSelectionRestoration -= ResetMaxSelection;
         }
 
     }

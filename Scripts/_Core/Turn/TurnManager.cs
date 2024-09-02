@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DataModels;
 using Enums;
+using Enums.Selections;
 using Network;
 using UnityEngine;
 using Teams;
@@ -99,6 +100,9 @@ namespace Turn
             print("turn track: " + _turnTracker);
             turnHelper.ManageInput();
             SetFirstState();
+            
+            //SelectionReferences.Instance.GetSelector(SelectionType.PlayerOnlyStd).StartWithNewTowers();
+            ((SelectionState) _stateHolder.GetStateByType(TurnStateType.Selection)).ResetSelector();
         }
 
         void SetFirstState()

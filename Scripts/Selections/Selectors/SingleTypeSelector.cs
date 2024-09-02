@@ -18,6 +18,7 @@ public class SingleTypeSelector : Selector, IBlockable
     public override void StartWithNewTowers()
     {
         DeselectAll();
+        //turn bitiminde resetleniyor!!
     }
     
  
@@ -45,9 +46,9 @@ public class SingleTypeSelector : Selector, IBlockable
 
     public void TryBlock(Dictionary<TeamState, Team> teamsByTurn)
     {
-        Blocker.BlockType = CurrentGroup.BlockType; //TODO: SelectedTeamsByTurn falan hep blocker üzerinden belirleniyor, fix
+        Blocker.BlockType = CurrentGroup.BlockType;
         SetTeams(teamsByTurn);
-        //SelectionEvents.OnSelectionReady?.Invoke(this);
+       
         Blocker.BlockSelection(_teamsByTurn, CurrentGroup.BlockedTeam);
     }
     

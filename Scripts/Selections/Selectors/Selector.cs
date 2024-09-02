@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using _Core.Turn.Selectors;
 using Enums;
 using Enums.Selections;
@@ -61,22 +62,28 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
         HandleUI();
     }
 
-  
     private void Select(int newSelection)
     {
         CurrentGroup.SelectedTowers.Add(newSelection);
-        SetSelectionColor(newSelection);
-       
+        var tower = AllTowers.GetData(newSelection);
+        SetSelectionColor(tower);
+
+        //SelectionEvents.OnSelection?.Invoke(tower.UniqID.ToString()); //todo: name
+
     }
     private void Deselect(int newSelection)
     {
         CurrentGroup.SelectedTowers.Remove(newSelection);
         AllTowers.GetData(newSelection).ColorHandler.ToOriginalColor();
+        
+        //SelectionEvents.OnSelection?.Invoke("");
     }
+
+   
     
-    private void SetSelectionColor(int newSelection)
+    private void SetSelectionColor(TowerData tower)
     {
-        AllTowers.GetData(newSelection).ColorHandler.SetColorByColorType(CurrentGroup.SelectionColorType);
+        tower.ColorHandler.SetColorByColorType(CurrentGroup.SelectionColorType);
     }
     protected void ShowCompleteButton(bool enable)
     {

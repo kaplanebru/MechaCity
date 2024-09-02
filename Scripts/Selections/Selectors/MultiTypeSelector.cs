@@ -57,9 +57,7 @@ public class MultiTypeSelector : Selector, IBlockable
         }
     }
 
-    protected override void HandleUI()
-    {
-    }
+    protected override void HandleUI() { }
 
     void ShiftGroup()
     {
@@ -83,28 +81,10 @@ public class MultiTypeSelector : Selector, IBlockable
 
     void Block()
     {
-        //Blocker.BlockedTeamState = CurrentGroup.BlockedTeamState;
         Blocker.BlockType = CurrentGroup.BlockType;
         Blocker.BlockSelection(_teamsByTurn, CurrentGroup.BlockedTeam);
-       
     }
-
-    // void Block()
-    // {
-    //     AllTowers.EnableClickability();
-    //
-    //     switch (CurrentGroup.BlockState)
-    //     {
-    //         case Selections.BlockState.BlockCurrent:
-    //             playerBlocker.BlockSelection(_teams);
-    //             break;
-    //
-    //         case Selections.BlockState.BlockRival:
-    //             rivalBlocker.BlockSelection(_teams);
-    //             break;
-    //     }
-    // }
-
+    
     void FullSituation()
     {
         ShowCompleteButton(true);
@@ -118,9 +98,6 @@ public class MultiTypeSelector : Selector, IBlockable
             group.ResetTowers();
         }
     }
-
-
-
 
     protected override bool SelectedTwice(int selectedTower)
     {
@@ -138,5 +115,4 @@ public class MultiTypeSelector : Selector, IBlockable
         return towers;
     }
 
-   
 }

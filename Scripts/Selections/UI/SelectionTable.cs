@@ -8,12 +8,22 @@ public class SelectionTable : MonoBehaviour
 {
     private Selector _currentSelector;
     public SelectionSlot[] slots;
+    private int _slotCounter;
     private int _slotAmount;
 
     private void OnEnable()
     {
         SelectionEvents.OnSelectionReady += GetSelector;
+        SelectionEvents.OnSelection += AddToTable;
     }
+
+    private void AddToTable(string towerName)
+    {
+        // slots[_slotCounter].name = towerName;
+        // _slotCounter++; //todo: removeda eksi, hatta hangi slot olduğunu bilmemiz gerekebilir
+    }
+    
+    //_______________SETTER____________________________________
 
     public void GetSelector(Selector selector)
     {
@@ -59,6 +69,7 @@ public class SelectionTable : MonoBehaviour
     private void OnDisable()
     {
         SelectionEvents.OnSelectionReady -= GetSelector;
+        SelectionEvents.OnSelection -= AddToTable;
     }
 
     //not: eşleştirmeyle uğraşma zaten blocklular

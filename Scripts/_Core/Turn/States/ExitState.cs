@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Enums;
+using Enums.Selections;
 using Turn;
 
 public class ExitTransferData : BaseTurnTransferData
@@ -15,6 +16,7 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     public override TurnStateType StateType { get; } = TurnStateType.Exit;
 
     public CombatHelper _combatHelper;
+
     public override void Subscribe() {}
     public override void SubscribeToConstantEvents() {}
     public override void Register() {}
