@@ -17,7 +17,7 @@ public class SingleTypeSelector : Selector, IBlockable
 
     public override void StartWithNewTowers()
     {
-        CurrentGroup.SelectedTowers.Clear();
+        DeselectAll();
     }
     
  

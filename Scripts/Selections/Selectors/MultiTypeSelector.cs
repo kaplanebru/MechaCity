@@ -3,6 +3,7 @@ using _Core.Turn.Selectors;
 using Enums;
 using Enums.Selections;
 using Teams;
+using UnityEngine;
 
 public class MultiTypeSelector : Selector, IBlockable
 {
@@ -21,6 +22,7 @@ public class MultiTypeSelector : Selector, IBlockable
 
     public override void StartWithNewTowers()
     {
+        DeselectAll();
         CurrentGroup = Data.Groups[0];
 
         if (CurrentGroup.BlockType != BlockType.None) //bunu sileriz
@@ -35,6 +37,8 @@ public class MultiTypeSelector : Selector, IBlockable
     protected override void GetTower(params object[] args)
     {
         int towerId = (int) args[0];
+        
+        Debug.Log("multi");
 
         if (isFull)
         {
@@ -82,6 +86,7 @@ public class MultiTypeSelector : Selector, IBlockable
         //Blocker.BlockedTeamState = CurrentGroup.BlockedTeamState;
         Blocker.BlockType = CurrentGroup.BlockType;
         Blocker.BlockSelection(_teamsByTurn, CurrentGroup.BlockedTeam);
+       
     }
 
     // void Block()
