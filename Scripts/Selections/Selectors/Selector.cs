@@ -25,9 +25,10 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
         Register();
     }
 
-    public void SetTeams(Dictionary<TeamState, Team> teams)
+    protected void SetTeams(Dictionary<TeamState, Team> teams)
     {
         _teamsByTurn = teams;
+        SelectionEvents.OnSelectionReady?.Invoke(this);
     }
 
     public Team GetSelectionTeam(int i)

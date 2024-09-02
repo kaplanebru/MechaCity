@@ -47,7 +47,7 @@ public class SingleTypeSelector : Selector, IBlockable
     {
         Blocker.BlockType = CurrentGroup.BlockType; //TODO: SelectedTeamsByTurn falan hep blocker üzerinden belirleniyor, fix
         SetTeams(teamsByTurn);
-        SelectionEvents.OnBlockerSet?.Invoke(this);
+        //SelectionEvents.OnSelectionReady?.Invoke(this);
         Blocker.BlockSelection(_teamsByTurn, CurrentGroup.BlockedTeam);
     }
     

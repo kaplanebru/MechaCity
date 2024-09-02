@@ -29,9 +29,7 @@ public class MultiTypeSelector : Selector, IBlockable
 
     private void GetTeamsData(Dictionary<TeamState, Team> teams) //sürekli değiştiği için, burda almakta fayda var
     {
-        //_teamsByTurn = teams;
         SetTeams(teams);
-        SelectionEvents.OnBlockerSet?.Invoke(this); //todo: testtt
     }
 
     protected override void GetTower(params object[] args)

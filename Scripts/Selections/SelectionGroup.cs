@@ -11,6 +11,9 @@ public class SelectionGroup
 {
     public int Index;
     public int MaxTowers = 1;
+    public ColorType SelectionColorType;
+    public List<int> SelectedTowers { get; set; } = new();
+    
     public BlockType BlockType;
     public TeamState SelectionTeam {
         get
@@ -36,10 +39,6 @@ public class SelectionGroup
             };
         }
     }
-    
-    
-    public ColorType SelectionColorType;
-    public List<int> SelectedTowers { get; set; } = new();
     public void ResetTowers()
     {
         foreach (var tower in SelectedTowers)

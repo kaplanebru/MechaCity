@@ -12,7 +12,7 @@ public class SelectionTable : MonoBehaviour
 
     private void OnEnable()
     {
-        SelectionEvents.OnBlockerSet += GetSelector;
+        SelectionEvents.OnSelectionReady += GetSelector;
     }
 
     public void GetSelector(Selector selector)
@@ -58,7 +58,7 @@ public class SelectionTable : MonoBehaviour
 
     private void OnDisable()
     {
-        SelectionEvents.OnBlockerSet -= GetSelector;
+        SelectionEvents.OnSelectionReady -= GetSelector;
     }
 
     //not: eşleştirmeyle uğraşma zaten blocklular
