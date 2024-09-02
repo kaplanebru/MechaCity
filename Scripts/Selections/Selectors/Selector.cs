@@ -34,7 +34,7 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
 
     public Team GetSelectionTeam()
     {
-       return _teamsByTurn[Blocker.SelectionTeamByTurn]; //TODO: bunu datadan almalıyız, blocker olarak da sonradan eklenebilir
+       return _teamsByTurn[CurrentGroup.SelectionTeam]; //TODO: bunu datadan almalıyız, blocker olarak da sonradan eklenebilir
     }
 
     public void SetData(SelectionData data)

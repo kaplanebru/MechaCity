@@ -83,7 +83,7 @@ public class MultiTypeSelector : Selector, IBlockable
     {
         //Blocker.BlockedTeamState = CurrentGroup.BlockedTeamState;
         Blocker.BlockType = CurrentGroup.BlockType;
-        Blocker.BlockSelection(_teamsByTurn);
+        Blocker.BlockSelection(_teamsByTurn, CurrentGroup.BlockedTeam);
     }
 
     // void Block()

@@ -15,52 +15,19 @@ namespace _Core.Turn.Selectors
     public interface ITeamBlocker
     {
         public BlockType BlockType { get; set; }
-
-        public TeamState BlockedTeamByTurn { get; }
-        public void BlockSelection(Dictionary<TeamState, Team> teams);
+        public void BlockSelection(Dictionary<TeamState, Team> teams, TeamState blockedTeam);
     }
 
 
     public class Blocker : ITeamBlocker // where TBlocker : ITeamBlocker
     {
         public BlockType BlockType { get; set; }
+        
 
-        public TeamState BlockedTeamByTurn
-        {
-            get
-            {
-                Debug.Log(BlockType);
-
-                return BlockType switch
-                {
-                    BlockType.BlockCurrent => TeamState.CurrentTeam,
-                    BlockType.BlockRival => TeamState.RivalTeam,
-                    _ => throw new InvalidOperationException("BlockType None")
-                };
-            }
-        }
-
-        public TeamState SelectionTeamByTurn
-        {
-            get
-            {
-                Debug.Log(BlockType);
-                switch (BlockType)
-                {
-                    case BlockType.BlockCurrent:
-                        return TeamState.RivalTeam;
-                    case BlockType.BlockRival:
-                        return TeamState.CurrentTeam;
-                    default:
-                        throw new InvalidOperationException("BlockType None");
-                }
-            }
-        }
-
-        public void BlockSelection(Dictionary<TeamState, Team> teams)
+        public void BlockSelection(Dictionary<TeamState, Team> teams, TeamState blockedTeam)
         {
             if(BlockType == BlockType.None) return;
-            TeamData teamToBlock = teams[BlockedTeamByTurn].Data;
+            TeamData teamToBlock = teams[blockedTeam].Data;
             teamToBlock.Towers.ForEach(t => t.DisableSelection());
         }
     }
