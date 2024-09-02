@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using _Core.Turn.Selectors;
 using Enums;
+using Enums.Selections;
 using GameUI;
 using Network;
 using Teams;
 using Towers;
-
-
+using UnityEngine;
 
 
 public abstract class Selector //Selector<T> where T : ISelectionColorSetter, new()
@@ -28,13 +28,12 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
     public void SetTeams(Dictionary<TeamState, Team> teams)
     {
         _teamsByTurn = teams;
-        //SelectionEvents.OnBlockerSet?.Invoke(this);
-
     }
 
-    public Team GetSelectionTeam()
+    public Team GetSelectionTeam(int i)
     {
-       return _teamsByTurn[CurrentGroup.SelectionTeam]; //TODO: bunu datadan almalıyız, blocker olarak da sonradan eklenebilir
+        var teamState = Data.Groups[i].SelectionTeam;
+       return _teamsByTurn[teamState];
     }
 
     public void SetData(SelectionData data)

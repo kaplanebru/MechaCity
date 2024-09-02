@@ -15,8 +15,6 @@ public class SelectionGroup
     public TeamState SelectionTeam {
         get
         {
-            Debug.Log(BlockType);
-
             return BlockType switch
             {
                 BlockType.BlockCurrent => TeamState.RivalTeam,
