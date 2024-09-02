@@ -7,20 +7,34 @@ using Teams;
 using Towers;
 
 
+
+
 public abstract class Selector //Selector<T> where T : ISelectionColorSetter, new()
 {
     protected SelectionGroup CurrentGroup;
-    protected SelectionData Data;
+    public SelectionData Data { get; private set; }
     protected Blocker Blocker = new();
 
 
-    protected Dictionary<TeamState, Team> _teams = new();
-    
+    protected Dictionary<TeamState, Team> _teamsByTurn = new();
+
     public void Subscribe()
     {
         //SelectedTowers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
         Register();
+    }
+
+    public void SetTeams(Dictionary<TeamState, Team> teams)
+    {
+        _teamsByTurn = teams;
+        //SelectionEvents.OnBlockerSet?.Invoke(this);
+
+    }
+
+    public Team GetSelectionTeam()
+    {
+       return _teamsByTurn[Blocker.SelectionTeamByTurn]; //TODO: bunu datadan almalıyız, blocker olarak da sonradan eklenebilir
     }
 
     public void SetData(SelectionData data)

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f00e7d641d64aaab67b2caa5c7fa711, type: 3}
   m_Name: MultiSelectionData
   m_EditorClassIdentifier: 
-  Type: 2
+  Type: 3
   Groups:
   - Index: 0
     MaxTowers: 1

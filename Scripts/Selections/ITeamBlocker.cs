@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Enums;
 using Enums.Selections;
 using Teams;
+using UnityEngine;
 
 namespace _Core.Turn.Selectors
 {
@@ -28,12 +29,31 @@ namespace _Core.Turn.Selectors
         {
             get
             {
+                Debug.Log(BlockType);
+
                 return BlockType switch
                 {
                     BlockType.BlockCurrent => TeamState.CurrentTeam,
                     BlockType.BlockRival => TeamState.RivalTeam,
-                    _ => throw new InvalidOperationException("Invalid BlockState value.")
+                    _ => throw new InvalidOperationException("BlockType None")
                 };
+            }
+        }
+
+        public TeamState SelectionTeamByTurn
+        {
+            get
+            {
+                Debug.Log(BlockType);
+                switch (BlockType)
+                {
+                    case BlockType.BlockCurrent:
+                        return TeamState.RivalTeam;
+                    case BlockType.BlockRival:
+                        return TeamState.CurrentTeam;
+                    default:
+                        throw new InvalidOperationException("BlockType None");
+                }
             }
         }
 

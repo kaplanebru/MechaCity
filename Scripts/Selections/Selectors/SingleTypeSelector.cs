@@ -45,8 +45,10 @@ public class SingleTypeSelector : Selector, IBlockable
 
     public void TryBlock(Dictionary<TeamState, Team> teamsByTurn)
     {
-        Blocker.BlockType = Data.Groups[0].BlockType;
-        Blocker.BlockSelection(teamsByTurn);
+        Blocker.BlockType = Data.Groups[0].BlockType; //TODO: SelectedTeamsByTurn falan hep blocker üzerinden belirleniyor, fix
+        SetTeams(teamsByTurn);
+        SelectionEvents.OnBlockerSet?.Invoke(this);
+        Blocker.BlockSelection(_teamsByTurn);
     }
     
     public override void ContinueTowers(List<int> towers) //önceki state'ten kalan varsa takip edebilelim diye
