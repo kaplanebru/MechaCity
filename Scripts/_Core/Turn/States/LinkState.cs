@@ -34,6 +34,8 @@ namespace Turn
         {
             NetworkEventbus.InputEvents.OnObjectClicked += TowerSelected;
             Eventbus.LinkEvents.OnLinkStateBegin?.Invoke();
+            
+            UIEventbus.OnStateShift?.Invoke(StateType);
         }
         
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)

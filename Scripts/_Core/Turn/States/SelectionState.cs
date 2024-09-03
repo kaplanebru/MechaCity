@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Enums;
 using Enums.Selections;
+using GameUI;
 
 namespace Turn
 {
@@ -37,6 +38,8 @@ namespace Turn
 
         public override void Subscribe()
         {
+            UIEventbus.OnStateShift?.Invoke(StateType);
+
             mainSelector.Subscribe();
             mainSelector.TryBlock(TeamsByTurn);
         }

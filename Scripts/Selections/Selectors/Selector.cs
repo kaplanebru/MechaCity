@@ -85,7 +85,7 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
     {
         tower.ColorHandler.SetColorByColorType(CurrentGroup.SelectionColorType);
     }
-    protected void ShowCompleteButton(bool enable)
+    protected void HighlightApply(bool enable)
     {
         UIEventbus.OnButtonCall?.Invoke(enable);
     }

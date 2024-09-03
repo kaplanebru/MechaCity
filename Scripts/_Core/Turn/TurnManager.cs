@@ -48,6 +48,7 @@ namespace Turn
             NetworkEventbus.RequestEvents.OnStateChangeRequestByServer += ChangeStateBySystem;
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
             
+            
             UIEventbus.OnButtonCall += ShowButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
             UIEventbus.OnButtonClicked += StateChangeRequestByUser;
             BpEventbus.StateEvents.OnStateChangeWithoutInteraction += StateChangeByIntruder;
@@ -58,7 +59,7 @@ namespace Turn
 
         private void ShowButtonRequest(bool enable)
         {
-            UIEventbus.OnShowButtonRequest?.Invoke(enable, currentState.StateType);
+            UIEventbus.OnHighlightRequest?.Invoke(enable);
         }
 
         private void Initialize()
@@ -137,12 +138,16 @@ namespace Turn
         {
             var nextType = _stateHolder.States[turnHelper.GetNextStateId(currentState.StateId)].StateType;
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(nextType);
+            
+            UIEventbus.OnStateShift?.Invoke(nextType);
 
         }
         public void GetPreviousState()
         {
             var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(previousType);
+            
+            UIEventbus.OnStateShift?.Invoke(previousType);
         }
 
         public void ChangeStateBySystem(TurnStateType newType)

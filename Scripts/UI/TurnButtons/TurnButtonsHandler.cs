@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DataModels;
 using Enums;
 using Network;
@@ -12,61 +13,58 @@ namespace GameUI
 {
     public class TurnButtonsHandler : MonoBehaviour
     {
+        [SerializeField] private TurnButton[] turnButtons;
+        private TurnButton _currentButton;
         
-        [SerializeField] private Button button;
-        [SerializeField] private Image buttonImage;
-        
-        [SerializeField] private Color[] buttonColors;
-        [SerializeField] private TextMeshProUGUI buttonTextSlot;
-        public TurnButtonHolder buttonHolder;
-
-        private TurnStateType _currentType = TurnStateType.Exit;
-        private TurnStateType _oldType = TurnStateType.Exit;
-
         private void OnEnable() //ui daha önce gelmeli turnden
         {
             Subscribe();
-            buttonTextSlot.fontSizeMax = 20;
+            DisableAll();
+            //buttonTextSlot.fontSizeMax = 20;
         }
         
         void Subscribe()
         {
-            Highlight(false);
-            UIEventbus.OnShowButtonRequest += ShowButton;
+            UIEventbus.OnStateShift += ShiftButton;
+            UIEventbus.OnHighlightRequest += Highlight;
         }
 
-        void Highlight(bool shine)
+        private void Highlight(bool enable)
         {
-            buttonImage.color = shine ? buttonColors[1] : buttonColors[0];
+            _currentButton.Highlight(enable);
+        }
+
+
+        void ShiftButton(TurnStateType type)
+        {
+            DisableAll();
+            
+            _currentButton = turnButtons.FirstOrDefault(b=>b.turnStateType == type);
+            if(!_currentButton) return;
+            
+            _currentButton.Highlight(false);
+            _currentButton.gameObject.SetActive(true);
         }
         
-        void ShowButton(bool enable, TurnStateType type)
-        {
-            _oldType = _currentType;
-            _currentType = type;
-            
-            if(type != _oldType)
-                SetButton(type);
-            Highlight(enable);
-        }
-
-        void SetButton(TurnStateType type)
-        {
-            // buttonTextSlot.text = buttonHolder.ButtonsByType[type].Content;
-            // buttonTextSlot.fontSizeMax = 40;
-            // buttonTextSlot.enableAutoSizing = true;
-            //TODO: tooltip olarak çıkabilir
-        }
 
         public void ButtonClicked()
         {
             UIEventbus.OnButtonClicked?.Invoke();
-            Highlight(false);
+            _currentButton.Highlight(false);
+        }
+
+        void DisableAll()
+        {
+            foreach (var turnButton in turnButtons)
+            {
+                turnButton.gameObject.SetActive(false);
+            }
         }
         
         private void OnDisable()
         {
-            UIEventbus.OnShowButtonRequest -= ShowButton;
+            UIEventbus.OnStateShift -= ShiftButton;
+            UIEventbus.OnHighlightRequest -= Highlight;
         }
     }
 }

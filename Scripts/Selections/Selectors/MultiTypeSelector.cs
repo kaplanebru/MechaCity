@@ -44,7 +44,7 @@ public class MultiTypeSelector : Selector, IBlockable
         {
             DeselectAll();
             isFull = false;
-            ShowCompleteButton(false);
+            HighlightApply(false);
         }
 
         // if(SelectedTwice(towerId)) return; //sadece seçili olan deselect olur. TODO: tıklanamaz olduğu için sıkıntı
@@ -87,7 +87,7 @@ public class MultiTypeSelector : Selector, IBlockable
     
     void FullSituation()
     {
-        ShowCompleteButton(true);
+        HighlightApply(true);
         isFull = true;
     }
 

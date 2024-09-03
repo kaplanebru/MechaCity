@@ -9,7 +9,8 @@ namespace GameUI
     public class UIEventbus
     {
         public static Action<bool> OnButtonCall;
-        public static Action<bool, TurnStateType> OnShowButtonRequest;
+        public static Action<TurnStateType> OnStateShift;
+        public static Action<bool> OnHighlightRequest;
         public static Action OnButtonClicked;
         
         public static Action<float, int> OnTowerHeightChange;

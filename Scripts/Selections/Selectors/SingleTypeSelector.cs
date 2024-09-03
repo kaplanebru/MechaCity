@@ -64,7 +64,7 @@ public class SingleTypeSelector : Selector, IBlockable
 
     protected override void HandleUI()
     {
-        ShowCompleteButton(CurrentGroup.SelectedTowers.Count == CurrentGroup.MaxTowers);
+        HighlightApply(CurrentGroup.SelectedTowers.Count == CurrentGroup.MaxTowers);
     }
     
     public override void ResetMaxSelection()
