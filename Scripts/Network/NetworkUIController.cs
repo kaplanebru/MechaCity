@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Network
 {
-    public class NetwrokUIController : MonoBehaviour
+    public class NetworkUIController : MonoBehaviour
     {
         [SerializeField] private Button serverButton;
         [SerializeField] private Button hostButton;

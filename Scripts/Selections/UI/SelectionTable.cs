@@ -8,6 +8,7 @@ using UnityEngine;
 public class SelectionTable : MonoBehaviour
 {
     public SelectionSlot[] slots;
+    public GameObject content;
     
     private Selector _currentSelector;
     private List<SelectionSlot> emptySlots = new();
@@ -15,17 +16,13 @@ public class SelectionTable : MonoBehaviour
 
     private void OnEnable()
     {
-        SelectionEvents.OnSelectionReady += StartSelector;
+        SelectionEvents.OnSelectionReady += StartTable;
+        SelectionEvents.OnSelectionTerminated += CloseTable;
+
         SelectionEvents.OnSelection += AddToTable;
         SelectionEvents.OnDeselect += RemoveFromTable;
     }
-
     
-    private void Start()
-    {
-        SetIndexesForOnce();
-    }
-
     private void AddToTable(string towerName, int id)
     {
         emptySlots.First().Fill(towerName, id);
@@ -48,12 +45,24 @@ public class SelectionTable : MonoBehaviour
     
     
     //_______________SETTER____________________________________
-
-    public void StartSelector(Selector selector)
+    
+    private void Start()
     {
+        SetIndexesForOnce();
+    }
+
+    public void StartTable(Selector selector)
+    {
+        content.SetActive(true);
         _currentSelector = selector;
         SetSlots();
     }
+    
+    private void CloseTable()
+    {
+        content.SetActive(false);
+    }
+
     
     public void SetSlots()
     {
@@ -101,10 +110,10 @@ public class SelectionTable : MonoBehaviour
 
     private void OnDisable()
     {
-        SelectionEvents.OnSelectionReady -= StartSelector;
+        SelectionEvents.OnSelectionReady -= StartTable;
+        SelectionEvents.OnSelectionTerminated -= CloseTable;
+
         SelectionEvents.OnSelection -= AddToTable;
         SelectionEvents.OnDeselect -= RemoveFromTable;
     }
-
-    //not: eşleştirmeyle uğraşma zaten blocklular
 }

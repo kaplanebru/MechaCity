@@ -14,6 +14,9 @@ namespace GameUI
     {
         
         [SerializeField] private Button button;
+        [SerializeField] private Image buttonImage;
+        
+        [SerializeField] private Color[] buttonColors;
         [SerializeField] private TextMeshProUGUI buttonTextSlot;
         public TurnButtonHolder buttonHolder;
 
@@ -28,8 +31,13 @@ namespace GameUI
         
         void Subscribe()
         {
-            button.gameObject.SetActive(false);
+            Highlight(false);
             UIEventbus.OnShowButtonRequest += ShowButton;
+        }
+
+        void Highlight(bool shine)
+        {
+            buttonImage.color = shine ? buttonColors[1] : buttonColors[0];
         }
         
         void ShowButton(bool enable, TurnStateType type)
@@ -39,19 +47,21 @@ namespace GameUI
             
             if(type != _oldType)
                 SetButton(type);
-            button.gameObject.SetActive(enable);
+            Highlight(enable);
         }
 
         void SetButton(TurnStateType type)
         {
-            buttonTextSlot.text = buttonHolder.ButtonsByType[type].Content;
-            buttonTextSlot.fontSizeMax = 40;
-            buttonTextSlot.enableAutoSizing = true;
+            // buttonTextSlot.text = buttonHolder.ButtonsByType[type].Content;
+            // buttonTextSlot.fontSizeMax = 40;
+            // buttonTextSlot.enableAutoSizing = true;
+            //TODO: tooltip olarak çıkabilir
         }
 
         public void ButtonClicked()
         {
             UIEventbus.OnButtonClicked?.Invoke();
+            Highlight(false);
         }
         
         private void OnDisable()
