@@ -18,6 +18,15 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
 
 
     protected Dictionary<TeamState, Team> _teamsByTurn = new();
+    
+    protected abstract void Register(); 
+    protected abstract void Unregister();
+    public abstract void StartWithNewTowers();
+    protected abstract void GetTower(params object[] args);
+    protected abstract void HandleUI();
+    public abstract List<int> SendAllTowers();
+    protected abstract void DeselectAll();
+    protected abstract bool SelectedTwice(int selectedTower);
 
     public void Subscribe()
     {
@@ -42,16 +51,6 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
     {
         Data = data;
     }
-
-    protected abstract void Register(); 
-    protected abstract void Unregister();
-    public abstract void StartWithNewTowers();
-    protected abstract void GetTower(params object[] args);
-    protected abstract void HandleUI();
-    public abstract List<int> SendAllTowers();
-    protected abstract void DeselectAll();
-    protected abstract bool SelectedTwice(int selectedTower);
-
     protected void HandleSelection(bool select, int newSelection)
     {
         if (select)
@@ -68,15 +67,16 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
         var tower = AllTowers.GetData(newSelection);
         SetSelectionColor(tower);
 
-        //SelectionEvents.OnSelection?.Invoke(tower.UniqID.ToString()); //todo: name
+        SelectionEvents.OnSelection?.Invoke(tower.UniqID.ToString(), tower.UniqID); //todo: name
 
     }
     private void Deselect(int newSelection)
     {
         CurrentGroup.SelectedTowers.Remove(newSelection);
-        AllTowers.GetData(newSelection).ColorHandler.ToOriginalColor();
+        var tower = AllTowers.GetData(newSelection);
+        tower.ColorHandler.ToOriginalColor();
         
-        //SelectionEvents.OnSelection?.Invoke("");
+        SelectionEvents.OnDeselect?.Invoke(tower.UniqID);
     }
 
    

@@ -1,31 +1,55 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Enums.Selections;
 using UnityEngine;
 
 public class SelectionTable : MonoBehaviour
 {
-    private Selector _currentSelector;
     public SelectionSlot[] slots;
-    private int _slotCounter;
+    
+    private Selector _currentSelector;
+    private List<SelectionSlot> emptySlots = new();
     private int _slotAmount;
 
     private void OnEnable()
     {
-        SelectionEvents.OnSelectionReady += GetSelector;
+        SelectionEvents.OnSelectionReady += StartSelector;
         SelectionEvents.OnSelection += AddToTable;
+        SelectionEvents.OnDeselect += RemoveFromTable;
     }
 
-    private void AddToTable(string towerName)
+    
+    private void Start()
     {
-        // slots[_slotCounter].name = towerName;
-        // _slotCounter++; //todo: removeda eksi, hatta hangi slot olduğunu bilmemiz gerekebilir
+        SetIndexesForOnce();
     }
+
+    private void AddToTable(string towerName, int id)
+    {
+        emptySlots.First().Fill(towerName, id);
+        emptySlots.RemoveAt(0);
+    }
+    
+    private void RemoveFromTable(int id)
+    {
+        var slot = slots.First(s => s.towerId == id);
+        slot.ResetSlot();
+        
+        emptySlots.Add(slot);
+        Reorder();
+    }
+
+    private void Reorder()
+    {
+        emptySlots = emptySlots.OrderBy(s => s.Index).ToList();
+    }
+    
     
     //_______________SETTER____________________________________
 
-    public void GetSelector(Selector selector)
+    public void StartSelector(Selector selector)
     {
         _currentSelector = selector;
         SetSlots();
@@ -40,8 +64,9 @@ public class SelectionTable : MonoBehaviour
         {
             var slot = slots[i];
             
-            slot.ResetName();
+            slot.ResetSlot();
             slot.gameObject.SetActive(true);
+            emptySlots.Add(slot);
         }
     }
     void SetSlotAmountAnColors()
@@ -57,8 +82,16 @@ public class SelectionTable : MonoBehaviour
            
         }
     }
+
+    private void SetIndexesForOnce()
+    {
+        for (var i = 0; i < slots.Length; i++)
+        {
+            slots[i].SetIndex(i);
+        }
+    }
     
-    void DisableAll()
+    private void DisableAll()
     {
         foreach (var slot in slots)
         {
@@ -68,8 +101,9 @@ public class SelectionTable : MonoBehaviour
 
     private void OnDisable()
     {
-        SelectionEvents.OnSelectionReady -= GetSelector;
+        SelectionEvents.OnSelectionReady -= StartSelector;
         SelectionEvents.OnSelection -= AddToTable;
+        SelectionEvents.OnDeselect -= RemoveFromTable;
     }
 
     //not: eşleştirmeyle uğraşma zaten blocklular
