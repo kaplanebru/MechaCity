@@ -34,8 +34,6 @@ namespace Turn
         {
             NetworkEventbus.InputEvents.OnObjectClicked += TowerSelected;
             Eventbus.LinkEvents.OnLinkStateBegin?.Invoke();
-            
-            UIEventbus.OnStateShift?.Invoke(StateType);
         }
         
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
@@ -54,7 +52,7 @@ namespace Turn
 
         private void TowerSelected(params object[] args)
         {
-            UIEventbus.OnButtonCall?.Invoke(true); //todo: temp
+            UIEventbus.OnHighlightTime?.Invoke(true); //todo: temp
 
             int towerID = (int) args[0];
             RiseAndFall(AllTowers.GetData(towerID), 1);

@@ -19,7 +19,7 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
 
     public override void Subscribe()
     {
-        SelectionEvents.OnSelectionTerminated?.Invoke(); //TODO: Event merkezini değiştir
+        //SelectionEvents.OnSelectionTerminated?.Invoke(); //TODO: Event merkezini değiştir
     }
     public override void SubscribeToConstantEvents() {}
     public override void Register() {}

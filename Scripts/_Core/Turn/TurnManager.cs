@@ -49,7 +49,7 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
             
             
-            UIEventbus.OnButtonCall += ShowButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
+            UIEventbus.OnHighlightTime += HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
             UIEventbus.OnButtonClicked += StateChangeRequestByUser;
             BpEventbus.StateEvents.OnStateChangeWithoutInteraction += StateChangeByIntruder;
             
@@ -57,7 +57,7 @@ namespace Turn
         }
 
 
-        private void ShowButtonRequest(bool enable)
+        private void HighlightButtonRequest(bool enable)
         {
             UIEventbus.OnHighlightRequest?.Invoke(enable);
         }
@@ -109,18 +109,28 @@ namespace Turn
         void SetFirstState()
         {
             if (firstTurn)
+            {
                 SetNewState(_stateHolder.GetStateByType(TurnStateType.Selection));
-            else
-                NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(TurnStateType.Selection);
+                UIEventbus.OnStateShift?.Invoke(TurnStateType.Selection); //todo: burdaki buton rivalda da çıkabilir, fix
+            }
             
+            else
+                SendStateChangeRequest(TurnStateType.Selection);
         }
+        
 
         void StateChangeByIntruder()
         {
             currentState.ExecuteSelection();
             GetPreviousState();
         }
-        
+
+
+        private void SendStateChangeRequest(TurnStateType type)
+        {
+            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(type);
+            UIEventbus.OnStateShift?.Invoke(type);
+        }
         private void StateChangeRequestByUser()
         {
             if (currentState.StateType == TurnStateType.Intruder) //apply yapılan yerde enum olabilir
@@ -131,23 +141,18 @@ namespace Turn
             {
                 GetNextState();
             }
-           
         }
 
         public void GetNextState()
         {
             var nextType = _stateHolder.States[turnHelper.GetNextStateId(currentState.StateId)].StateType;
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(nextType);
-            
-            UIEventbus.OnStateShift?.Invoke(nextType);
-
+            SendStateChangeRequest(nextType);
+          
         }
         public void GetPreviousState()
         {
             var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(previousType);
-            
-            UIEventbus.OnStateShift?.Invoke(previousType);
+            SendStateChangeRequest(previousType);
         }
 
         public void ChangeStateBySystem(TurnStateType newType)
@@ -192,7 +197,7 @@ namespace Turn
             NetworkEventbus.RequestEvents.OnStateChangeRequestByServer -= ChangeStateBySystem;
 
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
-            UIEventbus.OnButtonCall -= ShowButtonRequest;
+            UIEventbus.OnHighlightTime -= HighlightButtonRequest;
             UIEventbus.OnButtonClicked -= StateChangeRequestByUser;
             BpEventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeByIntruder;
             

@@ -38,8 +38,6 @@ namespace Turn
 
         public override void Subscribe()
         {
-            UIEventbus.OnStateShift?.Invoke(StateType);
-
             mainSelector.Subscribe();
             mainSelector.TryBlock(TeamsByTurn);
         }

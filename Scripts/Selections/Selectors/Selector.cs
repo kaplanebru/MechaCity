@@ -87,7 +87,7 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
     }
     protected void HighlightApply(bool enable)
     {
-        UIEventbus.OnButtonCall?.Invoke(enable);
+        UIEventbus.OnHighlightTime?.Invoke(enable);
     }
 
     public virtual void ResetMaxSelection(){}
