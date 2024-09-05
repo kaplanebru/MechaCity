@@ -65,7 +65,6 @@ namespace GameUI
         {
             UIEventbus.OnStateShift -= ShiftButton;
             UIEventbus.OnHighlightRequest -= Highlight;
-            print("disable");
         }
     }
 }

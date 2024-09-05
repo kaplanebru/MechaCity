@@ -79,7 +79,7 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
         SelectionEvents.OnDeselect?.Invoke(tower.UniqID);
     }
 
-    protected void DeselectAll()
+    public void DeselectAll()
     {
         foreach (var group in Data.Groups)
         {

@@ -7,4 +7,5 @@ public static class SelectionEvents
     public static Action<string, int> OnSelection;
     public static Action<int> OnDeselect;
     public static Action OnDeselectAll;
+    
 }
