@@ -57,10 +57,10 @@ public class SingleTypeSelector : Selector, IBlockable
         CurrentGroup.SelectedTowers = towers;
     }
 
-    protected override void DeselectAll()
-    {
-        CurrentGroup.ResetTowers();
-    }
+    // protected override void DeselectAll()
+    // {
+    //     CurrentGroup.ResetTowers();
+    // }
 
     protected override void HandleUI()
     {

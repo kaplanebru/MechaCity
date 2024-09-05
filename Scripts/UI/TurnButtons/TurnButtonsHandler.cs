@@ -37,15 +37,12 @@ namespace GameUI
 
         void ShiftButton(TurnStateType type)
         {
-            print("shift");
             DisableAll();
             
             _currentButton = turnButtons.FirstOrDefault(b=>b.turnStateType == type);
             if (!_currentButton)
-            {
                 return;
-            }
-            
+
             _currentButton.Highlight(false);
             _currentButton.gameObject.SetActive(true);
         }

@@ -12,21 +12,37 @@ public class SelectionTable : MonoBehaviour
     
     private Selector _currentSelector;
     private List<SelectionSlot> emptySlots = new();
+    private List<SelectionSlot> activeSlots = new();
     private int _slotAmount;
 
     private void OnEnable()
     {
+        content.SetActive(false);
+        
         SelectionEvents.OnSelectionReady += StartTable;
         SelectionEvents.OnSelectionTerminated += CloseTable;
 
         SelectionEvents.OnSelection += AddToTable;
         SelectionEvents.OnDeselect += RemoveFromTable;
+        SelectionEvents.OnDeselectAll += ResetTable;
     }
-    
+
+    private void ResetTable()
+    {
+        foreach (var slot in activeSlots)
+        {
+            slot.ResetSlot();
+        }
+
+        emptySlots = activeSlots.ToList();
+    }
+
     private void AddToTable(string towerName, int id)
     {
         emptySlots.First().Fill(towerName, id);
         emptySlots.RemoveAt(0);
+        
+        //dolmuşsa resetlemek lazım
     }
     
     private void RemoveFromTable(int id)
@@ -66,6 +82,9 @@ public class SelectionTable : MonoBehaviour
     
     public void SetSlots()
     {
+        activeSlots.Clear();
+        emptySlots.Clear();
+        
         DisableAll();
         SetSlotAmountAnColors();
 
@@ -76,6 +95,7 @@ public class SelectionTable : MonoBehaviour
             slot.ResetSlot();
             slot.gameObject.SetActive(true);
             emptySlots.Add(slot);
+            activeSlots.Add(slot);
         }
     }
     void SetSlotAmountAnColors()
@@ -115,5 +135,7 @@ public class SelectionTable : MonoBehaviour
 
         SelectionEvents.OnSelection -= AddToTable;
         SelectionEvents.OnDeselect -= RemoveFromTable;
+        SelectionEvents.OnDeselectAll -= ResetTable;
+
     }
 }

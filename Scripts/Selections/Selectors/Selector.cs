@@ -25,7 +25,7 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
     protected abstract void GetTower(params object[] args);
     protected abstract void HandleUI();
     public abstract List<int> SendAllTowers();
-    protected abstract void DeselectAll();
+    //protected abstract void DeselectAll();
     protected abstract bool SelectedTwice(int selectedTower);
 
     public void Subscribe()
@@ -79,7 +79,14 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
         SelectionEvents.OnDeselect?.Invoke(tower.UniqID);
     }
 
-   
+    protected void DeselectAll()
+    {
+        foreach (var group in Data.Groups)
+        {
+            group.ResetTowers();
+        }
+        SelectionEvents.OnDeselectAll?.Invoke();
+    }
     
     private void SetSelectionColor(TowerData tower)
     {

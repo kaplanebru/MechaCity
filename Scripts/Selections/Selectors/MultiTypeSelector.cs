@@ -91,13 +91,13 @@ public class MultiTypeSelector : Selector, IBlockable
         isFull = true;
     }
 
-    protected override void DeselectAll()
-    {
-        foreach (var group in Data.Groups)
-        {
-            group.ResetTowers();
-        }
-    }
+    // protected override void DeselectAll()
+    // {
+    //     foreach (var group in Data.Groups)
+    //     {
+    //         group.ResetTowers();
+    //     }
+    // }
 
     protected override bool SelectedTwice(int selectedTower)
     {
