@@ -44,13 +44,7 @@ public class SingleTypeSelector : Selector, IBlockable
         return false;
     }
 
-    public void SetTeamsAndBlock(Dictionary<TeamState, Team> teamsByTurn)
-    {
-        Blocker.BlockType = CurrentGroup.BlockType;
-        SetTeams(teamsByTurn);
-       
-        Blocker.BlockSelection(_teamsByTurn, CurrentGroup.BlockedTeam);
-    }
+
     
     public override void ContinueTowers(List<int> towers) //önceki state'ten kalan varsa takip edebilelim diye
     {

@@ -44,8 +44,11 @@ namespace Turn
                 BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
                 return;
             }
+            
 
             bpSelector.Subscribe();
+            bpSelector.SetTeamsAndBlock(TeamsByTurn);
+
             bpSelector.StartWithNewTowers(); //ContinueTowers(new List<int>());
             //TODO: bp towers için resetlenen bir list tutulabilir
         }

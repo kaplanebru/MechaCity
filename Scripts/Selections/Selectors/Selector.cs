@@ -10,7 +10,7 @@ using Towers;
 using UnityEngine;
 
 
-public abstract class Selector //Selector<T> where T : ISelectionColorSetter, new()
+public abstract class Selector: IBlockable //Selector<T> where T : ISelectionColorSetter, new()
 {
     protected SelectionGroup CurrentGroup;
     public SelectionData Data { get; private set; }
@@ -35,10 +35,20 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
         Register();
     }
 
-    protected void SetTeams(Dictionary<TeamState, Team> teams)
+    public void SetTeamsAndBlock(Dictionary<TeamState, Team> teams)
     {
         _teamsByTurn = teams;
+        Block();
+
         SelectionEvents.OnSelectionReady?.Invoke(this);
+    }
+
+    protected void Block()
+    {
+        AllTowers.EnableClickability();
+        
+        Blocker.BlockType = CurrentGroup.BlockType;
+        Blocker.BlockSelection(_teamsByTurn, CurrentGroup.BlockedTeam);
     }
 
     public Team GetSelectionTeam(int i)

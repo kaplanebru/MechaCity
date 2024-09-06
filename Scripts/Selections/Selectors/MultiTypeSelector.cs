@@ -66,19 +66,13 @@ public class MultiTypeSelector : Selector, IBlockable
         Block();
     }
 
-    public void SetTeamsAndBlock(Dictionary<TeamState, Team> teamsByTurn)
-    {
-        SetTeams(teamsByTurn);
-        Block();
-    }
+    // public void SetTeamsAndBlock(Dictionary<TeamState, Team> teamsByTurn)
+    // {
+    //     SetTeamsThanBlock(teamsByTurn);
+    //     Block();
+    // }
 
-    void Block()
-    {
-        AllTowers.EnableClickability();
-        
-        Blocker.BlockType = CurrentGroup.BlockType;
-        Blocker.BlockSelection(_teamsByTurn, CurrentGroup.BlockedTeam);
-    }
+   
     
     void FullSituation()
     {

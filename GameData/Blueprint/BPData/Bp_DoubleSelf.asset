@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed63e7d8df4e4e64b94aab4aa1244594, type: 3}
+  m_Name: Bp_DoubleSelf
+  m_EditorClassIdentifier: 
+  Type: 4
+  Color: {r: 0.8960486, g: 0.9056604, b: 0.5758633, a: 0}
+  Sprite: {fileID: 21300000, guid: cdb88fdb0cf46b244a667edaff21c7df, type: 3}
+  GlowColor: {r: 0.9433962, g: 0.6274818, b: 0.11035952, a: 0}
+  Title: Double Self
+  Description: 
+  Instruction: 
+  Level: 1

@@ -57,6 +57,7 @@ namespace Blueprint
             currentBlueprint.Level = level;
             
             print(currentBlueprint);
+            print(currentBlueprint.SelectionType);
 
             BpEventbus.SelectionEvents.OnCurrentBpSet?.Invoke(currentBlueprint.SelectionType);
         }

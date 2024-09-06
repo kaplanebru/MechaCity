@@ -75,6 +75,7 @@ namespace Enums
         Freeze,
         Double,
         SelectionIncrement,
+        DoubleSelf,
         None
     }
 
