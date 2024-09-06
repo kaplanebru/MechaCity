@@ -14,10 +14,11 @@ namespace Blueprint
             var tower = AllTowers.GetData(selectedTower);
             foreach (var neighbourID in tower.NeighbourIDs)
             {
-                AllTowers.GetData(neighbourID).ColorHandler.ToSelectionColor();
+                var neighbour = AllTowers.GetData(neighbourID);
+                neighbour. ColorHandler.ToSelectionColor();
+                
+                Debug.Log(neighbourID);
             }
-            
-            Debug.Log(tower.NeighbourIDs.Count);
         }
     }
 

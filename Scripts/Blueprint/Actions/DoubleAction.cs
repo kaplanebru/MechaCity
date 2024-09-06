@@ -17,8 +17,6 @@ namespace Blueprint
             {
                 var tower = AllTowers.GetData(selectedTower);
                 doubleWithRival.HighlightNeighbours(tower.UniqID);
-                // tower.ColorHandler.ToOriginalColor();
-
             }
         }
         public void Restore(params object[] obj)

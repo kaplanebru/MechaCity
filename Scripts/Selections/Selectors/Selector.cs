@@ -85,6 +85,8 @@ public abstract class Selector //Selector<T> where T : ISelectionColorSetter, ne
         {
             group.ResetTowers();
         }
+        
+        CurrentGroup = Data.Groups[0];
         SelectionEvents.OnDeselectAll?.Invoke();
     }
     

@@ -24,7 +24,6 @@ public class MultiTypeSelector : Selector, IBlockable
     public override void StartWithNewTowers()
     {
         DeselectAll();
-        CurrentGroup = Data.Groups[0];
 
         if (CurrentGroup.BlockType != BlockType.None) //bunu sileriz
             TeamEvents.OnTeamsRequest?.Invoke();
