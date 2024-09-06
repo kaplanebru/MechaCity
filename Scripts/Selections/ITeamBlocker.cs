@@ -9,7 +9,7 @@ namespace _Core.Turn.Selectors
 {
     public interface IBlockable
     {
-        public void TryBlock(Dictionary<TeamState, Team> teamsByTurn);
+        public void SetTeamsAndBlock(Dictionary<TeamState, Team> teamsByTurn);
     }
 
     public interface ITeamBlocker

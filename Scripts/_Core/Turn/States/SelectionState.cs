@@ -39,7 +39,7 @@ namespace Turn
         public override void Subscribe()
         {
             mainSelector.Subscribe();
-            mainSelector.TryBlock(TeamsByTurn);
+            mainSelector.SetTeamsAndBlock(TeamsByTurn);
         }
 
         private void UpdateSelectionAmount()

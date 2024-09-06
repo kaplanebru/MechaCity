@@ -3,6 +3,7 @@ using _Core.Turn.Selectors;
 using Enums;
 using Enums.Selections;
 using Teams;
+using Towers;
 using UnityEngine;
 
 public class MultiTypeSelector : Selector, IBlockable
@@ -12,12 +13,12 @@ public class MultiTypeSelector : Selector, IBlockable
 
     protected override void Register()
     {
-        TeamEvents.OnTeamsSent += GetTeamsData;
+        TeamEvents.OnTeamsSent += SetTeamsAndBlock;
     }
 
     protected override void Unregister()
     {
-        TeamEvents.OnTeamsSent -= GetTeamsData;
+        TeamEvents.OnTeamsSent -= SetTeamsAndBlock;
     }
 
     public override void StartWithNewTowers()
@@ -28,18 +29,11 @@ public class MultiTypeSelector : Selector, IBlockable
         if (CurrentGroup.BlockType != BlockType.None) //bunu sileriz
             TeamEvents.OnTeamsRequest?.Invoke();
     }
-
-    private void GetTeamsData(Dictionary<TeamState, Team> teams) //sürekli değiştiği için, burda almakta fayda var
-    {
-        SetTeams(teams);
-    }
-
+    
     protected override void GetTower(params object[] args)
     {
         int towerId = (int) args[0];
         
-        Debug.Log("multi");
-
         if (isFull)
         {
             DeselectAll();
@@ -61,7 +55,7 @@ public class MultiTypeSelector : Selector, IBlockable
 
     void ShiftGroup()
     {
-        int nextGroupIndex = CurrentGroup.Index + 1; // % groupAmount - 1;
+        int nextGroupIndex = CurrentGroup.Index + 1; 
 
         if (nextGroupIndex == Data.Groups.Length)
         {
@@ -73,14 +67,16 @@ public class MultiTypeSelector : Selector, IBlockable
         Block();
     }
 
-    public void TryBlock(Dictionary<TeamState, Team> teamsByTurn)
+    public void SetTeamsAndBlock(Dictionary<TeamState, Team> teamsByTurn)
     {
-        _teamsByTurn = teamsByTurn;
+        SetTeams(teamsByTurn);
         Block();
     }
 
     void Block()
     {
+        AllTowers.EnableClickability();
+        
         Blocker.BlockType = CurrentGroup.BlockType;
         Blocker.BlockSelection(_teamsByTurn, CurrentGroup.BlockedTeam);
     }
@@ -90,14 +86,6 @@ public class MultiTypeSelector : Selector, IBlockable
         HighlightApply(true);
         isFull = true;
     }
-
-    // protected override void DeselectAll()
-    // {
-    //     foreach (var group in Data.Groups)
-    //     {
-    //         group.ResetTowers();
-    //     }
-    // }
 
     protected override bool SelectedTwice(int selectedTower)
     {

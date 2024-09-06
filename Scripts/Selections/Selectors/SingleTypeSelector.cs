@@ -44,7 +44,7 @@ public class SingleTypeSelector : Selector, IBlockable
         return false;
     }
 
-    public void TryBlock(Dictionary<TeamState, Team> teamsByTurn)
+    public void SetTeamsAndBlock(Dictionary<TeamState, Team> teamsByTurn)
     {
         Blocker.BlockType = CurrentGroup.BlockType;
         SetTeams(teamsByTurn);
