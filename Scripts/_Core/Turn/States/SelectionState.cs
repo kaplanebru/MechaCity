@@ -60,7 +60,7 @@ namespace Turn
 
         public void ResetSelector()
         {
-            mainSelector.StartWithNewTowers();
+            mainSelector.RestartWithNewTowers();
         }
 
         public override void Unsubscribe()

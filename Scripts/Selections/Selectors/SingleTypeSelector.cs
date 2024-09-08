@@ -7,7 +7,7 @@ public class SingleTypeSelector : Selector, IBlockable
 {
    
     private int _maxTowerConstant;
-    protected override void Register()
+    protected override void SubscribeAndSetup()
     {
         CurrentGroup = Data.Groups[0];
         _maxTowerConstant = CurrentGroup.MaxTowers;
@@ -15,7 +15,7 @@ public class SingleTypeSelector : Selector, IBlockable
 
     protected override void Unregister() {}
 
-    public override void StartWithNewTowers()
+    public override void RestartWithNewTowers()
     {
         DeselectAll();
         //turn bitiminde resetleniyor!!
@@ -43,18 +43,11 @@ public class SingleTypeSelector : Selector, IBlockable
         }
         return false;
     }
-
-
     
     public override void ContinueTowers(List<int> towers) //önceki state'ten kalan varsa takip edebilelim diye
     {
         CurrentGroup.SelectedTowers = towers;
     }
-
-    // protected override void DeselectAll()
-    // {
-    //     CurrentGroup.ResetTowers();
-    // }
 
     protected override void HandleUI()
     {

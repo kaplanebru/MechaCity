@@ -11,8 +11,9 @@ public class MultiTypeSelector : Selector, IBlockable
     
     private bool isFull = false;
 
-    protected override void Register()
+    protected override void SubscribeAndSetup()
     {
+        CurrentGroup = Data.Groups[0];
         TeamEvents.OnTeamsSent += SetTeamsAndBlock;
     }
 
@@ -21,7 +22,7 @@ public class MultiTypeSelector : Selector, IBlockable
         TeamEvents.OnTeamsSent -= SetTeamsAndBlock;
     }
 
-    public override void StartWithNewTowers()
+    public override void RestartWithNewTowers()
     {
         DeselectAll();
 
@@ -52,6 +53,9 @@ public class MultiTypeSelector : Selector, IBlockable
 
     protected override void HandleUI() { }
 
+    protected override void DeselectCall() => isFull = false;
+   
+
     void ShiftGroup()
     {
         int nextGroupIndex = CurrentGroup.Index + 1; 
@@ -65,14 +69,7 @@ public class MultiTypeSelector : Selector, IBlockable
         CurrentGroup = Data.Groups[nextGroupIndex];
         Block();
     }
-
-    // public void SetTeamsAndBlock(Dictionary<TeamState, Team> teamsByTurn)
-    // {
-    //     SetTeamsThanBlock(teamsByTurn);
-    //     Block();
-    // }
-
-   
+    
     
     void FullSituation()
     {

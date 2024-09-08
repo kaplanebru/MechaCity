@@ -19,9 +19,9 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
 
     protected Dictionary<TeamState, Team> _teamsByTurn = new();
     
-    protected abstract void Register(); 
+    protected abstract void SubscribeAndSetup(); 
     protected abstract void Unregister();
-    public abstract void StartWithNewTowers();
+    public abstract void RestartWithNewTowers();
     protected abstract void GetTower(params object[] args);
     protected abstract void HandleUI();
     public abstract List<int> SendAllTowers();
@@ -32,7 +32,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     {
         //SelectedTowers.Clear(); //TODO: DONT!
         NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
-        Register();
+        SubscribeAndSetup();
     }
 
     public void SetTeamsAndBlock(Dictionary<TeamState, Team> teams)
@@ -96,9 +96,13 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
             group.ResetTowers();
         }
         
-        CurrentGroup = Data.Groups[0];
+        CurrentGroup = Data.Groups[0]; //is it necessary here?
+        Block();
+        DeselectCall();
         SelectionEvents.OnDeselectAll?.Invoke();
     }
+
+    protected virtual void DeselectCall() { }
     
     private void SetSelectionColor(TowerData tower)
     {

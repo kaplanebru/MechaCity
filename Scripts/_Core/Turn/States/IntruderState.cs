@@ -49,7 +49,7 @@ namespace Turn
             bpSelector.Subscribe();
             bpSelector.SetTeamsAndBlock(TeamsByTurn);
 
-            bpSelector.StartWithNewTowers(); //ContinueTowers(new List<int>());
+            bpSelector.RestartWithNewTowers(); //ContinueTowers(new List<int>());
             //TODO: bp towers için resetlenen bir list tutulabilir
         }
         
