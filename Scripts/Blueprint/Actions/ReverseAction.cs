@@ -8,6 +8,7 @@ namespace Blueprint
     {
         public void Execute(params object[] obj)
         {
+            Debug.Log("execute reverse");
             BpEventbus.ActionEvents.OnReverseActionTriggered?.Invoke();
         }
         

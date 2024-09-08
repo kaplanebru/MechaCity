@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DataModels;
 using Enums;
+using JetBrains.Annotations;
 using Network;
 using UnityEngine;
 
@@ -29,7 +30,7 @@ namespace Blueprint
             
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer;
             
-            BpEventbus.OnSendingSelections += ExecuteBp;
+            BpEventbus.OnSendingSelectionsForExecution += TryExecuteBp;
             
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
@@ -72,16 +73,17 @@ namespace Blueprint
             bpTrackerList.RemoveFromTrackList(lifeTracker);
         }
 
-        private void ExecuteBp(int[] selectedItems)
+        private void TryExecuteBp([CanBeNull] int[] selectedItems)
         {
+            print(currentBlueprint + "  try take action");
             if (currentBlueprint.TryTakeAction(selectedItems))
             {
                 SetTracker(selectedItems);
-                BpEventbus.StateEvents.OnStateChangeRequestByBlueprint?.Invoke();
+                BpEventbus.StateEvents.OnStateChangeRequestByIntruder?.Invoke();
             }
         }
 
-        void SetTracker(int[] selectedItems)
+        void SetTracker([CanBeNull] int[] selectedItems)
         {
             if(selectedItems == null) return; //TODO: ya des trackers sans items
             
@@ -124,7 +126,7 @@ namespace Blueprint
 
         public void Unsubscribe()
         {
-            BpEventbus.OnSendingSelections -= ExecuteBp;
+            BpEventbus.OnSendingSelectionsForExecution -= TryExecuteBp;
 
             BpEventbus.UIEvents.OnInteraction -= StartBpSelection;
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;

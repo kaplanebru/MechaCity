@@ -51,8 +51,7 @@ namespace Turn
             
             UIEventbus.OnHighlightTime += HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
             UIEventbus.OnButtonClicked += StateEndRequestByUser;
-            BpEventbus.StateEvents.OnStateChangeRequestByBlueprint += GetPreviousState;
-            BpEventbus.StateEvents.OnStateChangeWithoutInteraction += StateChangeAttemptByIntruder;
+            BpEventbus.StateEvents.OnStateChangeRequestByIntruder += GetPreviousState;
             
             bpEventHandler = new BlueprintEventHandler(this);
         }
@@ -132,7 +131,7 @@ namespace Turn
         {
             if (currentState.StateType == TurnStateType.Intruder) //apply yapılan yerde enum olabilir
             {
-                StateChangeAttemptByIntruder();
+                IntruderAttempt();
             }
             else
             {
@@ -140,9 +139,9 @@ namespace Turn
             }
         }
         
-        void StateChangeAttemptByIntruder()
+        void IntruderAttempt()
         {
-            currentState.SendSelections();
+            currentState.TryExecuteBp();
             
             //GetPreviousState(); //TODO
         }
@@ -203,8 +202,7 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnHighlightTime -= HighlightButtonRequest;
             UIEventbus.OnButtonClicked -= StateEndRequestByUser;
-            BpEventbus.StateEvents.OnStateChangeRequestByBlueprint -= GetPreviousState;
-            BpEventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeAttemptByIntruder;
+            BpEventbus.StateEvents.OnStateChangeRequestByIntruder -= GetPreviousState;
             
             pairController.Unsubscribe();
             turnHelper.Unsubscribe();

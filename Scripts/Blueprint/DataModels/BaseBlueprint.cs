@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Enums;
 using Enums.Selections;
+using JetBrains.Annotations;
 
 namespace Blueprint
 {
@@ -19,7 +20,7 @@ namespace Blueprint
         public abstract int Lifespan {get; set; } //todo: lifespan da değişken olacak burda olmamalı
         
         public abstract int MaxSelectionAmount { get; set; }
-        public abstract bool TryTakeAction(int[] selectedItems);
+        public abstract bool TryTakeAction([CanBeNull] int[] selectedItems);
 
         //public abstract void CheckSelectionConstraints(int[] selectedItems);
 
