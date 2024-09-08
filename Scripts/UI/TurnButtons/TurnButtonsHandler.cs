@@ -46,7 +46,6 @@ namespace GameUI
             _currentButton.Highlight(false);
             _currentButton.gameObject.SetActive(true);
         }
-        
 
         public void ButtonClicked()
         {

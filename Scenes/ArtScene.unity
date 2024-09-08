@@ -21443,6 +21443,7 @@ MonoBehaviour:
   buttonColors:
   - {r: 0.83137256, g: 0.7176471, b: 0.6627451, a: 1}
   - {r: 0.4117647, g: 0.94509804, b: 0.85882354, a: 1}
+  applyButton: {fileID: 1973167173}
 --- !u!1 &735386302
 GameObject:
   m_ObjectHideFlags: 0
@@ -52774,6 +52775,7 @@ MonoBehaviour:
   buttonColors:
   - {r: 0.83137256, g: 0.7176471, b: 0.6627451, a: 1}
   - {r: 0.4117647, g: 0.94509804, b: 0.85882354, a: 1}
+  applyButton: {fileID: 601214401}
 --- !u!1 &1896142786
 GameObject:
   m_ObjectHideFlags: 0
