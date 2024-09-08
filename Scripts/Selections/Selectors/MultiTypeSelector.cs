@@ -69,7 +69,11 @@ public class MultiTypeSelector : Selector, IBlockable
         CurrentGroup = Data.Groups[nextGroupIndex];
         Block();
     }
-    
+
+    void CheckConstraints()
+    {
+        
+    }
     
     void FullSituation()
     {
