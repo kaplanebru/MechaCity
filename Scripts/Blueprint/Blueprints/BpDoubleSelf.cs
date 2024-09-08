@@ -16,22 +16,24 @@ namespace Blueprint
         public override int MaxSelectionAmount { get; set; } = 1;
         public DoubleSelfAction BpAction { get; } = new DoubleSelfAction();
 
-        
-        public override void TryTakeAction(int[] selectedItems)
+
+        public override bool TryTakeAction(int[] selectedItems)
         {
-            if(CheckSelectionConstraints(selectedItems))
-                BpAction.Execute(selectedItems);
-            else
+            if (CheckSelectionConstraints(selectedItems))
             {
-                Debug.Log("doesnt conform to constraints");
+                BpAction.Execute(selectedItems);
+                return true;
             }
+            
+            Debug.Log("doesnt conform to constraints");
+            return false;
         }
 
         public override void TryRestoreAction(int selectedItem)
         {
             BpAction.Restore(selectedItem);
         }
-        
+
         TowerData[] ConvertToTowers(int[] selectedItems)
         {
             TowerData[] towers = new TowerData[selectedItems.Length];
@@ -43,11 +45,11 @@ namespace Blueprint
             return towers;
         }
 
-        bool CheckSelectionConstraints(int[] selectedItems)
+        public bool CheckSelectionConstraints(int[] selectedItems)
         {
             var towers = ConvertToTowers(selectedItems);
             towers = towers.OrderBy(t => t.UniqID).ToArray();
-            
+
             for (var i = 0; i < towers.Length; i++)
             {
                 var tower = towers[i];

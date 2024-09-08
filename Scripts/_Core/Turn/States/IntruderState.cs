@@ -41,7 +41,8 @@ namespace Turn
 
             if (selectionType == SelectionType.None)
             {
-                BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
+                //BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
+                BpEventbus.StateEvents.OnStateChangeRequestByBlueprint?.Invoke();
                 return;
             }
             
@@ -53,9 +54,9 @@ namespace Turn
             //TODO: bp towers için resetlenen bir list tutulabilir
         }
         
-        public override void ExecuteSelection()
+        public override void SendSelections()
         {
-            BpEventbus.OnBpExecution?.Invoke(bpSelector?.SendAllTowers()
+            BpEventbus.OnSendingSelections?.Invoke(bpSelector?.SendAllTowers()
                 .ToArray()); //burda tekrar networke gitmeye gerek yok!!
         }
         

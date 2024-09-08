@@ -50,8 +50,9 @@ namespace Turn
             
             
             UIEventbus.OnHighlightTime += HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
-            UIEventbus.OnButtonClicked += StateChangeRequestByUser;
-            BpEventbus.StateEvents.OnStateChangeWithoutInteraction += StateChangeByIntruder;
+            UIEventbus.OnButtonClicked += StateEndRequestByUser;
+            BpEventbus.StateEvents.OnStateChangeRequestByBlueprint += GetPreviousState;
+            BpEventbus.StateEvents.OnStateChangeWithoutInteraction += StateChangeAttemptByIntruder;
             
             bpEventHandler = new BlueprintEventHandler(this);
         }
@@ -119,11 +120,7 @@ namespace Turn
         }
         
 
-        void StateChangeByIntruder()
-        {
-            currentState.ExecuteSelection();
-            GetPreviousState();
-        }
+       
 
 
         private void SendStateChangeRequest(TurnStateType type)
@@ -131,16 +128,23 @@ namespace Turn
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(type);
             UIEventbus.OnStateShift?.Invoke(type);
         }
-        private void StateChangeRequestByUser()
+        private void StateEndRequestByUser()
         {
             if (currentState.StateType == TurnStateType.Intruder) //apply yapılan yerde enum olabilir
             {
-                StateChangeByIntruder();
+                StateChangeAttemptByIntruder();
             }
             else
             {
                 GetNextState();
             }
+        }
+        
+        void StateChangeAttemptByIntruder()
+        {
+            currentState.SendSelections();
+            
+            //GetPreviousState(); //TODO
         }
 
         public void GetNextState()
@@ -149,7 +153,7 @@ namespace Turn
             SendStateChangeRequest(nextType);
           
         }
-        public void GetPreviousState()
+        private void GetPreviousState()
         {
             var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
             SendStateChangeRequest(previousType);
@@ -198,8 +202,9 @@ namespace Turn
 
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnHighlightTime -= HighlightButtonRequest;
-            UIEventbus.OnButtonClicked -= StateChangeRequestByUser;
-            BpEventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeByIntruder;
+            UIEventbus.OnButtonClicked -= StateEndRequestByUser;
+            BpEventbus.StateEvents.OnStateChangeRequestByBlueprint -= GetPreviousState;
+            BpEventbus.StateEvents.OnStateChangeWithoutInteraction -= StateChangeAttemptByIntruder;
             
             pairController.Unsubscribe();
             turnHelper.Unsubscribe();

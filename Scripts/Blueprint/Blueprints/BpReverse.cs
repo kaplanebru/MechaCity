@@ -12,9 +12,10 @@ namespace Blueprint
         public override int MaxSelectionAmount { get; set; } = 0;
         public ReverseAction BpAction { get; } = new();
         
-        public override void TryTakeAction(int[] selectedItems)
+        public override bool TryTakeAction(int[] selectedItems)
         {
             BpAction.Execute();
+            return true;
         }
 
         public override void TryRestoreAction(int selectedItem)

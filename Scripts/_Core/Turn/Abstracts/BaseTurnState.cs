@@ -39,7 +39,7 @@ namespace Turn
             TeamsByTurn = teams;
         }
         
-        public virtual void ExecuteSelection(){}
+        public virtual void SendSelections(){}
 
         public abstract void Unsubscribe();
         

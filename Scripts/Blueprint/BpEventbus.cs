@@ -9,7 +9,7 @@ using UnityEngine;
 public static class BpEventbus
 {
 
-    public static Action<int[]> OnBpExecution;
+    public static Action<int[]> OnSendingSelections;
     public class SelectionEvents
     {
         public static Action<SelectionType> OnCurrentBpSet;
@@ -18,6 +18,7 @@ public static class BpEventbus
     public class StateEvents
     {
         public static Action OnStateChangeWithoutInteraction;
+        public static Action OnStateChangeRequestByBlueprint;
     }
     public class ActionEvents
     {
