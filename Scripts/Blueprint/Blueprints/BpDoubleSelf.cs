@@ -54,7 +54,12 @@ namespace Blueprint
             {
                 var tower = towers[i];
                 var nextTower = towers[(i + 1) % (towers.Length)];
-                if (tower.NeighbourIDs[1] != nextTower.UniqID)
+                //geri gidiyorsa sonraki değil previous neighbora bakmalı
+                //Debug.Log("nextTower: " + nextTower.UniqID + " neighbour: " +  tower.NeighbourIDs[1] );
+                // if (tower.NeighbourIDs[1] != nextTower.UniqID)
+                //     return false;
+
+                if (!tower.NeighbourIDs.Contains(nextTower.UniqID))
                     return false;
             }
 
