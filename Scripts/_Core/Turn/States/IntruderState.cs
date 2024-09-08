@@ -20,9 +20,15 @@ namespace Turn
         protected Selector bpSelector; // = new ();
 
         private BaseTurnTransferData incomingData;
-        
-        public override void Register() {}
-        public override void SubscribeToConstantEvents() {}
+
+        public override void Register()
+        {
+        }
+
+        public override void SubscribeToConstantEvents()
+        {
+        }
+
         public override void Subscribe()
         {
             AllTowers.ResetTowerSelectionColors();
@@ -37,15 +43,16 @@ namespace Turn
 
         private void GetBpSelector(SelectionType selectionType)
         {
-            bpSelector = SelectionReferences.Instance.GetSelector(selectionType);
+            if (selectionType != SelectionType.None)
+                bpSelector = SelectionReferences.Instance.GetSelector(selectionType);
 
-            if (selectionType == SelectionType.None)
+            else
             {
-                //BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
-                BpEventbus.StateEvents.OnStateChangeRequestByBlueprint?.Invoke();
+                BpEventbus.StateEvents.OnStateChangeWithoutInteraction?.Invoke();
+                //BpEventbus.StateEvents.OnStateChangeRequestByBlueprint?.Invoke();
                 return;
             }
-            
+
 
             bpSelector.Subscribe();
             bpSelector.SetTeamsAndBlock(TeamsByTurn);
@@ -53,13 +60,13 @@ namespace Turn
             bpSelector.RestartWithNewTowers(); //ContinueTowers(new List<int>());
             //TODO: bp towers için resetlenen bir list tutulabilir
         }
-        
+
         public override void SendSelections()
         {
             BpEventbus.OnSendingSelections?.Invoke(bpSelector?.SendAllTowers()
                 .ToArray()); //burda tekrar networke gitmeye gerek yok!!
         }
-        
+
         public override void Unsubscribe()
         {
             BpEventbus.SelectionEvents.OnCurrentBpSet -= GetBpSelector;
