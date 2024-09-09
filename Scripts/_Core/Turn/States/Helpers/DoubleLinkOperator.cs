@@ -1,13 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Enums;
 using GameUI;
 using Towers;
 using UnityEngine;
 
 namespace Turn
 {
-    public class DoubleLinkOperator : LinkOperator
+    public class DoubleLinkOperator : ILinkOperator
     {
+        public LinkOperatorType Type { get; set; } = LinkOperatorType.Double;
+        
+        public int[] Towers { get; set; }
+        
+        public List<TowerData> SafeGroup { get; set; } = new();
+        
         private List<int> doublesId = new();
         private List<int> singlesId = new(); //todo: 3lü seçim de olabilir
 
@@ -15,6 +22,30 @@ namespace Turn
         private List<TowerData> singles = new();
 
         //todo: selection olmadan da buluruz
+        
+        public void GetTowers(int[] newTowers)
+        {
+            Towers = newTowers;
+
+            foreach (var id in newTowers)
+            {
+                if (!doublesId.Contains(id))
+                {
+                    singlesId.Add(id);
+                    singles.Add(AllTowers.GetData(id));
+                }
+            }
+        }
+
+        public void GetDoubles(List<int> newDoubles)
+        {
+            Reset();
+            doublesId = newDoubles;
+            foreach (var id in doublesId)
+            {
+                doubles.Add(AllTowers.GetData(id));
+            }
+        }
 
         void Reset()
         {
@@ -23,27 +54,27 @@ namespace Turn
             doubles.Clear();
             singles.Clear();
         }
-
-        public void SetTowers(List<int> doubleTowers)
-        {
-            Reset();
-            
-            foreach (var id in towers)
-            {
-                if (doubleTowers.Contains(id))
-                {
-                    doublesId.Add(id);
-                    doubles.Add(AllTowers.GetData(id));
-                }
-                else
-                {
-                    singlesId.Add(id);
-                    singles.Add(AllTowers.GetData(id));
-                }
-            }
-        }
         
-        public override void TowerSelected(params object[] args)
+
+        // private void SetTowers(List<int> doubleTowers)
+        // {
+        //
+        //     foreach (var id in Towers) //get towersın önce olduğunu varsayıyor
+        //     {
+        //         if (doubleTowers.Contains(id))
+        //         {
+        //             doublesId.Add(id);
+        //             doubles.Add(AllTowers.GetData(id));
+        //         }
+        //         else
+        //         {
+        //             singlesId.Add(id);
+        //             singles.Add(AllTowers.GetData(id));
+        //         }
+        //     }
+        // }
+        
+        public void TowerSelected(params object[] args)
         {
             int towerID = (int) args[0];
 
@@ -52,7 +83,9 @@ namespace Turn
                 RiseDouble(1);
             }
         }
-        
+
+       
+
         void RiseDouble(int step)
         {
             int totalStep = GetRiseHeightForDouble(step);
@@ -68,15 +101,15 @@ namespace Turn
 
             if (rest > 0)
             {
-                safeGroup.RemoveAt(0);
-                if(safeGroup.Count == 0) return;
+                SafeGroup.RemoveAt(0);
+                if(SafeGroup.Count == 0) return;
             }
 
             foreach (var tower in doubles)
             {
                 tower.Mover.ChangeHeight(tower.Height += singleStep, true);
             }
-            foreach (var tower in safeGroup)
+            foreach (var tower in SafeGroup)
             {
                 tower.Mover.ChangeHeight(tower.Height -= step, false);
             }
@@ -87,7 +120,7 @@ namespace Turn
 
         int GetRiseHeightForDouble(int step)
         {
-            safeGroup.Clear();
+            SafeGroup.Clear();
             step *= doublesId.Count;
             
             foreach (var towerID in singlesId)
@@ -97,11 +130,11 @@ namespace Turn
 
                 if (tower.AvailableHeight > step)
                 {
-                    safeGroup.Add(tower);
+                    SafeGroup.Add(tower);
                 }
             }
             
-            return safeGroup.Count * step;
+            return SafeGroup.Count * step;
         }
         
         void Fall(int step)

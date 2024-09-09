@@ -79,6 +79,12 @@ namespace Enums
         None
     }
 
+    public enum LinkOperatorType
+    {
+        Standard,
+        Double
+    }
+
    
 
     

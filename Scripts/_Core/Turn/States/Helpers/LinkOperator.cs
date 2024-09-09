@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Enums;
 using GameUI;
 using Towers;
 using UnityEngine;
 
 namespace Turn
 {
-    public class LinkOperator
+    public class LinkOperator: ILinkOperator
     {
-        protected int[] towers;
-        protected List<TowerData> safeGroup = new ();
-
+        public LinkOperatorType Type { get; set; } = LinkOperatorType.Standard;
+        public int[] Towers { get; set; }
+        public List<TowerData> SafeGroup { get; set; } = new();
+        
         public void GetTowers(int[] newTowers)
         {
-            towers = newTowers;
+            Towers = newTowers;
         }
         
         public virtual void TowerSelected(params object[] args)
@@ -37,7 +39,7 @@ namespace Turn
 
             selectedTower.Mover.ChangeHeight(selectedTower.Height += riseStep, true);
 
-            foreach (var tower in safeGroup)
+            foreach (var tower in SafeGroup)
             {
                 tower.Mover.ChangeHeight(tower.Height -= step, false);
             }
@@ -59,8 +61,8 @@ namespace Turn
         }
         int GetRiseHeight(TowerData selectedTower, int step)
         {
-            safeGroup.Clear();
-            foreach (var towerID in towers)
+            SafeGroup.Clear();
+            foreach (var towerID in Towers)
             {
                 if (towerID == selectedTower.UniqID)
                     continue;
@@ -69,20 +71,20 @@ namespace Turn
 
                 if (tower.AvailableHeight > step)
                 {
-                    safeGroup.Add(tower);
+                    SafeGroup.Add(tower);
                 }
             }
 
-            return safeGroup.Count * step;
+            return SafeGroup.Count * step;
         }
-        protected TowerData GetRandomOtherTower(int selectedTowerId)
+        private TowerData GetRandomOtherTower(int selectedTowerId)
         {
             int randomId;
             
             do
             {
-                var index = Random.Range(0, towers.Length);
-                randomId = towers[index];
+                var index = Random.Range(0, Towers.Length);
+                randomId = Towers[index];
             } 
             while (randomId == selectedTowerId);
 
