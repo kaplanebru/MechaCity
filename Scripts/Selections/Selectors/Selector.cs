@@ -110,7 +110,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     }
     protected void HighlightApply(bool enable)
     {
-        UIEventbus.OnHighlightTime?.Invoke(enable);
+        UIEventbus.OnApplyPossibility?.Invoke(enable);
     }
 
     public virtual void ResetMaxSelection(){}

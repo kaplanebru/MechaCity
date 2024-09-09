@@ -49,7 +49,7 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
             
             
-            UIEventbus.OnHighlightTime += HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
+            UIEventbus.OnApplyPossibility += HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
             UIEventbus.OnButtonClicked += StateEndRequestByUser;
             BpEventbus.StateEvents.OnStateChangeRequestByIntruder += GetPreviousState;
             
@@ -200,7 +200,7 @@ namespace Turn
             NetworkEventbus.RequestEvents.OnStateChangeRequestByServer -= ChangeStateBySystem;
 
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
-            UIEventbus.OnHighlightTime -= HighlightButtonRequest;
+            UIEventbus.OnApplyPossibility -= HighlightButtonRequest;
             UIEventbus.OnButtonClicked -= StateEndRequestByUser;
             BpEventbus.StateEvents.OnStateChangeRequestByIntruder -= GetPreviousState;
             

@@ -52,9 +52,6 @@ namespace Towers
                 CanShoot = value > 0;
             }
         }
-        
-      
-            
 
         [SerializeField] int _health = 1;
 
@@ -63,6 +60,8 @@ namespace Towers
             get => _health;
             set => _health = value;
         }
+
+        public bool IsDouble = false;
 
         public int DamagePower;
         public bool IsClickable = true;
@@ -78,7 +77,7 @@ namespace Towers
         public TowerMover Mover;
         public ColorHandler ColorHandler;
         public TowerUIHandler UIHandler;
-        
+
         public void CreateSegments()
         {
             Mover = new TowerMover(SegmentData.MoverData);
