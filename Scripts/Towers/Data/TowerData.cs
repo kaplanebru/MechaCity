@@ -61,8 +61,6 @@ namespace Towers
             set => _health = value;
         }
 
-        public bool IsDouble = false;
-
         public int DamagePower;
         public bool IsClickable = true;
         public LockStatus LockStatus;

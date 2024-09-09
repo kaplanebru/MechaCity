@@ -9,7 +9,7 @@ namespace Turn
     public class LinkOperator
     {
         protected int[] towers;
-        private List<TowerData> safeGroup = new ();
+        protected List<TowerData> safeGroup = new ();
 
         public void GetTowers(int[] newTowers)
         {
@@ -22,16 +22,16 @@ namespace Turn
 
             int towerID = (int) args[0];
             
-            RiseAndFall(AllTowers.GetData(towerID), 1);
+            Rise(AllTowers.GetData(towerID), 1);
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
         
-        void RiseAndFall(TowerData selectedTower, int step)
+        void Rise(TowerData selectedTower, int step)
         {
             int riseStep = GetRiseHeight(selectedTower, step);
             if (riseStep == 0)
             {
-                FallAndRise(selectedTower, step);
+                Fall(selectedTower, step);
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace Turn
             }
         }
 
-        void FallAndRise(TowerData selectedTower, int step)
+        void Fall(TowerData selectedTower, int step)
         {
             if (selectedTower.Height > step)
             {
@@ -75,7 +75,7 @@ namespace Turn
 
             return safeGroup.Count * step;
         }
-        TowerData GetRandomOtherTower(int selectedTowerId)
+        protected TowerData GetRandomOtherTower(int selectedTowerId)
         {
             int randomId;
             
