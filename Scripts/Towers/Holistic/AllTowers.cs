@@ -15,7 +15,7 @@ namespace Towers
         public static IEnumerable<Tower> Towers => _towers;
         public static IEnumerable<TowerData> TowerDatas => _towerDatas;
         public static Tower GetTower(int id) => _towers[id];
-        public static TowerData GetData(int id) => _towerDatas[id];
+        public static TowerData GetData(int id) => _towerDatas[id]; //todo? firstordefault? Ya da id'ye göre order ettir kesinliği için
 
         [SerializeField] Transform levelPrefab;
         Transform _level;
@@ -29,6 +29,11 @@ namespace Towers
         {
             Eventbus.LinkEvents.OnLinkingTowers += SetLinkedTowers;
             Eventbus.LinkEvents.OnUnlink += ResetLinkedTowers;
+        }
+
+        public static TowerData[] GetTowerGroup(IEnumerable<int> ids)
+        {
+            return _towerDatas.Where(t => ids.Contains(t.UniqID)).ToArray();
         }
 
         private void ResetLinkedTowers(List<int> towerIds)
@@ -49,10 +54,7 @@ namespace Towers
                 tower.StartRiseFallRoutine();
             }
         }
-
-
-     
-
+        
         void CreateTowers()
         {
             InstantiateLevelPrefab();
@@ -73,6 +75,8 @@ namespace Towers
         void ReceiveTowers()
         {
             _towers = _level.GetComponentsInChildren<Tower>().ToList();
+           // _towers= _towers.OrderBy(t => t.Data.UniqID).ToList();
+
             TowersCount = _towers.Count;
         }
 
@@ -82,6 +86,8 @@ namespace Towers
             {
                 _towerDatas.Add(_towers[i].Data);
             }
+
+           // _towerDatas = _towerDatas.OrderBy(t => t.UniqID).ToList();
         }
 
         public static void LinkingTowers(List<TowerData> towers) //ters de gelebilir

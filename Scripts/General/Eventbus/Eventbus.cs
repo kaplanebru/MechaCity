@@ -34,6 +34,8 @@ public static class Eventbus
     {
         public static Action<int, int> OnLock;
         public static Action OnTurnBegin;
+
+        public static Action<int, int> OnBridgeAttempt; 
     }
     
 

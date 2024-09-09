@@ -56,23 +56,6 @@ namespace Turn
         }
         
 
-        // private void SetTowers(List<int> doubleTowers)
-        // {
-        //
-        //     foreach (var id in Towers) //get towersın önce olduğunu varsayıyor
-        //     {
-        //         if (doubleTowers.Contains(id))
-        //         {
-        //             doublesId.Add(id);
-        //             doubles.Add(AllTowers.GetData(id));
-        //         }
-        //         else
-        //         {
-        //             singlesId.Add(id);
-        //             singles.Add(AllTowers.GetData(id));
-        //         }
-        //     }
-        // }
         
         public void TowerSelected(params object[] args)
         {

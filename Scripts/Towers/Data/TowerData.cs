@@ -68,7 +68,7 @@ namespace Towers
         public BpTowerData BpTowerData;
         public CombatTimingData timingData;
         public ClickHandler clickHandler;
-        
+
         public TowerSegmentDataHolder SegmentData = new();
         public List<ITowerSegment> TowerSegments = new();
         
