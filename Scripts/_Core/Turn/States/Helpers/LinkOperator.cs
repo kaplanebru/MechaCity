@@ -8,7 +8,7 @@ namespace Turn
 {
     public class LinkOperator
     {
-        private int[] towers;
+        protected int[] towers;
         private List<TowerData> safeGroup = new ();
 
         public void GetTowers(int[] newTowers)

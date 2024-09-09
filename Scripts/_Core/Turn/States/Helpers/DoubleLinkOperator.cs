@@ -9,46 +9,57 @@ namespace Turn
     public class DoubleLinkOperator : LinkOperator
     {
         private List<TowerData> doubles;
-        private TowerData single;
+        private List<TowerData> singles; //todo: 3lü seçim de olabilir
+        
+        //todo: selection olmadan da buluruz
+
+        public void SetTowers()
+        {
+            foreach (var id in towers)
+            {
+                var tower = AllTowers.GetData(id);
+                if (tower.IsDouble) //is Double yerine DoubleOperatörü çalıştıracak bir eventle de yollabilirler
+                {
+                    doubles.Add(tower);
+                }
+                else
+                {
+                    singles.Add(tower);
+                }
+            }
+        }
+
+        public void SetTowers2(List<int> doubleTowers)
+        {
+            doubles.Clear();
+            singles.Clear();
+            
+            foreach (var id in towers)
+            {
+                var tower = AllTowers.GetData(id);
+                if (doubleTowers.Contains(id))
+                {
+                    doubles.Add(tower);
+                }
+                else
+                {
+                    singles.Add(tower);
+                }
+            }
+        }
+        
+        
         public override void TowerSelected(params object[] args)
         {
             int towerID = (int) args[0];
             
-            CheckIfDouble(towerID);
             
+
             // RiseAndFall(AllTowers.GetData(towerID), 1);
             // MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
 
-        void CheckIfDouble(int id)
-        {
-            var tower = AllTowers.GetData(id);
-
-            if (tower.IsDouble)
-            {
-                SetDoubles(tower);
-            }
-            else
-            {
-                single = tower;
-            }
-        }
-
-        void SetDoubles(TowerData tower)
-        {
-            doubles.Add(tower);
-            FindOtherHalf(tower);
-        }
-
-        void FindOtherHalf(TowerData firstHalf)
-        {
-            foreach (var id in firstHalf.NeighbourIDs)
-            {
-                var neighbor = AllTowers.GetData(id);
-                if(!neighbor.IsDouble) continue;
-                doubles.Add(neighbor);
-            }
-        }
+       
     
     }
 
