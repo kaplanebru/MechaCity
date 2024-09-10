@@ -25,7 +25,7 @@ namespace Turn
         private TurnStateHolder _stateHolder = new();
         private BlueprintEventHandler bpEventHandler;
         
-        private CombatHelper _combatHelper = new();
+        private CombatOperator combatOperator = new();
         private CombatPairController pairController = new();
         private TurnHelper turnHelper = new();
 
@@ -73,8 +73,8 @@ namespace Turn
             
             turnHelper.Subscribe();
             
-            ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).GetCombatHelper(_combatHelper);
-            _combatHelper.GetElements(combatTimingData, pairController);
+            ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).GetCombatHelper(combatOperator);
+            combatOperator.GetElements(combatTimingData, pairController);
 
             if (MultiplayerSetter.FasterCombat)
             {
@@ -191,7 +191,7 @@ namespace Turn
         void FastenTurn()
         {
             combatTimingData.AccelerateValues();
-            _combatHelper.Fasten();
+            combatOperator.Fasten();
         }
 
         private void OnDisable()

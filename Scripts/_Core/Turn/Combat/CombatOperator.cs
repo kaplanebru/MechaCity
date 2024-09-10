@@ -25,7 +25,7 @@ namespace Turn
         }
     }
 
-    public class CombatHelper : IEnumeratorContainer
+    public class CombatOperator : IEnumeratorContainer
     {
         private readonly CombatData Data = new();
         private CombatPairController _pairController;
