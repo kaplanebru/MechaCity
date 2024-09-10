@@ -14,6 +14,15 @@ namespace Turn
         [ReadOnly] public float afterCombatDelay = .3f;
         public float selectionDelay = 0.3f;
         public float cursorDuration = 0.5f;
+
+        public float accelerant = 10;
+
+        public void AccelerateValues()
+        {
+            afterCombatDelay /= accelerant;
+            selectionDelay /= accelerant;
+            cursorDuration /= accelerant;
+        }
     }
 
     public class CombatHelper : IEnumeratorContainer
@@ -33,13 +42,13 @@ namespace Turn
 
         public void Subscribe(List<int> towers)
         {
-            // combatPairsCreator = new CombatPairsCreator(Data.CombatPairs);
-            //
-            // BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
-           
-            
             _towers = towers;
             _towers?.ForEach(at => AllTowers.GetData(at).ColorHandler.ToOriginalColor());
+        }
+
+        public void Fasten()
+        {
+            Data.AccelerateValues();
         }
 
         public void Fire()

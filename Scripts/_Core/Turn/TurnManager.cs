@@ -6,6 +6,7 @@ using Network;
 using UnityEngine;
 using Teams;
 using GameUI;
+using Testing;
 
 
 namespace Turn
@@ -74,11 +75,16 @@ namespace Turn
             
             ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).GetCombatHelper(_combatHelper);
             _combatHelper.GetElements(combatTimingData, pairController);
+
+            if (MultiplayerSetter.FasterCombat)
+            {
+                FastenTurn();
+            }
             
             Eventbus.TowerEvents.OnTurnBegin?.Invoke();
             
         }
-
+        
         void SetTurnTeams(Team[] teams)
         {
             turnHelper.TeamsByTurn = new Dictionary<TeamState, Team>()
@@ -117,11 +123,6 @@ namespace Turn
             else
                 SendStateChangeRequest(TurnStateType.Selection);
         }
-        
-
-       
-
-
         private void SendStateChangeRequest(TurnStateType type)
         {
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(type);
@@ -142,8 +143,6 @@ namespace Turn
         void IntruderAttempt()
         {
             currentState.TryExecuteBp();
-            
-            //GetPreviousState(); //TODO
         }
 
         public void GetNextState()
@@ -187,6 +186,12 @@ namespace Turn
                 var turnData = (ITransferDataHolder<BaseTurnTransferData>) state;
                 turnData.TransferData.ResetPreviousTurnData();
             }
+        }
+        
+        void FastenTurn()
+        {
+            combatTimingData.AccelerateValues();
+            _combatHelper.Fasten();
         }
 
         private void OnDisable()

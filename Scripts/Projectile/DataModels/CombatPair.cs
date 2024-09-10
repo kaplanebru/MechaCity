@@ -55,11 +55,9 @@ namespace DataModels
 
                 return false;
             }
-            else
-            {
-                SkipCombat();
-                return false;
-            }
+            
+            SkipCombat();
+            return false;
         }
         
 
