@@ -69,7 +69,6 @@ namespace Turn
         {
             currentLinkOperator = linkOperators.First(o => o.Type == type);
             
-            Debug.Log("link ps: " + linkOperators.Length);
             doubles = towers;
             if (currentLinkOperator.Type == LinkOperatorType.Double)
                 doubleLinkOperator.GetDoubles(doubles.ToList());
