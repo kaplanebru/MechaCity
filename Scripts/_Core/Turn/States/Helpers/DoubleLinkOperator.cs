@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Enums;
 using GameUI;
 using Towers;
@@ -35,6 +36,8 @@ namespace Turn
                     singles.Add(AllTowers.GetData(id));
                 }
             }
+            
+            SetDoublesClickable();
         }
 
         public void GetDoubles(List<int> newDoubles)
@@ -47,6 +50,12 @@ namespace Turn
             }
         }
 
+        public List<int> SetDoublesClickable()
+        {
+           return doublesId.Concat(singlesId).ToList();
+        }
+        
+
         void Reset()
         {
             doublesId.Clear();
@@ -54,8 +63,6 @@ namespace Turn
             doubles.Clear();
             singles.Clear();
         }
-        
-
         
         public void TowerSelected(params object[] args)
         {
@@ -66,8 +73,6 @@ namespace Turn
                 RiseDouble(1);
             }
         }
-
-       
 
         void RiseDouble(int step)
         {

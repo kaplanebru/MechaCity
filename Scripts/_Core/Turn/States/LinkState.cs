@@ -60,7 +60,9 @@ namespace Turn
             TransferData.Towers = data.Towers;
             currentLinkOperator.GetTowers(TransferData.Towers.ToArray());
             
-            
+            if (currentLinkOperator.Type == LinkOperatorType.Double)
+                TransferData.Towers = doubleLinkOperator.SetDoublesClickable();
+
             Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.Towers);
         }
 
