@@ -16,7 +16,7 @@ namespace Turn
         private Dictionary<int, TowerData> doubleTowers = new();
         private Dictionary<int, TowerData> singleTowers = new();
         public List<TowerData> SafeGroup { get; set; } = new();
-        
+
 
         public void GetDoubles(List<int> newDoubleIds)
         {
@@ -63,36 +63,29 @@ namespace Turn
             
             if(doubleTowers.ContainsKey(towerID))
             {
-                RiseDouble(1);
+                DoubleRise(1);
             }
             
             else if (singleTowers.ContainsKey(towerID))
             {
-                RiseOneSingle(singleTowers[towerID], 1);
+                SpecificSingleRise(singleTowers[towerID], 1);
             }
         }
 
-        void RiseOneSingle(TowerData single, int step)
-        {
-            if(!CheckDoubleFallPossibility(step)) return;
-            DoubleFallOperation(step);
-            
-            int releasedResource = doubleTowers.Count * step;
-            single.Mover.ChangeHeight(single.Height += releasedResource, true);
-        }
+       
 
-        void RiseDouble(int step)
+        void DoubleRise(int step)
         {
-            int totalStep = GetRiseHeightForDouble(step);
-
-            if (totalStep < doubleTowers.Count * step)  //(totalStep <= step)
+            int releasingResource = GetRiseHeightForDouble(step);
+            int freeResource = doubleTowers.Count * step;
+            if (releasingResource < freeResource)
             {
-                Fall(step);
+                DoubleFall(step);
                 return;
             }
             
-            int singleStep = totalStep / doubleTowers.Count;    //riseStep / 2 yaptığımızda tam sayı olmaz!!!
-            int rest = totalStep % doubleTowers.Count;
+            int singleStep = releasingResource / doubleTowers.Count;    //riseStep / 2 yaptığımızda tam sayı olmaz!!!
+            int rest = releasingResource % doubleTowers.Count;
 
             if (rest > 0)
             {
@@ -104,13 +97,35 @@ namespace Turn
             {
                 tower.Mover.ChangeHeight(tower.Height += singleStep, true);
             }
-            foreach (var tower in SafeGroup)
-            {
-                tower.Mover.ChangeHeight(tower.Height -= step, false);
-            }
+            
+            SingleFall(1, freeResource);
+
+            
             
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
           
+        }
+
+        void SingleFall(int step, int freeResource)
+        {
+            if (SafeGroup.Count == doubleTowers.Count)
+            {
+                foreach (var tower in SafeGroup)
+                {
+                    tower.Mover.ChangeHeight(tower.Height -= step, false);
+                }
+            }
+            else if (SafeGroup.Count > doubleTowers.Count)
+            {
+                for (int i = 0; i < doubleTowers.Count; i++)
+                {
+                    SafeGroup[i].Mover.ChangeHeight(SafeGroup[i].Height -= step, false);
+                }
+            }
+            else
+            {
+                SafeGroup[0].Mover.ChangeHeight(SafeGroup[0].Height -= freeResource, false);//todo maybe
+            }
         }
 
         int GetRiseHeightForDouble(int step)
@@ -168,16 +183,16 @@ namespace Turn
             }
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
-        void Fall(int step)
+        void DoubleFall(int step)
         {
             if(!CheckDoubleFallPossibility(step)) return;
             DoubleFallOperation(step);
             
             int releasedResource = doubleTowers.Count * step;
-            ReverseFall(step, releasedResource);
+            SingleRise(step, releasedResource);
         }
 
-        void ReverseFall(int step, int releaedResource)
+        void SingleRise(int step, int freeResource)
         {
             if (singleTowers.Count == doubleTowers.Count)
             {
@@ -195,8 +210,17 @@ namespace Turn
             }
             else
             {
-                singleTowers[0].Mover.ChangeHeight(singleTowers[0].Height += releaedResource, true); //Todo maybe
+                singleTowers[0].Mover.ChangeHeight(singleTowers[0].Height += freeResource, true); //Todo maybe
             }
+        }
+        
+        void SpecificSingleRise(TowerData single, int step)
+        {
+            if(!CheckDoubleFallPossibility(step)) return;
+            DoubleFallOperation(step);
+            
+            int releasedResource = doubleTowers.Count * step;
+            single.Mover.ChangeHeight(single.Height += releasedResource, true);
         }
     }
 
