@@ -11,24 +11,19 @@ namespace Turn
     public class DoubleLinkOperator : ILinkOperator
     {
         public LinkOperatorType Type { get; set; } = LinkOperatorType.Double;
-        
         public int[] Towers { get; set; }
-        
+
+        private Dictionary<int, TowerData> doubleTowers = new();
+        private Dictionary<int, TowerData> singleTowers = new();
         public List<TowerData> SafeGroup { get; set; } = new();
         
-        private List<int> doublesId = new();
-        private List<int> singlesId = new(); //todo: dict yapılabilir
 
-        private List<TowerData> doubles = new();
-        private List<TowerData> singles = new();
-
-        public void GetDoubles(List<int> newDoubles)
+        public void GetDoubles(List<int> newDoubleIds)
         {
             ResetDoubles();
-            doublesId = newDoubles;
-            foreach (var id in doublesId)
+            foreach (var id in newDoubleIds)
             {
-                doubles.Add(AllTowers.GetData(id));
+                doubleTowers.Add(id, AllTowers.GetData(id));
             }
         }
         
@@ -39,47 +34,41 @@ namespace Turn
             ResetSingles();
             foreach (var id in newTowers)
             {
-                if (!doublesId.Contains(id))
+                if (!doubleTowers.ContainsKey(id))
                 {
-                    singlesId.Add(id);
-                    singles.Add(AllTowers.GetData(id));
+                    singleTowers.Add(id, AllTowers.GetData(id));
                 }
             }
-            
-            //SetDoublesClickable();
         }
 
         public List<int> SetDoublesClickable()
         {
-            // var clickables = doublesId.Concat(singlesId).ToList();
-            // return clickables;
-            return doublesId.Concat(singlesId).ToList();
+            return doubleTowers.Keys.Concat(singleTowers.Keys).ToList();
         }
         
 
         void ResetDoubles()
         {
-            doublesId.Clear();
-            doubles.Clear();
+            doubleTowers.Clear();
         }
 
         void ResetSingles()
         {
-            singlesId.Clear();
-            singles.Clear();
+            singleTowers.Clear();
         }
         
         public void TowerSelected(params object[] args)
         {
             int towerID = (int) args[0];
-
-            if (doublesId.Contains(towerID))
+            
+            if(doubleTowers.ContainsKey(towerID))
             {
                 RiseDouble(1);
             }
-            else if (singlesId.Contains(towerID))
+            
+            else if (singleTowers.ContainsKey(towerID))
             {
-                RiseOneSingle(AllTowers.GetData(towerID), 1);
+                RiseOneSingle(singleTowers[towerID], 1);
             }
         }
 
@@ -88,7 +77,7 @@ namespace Turn
             if(!CheckDoubleFallPossibility(step)) return;
             DoubleFallOperation(step);
             
-            int releasedResource = doubles.Count * step;
+            int releasedResource = doubleTowers.Count * step;
             single.Mover.ChangeHeight(single.Height += releasedResource, true);
         }
 
@@ -96,14 +85,14 @@ namespace Turn
         {
             int totalStep = GetRiseHeightForDouble(step);
 
-            if (totalStep < doubles.Count * step)  //(totalStep <= step)
+            if (totalStep < doubleTowers.Count * step)  //(totalStep <= step)
             {
                 Fall(step);
                 return;
             }
             
-            int singleStep = totalStep / doublesId.Count;    //riseStep / 2 yaptığımızda tam sayı olmaz!!!
-            int rest = totalStep % doublesId.Count;
+            int singleStep = totalStep / doubleTowers.Count;    //riseStep / 2 yaptığımızda tam sayı olmaz!!!
+            int rest = totalStep % doubleTowers.Count;
 
             if (rest > 0)
             {
@@ -111,7 +100,7 @@ namespace Turn
                 if(SafeGroup.Count == 0) return;
             }
 
-            foreach (var tower in doubles)
+            foreach (var tower in doubleTowers.Values)
             {
                 tower.Mover.ChangeHeight(tower.Height += singleStep, true);
             }
@@ -128,11 +117,11 @@ namespace Turn
         {
             SafeGroup.Clear();
            
-            if (singles.Count < doubles.Count)
+            if (singleTowers.Count < doubleTowers.Count)
             {
-                step *= doubles.Count;
+                step *= doubleTowers.Count;
 
-                foreach (var tower in singles) //TODO: aslında 1 single'a göre çalışıyor bu şu an
+                foreach (var tower in singleTowers.Values) //TODO: aslında 1 single'a göre çalışıyor bu şu an
                 {
                     if (tower.AvailableHeight > step)
                     {
@@ -143,13 +132,13 @@ namespace Turn
             else
             {
                 int counter = 0;
-                foreach (var tower in singles)
+                foreach (var tower in singleTowers.Values)
                 {
                     if (tower.AvailableHeight > step)
                     {
                         counter++;
                         SafeGroup.Add(tower);
-                        if(counter == doubles.Count) break; 
+                        if(counter == doubleTowers.Count) break; 
                     }
                 }
             }
@@ -159,7 +148,7 @@ namespace Turn
 
         bool CheckDoubleFallPossibility(int step)
         {
-            foreach (var tower in doubles)
+            foreach (var tower in doubleTowers.Values)
             {
                 if (tower.height <= step)
                 {
@@ -173,7 +162,7 @@ namespace Turn
 
         void DoubleFallOperation(int step)
         {
-            foreach (var tower in doubles)
+            foreach (var tower in doubleTowers.Values)
             {
                 tower.Mover.ChangeHeight(tower.Height -= step, false);
             }
@@ -184,54 +173,29 @@ namespace Turn
             if(!CheckDoubleFallPossibility(step)) return;
             DoubleFallOperation(step);
             
-            int releasedResource = doubles.Count * step;
+            int releasedResource = doubleTowers.Count * step;
             ReverseFall(step, releasedResource);
-            
-            
-            
-            // int height = 0;
-            // foreach (var tower in doubles)
-            // {
-            //     height += tower.height;
-            // }
-            //
-            // if (height > step * doubles.Count)
-            // {
-            //     foreach (var tower in doubles)
-            //     {
-            //         tower.Mover.ChangeHeight(tower.Height -= step, false);
-            //     }
-            //
-            //     ReverseFall(step);
-            //    
-            //     MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
-            //
-            // }
-            // else
-            // {
-            //     Debug.Log("Not enough resource to lift that tower!");
-            // }
         }
 
         void ReverseFall(int step, int releaedResource)
         {
-            if (singles.Count == doubles.Count)
+            if (singleTowers.Count == doubleTowers.Count)
             {
-                foreach (var single in singles)
+                foreach (var single in singleTowers.Values)
                 {
                     single.Mover.ChangeHeight(single.Height += step, true);
                 }
             }
-            else if (singles.Count > doubles.Count)
+            else if (singleTowers.Count > doubleTowers.Count)
             {
-                for (int i = 0; i < doubles.Count; i++)
+                for (int i = 0; i < doubleTowers.Count; i++)
                 {
-                    singles[i].Mover.ChangeHeight(singles[i].Height += step, true);
+                    singleTowers[i].Mover.ChangeHeight(singleTowers[i].Height += step, true);
                 }
             }
             else
             {
-                singles[0].Mover.ChangeHeight(singles[0].Height += releaedResource, true); //Todo maybe
+                singleTowers[0].Mover.ChangeHeight(singleTowers[0].Height += releaedResource, true); //Todo maybe
             }
         }
     }
