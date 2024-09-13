@@ -13,62 +13,95 @@ namespace Turn
         public LinkOperatorType Type { get; set; } = LinkOperatorType.Double;
         public int[] Towers { get; set; }
 
-        private Dictionary<int, TowerData> doubles = new();
-        private Dictionary<int, TowerData> singles = new();
+        private List<DoubleTower> AllDoubles = new();
+        private HashSet<DoubleTower> TurnDoubles = new();
+
+        private DoubleTower _selectedDouble;
+        private Dictionary<int, TowerData> Singles = new();
+        
+        
         public List<TowerData> SafeGroup { get; set; } = new();
 
-        public void GetDoubles(List<int> newDoubleIds)
+        public void AddDoubles(DoubleTower newDouble)
         {
-            ResetDoubles();
-            foreach (var id in newDoubleIds)
-            {
-                doubles.Add(id, AllTowers.GetData(id));
-            }
+            AllDoubles.Add(newDouble);
+            Debug.Log("all doubles: "+AllDoubles[0].Amount);
         }
-        
-        public void GetTowers(int[] newTowers)
+
+        public void RemoveDouble(DoubleTower doubleTower)
+        {
+            AllDoubles.Remove(doubleTower);
+        }
+
+        public bool ScanDoubles(int id)
+        {
+            foreach (var Double in AllDoubles)
+            {
+                if (Double.towers.ContainsKey(id))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        public void SetTowers(int[] newTowers)
         {
             Towers = newTowers;
-
-            ResetSingles();
-            foreach (var id in newTowers)
+            Debug.Log(Towers.Length);
+            
+            TurnDoubles.Clear();
+            Singles.Clear();
+            
+            SetSelectedTowers();
+        }
+        
+        void SetSelectedTowers()
+        {
+            foreach (var id in Towers)
             {
-                if (!doubles.ContainsKey(id))
+                foreach (var Double in AllDoubles)
                 {
-                    singles.Add(id, AllTowers.GetData(id));
+                    if (Double.towers.ContainsKey(id))
+                        TurnDoubles.Add(Double); //if(SD)Contains ise double gibi muamele edilir
+                    
+                    else
+                        Singles.Add(id, AllTowers.GetData(id));
                 }
             }
         }
 
-        public List<int> SetDoublesClickable()
+        public IEnumerable<int> SetTransferData()
         {
-            return doubles.Keys.Concat(singles.Keys).ToList();
+            return Singles.Keys.Concat(TurnDoubles.SelectMany(Double => Double.towers.Keys));
         }
         
-
-        void ResetDoubles()
-        {
-            doubles.Clear();
-        }
-
-        void ResetSingles()
-        {
-            singles.Clear();
-        }
         
         public void TowerSelected(params object[] args)
         {
+            
             int towerID = (int) args[0];
-            
-            if(doubles.ContainsKey(towerID))
+
+            Debug.Log("tower selected by double");
+
+            if (Singles.ContainsKey(towerID))
             {
-                DoubleRise(1);
+                SelectedSingleRise(Singles[towerID], 1);
             }
-            
-            else if (singles.ContainsKey(towerID))
+            else
             {
-                SelectedSingleRise(singles[towerID], 1);
+                foreach (var Double in TurnDoubles)
+                {
+                    if(!Double.InspectDoubleById(towerID)) continue;
+                    _selectedDouble = Double;
+                    
+                    DoubleRise(1);
+                    break;
+                }
             }
+            UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
+
         }
 
        
@@ -77,7 +110,7 @@ namespace Turn
         {
             int freeSingleResource = GetRiseHeightForDouble(step);
             
-            int minDoubleResource = doubles.Count * step; //inebileceği resource
+            int minDoubleResource = _selectedDouble.Amount * step; //inebileceği resource
             if (freeSingleResource < minDoubleResource)
             {
                 DoubleFall(step);
@@ -85,7 +118,7 @@ namespace Turn
             }
             
           
-            int rest = freeSingleResource % doubles.Count;
+            int rest = freeSingleResource % _selectedDouble.Amount;
 
             if (rest > 0)
             {
@@ -94,9 +127,9 @@ namespace Turn
                 freeSingleResource -= step; //todo: -= rest
             }
             
-            int singleStep = freeSingleResource / doubles.Count;
+            int singleStep = freeSingleResource / _selectedDouble.Amount;
 
-            foreach (var tower in doubles.Values)
+            foreach (var tower in _selectedDouble.towers.Values)
             {
                 tower.Mover.ChangeHeight(tower.Height += singleStep, true);
             }
@@ -109,9 +142,9 @@ namespace Turn
 
         void SingleFall(int step)
         {
-            if (SafeGroup.Count < doubles.Count)
+            if (SafeGroup.Count < _selectedDouble.Amount)
             {
-                SafeGroup[0].Mover.ChangeHeight( SafeGroup[0].Height -= doubles.Count * step, false); //TODO tek singlea oynuyor yine
+                SafeGroup[0].Mover.ChangeHeight( SafeGroup[0].Height -= _selectedDouble.Amount * step, false); //TODO tek singlea oynuyor yine
             }
             else
             {
@@ -126,15 +159,15 @@ namespace Turn
         {
             SafeGroup.Clear();
            
-            if (singles.Count < doubles.Count) //TODO: aslında 1 single'a göre çalışıyor bu şu an
+            if (Singles.Count < _selectedDouble.Amount) //TODO: aslında 1 single'a göre çalışıyor bu şu an
             {
-                int minimumRequiredStes = doubles.Count / singles.Count - 1;
-                int surplus = doubles.Count - singles.Count;
+                int minimumRequiredStes = _selectedDouble.Amount / Singles.Count - 1;
+                int surplus = _selectedDouble.Amount - Singles.Count;
                 
                 
-                step *= doubles.Count;
+                step *= _selectedDouble.Amount;
                 
-                foreach (var tower in singles.Values) 
+                foreach (var tower in Singles.Values) 
                 {
                     if (tower.AvailableHeight > step)
                     {
@@ -145,13 +178,13 @@ namespace Turn
             else
             {
                 int counter = 0;
-                foreach (var tower in singles.Values)
+                foreach (var tower in Singles.Values)
                 {
                     if (tower.AvailableHeight > step)
                     {
                         counter++;
                         SafeGroup.Add(tower);
-                        if(counter == doubles.Count) break; 
+                        if(counter == _selectedDouble.Amount) break; 
                     }
                 }
             }
@@ -161,7 +194,7 @@ namespace Turn
 
         bool DoubleFallCapacity(int step)
         {
-            foreach (var tower in doubles.Values)
+            foreach (var tower in _selectedDouble.towers.Values)
             {
                 if (tower.height <= step)
                 {
@@ -174,7 +207,7 @@ namespace Turn
 
         void DoubleFallOperation(int step)
         {
-            foreach (var tower in doubles.Values)
+            foreach (var tower in _selectedDouble.towers.Values)
             {
                 tower.Mover.ChangeHeight(tower.Height -= step, false);
             }
@@ -186,23 +219,23 @@ namespace Turn
             if (!DoubleFallCapacity(step)) return;
             
             DoubleFallOperation(step);
-            SerialSingleRise(step, doubles.Count * step);
+            SerialSingleRise(step, _selectedDouble.Amount * step);
         }
 
         void SerialSingleRise(int step, int freeDoubleResource)
         {
-            if (singles.Count == doubles.Count)
+            if (Singles.Count == _selectedDouble.Amount)
             {
-                foreach (var single in singles.Values)
+                foreach (var single in Singles.Values)
                 {
                     single.Mover.ChangeHeight(single.Height += step, true);
                 }
             }
-            else if (singles.Count > doubles.Count)
+            else if (Singles.Count > _selectedDouble.Amount)
             {
-                for (int i = 0; i < doubles.Count; i++)
+                for (int i = 0; i < _selectedDouble.Amount; i++)
                 {
-                    var tower = singles.ElementAt(i).Value;
+                    var tower = Singles.ElementAt(i).Value;
                     tower.Mover.ChangeHeight(tower.Height += step, true);
                 }
                 
@@ -211,12 +244,12 @@ namespace Turn
             {
                 //singles.First().Value.Mover.ChangeHeight( singles.First().Value.Height += freeDoubleResource, true);
                 
-                 int loop = doubles.Count / singles.Count;
-                 int rest = doubles.Count % singles.Count;
+                 int loop = _selectedDouble.Amount / Singles.Count;
+                 int rest = _selectedDouble.Amount % Singles.Count;
                 //
                 for (int i = 0; i < loop; i++)
                 {
-                    foreach (var tower in singles.Values)
+                    foreach (var tower in Singles.Values)
                     {
                         tower.Mover.ChangeHeight(tower.Height += step, true); //changeheight üstüste çağrılabilir mi
                     }
@@ -224,7 +257,7 @@ namespace Turn
                 
                 for (int i = 0; i < rest; i++)
                 {
-                    var single = singles.ElementAt(i).Value;
+                    var single = Singles.ElementAt(i).Value;
                     single.Mover.ChangeHeight(single.Height += step, true); //todo singles i olamaz. i burda key gibi çalışır
                 }
             }
@@ -240,7 +273,7 @@ namespace Turn
             
             DoubleFallOperation(step);
             
-            int freeDoubleResource = doubles.Count * step;
+            int freeDoubleResource = _selectedDouble.Amount * step;
             single.Mover.ChangeHeight(single.Height += freeDoubleResource, true);
         }
     }

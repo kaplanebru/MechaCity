@@ -33,7 +33,7 @@ namespace Turn
         public override void SubscribeToConstantEvents()
         {
             Eventbus.LinkEvents.OnFloorsOpened += LinkTowers;
-            Eventbus.LinkEvents.OnDoubleSelfAction += SwitchLinkOperator;
+            BpEventbus.ActionEvents.OnDoubleSelfAction += GetDoubles;
             
             SetLinkOperators();
         }
@@ -50,7 +50,6 @@ namespace Turn
 
         public override void Subscribe()
         {
-            NetworkEventbus.InputEvents.OnObjectClicked += currentLinkOperator.TowerSelected;
             Eventbus.LinkEvents.OnLinkStateBegin?.Invoke();
         }
         
@@ -58,25 +57,45 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             TransferData.Towers = data.Towers;
-            currentLinkOperator.GetTowers(TransferData.Towers.ToArray());
+            
+            SetLinkOperatorAndSubscribe();
+            currentLinkOperator.SetTowers(TransferData.Towers.ToArray());
+           
 
             if (currentLinkOperator.Type == LinkOperatorType.Double)
-            {
-                TransferData.Towers = doubleLinkOperator.SetDoublesClickable();
-                Debug.Log(TransferData.Towers.Count);
-            }
-
+                TransferData.Towers = doubleLinkOperator.SetTransferData().ToList(); 
+            
             Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.Towers);
         }
 
-        private int[] doubles;
-        private void SwitchLinkOperator(LinkOperatorType type, int[] towers = null)
+        private void GetDoubles(DoubleTower doubleTower) //params int[] towers
+        {
+            doubleLinkOperator.AddDoubles(doubleTower);
+        }
+
+        private void SetLinkOperatorAndSubscribe()
+        {
+            foreach (var tower in TransferData.Towers)
+            {
+                if (doubleLinkOperator.ScanDoubles(tower))
+                {
+                    currentLinkOperator = doubleLinkOperator;
+                    //SwitchLinkOperator(LinkOperatorType.Double); //currentLinkOperator = doubleLinkOperator; böyle de  yapılabilir
+                    goto Subscribe;
+                }
+            }
+            //SwitchLinkOperator(LinkOperatorType.Standard);
+            currentLinkOperator = linkOperator;
+            
+            
+            Subscribe:
+            Debug.Log(currentLinkOperator.Type);
+            NetworkEventbus.InputEvents.OnObjectClicked += currentLinkOperator.TowerSelected;
+        }
+       
+        private void SwitchLinkOperator(LinkOperatorType type)
         {
             currentLinkOperator = linkOperators.First(o => o.Type == type);
-            
-            doubles = towers;
-            if (currentLinkOperator.Type == LinkOperatorType.Double)
-                doubleLinkOperator.GetDoubles(doubles.ToList());
         }
         
         private void LinkTowers()
@@ -90,6 +109,7 @@ namespace Turn
         {
             Eventbus.LinkEvents.OnUnlink?.Invoke(TransferData.Towers);
             MediatorEventbus.ChainLinkEvents.OnLinkBroken?.Invoke();
+            Debug.Log("LAST " + currentLinkOperator.Type);
             NetworkEventbus.InputEvents.OnObjectClicked -= currentLinkOperator.TowerSelected;
             AllTowers.EnableClickability();
         }
@@ -97,7 +117,8 @@ namespace Turn
         public override void UnsubscribeFromConstantEvents()
         {
             Eventbus.LinkEvents.OnFloorsOpened -= LinkTowers;
-            Eventbus.LinkEvents.OnDoubleSelfAction -= SwitchLinkOperator;
+            BpEventbus.ActionEvents.OnDoubleSelfAction -= GetDoubles;
+
         }
     }
 }

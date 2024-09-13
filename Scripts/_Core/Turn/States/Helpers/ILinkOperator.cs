@@ -10,6 +10,6 @@ namespace Turn
         public int[] Towers { get; set; }
         public List<TowerData> SafeGroup { get; set; } //new
         public void TowerSelected(params object[] args);
-        public void GetTowers(int[] newTowers);
+        public void SetTowers(int[] newTowers);
     }
 }

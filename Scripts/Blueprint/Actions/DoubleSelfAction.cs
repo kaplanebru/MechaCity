@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Enums;
 using Towers;
+using Turn;
 using UnityEngine;
 
 namespace Blueprint
@@ -17,7 +18,8 @@ namespace Blueprint
             
             CreateBridge(selectedTowers);
             
-            Eventbus.LinkEvents.OnDoubleSelfAction?.Invoke(LinkOperatorType.Double, selectedTowers);
+            BpEventbus.ActionEvents.OnDoubleSelfAction.Invoke(new DoubleTower(selectedTowers));
+            //Eventbus.LinkEvents.OnDoubleSelfAction?.Invoke(selectedTowers);
 
         }
         public void Restore(params object[] obj)

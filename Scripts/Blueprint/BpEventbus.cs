@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Blueprint;
 using Enums;
 using Enums.Selections;
+using Turn;
 using UnityEngine;
 
 public static class BpEventbus
@@ -24,6 +25,8 @@ public static class BpEventbus
         public static Action OnReverseActionTriggered;
         public static Action OnSelectionIncrementTriggered;
         public static Action OnRestoreSelectionAmount;
+        public static Action<DoubleTower> OnDoubleSelfAction;
+
     }
 
     public static class SubscriberEvents
@@ -42,6 +45,7 @@ public static class BpEventbus
         public static Action<ITrackable> OnExpiredTracker;
 
     }
+    
     
     public static class UIEvents
     {

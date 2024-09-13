@@ -13,13 +13,14 @@ namespace Turn
         public int[] Towers { get; set; }
         public List<TowerData> SafeGroup { get; set; } = new();
         
-        public void GetTowers(int[] newTowers)
+        public void SetTowers(int[] newTowers)
         {
             Towers = newTowers;
         }
         
-        public virtual void TowerSelected(params object[] args)
+        public void TowerSelected(params object[] args)
         {
+            Debug.Log("tower selected by stadard");
             UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
 
             int towerID = (int) args[0];
