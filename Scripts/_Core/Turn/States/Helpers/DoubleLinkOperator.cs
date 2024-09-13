@@ -128,8 +128,12 @@ namespace Turn
            
             if (singles.Count < doubles.Count) //TODO: aslında 1 single'a göre çalışıyor bu şu an
             {
+                int minimumRequiredStes = doubles.Count / singles.Count - 1;
+                int surplus = doubles.Count - singles.Count;
+                
+                
                 step *= doubles.Count;
-
+                
                 foreach (var tower in singles.Values) 
                 {
                     if (tower.AvailableHeight > step)
@@ -210,25 +214,29 @@ namespace Turn
                  int loop = doubles.Count / singles.Count;
                  int rest = doubles.Count % singles.Count;
                 //
-                for (int i = 0; i < loop-1; i++)
+                for (int i = 0; i < loop; i++)
                 {
                     foreach (var tower in singles.Values)
                     {
-                        tower.Mover.ChangeHeight(tower.Height += freeDoubleResource, true); //changeheight üstüste çağrılabilir mi
+                        tower.Mover.ChangeHeight(tower.Height += step, true); //changeheight üstüste çağrılabilir mi
                     }
                 }
                 
                 for (int i = 0; i < rest; i++)
                 {
                     var single = singles.ElementAt(i).Value;
-                    single.Mover.ChangeHeight(single.Height += freeDoubleResource, true); //todo singles i olamaz. i burda key gibi çalışır
+                    single.Mover.ChangeHeight(single.Height += step, true); //todo singles i olamaz. i burda key gibi çalışır
                 }
             }
         }
         
         void SelectedSingleRise(TowerData single, int step)
         {
-            if(!DoubleFallCapacity(step)) return;
+            if (!DoubleFallCapacity(step))
+            {
+                DoubleRise(step);
+                return;
+            }
             
             DoubleFallOperation(step);
             
