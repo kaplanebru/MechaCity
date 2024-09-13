@@ -12,79 +12,22 @@ namespace Turn
     {
         public LinkOperatorType Type { get; set; } = LinkOperatorType.Double;
         public int[] Towers { get; set; }
-
-        private List<DoubleTower> AllDoubles = new();
+        public DoubleLinkSetter setter = new();
+        
         private HashSet<DoubleTower> TurnDoubles = new();
-
-        private DoubleTower _selectedDouble;
         private Dictionary<int, TowerData> Singles = new();
-        
-        
+        private DoubleTower _selectedDouble;
         public List<TowerData> SafeGroup { get; set; } = new();
-
-        public void AddDoubles(DoubleTower newDouble)
-        {
-            AllDoubles.Add(newDouble);
-            Debug.Log("all doubles: "+AllDoubles[0].Amount);
-        }
-
-        public void RemoveDouble(DoubleTower doubleTower)
-        {
-            AllDoubles.Remove(doubleTower);
-        }
-
-        public bool ScanDoubles(int id)
-        {
-            foreach (var Double in AllDoubles)
-            {
-                if (Double.towers.ContainsKey(id))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
 
         public void SetTowers(int[] newTowers)
         {
-            Towers = newTowers;
-            Debug.Log(Towers.Length);
-            
-            TurnDoubles.Clear();
-            Singles.Clear();
-            
-            SetSelectedTowers();
+            setter.SetTowers(newTowers, out TurnDoubles, out Singles);
         }
-        
-        void SetSelectedTowers()
-        {
-            foreach (var id in Towers)
-            {
-                foreach (var Double in AllDoubles)
-                {
-                    if (Double.towers.ContainsKey(id))
-                        TurnDoubles.Add(Double); //if(SD)Contains ise double gibi muamele edilir
-                    
-                    else
-                        Singles.Add(id, AllTowers.GetData(id));
-                }
-            }
-        }
-
-        public IEnumerable<int> SetTransferData()
-        {
-            return Singles.Keys.Concat(TurnDoubles.SelectMany(Double => Double.towers.Keys));
-        }
-        
         
         public void TowerSelected(params object[] args)
         {
-            
             int towerID = (int) args[0];
-
-            Debug.Log("tower selected by double");
-
+            
             if (Singles.ContainsKey(towerID))
             {
                 SelectedSingleRise(Singles[towerID], 1);
@@ -94,8 +37,8 @@ namespace Turn
                 foreach (var Double in TurnDoubles)
                 {
                     if(!Double.InspectDoubleById(towerID)) continue;
-                    _selectedDouble = Double;
                     
+                    _selectedDouble = Double;
                     DoubleRise(1);
                     break;
                 }
@@ -103,9 +46,7 @@ namespace Turn
             UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
 
         }
-
-       
-
+        
         void DoubleRise(int step)
         {
             int freeSingleResource = GetRiseHeightForDouble(step);
@@ -116,8 +57,7 @@ namespace Turn
                 DoubleFall(step);
                 return;
             }
-            
-          
+
             int rest = freeSingleResource % _selectedDouble.Amount;
 
             if (rest > 0)

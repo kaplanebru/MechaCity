@@ -59,28 +59,28 @@ namespace Turn
             TransferData.Towers = data.Towers;
             
             SetLinkOperatorAndSubscribe();
-            currentLinkOperator.SetTowers(TransferData.Towers.ToArray());
+            currentLinkOperator.SetTowers(TransferData.Towers.ToArray()); //y
            
 
             if (currentLinkOperator.Type == LinkOperatorType.Double)
-                TransferData.Towers = doubleLinkOperator.SetTransferData().ToList(); 
+                TransferData.Towers = doubleLinkOperator.setter.SetTransferData().ToList(); //yo
             
             Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.Towers);
         }
 
         private void GetDoubles(DoubleTower doubleTower) //params int[] towers
         {
-            doubleLinkOperator.AddDoubles(doubleTower);
+            doubleLinkOperator.setter.AddDoubles(doubleTower);
         }
 
         private void SetLinkOperatorAndSubscribe()
         {
             foreach (var tower in TransferData.Towers)
             {
-                if (doubleLinkOperator.ScanDoubles(tower))
+                if (doubleLinkOperator.setter.InspectDoubles(tower))
                 {
                     currentLinkOperator = doubleLinkOperator;
-                    //SwitchLinkOperator(LinkOperatorType.Double); //currentLinkOperator = doubleLinkOperator; böyle de  yapılabilir
+                    //SwitchLinkOperator(LinkOperatorType.Double);
                     goto Subscribe;
                 }
             }
