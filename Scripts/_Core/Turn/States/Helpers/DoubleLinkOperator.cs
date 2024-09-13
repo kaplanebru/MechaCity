@@ -159,7 +159,7 @@ namespace Turn
         {
             foreach (var tower in doubles.Values)
             {
-                if (tower.height < step)
+                if (tower.height <= step)
                 {
                     Debug.Log("not enough double resource for Fall");
                     return false;
@@ -203,24 +203,26 @@ namespace Turn
                 }
                 
             }
-            else //single nüfusa göre fazlalık açığa çıkıyor
+            else //single az: 1 single fazladan yükselecek gibi
             {
-                singles.First().Value.Mover.ChangeHeight( singles.First().Value.Height += freeDoubleResource, true);
-                // int loop = doubles.Count / singles.Count;
-                // int rest = doubles.Count % singles.Count;
+                //singles.First().Value.Mover.ChangeHeight( singles.First().Value.Height += freeDoubleResource, true);
+                
+                 int loop = doubles.Count / singles.Count;
+                 int rest = doubles.Count % singles.Count;
                 //
-                // for (int i = 0; i < loop; i++)
-                // {
-                //     foreach (var tower in singles.Values)
-                //     {
-                //         tower.Mover.ChangeHeight(tower.Height += freeDoubleResource, true); //changeheight üstüste çağrılabilir mi
-                //     }
-                // }
-                //
-                // for (int i = 0; i < rest; i++)
-                // {
-                //     singles[i].Mover.ChangeHeight(singles[i].Height += freeDoubleResource, true); //todo singles i olamaz. i burda key gibi çalışır
-                // }
+                for (int i = 0; i < loop-1; i++)
+                {
+                    foreach (var tower in singles.Values)
+                    {
+                        tower.Mover.ChangeHeight(tower.Height += freeDoubleResource, true); //changeheight üstüste çağrılabilir mi
+                    }
+                }
+                
+                for (int i = 0; i < rest; i++)
+                {
+                    var single = singles.ElementAt(i).Value;
+                    single.Mover.ChangeHeight(single.Height += freeDoubleResource, true); //todo singles i olamaz. i burda key gibi çalışır
+                }
             }
         }
         
