@@ -52,20 +52,33 @@ namespace Turn
         }
 
 
+        bool HasCapacity(int step)
+        {
+            int totalAvailableHeight = 0;
+            foreach (var tower in Singles.Values)
+            {
+                if (tower.AvailableHeight < step) continue;
+                totalAvailableHeight += tower.AvailableHeight;
+            }
+
+            if (totalAvailableHeight < _selectedDouble.Amount * step)
+                return false;
+            return true;
+        }
         int GetRiseHeightForDouble(int step)
         {
             safeGroup.Clear();
-            int totalAvailableHeight = 0;
+           // int totalAvailableHeight = 0;
             foreach (var tower in Singles.Values)
             {
                 if (tower.AvailableHeight < step) continue;
 
                 safeGroup.Add(tower, 0);
-                totalAvailableHeight += tower.AvailableHeight;
+               // totalAvailableHeight += tower.AvailableHeight;
             }
 
-            if (totalAvailableHeight < _selectedDouble.Amount * step)
-                return 0;
+            // if (totalAvailableHeight < _selectedDouble.Amount * step)
+            //     return 0;
 
             safeGroup = safeGroup.OrderByDescending(s => s.Key.AvailableHeight)
                 .ToDictionary(s => s.Key, s => s.Value);
@@ -103,12 +116,18 @@ namespace Turn
 
         void DoubleRise(int step)
         {
-            int freeSingleResource = GetRiseHeightForDouble(step);
-            if (freeSingleResource == 0)
+            if (!HasCapacity(step))
             {
                 DoubleFall(step);
                 return;
             }
+            
+            int freeSingleResource = GetRiseHeightForDouble(step);
+            // if (freeSingleResource == 0)
+            // {
+            //     DoubleFall(step);
+            //     return;
+            // }
 
             int singleStep = freeSingleResource / _selectedDouble.Amount;
 
@@ -117,7 +136,7 @@ namespace Turn
                 tower.Mover.ChangeHeight(tower.Height += singleStep, true);
             }
 
-            SingleFall(1);
+            SingleFall(step);
 
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
@@ -160,52 +179,54 @@ namespace Turn
             foreach (var safePair in safeGroup)
             {
                 var tower = safePair.Key;
-                tower.Mover.ChangeHeight(tower.Height += safePair.Value, false);
+                Debug.Log("single rise: " + safePair.Value);
+                tower.Mover.ChangeHeight(tower.Height += safePair.Value, true);
+                
             }
             
-            if (Singles.Count == _selectedDouble.Amount)
-            {
-                foreach (var single in Singles.Values)
-                {
-                    single.Mover.ChangeHeight(single.Height += step, true);
-                }
-            }
-            else if (Singles.Count > _selectedDouble.Amount)
-            {
-                for (int i = 0; i < _selectedDouble.Amount; i++)
-                {
-                    var tower = Singles.ElementAt(i).Value;
-                    tower.Mover.ChangeHeight(tower.Height += step, true);
-                }
-            }
-            else //single az: 1 single fazladan yükselecek gibi
-            {
-                foreach (var safePair in safeGroup)
-                {
-                    var tower = safePair.Key;
-                    tower.Mover.ChangeHeight(tower.Height += safePair.Value, false);
-                }
-
-                ////singles.First().Value.Mover.ChangeHeight( singles.First().Value.Height += freeDoubleResource, true);
-
-                // int loop = _selectedDouble.Amount / Singles.Count;
-                // int rest = _selectedDouble.Amount % Singles.Count;
-                //
-                // for (int i = 0; i < loop; i++)
-                // {
-                //     foreach (var tower in Singles.Values)
-                //     {
-                //         tower.Mover.ChangeHeight(tower.Height += step, true); //changeheight üstüste çağrılabilir mi
-                //     }
-                // }
-                //
-                // for (int i = 0; i < rest; i++)
-                // {
-                //     var single = Singles.ElementAt(i).Value;
-                //     single.Mover.ChangeHeight(single.Height += step,
-                //         true); //todo singles i olamaz. i burda key gibi çalışır
-                // }
-            }
+            // if (Singles.Count == _selectedDouble.Amount)
+            // {
+            //     foreach (var single in Singles.Values)
+            //     {
+            //         single.Mover.ChangeHeight(single.Height += step, true);
+            //     }
+            // }
+            // else if (Singles.Count > _selectedDouble.Amount)
+            // {
+            //     for (int i = 0; i < _selectedDouble.Amount; i++)
+            //     {
+            //         var tower = Singles.ElementAt(i).Value;
+            //         tower.Mover.ChangeHeight(tower.Height += step, true);
+            //     }
+            // }
+            // else //single az: 1 single fazladan yükselecek gibi
+            // {
+            //     foreach (var safePair in safeGroup)
+            //     {
+            //         var tower = safePair.Key;
+            //         tower.Mover.ChangeHeight(tower.Height += safePair.Value, false);
+            //     }
+            //
+            //     ////singles.First().Value.Mover.ChangeHeight( singles.First().Value.Height += freeDoubleResource, true);
+            //
+            //     // int loop = _selectedDouble.Amount / Singles.Count;
+            //     // int rest = _selectedDouble.Amount % Singles.Count;
+            //     //
+            //     // for (int i = 0; i < loop; i++)
+            //     // {
+            //     //     foreach (var tower in Singles.Values)
+            //     //     {
+            //     //         tower.Mover.ChangeHeight(tower.Height += step, true); //changeheight üstüste çağrılabilir mi
+            //     //     }
+            //     // }
+            //     //
+            //     // for (int i = 0; i < rest; i++)
+            //     // {
+            //     //     var single = Singles.ElementAt(i).Value;
+            //     //     single.Mover.ChangeHeight(single.Height += step,
+            //     //         true); //todo singles i olamaz. i burda key gibi çalışır
+            //     // }
+            // }
         }
 
         void SingleFall(int step)
@@ -213,8 +234,10 @@ namespace Turn
             foreach (var safePair in safeGroup)
             {
                 var tower = safePair.Key;
+                Debug.Log("single fall: " +safePair.Value);
                 tower.Mover.ChangeHeight(tower.Height -= safePair.Value, false);
             }
+            
             // if (SafeGroup.Count < _selectedDouble.Amount)
             // {
             //     //SafeGroup[0].Mover.ChangeHeight(SafeGroup[0].Height -= _selectedDouble.Amount * step, false); //TODO tek singlea oynuyor yine
