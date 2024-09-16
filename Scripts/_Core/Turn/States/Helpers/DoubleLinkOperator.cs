@@ -46,6 +46,78 @@ namespace Turn
             UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
 
         }
+
+        public Dictionary<TowerData, int> safeGroup = new();
+
+        int GetRiseHeightForDouble(int step)
+        {
+            SafeGroup.Clear();
+            safeGroup.Clear();
+           
+            if (Singles.Count < _selectedDouble.Amount) //TODO: aslında 1 single'a göre çalışıyor bu şu an
+            {
+                //Check Capacity
+                int totalAvailableHeight = 0;
+                foreach (var tower in Singles.Values)
+                {
+                    if(tower.AvailableHeight < step) continue;
+                    
+                    safeGroup.Add(tower, 0);
+                    totalAvailableHeight += tower.AvailableHeight;
+                }
+
+                if (totalAvailableHeight < _selectedDouble.Amount * step)
+                {
+                    return 0;
+                }
+                
+                // //
+                // foreach (var tower in Singles.Values) 
+                // {
+                //     if(tower.AvailableHeight < step) continue;
+                //     safeGroup.Add(tower, 0);
+                // }
+                
+                safeGroup = safeGroup.OrderByDescending(s => s.Key.AvailableHeight).ToDictionary(s => s.Key, s => s.Value);
+
+                int counter = _selectedDouble.Amount * step;
+                while (counter > 0)
+                {
+                    foreach (var safeTower in safeGroup)
+                    {
+                        safeGroup[safeTower.Key]++;
+                        counter--;
+                    }
+                }
+               
+                
+                
+                // step *= _selectedDouble.Amount;
+                //
+                // foreach (var tower in Singles.Values) 
+                // {
+                //     if (tower.AvailableHeight > step)
+                //     {
+                //         SafeGroup.Add(tower);
+                //     }
+                // }
+            }
+            else
+            {
+                int counter = 0;
+                foreach (var tower in Singles.Values)
+                {
+                    if (tower.AvailableHeight > step)
+                    {
+                        counter++;
+                        SafeGroup.Add(tower);
+                        if(counter == _selectedDouble.Amount) break; 
+                    }
+                }
+            }
+            
+            return SafeGroup.Count * step;
+        }
         
         void DoubleRise(int step)
         {
@@ -95,42 +167,7 @@ namespace Turn
             }
         }
 
-        int GetRiseHeightForDouble(int step)
-        {
-            SafeGroup.Clear();
-           
-            if (Singles.Count < _selectedDouble.Amount) //TODO: aslında 1 single'a göre çalışıyor bu şu an
-            {
-                int minimumRequiredStes = _selectedDouble.Amount / Singles.Count - 1;
-                int surplus = _selectedDouble.Amount - Singles.Count;
-                
-                
-                step *= _selectedDouble.Amount;
-                
-                foreach (var tower in Singles.Values) 
-                {
-                    if (tower.AvailableHeight > step)
-                    {
-                        SafeGroup.Add(tower);
-                    }
-                }
-            }
-            else
-            {
-                int counter = 0;
-                foreach (var tower in Singles.Values)
-                {
-                    if (tower.AvailableHeight > step)
-                    {
-                        counter++;
-                        SafeGroup.Add(tower);
-                        if(counter == _selectedDouble.Amount) break; 
-                    }
-                }
-            }
-            
-            return SafeGroup.Count * step;
-        }
+       
 
         bool DoubleFallCapacity(int step)
         {
