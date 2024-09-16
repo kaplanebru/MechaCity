@@ -8,7 +8,7 @@ namespace Turn
     {
         public LinkOperatorType Type { get; set; }
         public int[] Towers { get; set; }
-        public List<TowerData> SafeGroup { get; set; } //new
+        //public List<TowerData> SafeGroup { get; set; } //new
         public void TowerSelected(params object[] args);
         public void SetTowers(int[] newTowers);
     }
