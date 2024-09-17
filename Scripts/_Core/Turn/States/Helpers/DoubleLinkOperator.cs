@@ -20,6 +20,8 @@ namespace Turn
         private Dictionary<TowerData, int> safeGroup = new();
 
         //TODO: ne fall ne rise söz konusu olmayan durum için sonsuz döngüyü engelle
+        //Not: normalde çoklu seçimde rise fall'a göre belirleniyor. diğer towerların fall'u ne kadarsa seçilen tower'a o kadar ekleniyor.
+        //Fakat double towers amount > others olduğunda tam tersi çalışıyor: Others  souble tower height'ine ulaşana kadar 1'den fazla iner
 
         public void SetTowers(int[] newTowers)
         {
@@ -51,17 +53,16 @@ namespace Turn
 
         bool HasDoubleRiseCapacity(int step)
         {
-            int totalAvailableHeight = 0;
+            int totalSingleAvailableHeight = 0;
             foreach (var tower in Singles.Values)
             {
                 if (tower.AvailableHeight < step) continue;
-                totalAvailableHeight += tower.AvailableHeight;
+                totalSingleAvailableHeight += tower.AvailableHeight;
                 Debug.Log(" av height: " + tower.AvailableHeight);
 
             }
-
-          
-            return totalAvailableHeight >= _selectedDouble.Amount * step;
+            
+            return totalSingleAvailableHeight >= _selectedDouble.GetFreeResource(step);
         }
         
         int GetRiseHeightForDouble(int step)
@@ -70,7 +71,6 @@ namespace Turn
             foreach (var tower in Singles.Values)
             {
                 if (tower.AvailableHeight < step) continue;
-
                 safeGroup.Add(tower, 0);
             }
             
@@ -78,9 +78,9 @@ namespace Turn
                 .ToDictionary(s => s.Key, s => s.Value);
             var keys = safeGroup.Keys.ToList();
 
-            if (safeGroup.Count < _selectedDouble.Amount)
+            if (safeGroup.Count < _selectedDouble.Amount) //1 stepten fazla azalacaklar, selected double'a yetişmek için.
             {
-                int counter = _selectedDouble.Amount * step;
+                int counter = _selectedDouble.GetFreeResource(step);
                 while (counter > 0)
                 {
                     foreach (var key in keys)
@@ -89,12 +89,13 @@ namespace Turn
                         counter--;
                     }
                 }
-                return _selectedDouble.Amount * step;
+                return _selectedDouble.GetFreeResource(step);
             }
+            
 
             foreach (var key in keys)
             {
-                safeGroup[key] += step; //bütün available height şart mı? 
+                safeGroup[key] += step;
             }
 
             var rest = safeGroup.Count % _selectedDouble.Amount;
@@ -159,7 +160,7 @@ namespace Turn
             }
         }
         
-        void SelectedSingleRise(TowerData single, int step)
+        void SelectedSingleRise(TowerData selectedSingle, int step)
         {
             int totalResource; 
             int freeDoubleResource = 0;
@@ -169,7 +170,7 @@ namespace Turn
             {
                 if (doubleTower.HasDoubleFallCapacity(step))
                 {
-                    freeDoubleResource += doubleTower.Amount * step;
+                    freeDoubleResource += doubleTower.GetFreeResource(step);
                     doubleTower.DoubleFallOperation(step);
                 }
             }
@@ -177,7 +178,7 @@ namespace Turn
             safeGroup.Clear();
             foreach (var singleTower in Singles)
             {
-                if(singleTower.Value == single) continue;
+                if(singleTower.Value == selectedSingle) continue;
                 if (singleTower.Value.AvailableHeight >= step)
                 {
                     safeGroup.Add(singleTower.Value, step);
@@ -188,13 +189,19 @@ namespace Turn
             totalResource = freeSingleResource + freeDoubleResource;
             if (totalResource < step)
             {
-                //DoubleRise(step);
+                // SelectedSingleFall(selectedSingle, step); //todo: kendi fall olacak -- kendinin fall olabilirliği kadar diğerleri rise olabilir
+                
                 Debug.Log("not enough Total Resource");
                 return;
             }
             
             SingleFall();
-            single.Mover.ChangeHeight(single.Height += totalResource, true);
+            selectedSingle.Mover.ChangeHeight(selectedSingle.Height += totalResource, true);
+        }
+
+        void SelectedSingleFall(TowerData selectedSingle, int step)
+        {
+            //doublelearın fall'u ikili
         }
     }
 }

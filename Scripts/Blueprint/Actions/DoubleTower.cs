@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Towers;
 using UnityEngine;
 
@@ -9,19 +10,29 @@ namespace Turn
         public Dictionary<int, TowerData> towers = new();
         public int Amount;
         
+        public int GetFreeResource(int step) 
+        {
+            return Amount * step;
+        }
+        public int AvailableHeight //1-3'se mesela inemesin
+        {
+            get
+            {
+                return towers.Sum(tower => tower.Value.AvailableHeight);
+            }
+        }
+
         public DoubleTower(params int[] ids)
         {
             foreach (var id in ids)
             {
                 towers.Add(id, AllTowers.GetData(id));
             }
-
+            
+            towers = towers.OrderBy(t => t.Value.AvailableHeight).ToDictionary(t => t.Key, t => t.Value);
             Amount = towers.Count;
         }
-
-        public void GetDoubleById(int id)
-        {}
-
+        
         public bool InspectDoubleById(int id)
         {
             if (towers.ContainsKey(id))
@@ -31,15 +42,17 @@ namespace Turn
         
         public bool HasDoubleFallCapacity(int step)
         {
-            foreach (var tower in towers.Values)
-            {
-                if (tower.height <= step)
-                {
-                    Debug.Log("not enough double resource for Fall");
-                    return false;
-                }
-            }
-            return true;
+           return towers.ElementAt(0).Value.AvailableHeight < step;
+           
+           // foreach (var tower in towers.Values)
+           // {
+           //     if (tower.AvailableHeight < step)
+           //     {
+           //         Debug.Log("not enough double resource for Fall");
+           //         return false;
+           //     }
+           // }
+           // return true;
         }
         
         public void DoubleFallOperation(int step)
@@ -52,12 +65,5 @@ namespace Turn
             //MediatorEventbus.ChainMotionEvents.OnRising?.Invoke(); //TODO: 2 kez çağrılıyor olabilir
         }
 
-        // public void AddDoubleById(int id) //todo: bool da yapılabilir
-        // {
-        //     if (!towers.ContainsKey(id))
-        //     {
-        //         towers.Add(id, AllTowers.GetData(id));
-        //     }
-        // }
     }
 }

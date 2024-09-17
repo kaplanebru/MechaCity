@@ -16,7 +16,7 @@ namespace Towers
     {
         public int UniqID;
 
-        public int height;
+        private int height;
         public int Height
         {
             get => height;

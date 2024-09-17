@@ -48,7 +48,7 @@ namespace Turn
 
         void Fall(TowerData selectedTower, int step)
         {
-            if (selectedTower.Height > step)
+            if (selectedTower.AvailableHeight >= step)
             {
                 selectedTower.Mover.ChangeHeight(selectedTower.Height -= step, false);
                 
