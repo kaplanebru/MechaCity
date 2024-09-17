@@ -70,7 +70,7 @@ namespace Turn
 
                 var tower = AllTowers.GetData(towerID);
 
-                if (tower.AvailableHeight > step)
+                if (tower.AvailableHeight >= step) //todo eşit sonradan eklend,
                 {
                     SafeGroup.Add(tower);
                 }

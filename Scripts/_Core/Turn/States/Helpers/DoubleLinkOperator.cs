@@ -11,7 +11,6 @@ namespace Turn
     public class DoubleLinkOperator : ILinkOperator
     {
         public LinkOperatorType Type { get; set; } = LinkOperatorType.Double;
-        public int[] Towers { get; set; }
         public DoubleLinkSetter setter = new();
 
         private HashSet<DoubleTower> TurnDoubles = new();
@@ -64,18 +63,7 @@ namespace Turn
           
             return totalAvailableHeight >= _selectedDouble.Amount * step;
         }
-        bool HasDoubleFallCapacity(int step)
-        {
-            foreach (var tower in _selectedDouble.towers.Values)
-            {
-                if (tower.height <= step)
-                {
-                    Debug.Log("not enough double resource for Fall");
-                    return false;
-                }
-            }
-            return true;
-        }
+        
         int GetRiseHeightForDouble(int step)
         {
             safeGroup.Clear();
@@ -141,22 +129,16 @@ namespace Turn
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
 
-        void DoubleFallOperation(int step)
-        {
-            foreach (var tower in _selectedDouble.towers.Values)
-            {
-                tower.Mover.ChangeHeight(tower.Height -= step, false);
-            }
-
-            MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
-        }
+       
 
         void DoubleFall(int step)
         {
-            if (!HasDoubleFallCapacity(step)) return;
+            if (!_selectedDouble.HasDoubleFallCapacity(step)) return;
 
-            DoubleFallOperation(step);
+            _selectedDouble.DoubleFallOperation(step);
             SingleRise();
+            
+            MediatorEventbus.ChainMotionEvents.OnRising?.Invoke(); //Sonradan eklendi
         }
         
         void SingleRise()
@@ -179,16 +161,40 @@ namespace Turn
         
         void SelectedSingleRise(TowerData single, int step)
         {
-            if (!HasDoubleFallCapacity(step))
+            int totalResource; 
+            int freeDoubleResource = 0;
+            int freeSingleResource;
+
+            foreach (var doubleTower in TurnDoubles)
             {
-                DoubleRise(step);
+                if (doubleTower.HasDoubleFallCapacity(step))
+                {
+                    freeDoubleResource += doubleTower.Amount * step;
+                    doubleTower.DoubleFallOperation(step);
+                }
+            }
+            
+            safeGroup.Clear();
+            foreach (var singleTower in Singles)
+            {
+                if(singleTower.Value == single) continue;
+                if (singleTower.Value.AvailableHeight >= step)
+                {
+                    safeGroup.Add(singleTower.Value, step);
+                }
+            }
+            freeSingleResource = safeGroup.Count * step;
+
+            totalResource = freeSingleResource + freeDoubleResource;
+            if (totalResource < step)
+            {
+                //DoubleRise(step);
+                Debug.Log("not enough Total Resource");
                 return;
             }
-
-            DoubleFallOperation(step);
-
-            int freeDoubleResource = _selectedDouble.Amount * step;
-            single.Mover.ChangeHeight(single.Height += freeDoubleResource, true);
+            
+            SingleFall();
+            single.Mover.ChangeHeight(single.Height += totalResource, true);
         }
     }
 }
