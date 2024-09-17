@@ -57,8 +57,11 @@ namespace Turn
             {
                 if (tower.AvailableHeight < step) continue;
                 totalAvailableHeight += tower.AvailableHeight;
+                Debug.Log(" av height: " + tower.AvailableHeight);
+
             }
 
+          
             return totalAvailableHeight >= _selectedDouble.Amount * step;
         }
         bool HasDoubleFallCapacity(int step)

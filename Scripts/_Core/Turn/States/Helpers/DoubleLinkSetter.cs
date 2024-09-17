@@ -38,7 +38,6 @@ namespace Turn
         public void SetTowers(int[] newTowers, out HashSet<DoubleTower> turnDoubles, out Dictionary<int, TowerData> singles)
         {
             Towers = newTowers;
-            Debug.Log(Towers.Length);
             
             TurnDoubles.Clear();
             Singles.Clear();

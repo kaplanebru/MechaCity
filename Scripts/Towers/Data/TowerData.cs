@@ -25,11 +25,11 @@ namespace Towers
                 height = value;
                 if (!LockStatus.Locked)
                 {
-                    AvailableHeight = value;
+                    AvailableHeight = value-1; //-1ler yeni eklendi
                 }
                 else
                 {
-                    AvailableHeight = value - LockStatus.Limit + 1; //+1 limiti sıfırlayabilmek için
+                    AvailableHeight = value-1 - LockStatus.Limit + 1; //+1 limiti sıfırlayabilmek için
                 }
             }
         }
