@@ -17,10 +17,10 @@ public class BridgeEventListener : TowerRelatedEventListener<BridgeRoot>
     }
 
 
-    void ConstructBridge(int id1, int id2)
+    void ConstructBridge(int[] ids)
     {
-        var bridge = RelatedItems.FirstOrDefault(s => s.Id == id1);
-        bridge.Stretch(id2);
+        var bridge = RelatedItems.FirstOrDefault(s => s.Id == ids[0]);
+        bridge.Stretch(ids[1]);
     }
 
     public override void Unsubscribe()

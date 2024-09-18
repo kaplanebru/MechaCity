@@ -91,8 +91,7 @@ namespace Turn
         
         public void CreateBridge()
         {
-            var keys = towers.Keys.ToArray();
-            Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(keys[0], keys[1]);
+            Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(towers.Keys.ToArray());
         }
     }
 }

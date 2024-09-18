@@ -219,6 +219,8 @@ namespace Turn
             OthersFall();
 
             selectedSingle.UpdateHeight(totalResource);
+            
+            MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
 
         void SelectedSingleFall(TowerData selectedSingle, int step)
@@ -231,7 +233,8 @@ namespace Turn
 
             OthersRise();
             selectedSingle.UpdateHeight(-safeGroup.Count * step);
-
+            
+            MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
 
         void NoResourceUI()
