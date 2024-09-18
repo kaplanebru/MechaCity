@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Turn
 {
-    public class DoubleTower
+    public class DoubleTower: ILinkable
     {
         public Dictionary<int, TowerData> towers = new();
         public int Amount;
@@ -42,10 +42,7 @@ namespace Turn
         
         public bool NoDoubleFallCapacity(int step)
         {
-            // if (towers.ElementAt(0).Value.AvailableHeight < step)
-            //     return true;
-            // return false;
-           return towers.ElementAt(0).Value.AvailableHeight < step;
+            return towers.ElementAt(0).Value.AvailableHeight < step;
         }
         
         public void DoubleFallOperation(int step)
@@ -58,5 +55,9 @@ namespace Turn
             //MediatorEventbus.ChainMotionEvents.OnRising?.Invoke(); //TODO: 2 kez çağrılıyor olabilir
         }
 
+        public bool Same(ILinkable other)
+        {
+            return other == this;
+        }
     }
 }

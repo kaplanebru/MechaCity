@@ -12,7 +12,7 @@ namespace Towers
 {
     // [CreateAssetMenu(fileName = nameof(TowerData))]
     [Serializable]
-    public class TowerData
+    public class TowerData : ILinkable
     {
         public int UniqID;
 
@@ -97,7 +97,16 @@ namespace Towers
         {
             clickHandler.DisableSelection();
         }
+        
+        public bool Same(ILinkable other)
+        {
+            return other == this;
+        }
+    }
 
+    public interface ILinkable
+    {
+        public bool Same(ILinkable other);
     }
 
     [Serializable]
