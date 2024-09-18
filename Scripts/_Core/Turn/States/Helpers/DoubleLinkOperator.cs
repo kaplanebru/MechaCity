@@ -22,7 +22,7 @@ namespace Turn
         //TODO: ne fall ne rise söz konusu olmayan durum için sonsuz döngüyü engelle
         //Not: normalde çoklu seçimde rise fall'a göre belirleniyor. diğer towerların fall'u ne kadarsa seçilen tower'a o kadar ekleniyor.
         //Fakat double towers amount > others olduğunda tam tersi çalışıyor: Others  souble tower height'ine ulaşana kadar 1'den fazla iner
-
+        
         public void SetTowers(int[] newTowers)
         {
             setter.SetTowers(newTowers, out TurnDoubles, out Singles);
@@ -43,81 +43,23 @@ namespace Turn
                     if (!Double.InspectDoubleById(towerID)) continue;
 
                     _selectedDouble = Double;
-                    DoubleRise(1);
+                    SelectedDoubleRise(1);
                     break;
                 }
             }
+
             UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
         }
 
-
-        bool HasDoubleRiseCapacity(int step)
+        void SelectedDoubleRise(int step)
         {
-            int totalSingleAvailableHeight = 0;
-            foreach (var tower in Singles.Values)
+            if (!CanDoubleRiseByOthers(step))
             {
-                if (tower.AvailableHeight < step) continue;
-                totalSingleAvailableHeight += tower.AvailableHeight;
-                Debug.Log(" av height: " + tower.AvailableHeight);
-
-            }
-            
-            return totalSingleAvailableHeight >= _selectedDouble.GetFreeResource(step);
-        }
-        
-        int GetRiseHeightForDouble(int step)
-        {
-            safeGroup.Clear();
-            foreach (var tower in Singles.Values)
-            {
-                if (tower.AvailableHeight < step) continue;
-                safeGroup.Add(tower, 0);
-            }
-            
-            safeGroup = safeGroup.OrderByDescending(s => s.Key.AvailableHeight)
-                .ToDictionary(s => s.Key, s => s.Value);
-            var keys = safeGroup.Keys.ToList();
-
-            if (safeGroup.Count < _selectedDouble.Amount) //1 stepten fazla azalacaklar, selected double'a yetişmek için.
-            {
-                int counter = _selectedDouble.GetFreeResource(step);
-                while (counter > 0)
-                {
-                    foreach (var key in keys)
-                    {
-                        safeGroup[key]++;
-                        counter--;
-                    }
-                }
-                return _selectedDouble.GetFreeResource(step);
-            }
-            
-
-            foreach (var key in keys)
-            {
-                safeGroup[key] += step;
-            }
-
-            var rest = safeGroup.Count % _selectedDouble.Amount;
-            if (rest > 0)
-            {
-                for (int i = 0; i < rest; i++)
-                {
-                    safeGroup.Remove(safeGroup.Last().Key);
-                }
-            }
-            return safeGroup.Count * step;
-        }
-
-        void DoubleRise(int step)
-        {
-            if (!HasDoubleRiseCapacity(step))
-            {
-                DoubleFall(step);
+                SelectedDoubleFall(step);
                 return;
             }
-            
-            int freeSingleResource = GetRiseHeightForDouble(step);
+
+            int freeSingleResource = GetOthersResourceForDouble(step);
             int singleStep = freeSingleResource / _selectedDouble.Amount;
 
             foreach (var tower in _selectedDouble.towers.Values)
@@ -125,24 +67,91 @@ namespace Turn
                 tower.Mover.ChangeHeight(tower.Height += singleStep, true);
             }
 
-            SingleFall();
+            OthersFall();
 
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
 
-       
-
-        void DoubleFall(int step)
+        bool CanDoubleRiseByOthers(int step)
         {
-            if (!_selectedDouble.HasDoubleFallCapacity(step)) return;
+            int totalSingleAvailableHeight = 0;
+            foreach (var tower in Singles.Values)
+            {
+                if (tower.AvailableHeight < step) continue;
+                totalSingleAvailableHeight += tower.AvailableHeight;
+            }
 
-            _selectedDouble.DoubleFallOperation(step);
-            SingleRise();
-            
-            MediatorEventbus.ChainMotionEvents.OnRising?.Invoke(); //Sonradan eklendi
+            return totalSingleAvailableHeight >= _selectedDouble.GetFreeResource(step);
         }
         
-        void SingleRise()
+        int GetOthersResourceForDouble(int step)
+        {
+            CreateSafeGroup(step);
+
+            return safeGroup.Count < _selectedDouble.Amount
+                ? ResourceByLessPopulation(step)
+                : ResourceByMorePopulation(step);
+        }
+        void CreateSafeGroup(int step)
+        {
+            safeGroup.Clear();
+            foreach (var tower in Singles.Values)
+            {
+                if (tower.AvailableHeight < step) continue;
+                safeGroup.Add(tower, 0);
+            }
+
+            foreach (var doubleTower in TurnDoubles) //todo: check, new
+            {
+                if (doubleTower == _selectedDouble) continue;
+                if (doubleTower.NoDoubleFallCapacity(step)) continue;
+            
+                foreach (var tower in doubleTower.towers)
+                {
+                    safeGroup.Add(tower.Value, 0);
+                }
+            }
+
+            safeGroup = safeGroup.OrderByDescending(s => s.Key.AvailableHeight)
+                .ToDictionary(s => s.Key, s => s.Value);
+        }
+        
+        int ResourceByLessPopulation(int step) //1 stepten fazla azalacaklar, selected double'a yetişmek için
+        {
+            int doubleFreeResource = _selectedDouble.GetFreeResource(step);
+            int counter = doubleFreeResource;
+
+            while (counter > 0)
+            {
+                foreach (var key in safeGroup.Keys.ToList())
+                {
+                    safeGroup[key]++;
+                    counter--;
+                }
+            }
+            return doubleFreeResource;
+        }
+
+        int ResourceByMorePopulation(int step)
+        {
+            foreach (var key in safeGroup.Keys.ToList())
+            {
+                safeGroup[key] = step;
+            }
+
+            var rest = safeGroup.Count % _selectedDouble.Amount;
+            if (rest > 0)
+            {
+                for (int i = 0; i < rest; i++)
+                {
+                    safeGroup.Remove(safeGroup.Last().Key); //todo: safe groupta double varsa işler değişir
+                }
+            }
+
+            return safeGroup.Count * step;
+        }
+        
+        void OthersRise()
         {
             foreach (var safePair in safeGroup)
             {
@@ -151,7 +160,7 @@ namespace Turn
             }
         }
 
-        void SingleFall()
+        void OthersFall()
         {
             foreach (var safePair in safeGroup)
             {
@@ -160,48 +169,48 @@ namespace Turn
             }
         }
         
+        void SelectedDoubleFall(int step)
+        {
+            if (_selectedDouble.NoDoubleFallCapacity(step)) return;
+
+            _selectedDouble.DoubleFallOperation(step);
+            OthersRise();
+
+            MediatorEventbus.ChainMotionEvents.OnRising?.Invoke(); //Sonradan eklendi
+        }
+
         void SelectedSingleRise(TowerData selectedSingle, int step)
         {
-            int totalResource; 
-            int freeDoubleResource = 0;
-            int freeSingleResource;
-
-            foreach (var doubleTower in TurnDoubles)
+            _selectedDouble = null;
+            CreateSafeGroup(step);
+            safeGroup.Remove(selectedSingle);
+            foreach (var key in safeGroup.Keys.ToList())
             {
-                if (doubleTower.HasDoubleFallCapacity(step))
-                {
-                    freeDoubleResource += doubleTower.GetFreeResource(step);
-                    doubleTower.DoubleFallOperation(step);
-                }
+                safeGroup[key] = step;
             }
             
-            safeGroup.Clear();
-            foreach (var singleTower in Singles)
+            Debug.Log(safeGroup.Count);
+            if (safeGroup.Count == 0)
             {
-                if(singleTower.Value == selectedSingle) continue;
-                if (singleTower.Value.AvailableHeight >= step)
-                {
-                    safeGroup.Add(singleTower.Value, step);
-                }
-            }
-            freeSingleResource = safeGroup.Count * step;
-
-            totalResource = freeSingleResource + freeDoubleResource;
-            if (totalResource < step)
-            {
-                // SelectedSingleFall(selectedSingle, step); //todo: kendi fall olacak -- kendinin fall olabilirliği kadar diğerleri rise olabilir
-                
-                Debug.Log("not enough Total Resource");
+                SelectedSingleFall(selectedSingle, step);
+                Debug.Log("no resource");
                 return;
             }
-            
-            SingleFall();
+               
+
+            var totalResource = safeGroup.Count * step;
+            OthersFall();
+          
             selectedSingle.Mover.ChangeHeight(selectedSingle.Height += totalResource, true);
         }
 
         void SelectedSingleFall(TowerData selectedSingle, int step)
         {
-            //doublelearın fall'u ikili
+            if (selectedSingle.AvailableHeight < step) return;
+            
+            OthersRise();
+            selectedSingle.Mover.ChangeHeight(selectedSingle.Height -= safeGroup.Count * step, true);
         }
+        
     }
 }

@@ -41,7 +41,6 @@ namespace Turn
         void SetLinkOperators()
         {
             linkOperators[0] = linkOperator;
-            
             linkOperators[1] = doubleLinkOperator;
 
             currentLinkOperator = linkOperators[0];

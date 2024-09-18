@@ -40,19 +40,12 @@ namespace Turn
             return false;
         }
         
-        public bool HasDoubleFallCapacity(int step)
+        public bool NoDoubleFallCapacity(int step)
         {
+            // if (towers.ElementAt(0).Value.AvailableHeight < step)
+            //     return true;
+            // return false;
            return towers.ElementAt(0).Value.AvailableHeight < step;
-           
-           // foreach (var tower in towers.Values)
-           // {
-           //     if (tower.AvailableHeight < step)
-           //     {
-           //         Debug.Log("not enough double resource for Fall");
-           //         return false;
-           //     }
-           // }
-           // return true;
         }
         
         public void DoubleFallOperation(int step)
