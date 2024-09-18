@@ -72,8 +72,7 @@ namespace Turn
 
             int averageHeight = totalHeight / Amount;
             int rest = averageHeight % Amount;
-
-
+            
             foreach (var tower in towers.Values)
             {
                 int extra = 0;
@@ -88,6 +87,12 @@ namespace Turn
                 int surplus = newHeight - tower.Height;
                 tower.UpdateHeight(surplus);
             }
+        }
+        
+        public void CreateBridge()
+        {
+            var keys = towers.Keys.ToArray();
+            Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(keys[0], keys[1]);
         }
     }
 }
