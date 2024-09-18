@@ -65,7 +65,6 @@ namespace Turn
 
             foreach (var tower in selectedDouble.towers.Values)
             {
-                //tower.Mover.ChangeHeightPhysically(tower.Height += singleStep, true);
                 tower.UpdateHeight(singleStep);
             }
 
@@ -173,7 +172,6 @@ namespace Turn
             foreach (var safePair in safeGroup)
             {
                 var tower = safePair.Key;
-                //tower.Mover.ChangeHeightPhysically(tower.Height += safePair.Value, true);
                 tower.UpdateHeight(safePair.Value);
             }
         }
@@ -183,7 +181,6 @@ namespace Turn
             foreach (var safePair in safeGroup)
             {
                 var tower = safePair.Key;
-                //tower.Mover.ChangeHeightPhysically(tower.Height -= safePair.Value, false);
                 tower.UpdateHeight(-safePair.Value);
             }
         }
@@ -221,7 +218,6 @@ namespace Turn
             var totalResource = safeGroup.Count * step;
             OthersFall();
 
-            //selectedSingle.Mover.ChangeHeightPhysically(selectedSingle.Height += totalResource, true);
             selectedSingle.UpdateHeight(totalResource);
         }
 
@@ -234,7 +230,6 @@ namespace Turn
             }
 
             OthersRise();
-            //selectedSingle.Mover.ChangeHeightPhysically(selectedSingle.Height -= safeGroup.Count * step, false);
             selectedSingle.UpdateHeight(-safeGroup.Count * step);
 
         }

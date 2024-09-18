@@ -51,7 +51,7 @@ namespace Turn
         {
             foreach (var tower in towers.Values)
             {
-                tower.Mover.ChangeHeightPhysically(tower.Height -= step, false);
+                tower.UpdateHeight(-step);
             }
 
             //MediatorEventbus.ChainMotionEvents.OnRising?.Invoke(); //TODO: 2 kez çağrılıyor olabilir
