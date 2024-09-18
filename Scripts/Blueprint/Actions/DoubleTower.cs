@@ -8,12 +8,14 @@ namespace Turn
     public class DoubleTower: ILinkable
     {
         public Dictionary<int, TowerData> towers = new();
-        public int Amount;
         
+        public int Amount { get; set; }
+
         public int GetFreeResource(int step) 
         {
             return Amount * step;
         }
+        
         public int AvailableHeight //1-3'se mesela inemesin
         {
             get

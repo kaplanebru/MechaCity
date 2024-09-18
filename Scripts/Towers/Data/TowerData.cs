@@ -98,15 +98,23 @@ namespace Towers
             clickHandler.DisableSelection();
         }
         
-        public bool Same(ILinkable other)
-        {
-            return other == this;
-        }
+        
+        //Linkable
+        public int Amount { get; set; } = 1;
+        public bool Same(ILinkable other) => other == this;
+        public int GetFreeResource(int step) => step;
+       
+
+
+
     }
 
     public interface ILinkable
     {
         public bool Same(ILinkable other);
+        public int GetFreeResource(int step);
+        
+        public int Amount { get; set; }
     }
 
     [Serializable]
