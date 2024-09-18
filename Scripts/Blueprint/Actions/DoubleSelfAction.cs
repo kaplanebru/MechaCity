@@ -16,11 +16,12 @@ namespace Blueprint
             
             var selectedTowers = (int[]) obj[0];
             
-            CreateBridge(selectedTowers);
-            
-            BpEventbus.ActionEvents.OnDoubleSelfAction.Invoke(new DoubleTower(selectedTowers));
-            //Eventbus.LinkEvents.OnDoubleSelfAction?.Invoke(selectedTowers);
 
+            var newDouble = new DoubleTower(selectedTowers);
+            newDouble.Equalize();
+            CreateBridge(selectedTowers);
+
+            BpEventbus.ActionEvents.OnDoubleSelfAction.Invoke(newDouble);
         }
         public void Restore(params object[] obj)
         {

@@ -35,7 +35,7 @@ namespace Turn
             Amount = towers.Count;
         }
         
-        public bool InspectDoubleById(int id)
+        public bool InspectDoubleByTowerId(int id)
         {
             if (towers.ContainsKey(id))
                 return true;
@@ -60,6 +60,35 @@ namespace Turn
         public bool Same(ILinkable other)
         {
             return other == this;
+        }
+
+        public void Equalize() //bridgeden önce olmalı
+        {
+            int totalHeight = 0;
+            foreach (var tower in towers.Values)
+            {
+                totalHeight += tower.Height;
+            }
+
+            int averageHeight = totalHeight / Amount;
+            int rest = averageHeight % Amount;
+
+
+            foreach (var tower in towers.Values)
+            {
+                int extra = 0;
+                if (rest > 0)
+                {
+                    extra = 1;
+                    rest--;
+                }
+                
+                var newHeight = averageHeight + extra;
+                if(newHeight == tower.Height) return;
+                int surplus = newHeight - tower.Height;
+                bool isRising = surplus > 0;
+                tower.Mover.ChangeHeight(tower.Height += surplus, isRising);
+            }
         }
     }
 }

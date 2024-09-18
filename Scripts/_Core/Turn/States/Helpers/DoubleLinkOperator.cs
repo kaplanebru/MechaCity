@@ -42,7 +42,7 @@ namespace Turn
             {
                 foreach (var Double in TurnDoubles)
                 {
-                    if (!Double.InspectDoubleById(towerID)) continue;
+                    if (!Double.InspectDoubleByTowerId(towerID)) continue;
                     selection = Double;
                     SelectedDoubleRise(1);
                     break;
@@ -149,12 +149,18 @@ namespace Turn
                 safeGroup[key] = step;
             }
 
+            CheckRest:
             var rest = safeGroup.Count % selection.Amount;
             if (rest > 0)
             {
                 for (int i = 0; i < rest; i++)
                 {
-                    safeGroup.Remove(safeGroup.Last().Key); //todo: safe groupta double varsa işler değişir
+                    //todo: safe groupta double varsa önce check et
+                    //double olmayanlardan çıkar
+                    //double varsa 2sini birden çıkar, kalana +1 fall amount ekle
+                    //goto: check rest
+                    //not: sondakiler muhtemelen doubledır, double en son ekleniyor
+                    safeGroup.Remove(safeGroup.First().Key); //safeGroup.Last().Key
                 }
             }
 
