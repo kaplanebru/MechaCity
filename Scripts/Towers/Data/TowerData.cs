@@ -103,11 +103,18 @@ namespace Towers
         public int Amount { get; set; } = 1;
         public bool Same(ILinkable other) => other == this;
         public int GetFreeResource(int step) => step;
-       
 
-
-
+        public void UpdateHeight(int extra)
+        {
+            int newHeight = Height + extra;
+            bool isRising = newHeight > Height;
+            Height = newHeight;
+            
+            Mover.ChangeHeightPhysically(newHeight, isRising);
+        }
     }
+    
+    
 
     public interface ILinkable
     {

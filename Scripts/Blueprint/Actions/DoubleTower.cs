@@ -51,7 +51,7 @@ namespace Turn
         {
             foreach (var tower in towers.Values)
             {
-                tower.Mover.ChangeHeight(tower.Height -= step, false);
+                tower.Mover.ChangeHeightPhysically(tower.Height -= step, false);
             }
 
             //MediatorEventbus.ChainMotionEvents.OnRising?.Invoke(); //TODO: 2 kez çağrılıyor olabilir
@@ -82,12 +82,11 @@ namespace Turn
                     extra = 1;
                     rest--;
                 }
-                
                 var newHeight = averageHeight + extra;
-                if(newHeight == tower.Height) return;
+                if(newHeight == tower.Height) continue;
+                
                 int surplus = newHeight - tower.Height;
-                bool isRising = surplus > 0;
-                tower.Mover.ChangeHeight(tower.Height += surplus, isRising);
+                tower.UpdateHeight(surplus);
             }
         }
     }

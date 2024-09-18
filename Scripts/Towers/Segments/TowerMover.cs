@@ -53,7 +53,7 @@ namespace Towers
 
       
 
-        public void ChangeHeight(float newHeight, bool isRising)
+        public void ChangeHeightPhysically(float newHeight, bool isRising)
         {
             newHeight *= Data.CommonData.TowerHeightPerStep;
             riseFallMotion.UpdateData(newHeight, isRising);

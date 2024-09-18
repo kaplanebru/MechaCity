@@ -38,11 +38,13 @@ namespace Turn
                 return;
             }
 
-            selectedTower.Mover.ChangeHeight(selectedTower.Height += riseStep, true);
+            //selectedTower.Mover.ChangeHeightPhysically(selectedTower.Height += riseStep, true);
+            selectedTower.UpdateHeight(riseStep);
 
             foreach (var tower in SafeGroup)
             {
-                tower.Mover.ChangeHeight(tower.Height -= step, false);
+                //tower.Mover.ChangeHeightPhysically(tower.Height -= step, false);
+                selectedTower.UpdateHeight(-step);
             }
         }
 
@@ -50,10 +52,12 @@ namespace Turn
         {
             if (selectedTower.AvailableHeight >= step)
             {
-                selectedTower.Mover.ChangeHeight(selectedTower.Height -= step, false);
+                //selectedTower.Mover.ChangeHeightPhysically(selectedTower.Height -= step, false);
+                selectedTower.UpdateHeight(-step);
                 
                 var randomTower = GetRandomOtherTower(selectedTower.UniqID);
-                randomTower.Mover.ChangeHeight(randomTower.Height += step, true);
+                //randomTower.Mover.ChangeHeightPhysically(randomTower.Height += step, true);
+                randomTower.UpdateHeight(step);
             }
             else
             {

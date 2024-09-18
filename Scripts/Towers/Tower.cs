@@ -64,7 +64,7 @@ namespace Towers
 
         void FirstMotion()
         {
-           Data.Mover.ChangeHeight(Data.Height, true);
+           Data.Mover.ChangeHeightPhysically(Data.Height, true);
            StartRiseFallRoutine();
            Invoke(nameof(StopRiseFallRoutine), 1); //TODO: add start time
         }
