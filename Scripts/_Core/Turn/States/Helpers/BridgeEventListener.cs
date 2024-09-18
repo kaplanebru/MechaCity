@@ -19,8 +19,12 @@ public class BridgeEventListener : TowerRelatedEventListener<BridgeRoot>
 
     void ConstructBridge(int[] ids)
     {
-        var bridge = RelatedItems.FirstOrDefault(s => s.Id == ids[0]);
-        bridge.Stretch(ids[1]);
+        for (int i = 0; i < ids.Length-1; i++)
+        {
+            var bridge = RelatedItems.FirstOrDefault(s => s.Id == ids[i]);
+            bridge.Stretch(ids[i+1]);
+        }
+       
     }
 
     public override void Unsubscribe()
