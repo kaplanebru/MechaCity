@@ -79,11 +79,14 @@ public class RiseFallMotion
     {
         DisableAll();
 
+       // Debug.Log("routine: " + Data.Id);
         while (true)
         {
+
             startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
             if (Data.RiseState == RiseState.Rising)
             {
+                //Debug.Log("rising: " + Data.Id);
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
                 {
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
@@ -102,14 +105,17 @@ public class RiseFallMotion
                     //not: bu loop'un içindeyken state değişimini kaçırıyor.target height değiştiği için looptan çıkılıyor ama riseState check edilemiyordu.
                     yield return null;
                 }
+                
 
                 if (Data.RiseState != RiseState.Falling)
                 {
                     Data.RiseState = RiseState.None;
                     MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
+                    UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
+
                 }
                 
-                UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
+               // UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
             }
 
             else if (Data.RiseState == RiseState.Falling)
@@ -138,14 +144,17 @@ public class RiseFallMotion
                 if (Data.RiseState != RiseState.Rising)
                 {
                     Data.RiseState = RiseState.None;
-                    MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
+                    //MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
+                    UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
+
                 }
                 
-                UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
+                //UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
             }
 
             else {}
 
+           
             yield return null;
         }
     }

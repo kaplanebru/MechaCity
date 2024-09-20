@@ -66,17 +66,22 @@ namespace Towers
         {
            Data.Mover.ChangeHeightPhysically(Data.Height, true);
            StartRiseFallRoutine();
-           Invoke(nameof(StopRiseFallRoutine), 1); //TODO: add start time
+           Invoke(nameof(StopRiseFallRoutine), 4); //TODO: add start time
         }
 
+        private Coroutine riseRoutine;
         public void StartRiseFallRoutine()
         {
-            StartCoroutine(Data.Mover.riseFallMotion.RiseRoutine());
+            riseRoutine = StartCoroutine(Data.Mover.riseFallMotion.RiseRoutine());
         }
 
         public void StopRiseFallRoutine()
         {
-            StopCoroutine(Data.Mover.riseFallMotion.RiseRoutine());
+            if (riseRoutine != null)
+            {
+                StopCoroutine(riseRoutine);
+                riseRoutine = null;
+            }
         }
 
         public void RestoreBullets() //Todo: name change: bullet hakkı
