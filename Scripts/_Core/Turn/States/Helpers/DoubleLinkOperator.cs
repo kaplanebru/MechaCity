@@ -153,9 +153,10 @@ namespace Turn
             var rest = safeGroup.Count % selection.Amount;
             if (rest > 0)
             {
+                var safeTower = safeGroup.First().Key; //safeGroup.Last().Key
+
                 for (int i = 0; i < rest; i++)
                 {
-                    var safeTower = safeGroup.First().Key; //safeGroup.Last().Key
                     foreach (var doubleTower in TurnDoubles)
                     {
                         if (doubleTower.ContainsDoubleByTowerData(safeTower))
@@ -165,9 +166,11 @@ namespace Turn
                                 safeGroup.Remove(tower.Value);
                             }
                             goto CheckRest;
+                            //not: double hiç olmaya dabilir, o yüzden safe remove aşağıda
                         }
-                        safeGroup.Remove(safeTower);
+                        
                     }
+                    safeGroup.Remove(safeTower);
                     
                     //todo: safe groupta double varsa önce check et
                     //double olmayanlardan çıkar
