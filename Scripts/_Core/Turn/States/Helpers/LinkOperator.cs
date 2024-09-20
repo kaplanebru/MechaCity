@@ -20,7 +20,6 @@ namespace Turn
         
         public void TowerSelected(params object[] args)
         {
-            Debug.Log("tower selected by stadard");
             UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
 
             int towerID = (int) args[0];

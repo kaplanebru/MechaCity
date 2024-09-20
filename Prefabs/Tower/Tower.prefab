@@ -5037,7 +5037,6 @@ MonoBehaviour:
   ConstantData: {fileID: 11400000, guid: 24382b7643f9bbb4d826eaf0d7c75384, type: 2}
   Data:
     UniqID: 0
-    height: 0
     AvailableHeight: 0
     SlotId: 0
     TeamType: 0
@@ -5072,6 +5071,7 @@ MonoBehaviour:
           - {fileID: 458587706314466722}
           RiseState: 0
           TargetHeight: 0
+          CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
       ColorData:
         TeamData: {fileID: 0}
         Logo: {fileID: 6072226709376358539}
@@ -41384,7 +41384,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c948766987dfa48930db183ccfde9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
   parent: {fileID: 4634288369036960134}
   Data: {fileID: 11400000, guid: b8d173923c8273c4487ab75b99325483, type: 2}
   drawGizmos: 1

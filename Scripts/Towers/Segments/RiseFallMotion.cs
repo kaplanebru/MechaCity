@@ -9,16 +9,22 @@ using UnityEngine;
 [Serializable]
 public class RiseFallData
 {
-    public int Id;
+    public int Id { get; private set; }
     public Transform ActiveHolder;
     public Transform PassiveHolder;
 
     public List<Transform> PassiveParts = new();
     public List<Transform> ActiveParts = new();
-
-    //public bool IsRising;
+    
     public RiseState RiseState;
     public float TargetHeight;
+
+    public CommonData CommonData;
+
+    public void SetId(int id)
+    {
+        Id = id;
+    }
 }
 
 public enum RiseState
@@ -33,15 +39,20 @@ public class RiseFallMotion
     private RiseFallData Data;
 
     public float speed = 0.025f;
-    public float unit = 1.8f;
+    public float unit; // = 1.8f;
     float tolerance = 0.0001f;
 
     private float startHeight;
 
 
+    public void SetId(int id)
+    {
+        Data.SetId(id);
+    }
     public RiseFallMotion(RiseFallData data)
     {
         Data = data;
+        unit = Data.CommonData.TowerHeightPerStep;
     }
 
     public void UpdateData(float newHeight, bool isRising)

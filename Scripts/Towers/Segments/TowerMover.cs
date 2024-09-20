@@ -40,6 +40,7 @@ namespace Towers
         public void SetId(int id)
         {
             Id = id;
+            riseFallMotion.SetId(Id);
         }
 
         public void Initialize()

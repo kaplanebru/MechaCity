@@ -42,7 +42,6 @@ namespace Chain
         {
             if(go != gameObject) return;
             Id = id;
-            print("cog id: " + Id);
         }
 
         public IMachinePartData GetMoverData()
