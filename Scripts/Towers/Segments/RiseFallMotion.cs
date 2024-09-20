@@ -86,7 +86,7 @@ public class RiseFallMotion
             startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
             if (Data.RiseState == RiseState.Rising)
             {
-                //Debug.Log("rising: " + Data.Id);
+                Debug.Log("rising: " + Data.Id);
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
                 {
                     if (Data.ActiveHolder.localPosition.y >= startHeight)

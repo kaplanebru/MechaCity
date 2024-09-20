@@ -27,7 +27,7 @@ namespace Towers
 
         private void OnEnable()
         {
-            Eventbus.LinkEvents.OnLinkingTowers += SetLinkedTowers;
+            Eventbus.LinkEvents.OnLinkingTowers += SetLinkedTowersAndStartRiseFallRoutine;
             Eventbus.LinkEvents.OnUnlink += ResetLinkedTowers;
         }
 
@@ -45,7 +45,7 @@ namespace Towers
             }
         }
 
-        private void SetLinkedTowers(List<int> towerIds)
+        private void SetLinkedTowersAndStartRiseFallRoutine(List<int> towerIds)
         {
             foreach (var id in towerIds)
             {
@@ -158,7 +158,7 @@ namespace Towers
         
         private void OnDisable()
         {
-            Eventbus.LinkEvents.OnLinkingTowers -= SetLinkedTowers;
+            Eventbus.LinkEvents.OnLinkingTowers -= SetLinkedTowersAndStartRiseFallRoutine;
             Eventbus.LinkEvents.OnUnlink -= ResetLinkedTowers;
         }
     }

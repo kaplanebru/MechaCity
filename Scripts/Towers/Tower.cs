@@ -62,6 +62,13 @@ namespace Towers
             completeCombat.Invoke();
         }
 
+
+        public void TestOnceRiseFall()
+        {
+            print("test");
+            StartRiseFallRoutine();
+            //Invoke(nameof(StopRiseFallRoutine), 4); //TODO: add start time
+        }
         void FirstMotion()
         {
            Data.Mover.ChangeHeightPhysically(Data.Height, true);
