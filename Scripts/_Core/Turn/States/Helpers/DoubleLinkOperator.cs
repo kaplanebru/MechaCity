@@ -155,15 +155,27 @@ namespace Turn
             {
                 for (int i = 0; i < rest; i++)
                 {
+                    var safeTower = safeGroup.First().Key; //safeGroup.Last().Key
+                    foreach (var doubleTower in TurnDoubles)
+                    {
+                        if (doubleTower.ContainsDoubleByTowerData(safeTower))
+                        {
+                            foreach (var tower in doubleTower.towers)
+                            {
+                                safeGroup.Remove(tower.Value);
+                            }
+                            goto CheckRest;
+                        }
+                        safeGroup.Remove(safeTower);
+                    }
+                    
                     //todo: safe groupta double varsa önce check et
                     //double olmayanlardan çıkar
                     //double varsa 2sini birden çıkar, kalana +1 fall amount ekle
                     //goto: check rest
                     //not: sondakiler muhtemelen doubledır, double en son ekleniyor
-                    safeGroup.Remove(safeGroup.First().Key); //safeGroup.Last().Key
                 }
             }
-
             return safeGroup.Count * step;
         }
 

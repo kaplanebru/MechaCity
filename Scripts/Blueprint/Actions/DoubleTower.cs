@@ -41,6 +41,11 @@ namespace Turn
                 return true;
             return false;
         }
+
+        public bool ContainsDoubleByTowerData(TowerData tower)
+        {
+            return towers.ContainsValue(tower);
+        }
         
         public bool NoDoubleFallCapacity(int step)
         {
