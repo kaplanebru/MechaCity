@@ -63,23 +63,17 @@ namespace Towers
         }
 
 
-        public void TestOnceRiseFall()
-        {
-            print("test");
-            StartRiseFallRoutine();
-            //Invoke(nameof(StopRiseFallRoutine), 4); //TODO: add start time
-        }
+       
         void FirstMotion()
         {
            Data.Mover.ChangeHeightPhysically(Data.Height, true);
-           StartRiseFallRoutine();
-           Invoke(nameof(StopRiseFallRoutine), 4); //TODO: add start time
+           StartRiseFallRoutine(true);
         }
 
         private Coroutine riseRoutine;
-        public void StartRiseFallRoutine()
+        public void StartRiseFallRoutine(bool forOnce = false)
         {
-            riseRoutine = StartCoroutine(Data.Mover.riseFallMotion.RiseRoutine());
+            riseRoutine = StartCoroutine(Data.Mover.riseFallMotion.RiseRoutine(forOnce));
         }
 
         public void StopRiseFallRoutine()

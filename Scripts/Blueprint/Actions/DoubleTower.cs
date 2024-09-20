@@ -90,9 +90,10 @@ namespace Turn
                 if(newHeight == tower.Height) continue;
                 
                 int surplus = newHeight - tower.Height;
+                
                 if(surplus==0)continue;
-                AllTowers.GetTower(tower.UniqID).TestOnceRiseFall(); //Todo: düzelt
                 tower.UpdateHeight(surplus);
+                AllTowers.GetTower(tower.UniqID).StartRiseFallRoutine(true); //Todo: düzelt
             }
         }
         

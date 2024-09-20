@@ -75,18 +75,17 @@ public class RiseFallMotion
         Data.ActiveHolder.localPosition = pos;
     }
 
-    public IEnumerator RiseRoutine()
+    public IEnumerator RiseRoutine(bool forOnce = false)
     {
         DisableAll();
 
        // Debug.Log("routine: " + Data.Id);
         while (true)
         {
-
             startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
             if (Data.RiseState == RiseState.Rising)
             {
-                Debug.Log("rising: " + Data.Id);
+                //Debug.Log("rising: " + Data.Id);
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
                 {
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
@@ -107,15 +106,14 @@ public class RiseFallMotion
                 }
                 
 
+                UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
+                if(forOnce) yield break;
                 if (Data.RiseState != RiseState.Falling)
                 {
                     Data.RiseState = RiseState.None;
                     MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
-                    UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
-
+                    //UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
                 }
-                
-               // UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
             }
 
             else if (Data.RiseState == RiseState.Falling)
@@ -141,20 +139,20 @@ public class RiseFallMotion
                     yield return null;
                 }
 
+                UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
+                if(forOnce) yield break;
+
                 if (Data.RiseState != RiseState.Rising)
                 {
                     Data.RiseState = RiseState.None;
                     //MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
-                    UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
-
                 }
                 
                 //UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
             }
 
             else {}
-
-           
+            
             yield return null;
         }
     }
