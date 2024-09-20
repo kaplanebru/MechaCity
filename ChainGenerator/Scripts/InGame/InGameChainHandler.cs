@@ -73,7 +73,7 @@ namespace ChainInGame
         {
             foreach (var id in ids)
             {
-                var gear = gears.FirstOrDefault(g => g.id == id);
+                var gear = gears.FirstOrDefault(g => g.Id == id);
                 if (gear != null)
                 {
                     _currentMachineryInGame.AddToMachinery(gear);

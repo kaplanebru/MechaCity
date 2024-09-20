@@ -25,6 +25,7 @@ public static class MediatorEventbus
     public static class SetupEvents
     {
         public static Action<IGear[]> OnGearsReady;
+        public static Action<int, GameObject> OnTowerIDSetting;
     }
 }
 

@@ -17,6 +17,7 @@ namespace Towers
         public int UniqID;
 
         private int height;
+
         public int Height
         {
             get => height;
@@ -25,24 +26,25 @@ namespace Towers
                 height = value;
                 if (!LockStatus.Locked)
                 {
-                    AvailableHeight = value-1; //-1ler yeni eklendi
+                    AvailableHeight = value - 1; //-1ler yeni eklendi
                 }
                 else
                 {
-                    AvailableHeight = value-1 - LockStatus.Limit + 1; //+1 limiti sıfırlayabilmek için
+                    AvailableHeight = value - 1 - LockStatus.Limit + 1; //+1 limiti sıfırlayabilmek için
                 }
             }
         }
-        
+
         public int AvailableHeight;
-        
+
         public int SlotId;
         public TeamType TeamType;
         public List<int> LinkedTowerIDs = new();
-        public List<int> NeighbourIDs = new ();
+        public List<int> NeighbourIDs = new();
         public bool CanShoot { get; private set; }
-        
+
         [SerializeField] private int _bulletAmountt = 1;
+
         public int BulletAmount
         {
             get => _bulletAmountt;
@@ -64,14 +66,14 @@ namespace Towers
         public int DamagePower;
         public bool IsClickable = true;
         public LockStatus LockStatus;
-        
+
         public BpTowerData BpTowerData;
         public CombatTimingData timingData;
         public ClickHandler clickHandler;
 
         public TowerSegmentDataHolder SegmentData = new();
         public List<ITowerSegment> TowerSegments = new();
-        
+
         public TowerMover Mover;
         public ColorHandler ColorHandler;
         public TowerUIHandler UIHandler;
@@ -86,19 +88,19 @@ namespace Towers
             TowerSegments.Add(ColorHandler);
             TowerSegments.Add(UIHandler);
         }
-        
+
         public void EnableSelection()
         {
             if (!IsClickable) return;
-           clickHandler.EnableSelection();
+            clickHandler.EnableSelection();
         }
 
         public void DisableSelection()
         {
             clickHandler.DisableSelection();
         }
-        
-        
+
+
         //Linkable
         public int Amount { get; set; } = 1;
         public bool Same(ILinkable other) => other == this;
@@ -106,21 +108,26 @@ namespace Towers
 
         public void UpdateHeight(int extra)
         {
+            if (extra == 0)
+            {
+                Debug.Log("EQUAL");
+                return;
+            }
+
             int newHeight = Height + extra;
             bool isRising = newHeight > Height;
             Height = newHeight;
-            
+
             Mover.ChangeHeightPhysically(newHeight, isRising);
         }
     }
-    
-    
+
 
     public interface ILinkable
     {
         public bool Same(ILinkable other);
         public int GetFreeResource(int step);
-        
+
         public int Amount { get; set; }
     }
 
@@ -132,5 +139,3 @@ namespace Towers
         public TowerUIData UIData;
     }
 }
-
-

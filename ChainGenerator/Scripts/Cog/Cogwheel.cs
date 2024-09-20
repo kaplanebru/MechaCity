@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Chain
     [ExecuteInEditMode]
     public class Cogwheel : MonoBehaviour, CogComponent, IMachinePart, IGear
     {
-        public int id;
+        public int Id { get; set; }
         public Transform parent;
         public GearData Data;
         public bool drawGizmos = false;
@@ -25,6 +26,7 @@ namespace Chain
 
         private void OnEnable()
         {
+            MediatorEventbus.SetupEvents.OnTowerIDSetting += SetCogID;
             parent = transform.parent;
             GameObject = gameObject;
 #if UNITY_EDITOR
@@ -34,6 +36,13 @@ namespace Chain
                 holeHolder = GetComponentInChildren<HoleHolder>();
             }
 #endif
+        }
+
+        private void SetCogID(int id, GameObject go)
+        {
+            if(go != gameObject) return;
+            Id = id;
+            print("cog id: " + Id);
         }
 
         public IMachinePartData GetMoverData()
@@ -186,6 +195,9 @@ namespace Chain
                 DrawGizmos();
         }
 
-        
+        private void OnDisable()
+        {
+            MediatorEventbus.SetupEvents.OnTowerIDSetting -= SetCogID;
+        }
     }
 }

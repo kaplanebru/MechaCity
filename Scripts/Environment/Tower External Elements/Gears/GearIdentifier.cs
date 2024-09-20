@@ -24,6 +24,7 @@ namespace TowerExternal
         public void Initialize(int id)
         {
             Id = id;
+            MediatorEventbus.SetupEvents.OnTowerIDSetting?.Invoke(Id, gameObject);
         }
     }
 
