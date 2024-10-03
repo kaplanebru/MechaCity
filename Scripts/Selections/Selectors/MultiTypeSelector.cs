@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _Core.Turn.Selectors;
 using Enums;
@@ -8,6 +9,7 @@ using UnityEngine;
 
 public class MultiTypeSelector : Selector, IBlockable
 {
+    public override void InitialSetup() {}
     
     private bool isFull = false;
 
@@ -52,6 +54,8 @@ public class MultiTypeSelector : Selector, IBlockable
     }
 
     protected override void HandleUI() { }
+
+   
 
     protected override void DeselectCall() => isFull = false;
    

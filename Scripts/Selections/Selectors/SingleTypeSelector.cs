@@ -2,15 +2,20 @@ using System.Collections.Generic;
 using _Core.Turn.Selectors;
 using Enums;
 using Teams;
+using UnityEngine;
 
 public class SingleTypeSelector : Selector, IBlockable
 {
    
     private int _maxTowerConstant;
+    
+    public override void InitialSetup()
+    {
+        _maxTowerConstant = Data.Groups[0].MaxTowers;
+    }
     protected override void SubscribeAndSetup()
     {
         CurrentGroup = Data.Groups[0];
-        _maxTowerConstant = CurrentGroup.MaxTowers;
     }
 
     protected override void Unregister() {}
@@ -59,6 +64,14 @@ public class SingleTypeSelector : Selector, IBlockable
         CurrentGroup.MaxTowers = _maxTowerConstant;
     }
     
+    public void ResetByForce()
+    {
+        _maxTowerConstant = 2;
+        ResetMaxSelection();
+        
+        SelectionEvents.OnSelectionReady?.Invoke(this);
+    }
+    
     public override void SetMaxTowers(int amount)
     {
         CurrentGroup.MaxTowers = amount;
@@ -73,5 +86,6 @@ public class SingleTypeSelector : Selector, IBlockable
     {
         return CurrentGroup.SelectedTowers;
     }
+
     
 }

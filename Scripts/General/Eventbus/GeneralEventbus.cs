@@ -19,5 +19,7 @@ public static class GeneralEventbus
     
     public static Action<int> OnTowerColorChange;
     public static Action<int> OnTurnTowerDeselect;
+    
+    public static Action OnResetMaxSelectionFromEditor;
 
 }

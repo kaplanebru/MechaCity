@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Testing
 {
@@ -21,6 +22,11 @@ namespace Testing
             IsMultiplayerOn = isMultiplayerOn;
             IsTestingWithoutCombat = isTestingWithoutCombat;
             FasterCombat = fasterCombat;
+        }
+
+        public void SetSelectionsToTwo()
+        {
+            GeneralEventbus.OnResetMaxSelectionFromEditor?.Invoke();
         }
     }
 }

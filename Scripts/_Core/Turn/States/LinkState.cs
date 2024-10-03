@@ -108,9 +108,11 @@ namespace Turn
         {
             Eventbus.LinkEvents.OnUnlink?.Invoke(TransferData.Towers);
             MediatorEventbus.ChainLinkEvents.OnLinkBroken?.Invoke();
-            Debug.Log("LAST " + currentLinkOperator.Type);
+
             NetworkEventbus.InputEvents.OnObjectClicked -= currentLinkOperator.TowerSelected;
             AllTowers.EnableClickability();
+            
+            SelectionEvents.OnSelectionTerminated?.Invoke();
         }
 
         public override void UnsubscribeFromConstantEvents()

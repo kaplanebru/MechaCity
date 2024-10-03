@@ -17,7 +17,7 @@ public class SelectionTable : MonoBehaviour
 
     private void OnEnable()
     {
-        content.SetActive(false);
+        CloseTable();
         
         SelectionEvents.OnSelectionReady += StartTable;
         SelectionEvents.OnSelectionTerminated += CloseTable;
@@ -74,9 +74,9 @@ public class SelectionTable : MonoBehaviour
 
     public void StartTable(Selector selector)
     {
-        content.SetActive(true);
         _currentSelector = selector;
         SetSlots();
+        content.SetActive(true);
     }
     
     private void CloseTable()
@@ -91,7 +91,7 @@ public class SelectionTable : MonoBehaviour
         emptySlots.Clear();
         
         DisableAll();
-        SetSlotAmountAnColors();
+        SetSlotAmountAndColors();
 
         for (int i = 0; i < _slotAmount; i++)
         {
@@ -103,11 +103,13 @@ public class SelectionTable : MonoBehaviour
             activeSlots.Add(slot);
         }
     }
-    void SetSlotAmountAnColors()
+    void SetSlotAmountAndColors()
     {
         _slotAmount = 0;
         foreach (var group in _currentSelector.Data.Groups)
         {
+            print("currentSelector: " + group.MaxTowers);
+
             for (int i = 0; i < group.MaxTowers; i++)
             {
                 slots[_slotAmount + i].SetTeamColor(_currentSelector.GetSelectionTeam(group.Index));

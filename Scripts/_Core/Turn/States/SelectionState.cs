@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Enums;
 using Enums.Selections;
 using GameUI;
+using UnityEngine;
 
 namespace Turn
 {
@@ -33,6 +34,8 @@ namespace Turn
         {
             BpEventbus.SubscriberEvents.OnSelectionIncrease += UpdateSelectionAmount;
             BpEventbus.SubscriberEvents.OnSelectionRestoration += ResetMaxSelection;
+
+            GeneralEventbus.OnResetMaxSelectionFromEditor += ResetByForce;
         }
 
 
@@ -53,14 +56,19 @@ namespace Turn
             mainSelector.ContinueTowers(TransferData.Towers);
         }
         
-        public void ResetMaxSelection()
+        public void ResetMaxSelection() 
         {
-            mainSelector.ResetMaxSelection(); 
+            mainSelector.ResetMaxSelection();
         }
 
         public void ResetSelector()
         {
             mainSelector.RestartWithNewTowers();
+        }
+
+        void ResetByForce()
+        {
+            mainSelector.ResetByForce();
         }
 
         public override void Unsubscribe()
@@ -73,6 +81,8 @@ namespace Turn
         {
             BpEventbus.SubscriberEvents.OnSelectionIncrease -= UpdateSelectionAmount;
             BpEventbus.SubscriberEvents.OnSelectionRestoration -= ResetMaxSelection;
+            
+            GeneralEventbus.OnResetMaxSelectionFromEditor -= ResetByForce;
         }
 
     }
