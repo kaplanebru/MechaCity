@@ -118,7 +118,7 @@ namespace Turn
             _pairController.CombatPairs.ForEach(p=> p.CombatCompleted = false);
             BpEventbus.ActionEvents.OnRestoreSelectionAmount?.Invoke();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
-            //not: aslında eventler ters sırayla çağrılmalı, ama combat terminated
+            //not: aslında eventler ters sırayla çağrılmalı?!
             Unsubscribe();
         }
 
