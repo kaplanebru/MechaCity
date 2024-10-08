@@ -9,6 +9,7 @@ public class BridgeEventListener : TowerRelatedEventListener<BridgeRoot>
 
     public override void Initialize()
     {
+       DisableAll();
     }
 
     public override void Subscribe()
@@ -19,12 +20,21 @@ public class BridgeEventListener : TowerRelatedEventListener<BridgeRoot>
 
     void ConstructBridge(int[] ids)
     {
+        Debug.Log(RelatedItems.Length);
         for (int i = 0; i < ids.Length-1; i++)
         {
             var bridge = RelatedItems.FirstOrDefault(s => s.Id == ids[i]);
+            bridge.Show(true);
             bridge.Stretch(ids[i+1]);
         }
-       
+    }
+
+    void DisableAll()
+    {
+        foreach (var relatedItem in RelatedItems)
+        {
+            relatedItem.Show(false);
+        }
     }
 
     public override void Unsubscribe()

@@ -38,6 +38,14 @@ public class BridgeRoot : MonoBehaviour, ITowerRelated
         direction = (targetTower.transform.position - mainTower.transform.position).normalized;
     }
 
+    public void Show(bool isShowing)
+    {
+        foreach (var root in roots)
+        {
+            root.gameObject.SetActive(isShowing);
+        }
+    }
+
     // int GetSide()
     // {
     //     float dotProduct = Vector3.Dot(targetTower.transform.right, direction);
