@@ -22,7 +22,7 @@ namespace Towers
             initializer = new TowerInitializer(this);
             Eventbus.TowerEvents.OnTurnBegin += FirstMotion;
         }
-        
+
         public void Setup(TeamTowerData teamData)
         {
             initializer.Setup(teamData);
@@ -33,14 +33,14 @@ namespace Towers
             yield return new WaitForSeconds(1);
             initializer.Setup(teamData);
         }
-        
+
         public void SetTeam(TeamTowerData teamData)
         {
             Data.TeamType = teamData.TeamType;
             Data.ColorHandler.SetTeamVisuals(teamData);
             Data.clickHandler.SetClickableTeams(teamData.TeamType);
         }
-     
+
 
         public void HandleDeath(Action teamSwitchCallback, Action completeCombat)
         {
@@ -63,14 +63,14 @@ namespace Towers
         }
 
 
-       
         void FirstMotion()
         {
-           Data.Mover.ChangeHeightPhysically(Data.Height, true);
-           StartRiseFallRoutine(true);
+            Data.Mover.ChangeHeightPhysically(Data.Height, true);
+            StartRiseFallRoutine(true);
         }
 
         private Coroutine riseRoutine;
+
         public void StartRiseFallRoutine(bool forOnce = false)
         {
             riseRoutine = StartCoroutine(Data.Mover.riseFallMotion.RiseRoutine(forOnce));

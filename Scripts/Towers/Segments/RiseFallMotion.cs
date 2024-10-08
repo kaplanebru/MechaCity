@@ -73,14 +73,12 @@ public class RiseFallMotion
         }
 
         float result = residue > 0 ? number - residue + unit : number;
-        Debug.Log("number: " + number + "residue: " + residue + "result: " +result);
         return result;
     }
 
     void ResetStartHeight()
     {
         startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
-        Debug.Log(startHeight);
     }
 
     public IEnumerator RiseRoutine(bool forOnce = false)
@@ -90,11 +88,9 @@ public class RiseFallMotion
         ResetStartHeight();
         while (true)
         {
-            //startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
             if (Data.RiseState == RiseState.Rising)
             {
                 //Debug.Log("rising: " + Data.Id);
-              
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
                 {
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
@@ -122,7 +118,6 @@ public class RiseFallMotion
                 if (Data.RiseState != RiseState.Falling)
                 {
                     Data.RiseState = RiseState.None;
-                    
                     MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                     //UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
                 }
@@ -130,8 +125,6 @@ public class RiseFallMotion
 
             else if (Data.RiseState == RiseState.Falling)
             {
-                //startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
-
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
                     Move(Data.ActiveHolder.localPosition);
