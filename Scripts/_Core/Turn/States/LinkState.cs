@@ -69,14 +69,15 @@ namespace Turn
 
         private void GetDoubles(DoubleTower doubleTower) //params int[] towers
         {
-            doubleLinkOperator.setter.AddDoubles(doubleTower);
+            //doubleLinkOperator.setter.AddDoubles(doubleTower);
+            AllDoubles.Add(doubleTower);
         }
 
         private void SetLinkOperatorAndSubscribe()
         {
             foreach (var tower in TransferData.Towers)
             {
-                if (doubleLinkOperator.setter.InspectDoubles(tower))
+                if (AllDoubles.InspectDouble(tower))//(doubleLinkOperator.setter.InspectDoubles(tower))
                 {
                     currentLinkOperator = doubleLinkOperator;
                     //SwitchLinkOperator(LinkOperatorType.Double);

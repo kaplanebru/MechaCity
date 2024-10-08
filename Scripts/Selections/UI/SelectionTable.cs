@@ -108,14 +108,11 @@ public class SelectionTable : MonoBehaviour
         _slotAmount = 0;
         foreach (var group in _currentSelector.Data.Groups)
         {
-            print("currentSelector: " + group.MaxTowers);
-
             for (int i = 0; i < group.MaxTowers; i++)
             {
                 slots[_slotAmount + i].SetTeamColor(_currentSelector.GetSelectionTeam(group.Index));
             }
             _slotAmount += group.MaxTowers;
-           
         }
     }
 
