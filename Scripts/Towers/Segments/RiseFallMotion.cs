@@ -39,7 +39,7 @@ public class RiseFallMotion
     private RiseFallData Data;
 
     public float speed = 0.025f;
-    public float unit; // = 1.8f;
+    public float unit;
     float tolerance = 0.0001f;
 
     private float startHeight;
@@ -63,17 +63,26 @@ public class RiseFallMotion
 
     float RoundByCustomUnit(float number)
     {
+        //float residue = number % unit;
+        
+        float tolerance = 1e-6f;  // A small value to handle precision issues
         float residue = number % unit;
+        if (Mathf.Abs(residue) < tolerance)
+        {
+            residue = 0;  // Ignore small floating-point errors
+        }
+
         float result = residue > 0 ? number - residue + unit : number;
+        Debug.Log("number: " + number + "residue: " + residue + "result: " +result);
         return result;
     }
 
-    public void SetZeroHeight(int y)
-    {
-        var pos = Data.ActiveHolder.localPosition;
-        pos.y = y;
-        Data.ActiveHolder.localPosition = pos;
-    }
+    // public void SetZeroHeight(int y)
+    // {
+    //     var pos = Data.ActiveHolder.localPosition;
+    //     pos.y = y;
+    //     Data.ActiveHolder.localPosition = pos;
+    // }
 
     public IEnumerator RiseRoutine(bool forOnce = false)
     {
@@ -85,11 +94,14 @@ public class RiseFallMotion
             startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
             if (Data.RiseState == RiseState.Rising)
             {
-                //Debug.Log("rising: " + Data.Id);
+                Debug.Log("rising: " + Data.Id);
+                Debug.Log("y: " +Data.ActiveHolder.localPosition.y + "start height " + startHeight);
+               // Debug.Log("ypos: "+ Data.ActiveHolder.localPosition.y + "target: " + Data.TargetHeight);
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
                 {
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
                     {
+                        
                         if (Data.PassiveParts.Count == 0)
                         {
                             Data.RiseState = RiseState.None;
@@ -167,6 +179,7 @@ public class RiseFallMotion
 
     void GetNextPart()
     {
+        // Debug.Log("passive count " + Data.PassiveParts.Count);
         var nextPart = Data.PassiveParts.Last();
 
         Data.PassiveParts.Remove(nextPart);
