@@ -77,26 +77,24 @@ public class RiseFallMotion
         return result;
     }
 
-    // public void SetZeroHeight(int y)
-    // {
-    //     var pos = Data.ActiveHolder.localPosition;
-    //     pos.y = y;
-    //     Data.ActiveHolder.localPosition = pos;
-    // }
+    void ResetStartHeight()
+    {
+        startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
+        Debug.Log(startHeight);
+    }
 
     public IEnumerator RiseRoutine(bool forOnce = false)
     {
         DisableAll();
-
-       // Debug.Log("routine: " + Data.Id);
+        
+        ResetStartHeight();
         while (true)
         {
-            startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
+            //startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
             if (Data.RiseState == RiseState.Rising)
             {
-                Debug.Log("rising: " + Data.Id);
-                Debug.Log("y: " +Data.ActiveHolder.localPosition.y + "start height " + startHeight);
-               // Debug.Log("ypos: "+ Data.ActiveHolder.localPosition.y + "target: " + Data.TargetHeight);
+                //Debug.Log("rising: " + Data.Id);
+              
                 while (Data.ActiveHolder.localPosition.y < Data.TargetHeight)
                 {
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
@@ -117,12 +115,14 @@ public class RiseFallMotion
                     yield return null;
                 }
                 
-
+                ResetStartHeight();
                 UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
+                
                 if(forOnce) yield break;
                 if (Data.RiseState != RiseState.Falling)
                 {
                     Data.RiseState = RiseState.None;
+                    
                     MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                     //UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
                 }
@@ -130,7 +130,7 @@ public class RiseFallMotion
 
             else if (Data.RiseState == RiseState.Falling)
             {
-                startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
+                //startHeight = RoundByCustomUnit(Data.ActiveHolder.localPosition.y);
 
                 while (Data.ActiveHolder.localPosition.y > Data.TargetHeight)
                 {
@@ -151,6 +151,7 @@ public class RiseFallMotion
                     yield return null;
                 }
 
+                ResetStartHeight();
                 UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
                 if(forOnce) yield break;
 
@@ -221,6 +222,13 @@ public class RiseFallMotion
             passivePart.gameObject.SetActive(false);
         }
     }
+    
+    // public void SetZeroHeight(int y)
+    // {
+    //     var pos = Data.ActiveHolder.localPosition;
+    //     pos.y = y;
+    //     Data.ActiveHolder.localPosition = pos;
+    // }
 
     #region Lerp
 
