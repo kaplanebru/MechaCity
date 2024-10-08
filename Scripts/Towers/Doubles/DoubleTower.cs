@@ -3,19 +3,14 @@ using System.Linq;
 using Towers;
 using UnityEngine;
 
-namespace Turn
+namespace Towers
 {
     public class DoubleTower: ILinkable
     {
         public Dictionary<int, TowerData> towers = new();
         
         public int Amount { get; set; }
-
-        public int GetFreeResource(int step) 
-        {
-            return Amount * step;
-        }
-        
+        public int GetFreeResource(int step) =>  Amount * step;
         public int AvailableHeight //1-3'se mesela inemesin
         {
             get
@@ -23,7 +18,9 @@ namespace Turn
                 return towers.Sum(tower => tower.Value.AvailableHeight);
             }
         }
-
+        public bool InspectByTowerData(TowerData tower) => towers.ContainsValue(tower);
+        public bool InspectByTowerID(int id) => towers.ContainsKey(id);
+        
         public DoubleTower(params int[] ids)
         {
             foreach (var id in ids)
@@ -33,18 +30,6 @@ namespace Turn
             
             towers = towers.OrderBy(t => t.Value.AvailableHeight).ToDictionary(t => t.Key, t => t.Value);
             Amount = towers.Count;
-        }
-        
-        public bool InspectDoubleByTowerId(int id)
-        {
-            if (towers.ContainsKey(id))
-                return true;
-            return false;
-        }
-
-        public bool ContainsDoubleByTowerData(TowerData tower)
-        {
-            return towers.ContainsValue(tower);
         }
         
         public bool NoDoubleFallCapacity(int step)
@@ -95,11 +80,23 @@ namespace Turn
                 tower.UpdateHeight(surplus);
                 AllTowers.GetTower(tower.UniqID).StartRiseFallRoutine(true); //Todo: düzelt
             }
+            
+            CommonizeHealth();
         }
         
         public void CreateBridge()
         {
             Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(towers.Keys.ToArray());
+        }
+
+        public void CommonizeHealth()
+        {
+            int totalHealth = towers.Sum(tower => tower.Value.Health);
+
+            foreach (var tower in towers)
+            {
+                tower.Value.ChangeHealth(totalHealth);
+            }
         }
     }
 }

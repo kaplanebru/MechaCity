@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
-using Turn;
+using Towers;
 using UnityEngine;
 
 public class AllDoubles : MonoBehaviour
@@ -25,7 +24,7 @@ public class AllDoubles : MonoBehaviour
     {
         foreach (var _double in _doubles)
         {
-            if (_double.towers.ContainsKey(id))
+            if (_double.InspectByTowerID(id)) //.towers.ContainsKey(id)
             {
                 doubleTower = _double;
                 return true;
@@ -38,22 +37,7 @@ public class AllDoubles : MonoBehaviour
     
     public static bool InspectByTower(int id)
     {
-        return _doubles.Any(_double => _double.towers.ContainsKey(id));
+        return _doubles.Any(_double => _double.InspectByTowerID(id)); //_double.towers.ContainsKey(id)
     }
     
-
-    // public static bool InspectDoubleByTower(int id)
-    // {
-    //     foreach (var _double in _doubles)
-    //     {
-    //         if (_double.towers.ContainsKey(id))
-    //         {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
-    
-    
-
 }

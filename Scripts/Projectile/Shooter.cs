@@ -5,7 +5,6 @@ using DG.Tweening;
 using GameUI;
 using ProjectileHandler;
 using Towers;
-using Turn;
 using UnityEngine;
 
 public class Shooter : MonoBehaviour, ITowerRelated
@@ -69,8 +68,8 @@ public class Shooter : MonoBehaviour, ITowerRelated
     //TODO: make death operator //pair complete comat önemli
     void RemoveHealth(TowerData victimData)
     {
-        victimData.Health -= _pair.OtherTowerData.DamagePower;
-        UIEventbus.OnHealthChange.Invoke(victimData.Health, _pair.OtherTowerData.UniqID);
+        victimData.ChangeHealth(victimData.Health - _pair.OtherTowerData.DamagePower);
+        //UIEventbus.OnHealthChange.Invoke(victimData.Health, _pair.OtherTowerData.UniqID);
             
         victimData.Mover.Shake();
 

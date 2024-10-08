@@ -42,7 +42,7 @@ namespace Turn
             {
                 foreach (var Double in TurnDoubles)
                 {
-                    if (!Double.InspectDoubleByTowerId(towerID)) continue;
+                    if (!Double.InspectByTowerID(towerID)) continue;
                     selection = Double;
                     SelectedDoubleRise(1);
                     break;
@@ -159,7 +159,7 @@ namespace Turn
                 {
                     foreach (var doubleTower in TurnDoubles)
                     {
-                        if (doubleTower.ContainsDoubleByTowerData(safeTower))
+                        if (doubleTower.InspectByTowerData(safeTower))
                         {
                             foreach (var tower in doubleTower.towers)
                             {
