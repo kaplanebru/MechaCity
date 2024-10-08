@@ -32,9 +32,9 @@ namespace Turn
         {
             foreach (var id in Towers)
             {
-                if (AllDoubles.InspectTower(id))
+                if (AllDoubles.TryInspectByTowerAndGetDouble(id, out DoubleTower doubleTower))
                 {
-                    TurnDoubles.Add(AllDoubles.GetDoubleByTower(id));
+                    TurnDoubles.Add(doubleTower);
                 }
                 else
                 {

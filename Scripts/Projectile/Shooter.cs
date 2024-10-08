@@ -5,6 +5,7 @@ using DG.Tweening;
 using GameUI;
 using ProjectileHandler;
 using Towers;
+using Turn;
 using UnityEngine;
 
 public class Shooter : MonoBehaviour, ITowerRelated
@@ -83,15 +84,22 @@ public class Shooter : MonoBehaviour, ITowerRelated
     {
         if (victimData.Health <= 0)
         {
-            if (AllDoubles.InspectDoubleByTower(victimData.UniqID))
+            if (AllDoubles.TryInspectByTowerAndGetDouble(victimData.UniqID, out DoubleTower doubleTower))
             {
-                //AllDoubles.GetDoubleByTower(victimData.UniqID)
-                //double'u bul
-                //doubledaki diğer towerlar için handle death
+                foreach (var towerID in doubleTower.towers)
+                {
+                    var tower = AllTowers.GetTower(towerID.Key); 
+                    tower.HandleDeath( () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(towerID.Key), _pair.CompleteCombat);
+                }
+                //AllDoubles.Remove(doubleTower); //Remove yok, ama taraf değiştirmeli. Remove anca break double olursa
             }
-            victim.HandleDeath(() =>
-                    Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData.UniqID),
-                _pair.CompleteCombat);
+            else
+            {
+                victim.HandleDeath(() =>
+                        Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData.UniqID),
+                    _pair.CompleteCombat);
+            }
+            
             return true;
         }
         return false;

@@ -20,26 +20,40 @@ public class AllDoubles : MonoBehaviour
         _doubles.Remove(doubleTower);
     }
 
-    public static bool InspectTower(int id)
-    {
-        return _doubles.Any(_double => _double.towers.ContainsKey(id));
-    }
-    
-    public static DoubleTower GetDoubleByTower(int id)
-    {
-        return _doubles.FirstOrDefault(_double => _double.towers.ContainsKey(id));
-    }
-
-    public static bool InspectDoubleByTower(int id)
+   
+    public static bool TryInspectByTowerAndGetDouble(int id, out DoubleTower doubleTower)
     {
         foreach (var _double in _doubles)
         {
             if (_double.towers.ContainsKey(id))
             {
+                doubleTower = _double;
                 return true;
             }
         }
+
+        doubleTower = null;
         return false;
     }
     
+    public static bool InspectByTower(int id)
+    {
+        return _doubles.Any(_double => _double.towers.ContainsKey(id));
+    }
+    
+
+    // public static bool InspectDoubleByTower(int id)
+    // {
+    //     foreach (var _double in _doubles)
+    //     {
+    //         if (_double.towers.ContainsKey(id))
+    //         {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+    
+    
+
 }

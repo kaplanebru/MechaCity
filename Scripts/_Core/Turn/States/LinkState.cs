@@ -77,7 +77,7 @@ namespace Turn
         {
             foreach (var tower in TransferData.Towers)
             {
-                if (AllDoubles.InspectDoubleByTower(tower))//(doubleLinkOperator.setter.InspectDoubles(tower))
+                if (AllDoubles.InspectByTower(tower))//(doubleLinkOperator.setter.InspectDoubles(tower))
                 {
                     currentLinkOperator = doubleLinkOperator;
                     //SwitchLinkOperator(LinkOperatorType.Double);
