@@ -30,7 +30,7 @@ public class AllDoubles : MonoBehaviour
         return _doubles.FirstOrDefault(_double => _double.towers.ContainsKey(id));
     }
 
-    public static bool InspectDouble(int id)
+    public static bool InspectDoubleByTower(int id)
     {
         foreach (var _double in _doubles)
         {

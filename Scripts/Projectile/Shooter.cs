@@ -65,6 +65,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
         });
     }
     
+    //TODO: make death operator //pair complete comat önemli
     void RemoveHealth(TowerData victimData)
     {
         victimData.Health -= _pair.OtherTowerData.DamagePower;
@@ -82,6 +83,12 @@ public class Shooter : MonoBehaviour, ITowerRelated
     {
         if (victimData.Health <= 0)
         {
+            if (AllDoubles.InspectDoubleByTower(victimData.UniqID))
+            {
+                //AllDoubles.GetDoubleByTower(victimData.UniqID)
+                //double'u bul
+                //doubledaki diğer towerlar için handle death
+            }
             victim.HandleDeath(() =>
                     Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData.UniqID),
                 _pair.CompleteCombat);
