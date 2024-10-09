@@ -24,7 +24,6 @@ namespace Towers
             Data.Height = ConstantData.StartHeight;
             Data.DamagePower = ConstantData.DamagePower;
             Data.LockStatus = ConstantData.StartLockStatus;
-            Data.SetHealthData(ConstantData.StartHealth);
             
             _tower.RestoreBullets();
             Data.BpTowerData = new BpTowerData(Data.UniqID);
@@ -35,7 +34,7 @@ namespace Towers
             
             _tower.SetTeam(teamData);
             
-            UIEventbus.OnHealthChange.Invoke(Data.Health, Data.UniqID);
+            //UIEventbus.OnHealthChange.Invoke(Data.Health, Data.UniqID);
            // Data.Mover.riseFallMotion.SetZeroHeight(0); //warning: bug sebebi (0'la başlarsa y<1 olur ve ekstra passive part açar
         }
         void SetSegments()

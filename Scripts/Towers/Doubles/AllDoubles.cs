@@ -12,13 +12,13 @@ public class AllDoubles
     public static void Add(DoubleTower doubleTower)
     {
         Doubles.Add(doubleTower);
-        DoublesByID.Add(doubleTower.HealthID, doubleTower);
+        DoublesByID.Add(doubleTower.ID, doubleTower);
     }
 
     public static void Remove(DoubleTower doubleTower)
     {
         Doubles.Remove(doubleTower);
-        DoublesByID.Remove(doubleTower.HealthID);
+        DoublesByID.Remove(doubleTower.ID);
     }
 
    

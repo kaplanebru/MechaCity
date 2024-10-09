@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Enums;
 using GameUI;
+using Health;
 using Network;
 using Teams;
 using Testing;
@@ -66,7 +67,8 @@ public class TurnHelper
     {
         foreach (var team in TeamsByTurn)
         {
-            if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Health == 0)) //TODO: CHECK
+           
+            if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => HealthManager.GetHealth(t.UniqID) == 0)) //TODO: CHECK  
             {
                 NetworkEventbus.TriggerEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
                 Debug.Log("game ends");

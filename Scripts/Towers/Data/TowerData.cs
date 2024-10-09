@@ -12,7 +12,7 @@ namespace Towers
 {
     // [CreateAssetMenu(fileName = nameof(TowerData))]
     [Serializable]
-    public class TowerData : ILinkable, IHealthy
+    public class TowerData : ILinkable
     {
         public int UniqID;
         public int SlotId;
@@ -58,26 +58,7 @@ namespace Towers
         }
         public int DamagePower;
 
-        //HEALTH
-
-        [SerializeField] int _health = 1;
-        public int Health
-        {
-            get => _health;
-            set => _health = value;
-        }
-        public int HealthID { get; set; }
-        public TowerData[] HealthSubjects { get; set; } // = new TowerData[1];
-
-        public void SetHealthData(int startHealth)
-        {
-            Health = startHealth;
-            HealthID = UniqID;
-            //HealthSubjects[0] = this;
-            //HealthSubjects = new [] { this };
-        }
-
-      
+     
 
         public TeamType TeamType;
         public List<int> LinkedTowerIDs = new();
@@ -163,7 +144,6 @@ namespace Towers
         
         public TowerData[] HealthSubjects { get; set; }
         
-        public void Shake();
     }
 
     [Serializable]

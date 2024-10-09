@@ -9,39 +9,39 @@ namespace Health
 {
     public class HealthHandler
     {
-        private static void ChangeHealth(IHealthy healthy, int newHealth)
-        {
-            healthy.Health = newHealth;
-            //UIEventbus.OnHealthChange.Invoke(newHealth, healthy.HealthID);
-        }
-        
-        public static void RemoveHealth(IHealthy healthy, int damage, Action completeCall)
-        {
-            if (AllDoubles.TryInspectByTowerAndGetDouble(healthy.HealthID, out DoubleTower doubleTower))
-                healthy = doubleTower;
-            
-            ChangeHealth(healthy, healthy.Health-damage);
-            doubleTower.Shake();
-            
-            if(IsDead(healthy, completeCall)) return;
-            completeCall();
-            
-            
-            // if (AllDoubles.TryInspectByTowerAndGetDouble(healthy.HealthID, out DoubleTower doubleTower))
-            // {
-            //     ChangeHealth(doubleTower, doubleTower.Health-damage);
-            //     doubleTower.Shake();
-            //     if(IsDoubleDead(doubleTower, completeCall)) return;
-            // }
-            // else
-            // {
-            //     ChangeHealth(victimData, victimData.Health-damage);
-            //     victimData.Shake();
-            //     if(IsVictimDead(victimData, completeCall)) return;
-            // }
-
-           
-        }
+        // private static void ChangeHealth(IHealthy healthy, int newHealth)
+        // {
+        //     healthy.Health = newHealth;
+        //     //UIEventbus.OnHealthChange.Invoke(newHealth, healthy.HealthID);
+        // }
+        //
+        // public static void RemoveHealth(IHealthy healthy, int damage, Action completeCall)
+        // {
+        //     if (AllDoubles.TryInspectByTowerAndGetDouble(healthy.HealthID, out DoubleTower doubleTower))
+        //         healthy = doubleTower;
+        //     
+        //     ChangeHealth(healthy, healthy.Health-damage);
+        //     doubleTower.Shake();
+        //     
+        //     if(IsDead(healthy, completeCall)) return;
+        //     completeCall();
+        //     
+        //     
+        //     // if (AllDoubles.TryInspectByTowerAndGetDouble(healthy.HealthID, out DoubleTower doubleTower))
+        //     // {
+        //     //     ChangeHealth(doubleTower, doubleTower.Health-damage);
+        //     //     doubleTower.Shake();
+        //     //     if(IsDoubleDead(doubleTower, completeCall)) return;
+        //     // }
+        //     // else
+        //     // {
+        //     //     ChangeHealth(victimData, victimData.Health-damage);
+        //     //     victimData.Shake();
+        //     //     if(IsVictimDead(victimData, completeCall)) return;
+        //     // }
+        //
+        //    
+        // }
         
 
         // private static bool IsDoubleDead(DoubleTower doubleTower, Action completeCall)
@@ -71,25 +71,25 @@ namespace Health
             return false;
         }
         
-        public static void ResetHealth(int id)
-        {
-            if (AllDoubles.TryInspectByTowerAndGetDouble(id, out DoubleTower doubleTower))
-            {
-                foreach (var key in doubleTower.towers.Keys)
-                {
-                    var newHealth =  AllTowers.GetTower(key).ConstantData.StartHealth;
-                    doubleTower.towers[key].Health = newHealth;
-                }
-                ChangeHealth(doubleTower, doubleTower.TotalHealth);
-               
-            }
-            else
-            {
-                var towerObj = AllTowers.GetTower(id);
-                var newHealth = towerObj.ConstantData.StartHealth;
-                ChangeHealth(towerObj.Data, newHealth);
-            }
-        }
+        // public static void ResetHealth(int id)
+        // {
+        //     if (AllDoubles.TryInspectByTowerAndGetDouble(id, out DoubleTower doubleTower))
+        //     {
+        //         foreach (var key in doubleTower.towers.Keys)
+        //         {
+        //             var newHealth =  AllTowers.GetTower(key).ConstantData.StartHealth;
+        //             doubleTower.towers[key].Health = newHealth;
+        //         }
+        //         ChangeHealth(doubleTower, doubleTower.TotalHealth);
+        //        
+        //     }
+        //     else
+        //     {
+        //         var towerObj = AllTowers.GetTower(id);
+        //         var newHealth = towerObj.ConstantData.StartHealth;
+        //         ChangeHealth(towerObj.Data, newHealth);
+        //     }
+        // }
   
     }
 

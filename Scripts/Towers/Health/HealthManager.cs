@@ -8,8 +8,8 @@ namespace Health
 {
     public class HealthManager
     {
-        private Dictionary<int, HealthData> Registry = new(); // TowerID -> Health
-        public int GetHealth(int towerID) => Registry[towerID].Health;
+        private static Dictionary<int, HealthData> Registry = new(); // TowerID -> Health
+        public static int GetHealth(int towerID) => Registry[towerID].Health;
 
         public void Subscribe()
         {

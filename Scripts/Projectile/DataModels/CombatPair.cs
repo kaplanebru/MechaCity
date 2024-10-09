@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using GameUI;
+using Health;
 using UnityEngine;
 using ProjectileHandler;
 using Towers;
@@ -39,7 +40,7 @@ namespace DataModels
                 return false;
             }
 
-            if (OtherTowerData.Health <= 0 || MainTowerData.Health <= 0)
+            if(HealthManager.GetHealth(OtherTowerData.UniqID) <= 0 || HealthManager.GetHealth(MainTowerData.UniqID) <= 0)
             {
                 SkipCombat();
                 return false;

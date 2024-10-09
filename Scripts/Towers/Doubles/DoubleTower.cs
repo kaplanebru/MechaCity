@@ -8,23 +8,20 @@ using UnityEngine;
 
 namespace Towers
 {
-    public class DoubleTower: ILinkable, IHealthy
+    public class DoubleTower: ILinkable
     {
         [NonSerialized]
         public Dictionary<int, TowerData> towers = new();
-        //public string ID { get; private set; }
+       
         public int Amount { get; set; } //private set?
-        
-        public int Health { get; set; }
-        public int HealthID { get; set; }
+        public int ID { get; }
         public TowerData[] HealthSubjects { get; set; }
 
         public void Shake()
         {
             //TODO İMPLEMENT LATER
         }
-
-        public int TotalHealth => towers.Sum(tower => tower.Value.Health);
+        
         public int GetFreeResource(int step) =>  Amount * step;
         public int AvailableHeight //1-3'se mesela inemesin
         {
@@ -46,7 +43,7 @@ namespace Towers
             towers = towers.OrderBy(t => t.Value.AvailableHeight).ToDictionary(t => t.Key, t => t.Value);
             Amount = towers.Count;
             
-            HealthID = UniqueIdGenerator.GenerateIntId();
+            ID = UniqueIdGenerator.GenerateIntId();
             HealthSubjects = towers.Values.ToArray();
         }
         
@@ -110,15 +107,11 @@ namespace Towers
        
         private void CommonizeHealth()
         {
-            //Health = TotalHealth;
             int[] towersByHeight = towers.OrderByDescending(t => t.Value.Height)
                 .Select(t => t.Key)
                 .ToArray();
 
-            Eventbus.HealthEvents.OnNewDoubleHealth?.Invoke(HealthID, towersByHeight);
-
-            //UIEventbus.OnCreatingDoubleHealth?.Invoke(towersByHeight, Health, HealthID);
-            
+            Eventbus.HealthEvents.OnNewDoubleHealth?.Invoke(ID, towersByHeight);
         }
     }
 }
