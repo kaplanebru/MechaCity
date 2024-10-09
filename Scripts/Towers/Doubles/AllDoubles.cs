@@ -6,23 +6,25 @@ using UnityEngine;
 
 public class AllDoubles
 {
-    private static List<DoubleTower> _doubles = new();
-    public static IEnumerable Doubles => _doubles;
+    private static List<DoubleTower> Doubles  = new();
+    public static Dictionary<string, DoubleTower> DoublesByID  { get; private set; }  = new();
 
     public static void Add(DoubleTower doubleTower)
     {
-        _doubles.Add(doubleTower);
+        Doubles.Add(doubleTower);
+        DoublesByID.Add(doubleTower.ID, doubleTower);
     }
 
     public static void Remove(DoubleTower doubleTower)
     {
-        _doubles.Remove(doubleTower);
+        Doubles.Remove(doubleTower);
+        DoublesByID.Remove(doubleTower.ID);
     }
 
    
     public static bool TryInspectByTowerAndGetDouble(int id, out DoubleTower doubleTower)
     {
-        foreach (var _double in _doubles)
+        foreach (var _double in Doubles)
         {
             if (_double.InspectByTowerID(id)) //.towers.ContainsKey(id)
             {
@@ -37,7 +39,7 @@ public class AllDoubles
     
     public static bool InspectByTower(int id)
     {
-        return _doubles.Any(_double => _double.InspectByTowerID(id)); //_double.towers.ContainsKey(id)
+        return Doubles.Any(_double => _double.InspectByTowerID(id)); //_double.towers.ContainsKey(id)
     }
     
 }

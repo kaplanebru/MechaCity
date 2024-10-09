@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using GameUI;
 using UnityEngine;
 
-public class HealthHolder : MonoBehaviour, ITowerRelated
+namespace Health
+{
+    public class HealthHolder : MonoBehaviour, ITowerRelated
 {
     public HealthIcon iconPrefab;
     public List<HealthIcon> icons;
@@ -152,4 +154,5 @@ public class HealthHolder : MonoBehaviour, ITowerRelated
     }
 
    
+}
 }

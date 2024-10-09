@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameUI;
+using Health;
 using Towers;
 using UnityEngine;
 
@@ -9,8 +10,9 @@ namespace Towers
     public class DoubleTower: ILinkable
     {
         public Dictionary<int, TowerData> towers = new();
+        public string ID { get; private set; }
         
-        public int Amount { get; set; }
+        public int Amount { get; set; } //private set?
         public int GetFreeResource(int step) =>  Amount * step;
         public int AvailableHeight //1-3'se mesela inemesin
         {
@@ -24,6 +26,7 @@ namespace Towers
         
         public DoubleTower(params int[] ids)
         {
+            ID = UniqueIdGenerator.GenerateUniqueId();
             foreach (var id in ids)
             {
                 towers.Add(id, AllTowers.GetData(id));
@@ -90,19 +93,21 @@ namespace Towers
             Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(towers.Keys.ToArray());
         }
 
-        public void CommonizeHealth()
+        public int Health { get; set; }
+        private void CommonizeHealth()
         {
-            int totalHealth = towers.Sum(tower => tower.Value.Health);
-
-            foreach (var tower in towers)
-            {
-                tower.Value.ChangeHealth(totalHealth);
-            }
-
+            Health = towers.Sum(tower => tower.Value.Health);
             int[] towersByHeight = towers.OrderByDescending(t => t.Value.Height)
                 .Select(t => t.Key)
                 .ToArray();
-            UIEventbus.OnDoubleHealth?.Invoke(towersByHeight, totalHealth);
+
+            UIEventbus.OnCreatingDoubleHealth?.Invoke(towersByHeight, Health, ID);
+            
+            // foreach (var tower in towers)
+            // {
+            //     HealthHandler.ChangeHealth(tower.Value, Health); //todo: böyle mi yapmalı?
+            // }
+            //UIEventbus.OnDoubleHealth?.Invoke(TowersByHeight, Health);
         }
     }
 }

@@ -68,13 +68,13 @@ public class Shooter : MonoBehaviour, ITowerRelated
     //TODO: make death operator //pair complete comat önemli
     void RemoveHealth(TowerData victimData)
     {
-        victimData.ChangeHealth(victimData.Health - _pair.OtherTowerData.DamagePower);
-        //UIEventbus.OnHealthChange.Invoke(victimData.Health, _pair.OtherTowerData.UniqID);
-            
-        victimData.Mover.Shake();
-
-        if(IsVictimDead(victimData,  AllTowers.GetTower(victimData.UniqID)))
-            return;
+        // victimData.ChangeHealth(victimData.Health - _pair.OtherTowerData.DamagePower);
+        // UIEventbus.OnHealthChange.Invoke(victimData.Health, victimData.UniqID);
+        //     
+        // victimData.Mover.Shake(); //TODO: double'ın tamamı sallanmalı
+        //
+        // if(IsVictimDead(victimData,  AllTowers.GetTower(victimData.UniqID)))
+        //     return;
             
         _pair.CompleteCombat();
     }
@@ -90,7 +90,6 @@ public class Shooter : MonoBehaviour, ITowerRelated
                     var tower = AllTowers.GetTower(towerID.Key); 
                     tower.HandleDeath( () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(towerID.Key), _pair.CompleteCombat);
                 }
-                //AllDoubles.Remove(doubleTower); //Remove yok, ama taraf değiştirmeli. Remove anca break double olursa
             }
             else
             {

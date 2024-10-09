@@ -122,11 +122,11 @@ namespace Towers
         }
         
 
-        public void ChangeHealth(int newHealth)
-        {
-            Health = newHealth;
-            UIEventbus.OnHealthChange.Invoke(Health, UniqID);
-        }
+        // public void ChangeHealth(int newHealth)
+        // {
+        //     Health = newHealth;
+        //     //UIEventbus.OnHealthChange.Invoke(Health, UniqID);
+        // }
     }
 
 
