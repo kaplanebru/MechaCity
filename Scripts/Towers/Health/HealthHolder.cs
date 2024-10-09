@@ -135,7 +135,7 @@ public class HealthHolder : MonoBehaviour, ITowerRelated
     }
 
 
-    void DisableAll()
+    public void DisableAll()
     {
         icons.ForEach(i => i.gameObject.SetActive(false));
         activeIcons.Clear();

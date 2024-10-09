@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GameUI;
 using Towers;
 using UnityEngine;
 
@@ -97,6 +98,8 @@ namespace Towers
             {
                 tower.Value.ChangeHealth(totalHealth);
             }
+            UIEventbus.OnDoubleHealth?.Invoke(towers.Keys.ToArray());
+
         }
     }
 }

@@ -120,6 +120,13 @@ namespace Towers
 
             Mover.ChangeHeightPhysically(newHeight, isRising);
         }
+        
+
+        public void ChangeHealth(int newHealth)
+        {
+            Health = newHealth;
+            UIEventbus.OnHealthChange.Invoke(Health, UniqID);
+        }
     }
 
 
