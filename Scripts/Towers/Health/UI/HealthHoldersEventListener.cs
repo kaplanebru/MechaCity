@@ -10,7 +10,7 @@ namespace Health
     public class HealthHoldersEventListener : TowerRelatedEventListener<HealthHolder>
     {
         protected override HealthHolder[] RelatedItems { get; set; }
-        private Dictionary<string,HealthHolder> doubleHealthHolder = new();
+        private Dictionary<int,HealthHolder> doubleHealthHolder = new();
         public HealthHolder healthHolderPb;
 
         public override void Subscribe()
@@ -30,13 +30,13 @@ namespace Health
             healthHolder.AdjustIcons(health);
         }
         
-        private void AdjustDoubleHealthIcon(int health, string id)
+        private void AdjustDoubleHealthIcon(int health, int id)
         {
             var healthHolder = doubleHealthHolder[id];
             healthHolder.AdjustIcons(health);
         }
 
-        public void CreateCommonIcon(int[] ids, int totalHealth, string doubleId)
+        public void CreateCommonIcon(int[] ids, int totalHealth, int doubleId)
         {
             //ids = ids.OrderBy(id=>id).ToArray();
             HealthHolder[] holders = new HealthHolder[ids.Length];

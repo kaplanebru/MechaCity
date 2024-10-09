@@ -35,13 +35,13 @@ namespace Towers
             GeneralEventbus.OnAdjustIconsRequest?.Invoke(health, id);
         }
         
-        private void AdjustDoubleIcons(int health, string id)
+        private void AdjustDoubleIcons(int health, int id)
         {
             GeneralEventbus.OnAdjustDoubleIconsRequest?.Invoke(health, id);
         }
         
         
-        private void CreatingDoubleHealthRequest(int[] ids, int health, string doubleId)
+        private void CreatingDoubleHealthRequest(int[] ids, int health, int doubleId)
         {
             GeneralEventbus.OnCommonHealthIconRequest?.Invoke(ids, health, doubleId);
         }

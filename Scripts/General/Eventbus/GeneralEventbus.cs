@@ -15,8 +15,8 @@ public static class GeneralEventbus
     }
 
     public static Action<int, int> OnAdjustIconsRequest;
-    public static Action<int, string> OnAdjustDoubleIconsRequest;
-    public static Action<int[], int, string> OnCommonHealthIconRequest;
+    public static Action<int, int> OnAdjustDoubleIconsRequest;
+    public static Action<int[], int, int> OnCommonHealthIconRequest;
     
     public static Action<IEnumeratorContainer> OnCoroutineTrigger;
     

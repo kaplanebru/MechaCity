@@ -12,10 +12,13 @@ namespace Towers
 {
     // [CreateAssetMenu(fileName = nameof(TowerData))]
     [Serializable]
-    public class TowerData : ILinkable
+    public class TowerData : ILinkable, IHealthy
     {
         public int UniqID;
+        public int SlotId;
+        public int HealthID { get; set; }
 
+        //HEIGHT
         private int height;
 
         public int Height
@@ -37,10 +40,9 @@ namespace Towers
 
         public int AvailableHeight;
 
-        public int SlotId;
-        public TeamType TeamType;
-        public List<int> LinkedTowerIDs = new();
-        public List<int> NeighbourIDs = new();
+        
+       
+        //SHOOTING
         public bool CanShoot { get; private set; }
 
         [SerializeField] private int _bulletAmountt = 1;
@@ -54,16 +56,23 @@ namespace Towers
                 CanShoot = value > 0;
             }
         }
+        public int DamagePower;
+
+        //HEALTH
 
         [SerializeField] int _health = 1;
-
         public int Health
         {
             get => _health;
             set => _health = value;
         }
 
-        public int DamagePower;
+      
+
+        public TeamType TeamType;
+        public List<int> LinkedTowerIDs = new();
+        public List<int> NeighbourIDs = new();
+
         public bool IsClickable = true;
         public LockStatus LockStatus;
 
@@ -120,13 +129,16 @@ namespace Towers
 
             Mover.ChangeHeightPhysically(newHeight, isRising);
         }
-        
 
-        // public void ChangeHealth(int newHealth)
-        // {
-        //     Health = newHealth;
-        //     //UIEventbus.OnHealthChange.Invoke(Health, UniqID);
-        // }
+        public void Shake()
+        {
+            Mover.Shake();
+        }
+
+        public void HandleDeath(Action completeCall)
+        {
+           
+        }
     }
 
 
@@ -136,6 +148,15 @@ namespace Towers
         public int GetFreeResource(int step);
 
         public int Amount { get; set; }
+    }
+
+    public interface IHealthy
+    {
+        public int Health { get; set; }
+        public int HealthID { get; set; }
+
+        public void HandleDeath(Action completeCall);
+        public void Shake();
     }
 
     [Serializable]

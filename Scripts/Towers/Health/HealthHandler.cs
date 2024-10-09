@@ -9,56 +9,40 @@ namespace Health
 {
     public class HealthHandler
     {
-        private static void ChangeHealth(TowerData tower, int newHealth)
+        private static void ChangeHealth(IHealthy healthy, int newHealth)
         {
-            tower.Health = newHealth;
-            UIEventbus.OnHealthChange.Invoke(newHealth, tower.UniqID);
-        }
-
-        private static void ChangeDoubleHealth(DoubleTower doubleTower, int newHealth)
-        {
-            doubleTower.Health = newHealth;
-            UIEventbus.OnDoubleHealthChange?.Invoke(newHealth, doubleTower.ID);
+            healthy.Health = newHealth;
+            UIEventbus.OnHealthChange.Invoke(newHealth, healthy.HealthID);
         }
         
-        public static void ResetHealth(int id)
+        public static void RemoveHealth(IHealthy healthy, int damage, Action completeCall)
         {
-            if (AllDoubles.TryInspectByTowerAndGetDouble(id, out DoubleTower doubleTower))
-            {
-                foreach (var key in doubleTower.towers.Keys)
-                {
-                    var newHealth =  AllTowers.GetTower(key).ConstantData.StartHealth;
-                    doubleTower.towers[key].Health = newHealth;
-                }
-                ChangeDoubleHealth(doubleTower, doubleTower.TotalHealth);
-            }
-            else
-            {
-                var towerObj = AllTowers.GetTower(id);
-                var newHealth = towerObj.ConstantData.StartHealth;
-                ChangeHealth(towerObj.Data, newHealth);
-            }
-        }
-
-        public static void RemoveHealth(TowerData victimData, int damage, Action completeCall) 
-        {
-            if (AllDoubles.TryInspectByTowerAndGetDouble(victimData.UniqID, out DoubleTower doubleTower))
-            {
-                ChangeDoubleHealth(doubleTower, doubleTower.Health-damage);
-                //todo: shake double
-                if(IsDoubleDead(doubleTower, completeCall)) return;
-                
-            }
-            else
-            {
-                ChangeHealth(victimData, victimData.Health-damage);
-                victimData.Mover.Shake();
-                if(IsVictimDead(victimData, completeCall)) return;
-            }
-
+            if (AllDoubles.TryInspectByTowerAndGetDouble(healthy.HealthID, out DoubleTower doubleTower))
+                healthy = doubleTower;
+            
+            ChangeHealth(healthy, healthy.Health-damage);
+            doubleTower.Shake();
+            if(IsDead(healthy, completeCall)) return;
+            
             completeCall();
-            //_pair.CompleteCombat();
+            
+            
+            // if (AllDoubles.TryInspectByTowerAndGetDouble(healthy.HealthID, out DoubleTower doubleTower))
+            // {
+            //     ChangeHealth(doubleTower, doubleTower.Health-damage);
+            //     doubleTower.Shake();
+            //     if(IsDoubleDead(doubleTower, completeCall)) return;
+            // }
+            // else
+            // {
+            //     ChangeHealth(victimData, victimData.Health-damage);
+            //     victimData.Shake();
+            //     if(IsVictimDead(victimData, completeCall)) return;
+            // }
+
+           
         }
+        
 
         private static bool IsDoubleDead(DoubleTower doubleTower, Action completeCall)
         {
@@ -74,15 +58,37 @@ namespace Health
             return false;
         }
         
-        private static bool IsVictimDead(TowerData victimData, Action completeCall)
+        private static bool IsDead(IHealthy healthy, Action completeCall)
         {
-            if (victimData.Health <= 0)
+            if (healthy.Health <= 0)
             {
-                var victim = AllTowers.GetTower(victimData.UniqID);
-                victim.HandleDeath(() => Eventbus.CombatEvents.OnTowerKilled?.Invoke(victimData.UniqID), completeCall);
+                healthy.HandleDeath(completeCall);
+                
+                var victim = AllTowers.GetTower(healthy.HealthID);
+                victim.HandleDeath(() => Eventbus.CombatEvents.OnTowerKilled?.Invoke(healthy.HealthID), completeCall);
                 return true;
             }
             return false;
+        }
+        
+        public static void ResetHealth(int id)
+        {
+            if (AllDoubles.TryInspectByTowerAndGetDouble(id, out DoubleTower doubleTower))
+            {
+                foreach (var key in doubleTower.towers.Keys)
+                {
+                    var newHealth =  AllTowers.GetTower(key).ConstantData.StartHealth;
+                    doubleTower.towers[key].Health = newHealth;
+                }
+                ChangeHealth(doubleTower, doubleTower.TotalHealth);
+               
+            }
+            else
+            {
+                var towerObj = AllTowers.GetTower(id);
+                var newHealth = towerObj.ConstantData.StartHealth;
+                ChangeHealth(towerObj.Data, newHealth);
+            }
         }
   
     }

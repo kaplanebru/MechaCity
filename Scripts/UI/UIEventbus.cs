@@ -15,8 +15,8 @@ namespace GameUI
         
         public static Action<float, int> OnTowerHeightChange;
         public static Action<int, int> OnHealthChange;
-        public static Action<int, string> OnDoubleHealthChange;
-        public static Action<int[], int, string> OnCreatingDoubleHealth;
+        public static Action<int, int> OnDoubleHealthChange;
+        public static Action<int[], int, int> OnCreatingDoubleHealth;
         
         public static Action<TeamType> OnTeamSwitch;
 

@@ -21,6 +21,7 @@ namespace Towers
         
         public void Setup(TeamTowerData teamData)
         {
+            Data.HealthID = Data.UniqID;
             Data.Height = ConstantData.StartHeight;
             Data.Health = ConstantData.StartHealth;
             Data.DamagePower = ConstantData.DamagePower;

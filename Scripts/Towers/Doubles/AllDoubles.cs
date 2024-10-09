@@ -7,18 +7,18 @@ using UnityEngine;
 public class AllDoubles
 {
     private static List<DoubleTower> Doubles  = new();
-    public static Dictionary<string, DoubleTower> DoublesByID  { get; private set; }  = new();
+    public static Dictionary<int, DoubleTower> DoublesByID  { get; private set; }  = new();
 
     public static void Add(DoubleTower doubleTower)
     {
         Doubles.Add(doubleTower);
-        DoublesByID.Add(doubleTower.ID, doubleTower);
+        DoublesByID.Add(doubleTower.HealthID, doubleTower);
     }
 
     public static void Remove(DoubleTower doubleTower)
     {
         Doubles.Remove(doubleTower);
-        DoublesByID.Remove(doubleTower.ID);
+        DoublesByID.Remove(doubleTower.HealthID);
     }
 
    
