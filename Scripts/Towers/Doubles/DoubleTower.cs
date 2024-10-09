@@ -110,18 +110,15 @@ namespace Towers
        
         private void CommonizeHealth()
         {
-            Health = TotalHealth;
+            //Health = TotalHealth;
             int[] towersByHeight = towers.OrderByDescending(t => t.Value.Height)
                 .Select(t => t.Key)
                 .ToArray();
 
-            UIEventbus.OnCreatingDoubleHealth?.Invoke(towersByHeight, Health, HealthID);
+            Eventbus.HealthEvents.OnNewDoubleHealth?.Invoke(HealthID, towersByHeight);
+
+            //UIEventbus.OnCreatingDoubleHealth?.Invoke(towersByHeight, Health, HealthID);
             
-            // foreach (var tower in towers)
-            // {
-            //     HealthHandler.ChangeHealth(tower.Value, Health); //todo: böyle mi yapmalı?
-            // }
-            //UIEventbus.OnDoubleHealth?.Invoke(TowersByHeight, Health);
         }
     }
 }

@@ -67,13 +67,13 @@ namespace Towers
             set => _health = value;
         }
         public int HealthID { get; set; }
-        public TowerData[] HealthSubjects { get; set; } = new TowerData[1];
+        public TowerData[] HealthSubjects { get; set; } // = new TowerData[1];
 
         public void SetHealthData(int startHealth)
         {
             Health = startHealth;
             HealthID = UniqID;
-            HealthSubjects[0] = this;
+            //HealthSubjects[0] = this;
             //HealthSubjects = new [] { this };
         }
 

@@ -12,7 +12,7 @@ namespace Health
         private static void ChangeHealth(IHealthy healthy, int newHealth)
         {
             healthy.Health = newHealth;
-            UIEventbus.OnHealthChange.Invoke(newHealth, healthy.HealthID);
+            //UIEventbus.OnHealthChange.Invoke(newHealth, healthy.HealthID);
         }
         
         public static void RemoveHealth(IHealthy healthy, int damage, Action completeCall)

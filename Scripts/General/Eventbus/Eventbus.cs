@@ -29,7 +29,16 @@ public static class Eventbus
 
        
     }
-    
+    public static class HealthEvents
+    {
+        public static Action<int, int, Action> OnShoot;
+        public static Action<int, int> OnHealthChange;
+        
+        public static Action<int, int[]> OnNewDoubleHealth;
+        public static Action<int[], int, int> OnCommonHealthIconRequest;
+        public static Action<int> OnRemoveFromRegistry;
+
+    }
     public static class TowerEvents
     {
         public static Action<int, int> OnLock;

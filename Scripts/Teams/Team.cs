@@ -30,6 +30,8 @@ namespace Teams
                     t.Setup(Data.TeamTowerData);
                 }
             }
+            
+            
         }
         
         void SetGrid()
