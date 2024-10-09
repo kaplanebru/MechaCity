@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Enums;
 using GameUI;
+using Health;
 using Network;
 using PlayerNetwork;
 using Teams;
@@ -16,6 +17,7 @@ namespace Core
         public Transform NetworkUIController;
         public static Team[] Teams;
         public TeamsHolder assetHolder;
+        public HealthManager HealthManager = new();
 
         private void OnEnable()
         {
@@ -35,6 +37,8 @@ namespace Core
             {
                 Teams[i] = Instantiate(assetHolder.Teams[i], transform);
                 Teams[i].Initialize();
+                HealthManager.Subscribe();
+                
             }
 
             NetworkUIController.gameObject.SetActive(true);
@@ -93,6 +97,7 @@ namespace Core
         {
             NetworkEventbus.RequestEvents.OnPlayerSpawned -= AssignPlayers;
             GeneralEventbus.InitializerEvents.OnTowersCreated -= ExecuteInitializer;
+            HealthManager.Unsubscribe();
         }
     }
 }

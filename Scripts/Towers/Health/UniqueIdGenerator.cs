@@ -1,8 +1,9 @@
 using System;
+using Towers;
 
 public class UniqueIdGenerator
 {
-    private static int currentId = 0;
+    private static int currentId = AllTowers.TowersCount + 10;
     public static int GenerateIntId()//todo: temporary
     {
         return currentId++;

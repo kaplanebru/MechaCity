@@ -40,7 +40,7 @@ namespace Turn
 
          void ResetDeadTower()
          {
-             HealthHandler.ResetHealth(_deadTower.UniqID);
+             //HealthHandler.ResetHealth(_deadTower.UniqID);
          }
 
         private void OnDisable()

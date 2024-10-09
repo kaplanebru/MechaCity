@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameUI;
-using Health;
-using Towers;
 using UnityEngine;
 
 namespace Towers
@@ -15,8 +12,7 @@ namespace Towers
        
         public int Amount { get; set; } //private set?
         public int ID { get; }
-        public TowerData[] HealthSubjects { get; set; }
-
+        
         public void Shake()
         {
             //TODO İMPLEMENT LATER
@@ -44,7 +40,6 @@ namespace Towers
             Amount = towers.Count;
             
             ID = UniqueIdGenerator.GenerateIntId();
-            HealthSubjects = towers.Values.ToArray();
         }
         
         public bool NoDoubleFallCapacity(int step)
@@ -97,6 +92,7 @@ namespace Towers
             }
             
             CommonizeHealth();
+           
         }
         
         public void CreateBridge()
@@ -111,6 +107,7 @@ namespace Towers
                 .Select(t => t.Key)
                 .ToArray();
 
+            Debug.Log("y");
             Eventbus.HealthEvents.OnNewDoubleHealth?.Invoke(ID, towersByHeight);
         }
     }

@@ -30,7 +30,7 @@ namespace Teams
                     t.Setup(Data.TeamTowerData);
                 }
             }
-            
+            Eventbus.HealthEvents.OnHealthsSet?.Invoke();
             
         }
         

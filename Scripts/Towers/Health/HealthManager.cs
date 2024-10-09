@@ -17,6 +17,15 @@ namespace Health
 
             Eventbus.HealthEvents.OnShoot += ApplyDamage;
             Eventbus.HealthEvents.OnNewDoubleHealth += CreateDoubleHealth;
+            Eventbus.HealthEvents.OnHealthsSet += SetHealthHoldersRequest;
+        }
+
+        private void SetHealthHoldersRequest()
+        {
+            foreach (var id in Registry.Keys)
+            {
+                Eventbus.HealthEvents.OnHealthChange?.Invoke(Registry[id].Health, id);
+            }
         }
 
         void FillRegistry()
@@ -25,7 +34,6 @@ namespace Health
             {
                 var id = tower.Data.UniqID;
                 RegisterItem(id, tower.ConstantData.StartHealth);
-                Eventbus.HealthEvents.OnHealthChange?.Invoke(Registry[id].Health, id); //possible bug: health holderların yaratılma sırası
 
             } //todo: double da register edilebilir
         }
@@ -60,9 +68,10 @@ namespace Health
             foreach (var id in ids)
             {
                 totalHealth += Registry[id].Health;
-                RemoveItem(id);
+                //RemoveItem(id);
             }
             
+            Debug.Log("create double");
             Eventbus.HealthEvents.OnCommonHealthIconRequest?.Invoke(ids, totalHealth, towerID);
             RegisterItem(towerID, totalHealth);
         }
@@ -84,9 +93,10 @@ namespace Health
 
         public void Unsubscribe()
         {
-            Registry.Clear();
             Eventbus.HealthEvents.OnShoot -= ApplyDamage;
             Eventbus.HealthEvents.OnNewDoubleHealth -= CreateDoubleHealth;
+            Eventbus.HealthEvents.OnHealthsSet -= SetHealthHoldersRequest;
+            Registry.Clear();
         }
 
         // public void SetHealth(int towerID, int newHealth)
