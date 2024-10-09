@@ -1,5 +1,6 @@
 using System.Linq;
 using Enums;
+using Health;
 using Teams;
 using Towers;
 using UnityEngine;
@@ -39,7 +40,7 @@ namespace Turn
 
          void ResetDeadTower()
          {
-             AllTowers.GetTower(_deadTower.UniqID).ResetHealth();
+             HealthHandler.ResetHealth(_deadTower.UniqID);
          }
 
         private void OnDisable()

@@ -94,9 +94,10 @@ namespace Towers
         }
 
         public int Health { get; set; }
+        public int TotalHealth => towers.Sum(tower => tower.Value.Health);
         private void CommonizeHealth()
         {
-            Health = towers.Sum(tower => tower.Value.Health);
+            Health = TotalHealth;
             int[] towersByHeight = towers.OrderByDescending(t => t.Value.Height)
                 .Select(t => t.Key)
                 .ToArray();

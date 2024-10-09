@@ -9,18 +9,37 @@ namespace Health
 {
     public class HealthHandler
     {
-        public static void ChangeHealth(TowerData tower, int newHealth)
+        private static void ChangeHealth(TowerData tower, int newHealth)
         {
             tower.Health = newHealth;
             UIEventbus.OnHealthChange.Invoke(newHealth, tower.UniqID);
         }
 
-        public static void ChangeDoubleHealth(DoubleTower doubleTower, int newHealth)
+        private static void ChangeDoubleHealth(DoubleTower doubleTower, int newHealth)
         {
             doubleTower.Health = newHealth;
             UIEventbus.OnDoubleHealthChange?.Invoke(newHealth, doubleTower.ID);
         }
         
+        public static void ResetHealth(int id)
+        {
+            if (AllDoubles.TryInspectByTowerAndGetDouble(id, out DoubleTower doubleTower))
+            {
+                foreach (var key in doubleTower.towers.Keys)
+                {
+                    var newHealth =  AllTowers.GetTower(key).ConstantData.StartHealth;
+                    doubleTower.towers[key].Health = newHealth;
+                }
+                ChangeDoubleHealth(doubleTower, doubleTower.TotalHealth);
+            }
+            else
+            {
+                var towerObj = AllTowers.GetTower(id);
+                var newHealth = towerObj.ConstantData.StartHealth;
+                ChangeHealth(towerObj.Data, newHealth);
+            }
+        }
+
         public static void RemoveHealth(TowerData victimData, int damage, Action completeCall) 
         {
             if (AllDoubles.TryInspectByTowerAndGetDouble(victimData.UniqID, out DoubleTower doubleTower))
@@ -41,7 +60,7 @@ namespace Health
             //_pair.CompleteCombat();
         }
 
-        public static bool IsDoubleDead(DoubleTower doubleTower, Action completeCall)
+        private static bool IsDoubleDead(DoubleTower doubleTower, Action completeCall)
         {
             if (doubleTower.Health <= 0)
             {
@@ -54,7 +73,8 @@ namespace Health
             }
             return false;
         }
-        public static bool IsVictimDead(TowerData victimData, Action completeCall)
+        
+        private static bool IsVictimDead(TowerData victimData, Action completeCall)
         {
             if (victimData.Health <= 0)
             {
