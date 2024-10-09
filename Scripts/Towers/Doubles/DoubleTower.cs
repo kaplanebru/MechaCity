@@ -98,7 +98,7 @@ namespace Towers
             {
                 tower.Value.ChangeHealth(totalHealth);
             }
-            UIEventbus.OnDoubleHealth?.Invoke(towers.Keys.ToArray());
+            UIEventbus.OnDoubleHealth?.Invoke(towers.Keys.ToArray(), totalHealth);
 
         }
     }

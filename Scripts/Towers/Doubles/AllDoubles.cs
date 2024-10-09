@@ -4,7 +4,7 @@ using System.Linq;
 using Towers;
 using UnityEngine;
 
-public class AllDoubles : MonoBehaviour
+public class AllDoubles
 {
     private static List<DoubleTower> _doubles = new();
     public static IEnumerable Doubles => _doubles;

@@ -18,7 +18,7 @@ namespace Towers
             
             UIEventbus.OnTowerHeightChange += UIHeightChangeRequest;
             UIEventbus.OnHealthChange += AdjustIcons;
-            UIEventbus.OnDoubleHealth += CreateCommonIcon;
+            UIEventbus.OnDoubleHealth += DoubleHealthRequest;
         }
 
        
@@ -33,9 +33,9 @@ namespace Towers
             GeneralEventbus.OnHealthIconChangeRequest?.Invoke(health, id);
         }
         
-        private void CreateCommonIcon(int[] ids)
+        private void DoubleHealthRequest(int[] ids, int health)
         {
-            GeneralEventbus.OnCommonHealthIconRequest?.Invoke(ids);
+            GeneralEventbus.OnCommonHealthIconRequest?.Invoke(ids, health);
         }
 
         private void UIHeightChangeRequest(float height, int id)
@@ -51,7 +51,7 @@ namespace Towers
             
             UIEventbus.OnTowerHeightChange -= UIHeightChangeRequest;
             UIEventbus.OnHealthChange -= AdjustIcons;
-            UIEventbus.OnDoubleHealth -= CreateCommonIcon;
+            UIEventbus.OnDoubleHealth -= DoubleHealthRequest;
         }
     }
 

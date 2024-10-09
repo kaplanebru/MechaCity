@@ -8,6 +8,8 @@ using UnityEngine;
 public class HealthHoldersEventListener : TowerRelatedEventListener<HealthHolder>
 {
     protected override HealthHolder[] RelatedItems { get; set; }
+    public HealthHolder healthHolder;
+
     public override void Subscribe()
     {
         GeneralEventbus.OnHealthIconChangeRequest += AdjustHealthIcon;
@@ -23,12 +25,12 @@ public class HealthHoldersEventListener : TowerRelatedEventListener<HealthHolder
         healthHolder.AdjustIcons(health);
     }
 
-    public void CreateCommonIcon(int[] ids)
+    public void CreateCommonIcon(int[] ids, int totalHealth)
     {
-        ids = ids.OrderBy(id=>id).ToArray();
+        //ids = ids.OrderBy(id=>id).ToArray();
         HealthHolder[] holders = new HealthHolder[ids.Length];
-
         Vector3 center = Vector3.zero;
+        
         for (var i = 0; i < ids.Length; i++)
         {
             holders[i] = RelatedItems.FirstOrDefault(h => h.Id == ids[i]);
@@ -38,7 +40,8 @@ public class HealthHoldersEventListener : TowerRelatedEventListener<HealthHolder
 
         center /= holders.Length;
 
-        //Instantiate(gameObject, center, Quaternion.identity); //TODO: health holder prefab. Double' ile birlikte inip çıkmalı, o yüzden en yüksek olanın tepesine koy!
+        var health = Instantiate(healthHolder, center, Quaternion.identity); //TODO: health holder prefab. Double' ile birlikte inip çıkmalı, o yüzden en yüksek olanın tepesine koy!
+        health.AdjustIcons(totalHealth);
     }
 
     public override void Unsubscribe()
