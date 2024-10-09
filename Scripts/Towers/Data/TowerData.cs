@@ -16,7 +16,7 @@ namespace Towers
     {
         public int UniqID;
         public int SlotId;
-        public int HealthID { get; set; }
+        
 
         //HEIGHT
         private int height;
@@ -65,6 +65,16 @@ namespace Towers
         {
             get => _health;
             set => _health = value;
+        }
+        public int HealthID { get; set; }
+        public TowerData[] HealthSubjects { get; set; } = new TowerData[1];
+
+        public void SetHealthData(int startHealth)
+        {
+            Health = startHealth;
+            HealthID = UniqID;
+            HealthSubjects[0] = this;
+            //HealthSubjects = new [] { this };
         }
 
       
@@ -134,11 +144,7 @@ namespace Towers
         {
             Mover.Shake();
         }
-
-        public void HandleDeath(Action completeCall)
-        {
-           
-        }
+        
     }
 
 
@@ -154,8 +160,9 @@ namespace Towers
     {
         public int Health { get; set; }
         public int HealthID { get; set; }
-
-        public void HandleDeath(Action completeCall);
+        
+        public TowerData[] HealthSubjects { get; set; }
+        
         public void Shake();
     }
 

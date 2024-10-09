@@ -22,8 +22,8 @@ namespace Health
             
             ChangeHealth(healthy, healthy.Health-damage);
             doubleTower.Shake();
-            if(IsDead(healthy, completeCall)) return;
             
+            if(IsDead(healthy, completeCall)) return;
             completeCall();
             
             
@@ -44,28 +44,28 @@ namespace Health
         }
         
 
-        private static bool IsDoubleDead(DoubleTower doubleTower, Action completeCall)
-        {
-            if (doubleTower.Health <= 0)
-            {
-                foreach (var towerID in doubleTower.towers)
-                {
-                     var tower = AllTowers.GetTower(towerID.Key); 
-                     tower.HandleDeath( () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(towerID.Key), completeCall);
-                }
-                return true;
-            }
-            return false;
-        }
+        // private static bool IsDoubleDead(DoubleTower doubleTower, Action completeCall)
+        // {
+        //     if (doubleTower.Health <= 0)
+        //     {
+        //         foreach (var towerID in doubleTower.towers)
+        //         {
+        //              var tower = AllTowers.GetTower(towerID.Key); 
+        //              tower.HandleDeath( () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(towerID.Key), completeCall);
+        //         }
+        //         return true;
+        //     }
+        //     return false;
+        // }
         
         private static bool IsDead(IHealthy healthy, Action completeCall)
         {
             if (healthy.Health <= 0)
             {
-                healthy.HandleDeath(completeCall);
+                DeathOperator.Instance.HandleDeath(healthy.HealthSubjects, 
+                    () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(healthy.HealthID), 
+                    completeCall);
                 
-                var victim = AllTowers.GetTower(healthy.HealthID);
-                victim.HandleDeath(() => Eventbus.CombatEvents.OnTowerKilled?.Invoke(healthy.HealthID), completeCall);
                 return true;
             }
             return false;

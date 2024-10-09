@@ -42,25 +42,25 @@ namespace Towers
         }
 
 
-        public void HandleDeath(Action teamSwitchCallback, Action completeCombat)
-        {
-            StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat));
-        }
+        // public void HandleDeath(Action teamSwitchCallback, Action completeCombat)
+        // {
+        //     StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat));
+        // }
 
-        IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat)
-        {
-            yield return new WaitForSeconds(Data.timingData.shakeDuration);
-
-            yield return new WaitForSeconds(.3f);
-
-            MediatorEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
-            Data.Mover.RotateMiddle();
-            teamSwitchCallback.Invoke();
-
-            yield return new WaitForSeconds(Data.timingData.colorFadeDuration);
-
-            completeCombat.Invoke();
-        }
+        // IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat)
+        // {
+        //     yield return new WaitForSeconds(Data.timingData.shakeDuration);
+        //
+        //     yield return new WaitForSeconds(.3f);
+        //
+        //     MediatorEventbus.EffectEvents.OnDeathEffect?.Invoke(Data.UniqID);
+        //     Data.Mover.RotateMiddle();
+        //     teamSwitchCallback.Invoke();
+        //
+        //     yield return new WaitForSeconds(Data.timingData.colorFadeDuration);
+        //
+        //     completeCombat.Invoke();
+        // }
 
 
         void FirstMotion()

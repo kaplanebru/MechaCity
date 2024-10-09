@@ -10,12 +10,15 @@ namespace Towers
 {
     public class DoubleTower: ILinkable, IHealthy
     {
+        [NonSerialized]
         public Dictionary<int, TowerData> towers = new();
         //public string ID { get; private set; }
         public int Amount { get; set; } //private set?
         
         public int Health { get; set; }
         public int HealthID { get; set; }
+        public TowerData[] HealthSubjects { get; set; }
+
         public void Shake()
         {
             //TODO İMPLEMENT LATER
@@ -35,7 +38,6 @@ namespace Towers
         
         public DoubleTower(params int[] ids)
         {
-            HealthID = UniqueIdGenerator.GenerateIntId();
             foreach (var id in ids)
             {
                 towers.Add(id, AllTowers.GetData(id));
@@ -43,6 +45,9 @@ namespace Towers
             
             towers = towers.OrderBy(t => t.Value.AvailableHeight).ToDictionary(t => t.Key, t => t.Value);
             Amount = towers.Count;
+            
+            HealthID = UniqueIdGenerator.GenerateIntId();
+            HealthSubjects = towers.Values.ToArray();
         }
         
         public bool NoDoubleFallCapacity(int step)
@@ -117,11 +122,6 @@ namespace Towers
             //     HealthHandler.ChangeHealth(tower.Value, Health); //todo: böyle mi yapmalı?
             // }
             //UIEventbus.OnDoubleHealth?.Invoke(TowersByHeight, Health);
-        }
-        
-        public void HandleDeath(Action completeCall)
-        {
-            
         }
     }
 }
