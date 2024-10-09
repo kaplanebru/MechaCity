@@ -39,9 +39,13 @@ public class HealthHoldersEventListener : TowerRelatedEventListener<HealthHolder
         }
 
         center /= holders.Length;
+        center.y = holders[0].transform.position.y;
 
-        var health = Instantiate(healthHolder, center, Quaternion.identity); //TODO: health holder prefab. Double' ile birlikte inip çıkmalı, o yüzden en yüksek olanın tepesine koy!
+        var health = Instantiate(healthHolder, holders[0].transform.parent);
+        health.transform.position = center;
         health.AdjustIcons(totalHealth);
+        //todo: iconlar diğer towerlardan ortaya dotweenle gelip toplanır, 10'a kadar çalışır
+        
     }
 
     public override void Unsubscribe()

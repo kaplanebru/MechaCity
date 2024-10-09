@@ -98,8 +98,11 @@ namespace Towers
             {
                 tower.Value.ChangeHealth(totalHealth);
             }
-            UIEventbus.OnDoubleHealth?.Invoke(towers.Keys.ToArray(), totalHealth);
 
+            int[] towersByHeight = towers.OrderByDescending(t => t.Value.Height)
+                .Select(t => t.Key)
+                .ToArray();
+            UIEventbus.OnDoubleHealth?.Invoke(towersByHeight, totalHealth);
         }
     }
 }
