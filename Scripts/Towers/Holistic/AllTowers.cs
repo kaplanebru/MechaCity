@@ -75,8 +75,6 @@ namespace Towers
         void ReceiveTowers()
         {
             _towers = _level.GetComponentsInChildren<Tower>().ToList();
-           // _towers= _towers.OrderBy(t => t.Data.UniqID).ToList();
-
             TowersCount = _towers.Count;
         }
 
@@ -86,8 +84,6 @@ namespace Towers
             {
                 _towerDatas.Add(_towers[i].Data);
             }
-
-           // _towerDatas = _towerDatas.OrderBy(t => t.UniqID).ToList();
         }
 
         public static void LinkingTowers(List<TowerData> towers) //ters de gelebilir

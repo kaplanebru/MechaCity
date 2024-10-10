@@ -24,8 +24,21 @@ public class CombatPairsCreator
         }
 
         _combatPairs.Clear();
-        AllTowers.LinkingTowers(tempTowers);
+        LinkPairs(tempTowers);
         tempTowers.ForEach(CombatPairByTower);
+    }
+    
+    private void LinkPairs(List<TowerData> towers) //ters de gelebilir
+    {
+        for (var i = 0; i < AllTowers.TowersCount; i++)
+        {
+            towers[i].LinkedTowerIDs.Clear();
+
+            int next = towers[(i + 1) % AllTowers.TowersCount].UniqID; //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
+            towers[i].LinkedTowerIDs.Add(next);
+                
+            // print("index: " + (i + 1) % TowersCount + " id: " + next);
+        }
     }
 
     public void CombatPairByTower(TowerData tower)

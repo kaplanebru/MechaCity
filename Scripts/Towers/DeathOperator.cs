@@ -15,7 +15,7 @@ namespace Towers
 
         public void HandleDeath(int id, Action teamSwitchCallback, Action completeCombat)
         {
-            if (AllDoubles.DoublesByID[id] != null)
+            if (AllDoubles.TryGetDoubleByID(id) != null)
             {
                 var doubleTowers = AllDoubles.DoublesByID[id].towers.Values;
                 foreach (var tower in doubleTowers)
