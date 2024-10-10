@@ -24,28 +24,18 @@ public class CombatPairsCreator
         }
 
         _combatPairs.Clear();
-        LinkPairs(tempTowers);
+        TowersRelationManager.SetLinkedTowers(tempTowers);
         tempTowers.ForEach(CombatPairByTower);
     }
     
-    private void LinkPairs(List<TowerData> towers) //ters de gelebilir
-    {
-        for (var i = 0; i < AllTowers.TowersCount; i++)
-        {
-            towers[i].LinkedTowerIDs.Clear();
-
-            int next = towers[(i + 1) % AllTowers.TowersCount].UniqID; //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
-            towers[i].LinkedTowerIDs.Add(next);
-                
-            // print("index: " + (i + 1) % TowersCount + " id: " + next);
-        }
-    }
+   
 
     public void CombatPairByTower(TowerData tower)
     {
-        OrderLinkedTowersByID(tower);
+        //OrderLinkedTowersByID(tower); //todo
 
-        foreach (var id in tower.LinkedTowerIDs)
+        var linkedTowers = TowersRelationManager.GetLinksByID(tower.UniqID);
+        foreach (var id in linkedTowers)
         {
             var linkedTower = AllTowers.GetData(id);
             AddToPair(tower, linkedTower);
@@ -59,8 +49,9 @@ public class CombatPairsCreator
 
     void OrderLinkedTowersByID(TowerData tower)
     {
-        tower.LinkedTowerIDs =
-            tower.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.SlotId - AllTowers.GetData(other).SlotId))
-                .ToList();
+        //TODO: NEDEN SLOT ID? uzaklık için mi. SlotId towers'daki sıralama olarak set edilebilir!
+        // tower.LinkedTowerIDs =
+        //     tower.LinkedTowerIDs.OrderBy(other => Mathf.Abs(tower.SlotId - AllTowers.GetData(other).SlotId))
+        //         .ToList();
     }
 }

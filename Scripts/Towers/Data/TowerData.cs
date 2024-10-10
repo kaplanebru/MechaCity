@@ -61,7 +61,6 @@ namespace Towers
      
 
         public TeamType TeamType;
-        public List<int> LinkedTowerIDs = new();
         public List<int> NeighbourIDs = new();
 
         public bool IsClickable = true;
