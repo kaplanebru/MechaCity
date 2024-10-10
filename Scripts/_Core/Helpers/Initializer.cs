@@ -33,13 +33,17 @@ namespace Core
         void CreateTeams()
         {
             Teams = new Team[assetHolder.Teams.Length];
+            HealthManager.Subscribe();
+            HealthManager.FillRegistry();
+
+
             for (int i = 0; i < Teams.Length; i++)
             {
                 Teams[i] = Instantiate(assetHolder.Teams[i], transform);
                 Teams[i].Initialize();
-                HealthManager.Subscribe();
-                
             }
+            Eventbus.HealthEvents.OnHealthsSet?.Invoke();
+
 
             NetworkUIController.gameObject.SetActive(true);
 

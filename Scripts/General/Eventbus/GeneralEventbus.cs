@@ -14,7 +14,7 @@ public static class GeneralEventbus
         public static Action OnExternalElementsReady;
     }
 
-    public static Action<int, int> OnAdjustDoubleIconsRequest;
+   
     
     public static Action<IEnumeratorContainer> OnCoroutineTrigger;
     

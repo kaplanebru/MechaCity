@@ -26,10 +26,7 @@ namespace Towers
             towers = AllTowers.TowerDatas.ToList();
         }
         
-        private void AdjustDoubleIcons(int health, int id)
-        {
-            GeneralEventbus.OnAdjustDoubleIconsRequest?.Invoke(health, id);
-        }
+       
         
         
         

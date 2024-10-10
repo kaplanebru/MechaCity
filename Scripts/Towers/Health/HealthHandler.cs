@@ -58,18 +58,18 @@ namespace Health
         //     return false;
         // }
         
-        private static bool IsDead(IHealthy healthy, Action completeCall)
-        {
-            if (healthy.Health <= 0)
-            {
-                DeathOperator.Instance.HandleDeath(healthy.HealthSubjects, 
-                    () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(healthy.HealthID), 
-                    completeCall);
-                
-                return true;
-            }
-            return false;
-        }
+        // private static bool IsDead(IHealthy healthy, Action completeCall)
+        // {
+        //     if (healthy.Health <= 0)
+        //     {
+        //         DeathOperator.Instance.HandleDeath(healthy.HealthSubjects, 
+        //             () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(healthy.HealthID), 
+        //             completeCall);
+        //         
+        //         return true;
+        //     }
+        //     return false;
+        // }
         
         // public static void ResetHealth(int id)
         // {

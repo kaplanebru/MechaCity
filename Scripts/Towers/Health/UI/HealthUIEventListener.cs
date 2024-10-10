@@ -7,23 +7,18 @@ using UnityEngine;
 
 namespace Health
 {
-    public class HealthHoldersEventListener : TowerRelatedEventListener<HealthHolder>
+    public class HealthUIEventListener : TowerRelatedEventListener<HealthHolder>
     {
         protected override HealthHolder[] RelatedItems { get; set; }
-        private Dictionary<int,HealthHolder> doubleHealthHolder = new();
         public HealthHolder healthHolderPb;
-
         public override void Subscribe()
         {
-            
             Eventbus.HealthEvents.OnHealthChange += AdjustHealthIcon;
-
             Eventbus.HealthEvents.OnRemoveFromRegistry += HideIcon;
-            
-            GeneralEventbus.OnAdjustDoubleIconsRequest += AdjustDoubleHealthIcon;
-            Eventbus.HealthEvents.OnCommonHealthIconRequest += CreateCommonIcon;
-        
+            Eventbus.HealthEvents.OnDoubleHealthCreated += CreateCommonIcon;
         }
+
+        
         public override void Initialize() { }
     
         private void AdjustHealthIcon(int health, int id)
@@ -32,11 +27,11 @@ namespace Health
             healthHolder.AdjustIcons(health);
         }
         
-        private void AdjustDoubleHealthIcon(int health, int id)
-        {
-            var healthHolder = doubleHealthHolder[id];
-            healthHolder.AdjustIcons(health);
-        }
+        // private void AdjustDoubleHealthIcon(int health, int id)
+        // {
+        //     var healthHolder = doubleHealthHolder[id];
+        //     healthHolder.AdjustIcons(health);
+        // }
         
         private void HideIcon(int id)
         {
@@ -61,8 +56,7 @@ namespace Health
             var health = Instantiate(healthHolderPb, holders[0].transform.parent);
             health.transform.position = center;
             health.AdjustIcons(totalHealth);
-           // doubleHealthHolder.Add(doubleId, health);
-            Debug.Log(doubleHealthHolder.Count);
+        
             //todo: iconlar diğer towerlardan ortaya dotweenle gelip toplanır, 10'a kadar çalışır
             
         
@@ -71,11 +65,8 @@ namespace Health
         public override void Unsubscribe()
         {
             Eventbus.HealthEvents.OnHealthChange -= AdjustHealthIcon;
-
             Eventbus.HealthEvents.OnRemoveFromRegistry -= HideIcon;
-
-            GeneralEventbus.OnAdjustDoubleIconsRequest -= AdjustDoubleHealthIcon;
-            Eventbus.HealthEvents.OnCommonHealthIconRequest -= CreateCommonIcon;
+            Eventbus.HealthEvents.OnDoubleHealthCreated -= CreateCommonIcon;
         }
     }
 }

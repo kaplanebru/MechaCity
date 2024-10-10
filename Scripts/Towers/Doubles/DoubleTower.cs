@@ -107,7 +107,6 @@ namespace Towers
                 .Select(t => t.Key)
                 .ToArray();
 
-            Debug.Log("y");
             Eventbus.HealthEvents.OnNewDoubleHealth?.Invoke(ID, towersByHeight);
         }
     }

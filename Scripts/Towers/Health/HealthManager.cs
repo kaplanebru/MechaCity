@@ -13,8 +13,6 @@ namespace Health
 
         public void Subscribe()
         {
-            FillRegistry();
-
             Eventbus.HealthEvents.OnShoot += ApplyDamage;
             Eventbus.HealthEvents.OnNewDoubleHealth += CreateDoubleHealth;
             Eventbus.HealthEvents.OnHealthsSet += SetHealthHoldersRequest;
@@ -28,7 +26,7 @@ namespace Health
             }
         }
 
-        void FillRegistry()
+        public void FillRegistry()
         {
             foreach (var tower in AllTowers.Towers)
             {
@@ -68,11 +66,10 @@ namespace Health
             foreach (var id in ids)
             {
                 totalHealth += Registry[id].Health;
-                //RemoveItem(id);
+                RemoveItem(id);
             }
             
-            Debug.Log("create double");
-            Eventbus.HealthEvents.OnCommonHealthIconRequest?.Invoke(ids, totalHealth, towerID);
+            Eventbus.HealthEvents.OnDoubleHealthCreated?.Invoke(ids, totalHealth, towerID);
             RegisterItem(towerID, totalHealth);
         }
 

@@ -36,7 +36,7 @@ public static class Eventbus
         public static Action OnHealthsSet;
 
         public static Action<int, int[]> OnNewDoubleHealth;
-        public static Action<int[], int, int> OnCommonHealthIconRequest;
+        public static Action<int[], int, int> OnDoubleHealthCreated;
         public static Action<int> OnRemoveFromRegistry;
 
     }
@@ -44,7 +44,6 @@ public static class Eventbus
     {
         public static Action<int, int> OnLock;
         public static Action OnTurnBegin;
-
         public static Action<int[]> OnBridgeAttempt; 
     }
     
