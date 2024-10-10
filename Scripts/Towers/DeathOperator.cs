@@ -11,26 +11,29 @@ namespace Towers
         {
             Instance = this;
         }
-        // public TowerData[] Towers;
-        //
-        // public void Setup(TowerData[] towers)
-        // {
-        //     Towers = towers;
-        // }
 
 
-        public void HandleDeath(TowerData[] towers, Action teamSwitchCallback, Action completeCombat)
+        public void HandleDeath(int id, Action teamSwitchCallback, Action completeCombat)
         {
-            foreach (var tower in towers)
+            if (AllDoubles.DoublesByID[id] != null)
             {
-                StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, tower));
+                var doubleTowers = AllDoubles.DoublesByID[id].towers.Values;
+                foreach (var tower in doubleTowers)
+                {
+                    StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, tower));
+                }
+            }
+            else
+            {
+                var tower = AllTowers.GetTower(id);
+                StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, tower.Data));
             }
         }
+        
         
         public IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat, TowerData tower)
         {
             yield return new WaitForSeconds(tower.timingData.shakeDuration);
-
             yield return new WaitForSeconds(.3f);
 
             MediatorEventbus.EffectEvents.OnDeathEffect?.Invoke(tower.UniqID);
@@ -38,7 +41,6 @@ namespace Towers
             teamSwitchCallback.Invoke();
 
             yield return new WaitForSeconds(tower.timingData.colorFadeDuration);
-
             completeCombat.Invoke();
         }
     }

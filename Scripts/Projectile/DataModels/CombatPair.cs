@@ -40,6 +40,8 @@ namespace DataModels
                 return false;
             }
 
+            //TODO: kendisi ya da other Double olabilir
+            //EN BAŞTAN double ile pairler güncellenebilir. Ama height 2. bir check gerektirecektir.
             if(HealthManager.GetHealth(OtherTowerData.UniqID) <= 0 || HealthManager.GetHealth(MainTowerData.UniqID) <= 0)
             {
                 SkipCombat();

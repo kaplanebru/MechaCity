@@ -77,10 +77,9 @@ namespace Health
         {
             if (Registry[id].Health <= 0)
             {
-                Debug.Log("dead");
-                // DeathOperator.Instance.HandleDeath(healthy.HealthSubjects, 
-                //     () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(healthy.HealthID), 
-                //     completeCall);
+                DeathOperator.Instance.HandleDeath(id, 
+                    () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(id), 
+                    completeCall);
 
                 return true;
             }

@@ -17,7 +17,6 @@ namespace Health
             Eventbus.HealthEvents.OnRemoveFromRegistry += HideIcon;
             Eventbus.HealthEvents.OnDoubleHealthCreated += CreateCommonIcon;
         }
-
         
         public override void Initialize() { }
     
@@ -26,12 +25,6 @@ namespace Health
             var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == id);
             healthHolder.AdjustIcons(health);
         }
-        
-        // private void AdjustDoubleHealthIcon(int health, int id)
-        // {
-        //     var healthHolder = doubleHealthHolder[id];
-        //     healthHolder.AdjustIcons(health);
-        // }
         
         private void HideIcon(int id)
         {
@@ -58,8 +51,6 @@ namespace Health
             health.AdjustIcons(totalHealth);
         
             //todo: iconlar diğer towerlardan ortaya dotweenle gelip toplanır, 10'a kadar çalışır
-            
-        
         }
 
         public override void Unsubscribe()
