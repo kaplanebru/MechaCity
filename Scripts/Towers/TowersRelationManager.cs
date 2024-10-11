@@ -23,8 +23,7 @@ namespace Towers
     public class TowersRelationManager 
     {
         public static Dictionary<int, RelationData> Relations { get; private set; } = new ();
-
-        public static List<int> GetLinksByID(int id) => Relations[id].LinkedTowers;
+        
 
         //dizilime göre artarda oldukları varsayılıyor, id'ye göre değil!
 
@@ -35,8 +34,10 @@ namespace Towers
             for (var i = 0; i < AllTowers.TowersCount; i++)
             {
                 var mainID = towers[i].UniqID;
-                
                 int next = towers[(i + 1) % AllTowers.TowersCount].UniqID; //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
+
+                //if(AllDoubles.InspectTower())
+              
                 Relations.Add(mainID, new RelationData(next));
                 //double varsa i++ denip loop pas geçilebilir
             }

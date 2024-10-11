@@ -32,7 +32,7 @@ public class AllDoubles
         return null;
     }
    
-    public static bool TryInspectByTowerAndGetDouble(int id, out DoubleTower doubleTower)
+    public static bool TryInspectTowerAndGetDouble(int id, out DoubleTower doubleTower)
     {
         foreach (var _double in Doubles)
         {
@@ -47,9 +47,10 @@ public class AllDoubles
         return false;
     }
     
-    public static bool InspectByTower(int id)
+    public static bool InspectTower(int id)
     {
         return Doubles.Any(_double => _double.InspectByTowerID(id)); //_double.towers.ContainsKey(id)
     }
+    
     
 }

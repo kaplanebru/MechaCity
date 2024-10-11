@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Actor;
 using UnityEngine;
 using Enums;
 using GameUI;
@@ -17,7 +18,7 @@ namespace Core
         public Transform NetworkUIController;
         public static Team[] Teams;
         public TeamsHolder assetHolder;
-        public HealthManager HealthManager = new();
+        public ActorManager ActorManager = new();
 
         private void OnEnable()
         {
@@ -33,8 +34,8 @@ namespace Core
         void CreateTeams()
         {
             Teams = new Team[assetHolder.Teams.Length];
-            HealthManager.Subscribe();
-            HealthManager.FillRegistry();
+            ActorManager.Subscribe();
+            ActorManager.FillRegistry();
 
 
             for (int i = 0; i < Teams.Length; i++)
@@ -101,7 +102,7 @@ namespace Core
         {
             NetworkEventbus.RequestEvents.OnPlayerSpawned -= AssignPlayers;
             GeneralEventbus.InitializerEvents.OnTowersCreated -= ExecuteInitializer;
-            HealthManager.Unsubscribe();
+            ActorManager.Unsubscribe();
         }
     }
 }

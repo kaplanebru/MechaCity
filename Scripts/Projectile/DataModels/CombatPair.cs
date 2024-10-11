@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Actor;
 using GameUI;
 using Health;
 using UnityEngine;
@@ -42,7 +43,7 @@ namespace DataModels
 
             //TODO: kendisi ya da other Double olabilir
             //EN BAŞTAN double ile pairler güncellenebilir. Ama height 2. bir check gerektirecektir.
-            if(HealthManager.GetHealth(OtherTowerData.UniqID) <= 0 || HealthManager.GetHealth(MainTowerData.UniqID) <= 0)
+            if(ActorManager.GetHealth(OtherTowerData.UniqID) <= 0 || ActorManager.GetHealth(MainTowerData.UniqID) <= 0)
             {
                 SkipCombat();
                 return false;

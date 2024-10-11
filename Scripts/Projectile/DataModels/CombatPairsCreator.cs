@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
 using DataModels;
 using Towers;
 using UnityEngine;
@@ -34,7 +35,7 @@ public class CombatPairsCreator
     {
         //OrderLinkedTowersByID(tower); //todo
 
-        var linkedTowers = TowersRelationManager.GetLinksByID(tower.UniqID);
+        var linkedTowers = ActorManager.GetLinksByID(tower.UniqID);
         foreach (var id in linkedTowers)
         {
             var linkedTower = AllTowers.GetData(id);
