@@ -2,10 +2,10 @@ namespace Actor
 {
     public abstract class ActorController
     {
-        protected ActorManager _manager;
-        public ActorController(ActorManager manager)
+        protected ActorHolder Holder;
+        public ActorController(ActorHolder holder)
         {
-            _manager = manager;
+            Holder = holder;
         }
 
         public abstract void Subscribe();

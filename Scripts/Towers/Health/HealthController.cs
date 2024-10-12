@@ -5,26 +5,26 @@ namespace Actor
 {
     public class HealthController : ActorController
     {
-        public HealthController(ActorManager manager) : base(manager) {}
+        public HealthController(ActorHolder holder) : base(holder) {}
         public override void Subscribe()
         {
             Eventbus.HealthEvents.OnShoot += ApplyDamage;
-            Eventbus.HealthEvents.OnNewDoubleHealth += CreateDoubleHealth;
+            Eventbus.HealthEvents.OnNewDoubleTower += CreateDoubleHealth;
             Eventbus.HealthEvents.OnHealthsSet += SetHealthHoldersRequest;
         }
         
         private void SetHealthHoldersRequest()
         {
-            foreach (var id in ActorManager.Registry.Keys)
+            foreach (var id in ActorHolder.Registry.Keys)
             {
-                Eventbus.HealthEvents.OnHealthChange?.Invoke(ActorManager.Registry[id].Health, id);
+                Eventbus.HealthEvents.OnHealthChange?.Invoke(ActorHolder.Registry[id].Health, id);
             }
         }
         
         void ApplyDamage(int towerID, int damage, Action completeCall)
         {
-            ActorManager.Registry[towerID].Health -= damage;
-            Eventbus.HealthEvents.OnHealthChange?.Invoke(ActorManager.Registry[towerID].Health, towerID);
+            ActorHolder.Registry[towerID].Health -= damage; //bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
+            Eventbus.HealthEvents.OnHealthChange?.Invoke(ActorHolder.Registry[towerID].Health, towerID);
 
             if (IsDead(towerID, completeCall)) return;
 
@@ -33,20 +33,19 @@ namespace Actor
 
         private void CreateDoubleHealth(int towerID, int[] ids)
         {
-            int totalHealth = 0;
-            foreach (var id in ids)
-            {
-                totalHealth += ActorManager.Registry[id].Health;
-                _manager.RemoveItem(id);
-            }
+            // int totalHealth = 0;
+            // foreach (var id in ids)
+            // {
+            //     totalHealth += ActorHolder.Registry[id].Health;
+            //     Holder.RemoveItem(id);
+            // }
             
-            Eventbus.HealthEvents.OnDoubleHealthCreated?.Invoke(ids, totalHealth, towerID);
-            _manager.RegisterItem(towerID, totalHealth);
+            //Eventbus.HealthEvents.OnDoubleHealthCreated?.Invoke(ids, totalHealth, towerID);
         }
 
         private bool IsDead(int id, Action completeCall)
         {
-            if (ActorManager.Registry[id].Health <= 0)
+            if (ActorHolder.Registry[id].Health <= 0)
             {
                 DeathOperator.Instance.HandleDeath(id, 
                     () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(id), 
@@ -61,7 +60,7 @@ namespace Actor
         public override void Unsubscribe()
         {
             Eventbus.HealthEvents.OnShoot -= ApplyDamage;
-            Eventbus.HealthEvents.OnNewDoubleHealth -= CreateDoubleHealth;
+            Eventbus.HealthEvents.OnNewDoubleTower -= CreateDoubleHealth;
             Eventbus.HealthEvents.OnHealthsSet -= SetHealthHoldersRequest;
         }
         

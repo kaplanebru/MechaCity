@@ -25,8 +25,7 @@ public class CombatPairsCreator
         }
 
         _combatPairs.Clear();
-       // TowersRelationManager.SetLinkedTowers(tempTowers);
-        Eventbus.LinkEvents.OnCreatingCombatPairs?.Invoke( tempActors.Select(t => t).ToList());
+        Eventbus.LinkEvents.OnCreatingCombatPairs?.Invoke(tempTowers.Select(t => t.UniqID).ToList());
         tempTowers.ForEach(CombatPairByTower);
     }
     
@@ -36,7 +35,7 @@ public class CombatPairsCreator
     {
         //OrderLinkedTowersByID(tower); //todo
 
-        var linkedTowers = ActorManager.GetLinksByID(tower.UniqID);
+        var linkedTowers = ActorHolder.GetLinksByID(tower.UniqID);
         foreach (var id in linkedTowers)
         {
             var linkedTower = AllTowers.GetData(id);

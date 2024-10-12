@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
+using Enums;
 using UnityEngine;
 
 namespace Towers
@@ -36,10 +38,17 @@ namespace Towers
                 towers.Add(id, AllTowers.GetData(id));
             }
             
+            RegisterActor();
+            
             towers = towers.OrderBy(t => t.Value.AvailableHeight).ToDictionary(t => t.Key, t => t.Value);
             Amount = towers.Count;
             
             ID = UniqueIdGenerator.GenerateIntId();
+        }
+        
+        private void RegisterActor()
+        {
+            Eventbus.ActorEvents.OnNewDoubleActor.Invoke(towers.Keys.ToArray());
         }
         
         public bool NoDoubleFallCapacity(int step)
@@ -56,6 +65,8 @@ namespace Towers
 
             //MediatorEventbus.ChainMotionEvents.OnRising?.Invoke(); //TODO: 2 kez çağrılıyor olabilir
         }
+
+     
 
         public bool Same(ILinkable other)
         {
@@ -91,23 +102,13 @@ namespace Towers
                 AllTowers.GetTower(tower.UniqID).StartRiseFallRoutine(true); //Todo: düzelt
             }
             
-            CommonizeHealth();
+            
            
         }
         
         public void CreateBridge()
         {
             Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(towers.Keys.ToArray());
-        }
-
-       
-        private void CommonizeHealth()
-        {
-            int[] towersByHeight = towers.OrderByDescending(t => t.Value.Height)
-                .Select(t => t.Key)
-                .ToArray();
-
-            Eventbus.HealthEvents.OnNewDoubleHealth?.Invoke(ID, towersByHeight);
         }
     }
 }

@@ -1,19 +1,29 @@
 using System.Collections.Generic;
 using System.Linq;
+using Enums;
 
 namespace Health
 {
     public class ActorData
     {
+        public string ID;
+        public ActorType Type;
+        public List<int> Towers;
+        
         public int Health;
         public int InitialHealth;
-        public List<int> LinkedActors;
         
-        public ActorData(int initialHealth, List<int> linkedActors)
+        public List<int> LinkedTowers;
+        
+        public ActorData(string id, ActorType type, int initialHealth, params int[] towers)
         {
-            Health = initialHealth;
+            ID = id;
+            Type = type;
+            
             InitialHealth = initialHealth;
-            LinkedActors = linkedActors;
+            Health = initialHealth;
+            
+            Towers = towers.ToList();
         }
 
         public void SetInitialHealth(int initialHealth)
@@ -22,9 +32,9 @@ namespace Health
             InitialHealth = initialHealth;
         }
 
-        public void SetLinkedActors(params int[] linkedTowers)
+        public void SetLinkedTowers(params int[] linkedTowers)
         {
-            LinkedActors = linkedTowers.ToList();
+            LinkedTowers = linkedTowers.ToList();
         }
     }
 }

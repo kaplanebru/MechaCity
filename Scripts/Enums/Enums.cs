@@ -38,7 +38,11 @@ namespace Enums
         }
     }
 
-   
+    public enum ActorType
+    {
+        Standard,
+        MultiTower,
+    }
 
     public enum TurnState
     {

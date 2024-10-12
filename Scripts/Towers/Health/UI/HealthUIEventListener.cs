@@ -14,7 +14,7 @@ namespace Health
         public override void Subscribe()
         {
             Eventbus.HealthEvents.OnHealthChange += AdjustHealthIcon;
-            Eventbus.HealthEvents.OnRemoveFromRegistry += HideIcon;
+            //Eventbus.HealthEvents.OnRemoveFromRegistry += HideIcon;
             Eventbus.HealthEvents.OnDoubleHealthCreated += CreateCommonIcon;
         }
         
@@ -31,7 +31,7 @@ namespace Health
             RelatedItems[id].icons.ForEach(i=>i.gameObject.SetActive(false));
         }
 
-        public void CreateCommonIcon(int[] ids, int totalHealth, int doubleId)
+        public void CreateCommonIcon(int[] ids, int totalHealth)
         {
             HealthHolder[] holders = new HealthHolder[ids.Length];
             Vector3 center = Vector3.zero;
@@ -44,6 +44,7 @@ namespace Health
             }
 
             center /= holders.Length;
+            holders = holders.OrderByDescending(t => t.transform.position.y).ToArray();
             center.y = holders[0].transform.position.y;
 
             var health = Instantiate(healthHolderPb, holders[0].transform.parent);
@@ -56,7 +57,7 @@ namespace Health
         public override void Unsubscribe()
         {
             Eventbus.HealthEvents.OnHealthChange -= AdjustHealthIcon;
-            Eventbus.HealthEvents.OnRemoveFromRegistry -= HideIcon;
+            //Eventbus.HealthEvents.OnRemoveFromRegistry -= HideIcon;
             Eventbus.HealthEvents.OnDoubleHealthCreated -= CreateCommonIcon;
         }
     }

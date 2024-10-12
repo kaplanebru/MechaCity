@@ -18,7 +18,7 @@ namespace Core
         public Transform NetworkUIController;
         public static Team[] Teams;
         public TeamsHolder assetHolder;
-        public ActorManager ActorManager = new();
+        public ActorHolder ActorHolder = new();
 
         private void OnEnable()
         {
@@ -34,8 +34,8 @@ namespace Core
         void CreateTeams()
         {
             Teams = new Team[assetHolder.Teams.Length];
-            ActorManager.Subscribe();
-            ActorManager.FillRegistry();
+            ActorHolder.Subscribe();
+            ActorHolder.FillRegistry();
 
 
             for (int i = 0; i < Teams.Length; i++)
@@ -102,7 +102,7 @@ namespace Core
         {
             NetworkEventbus.RequestEvents.OnPlayerSpawned -= AssignPlayers;
             GeneralEventbus.InitializerEvents.OnTowersCreated -= ExecuteInitializer;
-            ActorManager.Unsubscribe();
+            ActorHolder.Unsubscribe();
         }
     }
 }
