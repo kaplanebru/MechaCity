@@ -21,27 +21,24 @@ namespace Health
         
         public override void Initialize() { }
     
-        private void AdjustHealthIcon(string actorID)//(int health, int id)
+        private void AdjustHealthIcon(string actorID)
         {
             var actor = ActorHolder.Registry[actorID];
 
-            if (actor.Towers.Count == 1)
+            if (actor.Towers.Length == 1)
             {
                 var towerID = actor.Towers.First();
                 var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == towerID);
                 healthHolder.AdjustIcons(actor.Health);
                 
             }
-            else if(actor.Towers.Count > 1)
+            else if(actor.Towers.Length > 1)
             {
                 CreateCommonIcon(actor.Towers.ToArray(), actor.Health);
             }
-            
-            // var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == id);
-            // healthHolder.AdjustIcons(health);
         }
         
-        private void HideIcon(List<int> towers)
+        private void HideIcon(int[] towers)
         {
             foreach (var towerID in towers)
             {

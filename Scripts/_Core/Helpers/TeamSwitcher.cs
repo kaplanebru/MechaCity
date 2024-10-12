@@ -26,7 +26,7 @@ namespace Turn
     
          Team GetTeamDataByTeamType(TeamType type) => _teams.First(team => team.Data.TeamType == type);
 
-         private void ExchangeTowers(List<int> towers)
+         private void ExchangeTowers(int[] towers)
          {
              foreach (var deadTowerId in towers)
              {

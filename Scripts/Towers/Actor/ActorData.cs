@@ -8,7 +8,7 @@ namespace Actor
     {
         public string ID;
         public ActorType Type;
-        public List<int> Towers;
+        public int[] Towers;
         
         public int Health;
         public int InitialHealth;
@@ -23,18 +23,19 @@ namespace Actor
             InitialHealth = initialHealth;
             Health = initialHealth;
             
-            Towers = towers.ToList();
+            Towers = towers;
         }
 
-        public void SetInitialHealth(int initialHealth)
+        public void SetLinkedTowers(params string[] linkedActors)
         {
-            Health = initialHealth;
-            InitialHealth = initialHealth;
+            LinkedActors = linkedActors.ToList();
         }
+        // public void SetInitialHealth(int initialHealth)
+        // {
+        //     Health = initialHealth;
+        //     InitialHealth = initialHealth;
+        // }
 
-        public void SetLinkedTowers(params string[] linkedTowers)
-        {
-            LinkedActors = linkedTowers.ToList();
-        }
+       
     }
 }

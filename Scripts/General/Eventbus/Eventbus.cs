@@ -10,7 +10,7 @@ public static class Eventbus
     }
     public static class CombatEvents
     {
-        public static Action<List<int>> OnTowerKilled;
+        public static Action<int[]> OnTowerKilled;
         public static Action <float> OnNextTower;
         public static Action OnPairsSet;
         
@@ -38,7 +38,7 @@ public static class Eventbus
         public static Action<string, int, Action> OnShoot;
         public static Action<string> OnHealthChange;
         public static Action OnHealthsSet;
-        public static Action<List<int>> OnRemoveFromRegistry;
+        public static Action<int[]> OnRemoveFromRegistry;
     }
     public static class TowerEvents
     {

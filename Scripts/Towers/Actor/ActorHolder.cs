@@ -15,8 +15,6 @@ namespace Actor
         public static List<string> GetLinkedActors(string id) => Registry[id].LinkedActors;
 
         private ActorController[] Controllers = new ActorController[2];
-        private HealthController HealthController;
-        private RelationController RelationController;
 
         public void Subscribe()
         {
@@ -88,8 +86,10 @@ namespace Actor
         {
             Eventbus.ActorEvents.OnNewDoubleActor -= RegisterDouble;
 
-            HealthController.Unsubscribe();
-            RelationController.Unsubscribe();
+            foreach (var controller in Controllers)
+            {
+                controller.Unsubscribe();
+            }
 
             Registry.Clear();
         }
