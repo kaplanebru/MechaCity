@@ -41,14 +41,12 @@ namespace Health
             // healthHolder.AdjustIcons(health);
         }
         
-        private void HideIcon(string actorID)
+        private void HideIcon(List<int> towers)
         {
-            var actor = ActorHolder.Registry[actorID];
-            foreach (var towerID in actor.Towers)
+            foreach (var towerID in towers)
             {
                 RelatedItems[towerID].icons.ForEach(i=>i.gameObject.SetActive(false));
             }
-           
         }
 
         public void CreateCommonIcon(int[] towerIDs, int totalHealth)

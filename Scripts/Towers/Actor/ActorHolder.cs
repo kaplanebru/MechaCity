@@ -59,7 +59,7 @@ namespace Actor
             {
                 var actor = GetActorByTowerID(tower);
                 totalHealth += actor.Health;
-                RemoveItem(actor.ID);
+                RemoveItem(actor);
             }
             
             var id = RegisterItem(ActorType.MultiTower, totalHealth, ownTowers);
@@ -77,10 +77,10 @@ namespace Actor
             return null;
         }
         
-        public void RemoveItem(string actorID)
+        private void RemoveItem(ActorData actor)
         {
-            Registry.Remove(actorID);
-            Eventbus.HealthEvents.OnRemoveFromRegistry?.Invoke(actorID);
+            Registry.Remove(actor.ID);
+            Eventbus.HealthEvents.OnRemoveFromRegistry?.Invoke( actor.Towers);
         }
         
 

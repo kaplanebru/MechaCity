@@ -13,7 +13,7 @@ namespace Actor
         public int Health;
         public int InitialHealth;
         
-        public List<string> LinkedActors;
+        public List<string> LinkedActors = new();
         
         public ActorData(string id, ActorType type, int initialHealth, params int[] towers)
         {
