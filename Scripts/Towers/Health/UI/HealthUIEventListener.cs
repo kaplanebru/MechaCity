@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
 using GameUI;
 using UnityEngine;
 
@@ -14,31 +15,50 @@ namespace Health
         public override void Subscribe()
         {
             Eventbus.HealthEvents.OnHealthChange += AdjustHealthIcon;
-            //Eventbus.HealthEvents.OnRemoveFromRegistry += HideIcon;
-            Eventbus.HealthEvents.OnDoubleHealthCreated += CreateCommonIcon;
+            Eventbus.HealthEvents.OnRemoveFromRegistry += HideIcon;
+          
         }
         
         public override void Initialize() { }
     
-        private void AdjustHealthIcon(int health, int id)
+        private void AdjustHealthIcon(string actorID)//(int health, int id)
         {
-            var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == id);
-            healthHolder.AdjustIcons(health);
+            var actor = ActorHolder.Registry[actorID];
+
+            if (actor.Towers.Count == 1)
+            {
+                var towerID = actor.Towers.First();
+                var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == towerID);
+                healthHolder.AdjustIcons(actor.Health);
+                
+            }
+            else if(actor.Towers.Count > 1)
+            {
+                CreateCommonIcon(actor.Towers.ToArray(), actor.Health);
+            }
+            
+            // var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == id);
+            // healthHolder.AdjustIcons(health);
         }
         
-        private void HideIcon(int id)
+        private void HideIcon(string actorID)
         {
-            RelatedItems[id].icons.ForEach(i=>i.gameObject.SetActive(false));
+            var actor = ActorHolder.Registry[actorID];
+            foreach (var towerID in actor.Towers)
+            {
+                RelatedItems[towerID].icons.ForEach(i=>i.gameObject.SetActive(false));
+            }
+           
         }
 
-        public void CreateCommonIcon(int[] ids, int totalHealth)
+        public void CreateCommonIcon(int[] towerIDs, int totalHealth)
         {
-            HealthHolder[] holders = new HealthHolder[ids.Length];
+            HealthHolder[] holders = new HealthHolder[towerIDs.Length];
             Vector3 center = Vector3.zero;
         
-            for (var i = 0; i < ids.Length; i++)
+            for (var i = 0; i < towerIDs.Length; i++)
             {
-                holders[i] = RelatedItems.FirstOrDefault(h => h.Id == ids[i]);
+                holders[i] = RelatedItems.FirstOrDefault(h => h.Id == towerIDs[i]);
                 holders[i].DisableAll();
                 center += holders[i].transform.position;
             }
@@ -57,8 +77,7 @@ namespace Health
         public override void Unsubscribe()
         {
             Eventbus.HealthEvents.OnHealthChange -= AdjustHealthIcon;
-            //Eventbus.HealthEvents.OnRemoveFromRegistry -= HideIcon;
-            Eventbus.HealthEvents.OnDoubleHealthCreated -= CreateCommonIcon;
+            Eventbus.HealthEvents.OnRemoveFromRegistry -= HideIcon;
         }
     }
 }

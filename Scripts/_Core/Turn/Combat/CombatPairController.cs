@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
 using DataModels;
 using Towers;
 
@@ -22,7 +23,7 @@ namespace Turn
        
         public void SetCombatPairs()
         {
-            combatPairsCreator.CreateCombatPairs(AllTowers.TowerDatas.ToList(), pairsReversed);
+            combatPairsCreator.CreateCombatPairs(ActorHolder.Registry, pairsReversed);
             Eventbus.CombatEvents.OnPairsSet?.Invoke();
         }
 

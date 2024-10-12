@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Enums;
 using Health;
 using Towers;
@@ -44,10 +45,11 @@ namespace Actor
             }
         }
 
-        public void RegisterItem(ActorType type, int initialHealth, params int[] ownTowers)
+        public string RegisterItem(ActorType type, int initialHealth, params int[] ownTowers)
         {
             var id = UniqueIdGenerator.GenerateUniqueId();
             Registry.Add(id, new ActorData(id, type, initialHealth, ownTowers));
+            return id;
         }
 
         public void RegisterDouble(params int[] ownTowers)
@@ -57,13 +59,12 @@ namespace Actor
             {
                 var actor = GetActorByTowerID(tower);
                 totalHealth += actor.Health;
-                Registry.Remove(actor.ID);
+                RemoveItem(actor.ID);
             }
             
-            RegisterItem(ActorType.MultiTower, totalHealth, ownTowers);
-            
-            Eventbus.HealthEvents.OnDoubleHealthCreated?.Invoke(ownTowers, totalHealth);
-
+            var id = RegisterItem(ActorType.MultiTower, totalHealth, ownTowers);
+            //id = Registry.Last().Key;
+            Eventbus.HealthEvents.OnHealthChange?.Invoke(id);
         }
 
         ActorData GetActorByTowerID(int towerID)
@@ -76,8 +77,6 @@ namespace Actor
             return null;
         }
         
-        
-
         public void RemoveItem(string actorID)
         {
             Registry.Remove(actorID);

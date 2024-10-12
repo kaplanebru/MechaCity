@@ -36,11 +36,8 @@ public static class Eventbus
     public static class HealthEvents
     {
         public static Action<string, int, Action> OnShoot;
-        public static Action<int, int> OnHealthChange;
+        public static Action<string> OnHealthChange;
         public static Action OnHealthsSet;
-
-        public static Action<int, int[]> OnNewDoubleTower;
-        public static Action<int[], int> OnDoubleHealthCreated;
         public static Action<string> OnRemoveFromRegistry;
     }
     public static class TowerEvents

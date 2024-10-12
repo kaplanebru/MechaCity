@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Enums;
 
-namespace Health
+namespace Actor
 {
     public class ActorData
     {
