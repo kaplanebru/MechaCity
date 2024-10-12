@@ -14232,7 +14232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMultiplayerOn: 0
   isTestingWithoutCombat: 0
-  fasterCombat: 1
+  fasterCombat: 0
 --- !u!4 &521987823
 Transform:
   m_ObjectHideFlags: 0

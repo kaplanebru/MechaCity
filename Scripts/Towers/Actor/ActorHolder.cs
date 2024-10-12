@@ -10,12 +10,10 @@ namespace Actor
 {
     public class ActorHolder
     {
-        public static Dictionary<string, ActorData> Registry { get; private set; } = new(); // TowerID -> Health
-        public static int GetHealthByActor(string actorID) => Registry[actorID].Health;
-        public static List<string> GetLinkedActors(string id) => Registry[id].LinkedActors;
-
+        public static Dictionary<string, ActorData> Registry { get; private set; } = new();
         private ActorController[] Controllers = new ActorController[2];
 
+        public static ActorData GetActor(string id) => Registry[id];
         public void Subscribe()
         {
             Eventbus.ActorEvents.OnNewDoubleActor += RegisterDouble;

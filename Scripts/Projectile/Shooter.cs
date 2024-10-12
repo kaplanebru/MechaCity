@@ -63,7 +63,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
             perpetrator.ColorHandler.ToOriginalColor();
            
             Eventbus.HealthEvents.OnShoot?.Invoke(_pair.OtherActor.ID, perpetrator.DamagePower, _pair.CompleteCombat);
-            //HealthHandler.RemoveHealth(victim, perpetrator.DamagePower, _pair.CompleteCombat);
+            
             Hide();
         });
     }
