@@ -13,7 +13,7 @@ namespace Health
         public int Health;
         public int InitialHealth;
         
-        public List<int> LinkedTowers;
+        public List<string> LinkedActors;
         
         public ActorData(string id, ActorType type, int initialHealth, params int[] towers)
         {
@@ -32,9 +32,9 @@ namespace Health
             InitialHealth = initialHealth;
         }
 
-        public void SetLinkedTowers(params int[] linkedTowers)
+        public void SetLinkedTowers(params string[] linkedTowers)
         {
-            LinkedTowers = linkedTowers.ToList();
+            LinkedActors = linkedTowers.ToList();
         }
     }
 }

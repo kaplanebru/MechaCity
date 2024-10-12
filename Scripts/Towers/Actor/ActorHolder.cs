@@ -11,7 +11,7 @@ namespace Actor
     {
         public static Dictionary<string, ActorData> Registry { get; private set; } = new(); // TowerID -> Health
         public static int GetHealthByActor(string actorID) => Registry[actorID].Health;
-        public static List<int> GetLinksByID(string id) => Registry[id].LinkedTowers;
+        public static List<string> GetLinkedActors(string id) => Registry[id].LinkedActors;
 
         private ActorController[] Controllers = new ActorController[2];
         private HealthController HealthController;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Enums;
 using Health;
@@ -10,11 +11,12 @@ namespace Turn
     public class TeamSwitcher : BaseTurnHelper
     {
         [SerializeField] Team[] _teams; //turnmanagerdan da alınabilir
+      
 
         private void OnEnable()
         {
             TeamEvents.OnTeamsSet += GetTeams;
-            Eventbus.CombatEvents.OnTowerKilled += ExchangeTower;
+            Eventbus.CombatEvents.OnTowerKilled += ExchangeTowers;
         }
 
         public void GetTeams(Team[] teams)
@@ -24,15 +26,21 @@ namespace Turn
     
          Team GetTeamDataByTeamType(TeamType type) => _teams.First(team => team.Data.TeamType == type);
 
-         private TowerData _deadTower;
+         private void ExchangeTowers(List<int> towers)
+         {
+             foreach (var deadTowerId in towers)
+             {
+                 ExchangeTower(deadTowerId);
+             }
+         }
          private void ExchangeTower(int deadTowerId)
          {
-             _deadTower = AllTowers.GetData(deadTowerId);
-            Team oldTeam = GetTeamDataByTeamType(_deadTower.TeamType);
+            var deadTower = AllTowers.GetData(deadTowerId);
+            Team oldTeam = GetTeamDataByTeamType(deadTower.TeamType);
             Team newTeam = _teams.FirstOrDefault(t => t != oldTeam);
 
-            oldTeam.RemoveTower(_deadTower);
-            newTeam.TakeTowerFromRival(_deadTower);
+            oldTeam.RemoveTower(deadTower);
+            newTeam.TakeTowerFromRival(deadTower);
             
             
             Invoke(nameof(ResetDeadTower), 1f); //todo: temporary
@@ -46,7 +54,7 @@ namespace Turn
         private void OnDisable()
         {
             TeamEvents.OnTeamsSet -= GetTeams;
-            Eventbus.CombatEvents.OnTowerKilled -= ExchangeTower;
+            Eventbus.CombatEvents.OnTowerKilled -= ExchangeTowers;
         }
     }
 }

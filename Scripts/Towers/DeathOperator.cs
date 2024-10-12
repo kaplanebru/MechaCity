@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Actor;
 using UnityEngine;
 
 namespace Towers
@@ -13,21 +14,26 @@ namespace Towers
         }
 
 
-        public void HandleDeath(int id, Action teamSwitchCallback, Action completeCombat)
+        public void HandleDeath(string actorID, Action teamSwitchCallback, Action completeCombat)
         {
-            if (AllDoubles.TryGetDoubleByID(id) != null)
+            foreach (var tower in ActorHolder.Registry[actorID].Towers)
             {
-                var doubleTowers = AllDoubles.DoublesByID[id].towers.Values;
-                foreach (var tower in doubleTowers)
-                {
-                    StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, tower));
-                }
+                StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, AllTowers.GetData(tower)));
             }
-            else
-            {
-                var tower = AllTowers.GetTower(id);
-                StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, tower.Data));
-            }
+            
+            // if (AllDoubles.TryGetDoubleByID(actorID) != null)
+            // {
+            //     var doubleTowers = AllDoubles.DoublesByID[actorID].towers.Values;
+            //     foreach (var tower in doubleTowers)
+            //     {
+            //         StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, tower));
+            //     }
+            // }
+            // else
+            // {
+            //     var tower = AllTowers.GetTower(actorID);
+            //     StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, tower.Data));
+            // }
         }
         
         

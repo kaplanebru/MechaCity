@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Actor;
 using GameUI;
@@ -17,15 +18,20 @@ namespace DataModels
    
     public class CombatPair
     {
+        public ActorData MainActor;
+        public ActorData OtherActor;
         public TowerData MainTowerData { get; }
         public TowerData OtherTowerData { get; }
 
         public bool CombatCompleted { get; set; } = false;
 
-        public CombatPair(TowerData mainTowerData, TowerData otherTowerData)
+        public CombatPair(ActorData mainActor, ActorData otherActor)//(TowerData mainTowerData, TowerData otherTowerData)
         {
-            MainTowerData = mainTowerData;
-            OtherTowerData = otherTowerData;
+            MainActor = mainActor;
+            OtherActor = otherActor;
+            
+            MainTowerData = AllTowers.GetData(MainActor.Towers.Last());
+            OtherTowerData = AllTowers.GetData(OtherActor.Towers.First());
         }
 
         public bool Contains(int newTower)

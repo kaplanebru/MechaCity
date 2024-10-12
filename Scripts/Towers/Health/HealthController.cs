@@ -17,16 +17,16 @@ namespace Actor
         {
             foreach (var id in ActorHolder.Registry.Keys)
             {
-                Eventbus.HealthEvents.OnHealthChange?.Invoke(ActorHolder.Registry[id].Health, id);
+                Eventbus.HealthEvents.OnHealthChange?.Invoke(ActorHolder.Registry[id].Health, id); //todo: ui
             }
         }
         
-        void ApplyDamage(int towerID, int damage, Action completeCall)
+        void ApplyDamage(string actorID, int damage, Action completeCall)
         {
-            ActorHolder.Registry[towerID].Health -= damage; //bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
-            Eventbus.HealthEvents.OnHealthChange?.Invoke(ActorHolder.Registry[towerID].Health, towerID);
+            ActorHolder.Registry[actorID].Health -= damage; //bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
+            Eventbus.HealthEvents.OnHealthChange?.Invoke(ActorHolder.Registry[actorID].Health, actorID); //TODO: ui
 
-            if (IsDead(towerID, completeCall)) return;
+            if (IsDead(actorID, completeCall)) return;
 
             completeCall();
         }
@@ -43,12 +43,12 @@ namespace Actor
             //Eventbus.HealthEvents.OnDoubleHealthCreated?.Invoke(ids, totalHealth, towerID);
         }
 
-        private bool IsDead(int id, Action completeCall)
+        private bool IsDead(string actorID, Action completeCall)
         {
-            if (ActorHolder.Registry[id].Health <= 0)
+            if (ActorHolder.Registry[actorID].Health <= 0)
             {
-                DeathOperator.Instance.HandleDeath(id, 
-                    () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(id), 
+                DeathOperator.Instance.HandleDeath(actorID, 
+                    () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(ActorHolder.Registry[actorID].Towers), 
                     completeCall);
 
                 return true;

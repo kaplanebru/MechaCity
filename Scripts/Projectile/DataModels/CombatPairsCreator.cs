@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Actor;
 using DataModels;
+using Health;
 using Towers;
 using UnityEngine;
 
@@ -15,37 +16,39 @@ public class CombatPairsCreator
         _combatPairs = combatPairs;
     }
     
-    public void CreateCombatPairs(List<TowerData> tempTowers, bool isReversed = false)
+    public void CreateCombatPairs(Dictionary<string, ActorData> tempActors, bool isReversed = false)
     {
+        List<string> actorIDs = tempActors.Keys.ToList();
         if (isReversed)
         {
-            tempTowers.Add(tempTowers[0]);
-            tempTowers.RemoveAt(0);
-            tempTowers.Reverse();
+            var firstID = actorIDs.First();
+            actorIDs.RemoveAt(0);
+            actorIDs.Reverse();
+            actorIDs.Insert(0, firstID);
         }
 
         _combatPairs.Clear();
-        Eventbus.LinkEvents.OnCreatingCombatPairs?.Invoke(tempTowers.Select(t => t.UniqID).ToList());
-        tempTowers.ForEach(CombatPairByTower);
+        Eventbus.LinkEvents.OnCreatingCombatPairs?.Invoke( actorIDs);
+        actorIDs.ForEach(id => CombatPairByTower(tempActors[id]));
     }
     
    
 
-    public void CombatPairByTower(TowerData tower)
+    public void CombatPairByTower(ActorData mainActor)
     {
         //OrderLinkedTowersByID(tower); //todo
-
-        var linkedTowers = ActorHolder.GetLinksByID(tower.UniqID);
-        foreach (var id in linkedTowers)
+        
+        var linkedActors = mainActor.LinkedActors;
+        foreach (var id in linkedActors)
         {
-            var linkedTower = AllTowers.GetData(id);
-            AddToPair(tower, linkedTower);
+            var linkedActor = ActorHolder.Registry[id];
+            AddToPair(mainActor, linkedActor);
         }
     }
 
-    void AddToPair(TowerData tower1, TowerData tower2)
+    void AddToPair(ActorData actor1, ActorData actor2)
     {
-        _combatPairs.Add(new CombatPair(tower1, tower2));
+        _combatPairs.Add(new CombatPair(actor1, actor2));
     }
 
     void OrderLinkedTowersByID(TowerData tower)

@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace Health
 {
-    public class HealthUIEventListener : TowerRelatedEventListener<HealthHolder>
+    public class HealthUIEventListener: TowerRelatedEventListener<HealthHolder>
     {
-        protected override HealthHolder[] RelatedItems { get; set; }
+        protected override HealthHolder[] RelatedItems { get; set; } //bunları hep dict yapmak lazım.
         public HealthHolder healthHolderPb;
         public override void Subscribe()
         {
