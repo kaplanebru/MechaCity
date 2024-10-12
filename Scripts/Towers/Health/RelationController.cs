@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Towers;
 
 namespace Actor
@@ -10,7 +9,7 @@ namespace Actor
         
         public override void Subscribe()
         {
-            Eventbus.LinkEvents.OnCreatingCombatPairs += SetLinkedTowers;
+            Eventbus.LinkEvents.OnCreatingCombatPairs += SetLinkedTowersForAll;
         }
 
         public void SetRelationData(int id, params int[] towers)
@@ -19,24 +18,35 @@ namespace Actor
             ActorManager.Registry[id].LinkedActors.AddRange(towers);
         }
 
-        public void SetLinkedTowers(List<int> towers) //ters de gelebilir
+        public static void SetLinkedTowersForAll(List<int> tempRegistryIDs) //ters de gelebilir List<int> towers
         {
             ResetAllLinks();
             //link de dahil gibi düşün, ters çevirdiğinde dümdüz ters çevirmek sorun olabilir
-            for (var i = 0; i < ActorManager.Registry.Count; i++)
+            for (var i = 0; i < AllTowers.TowersCount; i++)
             {
-                int mainID = ActorManager.Registry.ElementAt(i).Key;
-                int nextInOrder = (i + 1) % ActorManager.Registry.Count;
-                var next = ActorManager.Registry.ElementAt(nextInOrder).Key;
+                var mainID = tempRegistryIDs[i]; //AllTowers.GetData(towers[i]).UniqID;
+                int nextInOrder = (i + 1) % tempRegistryIDs.Count;
+                int nextID = tempRegistryIDs[nextInOrder];
+                //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
+                
+                //bu noktada mainID ya da nextID bir tower id olmayabilir. LinkedActor olur.
+                
+                ActorManager.Registry[mainID].SetLinkedActors(nextID);
+            }
+        }
+        
+        /*for (var i = 0; i < tempRegistryIDs; i++)
+        {
+            int mainID = tempRegistryIDs[i];//ActorManager.Registry.ElementAt(i).Key;
+            int nextInOrder = (i + 1) % tempRegistryIDs.Count;
+            var next = //ActorManager.Registry.ElementAt(nextInOrder).Key;
                 
                 //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
                 
                 ActorManager.Registry[mainID].SetLinkedTowers(next);
-            }
-            
-        }
+        }*/
 
-        private void ResetAllLinks()
+        private static void ResetAllLinks()
         {
             foreach (var registry in ActorManager.Registry.Values)
             {
@@ -46,7 +56,7 @@ namespace Actor
 
         public override void Unsubscribe()
         {
-            Eventbus.LinkEvents.OnCreatingCombatPairs -= SetLinkedTowers;
+            Eventbus.LinkEvents.OnCreatingCombatPairs -= SetLinkedTowersForAll;
         }
 
     }

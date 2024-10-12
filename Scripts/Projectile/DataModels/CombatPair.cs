@@ -40,14 +40,12 @@ namespace DataModels
                 SkipCombat();
                 return false;
             }
-
-            //TODO: kendisi ya da other Double olabilir
-            //EN BAŞTAN double ile pairler güncellenebilir. Ama height 2. bir check gerektirecektir.
-            if(ActorManager.GetHealth(OtherTowerData.UniqID) <= 0 || ActorManager.GetHealth(MainTowerData.UniqID) <= 0)
-            {
-                SkipCombat();
-                return false;
-            }
+            
+            // if(ActorManager.GetHealth(OtherTowerData.UniqID) <= 0 || ActorManager.GetHealth(MainTowerData.UniqID) <= 0) //TODO: burda othertower double olabilir!! Böyle bir case yok bir yandan da!
+            // {
+            //     SkipCombat();
+            //     return false;
+            // }
 
             if (MainTowerData.Height > OtherTowerData.Height)
             {

@@ -22,7 +22,7 @@ namespace Health
             InitialHealth = initialHealth;
         }
 
-        public void SetLinkedTowers(params int[] linkedTowers)
+        public void SetLinkedActors(params int[] linkedTowers)
         {
             LinkedActors = linkedTowers.ToList();
         }
