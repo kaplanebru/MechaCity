@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Health
 {
@@ -6,13 +7,24 @@ namespace Health
     {
         public int Health;
         public int InitialHealth;
-        public List<int> LinkedTowers;
+        public List<int> LinkedActors;
         
-        public ActorData(int initialHealth, List<int> linkedTowers = null)
+        public ActorData(int initialHealth, List<int> linkedActors)
         {
             Health = initialHealth;
             InitialHealth = initialHealth;
-            LinkedTowers = linkedTowers;
+            LinkedActors = linkedActors;
+        }
+
+        public void SetInitialHealth(int initialHealth)
+        {
+            Health = initialHealth;
+            InitialHealth = initialHealth;
+        }
+
+        public void SetLinkedTowers(params int[] linkedTowers)
+        {
+            LinkedActors = linkedTowers.ToList();
         }
     }
 }

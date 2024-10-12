@@ -10,7 +10,7 @@ namespace Actor
     {
         public static Dictionary<int, ActorData> Registry { get; private set; } = new(); // TowerID -> Health
         public static int GetHealth(int towerID) => Registry[towerID].Health;
-        public static List<int> GetLinksByID(int id) => Registry[id].LinkedTowers;
+        public static List<int> GetLinksByID(int id) => Registry[id].LinkedActors;
 
         private ActorController[] Controllers = new ActorController[2];
         private HealthController HealthController;
@@ -33,18 +33,18 @@ namespace Actor
         }
         public void FillRegistry()
         {
+            //todo linkler yapılabilir
             foreach (var tower in AllTowers.Towers)
             {
                 var id = tower.Data.UniqID;
                 RegisterItem(id, tower.ConstantData.StartHealth);
-
-            } //todo: double da register edilebilir
+            }
         }
 
         public void RegisterItem(int actorID, int initialHealth)
         {
             if (Registry.ContainsKey(actorID)) return;
-            Registry[actorID] = new ActorData(initialHealth);
+            Registry[actorID] = new ActorData(initialHealth, new List<int>());
         }
 
         public void RemoveItem(int towerID)

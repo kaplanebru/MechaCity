@@ -27,7 +27,7 @@ public static class Eventbus
         public static Action<List<int>> OnUnlink;
         public static Action OnFloorsOpened;
 
-       
+        public static Action <List<int>> OnCreatingCombatPairs;
     }
     public static class HealthEvents
     {
@@ -38,7 +38,6 @@ public static class Eventbus
         public static Action<int, int[]> OnNewDoubleHealth;
         public static Action<int[], int, int> OnDoubleHealthCreated;
         public static Action<int> OnRemoveFromRegistry;
-
     }
     public static class TowerEvents
     {

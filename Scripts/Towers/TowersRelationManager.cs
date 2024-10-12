@@ -29,7 +29,7 @@ namespace Towers
 
         public static void SetLinkedTowers(List<TowerData> towers) //ters de gelebilir
         {
-            ResetAllLinks();
+           // ResetAllLinks();
             //link de dahil gibi düşün, ters çevirdiğinde dümdüz ters çevirmek sorun olabilir
             for (var i = 0; i < AllTowers.TowersCount; i++)
             {
@@ -43,13 +43,13 @@ namespace Towers
             }
         }
         
-        private static void ResetAllLinks()
-        {
-            foreach (var relation in Relations.Values)
-            {
-                relation.LinkedTowers.Clear();
-            }
-        }
+        // private static void ResetAllLinks()
+        // {
+        //     foreach (var relation in Relations.Values)
+        //     {
+        //         relation.LinkedTowers.Clear();
+        //     }
+        // }
 
     }
     

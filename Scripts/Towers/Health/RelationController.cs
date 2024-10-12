@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Towers;
 
 namespace Actor
@@ -9,41 +10,43 @@ namespace Actor
         
         public override void Subscribe()
         {
-                
+            Eventbus.LinkEvents.OnCreatingCombatPairs += SetLinkedTowers;
         }
 
         public void SetRelationData(int id, params int[] towers)
         {
-            ActorManager.Registry[id].LinkedTowers.Clear();
-            ActorManager.Registry[id].LinkedTowers.AddRange(towers);
+            ActorManager.Registry[id].LinkedActors.Clear();
+            ActorManager.Registry[id].LinkedActors.AddRange(towers);
         }
 
-        public static void SetLinkedTowers(List<TowerData> towers) //ters de gelebilir
+        public void SetLinkedTowers(List<int> towers) //ters de gelebilir
         {
             ResetAllLinks();
             //link de dahil gibi düşün, ters çevirdiğinde dümdüz ters çevirmek sorun olabilir
-            for (var i = 0; i < AllTowers.TowersCount; i++)
+            for (var i = 0; i < ActorManager.Registry.Count; i++)
             {
-                var mainID = towers[i].UniqID;
-                int next = towers[(i + 1) % AllTowers.TowersCount].UniqID; //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
+                int mainID = ActorManager.Registry.ElementAt(i).Key;
+                int nextInOrder = (i + 1) % ActorManager.Registry.Count;
+                var next = ActorManager.Registry.ElementAt(nextInOrder).Key;
                 
-              
-                //ActorManager.Registry.Add(mainID, new RelationData(next));
-               
+                //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
+                
+                ActorManager.Registry[mainID].SetLinkedTowers(next);
             }
+            
         }
 
-        private static void ResetAllLinks()
+        private void ResetAllLinks()
         {
-            // foreach (var relation in Relations.Values)
-            // {
-            //     relation.LinkedTowers.Clear();
-            // }
+            foreach (var registry in ActorManager.Registry.Values)
+            {
+                registry.LinkedActors.Clear();
+            }
         }
 
         public override void Unsubscribe()
         {
-                
+            Eventbus.LinkEvents.OnCreatingCombatPairs -= SetLinkedTowers;
         }
 
     }

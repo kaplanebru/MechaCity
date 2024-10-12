@@ -25,7 +25,8 @@ public class CombatPairsCreator
         }
 
         _combatPairs.Clear();
-        TowersRelationManager.SetLinkedTowers(tempTowers);
+       // TowersRelationManager.SetLinkedTowers(tempTowers);
+        Eventbus.LinkEvents.OnCreatingCombatPairs?.Invoke( tempActors.Select(t => t).ToList());
         tempTowers.ForEach(CombatPairByTower);
     }
     
