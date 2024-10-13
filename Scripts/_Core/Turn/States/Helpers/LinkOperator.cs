@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Actor;
 using Enums;
 using GameUI;
 using Towers;
@@ -10,19 +11,25 @@ namespace Turn
     public class LinkOperator: ILinkOperator
     {
         public LinkOperatorType Type { get; set; } = LinkOperatorType.Standard;
-        public int[] Towers { get; set; }
+        private int[] Towers { get; set; }
         public List<TowerData> SafeGroup { get; set; } = new();
         
-        public void SetTowers(int[] newTowers)
+        public void SetTowers(uint[] actors)
         {
-            Towers = newTowers;
+            List<int> newTowers = new();
+            foreach (var actorID in actors)
+            {
+                newTowers.AddRange(ActorHolder.GetTowersByID(actorID));
+            }
+            Towers = newTowers.ToArray();
         }
         
         public void TowerSelected(params object[] args)
         {
             UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
 
-            int towerID = (int) args[0];
+            uint actorID = (uint) args[0];
+            var towerID = ActorHolder.GetTowersByID(actorID)[0];  
             
             Rise(AllTowers.GetData(towerID), 1);
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();

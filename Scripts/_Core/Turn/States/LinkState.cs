@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
 using Enums;
 using GameUI;
 using Network;
@@ -25,45 +26,44 @@ namespace Turn
 
 
         private ILinkOperator currentLinkOperator;
-        private ILinkOperator[] linkOperators = new ILinkOperator[2];
-        
-        private LinkOperator linkOperator = new();
-        private DoubleLinkOperator doubleLinkOperator = new(); //double ölene kadar ömrü var
+        private Dictionary<ActorType, ILinkOperator> linkOperators = new();
+
 
         public override void SubscribeToConstantEvents()
         {
             Eventbus.LinkEvents.OnFloorsOpened += LinkTowers;
             BpEventbus.ActionEvents.OnDoubleSelfAction += GetDoubles;
-            
+
             SetLinkOperators();
         }
 
         void SetLinkOperators()
         {
-            linkOperators[0] = linkOperator;
-            linkOperators[1] = doubleLinkOperator;
+            linkOperators.Add(ActorType.Standard, new LinkOperator());
+            linkOperators.Add(ActorType.MultiTower, new DoubleLinkOperator());
 
-            currentLinkOperator = linkOperators[0];
+
+            currentLinkOperator = linkOperators[ActorType.Standard];
         }
-        
+
 
         public override void Subscribe()
         {
             Eventbus.LinkEvents.OnLinkStateBegin?.Invoke();
         }
-        
-        
+
+
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             TransferData.Actors = data.Actors;
-            
+
             SetLinkOperatorAndSubscribe();
-            currentLinkOperator.SetTowers(TransferData.Towers.ToArray()); //y
-           
+            currentLinkOperator.SetTowers(TransferData.Actors); //y
+
 
             if (currentLinkOperator.Type == LinkOperatorType.Double)
                 TransferData.Towers = doubleLinkOperator.setter.SetTransferData().ToList(); //yo
-            
+
             Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.Towers);
         }
 
@@ -74,36 +74,22 @@ namespace Turn
 
         private void SetLinkOperatorAndSubscribe()
         {
-            foreach (var tower in TransferData.Towers)
-            {
-                if (AllDoubles.InspectTower(tower))
-                {
-                    currentLinkOperator = doubleLinkOperator;
-                 
-                    goto Subscribe;
-                }
-            }
-           
-            currentLinkOperator = linkOperator;
-            
-            
-            Subscribe:
+            currentLinkOperator = TransferData.Actors.Any(a => ActorHolder.Registry[a].Type == ActorType.MultiTower)
+                ? linkOperators[ActorType.MultiTower]
+                : linkOperators[ActorType.Standard];
+
             Debug.Log(currentLinkOperator.Type);
             NetworkEventbus.InputEvents.OnObjectClicked += currentLinkOperator.TowerSelected;
         }
-       
-        private void SwitchLinkOperator(LinkOperatorType type)
-        {
-            currentLinkOperator = linkOperators.First(o => o.Type == type);
-        }
         
+
         private void LinkTowers()
         {
             AllTowers.DisableClickability();
             Eventbus.LinkEvents.OnLinkingTowers?.Invoke(TransferData.Towers);
             MediatorEventbus.ChainLinkEvents.OnLinkedTowers?.Invoke(TransferData.Towers.ToArray());
         }
-        
+
         public override void Unsubscribe()
         {
             Eventbus.LinkEvents.OnUnlink?.Invoke(TransferData.Towers);
@@ -111,7 +97,7 @@ namespace Turn
 
             NetworkEventbus.InputEvents.OnObjectClicked -= currentLinkOperator.TowerSelected;
             AllTowers.EnableClickability();
-            
+
             SelectionEvents.OnSelectionTerminated?.Invoke();
         }
 
@@ -119,7 +105,6 @@ namespace Turn
         {
             Eventbus.LinkEvents.OnFloorsOpened -= LinkTowers;
             BpEventbus.ActionEvents.OnDoubleSelfAction -= GetDoubles;
-
         }
     }
 }

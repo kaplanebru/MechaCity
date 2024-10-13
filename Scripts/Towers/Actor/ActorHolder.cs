@@ -14,6 +14,8 @@ namespace Actor
         private ActorController[] Controllers = new ActorController[2];
 
         public static ActorData GetActor(uint id) => Registry[id];
+
+        public static int[] GetTowersByID(uint id) => Registry[id].Towers;
         public void Subscribe()
         {
             Eventbus.ActorEvents.OnNewDoubleActor += RegisterDouble;
@@ -59,7 +61,6 @@ namespace Actor
             }
             
             var id = RegisterItem(ActorType.MultiTower, totalHealth, ownTowers);
-            //id = Registry.Last().Key;
             Eventbus.HealthEvents.OnHealthChange?.Invoke(id);
         }
 

@@ -35,7 +35,7 @@ namespace Actor
             if (ActorHolder.Registry[actorID].Health <= 0)
             {
                 DeathOperator.Instance.HandleDeath(actorID, 
-                    () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(ActorHolder.Registry[actorID].Towers), 
+                    () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(ActorHolder.GetTowersByID(actorID)), 
                     completeCall);
 
                 return true;

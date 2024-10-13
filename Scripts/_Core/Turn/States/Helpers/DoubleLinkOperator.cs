@@ -24,14 +24,16 @@ namespace Turn
         //Açıklama: normalde çoklu seçimde rise fall'a göre belirleniyor. diğer towerların fall'u ne kadarsa seçilen tower'a o kadar ekleniyor.
         //Fakat double towers amount > others olduğunda tam tersi çalışıyor: Others  souble tower height'ine ulaşana kadar 1'den fazla iner
 
-        public void SetTowers(int[] newTowers)
+        public void SetTowers(uint[] actors)
         {
-            setter.SetTowers(newTowers, out TurnDoubles, out Singles);
+            setter.SetTowers(actors, out TurnDoubles, out Singles);
         }
 
         public void TowerSelected(params object[] args)
         {
-            int towerID = (int) args[0];
+            uint towerID = (uint) args[0];
+            
+            
 
             if (Singles.ContainsKey(towerID))
             {

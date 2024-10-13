@@ -20,9 +20,9 @@ namespace Turn
         
         public void RestorePreviousSelectionColors()
         {
-            foreach (var actor in Actors)
+            foreach (var actorID in Actors)
             {
-                foreach (var tower in ActorHolder.Registry[actor].Towers)
+                foreach (var tower in ActorHolder.GetTowersByID(actorID))
                 {
                     AllTowers.GetData(tower).ColorHandler.ToSelectionColor();
                 }
