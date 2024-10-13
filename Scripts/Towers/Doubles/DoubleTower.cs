@@ -42,8 +42,8 @@ namespace Towers
             
             towers = towers.OrderBy(t => t.Value.AvailableHeight).ToDictionary(t => t.Key, t => t.Value);
             Amount = towers.Count;
-            
-            ID = UniqueIdGenerator.GenerateIntId();
+
+            ID = UniqueIdGenerator.IntId();
         }
         
         private void RegisterActor()

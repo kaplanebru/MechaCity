@@ -11,7 +11,7 @@ namespace Turn
     public class SelectionTransferData : BaseTurnTransferData
     {
         public override TurnStateType StateType { get; set; } = TurnStateType.Selection;
-        public override List<int> Towers { get; set; } = new();
+        public override List<uint> Actors { get; set; } = new();
         
     }
 
@@ -52,8 +52,8 @@ namespace Turn
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
-            TransferData.Towers = data.Towers;
-            mainSelector.ContinueTowers(TransferData.Towers);
+            TransferData.Actors = data.Actors;
+            mainSelector.ContinueTowers(TransferData.Actors);
         }
         
         public void ResetMaxSelection() 
@@ -73,7 +73,7 @@ namespace Turn
 
         public override void Unsubscribe()
         {
-            TransferData.Towers = mainSelector.SendAllTowers();
+            TransferData.Actors = mainSelector.SendAllTowers();
             mainSelector.Unsubscribe();
         }
 

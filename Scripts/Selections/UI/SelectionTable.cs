@@ -37,17 +37,17 @@ public class SelectionTable : MonoBehaviour
         emptySlots = activeSlots.ToList();
     }
 
-    private void AddToTable(string towerName, int id)
+    private void AddToTable(string towerName, uint actorID)
     {
-        emptySlots.First().Fill(towerName, id);
+        emptySlots.First().Fill(towerName, actorID);
         emptySlots.RemoveAt(0);
         
         //dolmuşsa resetlemek lazım
     }
     
-    private void RemoveFromTable(int id)
+    private void RemoveFromTable(uint id)
     {
-        var slot = slots.First(s => s.towerId == id);
+        var slot = slots.First(s => s.actorID == id);
         slot.ResetSlot();
         
         emptySlots.Add(slot);

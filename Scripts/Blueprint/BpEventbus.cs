@@ -10,7 +10,7 @@ using UnityEngine;
 public static class BpEventbus
 {
 
-    public static Action<int[]?> OnSendingSelectionsForExecution;
+    public static Action<uint[]?> OnSendingSelectionsForExecution;
     public class SelectionEvents
     {
         public static Action<SelectionType> OnCurrentBpSet;

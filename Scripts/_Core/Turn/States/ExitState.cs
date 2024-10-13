@@ -6,7 +6,7 @@ using Turn;
 public class ExitTransferData : BaseTurnTransferData
 {
     public override TurnStateType StateType { get; set; } = TurnStateType.Exit;
-    public override List<int> Towers { get; set; } = new();
+    public override List<uint> Actors { get; set; } = new();
 }
 
 public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
@@ -30,8 +30,8 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     }
     public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
     {
-        TransferData.Towers = data.Towers;
-        CombatOperator.Subscribe(TransferData.Towers);
+        TransferData.Actors = data.Actors;
+        CombatOperator.Subscribe(TransferData.Actors);
         ExecuteCombat();
     }
     

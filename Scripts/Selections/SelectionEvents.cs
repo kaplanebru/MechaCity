@@ -4,8 +4,8 @@ public static class SelectionEvents
 {
     public static Action<Selector> OnSelectionReady;
     public static Action OnSelectionTerminated;
-    public static Action<string, int> OnSelection;
-    public static Action<int> OnDeselect;
+    public static Action<string, uint> OnSelection;
+    public static Action<uint> OnDeselect;
     public static Action OnDeselectAll;
 
    

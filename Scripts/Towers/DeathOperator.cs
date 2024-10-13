@@ -14,7 +14,7 @@ namespace Towers
         }
 
 
-        public void HandleDeath(string actorID, Action teamSwitchCallback, Action completeCombat)
+        public void HandleDeath(uint actorID, Action teamSwitchCallback, Action completeCombat)
         {
             foreach (var tower in ActorHolder.Registry[actorID].Towers)
             {

@@ -10,10 +10,10 @@ namespace Actor
 {
     public class ActorHolder
     {
-        public static Dictionary<string, ActorData> Registry { get; private set; } = new();
+        public static Dictionary<uint, ActorData> Registry { get; private set; } = new();
         private ActorController[] Controllers = new ActorController[2];
 
-        public static ActorData GetActor(string id) => Registry[id];
+        public static ActorData GetActor(uint id) => Registry[id];
         public void Subscribe()
         {
             Eventbus.ActorEvents.OnNewDoubleActor += RegisterDouble;
@@ -41,9 +41,9 @@ namespace Actor
             }
         }
 
-        public string RegisterItem(ActorType type, int initialHealth, params int[] ownTowers)
+        public uint RegisterItem(ActorType type, int initialHealth, params int[] ownTowers)
         {
-            var id = UniqueIdGenerator.GenerateUniqueId();
+            var id = UniqueIdGenerator.UIntId();
             Registry.Add(id, new ActorData(id, type, initialHealth, ownTowers));
             return id;
         }

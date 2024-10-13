@@ -11,14 +11,8 @@ namespace Actor
         {
             Eventbus.LinkEvents.OnCreatingCombatPairs += SetLinkedTowers;
         }
-
-        public void SetRelationData(string id, params string[] towers)
-        {
-            ActorHolder.Registry[id].LinkedActors.Clear();
-            ActorHolder.Registry[id].LinkedActors.AddRange(towers);
-        }
-
-        public static void SetLinkedTowers(List<string> tempTowerIDs) //ters de gelebilir
+        
+        public static void SetLinkedTowers(List<uint> tempTowerIDs) //ters de gelebilir
         {
             ResetAllLinks();
             for (var i = 0; i < AllTowers.TowersCount; i++)

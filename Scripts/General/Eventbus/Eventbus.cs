@@ -31,12 +31,12 @@ public static class Eventbus
         public static Action<List<int>> OnUnlink;
         public static Action OnFloorsOpened;
 
-        public static Action <List<string>> OnCreatingCombatPairs;
+        public static Action <List<uint>> OnCreatingCombatPairs;
     }
     public static class HealthEvents
     {
-        public static Action<string, int, Action> OnShoot;
-        public static Action<string> OnHealthChange;
+        public static Action<uint, int, Action> OnShoot;
+        public static Action<uint> OnHealthChange;
         public static Action OnHealthsSet;
         public static Action<int[]> OnRemoveFromRegistry;
     }

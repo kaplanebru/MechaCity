@@ -1,30 +1,26 @@
+using System;
 using Enums;
 using UnityEngine;
 
 namespace Clicks
 {
-    public class ClickHandler : MonoBehaviour, ITowerRelated
+    public class ClickHandler : MonoBehaviour //, ITowerRelated
     {
         private Clickable[] _clickables;
+
+        private void OnEnable()
+        {
+            Initialize();
+            //todo: event for setclickableıds
+        }
+
         
-        public int Id { get; set; }
-        public void Initialize(int id)
+        public void Initialize()
         {
             _clickables = GetComponentsInChildren<Clickable>();
-            Id = id;
-            foreach (var clickable in _clickables)
-            {
-                clickable.id = Id;
-            }
         }
-
-        public void SetClickables(int id)
-        {
-            _clickables = GetComponentsInChildren<Clickable>();
-            SetClickableIds(id);
-        }
-
-        void SetClickableIds(int id)
+        
+        void SetClickableIds(uint id)
         {
             foreach (var clickable in _clickables)
             {
@@ -56,6 +52,9 @@ namespace Clicks
             }
         }
 
-       
+        private void OnDisable()
+        {
+            
+        }
     }
 }

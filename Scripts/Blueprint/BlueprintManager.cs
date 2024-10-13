@@ -73,7 +73,7 @@ namespace Blueprint
             bpTrackerList.RemoveFromTrackList(lifeTracker);
         }
 
-        private void TryExecuteBp([CanBeNull] int[] selectedItems)
+        private void TryExecuteBp([CanBeNull] uint[] selectedItems)
         {
             if(selectedItems == null) return;
             if (currentBlueprint.TryTakeAction(selectedItems))
@@ -83,7 +83,7 @@ namespace Blueprint
             }
         }
 
-        void SetTracker([CanBeNull] int[] selectedItems)
+        void SetTracker([CanBeNull] uint[] selectedItems)
         {
             if(selectedItems == null) return; //TODO: ya des trackers sans items
             

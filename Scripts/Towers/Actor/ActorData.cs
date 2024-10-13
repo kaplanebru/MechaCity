@@ -6,16 +6,16 @@ namespace Actor
 {
     public class ActorData
     {
-        public string ID;
+        public uint ID;
         public ActorType Type;
         public int[] Towers;
         
         public int Health;
         public int InitialHealth;
         
-        public List<string> LinkedActors = new();
+        public List<uint> LinkedActors = new();
         
-        public ActorData(string id, ActorType type, int initialHealth, params int[] towers)
+        public ActorData(uint id, ActorType type, int initialHealth, params int[] towers)
         {
             ID = id;
             Type = type;
@@ -26,7 +26,7 @@ namespace Actor
             Towers = towers;
         }
 
-        public void SetLinkedTowers(params string[] linkedActors)
+        public void SetLinkedTowers(params uint[] linkedActors)
         {
             LinkedActors = linkedActors.ToList();
         }

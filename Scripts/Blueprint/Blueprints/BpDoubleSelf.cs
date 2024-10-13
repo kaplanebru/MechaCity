@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
 using Enums;
 using Enums.Selections;
 using Towers;
@@ -17,7 +18,7 @@ namespace Blueprint
         public DoubleSelfAction BpAction { get; } = new DoubleSelfAction();
 
 
-        public override bool TryTakeAction(int[] selectedItems)
+        public override bool TryTakeAction(uint[] selectedItems)
         {
             if (CheckSelectionConstraints(selectedItems))
             {
@@ -34,33 +35,29 @@ namespace Blueprint
             BpAction.Restore(selectedItem);
         }
 
-        TowerData[] ConvertToTowers(int[] selectedItems)
+        ActorData[] ConvertToTowers(uint[] selectedItems)
         {
-            TowerData[] towers = new TowerData[selectedItems.Length];
+            ActorData[] actors = new ActorData[selectedItems.Length];
             for (var i = 0; i < selectedItems.Length; i++)
             {
-                towers[i] = AllTowers.GetData(selectedItems[i]);
+                actors[i] = ActorHolder.GetActor(selectedItems[i]);
             }
 
-            return towers;
+            return actors;
         }
 
-        public bool CheckSelectionConstraints(int[] selectedItems)
+        public bool CheckSelectionConstraints(uint[] selectedItems)
         {
-            var towers = ConvertToTowers(selectedItems);
-            towers = towers.OrderBy(t => t.UniqID).ToArray();
+            var actors = ConvertToTowers(selectedItems);
+            actors = actors.OrderBy(a => a.ID).ToArray();
 
-            for (var i = 0; i < towers.Length; i++)
+            for (var i = 0; i < actors.Length; i++)
             {
-                var tower = towers[i];
-                var nextTower = towers[(i + 1) % (towers.Length)];
-                //geri gidiyorsa sonraki değil previous neighbora bakmalı
-                //Debug.Log("nextTower: " + nextTower.UniqID + " neighbour: " +  tower.NeighbourIDs[1] );
-                // if (tower.NeighbourIDs[1] != nextTower.UniqID)
-                //     return false;
+                var actor = actors[i];
+                var nextActor = actors[(i + 1) % (actors.Length)];
 
-                if (!tower.NeighbourIDs.Contains(nextTower.UniqID))
-                    return false;
+                // if (!actor.NeighbourIDs.Contains(nextActor.ID)) //todo: neighbours
+                //     return false;
             }
 
             return true;

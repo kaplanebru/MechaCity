@@ -20,7 +20,7 @@ namespace Actor
             }
         }
         
-        void ApplyDamage(string actorID, int damage, Action completeCall)
+        void ApplyDamage(uint actorID, int damage, Action completeCall)
         {
             ActorHolder.Registry[actorID].Health -= damage; //bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
             Eventbus.HealthEvents.OnHealthChange?.Invoke(actorID); //TODO: ui
@@ -30,7 +30,7 @@ namespace Actor
             completeCall();
         }
 
-        private bool IsDead(string actorID, Action completeCall)
+        private bool IsDead(uint actorID, Action completeCall)
         {
             if (ActorHolder.Registry[actorID].Health <= 0)
             {

@@ -29,34 +29,34 @@ public class SingleTypeSelector : Selector, IBlockable
  
     protected override void GetTower(params object[] args)
     {
-        int towerId = (int) args[0];
+        uint actorID = (uint) args[0];
 
-        if (SelectedTwice(towerId)) return;
+        if (SelectedTwice(actorID)) return;
 
-        if (CurrentGroup.SelectedTowers.Count == CurrentGroup.MaxTowers)
+        if (CurrentGroup.SelectedActors.Count == CurrentGroup.MaxTowers)
             DeselectAll();
 
-        HandleSelection(true, towerId);
+        HandleSelection(true, actorID);
     }
 
-    protected override bool SelectedTwice(int selectedTower)
+    protected override bool SelectedTwice(uint selectedActor)
     {
-        if (CurrentGroup.SelectedTowers.Contains(selectedTower))
+        if (CurrentGroup.SelectedActors.Contains(selectedActor))
         {
-            HandleSelection(false, selectedTower);
+            HandleSelection(false, selectedActor);
             return true;
         }
         return false;
     }
     
-    public override void ContinueTowers(List<int> towers) //önceki state'ten kalan varsa takip edebilelim diye
+    public override void ContinueTowers(List<uint> actors) //önceki state'ten kalan varsa takip edebilelim diye
     {
-        CurrentGroup.SelectedTowers = towers;
+        CurrentGroup.SelectedActors = actors;
     }
 
     protected override void HandleUI()
     {
-        HighlightApply(CurrentGroup.SelectedTowers.Count == CurrentGroup.MaxTowers);
+        HighlightApply(CurrentGroup.SelectedActors.Count == CurrentGroup.MaxTowers);
     }
     
     public override void ResetMaxSelection()
@@ -82,9 +82,9 @@ public class SingleTypeSelector : Selector, IBlockable
         CurrentGroup.MaxTowers++;
     }
     
-    public override List<int> SendAllTowers()
+    public override List<uint> SendAllTowers()
     {
-        return CurrentGroup.SelectedTowers;
+        return CurrentGroup.SelectedActors;
     }
 
     

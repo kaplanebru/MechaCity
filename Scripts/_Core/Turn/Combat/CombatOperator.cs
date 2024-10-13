@@ -41,10 +41,19 @@ namespace Turn
             _pairController = pairController;
         }
 
-        public void Subscribe(List<int> towers)
+        public void Subscribe(List<uint> actors)
         {
-            _towers = towers;
-            _towers?.ForEach(at => AllTowers.GetData(at).ColorHandler.ToOriginalColor());
+            _towers.Clear();
+            foreach (var actorID in actors)
+            {
+                var actor = ActorHolder.Registry[actorID];
+                _towers.AddRange(actor.Towers);
+            }
+            
+            foreach (var tower in _towers)
+            {
+                AllTowers.GetData(tower).ColorHandler.ToOriginalColor();
+            }
         }
 
         public void Fasten()

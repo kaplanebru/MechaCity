@@ -9,7 +9,7 @@ public class SelectionSlot : MonoBehaviour
 {
     public int Index { get; private set; }
 
-    public int towerId;
+    public uint actorID;
     [SerializeField]private TextMeshProUGUI text;
     [SerializeField]private Image image;
     [SerializeField]private Color[] colors;
@@ -17,13 +17,13 @@ public class SelectionSlot : MonoBehaviour
     public void ResetSlot()
     {
         text.text = "";
-        towerId = -1;
+        actorID = 0; //-1
     }
 
-    public void Fill(string towerName, int id)
+    public void Fill(string towerName, uint id)
     {
         text.text = towerName;
-        towerId = id;
+        actorID = id;
     }
 
     public void SetTeamColor(Team team)

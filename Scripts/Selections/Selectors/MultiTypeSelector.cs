@@ -34,7 +34,7 @@ public class MultiTypeSelector : Selector, IBlockable
     
     protected override void GetTower(params object[] args)
     {
-        int towerId = (int) args[0];
+        uint actorID = (uint) args[0];
         
         if (isFull)
         {
@@ -45,9 +45,9 @@ public class MultiTypeSelector : Selector, IBlockable
 
         // if(SelectedTwice(towerId)) return; //sadece seçili olan deselect olur. TODO: tıklanamaz olduğu için sıkıntı
 
-        HandleSelection(true, towerId);
+        HandleSelection(true, actorID);
 
-        if (CurrentGroup.SelectedTowers.Count == CurrentGroup.MaxTowers)
+        if (CurrentGroup.SelectedActors.Count == CurrentGroup.MaxTowers)
         {
             ShiftGroup();
         }
@@ -85,20 +85,20 @@ public class MultiTypeSelector : Selector, IBlockable
         isFull = true;
     }
 
-    protected override bool SelectedTwice(int selectedTower)
+    protected override bool SelectedTwice(uint selectedActor)
     {
         return false;
     }
 
-    public override List<int> SendAllTowers()
+    public override List<uint> SendAllTowers()
     {
-        List<int> towers = new();
+        List<uint> actors = new();
         foreach (var group in Data.Groups)
         {
-            towers.AddRange(group.SelectedTowers);
+            actors.AddRange(group.SelectedActors);
         }
 
-        return towers;
+        return actors;
     }
 
 }

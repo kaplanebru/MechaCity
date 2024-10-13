@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Actor;
 using Enums;
 using Enums.Selections;
 using Towers;
@@ -12,7 +13,7 @@ public class SelectionGroup
     public int Index;
     public int MaxTowers = 1;
     public ColorType SelectionColorType;
-    public List<int> SelectedTowers { get; set; } = new();
+    public List<uint> SelectedActors { get; set; } = new();
     
     public BlockType BlockType;
     public TeamState SelectionTeam {
@@ -41,10 +42,14 @@ public class SelectionGroup
     }
     public void ResetTowers()
     {
-        foreach (var tower in SelectedTowers)
+        foreach (var actorID in SelectedActors)
         {
-            AllTowers.GetData(tower).ColorHandler.ToOriginalColor();
+            ActorData actor = ActorHolder.Registry[actorID];
+            foreach (var tower in actor.Towers)
+            {
+                AllTowers.GetData(tower).ColorHandler.ToOriginalColor();
+            }
         }
-        SelectedTowers.Clear();
+        SelectedActors.Clear();
     }
 }

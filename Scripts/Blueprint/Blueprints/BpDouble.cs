@@ -15,7 +15,7 @@ namespace Blueprint
         public DoubleAction BpAction { get; } = new DoubleAction();
         
         
-        public override bool TryTakeAction(int[] selectedItems)
+        public override bool TryTakeAction(uint[] selectedItems)
         {
             BpAction.Execute(selectedItems);
             return true;

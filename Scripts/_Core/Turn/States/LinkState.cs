@@ -14,7 +14,7 @@ namespace Turn
     public class TowerGroupTransferData : BaseTurnTransferData
     {
         public override TurnStateType StateType { get; set; } = TurnStateType.Link;
-        public override List<int> Towers { get; set; } = new();
+        public override List<uint> Actors { get; set; } = new();
     }
 
     public class LinkState : BaseTurnState, ITransferDataHolder<TowerGroupTransferData>
@@ -55,7 +55,7 @@ namespace Turn
         
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
-            TransferData.Towers = data.Towers;
+            TransferData.Actors = data.Actors;
             
             SetLinkOperatorAndSubscribe();
             currentLinkOperator.SetTowers(TransferData.Towers.ToArray()); //y
@@ -67,9 +67,8 @@ namespace Turn
             Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.Towers);
         }
 
-        private void GetDoubles(DoubleTower doubleTower) //params int[] towers
+        private void GetDoubles(DoubleTower doubleTower)
         {
-            //doubleLinkOperator.setter.AddDoubles(doubleTower);
             AllDoubles.Add(doubleTower);
         }
 
@@ -77,14 +76,14 @@ namespace Turn
         {
             foreach (var tower in TransferData.Towers)
             {
-                if (AllDoubles.InspectTower(tower))//(doubleLinkOperator.setter.InspectDoubles(tower))
+                if (AllDoubles.InspectTower(tower))
                 {
                     currentLinkOperator = doubleLinkOperator;
-                    //SwitchLinkOperator(LinkOperatorType.Double);
+                 
                     goto Subscribe;
                 }
             }
-            //SwitchLinkOperator(LinkOperatorType.Standard);
+           
             currentLinkOperator = linkOperator;
             
             

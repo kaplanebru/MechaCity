@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Core.Turn.Selectors;
+using Actor;
 using Enums;
 using Enums.Selections;
 using GameUI;
@@ -24,9 +25,9 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     public abstract void RestartWithNewTowers();
     protected abstract void GetTower(params object[] args);
     protected abstract void HandleUI();
-    public abstract List<int> SendAllTowers();
+    public abstract List<uint> SendAllTowers();
     //protected abstract void DeselectAll();
-    protected abstract bool SelectedTwice(int selectedTower);
+    protected abstract bool SelectedTwice(uint selectedTower);
 
     public void Subscribe()
     {
@@ -67,7 +68,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     }
 
     public abstract void InitialSetup();
-    protected void HandleSelection(bool select, int newSelection)
+    protected void HandleSelection(bool select, uint newSelection)
     {
         if (select)
             Select(newSelection);
@@ -77,22 +78,28 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
         HandleUI();
     }
 
-    private void Select(int newSelection)
+    private void Select(uint newSelection)
     {
-        CurrentGroup.SelectedTowers.Add(newSelection);
-        var tower = AllTowers.GetData(newSelection);
-        SetSelectionColor(tower);
+        CurrentGroup.SelectedActors.Add(newSelection);
+        var actor = ActorHolder.Registry[newSelection];//AllTowers.GetData(newSelection);
+        
+        SetSelectionColor(actor);
 
-        SelectionEvents.OnSelection?.Invoke(tower.UniqID.ToString(), tower.UniqID); //todo: name
+        SelectionEvents.OnSelection?.Invoke(actor.ID.ToString(), actor.ID); //todo: name
 
     }
-    private void Deselect(int newSelection)
+    private void Deselect(uint newSelection)
     {
-        CurrentGroup.SelectedTowers.Remove(newSelection);
-        var tower = AllTowers.GetData(newSelection);
-        tower.ColorHandler.ToOriginalColor();
+        CurrentGroup.SelectedActors.Remove(newSelection);
+        var actor = ActorHolder.Registry[newSelection];//AllTowers.GetData(newSelection);
+
+        foreach (var tower in actor.Towers)
+        {
+            AllTowers.GetData(tower).ColorHandler.ToOriginalColor();
+        }
+       
         
-        SelectionEvents.OnDeselect?.Invoke(tower.UniqID);
+        SelectionEvents.OnDeselect?.Invoke(actor.ID);
     }
 
     public void DeselectAll()
@@ -110,9 +117,13 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
 
     protected virtual void DeselectCall() { }
     
-    private void SetSelectionColor(TowerData tower)
+    private void SetSelectionColor(ActorData actor)
     {
-        tower.ColorHandler.SetColorByColorType(CurrentGroup.SelectionColorType);
+        foreach (var towerID in actor.Towers)
+        {
+            var tower = AllTowers.GetData(towerID);
+            tower.ColorHandler.SetColorByColorType(CurrentGroup.SelectionColorType);
+        }
     }
     protected void HighlightApply(bool enable)
     {
@@ -122,7 +133,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     public virtual void ResetMaxSelection(){}
     public virtual void SetMaxTowers(int amount) {}
     public virtual void IncreaseMaxTowers() {}
-    public virtual void ContinueTowers(List<int> towers) {}//önceki state'ten kalan varsa takip edebilelim diye
+    public virtual void ContinueTowers(List<uint> towers) {}//önceki state'ten kalan varsa takip edebilelim diye
     
     public void Unsubscribe()
     {

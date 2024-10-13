@@ -8,7 +8,7 @@ namespace Turn
     public class IntruderTransferData : BaseTurnTransferData
     {
         public override TurnStateType StateType { get; set; } = TurnStateType.Intruder;
-        public override List<int> Towers { get; set; } = new();
+        public override List<uint> Actors { get; set; } = new();
     }
 
     public class IntruderState : BaseTurnState, ITransferDataHolder<IntruderTransferData>
@@ -38,7 +38,7 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
         {
             incomingData = data;
-            TransferData.Towers = data.Towers;
+            TransferData.Actors = data.Actors;
         }
 
         private void GetBpSelector(SelectionType selectionType)

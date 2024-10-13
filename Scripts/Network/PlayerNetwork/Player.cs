@@ -82,15 +82,15 @@ namespace PlayerNetwork
         }
 
         [ServerRpc]
-        void SendTowerIdToServerRpc(int towerId)
+        void SendTowerIdToServerRpc(uint actorID)
         {
-            AdjustTowerClientRpc(towerId);
+            AdjustTowerClientRpc(actorID);
         }
 
         [ClientRpc]
-        void AdjustTowerClientRpc(int towerId) //burda da hem owner hem klonu dahil clienttaki
+        void AdjustTowerClientRpc(uint actorID) //burda da hem owner hem klonu dahil clienttaki
         {
-            NetworkEventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {towerId }); //
+            NetworkEventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {actorID }); //
             //print(towerId);
         }
         

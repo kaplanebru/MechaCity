@@ -20,7 +20,7 @@ namespace Blueprint
         public abstract int Lifespan {get; set; } //todo: lifespan da değişken olacak burda olmamalı
         
         public abstract int MaxSelectionAmount { get; set; }
-        public abstract bool TryTakeAction([CanBeNull] int[] selectedItems);
+        public abstract bool TryTakeAction([CanBeNull] uint[] selectedItems);
 
         //public abstract void CheckSelectionConstraints(int[] selectedItems);
 

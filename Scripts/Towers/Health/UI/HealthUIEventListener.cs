@@ -22,7 +22,7 @@ namespace Health
         
         public override void Initialize() { }
     
-        private void AdjustHealthIcon(string actorID)
+        private void AdjustHealthIcon(uint actorID)
         {
             var actor = ActorHolder.Registry[actorID];
 

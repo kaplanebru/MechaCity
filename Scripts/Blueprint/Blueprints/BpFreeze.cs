@@ -12,7 +12,7 @@ namespace Blueprint
         public override int MaxSelectionAmount { get; set; } = 1; //dışardan belirlenmeli - değişken
         public FreezeAction BpAction { get; } = new FreezeAction();
 
-        public override bool TryTakeAction(int[] selectedItems)
+        public override bool TryTakeAction(uint[] selectedItems)
         {
             Debug.Log("EXECUTE");
             BpAction.Execute(selectedItems);

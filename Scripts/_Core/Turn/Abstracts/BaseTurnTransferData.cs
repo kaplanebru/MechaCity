@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Actor;
 using Enums;
 using Towers;
 
@@ -10,16 +11,22 @@ namespace Turn
     public abstract class BaseTurnTransferData
     {
         public abstract TurnStateType StateType { get; set; }
-        public abstract List<int> Towers { get; set; }
+        public abstract List<uint> Actors { get; set; }
         
         public virtual void ResetPreviousTurnData()
         {
-            Towers.Clear();
+            Actors.Clear();
         }
         
         public void RestorePreviousSelectionColors()
         {
-            Towers.ForEach(s=>AllTowers.GetData(s).ColorHandler.ToSelectionColor());
+            foreach (var actor in Actors)
+            {
+                foreach (var tower in ActorHolder.Registry[actor].Towers)
+                {
+                    AllTowers.GetData(tower).ColorHandler.ToSelectionColor();
+                }
+            }
         }
 
     }
