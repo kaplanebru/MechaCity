@@ -4,10 +4,7 @@ using Enums;
 
 public static class Eventbus
 {
-    public static class ActorEvents
-    {
-        public static Action<int[]> OnNewDoubleActor;
-    }
+    
     public static class CombatEvents
     {
         public static Action<int[]> OnTowerKilled;

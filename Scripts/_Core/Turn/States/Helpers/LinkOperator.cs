@@ -10,7 +10,6 @@ namespace Turn
 {
     public class LinkOperator: ILinkOperator
     {
-        public LinkOperatorType Type { get; set; } = LinkOperatorType.Standard;
         private int[] Towers { get; set; }
         public List<TowerData> SafeGroup { get; set; } = new();
         

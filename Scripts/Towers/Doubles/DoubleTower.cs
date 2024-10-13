@@ -12,8 +12,8 @@ namespace Towers
         [NonSerialized]
         public Dictionary<int, TowerData> towers = new();
        
-        public int Amount { get; set; } //private set?
-        public int ID { get; }
+        public int Amount { get; set; }
+        //public int ID { get; }
 
         public DTPhysical Physical;
       
@@ -39,13 +39,14 @@ namespace Towers
             towers = towers.OrderBy(t => t.Value.AvailableHeight).ToDictionary(t => t.Key, t => t.Value);
             Amount = towers.Count;
 
-            ID = UniqueIdGenerator.IntId();
+           // ID = UniqueIdGenerator.IntId();
             Physical = new DTPhysical(towers);
         }
         
         private void RegisterActor()
         {
-            Eventbus.ActorEvents.OnNewDoubleActor.Invoke(towers.Keys.ToArray());
+            uint actorID = AllDoubles.DoubleTowerEvents.OnDoubleTowerCreated.Invoke(towers.Keys.ToArray());
+            AllDoubles.RegisterDouble(actorID, this);
         }
         public bool InspectByTowerData(TowerData tower) => towers.ContainsValue(tower);
         public bool InspectByTowerID(int id) => towers.ContainsKey(id);

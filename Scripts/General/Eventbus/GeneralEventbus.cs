@@ -14,8 +14,6 @@ public static class GeneralEventbus
         public static Action OnExternalElementsReady;
     }
 
-   
-    
     public static Action<IEnumeratorContainer> OnCoroutineTrigger;
     
     public static Action<int> OnTowerColorChange;

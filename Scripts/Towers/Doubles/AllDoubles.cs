@@ -1,58 +1,55 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Towers;
 using UnityEngine;
 
-public class AllDoubles
+
+namespace Towers
 {
-    private static List<DoubleTower> Doubles  = new();
-    public static Dictionary<int, DoubleTower> DoublesByID  { get; private set; }  = new();
-
-    public static void Add(DoubleTower doubleTower)
+    public class AllDoubles
     {
-        Doubles.Add(doubleTower);
-        DoublesByID.Add(doubleTower.ID, doubleTower);
-    }
-
-    public static void Remove(DoubleTower doubleTower)
-    {
-        Doubles.Remove(doubleTower);
-        DoublesByID.Remove(doubleTower.ID);
-    }
-
-   
-   
-    public static bool TryInspectTowerAndGetDouble(int id, out DoubleTower doubleTower)
-    {
-        foreach (var _double in Doubles)
+        public static class DoubleTowerEvents
         {
-            if (_double.InspectByTowerID(id)) //.towers.ContainsKey(id)
-            {
-                doubleTower = _double;
-                return true;
-            }
+            public static Func<int[], uint> OnDoubleTowerCreated;
+        }
+        private static Dictionary<uint, DoubleTower> DoublesByActorID { get; } = new();
+
+        public static void RegisterDouble(uint actorID, DoubleTower doubleTower)
+        {
+            DoublesByActorID.Add(actorID, doubleTower);
         }
 
-        doubleTower = null;
-        return false;
+        public static void RemoveDouble(uint actorID)
+        {
+            DoublesByActorID.Remove(actorID); //todo: actorü yok etmeden önce double'ı yok etmek gerekir
+        }
+
+        public static DoubleTower GetDouble(uint actorID)
+        {
+            if (!DoublesByActorID.ContainsKey(actorID))
+            {
+                Debug.LogError("NO Double with this ACTOR ID");
+                return null;
+            }
+
+            return DoublesByActorID[actorID];
+        }
+        
+        
+        // public static bool TryInspectTowerAndGetDouble(int id, out DoubleTower doubleTower)
+        // {
+        //     foreach (var _double in Doubles)
+        //     {
+        //         if (_double.InspectByTowerID(id)) //.towers.ContainsKey(id)
+        //         {
+        //             doubleTower = _double;
+        //             return true;
+        //         }
+        //     }
+        //
+        //     doubleTower = null;
+        //     return false;
+        // }
     }
-    
-    // public static bool InspectTower(int id)
-    // {
-    //     return Doubles.Any(_double => _double.InspectByTowerID(id)); //_double.towers.ContainsKey(id)
-    // }
-    //
-    // public static DoubleTower TryGetDoubleByID(int id)
-    // {
-    //     foreach (var key in DoublesByID.Keys)
-    //     {
-    //         if (key == id)
-    //             return DoublesByID[id];
-    //     }
-    //     
-    //     return null;
-    // }
-    
-    
 }

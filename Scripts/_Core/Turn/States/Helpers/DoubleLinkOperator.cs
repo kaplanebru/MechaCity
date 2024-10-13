@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
 using Enums;
 using GameUI;
 using Towers;
@@ -11,14 +12,13 @@ namespace Turn
 {
     public class DoubleLinkOperator : ILinkOperator
     {
-        public LinkOperatorType Type { get; set; } = LinkOperatorType.Double;
-        public DoubleLinkSetter setter = new();
-
         private HashSet<DoubleTower> TurnDoubles = new();
         private Dictionary<int, TowerData> Singles = new();
 
         private Dictionary<TowerData, int> safeGroup = new();
         private ILinkable selection;
+
+        private Dictionary<uint, ActorData> _actors = new();
 
 
         //Açıklama: normalde çoklu seçimde rise fall'a göre belirleniyor. diğer towerların fall'u ne kadarsa seçilen tower'a o kadar ekleniyor.
@@ -26,30 +26,28 @@ namespace Turn
 
         public void SetTowers(uint[] actors)
         {
-            setter.SetTowers(actors, out TurnDoubles, out Singles);
+            _actors.Clear();
+            foreach (var actorID in actors)
+            {
+                _actors.Add(actorID, ActorHolder.Registry[actorID]);
+            }
         }
 
         public void TowerSelected(params object[] args)
         {
-            uint towerID = (uint) args[0];
+            uint actorID = (uint) args[0];
             
-            
-
-            if (Singles.ContainsKey(towerID))
+            if (_actors[actorID].Type == ActorType.Standard)
             {
-                selection = Singles[towerID];
+                selection = AllTowers.GetData(_actors[actorID].Towers[0]);
                 SelectedSingleRise(1);
             }
             else
             {
-                foreach (var Double in TurnDoubles)
-                {
-                    if (!Double.InspectByTowerID(towerID)) continue;
-                    selection = Double;
-                    SelectedDoubleRise(1);
-                    break;
-                }
+                selection = AllDoubles.GetDouble(actorID);
+                SelectedDoubleRise(1);
             }
+            
             UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
         }
 

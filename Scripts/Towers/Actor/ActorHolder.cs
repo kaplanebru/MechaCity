@@ -18,7 +18,7 @@ namespace Actor
         public static int[] GetTowersByID(uint id) => Registry[id].Towers;
         public void Subscribe()
         {
-            Eventbus.ActorEvents.OnNewDoubleActor += RegisterDouble;
+            AllDoubles.DoubleTowerEvents.OnDoubleTowerCreated += RegisterDouble;
             SetControllers();
         }
 
@@ -50,7 +50,7 @@ namespace Actor
             return id;
         }
 
-        public void RegisterDouble(params int[] ownTowers)
+        private uint RegisterDouble(int[] ownTowers)
         {
             int totalHealth = 0;
             foreach (var tower in ownTowers)
@@ -61,7 +61,20 @@ namespace Actor
             }
             
             var id = RegisterItem(ActorType.MultiTower, totalHealth, ownTowers);
+            
             Eventbus.HealthEvents.OnHealthChange?.Invoke(id);
+            return id;
+        }
+
+        public static List<int> ResolveTowersFromActors(uint[] actorIDs)
+        {
+            List<int> towers = new();
+            foreach (var actorID in actorIDs)
+            {
+                towers.AddRange(GetTowersByID(actorID));
+            }
+
+            return towers;
         }
 
         ActorData GetActorByTowerID(int towerID)
@@ -83,7 +96,7 @@ namespace Actor
 
         public void Unsubscribe()
         {
-            Eventbus.ActorEvents.OnNewDoubleActor -= RegisterDouble;
+            AllDoubles.DoubleTowerEvents.OnDoubleTowerCreated -= RegisterDouble;
 
             foreach (var controller in Controllers)
             {
