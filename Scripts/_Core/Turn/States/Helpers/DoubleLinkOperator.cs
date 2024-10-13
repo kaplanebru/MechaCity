@@ -12,8 +12,8 @@ namespace Turn
 {
     public class DoubleLinkOperator : ILinkOperator
     {
-        private HashSet<DoubleTower> TurnDoubles = new();
-        private Dictionary<int, TowerData> Singles = new();
+        private LinkGroupMaker GroupMaker = new();
+        private LinkGroupData GroupData = new();
 
         private Dictionary<TowerData, int> safeGroup = new();
         private ILinkable selection;
@@ -31,6 +31,8 @@ namespace Turn
             {
                 _actors.Add(actorID, ActorHolder.Registry[actorID]);
             }
+
+            GroupData = GroupMaker.GetGroups(actors);
         }
 
         public void TowerSelected(params object[] args)
@@ -76,14 +78,14 @@ namespace Turn
         bool CanDoubleRiseByOthers(int step)
         {
             int totalAvailableHeight = 0;
-            foreach (var tower in Singles.Values)
+            foreach (var tower in GroupData.Singles.Values)
             {
                 if (tower == selection) continue;
                 if (tower.AvailableHeight < step) continue;
                 totalAvailableHeight += tower.AvailableHeight;
             }
 
-            foreach (var doubleTower in TurnDoubles) //todo: check, new 2
+            foreach (var doubleTower in GroupData.TurnDoubles) //todo: check, new 2
             {
                 if (doubleTower == selection) continue;
                 if (doubleTower.NoDoubleFallCapacity(step)) continue;
@@ -105,13 +107,13 @@ namespace Turn
         void CreateSafeGroup(int step)
         {
             safeGroup.Clear();
-            foreach (var tower in Singles.Values)
+            foreach (var tower in GroupData.Singles.Values)
             {
                 if (tower.AvailableHeight < step) continue;
                 safeGroup.Add(tower, 0);
             }
 
-            foreach (var doubleTower in TurnDoubles) //todo: check, new
+            foreach (var doubleTower in GroupData.TurnDoubles) //todo: check, new
             {
                 if (doubleTower == selection) continue;
                 if (doubleTower.NoDoubleFallCapacity(step)) continue;
@@ -157,7 +159,7 @@ namespace Turn
 
                 for (int i = 0; i < rest; i++)
                 {
-                    foreach (var doubleTower in TurnDoubles)
+                    foreach (var doubleTower in GroupData.TurnDoubles)
                     {
                         if (doubleTower.InspectByTowerData(safeTower))
                         {
