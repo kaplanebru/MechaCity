@@ -12,6 +12,7 @@ namespace Clicks
         {
             Initialize();
             //todo: event for setclickableıds
+            Eventbus
         }
 
         

@@ -32,7 +32,7 @@ public class MultiTypeSelector : Selector, IBlockable
             TeamEvents.OnTeamsRequest?.Invoke();
     }
     
-    protected override void GetTower(params object[] args)
+    protected override void GetActor(params object[] args)
     {
         uint actorID = (uint) args[0];
         

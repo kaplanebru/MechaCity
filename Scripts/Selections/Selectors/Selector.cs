@@ -23,7 +23,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     protected abstract void SubscribeAndSetup(); 
     protected abstract void Unregister();
     public abstract void RestartWithNewTowers();
-    protected abstract void GetTower(params object[] args);
+    protected abstract void GetActor(params object[] args);
     protected abstract void HandleUI();
     public abstract List<uint> SendAllTowers();
     //protected abstract void DeselectAll();
@@ -32,7 +32,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     public void Subscribe()
     {
         //SelectedTowers.Clear(); //TODO: DONT!
-        NetworkEventbus.InputEvents.OnObjectClicked += GetTower;
+        NetworkEventbus.InputEvents.OnObjectClicked += GetActor;
         SubscribeAndSetup();
     }
 
@@ -137,7 +137,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     
     public void Unsubscribe()
     {
-        NetworkEventbus.InputEvents.OnObjectClicked -= GetTower;
+        NetworkEventbus.InputEvents.OnObjectClicked -= GetActor;
         // AllTowers.ResetTowerSelectionColors(); //todo: test, dont
         AllTowers.EnableClickability(); //todo: eğer eliminated ise
         Unregister();
