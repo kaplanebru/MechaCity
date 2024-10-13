@@ -97,6 +97,8 @@ namespace Turn
         void FirstTurn(params object[] args)
         {
             Initialize();
+            ((SelectionState) _stateHolder.GetStateByType(TurnStateType.Selection)).ClearSelector(); //todo: temp
+
             NewTurn();
             firstTurn = false;
         }

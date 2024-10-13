@@ -12,7 +12,8 @@ namespace Turn
     public class LinkGroupData
     {
         public HashSet<DoubleTower> TurnDoubles = new();
-        public Dictionary<int, TowerData> Singles = new();
+        //public Dictionary<int, TowerData> Singles = new();
+        public List<TowerData> Singles = new();
 
         public void ClearGroups()
         {
@@ -47,15 +48,10 @@ namespace Turn
                 }
                 else
                 {
-                    Data.Singles.Add(actor.Towers[0], AllTowers.GetData(actor.Towers[0]));
+                    Data.Singles.Add(AllTowers.GetData(actor.Towers[0]));
                 }
             }
         }
-
-        // public IEnumerable<int> SetTransferData() //TODO: Check if we need
-        // {
-        //     return Singles.Keys.Concat(TurnDoubles.SelectMany(Double => Double.towers.Keys));
-        // }
     }
 
 }

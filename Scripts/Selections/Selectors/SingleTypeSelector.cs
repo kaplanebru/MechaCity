@@ -25,8 +25,6 @@ public class SingleTypeSelector : Selector, IBlockable
         DeselectAll();
         //turn bitiminde resetleniyor!!
     }
-    
- 
     protected override void GetActor(params object[] args)
     {
         uint actorID = (uint) args[0];

@@ -42,7 +42,9 @@ public class SelectionGroup
     }
     public void ResetTowers()
     {
+        Debug.Log(SelectedActors.Count);
         if(SelectedActors.Count == 0) return;
+        
         foreach (var actorID in SelectedActors)
         {
             ActorData actor = ActorHolder.Registry[actorID];
@@ -51,6 +53,11 @@ public class SelectionGroup
                 AllTowers.GetData(tower).ColorHandler.ToOriginalColor();
             }
         }
+        SelectedActors.Clear();
+    }
+
+    public void ClearTowers()
+    {
         SelectedActors.Clear();
     }
 }

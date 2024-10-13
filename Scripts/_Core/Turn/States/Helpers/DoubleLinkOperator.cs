@@ -78,7 +78,7 @@ namespace Turn
         bool CanDoubleRiseByOthers(int step)
         {
             int totalAvailableHeight = 0;
-            foreach (var tower in GroupData.Singles.Values)
+            foreach (var tower in GroupData.Singles)
             {
                 if (tower == selection) continue;
                 if (tower.AvailableHeight < step) continue;
@@ -107,7 +107,7 @@ namespace Turn
         void CreateSafeGroup(int step)
         {
             safeGroup.Clear();
-            foreach (var tower in GroupData.Singles.Values)
+            foreach (var tower in GroupData.Singles)
             {
                 if (tower.AvailableHeight < step) continue;
                 safeGroup.Add(tower, 0);
@@ -257,7 +257,6 @@ namespace Turn
         void NoResourceUI()
         {
             Debug.Log("No possible motion with this resource"); //TODO: UI
-
         }
     }
 }

@@ -66,6 +66,11 @@ namespace Turn
             mainSelector.RestartWithNewTowers();
         }
 
+        public void ClearSelector()
+        {
+            mainSelector.ClearTowers();
+        }
+
         void ResetByForce()
         {
             mainSelector.ResetByForce();

@@ -115,6 +115,14 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
         SelectionEvents.OnDeselectAll?.Invoke();
     }
 
+    public void ClearTowers()
+    {
+        foreach (var group in Data.Groups)
+        {
+            group.ClearTowers();
+        }
+    }
+
     protected virtual void DeselectCall() { }
     
     private void SetSelectionColor(ActorData actor)
