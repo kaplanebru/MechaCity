@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Actor;
 using DataModels;
 using Testing;
 using Towers;
@@ -84,12 +85,12 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
             yield return new WaitForSeconds(_timingData.cameraDelay);
 
-            for (int i = 0; i < AllTowers.TowersCount; i++)
+            for (int i = 0; i <  _pairController.PairAmount; i++) //ActorHolder.Registry.Count
             {
                 Eventbus.CombatEvents.OnNextTower?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
 
-                var pair = _pairController.GetPairByIndex(i);//Data.CombatPairs[i];
+                var pair = _pairController.GetPairByIndex(i);//TODO: pair sayısı ve alltower sayısı eşit olmak zorunda değil. o yüzden pairlere ya da Actorlere gçre revize et!
                 SetSelectionColor(pair);
 
                 yield return new WaitForSeconds(Data.selectionDelay);
@@ -115,7 +116,7 @@ namespace Turn
 
         void EndCombat()
         {
-            _pairController.CombatPairs.ForEach(p=> p.CombatCompleted = false);
+            _pairController.ResetCombatCompletedForAll();
             BpEventbus.ActionEvents.OnRestoreSelectionAmount?.Invoke();
             Eventbus.CombatEvents.OnCombatTerminated?.Invoke();
             //not: aslında eventler ters sırayla çağrılmalı?!

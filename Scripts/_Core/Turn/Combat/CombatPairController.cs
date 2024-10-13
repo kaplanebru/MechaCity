@@ -8,7 +8,7 @@ namespace Turn
 {
     public class CombatPairController
     {
-        public List<CombatPair> CombatPairs = new();
+        private List<CombatPair> CombatPairs = new();
         private CombatPairsCreator combatPairsCreator;
         private bool pairsReversed = false;
 
@@ -20,7 +20,14 @@ namespace Turn
         }
 
         public CombatPair GetPairByIndex(int index) => CombatPairs[index];
-       
+
+        public int PairAmount => CombatPairs.Count;
+
+        public void ResetCombatCompletedForAll()
+        {
+            CombatPairs.ForEach(p=> p.CombatCompleted = false);
+        }
+
         public void SetCombatPairs()
         {
             combatPairsCreator.CreateCombatPairs(ActorHolder.Registry, pairsReversed);

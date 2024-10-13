@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Actor;
+using Enums;
 using GameUI;
 using UnityEngine;
 
@@ -25,14 +26,14 @@ namespace Health
         {
             var actor = ActorHolder.Registry[actorID];
 
-            if (actor.Towers.Length == 1)
+            if (actor.Type == ActorType.Standard)//(actor.Towers.Length == 1)
             {
                 var towerID = actor.Towers.First();
                 var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == towerID);
                 healthHolder.AdjustIcons(actor.Health);
                 
             }
-            else if(actor.Towers.Length > 1)
+            else
             {
                 CreateCommonIcon(actor.Towers.ToArray(), actor.Health);
             }
