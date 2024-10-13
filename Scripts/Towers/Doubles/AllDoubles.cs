@@ -21,16 +21,7 @@ public class AllDoubles
         DoublesByID.Remove(doubleTower.ID);
     }
 
-    public static DoubleTower TryGetDoubleByID(int id)
-    {
-        foreach (var key in DoublesByID.Keys)
-        {
-            if (key == id)
-                return DoublesByID[id];
-        }
-        
-        return null;
-    }
+   
    
     public static bool TryInspectTowerAndGetDouble(int id, out DoubleTower doubleTower)
     {
@@ -47,10 +38,21 @@ public class AllDoubles
         return false;
     }
     
-    public static bool InspectTower(int id)
-    {
-        return Doubles.Any(_double => _double.InspectByTowerID(id)); //_double.towers.ContainsKey(id)
-    }
+    // public static bool InspectTower(int id)
+    // {
+    //     return Doubles.Any(_double => _double.InspectByTowerID(id)); //_double.towers.ContainsKey(id)
+    // }
+    //
+    // public static DoubleTower TryGetDoubleByID(int id)
+    // {
+    //     foreach (var key in DoublesByID.Keys)
+    //     {
+    //         if (key == id)
+    //             return DoublesByID[id];
+    //     }
+    //     
+    //     return null;
+    // }
     
     
 }

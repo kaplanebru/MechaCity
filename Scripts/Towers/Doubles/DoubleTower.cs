@@ -14,11 +14,9 @@ namespace Towers
        
         public int Amount { get; set; } //private set?
         public int ID { get; }
-        
-        public void Shake()
-        {
-            //TODO İMPLEMENT LATER
-        }
+
+        public DTPhysical Physical;
+      
         
         public int GetFreeResource(int step) =>  Amount * step;
         public int AvailableHeight //1-3'se mesela inemesin
@@ -28,9 +26,7 @@ namespace Towers
                 return towers.Sum(tower => tower.Value.AvailableHeight);
             }
         }
-        public bool InspectByTowerData(TowerData tower) => towers.ContainsValue(tower);
-        public bool InspectByTowerID(int id) => towers.ContainsKey(id);
-        
+
         public DoubleTower(params int[] ids)
         {
             foreach (var id in ids)
@@ -44,18 +40,20 @@ namespace Towers
             Amount = towers.Count;
 
             ID = UniqueIdGenerator.IntId();
+            Physical = new DTPhysical(towers);
         }
         
         private void RegisterActor()
         {
             Eventbus.ActorEvents.OnNewDoubleActor.Invoke(towers.Keys.ToArray());
         }
+        public bool InspectByTowerData(TowerData tower) => towers.ContainsValue(tower);
+        public bool InspectByTowerID(int id) => towers.ContainsKey(id);
         
         public bool NoDoubleFallCapacity(int step)
         {
             return towers.ElementAt(0).Value.AvailableHeight < step;
         }
-        
         public void DoubleFallOperation(int step)
         {
             foreach (var tower in towers.Values)
@@ -65,50 +63,10 @@ namespace Towers
 
             //MediatorEventbus.ChainMotionEvents.OnRising?.Invoke(); //TODO: 2 kez çağrılıyor olabilir
         }
-
-     
-
+        
         public bool Same(ILinkable other)
         {
             return other == this;
-        }
-
-        public void Equalize() //bridgeden önce olmalı
-        {
-            int totalHeight = 0;
-            foreach (var tower in towers.Values)
-            {
-                totalHeight += tower.Height;
-            }
-
-            int averageHeight = totalHeight / Amount;
-            int rest = averageHeight % Amount;
-            
-            foreach (var tower in towers.Values)
-            {
-                int extra = 0;
-                if (rest > 0)
-                {
-                    extra = 1;
-                    rest--;
-                }
-                var newHeight = averageHeight + extra;
-                if(newHeight == tower.Height) continue;
-                
-                int surplus = newHeight - tower.Height;
-                
-                if(surplus==0)continue;
-                tower.UpdateHeight(surplus);
-                AllTowers.GetTower(tower.UniqID).StartRiseFallRoutine(true); //Todo: düzelt
-            }
-            
-            
-           
-        }
-        
-        public void CreateBridge()
-        {
-            Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(towers.Keys.ToArray());
         }
     }
 }

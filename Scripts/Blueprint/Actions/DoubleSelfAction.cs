@@ -16,8 +16,8 @@ namespace Blueprint
             var selectedTowers = (int[]) obj[0];
             
             var newDouble = new DoubleTower(selectedTowers);
-            newDouble.Equalize();
-            newDouble.CreateBridge();
+            newDouble.Physical.Equalize();
+            newDouble.Physical.CreateBridge();
 
             BpEventbus.ActionEvents.OnDoubleSelfAction.Invoke(newDouble);
         }

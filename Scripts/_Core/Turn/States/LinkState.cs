@@ -23,12 +23,10 @@ namespace Turn
         public TowerGroupTransferData TransferData { get; private set; } = new();
         public override TurnStateType StateType => TurnStateType.Link;
         public override int StateId { get; set; }
-
-
+        
         private ILinkOperator currentLinkOperator;
         private Dictionary<ActorType, ILinkOperator> linkOperators = new();
-
-
+        
         public override void SubscribeToConstantEvents()
         {
             Eventbus.LinkEvents.OnFloorsOpened += LinkTowers;
