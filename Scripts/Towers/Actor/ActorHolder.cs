@@ -47,6 +47,11 @@ namespace Actor
         {
             var id = UniqueIdGenerator.UIntId();
             Registry.Add(id, new ActorData(id, type, initialHealth, ownTowers));
+            
+            foreach (var tower in ownTowers)              //TODO: LATER
+            {
+                AllTowers.GetData(tower).SetClickHandlerID(id);
+            }
             return id;
         }
 

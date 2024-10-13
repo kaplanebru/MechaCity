@@ -11,17 +11,13 @@ namespace Clicks
         private void OnEnable()
         {
             Initialize();
-            //todo: event for setclickableıds
-            Eventbus
         }
-
-        
         public void Initialize()
         {
             _clickables = GetComponentsInChildren<Clickable>();
         }
         
-        void SetClickableIds(uint id)
+        public void SetClickableIds(uint id)
         {
             foreach (var clickable in _clickables)
             {

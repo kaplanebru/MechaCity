@@ -89,8 +89,8 @@ namespace Blueprint
             
             foreach (var item in selectedItems)
             {
-                var tracker = bpTrackerList.CreateTracker(currentBlueprint.Lifespan, item, currentBlueprint.Type);
-                BpEventbus.LifespanEvents.OnTrackerRequest?.Invoke(tracker);
+                // var tracker = bpTrackerList.CreateTracker(currentBlueprint.Lifespan, item, currentBlueprint.Type);  //TODO: LATER
+                // BpEventbus.LifespanEvents.OnTrackerRequest?.Invoke(tracker);
             }
         }
 

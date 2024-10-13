@@ -30,7 +30,7 @@ namespace Turn
     {
         private readonly CombatData Data = new();
         private CombatPairController _pairController;
-        private List<int> _towers;
+        private List<int> _towers = new();
 
         private CombatTimingData _timingData;
         

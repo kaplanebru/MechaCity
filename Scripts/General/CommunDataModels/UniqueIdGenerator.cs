@@ -1,4 +1,6 @@
 using System;
+using UnityEngine;
+
 public class UniqueIdGenerator
 {
     private static uint uintId = 0;
@@ -11,6 +13,7 @@ public class UniqueIdGenerator
     }
     public static uint UIntId()
     {
+        Debug.Log(uintId+1);
         return uintId++;
     }
     public static int IntId()

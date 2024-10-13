@@ -99,7 +99,11 @@ namespace Towers
             clickHandler.DisableSelection();
         }
 
-
+        public void SetClickHandlerID(uint id)
+        {
+            clickHandler.SetClickableIds(id);
+        }
+        
         //Linkable
         public int Amount { get; set; } = 1;
         public bool Same(ILinkable other) => other == this;

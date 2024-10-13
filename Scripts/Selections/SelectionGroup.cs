@@ -42,6 +42,7 @@ public class SelectionGroup
     }
     public void ResetTowers()
     {
+        if(SelectedActors.Count == 0) return;
         foreach (var actorID in SelectedActors)
         {
             ActorData actor = ActorHolder.Registry[actorID];
