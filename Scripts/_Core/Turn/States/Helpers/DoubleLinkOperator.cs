@@ -218,6 +218,9 @@ namespace Turn
         //     MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         // }
         //
+
+        System.Random random = new System.Random();
+        private uint randomKey;
         void SelectedDoubleFall(int step)
         {
             if (selectedActor.TryGetAvailableHeight(step) == 0)
@@ -225,15 +228,22 @@ namespace Turn
                 NoResourceUI();
                 return;
             }
-
-
-            foreach (var actor in _actors.Values)
+            
+            do
             {
-                if(actor == selectedActor) continue;
-                selectedActor = actor;
-                SelectOperation(selectedActor);
-                return; //todo temp sadece 2 aktör olduğunda
-            }
+                randomKey = _actors.Keys.ElementAt(random.Next(_actors.Count));
+            } while (randomKey == selectedActor.ID);
+
+            selectedActor = _actors[randomKey];
+            SelectOperation(selectedActor);
+
+            // foreach (var actor in _actors.Values)
+            // {
+            //     if(actor == selectedActor) continue;
+            //     selectedActor = actor;
+            //     SelectOperation(selectedActor);
+            //     return; //todo temp sadece 2 aktör olduğunda
+            // }
         }
 
 
