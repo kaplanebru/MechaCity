@@ -55,7 +55,7 @@ namespace Turn
 
         void SelectedSingleRise(int step)
         {
-            if (!CanDoubleRiseByOthers(step))
+            if (!CanRiseByOthers(step))
             {
                 SelectedSingleFall(step);
                 return;
@@ -72,7 +72,7 @@ namespace Turn
 
         void SelectedDoubleRise(int step)
         {
-            if (!CanDoubleRiseByOthers(step))
+            if (!CanRiseByOthers(step))
             {
                 SelectedDoubleFall( step);
                 return;
@@ -92,10 +92,11 @@ namespace Turn
         }
 
         int totalAvailableHeight;
-        bool CanDoubleRiseByOthers(int step)
+        private List<ActorData> tempGroup = new();
+        bool CanRiseByOthers(int step)
         {
             totalAvailableHeight = 0;
-            SafeGroup.Clear();
+            tempGroup.Clear();
 
             foreach (var actor in _actors.Values)
             {
@@ -105,12 +106,18 @@ namespace Turn
                 if (availableHeight > 0)
                 {
                     totalAvailableHeight += actor.TryGetAvailableHeight(step);
-                    SafeGroup.Add(actor);
+                    tempGroup.Add(actor);
                 }
             }
-            SafeGroup.RemoveActor(selectedActor);
-            SafeGroup.OrderByDescending();
-            return totalAvailableHeight >= selectedActor.GetFreeResource(step);
+            
+            if (totalAvailableHeight >= selectedActor.GetFreeResource(step))
+            {
+                SafeGroup.Convert(tempGroup);
+                SafeGroup.OrderByDescending();
+                return true;
+            }
+
+            return false;
         }
         
 
@@ -131,11 +138,9 @@ namespace Turn
 
             while (counter > 0)
             {
-                Debug.Log("safegroup amount: " + SafeGroup.StepsByTower.Count);
-                foreach (var key in SafeGroup.StepsByTower.Keys.ToList())
+                foreach (var key in SafeGroup.StepsPerTower.Keys.ToList())
                 {
-                    SafeGroup.StepsByTower[key]++;
-                    Debug.Log("id: " + key.UniqID + " step: " +  SafeGroup.StepsByTower[key]);
+                    SafeGroup.StepsPerTower[key]++;
                     counter--;
                 }
             }
@@ -145,9 +150,9 @@ namespace Turn
 
         int ResourceByMorePopulation(int step)
         {
-            foreach (var key in SafeGroup.StepsByTower.Keys.ToList())
+            foreach (var key in SafeGroup.StepsPerTower.Keys.ToList())
             {
-                SafeGroup.StepsByTower[key] = step;
+                SafeGroup.StepsPerTower[key] = step;
             }
 
             CheckRest:
@@ -177,7 +182,7 @@ namespace Turn
 
         void OthersRise()
         {
-            foreach (var tower in SafeGroup.StepsByTower.Keys)
+            foreach (var tower in SafeGroup.StepsPerTower.Keys)
             {
                 tower.UpdateHeight(SafeGroup.GetStepsToRemove(tower));
             }
@@ -185,7 +190,7 @@ namespace Turn
 
         void OthersFall()
         {
-            foreach (var tower in SafeGroup.StepsByTower.Keys)
+            foreach (var tower in SafeGroup.StepsPerTower.Keys)
             {
                 tower.UpdateHeight(-SafeGroup.GetStepsToRemove(tower)); 
             }
