@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Actor;
 using Towers;
 using UnityEngine;
@@ -9,45 +10,45 @@ namespace Turn
     public class SafeGroup
     {
         public List<ActorData> Actors = new();
-        public List<TowerData> Towers = new();
-        public Dictionary<int, int> RemovalStepsByID = new();
+        public Dictionary<TowerData, int> StepsByTower = new();
+        public int TowerCount => StepsByTower.Count;
 
-        public void Add(ActorData actor)
+        public void Add(ActorData actor, int stepToRemove)
         {
             Actors.Add(actor);
 
-            foreach (var tower in actor.TowerIDs)
+            foreach (var id in actor.TowerIDs)
             {
-                Towers.Add(AllTowers.GetData(tower));
-                RemovalStepsByID.Add(tower, 0);
-            }
-            
-            // safeGroup = safeGroup.OrderByDescending(s => s.Key.AvailableHeight)
-            //     .ToDictionary(s => s.Key, s => s.Value);
-        }
-
-        public void RemoveItem(ActorData item, params int[] towerIDs)
-        {
-            Actors.Remove(item);
-
-            foreach (var towerID in towerIDs)
-            {
-                var tower = AllTowers.GetData(towerID);
-                Towers.Remove(tower);
-                RemovalStepsByID.Remove(towerID);
+                var tower = AllTowers.GetData(id);
+                StepsByTower.Add(tower, stepToRemove);
             }
         }
 
-        public void SetRemovalStep(int id, int stepToRemove)
+        public void RemoveActor(ActorData actor)
         {
-            RemovalStepsByID[id] = stepToRemove;
+            Actors.Remove(actor);
+
+            foreach (var tower in actor.Towers)
+            {
+                StepsByTower.Remove(tower);
+            }
+        }
+
+        public void OrderByDescending()
+        {
+            Actors = Actors.OrderByDescending(a => a.Towers[0].AvailableHeight).ToList();
+            StepsByTower = StepsByTower.OrderByDescending(t => t.Key.AvailableHeight).ToDictionary(t => t.Key, t => t.Value);
+        }
+
+        public void SetRemovalStep(TowerData tower, int stepToRemove)
+        {
+            StepsByTower[tower] = stepToRemove;
         }
 
         public void Clear()
         {
             Actors.Clear();
-            Towers.Clear();
-            RemovalStepsByID.Clear();
+            StepsByTower.Clear();
         }
     }
 }

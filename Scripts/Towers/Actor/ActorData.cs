@@ -26,6 +26,12 @@ namespace Actor
             InitialHealth = initialHealth;
             Health = initialHealth;
             
+            SetTowers(towerIDs);
+          
+        }
+
+        void SetTowers(params int[] towerIDs)
+        {
             TowerIDs = towerIDs;
             Towers = new TowerData[TowerIDs.Length]; //TODO: make dict int,Data
             TowerAmount = Towers.Length;
@@ -42,11 +48,7 @@ namespace Actor
         {
             LinkedActors = linkedActors.ToList();
         }
-
-        
         public int GetFreeResource(int step) =>  TowerAmount * step;
-
-
         public int TryGetAvailableHeight(int step)
         {
             int availableHeight = Towers.Sum(tower => tower.AvailableHeight);

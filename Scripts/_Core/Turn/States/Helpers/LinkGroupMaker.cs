@@ -11,16 +11,14 @@ namespace Turn
 {
     public class LinkGroupData
     {
-        public HashSet<DoubleTower> TurnDoubles = new();
-        //public Dictionary<int, TowerData> Singles = new();
+        public HashSet<DoubleTower> Doubles = new();
         public List<TowerData> Singles = new();
-        public List<ILinkable> All = new();
+        
 
         public void ClearGroups()
         {
-            TurnDoubles.Clear();
+            Doubles.Clear();
             Singles.Clear();
-            All.Clear();
         }
     }
     public class LinkGroupMaker
@@ -47,14 +45,13 @@ namespace Turn
                 if (actor.Type == ActorType.MultiTower)
                 {
                     var doubleTower = AllDoubles.GetDouble(actorID);
-                    Data.TurnDoubles.Add(doubleTower);
-                    Data.All.Add(doubleTower);
+                    Data.Doubles.Add(doubleTower);
+                    
                 }
                 else
                 {
                     var tower = AllTowers.GetData(actor.TowerIDs[0]);
                     Data.Singles.Add(tower);
-                    Data.All.Add(tower);
                 }
             }
         }
