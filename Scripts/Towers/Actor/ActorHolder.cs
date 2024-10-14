@@ -15,7 +15,7 @@ namespace Actor
 
         public static ActorData GetActor(uint id) => Registry[id];
 
-        public static int[] GetTowersByID(uint id) => Registry[id].Towers;
+        public static int[] GetTowersByID(uint id) => Registry[id].TowerIDs;
         public void Subscribe()
         {
             AllDoubles.DoubleTowerEvents.OnDoubleTowerCreated += RegisterDouble;
@@ -86,7 +86,7 @@ namespace Actor
         {
             foreach (var actor in Registry)
             {
-                if (actor.Value.Towers.Contains(towerID))
+                if (actor.Value.TowerIDs.Contains(towerID))
                     return actor.Value;
             }
             return null;
@@ -95,7 +95,7 @@ namespace Actor
         private void RemoveItem(ActorData actor)
         {
             Registry.Remove(actor.ID);
-            Eventbus.HealthEvents.OnRemoveFromRegistry?.Invoke( actor.Towers);
+            Eventbus.HealthEvents.OnRemoveFromRegistry?.Invoke( actor.TowerIDs);
         }
         
 

@@ -28,14 +28,14 @@ namespace Health
 
             if (actor.Type == ActorType.Standard)//(actor.Towers.Length == 1)
             {
-                var towerID = actor.Towers.First();
+                var towerID = actor.TowerIDs.First();
                 var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == towerID);
                 healthHolder.AdjustIcons(actor.Health);
                 
             }
             else
             {
-                CreateCommonIcon(actor.Towers.ToArray(), actor.Health);
+                CreateCommonIcon(actor.TowerIDs.ToArray(), actor.Health);
             }
         }
         

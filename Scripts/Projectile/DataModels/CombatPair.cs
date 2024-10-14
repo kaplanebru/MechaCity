@@ -30,8 +30,8 @@ namespace DataModels
             MainActor = mainActor;
             OtherActor = otherActor;
             
-            MainTowerData = AllTowers.GetData(MainActor.Towers.Last());
-            OtherTowerData = AllTowers.GetData(OtherActor.Towers.First());
+            MainTowerData = AllTowers.GetData(MainActor.TowerIDs.Last());
+            OtherTowerData = AllTowers.GetData(OtherActor.TowerIDs.First());
         }
 
         public bool Contains(int newTower)

@@ -52,7 +52,7 @@ namespace Turn
                 }
                 else
                 {
-                    var tower = AllTowers.GetData(actor.Towers[0]);
+                    var tower = AllTowers.GetData(actor.TowerIDs[0]);
                     Data.Singles.Add(tower);
                     Data.All.Add(tower);
                 }

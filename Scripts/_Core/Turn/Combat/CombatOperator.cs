@@ -47,7 +47,7 @@ namespace Turn
             foreach (var actorID in actors)
             {
                 var actor = ActorHolder.Registry[actorID];
-                _towers.AddRange(actor.Towers);
+                _towers.AddRange(actor.TowerIDs);
             }
             
             foreach (var tower in _towers)

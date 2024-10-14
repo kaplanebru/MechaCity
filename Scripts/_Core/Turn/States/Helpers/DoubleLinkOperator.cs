@@ -15,10 +15,11 @@ namespace Turn
         private LinkGroupMaker GroupMaker = new();
         private LinkGroupData GroupData = new();
 
-        private Dictionary<TowerData, int> safeGroup = new();
+        //private Dictionary<TowerData, int> safeGroup = new();
         private ILinkable selection;
 
         private Dictionary<uint, ActorData> _actors = new();
+        private SafeGroup SafeGroup = new();
         
 
 
@@ -45,7 +46,7 @@ namespace Turn
 
             if (_actors[actorID].Type == ActorType.Standard)
             {
-                selection = AllTowers.GetData(_actors[actorID].Towers[0]);
+                selection = AllTowers.GetData(_actors[actorID].TowerIDs[0]);
                 SelectedSingleRise(1);
             }
             else
@@ -114,6 +115,8 @@ namespace Turn
                 if(selection == item) continue;
                 totalAvailableHeight += item.TryGetAvailableHeight(step);
             }
+            
+            return totalAvailableHeight >= selection.GetFreeResource(step);
             
             // foreach (var tower in GroupData.Singles)
             // {

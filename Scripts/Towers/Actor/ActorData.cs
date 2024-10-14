@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Enums;
+using Towers;
 
 namespace Actor
 {
@@ -8,14 +9,16 @@ namespace Actor
     {
         public uint ID;
         public ActorType Type;
-        public int[] Towers;
+        public int[] TowerIDs;
+        public TowerData[] Towers;
+        public int TowerAmount { get; set; }
         
         public int Health;
         public int InitialHealth;
         
         public List<uint> LinkedActors = new();
         
-        public ActorData(uint id, ActorType type, int initialHealth, params int[] towers)
+        public ActorData(uint id, ActorType type, int initialHealth, params int[] towerIDs)
         {
             ID = id;
             Type = type;
@@ -23,19 +26,31 @@ namespace Actor
             InitialHealth = initialHealth;
             Health = initialHealth;
             
-            Towers = towers;
+            TowerIDs = towerIDs;
+            Towers = new TowerData[TowerIDs.Length]; //TODO: make dict int,Data
+            TowerAmount = Towers.Length;
+            Towers = Towers.OrderBy(t => t.AvailableHeight).ToArray(); //İD'NİN LİNKAGE İÇİN YER DEĞİŞTİRMEMESİ Gerekebilir
+
+            for (var i = 0; i < TowerIDs.Length; i++)
+            {
+                TowerData tower = AllTowers.GetData(TowerIDs[i]);
+                Towers[i] = tower;
+            }
         }
 
         public void SetLinkedTowers(params uint[] linkedActors)
         {
             LinkedActors = linkedActors.ToList();
         }
-        // public void SetInitialHealth(int initialHealth)
-        // {
-        //     Health = initialHealth;
-        //     InitialHealth = initialHealth;
-        // }
 
-       
+        
+        public int GetFreeResource(int step) =>  TowerAmount * step;
+
+
+        public int TryGetAvailableHeight(int step)
+        {
+            int availableHeight = Towers.Sum(tower => tower.AvailableHeight);
+            return Towers[0].AvailableHeight < step ? 0 : availableHeight;
+        }
     }
 }

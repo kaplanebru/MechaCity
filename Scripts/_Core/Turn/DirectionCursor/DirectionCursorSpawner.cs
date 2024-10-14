@@ -37,9 +37,9 @@ public class DirectionCursorSpawner : MonoBehaviour
         {
             var cursor = directionCursors[i];
             
-            var pos1 = CalculatePos(ActorHolder.Registry.ElementAt(i).Value.Towers);
+            var pos1 = CalculatePos(ActorHolder.Registry.ElementAt(i).Value.TowerIDs);
             int nextID = (i + 1) % AllTowers.TowersCount;
-            var pos2 = CalculatePos(ActorHolder.Registry.ElementAt(nextID).Value.Towers);
+            var pos2 = CalculatePos(ActorHolder.Registry.ElementAt(nextID).Value.TowerIDs);
             
             cursor.transform.localPosition = (pos1 + pos2) / 2;
             cursor.transform.rotation = Quaternion.LookRotation((pos2 - pos1).normalized);

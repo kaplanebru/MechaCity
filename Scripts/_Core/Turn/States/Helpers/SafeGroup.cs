@@ -16,10 +16,14 @@ namespace Turn
         {
             Actors.Add(actor);
 
-            foreach (var tower in actor.Towers)
+            foreach (var tower in actor.TowerIDs)
             {
                 Towers.Add(AllTowers.GetData(tower));
+                RemovalStepsByID.Add(tower, 0);
             }
+            
+            // safeGroup = safeGroup.OrderByDescending(s => s.Key.AvailableHeight)
+            //     .ToDictionary(s => s.Key, s => s.Value);
         }
 
         public void RemoveItem(ActorData item, params int[] towerIDs)

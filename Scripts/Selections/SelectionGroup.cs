@@ -47,7 +47,7 @@ public class SelectionGroup
         foreach (var actorID in SelectedActors)
         {
             ActorData actor = ActorHolder.Registry[actorID];
-            foreach (var tower in actor.Towers)
+            foreach (var tower in actor.TowerIDs)
             {
                 AllTowers.GetData(tower).ColorHandler.ToOriginalColor();
             }
