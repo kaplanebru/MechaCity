@@ -42,12 +42,10 @@ namespace Turn
 
             if (_actors[actorID].Type == ActorType.Standard)
             {
-                //selection = AllTowers.GetData(_actors[actorID].TowerIDs[0]);
                 SelectedSingleRise(1);
             }
             else
             {
-               // selection = AllDoubles.GetDouble(actorID);
                 SelectedDoubleRise(1);
             }
 
@@ -62,7 +60,8 @@ namespace Turn
                 SelectedSingleFall(step);
                 return;
             }
-
+            
+            SafeGroup.SetRemovalSteps(step);
             OthersFall();
 
             var totalResource = SafeGroup.TowerCount * step;
@@ -78,10 +77,8 @@ namespace Turn
                 SelectedDoubleFall( step);
                 return;
             }
-            
-            //-----
-            
-            int freeSingleResource = GetOthersResourceForDouble(step);
+
+            int freeSingleResource = GetOthersResourceForDouble(step); //todo check: sadece singlelar mı?
             int singleStep = freeSingleResource / selectedActor.TowerAmount;
 
             foreach (var tower in selectedActor.Towers)
@@ -94,7 +91,7 @@ namespace Turn
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
 
-        int totalAvailableHeight = 0;
+        int totalAvailableHeight;
         bool CanDoubleRiseByOthers(int step)
         {
             totalAvailableHeight = 0;
@@ -108,9 +105,10 @@ namespace Turn
                 if (availableHeight > 0)
                 {
                     totalAvailableHeight += actor.TryGetAvailableHeight(step);
-                    SafeGroup.Add(actor, step);
+                    SafeGroup.Add(actor);
                 }
             }
+            SafeGroup.RemoveActor(selectedActor);
             SafeGroup.OrderByDescending();
             return totalAvailableHeight >= selectedActor.GetFreeResource(step);
         }
@@ -127,13 +125,17 @@ namespace Turn
         int ResourceByLessPopulation(int step) //1 stepten fazla azalacaklar, selected double'a yetişmek için
         {
             int doubleFreeResource = selectedActor.GetFreeResource(step);
+            Debug.Log(nameof(doubleFreeResource) + doubleFreeResource);
+            
             int counter = doubleFreeResource;
 
             while (counter > 0)
             {
+                Debug.Log("safegroup amount: " + SafeGroup.StepsByTower.Count);
                 foreach (var key in SafeGroup.StepsByTower.Keys.ToList())
                 {
                     SafeGroup.StepsByTower[key]++;
+                    Debug.Log("id: " + key.UniqID + " step: " +  SafeGroup.StepsByTower[key]);
                     counter--;
                 }
             }
@@ -177,7 +179,7 @@ namespace Turn
         {
             foreach (var tower in SafeGroup.StepsByTower.Keys)
             {
-                tower.UpdateHeight(SafeGroup.StepsByTower[tower]);
+                tower.UpdateHeight(SafeGroup.GetStepsToRemove(tower));
             }
         }
 
@@ -185,7 +187,7 @@ namespace Turn
         {
             foreach (var tower in SafeGroup.StepsByTower.Keys)
             {
-                tower.UpdateHeight(-SafeGroup.StepsByTower[tower]);
+                tower.UpdateHeight(-SafeGroup.GetStepsToRemove(tower)); 
             }
         }
 

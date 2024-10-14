@@ -35,14 +35,16 @@ namespace Actor
             TowerIDs = towerIDs;
             Towers = new TowerData[TowerIDs.Length]; //TODO: make dict int,Data
             TowerAmount = Towers.Length;
-            Towers = Towers.OrderBy(t => t.AvailableHeight).ToArray(); //İD'NİN LİNKAGE İÇİN YER DEĞİŞTİRMEMESİ Gerekebilir
+          
 
             for (var i = 0; i < TowerIDs.Length; i++)
             {
                 TowerData tower = AllTowers.GetData(TowerIDs[i]);
                 Towers[i] = tower;
             }
+            Towers = Towers.OrderBy(t => t.AvailableHeight).ToArray(); //İD'NİN LİNKAGE İÇİN YER DEĞİŞTİRMEMESİ Gerekebilir
         }
+        
 
         public void SetLinkedTowers(params uint[] linkedActors)
         {

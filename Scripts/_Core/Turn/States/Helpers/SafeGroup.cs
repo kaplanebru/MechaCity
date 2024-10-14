@@ -11,16 +11,19 @@ namespace Turn
     {
         public List<ActorData> Actors = new();
         public Dictionary<TowerData, int> StepsByTower = new();
+        private List<TowerData> Towers = new();
         public int TowerCount => StepsByTower.Count;
 
-        public void Add(ActorData actor, int stepToRemove)
+        public int GetStepsToRemove(TowerData tower) => StepsByTower[tower];
+
+        public void Add(ActorData actor)
         {
             Actors.Add(actor);
 
             foreach (var id in actor.TowerIDs)
             {
                 var tower = AllTowers.GetData(id);
-                StepsByTower.Add(tower, stepToRemove);
+                StepsByTower.Add(tower, 0);
             }
         }
 
@@ -39,10 +42,15 @@ namespace Turn
             Actors = Actors.OrderByDescending(a => a.Towers[0].AvailableHeight).ToList();
             StepsByTower = StepsByTower.OrderByDescending(t => t.Key.AvailableHeight).ToDictionary(t => t.Key, t => t.Value);
         }
+        
+        
 
-        public void SetRemovalStep(TowerData tower, int stepToRemove)
+        public void SetRemovalSteps(int step)
         {
-            StepsByTower[tower] = stepToRemove;
+            foreach (var key in StepsByTower.Keys.ToList())
+            {
+                StepsByTower[key] = step;
+            }
         }
 
         public void Clear()
