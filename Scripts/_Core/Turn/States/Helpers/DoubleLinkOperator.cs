@@ -39,8 +39,13 @@ namespace Turn
             uint actorID = (uint) args[0];
             selectedActor = _actors[actorID];
            
+            SelectOperation(_actors[actorID]);
+          
+        }
 
-            if (_actors[actorID].Type == ActorType.Standard)
+        void SelectOperation(ActorData actor)
+        {
+            if (actor.Type == ActorType.Standard)
             {
                 SelectedSingleRise(1);
             }
@@ -132,7 +137,6 @@ namespace Turn
         int ResourceByLessPopulation(int step) //1 stepten fazla azalacaklar, selected double'a yetişmek için
         {
             int doubleFreeResource = selectedActor.GetFreeResource(step);
-            Debug.Log(nameof(doubleFreeResource) + doubleFreeResource);
             
             int counter = doubleFreeResource;
 
@@ -196,6 +200,24 @@ namespace Turn
             }
         }
 
+        // void SelectedDoubleFall(int step)
+        // {
+        //     if (selectedActor.TryGetAvailableHeight(step) == 0)
+        //     {
+        //         NoResourceUI();
+        //         return;
+        //     }
+        //
+        //     foreach (var tower in selectedActor.Towers)
+        //     {
+        //         tower.UpdateHeight(-step); //potential bug: neden -SafeGroup.Towers.Count * step değil? Totaldekine uyumlu şekilde azalmalı
+        //     }
+        //    
+        //     OthersRise();
+        //
+        //     MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
+        // }
+        //
         void SelectedDoubleFall(int step)
         {
             if (selectedActor.TryGetAvailableHeight(step) == 0)
@@ -204,30 +226,35 @@ namespace Turn
                 return;
             }
 
-            foreach (var tower in selectedActor.Towers)
-            {
-                tower.UpdateHeight(-step); //potential bug: neden -SafeGroup.Towers.Count * step değil? Totaldekine uyumlu şekilde azalmalı
-            }
-           
-            OthersRise();
 
-            MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
+            foreach (var actor in _actors.Values)
+            {
+                if(actor == selectedActor) continue;
+                selectedActor = actor;
+                SelectOperation(selectedActor);
+                return; //todo temp sadece 2 aktör olduğunda
+            }
         }
 
 
         void SelectedSingleFall(int step)
         {
-            if (selectedActor.Towers[0].AvailableHeight < step)
-            {
-                NoResourceUI();
-                return;
-            }
-
-            OthersRise();
-            selectedActor.Towers[0].UpdateHeight(-SafeGroup.TowerCount * step);
-
-            MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
+           SelectedDoubleFall(step);
         }
+
+        // void SelectedSingleFall(int step)
+        // {
+        //     if (selectedActor.Towers[0].AvailableHeight < step)
+        //     {
+        //         NoResourceUI();
+        //         return;
+        //     }
+        //
+        //     OthersRise();
+        //     selectedActor.Towers[0].UpdateHeight(-SafeGroup.TowerCount * step);
+        //
+        //     MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
+        // }
 
         void NoResourceUI()
         {
