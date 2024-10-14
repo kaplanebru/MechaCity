@@ -11,7 +11,9 @@ namespace Towers
     {
         [NonSerialized]
         public Dictionary<int, TowerData> towers = new();
+
        
+
         public int Amount { get; set; }
         //public int ID { get; }
 
@@ -25,6 +27,10 @@ namespace Towers
             {
                 return towers.Sum(tower => tower.Value.AvailableHeight);
             }
+        }
+        public int TryGetAvailableHeight(int step)
+        {
+            return towers.ElementAt(0).Value.AvailableHeight < step ? 0 : AvailableHeight;
         }
 
         public DoubleTower(params int[] ids)

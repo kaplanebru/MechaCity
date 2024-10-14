@@ -42,7 +42,6 @@ public class SelectionGroup
     }
     public void ResetTowers()
     {
-        Debug.Log(SelectedActors.Count);
         if(SelectedActors.Count == 0) return;
         
         foreach (var actorID in SelectedActors)

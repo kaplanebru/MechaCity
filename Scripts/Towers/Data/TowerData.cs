@@ -105,6 +105,11 @@ namespace Towers
         }
         
         //Linkable
+        public int TryGetAvailableHeight(int step)
+        {
+            return AvailableHeight < step ? 0 : AvailableHeight;
+        }
+
         public int Amount { get; set; } = 1;
         public bool Same(ILinkable other) => other == this;
         public int GetFreeResource(int step) => step;
@@ -136,6 +141,8 @@ namespace Towers
     {
         public bool Same(ILinkable other);
         public int GetFreeResource(int step);
+
+        public int TryGetAvailableHeight(int step);
 
         public int Amount { get; set; }
     }
