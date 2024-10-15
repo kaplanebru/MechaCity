@@ -8,6 +8,7 @@ public static class Eventbus
     {
         public static Action<uint> OnAllActorsRegistered;
         public static Action<int[]> OnDoubleTowerCreated;
+        public static Action OnDoubleTowerRegistered;
     }
     public static class CombatEvents
     {

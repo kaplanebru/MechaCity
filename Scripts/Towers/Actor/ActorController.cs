@@ -2,7 +2,7 @@ namespace Actor
 {
     public abstract class ActorController
     {
-        protected ActorHolder Holder;
+        public ActorHolder Holder;
         public ActorController(ActorHolder holder)
         {
             Holder = holder;

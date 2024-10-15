@@ -68,7 +68,9 @@ namespace Actor
             var id = RegisterItem(ActorType.MultiTower, totalHealth, ownTowers);
             
             Eventbus.HealthEvents.OnHealthChange?.Invoke(id);
-            //return id;
+            Eventbus.ActorEvents.OnDoubleTowerRegistered?.Invoke(); //Restore pairs
+           
+            
         }
 
         public static List<int> ResolveTowersFromActors(uint[] actorIDs)

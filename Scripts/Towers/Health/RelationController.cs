@@ -12,13 +12,15 @@ namespace Actor
             Eventbus.LinkEvents.OnCreatingCombatPairs += SetLinkedTowers;
         }
         
-        public static void SetLinkedTowers(List<uint> tempTowerIDs) //ters de gelebilir
+        public static void SetLinkedTowers(List<uint> actors) //ters de gelebilir
         {
+            
             ResetAllLinks();
-            for (var i = 0; i < AllTowers.TowersCount; i++)
+            var actorsAmount = actors.Count;
+            for (var i = 0; i < actorsAmount ; i++)
             {
-                var mainID = tempTowerIDs[i];
-                var nextIDInOrder = tempTowerIDs[(i + 1) % AllTowers.TowersCount];
+                var mainID = actors[i];
+                var nextIDInOrder = actors[(i + 1) % actorsAmount];
                 //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
                 
                 ActorHolder.Registry[mainID].SetLinkedTowers(nextIDInOrder); //burda patlar, double'ın elemanı olup registeryde bulunmayabilir!

@@ -54,9 +54,7 @@ namespace Towers
         
         public void CreateBridge()
         {
-          
             _towerIDs = _towers.Select(t => t.UniqID).ToArray();
-            
             Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towerIDs);
         }
         

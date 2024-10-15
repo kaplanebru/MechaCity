@@ -17,6 +17,8 @@ namespace Turn
         {
             combatPairsCreator = new CombatPairsCreator(CombatPairs);
             BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
+            Eventbus.ActorEvents.OnDoubleTowerRegistered += SetCombatPairs; 
+
         }
 
         public CombatPair GetPairByIndex(int index) => CombatPairs[index];
@@ -45,6 +47,7 @@ namespace Turn
         public void Unsubscribe()
         {
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
+            Eventbus.ActorEvents.OnDoubleTowerRegistered -= SetCombatPairs;
         }
 
     }
