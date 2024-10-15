@@ -20,10 +20,10 @@ namespace Turn
         {
             Actors.Add(actor);
 
-            foreach (var id in actor.TowerIDs)
+            foreach (var tower in actor.Towers)
             {
-                var tower = AllTowers.GetData(id);
                 StepsPerTower.Add(tower, 0);
+
             }
         }
 

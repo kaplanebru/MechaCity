@@ -93,9 +93,9 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
         CurrentGroup.SelectedActors.Remove(newSelection);
         var actor = ActorHolder.Registry[newSelection];//AllTowers.GetData(newSelection);
 
-        foreach (var tower in actor.TowerIDs)
+        foreach (var tower in actor.Towers)
         {
-            AllTowers.GetData(tower).ColorHandler.ToOriginalColor();
+            tower.ColorHandler.ToOriginalColor();
         }
        
         
@@ -127,9 +127,8 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     
     private void SetSelectionColor(ActorData actor)
     {
-        foreach (var towerID in actor.TowerIDs)
+        foreach (var tower in actor.Towers)
         {
-            var tower = AllTowers.GetData(towerID);
             tower.ColorHandler.SetColorByColorType(CurrentGroup.SelectionColorType);
         }
     }

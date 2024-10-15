@@ -30,7 +30,7 @@ namespace DataModels
             MainActor = mainActor;
             OtherActor = otherActor;
             
-            MainTowerData = AllTowers.GetData(MainActor.TowerIDs.Last());
+            MainTowerData = AllTowers.GetData(MainActor.TowerIDs.Last());  //todo: dizilim bozulmasın diye towers almıyorum
             OtherTowerData = AllTowers.GetData(OtherActor.TowerIDs.First());
         }
 

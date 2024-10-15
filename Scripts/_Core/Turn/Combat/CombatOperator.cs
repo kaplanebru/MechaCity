@@ -30,7 +30,7 @@ namespace Turn
     {
         private readonly CombatData Data = new();
         private CombatPairController _pairController;
-        private List<int> _towers = new();
+        private List<TowerData> _towers = new();
 
         private CombatTimingData _timingData;
         
@@ -47,13 +47,10 @@ namespace Turn
             foreach (var actorID in actors)
             {
                 var actor = ActorHolder.Registry[actorID];
-                _towers.AddRange(actor.TowerIDs);
+                _towers.AddRange(actor.Towers);
             }
             
-            foreach (var tower in _towers)
-            {
-                AllTowers.GetData(tower).ColorHandler.ToOriginalColor();
-            }
+            _towers?.ForEach(t =>t.ColorHandler.ToOriginalColor());
         }
 
         public void Fasten()
@@ -134,7 +131,7 @@ namespace Turn
 
         void DeselectAlteredTowers()
         {
-            _towers?.ForEach(t => AllTowers.GetData(t).ColorHandler.ToOriginalColor());
+            _towers?.ForEach(t =>t.ColorHandler.ToOriginalColor());
         }
 
         public void Unsubscribe()

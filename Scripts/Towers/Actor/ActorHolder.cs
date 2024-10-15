@@ -19,6 +19,7 @@ namespace Actor
         public void Subscribe()
         {
             SetControllers();
+            Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
         }
 
         void SetControllers()
@@ -54,7 +55,7 @@ namespace Actor
             return id;
         }
 
-        private uint RegisterDouble(int[] ownTowers)
+        private void RegisterDouble(int[] ownTowers)
         {
             int totalHealth = 0;
             foreach (var tower in ownTowers)
@@ -67,7 +68,7 @@ namespace Actor
             var id = RegisterItem(ActorType.MultiTower, totalHealth, ownTowers);
             
             Eventbus.HealthEvents.OnHealthChange?.Invoke(id);
-            return id;
+            //return id;
         }
 
         public static List<int> ResolveTowersFromActors(uint[] actorIDs)
@@ -83,18 +84,14 @@ namespace Actor
 
         ActorData GetActorByTowerID(int towerID)
         {
-            foreach (var actor in Registry)
-            {
-                if (actor.Value.TowerIDs.Contains(towerID))
-                    return actor.Value;
-            }
-            return null;
+            var actorEntry = Registry.FirstOrDefault(a => a.Value.TowerIDs.Contains(towerID));
+            return actorEntry.Value ?? null;
         }
         
         private void RemoveItem(ActorData actor)
         {
             Registry.Remove(actor.ID);
-            Eventbus.HealthEvents.OnRemoveFromRegistry?.Invoke( actor.TowerIDs);
+            Eventbus.HealthEvents.OnRemoveFromRegistry?.Invoke(actor.TowerIDs);
         }
         
 
@@ -104,6 +101,7 @@ namespace Actor
             {
                 controller.Unsubscribe();
             }
+            Eventbus.ActorEvents.OnDoubleTowerCreated -= RegisterDouble;
 
             Registry.Clear();
         }

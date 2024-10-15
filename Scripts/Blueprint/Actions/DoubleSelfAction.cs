@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
 using Enums;
 using Towers;
 
@@ -17,6 +18,8 @@ namespace Blueprint
             var newDouble = new DoubleTowerPhysical(selectedTowers);
             newDouble.Equalize();
             newDouble.CreateBridge();
+            
+            Eventbus.ActorEvents.OnDoubleTowerCreated?.Invoke(selectedTowers);
             
         }
         public void Restore(params object[] obj)
