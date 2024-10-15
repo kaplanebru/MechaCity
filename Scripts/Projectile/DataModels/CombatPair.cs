@@ -20,8 +20,8 @@ namespace DataModels
     {
         public ActorData MainActor;
         public ActorData OtherActor;
-        public TowerData MainTowerData { get; }
-        public TowerData OtherTowerData { get; }
+        public TowerData MainTowerData { get; private set; }
+        public TowerData OtherTowerData { get; private set; }
 
         public bool CombatCompleted { get; set; } = false;
 
@@ -29,9 +29,21 @@ namespace DataModels
         {
             MainActor = mainActor;
             OtherActor = otherActor;
-            
-            MainTowerData = AllTowers.GetData(MainActor.TowerIDs.Last());  //todo: dizilim bozulmasın diye towers almıyorum
-            OtherTowerData = AllTowers.GetData(OtherActor.TowerIDs.First());
+        }
+
+        public void OrderTowers(bool isReversed)
+        {
+            if (!isReversed)
+            {
+                MainTowerData = AllTowers.GetData(MainActor.TowerIDs.Last());  //not: dizilim bozulmasın diye towers almıyorum
+                OtherTowerData = AllTowers.GetData(OtherActor.TowerIDs.First());
+            }
+            else
+            {
+                MainTowerData = AllTowers.GetData(MainActor.TowerIDs.First());  
+                OtherTowerData = AllTowers.GetData(OtherActor.TowerIDs.Last());
+            }
+           
         }
 
         public bool Contains(int newTower)
@@ -46,12 +58,6 @@ namespace DataModels
                 SkipCombat();
                 return false;
             }
-            
-            // if(ActorManager.GetHealth(OtherTowerData.UniqID) <= 0 || ActorManager.GetHealth(MainTowerData.UniqID) <= 0) //TODO: burda othertower double olabilir!! Böyle bir case yok bir yandan da!
-            // {
-            //     SkipCombat();
-            //     return false;
-            // }
 
             if (MainTowerData.Height > OtherTowerData.Height)
             {

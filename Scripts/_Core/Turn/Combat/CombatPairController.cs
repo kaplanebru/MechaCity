@@ -40,6 +40,8 @@ namespace Turn
             SetCombatPairs();
         }
         
+        
+        
         public void Unsubscribe()
         {
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;

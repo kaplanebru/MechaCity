@@ -29,26 +29,29 @@ public class CombatPairsCreator
 
         _combatPairs.Clear();
         Eventbus.LinkEvents.OnCreatingCombatPairs?.Invoke(actorIDs);
-        actorIDs.ForEach(id => CombatPairByTower(tempActors[id]));
+        actorIDs.ForEach(id => CombatPairByTower(tempActors[id], isReversed));
+        
     }
     
-   
-
-    public void CombatPairByTower(ActorData mainActor)
+    public void CombatPairByTower(ActorData mainActor, bool isReversed = false)
     {
-        //OrderLinkedTowersByID(tower); //todo
+        //OrderLinkedTowersByID(tower); //todo: birden fazla linked varsa diye, in further update
         
         var linkedActors = mainActor.LinkedActors;
         foreach (var id in linkedActors)
         {
             var linkedActor = ActorHolder.Registry[id];
-            AddToPair(mainActor, linkedActor);
+            var pair = AddToPair(mainActor, linkedActor);
+            pair.OrderTowers(isReversed);
+
         }
     }
 
-    void AddToPair(ActorData actor1, ActorData actor2)
+    CombatPair AddToPair(ActorData actor1, ActorData actor2)
     {
-        _combatPairs.Add(new CombatPair(actor1, actor2));
+        var pair = new CombatPair(actor1, actor2);
+        _combatPairs.Add(pair);
+        return pair;
     }
 
     void OrderLinkedTowersByID(TowerData tower)
