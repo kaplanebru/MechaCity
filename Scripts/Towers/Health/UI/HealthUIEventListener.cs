@@ -35,7 +35,7 @@ namespace Health
             }
             else
             {
-                CreateCommonIcon(actor.TowerIDs.ToArray(), actor.Health);
+                CreateCommonIcon(actor.TowerIDs, actor.Health);
             }
         }
         

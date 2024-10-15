@@ -12,13 +12,14 @@ namespace Towers
         private int _amount;
         public DoubleTowerPhysical(int[] towerIDs)
         {
-            _towerIDs = towerIDs;
             
             foreach (var id in towerIDs)
             {
                 var tower = AllTowers.GetData(id);
                 _towers.Add(tower);
             }
+
+            _towers = _towers.OrderBy(t => t.Height).ToList();
             _amount = _towers.Count;
         }
         public void Equalize() //bridgeden önce olmalı
@@ -53,6 +54,9 @@ namespace Towers
         
         public void CreateBridge()
         {
+          
+            _towerIDs = _towers.Select(t => t.UniqID).ToArray();
+            
             Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towerIDs);
         }
         

@@ -51,7 +51,7 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             TransferData.Actors = data.Actors;
-            TransferData.towers = ActorHolder.ResolveTowersFromActors(TransferData.Actors.ToArray());
+            TransferData.towers = ActorHolder.ResolveTowersFromActors(TransferData.Actors.ToArray()).ToList();
             
             SetLinkOperatorAndSubscribe();
             currentLinkOperator.SetTowers(TransferData.Actors.ToArray());

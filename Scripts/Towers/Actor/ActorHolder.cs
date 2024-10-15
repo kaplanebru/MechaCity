@@ -76,7 +76,10 @@ namespace Actor
             List<int> towers = new();
             foreach (var actorID in actorIDs)
             {
-                towers.AddRange(GetTowersByID(actorID));
+                foreach (var tower in Registry[actorID].TowerIDs)
+                {
+                    towers.Add(tower);
+                }
             }
 
             return towers;
