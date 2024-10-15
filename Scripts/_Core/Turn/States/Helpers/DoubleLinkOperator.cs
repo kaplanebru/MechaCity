@@ -12,13 +12,9 @@ namespace Turn
 {
     public class DoubleLinkOperator : ILinkOperator
     {
-      
-       
         private Dictionary<uint, ActorData> _actors = new();
         private SafeGroup SafeGroup = new();
         
-
-
         //Açıklama: normalde çoklu seçimde rise fall'a göre belirleniyor. diğer towerların fall'u ne kadarsa seçilen tower'a o kadar ekleniyor.
         //Fakat double towers amount > others olduğunda tam tersi çalışıyor: Others  souble tower height'ine ulaşana kadar 1'den fazla iner
 
@@ -29,7 +25,6 @@ namespace Turn
             {
                 _actors.Add(actorID, ActorHolder.Registry[actorID]);
             }
-            
         }
 
         private ActorData selectedActor;
@@ -46,13 +41,9 @@ namespace Turn
         void SelectOperation(ActorData actor)
         {
             if (actor.Type == ActorType.Standard)
-            {
                 SelectedSingleRise(1);
-            }
             else
-            {
                 SelectedDoubleRise(1);
-            }
 
             UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
         }
@@ -62,7 +53,7 @@ namespace Turn
         {
             if (!CanRiseByOthers(step))
             {
-                SelectedSingleFall(step);
+                SelectedActorFall(step);
                 return;
             }
             
@@ -79,7 +70,7 @@ namespace Turn
         {
             if (!CanRiseByOthers(step))
             {
-                SelectedDoubleFall( step);
+                SelectedActorFall( step);
                 return;
             }
 
@@ -183,14 +174,7 @@ namespace Turn
             
             return SafeGroup.TowerCount * step;
         }
-
-        void OthersRise()
-        {
-            foreach (var tower in SafeGroup.StepsPerTower.Keys)
-            {
-                tower.UpdateHeight(SafeGroup.GetStepsToRemove(tower));
-            }
-        }
+        
 
         void OthersFall()
         {
@@ -199,29 +183,11 @@ namespace Turn
                 tower.UpdateHeight(-SafeGroup.GetStepsToRemove(tower)); 
             }
         }
-
-        // void SelectedDoubleFall(int step)
-        // {
-        //     if (selectedActor.TryGetAvailableHeight(step) == 0)
-        //     {
-        //         NoResourceUI();
-        //         return;
-        //     }
-        //
-        //     foreach (var tower in selectedActor.Towers)
-        //     {
-        //         tower.UpdateHeight(-step); //potential bug: neden -SafeGroup.Towers.Count * step değil? Totaldekine uyumlu şekilde azalmalı
-        //     }
-        //    
-        //     OthersRise();
-        //
-        //     MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
-        // }
-        //
+        
 
         System.Random random = new System.Random();
         private uint randomKey;
-        void SelectedDoubleFall(int step)
+        void SelectedActorFall(int step)
         {
             if (selectedActor.TryGetAvailableHeight(step) == 0)
             {
@@ -236,36 +202,9 @@ namespace Turn
 
             selectedActor = _actors[randomKey];
             SelectOperation(selectedActor);
-
-            // foreach (var actor in _actors.Values)
-            // {
-            //     if(actor == selectedActor) continue;
-            //     selectedActor = actor;
-            //     SelectOperation(selectedActor);
-            //     return; //todo temp sadece 2 aktör olduğunda
-            // }
         }
-
-
-        void SelectedSingleFall(int step)
-        {
-           SelectedDoubleFall(step);
-        }
-
-        // void SelectedSingleFall(int step)
-        // {
-        //     if (selectedActor.Towers[0].AvailableHeight < step)
-        //     {
-        //         NoResourceUI();
-        //         return;
-        //     }
-        //
-        //     OthersRise();
-        //     selectedActor.Towers[0].UpdateHeight(-SafeGroup.TowerCount * step);
-        //
-        //     MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
-        // }
-
+        
+        
         void NoResourceUI()
         {
             Debug.Log("No possible motion with this resource"); //TODO: UI
