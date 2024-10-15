@@ -12,15 +12,13 @@ namespace Towers
 {
     // [CreateAssetMenu(fileName = nameof(TowerData))]
     [Serializable]
-    public class TowerData : ILinkable
+    public class TowerData
     {
         public int UniqID;
         public int SlotId;
-        
 
         //HEIGHT
         private int height;
-
         public int Height
         {
             get => height;
@@ -37,11 +35,8 @@ namespace Towers
                 }
             }
         }
-
         public int AvailableHeight;
-
         
-       
         //SHOOTING
         public bool CanShoot { get; private set; }
 
@@ -103,16 +98,6 @@ namespace Towers
         {
             clickHandler.SetClickableIds(id);
         }
-        
-        //Linkable
-        public int TryGetAvailableHeight(int step)
-        {
-            return AvailableHeight < step ? 0 : AvailableHeight;
-        }
-
-        public int Amount { get; set; } = 1;
-        public bool Same(ILinkable other) => other == this;
-        public int GetFreeResource(int step) => step;
 
         public void UpdateHeight(int extra)
         {
@@ -133,26 +118,6 @@ namespace Towers
         {
             Mover.Shake();
         }
-        
-    }
-
-
-    public interface ILinkable
-    {
-        public bool Same(ILinkable other);
-        public int GetFreeResource(int step);
-
-        public int TryGetAvailableHeight(int step);
-
-        public int Amount { get; set; }
-    }
-
-    public interface IHealthy
-    {
-        public int Health { get; set; }
-        public int HealthID { get; set; }
-        
-        public TowerData[] HealthSubjects { get; set; }
         
     }
 

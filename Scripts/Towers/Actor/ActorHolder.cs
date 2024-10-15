@@ -18,7 +18,6 @@ namespace Actor
         public static int[] GetTowersByID(uint id) => Registry[id].TowerIDs;
         public void Subscribe()
         {
-            AllDoubles.DoubleTowerEvents.OnDoubleTowerCreated += RegisterDouble;
             SetControllers();
         }
 
@@ -101,8 +100,6 @@ namespace Actor
 
         public void Unsubscribe()
         {
-            AllDoubles.DoubleTowerEvents.OnDoubleTowerCreated -= RegisterDouble;
-
             foreach (var controller in Controllers)
             {
                 controller.Unsubscribe();

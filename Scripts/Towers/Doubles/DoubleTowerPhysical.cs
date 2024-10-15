@@ -5,19 +5,26 @@ using UnityEngine;
 
 namespace Towers
 {
-    public class DTPhysical
+    public class DoubleTowerPhysical
     {
-        private Dictionary<int, TowerData> _towers = new();
+        private int[] _towerIDs;
+        private List<TowerData> _towers = new();
         private int _amount;
-        public DTPhysical(Dictionary<int, TowerData> towers)
+        public DoubleTowerPhysical(int[] towerIDs)
         {
-            _towers = towers;
-            _amount = towers.Count;
+            _towerIDs = towerIDs;
+            
+            foreach (var id in towerIDs)
+            {
+                var tower = AllTowers.GetData(id);
+                _towers.Add(tower);
+            }
+            _amount = _towers.Count;
         }
         public void Equalize() //bridgeden önce olmalı
         {
             int totalHeight = 0;
-            foreach (var tower in _towers.Values)
+            foreach (var tower in _towers)
             {
                 totalHeight += tower.Height;
             }
@@ -25,7 +32,7 @@ namespace Towers
             int averageHeight = totalHeight / _amount;
             int rest = averageHeight % _amount;
             
-            foreach (var tower in _towers.Values)
+            foreach (var tower in _towers)
             {
                 int extra = 0;
                 if (rest > 0)
@@ -46,7 +53,7 @@ namespace Towers
         
         public void CreateBridge()
         {
-            Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towers.Keys.ToArray());
+            Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towerIDs);
         }
         
         public void Shake()
