@@ -22,8 +22,10 @@ namespace Core
 
         private void OnEnable()
         {
+            //GeneralEventbus.InitializerEvents.OnInitialize?.Invoke();
             NetworkEventbus.RequestEvents.OnPlayerSpawned += AssignPlayers;
             GeneralEventbus.InitializerEvents.OnTowersCreated += ExecuteInitializer;
+            ActorHolder.Initialize();
         }
 
         void ExecuteInitializer()
@@ -40,15 +42,11 @@ namespace Core
                 Teams[i] = Instantiate(assetHolder.Teams[i], transform);
                 Teams[i].SetTowers();
             }
-            //Eventbus.HealthEvents.OnTowersSet?.Invoke(); //health holderlar tower setupında mı?
-
-
+            
             NetworkUIController.gameObject.SetActive(true);
 
             TeamEvents.OnTeamsSet?.Invoke(Teams);
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady?.Invoke();
-            
-           
         }
 
 

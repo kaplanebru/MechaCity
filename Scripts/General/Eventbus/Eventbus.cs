@@ -40,7 +40,6 @@ public static class Eventbus
     {
         public static Action<uint, int, Action> OnShoot;
         public static Action<uint> OnHealthChange;
-        public static Action OnTowersSet;
         public static Action<int[]> OnRemoveFromRegistry;
     }
     public static class TowerEvents

@@ -18,14 +18,11 @@ namespace Actor
         
         public List<uint> LinkedActors = new();
         
-        public ActorData(uint id, ActorType type, int initialHealth, params int[] towerIDs)
+        public ActorData(uint id, ActorType type, params int[] towerIDs)
         {
             ID = id;
             Type = type;
-            
-            InitialHealth = initialHealth;
-            Health = initialHealth;
-            
+
             SetTowers(towerIDs);
           
         }

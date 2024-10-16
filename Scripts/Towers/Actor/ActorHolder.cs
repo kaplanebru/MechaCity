@@ -18,17 +18,17 @@ namespace Actor
         public static int[] GetTowersByID(uint id) => Registry[id].TowerIDs;
         public void Subscribe()
         {
-            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += Initialize;
+            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += FillRegistry;
             Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
         }
 
-        private void Initialize()
+        public void Initialize()
         {
-            Subscribe();
             SetControllers();
-            FillRegistry();
-            Eventbus.HealthEvents.OnTowersSet?.Invoke(); //health holderlar tower yaratıldıktan sonra?
+            Subscribe();
         }
+
+       
 
         void SetControllers()
         {
@@ -47,18 +47,21 @@ namespace Actor
             foreach (var tower in AllTowers.Towers)
             {
                 var towerID = tower.Data.UniqID;
-                RegisterItem(ActorType.Standard, tower.ConstantData.StartHealth, towerID);
+                var actorID = RegisterItem(ActorType.Standard, towerID);
+                ((HealthController)Controllers[0]).SetHealth(Registry[actorID], tower.ConstantData.StartHealth, true);
             }
         }
 
-        public uint RegisterItem(ActorType type, int initialHealth, params int[] ownTowers)
+        public uint RegisterItem(ActorType type, params int[] ownTowers)
         {
             var id = UniqueIdGenerator.UIntId();
-            Registry.Add(id, new ActorData(id, type, initialHealth, ownTowers));
-            
-            foreach (var tower in ownTowers)              //TODO: LATER
+            var actor = new ActorData(id, type, ownTowers);
+            Registry.Add(id, actor);
+
+            foreach (var towerID in ownTowers)
             {
-                AllTowers.GetData(tower).SetClickHandlerID(id);
+                var tower = AllTowers.GetData(towerID);
+                tower.SetClickHandlerID(id);
             }
             return id;
         }
@@ -73,13 +76,13 @@ namespace Actor
                 RemoveItem(actor);
             }
             
-            var id = RegisterItem(ActorType.MultiTower, totalHealth, ownTowers);
+            var id = RegisterItem(ActorType.MultiTower, ownTowers);
             
-            Eventbus.HealthEvents.OnHealthChange?.Invoke(id);
+            ((HealthController)Controllers[0]).SetHealth(Registry[id], totalHealth, true);
             Eventbus.ActorEvents.OnDoubleTowerRegistered?.Invoke(); //Restore pairs
-           
-            
         }
+
+        
 
         public static List<int> ResolveTowersFromActors(uint[] actorIDs)
         {
@@ -115,7 +118,7 @@ namespace Actor
                 controller.Unsubscribe();
             }
             Eventbus.ActorEvents.OnDoubleTowerCreated -= RegisterDouble;
-            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= Initialize;
+            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= FillRegistry;
             Registry.Clear();
         }
     }

@@ -9,23 +9,18 @@ namespace Actor
         public override void Subscribe()
         {
             Eventbus.HealthEvents.OnShoot += ApplyDamage;
-            Eventbus.HealthEvents.OnTowersSet += SetHealthHoldersRequest;
             Eventbus.CombatEvents.OnTeamSwitch += ResetHealth;
         }
         
-        private void SetHealthHoldersRequest()
-        {
-            foreach (var actorID in ActorHolder.Registry.Keys)
-            {
-                Eventbus.HealthEvents.OnHealthChange?.Invoke(actorID); //todo: ui
-            }
-        }
+       
         
         void ApplyDamage(uint actorID, int damage, Action completeCall)
         {
-            ActorHolder.Registry[actorID].Health -= damage; //eski bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
-            Eventbus.HealthEvents.OnHealthChange?.Invoke(actorID); //TODO: ui
-
+            var actor = ActorHolder.Registry[actorID]; //eski bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
+            var health = actor.Health - damage;
+            
+            SetHealth(actor, health);
+            
             if (IsDead(actorID, completeCall)) return;
 
             completeCall();
@@ -52,10 +47,19 @@ namespace Actor
             Eventbus.HealthEvents.OnHealthChange?.Invoke(actorID);
         }
         
+        public void SetHealth(ActorData actor, int health, bool isInitial = false)
+        {
+            if (isInitial)
+                actor.InitialHealth = health;
+            actor.Health = health;
+            
+            Eventbus.HealthEvents.OnHealthChange?.Invoke(actor.ID);
+        }
+        
+        
         public override void Unsubscribe()
         {
             Eventbus.HealthEvents.OnShoot -= ApplyDamage;
-            Eventbus.HealthEvents.OnTowersSet -= SetHealthHoldersRequest;
             Eventbus.CombatEvents.OnTeamSwitch -= ResetHealth;
         }
         
