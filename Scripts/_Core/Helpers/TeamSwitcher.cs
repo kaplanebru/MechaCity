@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
 using Enums;
 using Health;
 using Teams;
@@ -16,7 +17,7 @@ namespace Turn
         private void OnEnable()
         {
             TeamEvents.OnTeamsSet += GetTeams;
-            Eventbus.CombatEvents.OnTowerKilled += ExchangeTowers;
+            Eventbus.CombatEvents.OnActorKilled += ExchangeTowers;
         }
 
         public void GetTeams(Team[] teams)
@@ -26,35 +27,39 @@ namespace Turn
     
          Team GetTeamDataByTeamType(TeamType type) => _teams.First(team => team.Data.TeamType == type);
 
-         private void ExchangeTowers(int[] towers)
+         private uint _deadActorID;
+         private void ExchangeTowers(uint actorID)
          {
-             foreach (var deadTowerId in towers)
+             _deadActorID = actorID;
+             var actor = ActorHolder.Registry[actorID];
+             foreach (var deadTower in actor.Towers)
              {
-                 ExchangeTower(deadTowerId);
+                 ExchangeTower(deadTower);
              }
+             
+             Invoke(nameof(ResetHealth), 1f); //todo: temporary
          }
-         private void ExchangeTower(int deadTowerId)
+         private void ExchangeTower(TowerData deadTower)
          {
-            var deadTower = AllTowers.GetData(deadTowerId);
-            Team oldTeam = GetTeamDataByTeamType(deadTower.TeamType);
+             Team oldTeam = GetTeamDataByTeamType(deadTower.TeamType);
             Team newTeam = _teams.FirstOrDefault(t => t != oldTeam);
 
             oldTeam.RemoveTower(deadTower);
             newTeam.TakeTowerFromRival(deadTower);
             
             
-            Invoke(nameof(ResetDeadTower), 1f); //todo: temporary
+            
         }
 
-         void ResetDeadTower()
+         void ResetHealth()
          {
-             //HealthHandler.ResetHealth(_deadTower.UniqID);
+             Eventbus.CombatEvents.OnTeamSwitch?.Invoke(_deadActorID);
          }
 
         private void OnDisable()
         {
             TeamEvents.OnTeamsSet -= GetTeams;
-            Eventbus.CombatEvents.OnTowerKilled -= ExchangeTowers;
+            Eventbus.CombatEvents.OnActorKilled -= ExchangeTowers;
         }
     }
 }

@@ -9,20 +9,21 @@ namespace Actor
         public override void Subscribe()
         {
             Eventbus.HealthEvents.OnShoot += ApplyDamage;
-            Eventbus.HealthEvents.OnHealthsSet += SetHealthHoldersRequest;
+            Eventbus.HealthEvents.OnTowersSet += SetHealthHoldersRequest;
+            Eventbus.CombatEvents.OnTeamSwitch += ResetHealth;
         }
         
         private void SetHealthHoldersRequest()
         {
-            foreach (var id in ActorHolder.Registry.Keys)
+            foreach (var actorID in ActorHolder.Registry.Keys)
             {
-                Eventbus.HealthEvents.OnHealthChange?.Invoke(id); //todo: ui
+                Eventbus.HealthEvents.OnHealthChange?.Invoke(actorID); //todo: ui
             }
         }
         
         void ApplyDamage(uint actorID, int damage, Action completeCall)
         {
-            ActorHolder.Registry[actorID].Health -= damage; //bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
+            ActorHolder.Registry[actorID].Health -= damage; //eski bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
             Eventbus.HealthEvents.OnHealthChange?.Invoke(actorID); //TODO: ui
 
             if (IsDead(actorID, completeCall)) return;
@@ -35,7 +36,7 @@ namespace Actor
             if (ActorHolder.Registry[actorID].Health <= 0)
             {
                 DeathOperator.Instance.HandleDeath(actorID, 
-                    () => Eventbus.CombatEvents.OnTowerKilled?.Invoke(ActorHolder.GetTowersByID(actorID)), 
+                    () => Eventbus.CombatEvents.OnActorKilled?.Invoke(actorID), 
                     completeCall);
 
                 return true;
@@ -43,11 +44,19 @@ namespace Actor
 
             return false;
         }
+
+        private void ResetHealth(uint actorID)
+        {
+            var actor = ActorHolder.Registry[actorID];
+            actor.Health = actor.InitialHealth;
+            Eventbus.HealthEvents.OnHealthChange?.Invoke(actorID);
+        }
         
         public override void Unsubscribe()
         {
             Eventbus.HealthEvents.OnShoot -= ApplyDamage;
-            Eventbus.HealthEvents.OnHealthsSet -= SetHealthHoldersRequest;
+            Eventbus.HealthEvents.OnTowersSet -= SetHealthHoldersRequest;
+            Eventbus.CombatEvents.OnTeamSwitch -= ResetHealth;
         }
         
        

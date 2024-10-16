@@ -41,9 +41,9 @@ namespace Core
             for (int i = 0; i < Teams.Length; i++)
             {
                 Teams[i] = Instantiate(assetHolder.Teams[i], transform);
-                Teams[i].Initialize();
+                Teams[i].SetTowers();
             }
-            Eventbus.HealthEvents.OnHealthsSet?.Invoke();
+            Eventbus.HealthEvents.OnTowersSet?.Invoke(); //health holderlar tower setupında mı?
 
 
             NetworkUIController.gameObject.SetActive(true);

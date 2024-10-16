@@ -12,7 +12,7 @@ namespace Teams
     {
         public TeamData Data;
         
-        public void Initialize()
+        public void SetTowers()
         {
             GetTeamTowers();
             SetGrid();

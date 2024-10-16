@@ -52,9 +52,7 @@ namespace Towers
             }
         }
         public int DamagePower;
-
-     
-
+        
         public TeamType TeamType;
         public List<int> NeighbourIDs = new();
 
