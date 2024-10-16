@@ -29,7 +29,7 @@ namespace Actor
 
         void SetTowers(params int[] towerIDs)
         {
-            TowerIDs = towerIDs;
+            TowerIDs = towerIDs;//towerIDs.OrderBy(i=>i).ToArray();
             Towers = new TowerData[TowerIDs.Length]; //TODO: make dict int,Data
             TowerAmount = Towers.Length;
           

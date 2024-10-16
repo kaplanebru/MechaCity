@@ -13,13 +13,14 @@ namespace Blueprint
     {
         public void Execute(params object[] obj)
         {
-            var selectedTowers = (int[]) obj[0];
+            var selectedActors = (uint[]) obj[0];
+            selectedActors = selectedActors.OrderBy(a => a).ToArray();
             
-            var newDouble = new DoubleTowerPhysical(selectedTowers);
+            var newDouble = new DoubleTowerPhysical(selectedActors);
             newDouble.Equalize();
             newDouble.CreateBridge();
             
-            Eventbus.ActorEvents.OnDoubleTowerCreated?.Invoke(selectedTowers);
+            Eventbus.ActorEvents.OnDoubleTowerCreated?.Invoke(selectedActors);
             
         }
         public void Restore(params object[] obj)

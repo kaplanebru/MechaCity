@@ -18,7 +18,7 @@ namespace Turn
             List<int> newTowers = new();
             foreach (var actorID in actors)
             {
-                newTowers.AddRange(ActorHolder.GetTowersByID(actorID));
+                newTowers.AddRange(ActorHolder.GetTowerIDs(actorID));
             }
             Towers = newTowers.ToArray();
         }
@@ -28,7 +28,7 @@ namespace Turn
             UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
 
             uint actorID = (uint) args[0];
-            var towerID = ActorHolder.GetTowersByID(actorID)[0];  
+            var towerID = ActorHolder.GetTowerIDs(actorID)[0];  
             
             Rise(AllTowers.GetData(towerID), 1);
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();

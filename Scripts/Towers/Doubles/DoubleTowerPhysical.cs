@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
 using UnityEngine;
 
 namespace Towers
@@ -10,15 +11,13 @@ namespace Towers
         private int[] _towerIDs;
         private List<TowerData> _towers = new();
         private int _amount;
-        public DoubleTowerPhysical(int[] towerIDs)
+        public DoubleTowerPhysical(uint[] actorIDs)
         {
-            
-            foreach (var id in towerIDs)
+            foreach (var actorID in actorIDs)
             {
-                var tower = AllTowers.GetData(id);
-                _towers.Add(tower);
+                _towers.AddRange(ActorHolder.GetTowersData(actorID).ToList());
             }
-
+            
             _towers = _towers.OrderBy(t => t.Height).ToList();
             _amount = _towers.Count;
         }

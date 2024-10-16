@@ -7,7 +7,7 @@ public static class Eventbus
     public static class ActorEvents
     {
         public static Action<uint> OnAllActorsRegistered;
-        public static Action<int[]> OnDoubleTowerCreated;
+        public static Action<uint[]> OnDoubleTowerCreated;
         public static Action OnDoubleTowerRegistered;
     }
     public static class CombatEvents

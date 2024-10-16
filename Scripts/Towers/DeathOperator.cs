@@ -16,7 +16,7 @@ namespace Towers
 
         public void HandleDeath(uint actorID, Action teamSwitchCallback, Action completeCombat)
         {
-            foreach (var tower in ActorHolder.GetTowersByID(actorID))
+            foreach (var tower in ActorHolder.GetTowerIDs(actorID))
             {
                 StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, AllTowers.GetData(tower)));
             }

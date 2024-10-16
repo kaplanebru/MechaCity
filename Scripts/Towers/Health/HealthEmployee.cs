@@ -3,9 +3,9 @@ using Towers;
 
 namespace Actor
 {
-    public class HealthController : ActorController
+    public class HealthEmployee : ActorEmployee
     {
-        public HealthController(ActorHolder holder) : base(holder) {}
+        public HealthEmployee(ActorHolder holder) : base(holder) {}
         public override void Subscribe()
         {
             Eventbus.HealthEvents.OnShoot += ApplyDamage;

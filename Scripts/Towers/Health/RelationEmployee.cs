@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using Towers;
+using UnityEngine;
 
 namespace Actor
 {
-    public class RelationController : ActorController
+    public class RelationEmployee : ActorEmployee
     {
-        public RelationController(ActorHolder holder) : base(holder) {}
+        public RelationEmployee(ActorHolder holder) : base(holder) {}
         
         public override void Subscribe()
         {
-            Eventbus.LinkEvents.OnCreatingCombatPairs += SetLinkedTowers;
+            Eventbus.LinkEvents.OnCreatingCombatPairs += SetLinkedActors;
         }
         
-        public static void SetLinkedTowers(List<uint> actors) //ters de gelebilir
+        public static void SetLinkedActors(List<uint> actors) //ters de gelebilir
         {
             
             ResetAllLinks();
@@ -21,6 +22,7 @@ namespace Actor
             {
                 var mainID = actors[i];
                 var nextIDInOrder = actors[(i + 1) % actorsAmount];
+                //Debug.Log(mainID);
                 //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
                 
                 ActorHolder.Registry[mainID].SetLinkedTowers(nextIDInOrder); //burda patlar, double'ın elemanı olup registeryde bulunmayabilir!
@@ -37,7 +39,7 @@ namespace Actor
 
         public override void Unsubscribe()
         {
-            Eventbus.LinkEvents.OnCreatingCombatPairs -= SetLinkedTowers;
+            Eventbus.LinkEvents.OnCreatingCombatPairs -= SetLinkedActors;
         }
 
     }

@@ -11,11 +11,11 @@ namespace Actor
     public class ActorHolder
     {
         public static Dictionary<uint, ActorData> Registry { get; private set; } = new();
-        private ActorController[] Controllers = new ActorController[2];
+        private ActorEmployee[] Employees = new ActorEmployee[2];
 
         public static ActorData GetActor(uint id) => Registry[id];
-
-        public static int[] GetTowersByID(uint id) => Registry[id].TowerIDs;
+        public static int[] GetTowerIDs(uint id) => Registry[id].TowerIDs;
+        public static List<TowerData> GetTowersData(uint id) => Registry[id].Towers.ToList();
         public void Subscribe()
         {
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += FillRegistry;
@@ -27,15 +27,13 @@ namespace Actor
             SetControllers();
             Subscribe();
         }
-
-       
-
+        
         void SetControllers()
         {
-            Controllers[0] = new HealthController(this);
-            Controllers[1] = new RelationController(this);
+            Employees[0] = new HealthEmployee(this);
+            Employees[1] = new RelationEmployee(this);
 
-            foreach (var controller in Controllers)
+            foreach (var controller in Employees)
             {
                 controller.Subscribe();
             }
@@ -48,7 +46,7 @@ namespace Actor
             {
                 var towerID = tower.Data.UniqID;
                 var actorID = RegisterItem(ActorType.Standard, towerID);
-                ((HealthController)Controllers[0]).SetHealth(Registry[actorID], tower.ConstantData.StartHealth, true);
+                ((HealthEmployee)Employees[0]).SetHealth(Registry[actorID], tower.ConstantData.StartHealth, true);
             }
         }
 
@@ -57,7 +55,7 @@ namespace Actor
             var id = UniqueIdGenerator.UIntId();
             var actor = new ActorData(id, type, ownTowers);
             Registry.Add(id, actor);
-
+            //Registry.Insert()
             foreach (var towerID in ownTowers)
             {
                 var tower = AllTowers.GetData(towerID);
@@ -66,24 +64,27 @@ namespace Actor
             return id;
         }
 
-        private void RegisterDouble(int[] ownTowers)
+        private void RegisterDouble(uint[] oldActors)
         {
             int totalHealth = 0;
-            foreach (var tower in ownTowers)
+            List<int> ownTowers = new();
+            int index =  Registry.Keys.ToList().IndexOf(oldActors.First());
+            
+            foreach (var actorID in oldActors)
             {
-                var actor = GetActorByTowerID(tower);
+                var actor = Registry[actorID];
+                
                 totalHealth += actor.Health;
-                RemoveItem(actor);
+                ownTowers.AddRange(actor.TowerIDs);
+                RemoveItem(actor); //NOT: removelar'dan sonra register edildiği için doğru index'e geliyor, ama sona eklenip bug çıkarır sanıyordum.
             }
             
-            var id = RegisterItem(ActorType.MultiTower, ownTowers);
+            var id = RegisterItem(ActorType.MultiTower, ownTowers.ToArray());
             
-            ((HealthController)Controllers[0]).SetHealth(Registry[id], totalHealth, true);
+            ((HealthEmployee)Employees[0]).SetHealth(Registry[id], totalHealth, true);
             Eventbus.ActorEvents.OnDoubleTowerRegistered?.Invoke(); //Restore pairs
         }
-
         
-
         public static List<int> ResolveTowersFromActors(uint[] actorIDs)
         {
             List<int> towers = new();
@@ -98,11 +99,11 @@ namespace Actor
             return towers;
         }
 
-        ActorData GetActorByTowerID(int towerID)
-        {
-            var actorEntry = Registry.FirstOrDefault(a => a.Value.TowerIDs.Contains(towerID));
-            return actorEntry.Value ?? null;
-        }
+        // ActorData GetActorByTowerID(int towerID)
+        // {
+        //     var actorEntry = Registry.FirstOrDefault(a => a.Value.TowerIDs.Contains(towerID));
+        //     return actorEntry.Value ?? null;
+        // }
         
         private void RemoveItem(ActorData actor)
         {
@@ -113,7 +114,7 @@ namespace Actor
 
         public void Unsubscribe()
         {
-            foreach (var controller in Controllers)
+            foreach (var controller in Employees)
             {
                 controller.Unsubscribe();
             }
