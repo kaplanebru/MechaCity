@@ -46,10 +46,7 @@ namespace Turn
 
             oldTeam.RemoveTower(deadTower);
             newTeam.TakeTowerFromRival(deadTower);
-            
-            
-            
-        }
+         }
 
          void ResetHealth()
          {

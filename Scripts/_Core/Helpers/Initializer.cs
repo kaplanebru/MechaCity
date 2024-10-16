@@ -34,22 +34,21 @@ namespace Core
         void CreateTeams()
         {
             Teams = new Team[assetHolder.Teams.Length];
-            ActorHolder.Subscribe();
-            ActorHolder.FillRegistry();
-
-
+           
             for (int i = 0; i < Teams.Length; i++)
             {
                 Teams[i] = Instantiate(assetHolder.Teams[i], transform);
                 Teams[i].SetTowers();
             }
-            Eventbus.HealthEvents.OnTowersSet?.Invoke(); //health holderlar tower setupında mı?
+            //Eventbus.HealthEvents.OnTowersSet?.Invoke(); //health holderlar tower setupında mı?
 
 
             NetworkUIController.gameObject.SetActive(true);
 
             TeamEvents.OnTeamsSet?.Invoke(Teams);
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady?.Invoke();
+            
+           
         }
 
 

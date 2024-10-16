@@ -18,8 +18,16 @@ namespace Actor
         public static int[] GetTowersByID(uint id) => Registry[id].TowerIDs;
         public void Subscribe()
         {
-            SetControllers();
+            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += Initialize;
             Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
+        }
+
+        private void Initialize()
+        {
+            Subscribe();
+            SetControllers();
+            FillRegistry();
+            Eventbus.HealthEvents.OnTowersSet?.Invoke(); //health holderlar tower yaratıldıktan sonra?
         }
 
         void SetControllers()
@@ -107,7 +115,7 @@ namespace Actor
                 controller.Unsubscribe();
             }
             Eventbus.ActorEvents.OnDoubleTowerCreated -= RegisterDouble;
-
+            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= Initialize;
             Registry.Clear();
         }
     }
