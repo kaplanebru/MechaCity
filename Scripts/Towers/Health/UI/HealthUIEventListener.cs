@@ -51,11 +51,8 @@ namespace Health
                     CreateCommonIcon(actorID, actor.TowerIDs, actor.Health);
                 }
             }
-
-            Debug.Log(actor.Health);
+            
             holdersByActor[actorID].AdjustIcons(actor.Health);
-
-         
         }
 
         private void HideIcon(int[] towers)

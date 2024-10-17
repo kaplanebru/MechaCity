@@ -83,7 +83,7 @@ namespace Actor
                 RemoveItem(actor); //NOT: removelar'dan sonra register edildiği için doğru index'e geliyor, ama sona eklenip bug çıkarır sanıyordum.
             }
             
-            var id = RegisterItem(ActorType.MultiTower, abortedRow, totalHealth, ownTowers.ToArray());
+            RegisterItem(ActorType.MultiTower, abortedRow, totalHealth, ownTowers.ToArray());
             
             OrderRegistry();
             Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(); //Restore pairs

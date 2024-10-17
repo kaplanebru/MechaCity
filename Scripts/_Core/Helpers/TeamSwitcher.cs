@@ -12,7 +12,7 @@ namespace Turn
     public class TeamSwitcher : BaseTurnHelper
     {
         [SerializeField] Team[] _teams; //turnmanagerdan da alınabilir
-      
+
 
         private void OnEnable()
         {
@@ -24,34 +24,37 @@ namespace Turn
         {
             _teams = teams;
         }
-    
-         Team GetTeamDataByTeamType(TeamType type) => _teams.First(team => team.Data.TeamType == type);
 
-         private uint _deadActorID;
-         private void ExchangeTowers(uint actorID)
-         {
-             _deadActorID = actorID;
-             var actor = ActorHolder.Registry[actorID];
-             foreach (var deadTower in actor.Towers)
-             {
-                 ExchangeTower(deadTower);
-             }
-             
-             Invoke(nameof(ResetHealth), 1f); //todo: temporary
-         }
-         private void ExchangeTower(TowerData deadTower)
-         {
-             Team oldTeam = GetTeamDataByTeamType(deadTower.TeamType);
+        Team GetTeamDataByTeamType(TeamType type) => _teams.First(team => team.Data.TeamType == type);
+
+        private uint _deadActorID;
+
+        private void ExchangeTowers(uint actorID)
+        {
+            _deadActorID = actorID;
+            var actor = ActorHolder.Registry[actorID];
+            foreach (var tower in actor.Towers)
+            {
+                ExchangeTower(tower);
+            }
+
+
+            Invoke(nameof(ResetHealth), 1f); //todo: temporary
+        }
+
+        private void ExchangeTower(TowerData deadTower)
+        {
+            Team oldTeam = GetTeamDataByTeamType(deadTower.TeamType);
             Team newTeam = _teams.FirstOrDefault(t => t != oldTeam);
 
             oldTeam.RemoveTower(deadTower);
             newTeam.TakeTowerFromRival(deadTower);
-         }
+        }
 
-         void ResetHealth()
-         {
-             Eventbus.CombatEvents.OnTeamSwitch?.Invoke(_deadActorID);
-         }
+        void ResetHealth()
+        {
+            Eventbus.CombatEvents.OnTeamSwitch?.Invoke(_deadActorID);
+        }
 
         private void OnDisable()
         {

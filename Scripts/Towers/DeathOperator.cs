@@ -16,37 +16,27 @@ namespace Towers
 
         public void HandleDeath(uint actorID, Action teamSwitchCallback, Action completeCombat)
         {
-            foreach (var tower in ActorHolder.GetTowerIDs(actorID))
-            {
-                StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, AllTowers.GetData(tower)));
-            }
             
-            // if (AllDoubles.TryGetDoubleByID(actorID) != null)
-            // {
-            //     var doubleTowers = AllDoubles.DoublesByID[actorID].towers.Values;
-            //     foreach (var tower in doubleTowers)
-            //     {
-            //         StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, tower));
-            //     }
-            // }
-            // else
-            // {
-            //     var tower = AllTowers.GetTower(actorID);
-            //     StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, tower.Data));
-            // }
+                StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, ActorHolder.Registry[actorID]));
+            
+            
         }
         
         
-        public IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat, TowerData tower)
+        public IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat, ActorData actor)
         {
-            yield return new WaitForSeconds(tower.timingData.shakeDuration);
+            yield return new WaitForSeconds(actor.Towers[0].timingData.shakeDuration);
             yield return new WaitForSeconds(.3f);
 
-            MediatorEventbus.EffectEvents.OnDeathEffect?.Invoke(tower.UniqID);
-            tower.Mover.RotateMiddle();
+            foreach (var tower in actor.Towers)
+            {
+                MediatorEventbus.EffectEvents.OnDeathEffect?.Invoke(tower.UniqID);
+                tower.Mover.RotateMiddle();
+            }
+           
             teamSwitchCallback.Invoke();
 
-            yield return new WaitForSeconds(tower.timingData.colorFadeDuration);
+            yield return new WaitForSeconds(actor.Towers[0].timingData.colorFadeDuration);
             completeCombat.Invoke();
         }
     }
