@@ -98,7 +98,7 @@ namespace Turn
 
                 var pair = _pairController.GetPairByIndex(i);//TODO: pair sayısı ve alltower sayısı eşit olmak zorunda değil. o yüzden pairlere ya da Actorlere gçre revize et!
                 SetSelectionColor(pair);
-                Debug.Log(pair.MainActor.Row);
+                //Debug.Log(pair.MainActor.Row);
 
                 yield return new WaitForSeconds(Data.selectionDelay);
                 

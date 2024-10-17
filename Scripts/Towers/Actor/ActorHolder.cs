@@ -45,20 +45,20 @@ namespace Actor
             foreach (var tower in AllTowers.Towers)
             {
                 var towerID = tower.Data.UniqID;
-                var actorID = RegisterItem(ActorType.Standard, towerID);
-                
-                ((HealthEmployee)Employees[0]).SetHealth(Registry[actorID], tower.ConstantData.StartHealth, true);
-                Registry[actorID].Row = towerID;
+                RegisterItem(ActorType.Standard,towerID, tower.ConstantData.StartHealth, towerID);
             }
             OrderRegistry();
         }
 
-        public uint RegisterItem(ActorType type, params int[] ownTowers)
+        public uint RegisterItem(ActorType type,int row, int health, params int[] ownTowers)
         {
             var id = UniqueIdGenerator.UIntId();
             var actor = new ActorData(id, type, ownTowers);
+           
             Registry.Add(id, actor);
-            //Registry.Insert()
+            actor.Row = row;
+            ((HealthEmployee)Employees[0]).SetHealth(Registry[id], health, true);
+            
             foreach (var towerID in ownTowers)
             {
                 var tower = AllTowers.GetData(towerID);
@@ -82,11 +82,9 @@ namespace Actor
                 RemoveItem(actor); //NOT: removelar'dan sonra register edildiği için doğru index'e geliyor, ama sona eklenip bug çıkarır sanıyordum.
             }
             
-            var id = RegisterItem(ActorType.MultiTower, ownTowers.ToArray());
-            Registry[id].Row = abortedRow;
+            var id = RegisterItem(ActorType.MultiTower, abortedRow, totalHealth, ownTowers.ToArray());
             
             OrderRegistry();
-            ((HealthEmployee)Employees[0]).SetHealth(Registry[id], totalHealth, true);
             Eventbus.ActorEvents.OnDoubleTowerRegistered?.Invoke(); //Restore pairs
         }
 

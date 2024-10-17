@@ -22,7 +22,7 @@ namespace Actor
             {
                 var mainID = actors[i];
                 var nextIDInOrder = actors[(i + 1) % actorsAmount];
-                //Debug.Log(ActorHolder.Registry[mainID].Row);
+                Debug.Log(ActorHolder.Registry[mainID].Row);
                 //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
                 
                 ActorHolder.Registry[mainID].SetLinkedTowers(nextIDInOrder); //burda patlar, double'ın elemanı olup registeryde bulunmayabilir!
