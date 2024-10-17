@@ -72,9 +72,7 @@ namespace Turn
             _stateHolder.SubscribeToConstantEvents();
             
             turnHelper.Subscribe();
-            
             ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).SetCombatOperator(combatOperator);
-           // combatOperator.SetElements(combatTimingData, pairController);
 
             if (MultiplayerSetter.FasterCombat)
             {

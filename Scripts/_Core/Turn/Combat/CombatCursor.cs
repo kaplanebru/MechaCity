@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Actor;
 using DataModels;
 using DG.Tweening;
 using Enums;
@@ -11,15 +12,18 @@ public class CombatCursor : MonoBehaviour
     public BPDataHolder bpDataHolder;
     public BpInstallEffect installEffect;
     public Transform cursorObj;
-    public List<Transform> transforms;
+    
     public float distance = 1;
 
     private CursorSpriteHandler cursorSpriteHandler;
     private SpriteRenderer spriteRenderer;
     private float _duration;
     
+    public List<Vector3> positions = new();
     public List<Vector3> directions = new();
     public List<Vector3> targetPositions = new();
+    
+  
 
     private Vector3 center;
     
@@ -27,7 +31,8 @@ public class CombatCursor : MonoBehaviour
     
     private void OnEnable()
     {
-        GeneralEventbus.InitializerEvents.OnTowersCreated += GetTransforms;
+        Eventbus.CombatEvents.OnPairsSet += Setup;
+
         Eventbus.CombatEvents.OnNextActor += ShiftTarget;
 
         Eventbus.CombatEvents.OnCombatStarted += StartCursor;
@@ -40,48 +45,53 @@ public class CombatCursor : MonoBehaviour
         
         BpEventbus.SubscriberEvents.OnReverseAction += ReverseAngle;
 
+        SetVisualReferences();
         installEffect = GetComponentInChildren<BpInstallEffect>();
         installEffect.Initialize();
+        center = cursorObj.transform.position;
     }
     
-    private void GetTransforms()
+   
+    void Setup()
     {
-        Setup(); 
+        FillActorPositions();
+        SetDirections();
+        SetTargetPositions();
     }
 
-    void SetReferences()
+    void FillActorPositions()
     {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        cursorSpriteHandler = new CursorSpriteHandler(spriteRenderer);
+        positions.Clear();
+        foreach (var actor in  ActorHolder.Registry.Values)
+        {
+            positions.Add(actor.Center);
+        }
     }
 
     void SetDirections()
     {
-        foreach (var towerTransform in transforms)
+        directions.Clear();
+        foreach (var actorPos in positions)
         {
-            var dir = (towerTransform.position - center).normalized;
-            //directions.Add(dir);
+            var dir = (actorPos - center).normalized;
             directions.Add(new Vector3(dir.x, 0, dir.z).normalized);
         }
     }
-    void SetPositions()
+    void SetTargetPositions()
     {
+        targetPositions.Clear();
         foreach (var dir in directions)
         {
             targetPositions.Add(center + new Vector3(dir.x * distance, 0, dir.z * distance));
         }
     }
 
-   
-    void Setup()
+    void SetVisualReferences()
     {
-        center = cursorObj.transform.position;
-        SetReferences();
-        SetDirections();
-        SetPositions();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        cursorSpriteHandler = new CursorSpriteHandler(spriteRenderer);
     }
 
-   
     private int index = 0;
     void ShiftTarget(float duration)
     {
@@ -139,7 +149,7 @@ public class CombatCursor : MonoBehaviour
     
     private void OnDisable()
     {
-        GeneralEventbus.InitializerEvents.OnTowersCreated -= GetTransforms;
+        Eventbus.CombatEvents.OnPairsSet -= Setup;
         Eventbus.CombatEvents.OnNextActor -= ShiftTarget;
 
         Eventbus.CombatEvents.OnCombatStarted -= StartCursor;
