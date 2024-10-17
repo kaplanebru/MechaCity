@@ -44,6 +44,7 @@ namespace Actor
         {
             var actor = ActorHolder.Registry[actorID];
             actor.Health = actor.InitialHealth;
+            
             Eventbus.HealthEvents.OnHealthChange?.Invoke(actorID);
         }
         

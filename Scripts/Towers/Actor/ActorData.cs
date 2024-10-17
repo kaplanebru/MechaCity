@@ -13,6 +13,7 @@ namespace Actor
         public ActorType Type;
         public int[] TowerIDs;
         public TowerData[] Towers;
+        //public Transform HealthParent;
         public int TowerAmount { get; set; }
         public Vector3 Center;
         
@@ -59,7 +60,9 @@ namespace Actor
                 Center += AllTowers.GetTower(tower).transform.position;
             }
 
+            //HealthParent = AllTowers.GetTower(Towers.Last().UniqID).transform; //todo: health holderı almalı aslında, towerı değil
             Center /= TowerAmount;
+           // Center.y = HealthParent.position.y;
         }
         public int GetFreeResource(int step) =>  TowerAmount * step;
         public int TryGetAvailableHeight(int step)
