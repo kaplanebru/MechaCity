@@ -8,6 +8,7 @@ namespace Actor
     public class ActorData
     {
         public uint ID;
+        public int Row;
         public ActorType Type;
         public int[] TowerIDs;
         public TowerData[] Towers;

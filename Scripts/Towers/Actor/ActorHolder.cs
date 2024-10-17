@@ -46,8 +46,11 @@ namespace Actor
             {
                 var towerID = tower.Data.UniqID;
                 var actorID = RegisterItem(ActorType.Standard, towerID);
+                
                 ((HealthEmployee)Employees[0]).SetHealth(Registry[actorID], tower.ConstantData.StartHealth, true);
+                Registry[actorID].Row = towerID;
             }
+            OrderRegistry();
         }
 
         public uint RegisterItem(ActorType type, params int[] ownTowers)
@@ -68,7 +71,7 @@ namespace Actor
         {
             int totalHealth = 0;
             List<int> ownTowers = new();
-            int index =  Registry.Keys.ToList().IndexOf(oldActors.First());
+            int abortedRow = Registry[oldActors.First()].Row;
             
             foreach (var actorID in oldActors)
             {
@@ -80,9 +83,16 @@ namespace Actor
             }
             
             var id = RegisterItem(ActorType.MultiTower, ownTowers.ToArray());
+            Registry[id].Row = abortedRow;
             
+            OrderRegistry();
             ((HealthEmployee)Employees[0]).SetHealth(Registry[id], totalHealth, true);
             Eventbus.ActorEvents.OnDoubleTowerRegistered?.Invoke(); //Restore pairs
+        }
+
+        void OrderRegistry()
+        {
+            Registry = Registry.OrderBy(a => a.Value.Row).ToDictionary(a => a.Key, a => a.Value);
         }
         
         public static List<int> ResolveTowersFromActors(uint[] actorIDs)
