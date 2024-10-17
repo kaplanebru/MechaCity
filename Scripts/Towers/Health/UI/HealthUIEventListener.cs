@@ -65,6 +65,28 @@ namespace Health
                 RelatedItems[towerID].icons.ForEach(i => i.gameObject.SetActive(false));
             }
         }
+        
+        void OnDoubleSeparated2(uint[] actorIDs)
+        {
+            ActorData[] actors = new ActorData[actorIDs.Length];
+            HealthHolder[] holders = new HealthHolder[actorIDs.Length];
+            for (var i = 0; i < actorIDs.Length; i++)
+            {
+                actors[i] = ActorHolder.Registry[actorIDs[i]];
+            }
+
+            foreach (var actorID in actorIDs)
+            {
+                var actor = ActorHolder.Registry[actorID];
+                var holder = holdersByActor[actorID];
+                
+                var pos = holder.transform.position;
+                pos.x = actor.Center.x;
+                pos.z = actor.Center.z;
+                holder.transform.position = pos;
+                holder.gameObject.SetActive(true);
+            }
+        }
 
         void OnDoubleSeparated(uint actorID)
         {
@@ -77,21 +99,8 @@ namespace Health
              var tower = AllTowers.GetTower(highestTower);
              pos.x = tower.transform.position.x;
              pos.z = tower.transform.position.z;
+             holder.transform.position = pos;
         }
-
-        // public void CreateCommon(ActorData actor, int totalHealth)
-        // {
-        //     foreach (var tower in actor.Towers)
-        //     {
-        //        // tower. //önce bütün hepsini kapat
-        //     }
-        //     
-        //     //sonra en yüksek holderı aç. sorun en yüksek holderın mevcut healthini sıfırlamamaktan kaynaklı. Poolluk bişey yok.
-        //     var health = Instantiate(healthHolderPb, actor.HealthParent);
-        //     health.transform.position = actor.Center;
-        //     health.AdjustIcons(totalHealth);
-        // }
-
         public void CreateCommonIcon(uint actorID, int[] towerIDs, int totalHealth)
         {
             HealthHolder[] holders = new HealthHolder[towerIDs.Length];
