@@ -25,7 +25,7 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     public override void SubscribeToConstantEvents() {}
     public override void Register() {}
 
-    public void GetCombatHelper(CombatOperator combatOperator)
+    public void SetCombatOperator(CombatOperator combatOperator)
     {
         CombatOperator = combatOperator;
     }

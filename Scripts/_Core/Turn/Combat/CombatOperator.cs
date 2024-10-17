@@ -35,7 +35,7 @@ namespace Turn
         private CombatTimingData _timingData;
         
 
-        public void GetElements(CombatTimingData combatTimingData, CombatPairController pairController)
+        public void SetElements(CombatTimingData combatTimingData, CombatPairController pairController)
         {
             _timingData = combatTimingData;
             _pairController = pairController;
@@ -93,10 +93,10 @@ namespace Turn
 
             for (int i = 0; i <  _pairController.PairAmount; i++) //ActorHolder.Registry.Count
             {
-                Eventbus.CombatEvents.OnNextTower?.Invoke(Data.cursorDuration);
+                Eventbus.CombatEvents.OnNextActor?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
 
-                var pair = _pairController.GetPairByIndex(i);//TODO: pair sayısı ve alltower sayısı eşit olmak zorunda değil. o yüzden pairlere ya da Actorlere gçre revize et!
+                var pair = _pairController.GetPairByIndex(i);
                 SetSelectionColor(pair);
                 //Debug.Log(pair.MainActor.Row);
 

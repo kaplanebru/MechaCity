@@ -48,6 +48,7 @@ namespace Actor
                 RegisterItem(ActorType.Standard,towerID, tower.ConstantData.StartHealth, towerID);
             }
             OrderRegistry();
+            Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(); 
         }
 
         public uint RegisterItem(ActorType type,int row, int health, params int[] ownTowers)
@@ -85,7 +86,7 @@ namespace Actor
             var id = RegisterItem(ActorType.MultiTower, abortedRow, totalHealth, ownTowers.ToArray());
             
             OrderRegistry();
-            Eventbus.ActorEvents.OnDoubleTowerRegistered?.Invoke(); //Restore pairs
+            Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(); //Restore pairs
         }
 
         void OrderRegistry()

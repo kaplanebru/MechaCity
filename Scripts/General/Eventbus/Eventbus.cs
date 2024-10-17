@@ -6,15 +6,14 @@ public static class Eventbus
 {
     public static class ActorEvents
     {
-        public static Action<uint> OnAllActorsRegistered;
         public static Action<uint[]> OnDoubleTowerCreated;
-        public static Action OnDoubleTowerRegistered;
+        public static Action OnRegistryUpdate;
     }
     public static class CombatEvents
     {
         public static Action<uint> OnActorKilled;
         public static Action<uint> OnTeamSwitch;
-        public static Action <float> OnNextTower;
+        public static Action <float> OnNextActor;
         public static Action OnPairsSet;
         
         public static Action OnCombatStarted;

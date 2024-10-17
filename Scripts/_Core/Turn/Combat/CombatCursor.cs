@@ -18,8 +18,8 @@ public class CombatCursor : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private float _duration;
     
-    public List<Vector3> directions;
-    public List<Vector3> targetPositions;
+    public List<Vector3> directions = new();
+    public List<Vector3> targetPositions = new();
 
     private Vector3 center;
     
@@ -28,7 +28,7 @@ public class CombatCursor : MonoBehaviour
     private void OnEnable()
     {
         GeneralEventbus.InitializerEvents.OnTowersCreated += GetTransforms;
-        Eventbus.CombatEvents.OnNextTower += ShiftTarget;
+        Eventbus.CombatEvents.OnNextActor += ShiftTarget;
 
         Eventbus.CombatEvents.OnCombatStarted += StartCursor;
         Eventbus.CombatEvents.OnCombatEnding += EndCursor;
@@ -140,7 +140,7 @@ public class CombatCursor : MonoBehaviour
     private void OnDisable()
     {
         GeneralEventbus.InitializerEvents.OnTowersCreated -= GetTransforms;
-        Eventbus.CombatEvents.OnNextTower -= ShiftTarget;
+        Eventbus.CombatEvents.OnNextActor -= ShiftTarget;
 
         Eventbus.CombatEvents.OnCombatStarted -= StartCursor;
         Eventbus.CombatEvents.OnCombatEnding -= EndCursor;

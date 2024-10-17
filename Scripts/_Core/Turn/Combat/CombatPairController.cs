@@ -17,7 +17,7 @@ namespace Turn
         {
             combatPairsCreator = new CombatPairsCreator(CombatPairs);
             BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
-            Eventbus.ActorEvents.OnDoubleTowerRegistered += SetCombatPairs; 
+            Eventbus.ActorEvents.OnRegistryUpdate += SetCombatPairs; 
 
         }
 
@@ -47,7 +47,7 @@ namespace Turn
         public void Unsubscribe()
         {
             BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
-            Eventbus.ActorEvents.OnDoubleTowerRegistered -= SetCombatPairs;
+            Eventbus.ActorEvents.OnRegistryUpdate -= SetCombatPairs;
         }
 
     }

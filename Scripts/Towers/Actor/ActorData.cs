@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Enums;
 using Towers;
+using UnityEngine;
 
 namespace Actor
 {
@@ -13,6 +14,7 @@ namespace Actor
         public int[] TowerIDs;
         public TowerData[] Towers;
         public int TowerAmount { get; set; }
+        public Vector3 Center;
         
         public int Health;
         public int InitialHealth;
@@ -25,7 +27,7 @@ namespace Actor
             Type = type;
 
             SetTowers(towerIDs);
-          
+            SetCenter();
         }
 
         void SetTowers(params int[] towerIDs)
@@ -47,6 +49,17 @@ namespace Actor
         public void SetLinkedTowers(params uint[] linkedActors)
         {
             LinkedActors = linkedActors.ToList();
+        }
+
+        void SetCenter()
+        {
+            Center = Vector3.zero;
+            foreach (var tower in TowerIDs)
+            {
+                Center += AllTowers.GetTower(tower).transform.position;
+            }
+
+            Center /= TowerAmount;
         }
         public int GetFreeResource(int step) =>  TowerAmount * step;
         public int TryGetAvailableHeight(int step)

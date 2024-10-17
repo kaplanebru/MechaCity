@@ -55,6 +55,9 @@ namespace Turn
             BpEventbus.StateEvents.OnStateChangeRequestByIntruder += GetPreviousState;
             
             bpEventHandler = new BlueprintEventHandler(this);
+            pairController.Subscribe();
+            combatOperator.SetElements(combatTimingData, pairController);
+
         }
 
 
@@ -68,13 +71,10 @@ namespace Turn
             _stateHolder.RegisterStates();
             _stateHolder.SubscribeToConstantEvents();
             
-            pairController.Subscribe();
-            pairController.SetCombatPairs();
-            
             turnHelper.Subscribe();
             
-            ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).GetCombatHelper(combatOperator);
-            combatOperator.GetElements(combatTimingData, pairController);
+            ((ExitState) _stateHolder.GetStateByType(TurnStateType.Exit)).SetCombatOperator(combatOperator);
+           // combatOperator.SetElements(combatTimingData, pairController);
 
             if (MultiplayerSetter.FasterCombat)
             {
