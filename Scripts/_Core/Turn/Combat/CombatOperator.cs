@@ -68,12 +68,20 @@ namespace Turn
         {
             if (select)
             {
-                pair.MainTowerData.ColorHandler.ToSelectionColor();
-                Eventbus.CombatEvents.OnTurnTowerSelection?.Invoke(pair.MainTowerData.UniqID);
+                foreach (var tower in  pair.MainActor.Towers)
+                {
+                    tower.ColorHandler.ToSelectionColor();
+                }
+                
+                Eventbus.CombatEvents.OnTurnTowerSelection?.Invoke(pair.MainActor.ID);
             }
             else
             {
-                pair.MainTowerData.ColorHandler.ToOriginalColor();
+                foreach (var tower in  pair.MainActor.Towers)
+                {
+                    tower.ColorHandler.ToOriginalColor();
+                }
+                
                 Eventbus.CombatEvents.OnTurnTowerDeselect?.Invoke();
             }
         }

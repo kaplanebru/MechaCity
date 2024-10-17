@@ -21,7 +21,7 @@ public static class Eventbus
         public static Action OnCombatEnding;
         public static Action OnCombatTerminated;
 
-        public static Action<int> OnTurnTowerSelection;
+        public static Action<uint> OnTurnTowerSelection;
         public static Action OnTurnTowerDeselect;
     }
 
