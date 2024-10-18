@@ -42,6 +42,7 @@ public class RiseFallMotion
     public float speed = 0.025f;
     public float unit;
     float tolerance = 0.0001f;
+    float speedEqualizer;
 
     private float startHeight;
 
@@ -58,6 +59,10 @@ public class RiseFallMotion
 
     public void UpdateData(float newHeight, bool isRising)
     {
+        speedEqualizer = Mathf.Abs(Data.TargetHeight - newHeight);
+        speed = startSpeed;
+        speed *= speedEqualizer;
+        
         Data.TargetHeight = newHeight;
         Data.RiseState = isRising ? RiseState.Rising : RiseState.Falling;
     }
@@ -84,6 +89,7 @@ public class RiseFallMotion
 
     public IEnumerator RiseRoutine(bool forOnce = false)
     {
+        if(!forOnce) speed = startSpeed; //bug tedbiri
         DisableAll();
         
         ResetStartHeight();
@@ -119,6 +125,7 @@ public class RiseFallMotion
                 if (Data.RiseState != RiseState.Falling)
                 {
                     Data.RiseState = RiseState.None;
+                    speed = startSpeed;
                     MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                     //UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
                 }
@@ -152,6 +159,7 @@ public class RiseFallMotion
                 if (Data.RiseState != RiseState.Rising)
                 {
                     Data.RiseState = RiseState.None;
+                    speed = startSpeed;
                     //MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                 }
                 

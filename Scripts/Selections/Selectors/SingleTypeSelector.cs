@@ -15,10 +15,7 @@ public class SingleTypeSelector : Selector, IBlockable
     }
     protected override void SubscribeAndSetup()
     {
-        
-        
         CurrentGroup = Data.Groups[0];
-       
         CurrentGroup.SelectedActors.Clear(); //todo sonradan ekledim, multiye de bak
     }
 
@@ -33,17 +30,12 @@ public class SingleTypeSelector : Selector, IBlockable
     protected override void GetActor(params object[] args)
     {
         uint actorID = (uint) args[0];
-        Debug.Log(CurrentGroup.SelectedActors.Count);
 
         if (SelectedTwice(actorID)) return;
 
         if (CurrentGroup.SelectedActors.Count == CurrentGroup.MaxTowers)
-        {
-            // Debug.Log(CurrentGroup.SelectedActors.Count);
             DeselectSelected();
-
-        }
-
+        
         HandleSelection(true, actorID);
     }
 
