@@ -18,7 +18,7 @@ namespace Turn
             Actors.Clear();
         }
         
-        public void RestorePreviousSelectionColors()
+        public void RestorePreviousSelectionColors() //TODO: burda actor değil tower tutulmalı!!
         {
             foreach (var actorID in Actors)
             {

@@ -38,6 +38,7 @@ public class RiseFallMotion
 {
     private RiseFallData Data;
 
+    public float startSpeed = 0.025f;
     public float speed = 0.025f;
     public float unit;
     float tolerance = 0.0001f;

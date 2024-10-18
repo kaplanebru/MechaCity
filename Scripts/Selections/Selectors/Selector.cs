@@ -102,11 +102,11 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
         SelectionEvents.OnDeselect?.Invoke(actor.ID);
     }
 
-    public void DeselectAll()
+    public void DeselectSelected()
     {
         foreach (var group in Data.Groups)
         {
-            group.ResetTowers();
+            group.ResetSelectedTowers();
         }
         
         CurrentGroup = Data.Groups[0]; //is it necessary here?
@@ -114,6 +114,20 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
         DeselectCall();
         SelectionEvents.OnDeselectAll?.Invoke();
     }
+
+    public void DeselectAll() //temporary
+    {
+        foreach (var group in Data.Groups)
+        {
+            group.ResetAllTowers();
+        }
+        
+        
+        CurrentGroup = Data.Groups[0]; //is it necessary here?
+        Block();
+        DeselectCall();
+    }
+    
 
     public void ClearTowers()
     {

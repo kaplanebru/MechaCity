@@ -16,6 +16,12 @@ public class MultiTypeSelector : Selector, IBlockable
     protected override void SubscribeAndSetup()
     {
         CurrentGroup = Data.Groups[0];
+
+        foreach (var group in Data.Groups)//temp
+        {
+            group.SelectedActors.Clear(); 
+        }
+
         TeamEvents.OnTeamsSent += SetTeamsAndBlock;
     }
 
@@ -26,6 +32,7 @@ public class MultiTypeSelector : Selector, IBlockable
 
     public override void RestartWithNewTowers()
     {
+        //DeselectSelected();
         DeselectAll();
 
         if (CurrentGroup.BlockType != BlockType.None) //bunu sileriz
@@ -38,7 +45,7 @@ public class MultiTypeSelector : Selector, IBlockable
         
         if (isFull)
         {
-            DeselectAll();
+            DeselectSelected();
             isFull = false;
             HighlightApply(false);
         }

@@ -121,7 +121,7 @@ namespace Towers
             Towers.ForEach(t => t.RestoreBullets());
         }
 
-        public static void ResetTowerSelectionColors()
+        public static void ResetTowerColors()
         {
             TowerDatas.ForEach(t=>t.ColorHandler.ToOriginalColor());
         }

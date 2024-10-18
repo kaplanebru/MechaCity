@@ -59,10 +59,10 @@ public class SelectionTable : MonoBehaviour
         emptySlots = emptySlots.OrderBy(s => s.Index).ToList();
     }
 
-    public void ResetSelections()
-    {
-        _currentSelector.DeselectAll();
-    }
+    // public void ResetSelections()
+    // {
+    //     _currentSelector.DeselectSelected(); //ya da all
+    // }
     
     
     //_______________SETTER____________________________________

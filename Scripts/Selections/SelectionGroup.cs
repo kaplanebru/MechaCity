@@ -40,8 +40,12 @@ public class SelectionGroup
             };
         }
     }
-    public void ResetTowers()
+    public void ResetSelectedTowers()
     {
+        // foreach (var actorID in SelectedActors)
+        // {
+        //    Debug.Log(actorID);
+        // }
         if(SelectedActors.Count == 0) return;
         
         foreach (var actorID in SelectedActors)
@@ -52,6 +56,12 @@ public class SelectionGroup
                 tower.ColorHandler.ToOriginalColor();
             }
         }
+        SelectedActors.Clear();
+    }
+
+    public void ResetAllTowers()
+    {
+        AllTowers.ResetTowerColors();
         SelectedActors.Clear();
     }
 

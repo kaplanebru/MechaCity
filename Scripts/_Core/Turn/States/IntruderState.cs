@@ -21,17 +21,12 @@ namespace Turn
 
         private BaseTurnTransferData incomingData;
 
-        public override void Register()
-        {
-        }
-
-        public override void SubscribeToConstantEvents()
-        {
-        }
+        public override void Register() {}
+        public override void SubscribeToConstantEvents() {}
 
         public override void Subscribe()
         {
-            AllTowers.ResetTowerSelectionColors();
+            AllTowers.ResetTowerColors();
             BpEventbus.SelectionEvents.OnCurrentBpSet += GetBpSelector; //permanent de olabilir
         }
 
@@ -72,7 +67,7 @@ namespace Turn
             BpEventbus.SelectionEvents.OnCurrentBpSet -= GetBpSelector;
             if (bpSelector != null) //TODO: CHECK MİGHT CAUSE TROUBLE FOR MP
                 bpSelector.Unsubscribe();
-            incomingData.RestorePreviousSelectionColors();
+           // incomingData.RestorePreviousSelectionColors();
         }
 
         public override void UnsubscribeFromConstantEvents()
