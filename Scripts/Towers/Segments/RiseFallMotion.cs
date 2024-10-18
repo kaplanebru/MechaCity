@@ -12,6 +12,7 @@ public class RiseFallData
     public int Id { get; private set; }
     public Transform ActiveHolder;
     public Transform PassiveHolder;
+    public Transform Light;
 
     public List<Transform> PassiveParts = new();
     public List<Transform> ActiveParts = new();
@@ -114,6 +115,7 @@ public class RiseFallMotion
                     }
 
                     Move(Data.ActiveHolder.localPosition);
+                   
                     //not: bu loop'un içindeyken state değişimini kaçırıyor.target height değiştiği için looptan çıkılıyor ama riseState check edilemiyordu.
                     yield return null;
                 }
@@ -171,12 +173,18 @@ public class RiseFallMotion
             yield return null;
         }
     }
-
-
+    
+    void ScaleLight(Vector3 scale)
+    {
+        scale.y =  Mathf.MoveTowards(scale.y, Data.TargetHeight/2, speed/2);
+        Data.Light.localScale = scale;
+    }
     void Move(Vector3 pos)
     {
         pos.y = Mathf.MoveTowards(pos.y, Data.TargetHeight, speed);
         Data.ActiveHolder.localPosition = pos;
+        
+        ScaleLight(Data.Light.localScale);
     }
 
 
