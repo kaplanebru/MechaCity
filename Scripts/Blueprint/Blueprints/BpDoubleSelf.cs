@@ -46,10 +46,10 @@ namespace Blueprint
             return actors;
         }
 
-        public bool CheckSelectionConstraints(uint[] selectedItems)
+        public bool CheckSelectionConstraints(uint[] actors)
         {
-            var actors = ConvertToTowers(selectedItems);
-            actors = actors.OrderBy(a => a.ID).ToArray();
+           
+           // actors = actors.OrderBy(a => a.ID).ToArray();
 
             for (var i = 0; i < actors.Length; i++)
             {

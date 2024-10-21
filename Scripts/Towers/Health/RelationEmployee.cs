@@ -25,8 +25,44 @@ namespace Actor
 //                Debug.Log(ActorHolder.Registry[mainID].Row);
                 //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
                 
-                ActorHolder.Registry[mainID].SetLinkedTowers(nextIDInOrder); //burda patlar, double'ın elemanı olup registeryde bulunmayabilir!
+                ActorHolder.Registry[mainID].LinkActors(nextIDInOrder); //burda patlar, double'ın elemanı olup registeryde bulunmayabilir!
             }
+        }
+
+        public static void SetNeighbours(List<uint> actors)
+        {
+            var actorsAmount = actors.Count;
+            for (var i = 0; i < actorsAmount ; i++)
+            {
+                var mainID = actors[i];
+                var mainActor = ActorHolder.Registry[mainID];
+
+                uint previousID = actors[i - 1];
+                if (i - 1 < 0)
+                {
+                    previousID = actors[actorsAmount - 1];
+                }
+                
+                var nextID = actors[(i + 1) % actorsAmount];
+                
+                mainActor.SetNeighbours(previousID, nextID);
+                
+            }
+            //----
+            // for (var i = 0; i < TowersCount; i++)
+            // {
+            //     TowerDatas[i].NeighbourIDs.Clear();
+            //     
+            //     int previousID = i - 1;
+            //     if (previousID < 0)
+            //         previousID = TowersCount - 1;
+            //     int previous =  TowerDatas[previousID].UniqID;
+            //     
+            //     int next = TowerDatas[(i + 1) % TowersCount].UniqID;
+            //     
+            //     TowerDatas[i].NeighbourIDs.Add(previous);
+            //     TowerDatas[i].NeighbourIDs.Add(next);
+            // }
         }
 
         private static void ResetAllLinks()
