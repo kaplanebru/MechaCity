@@ -22,12 +22,7 @@ public class CombatCursor : MonoBehaviour
     public List<Vector3> positions = new();
     public List<Vector3> directions = new();
     public List<Vector3> targetPositions = new();
-    
-  
-
     private Vector3 center;
-    
-
     
     private void OnEnable()
     {
@@ -43,8 +38,6 @@ public class CombatCursor : MonoBehaviour
         BpEventbus.UIEvents.OnBpInstallBegin += SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset += ResetBpImage;
         
-        //BpEventbus.ActionEvents.OnReverseActionTriggered += ReverseAngle;
-
         SetVisualReferences();
         installEffect = GetComponentInChildren<BpInstallEffect>();
         installEffect.Initialize();
@@ -139,10 +132,7 @@ public class CombatCursor : MonoBehaviour
     
     void ReverseAngle()
     {
-        // var first = targetPositions.First();
-        // targetPositions.Remove(first);
         targetPositions.Reverse();
-        // targetPositions.Insert(0, first);
     }
     public void ResetBpImage()
     {

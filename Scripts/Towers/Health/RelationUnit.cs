@@ -19,7 +19,10 @@ namespace Actor
         {
             isReversed = !isReversed;
             List<uint> actors = ActorHolder.Registry.Keys.ToList();
-            actors.Reverse();
+            
+            if(isReversed)
+                actors.Reverse();
+            
             SetRelations(actors);
         }
 
