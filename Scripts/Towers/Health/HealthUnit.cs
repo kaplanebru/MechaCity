@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Actor
 {
-    public class HealthEmployee : ActorEmployee
+    public class HealthUnit : ActorUnit
     {
-        public HealthEmployee(ActorHolder holder) : base(holder) {}
+        public HealthUnit(ActorHolder holder) : base(holder) {}
         public override void Subscribe()
         {
             Eventbus.HealthEvents.OnShoot += ApplyDamage;

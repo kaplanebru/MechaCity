@@ -11,7 +11,7 @@ namespace Actor
     public class ActorHolder
     {
         public static Dictionary<uint, ActorData> Registry { get; private set; } = new();
-        private ActorEmployee[] Employees = new ActorEmployee[2];
+        private Dictionary<Enums.ActorUnit, ActorUnit> units = new();
 
         public static ActorData GetActor(uint id) => Registry[id];
         public static int[] GetTowerIDs(uint id) => Registry[id].TowerIDs;
@@ -30,12 +30,12 @@ namespace Actor
         
         void SetControllers()
         {
-            Employees[0] = new HealthEmployee(this);
-            Employees[1] = new RelationEmployee(this);
+            units[Enums.ActorUnit.Health] = new HealthUnit(this);
+            units[Enums.ActorUnit.Relation] = new RelationUnit(this);
 
-            foreach (var controller in Employees)
+            foreach (var unit in units.Values)
             {
-                controller.Subscribe();
+                unit.Subscribe();
             }
         }
 
@@ -48,7 +48,7 @@ namespace Actor
                 RegisterItem(ActorType.Standard,towerID, tower.ConstantData.StartHealth, towerID);
             }
             OrderRegistry();
-            Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(); 
+            OnRegistryUpdate();
         }
 
         public uint RegisterItem(ActorType type,int row, int health, params int[] ownTowers)
@@ -58,7 +58,7 @@ namespace Actor
            
             Registry.Add(id, actor);
             actor.Row = row;
-            ((HealthEmployee)Employees[0]).SetHealth(Registry[id], health, true);
+            ((HealthUnit)units[Enums.ActorUnit.Health]).SetHealth(Registry[id], health, true);
             
             foreach (var towerID in ownTowers)
             {
@@ -86,7 +86,13 @@ namespace Actor
             RegisterItem(ActorType.MultiTower, abortedRow, totalHealth, ownTowers.ToArray());
             
             OrderRegistry();
-            Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(); //Restore pairs
+            OnRegistryUpdate();
+        }
+
+        void OnRegistryUpdate()
+        {
+            ((RelationUnit)units[Enums.ActorUnit.Relation]).SetRelations(Registry.Keys.ToList());
+            //Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(); //Restore pairs
         }
 
         void OrderRegistry()
@@ -123,9 +129,9 @@ namespace Actor
 
         public void Unsubscribe()
         {
-            foreach (var controller in Employees)
+            foreach (var unit in units.Values)
             {
-                controller.Unsubscribe();
+                unit.Unsubscribe();
             }
             Eventbus.ActorEvents.OnDoubleTowerCreated -= RegisterDouble;
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= FillRegistry;

@@ -10,15 +10,12 @@ namespace Turn
     {
         private List<CombatPair> CombatPairs = new();
         private CombatPairsCreator combatPairsCreator;
-        private bool pairsReversed = false;
 
-        
+
         public void Subscribe()
         {
             combatPairsCreator = new CombatPairsCreator(CombatPairs);
-            BpEventbus.SubscriberEvents.OnReverseAction += ReversePairs;
-            Eventbus.ActorEvents.OnRegistryUpdate += SetCombatPairs; 
-
+            Eventbus.ActorEvents.OnRelationsSet += SetCombatPairs;
         }
 
         public CombatPair GetPairByIndex(int index) => CombatPairs[index];
@@ -30,24 +27,15 @@ namespace Turn
             CombatPairs.ForEach(p=> p.CombatCompleted = false);
         }
 
-        public void SetCombatPairs()
+        private void SetCombatPairs(bool isReversed)
         {
-            combatPairsCreator.CreateCombatPairs(ActorHolder.Registry, pairsReversed);
+            combatPairsCreator.CreateCombatPairs(ActorHolder.Registry, isReversed);
             Eventbus.CombatEvents.OnPairsSet?.Invoke();
         }
-
-        void ReversePairs() //todo: bug, buraya uğramıyor
-        {
-            pairsReversed = !pairsReversed;
-            SetCombatPairs();
-        }
-        
-        
         
         public void Unsubscribe()
         {
-            BpEventbus.SubscriberEvents.OnReverseAction -= ReversePairs;
-            Eventbus.ActorEvents.OnRegistryUpdate -= SetCombatPairs;
+            Eventbus.ActorEvents.OnRelationsSet -= SetCombatPairs;
         }
 
     }

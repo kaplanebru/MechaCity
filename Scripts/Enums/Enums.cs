@@ -44,6 +44,12 @@ namespace Enums
         MultiTower,
     }
 
+    public enum ActorUnit
+    {
+        Relation,
+        Health,
+    }
+
     public enum TurnState
     {
         TurnStarted,

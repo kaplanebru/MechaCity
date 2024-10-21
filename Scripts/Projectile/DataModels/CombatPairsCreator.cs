@@ -19,16 +19,15 @@ public class CombatPairsCreator
     public void CreateCombatPairs(Dictionary<uint, ActorData> tempActors, bool isReversed = false)
     {
         List<uint> actorIDs = tempActors.Keys.ToList();
-        if (isReversed)
-        {
-            var firstID = actorIDs.First();
-            actorIDs.RemoveAt(0);
-            actorIDs.Reverse();
-            actorIDs.Insert(0, firstID);
-        }
+        // if (isReversed)
+        // {
+        //     var firstID = actorIDs.First();
+        //     actorIDs.RemoveAt(0);
+        //     actorIDs.Reverse();
+        //     actorIDs.Insert(0, firstID);
+        // }
 
         _combatPairs.Clear();
-        Eventbus.LinkEvents.OnCreatingCombatPairs?.Invoke(actorIDs);
         actorIDs.ForEach(id => CombatPairByTower(tempActors[id], isReversed));
         
     }
@@ -43,7 +42,6 @@ public class CombatPairsCreator
             var linkedActor = ActorHolder.Registry[id];
             var pair = AddToPair(mainActor, linkedActor);
             pair.OrderTowers(isReversed);
-
         }
     }
 

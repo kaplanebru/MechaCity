@@ -1,35 +1,50 @@
 using System.Collections.Generic;
+using System.Linq;
 using Towers;
 using UnityEngine;
 
 namespace Actor
 {
-    public class RelationEmployee : ActorEmployee
+    public class RelationUnit : ActorUnit
     {
-        public RelationEmployee(ActorHolder holder) : base(holder) {}
-        
+        public RelationUnit(ActorHolder holder) : base(holder) {}
+        private bool isReversed = false;
+
         public override void Subscribe()
         {
-            Eventbus.LinkEvents.OnCreatingCombatPairs += SetLinkedActors;
+            Eventbus.ActorEvents.OnReverseRelations += ReversePairs;
+        }
+
+        private void ReversePairs()
+        {
+            isReversed = !isReversed;
+            List<uint> actors = ActorHolder.Registry.Keys.ToList();
+            actors.Reverse();
+            SetRelations(actors);
+        }
+
+        public void SetRelations(List<uint> actors)
+        {
+            SetLinkedActors(actors);
+            SetNeighbours(actors);
+            
+            Eventbus.ActorEvents.OnRelationsSet?.Invoke(isReversed);
         }
         
-        public static void SetLinkedActors(List<uint> actors) //ters de gelebilir
+        private void SetLinkedActors(List<uint> actors) 
         {
-            
-            ResetAllLinks();
             var actorsAmount = actors.Count;
             for (var i = 0; i < actorsAmount ; i++)
             {
                 var mainID = actors[i];
                 var nextIDInOrder = actors[(i + 1) % actorsAmount];
-//                Debug.Log(ActorHolder.Registry[mainID].Row);
                 //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
                 
                 ActorHolder.Registry[mainID].LinkActors(nextIDInOrder); //burda patlar, double'ın elemanı olup registeryde bulunmayabilir!
             }
         }
 
-        public static void SetNeighbours(List<uint> actors)
+        private void SetNeighbours(List<uint> actors)
         {
             var actorsAmount = actors.Count;
             for (var i = 0; i < actorsAmount ; i++)
@@ -37,11 +52,8 @@ namespace Actor
                 var mainID = actors[i];
                 var mainActor = ActorHolder.Registry[mainID];
 
-                uint previousID = actors[i - 1];
-                if (i - 1 < 0)
-                {
-                    previousID = actors[actorsAmount - 1];
-                }
+                var previousID = i - 1 < 0 ? actors[actorsAmount - 1] : actors[i - 1];
+                
                 
                 var nextID = actors[(i + 1) % actorsAmount];
                 
@@ -65,17 +77,17 @@ namespace Actor
             // }
         }
 
-        private static void ResetAllLinks()
-        {
-            foreach (var registry in ActorHolder.Registry.Values)
-            {
-                registry.LinkedActors.Clear();
-            }
-        }
+        // private void ResetAllLinks()
+        // {
+        //     foreach (var registry in ActorHolder.Registry.Values)
+        //     {
+        //         registry.LinkedActors.Clear();
+        //     }
+        // }
 
         public override void Unsubscribe()
         {
-            Eventbus.LinkEvents.OnCreatingCombatPairs -= SetLinkedActors;
+            Eventbus.ActorEvents.OnReverseRelations -= ReversePairs;
         }
 
     }

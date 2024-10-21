@@ -22,6 +22,7 @@ public class BlueprintEventHandler
     {
         Debug.Log("publish reverse");
         BpEventbus.SubscriberEvents.OnReverseAction?.Invoke();
+        Eventbus.ActorEvents.OnReverseRelations?.Invoke();
     }
 
     void PublishSelectionIncrementAction()

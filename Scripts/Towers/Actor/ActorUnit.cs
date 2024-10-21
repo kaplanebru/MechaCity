@@ -1,9 +1,9 @@
 namespace Actor
 {
-    public abstract class ActorEmployee
+    public abstract class ActorUnit
     {
         public ActorHolder Holder;
-        public ActorEmployee(ActorHolder holder)
+        public ActorUnit(ActorHolder holder)
         {
             Holder = holder;
         }
