@@ -22,9 +22,10 @@ public class BridgeEventListener : TowerRelatedEventListener<BridgeRoot>
     {
         for (int i = 0; i < ids.Length-1; i++)
         {
-            var bridge = RelatedItems.FirstOrDefault(s => s.Id == ids[i]);
+            var bridge = RelatedItems.FirstOrDefault(s => s.Id == ids[i]); //todo: dict yap
+            var target = RelatedItems.FirstOrDefault(s => s.Id == ids[i + 1]);
             bridge.Show(true);
-            bridge.Stretch(ids[i+1]);
+            bridge.Stretch(target.Id); //ids[i+1]
         }
     }
 

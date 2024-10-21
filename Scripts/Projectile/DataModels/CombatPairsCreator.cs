@@ -18,18 +18,8 @@ public class CombatPairsCreator
     
     public void CreateCombatPairs(List<uint> tempActors, bool isReversed = false)
     {
-        // List<uint> actorIDs = tempActors.Keys.ToList();
-        // if (isReversed)
-        // {
-        //     var firstID = actorIDs.First();
-        //     actorIDs.RemoveAt(0);
-        //     actorIDs.Reverse();
-        //     actorIDs.Insert(0, firstID);
-        // }
-
         _combatPairs.Clear();
         tempActors.ForEach(id => CombatPairByTower(ActorHolder.Registry[id], isReversed));
-        
     }
     
     public void CombatPairByTower(ActorData mainActor, bool isReversed = false)
