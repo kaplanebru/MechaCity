@@ -30,7 +30,6 @@ public static class BpEventbus
 
     public static class SubscriberEvents
     {
-        public static Action OnReverseAction;
         public static Action OnSelectionIncrease;
         public static Action OnSelectionRestoration;
     }

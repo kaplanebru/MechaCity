@@ -12,10 +12,10 @@ namespace Actor
 
         public override void Subscribe()
         {
-            Eventbus.ActorEvents.OnReverseRelations += ReversePairs;
+            Eventbus.ActorEvents.OnReverseRelations += ReverseRelations;
         }
 
-        private void ReversePairs()
+        private void ReverseRelations()
         {
             isReversed = !isReversed;
             List<uint> actors = ActorHolder.Registry.Keys.ToList();
@@ -28,7 +28,7 @@ namespace Actor
             SetLinkedActors(actors);
             SetNeighbours(actors);
             
-            Eventbus.ActorEvents.OnRelationsSet?.Invoke(isReversed);
+            Eventbus.ActorEvents.OnRelationsSet?.Invoke(actors, isReversed);
         }
         
         private void SetLinkedActors(List<uint> actors) 
@@ -87,7 +87,7 @@ namespace Actor
 
         public override void Unsubscribe()
         {
-            Eventbus.ActorEvents.OnReverseRelations -= ReversePairs;
+            Eventbus.ActorEvents.OnReverseRelations -= ReverseRelations;
         }
 
     }

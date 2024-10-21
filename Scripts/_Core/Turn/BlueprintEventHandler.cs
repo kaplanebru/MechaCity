@@ -21,7 +21,6 @@ public class BlueprintEventHandler
     void PublishReverseOrderAction()
     {
         Debug.Log("publish reverse");
-        BpEventbus.SubscriberEvents.OnReverseAction?.Invoke();
         Eventbus.ActorEvents.OnReverseRelations?.Invoke();
     }
 

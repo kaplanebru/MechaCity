@@ -27,9 +27,9 @@ namespace Turn
             CombatPairs.ForEach(p=> p.CombatCompleted = false);
         }
 
-        private void SetCombatPairs(bool isReversed)
+        private void SetCombatPairs(List<uint> actors, bool isReversed)
         {
-            combatPairsCreator.CreateCombatPairs(ActorHolder.Registry, isReversed);
+            combatPairsCreator.CreateCombatPairs(actors, isReversed);
             Eventbus.CombatEvents.OnPairsSet?.Invoke();
         }
         

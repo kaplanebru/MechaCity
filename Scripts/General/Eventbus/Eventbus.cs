@@ -8,7 +8,7 @@ public static class Eventbus
     {
         public static Action<uint[]> OnDoubleTowerCreated;
         public static Action OnRegistryUpdate;
-        public static Action<bool> OnRelationsSet;
+        public static Action<List<uint>, bool> OnRelationsSet;
         public static Action OnReverseRelations;
     }
     public static class CombatEvents
