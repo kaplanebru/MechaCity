@@ -75,7 +75,6 @@ namespace Blueprint
 
         private void TryExecuteBp([CanBeNull] uint[] selectedItems)
         {
-            if(selectedItems == null) return;
             if (currentBlueprint.TryTakeAction(selectedItems))
             {
                 SetTracker(selectedItems);

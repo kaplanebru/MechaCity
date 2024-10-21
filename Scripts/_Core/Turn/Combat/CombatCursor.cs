@@ -43,7 +43,7 @@ public class CombatCursor : MonoBehaviour
         BpEventbus.UIEvents.OnBpInstallBegin += SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset += ResetBpImage;
         
-        //BpEventbus.SubscriberEvents.OnReverseAction += ReverseAngle;
+        //BpEventbus.ActionEvents.OnReverseActionTriggered += ReverseAngle;
 
         SetVisualReferences();
         installEffect = GetComponentInChildren<BpInstallEffect>();
@@ -52,11 +52,13 @@ public class CombatCursor : MonoBehaviour
     }
     
    
-    void Setup()
+    void Setup(bool isReversed)
     {
         FillActorPositions();
         SetDirections();
         SetTargetPositions();
+        if(isReversed)
+            ReverseAngle();
     }
 
     void FillActorPositions()
@@ -137,10 +139,10 @@ public class CombatCursor : MonoBehaviour
     
     void ReverseAngle()
     {
-        var first = targetPositions.First();
-        targetPositions.Remove(first);
+        // var first = targetPositions.First();
+        // targetPositions.Remove(first);
         targetPositions.Reverse();
-        targetPositions.Insert(0, first);
+        // targetPositions.Insert(0, first);
     }
     public void ResetBpImage()
     {
@@ -158,6 +160,9 @@ public class CombatCursor : MonoBehaviour
         
         BpEventbus.UIEvents.OnBpInstallBegin -= SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset -= ResetBpImage;
+        
+        BpEventbus.ActionEvents.OnReverseActionTriggered -= ReverseAngle;
+
         
     }
 }

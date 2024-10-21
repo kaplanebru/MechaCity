@@ -30,7 +30,7 @@ namespace Turn
         private void SetCombatPairs(List<uint> actors, bool isReversed)
         {
             combatPairsCreator.CreateCombatPairs(actors, isReversed);
-            Eventbus.CombatEvents.OnPairsSet?.Invoke();
+            Eventbus.CombatEvents.OnPairsSet?.Invoke(isReversed);
         }
         
         public void Unsubscribe()

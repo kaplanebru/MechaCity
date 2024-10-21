@@ -16,7 +16,7 @@ public static class Eventbus
         public static Action<uint> OnActorKilled;
         public static Action<uint> OnTeamSwitch;
         public static Action <float> OnNextActor;
-        public static Action OnPairsSet;
+        public static Action <bool> OnPairsSet;
         
         public static Action OnCombatStarted;
         public static Action OnCombatReady;
