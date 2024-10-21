@@ -46,6 +46,13 @@ namespace Core
             NetworkUIController.gameObject.SetActive(true);
 
             TeamEvents.OnTeamsSet?.Invoke(Teams);
+            GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet?.Invoke();
+            
+            Invoke(nameof(TowerAndTeamsReadyCall), 0.5f);
+        }
+
+        void TowerAndTeamsReadyCall() //todo: temp
+        {
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady?.Invoke();
         }
 

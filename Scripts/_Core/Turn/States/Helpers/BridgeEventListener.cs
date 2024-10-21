@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class BridgeEventListener : TowerRelatedEventListener<BridgeRoot>
 {
-    protected override BridgeRoot[] RelatedItems { get; set; }
+    //protected override BridgeRoot[] RelatedItems { get; set; }
 
     public override void Initialize()
     {
        DisableAll();
     }
+
+    protected override Dictionary<int, BridgeRoot> RelatedItems { get; set; } = new();
 
     public override void Subscribe()
     {
@@ -22,8 +24,10 @@ public class BridgeEventListener : TowerRelatedEventListener<BridgeRoot>
     {
         for (int i = 0; i < ids.Length-1; i++)
         {
-            var bridge = RelatedItems.FirstOrDefault(s => s.Id == ids[i]); //todo: dict yap
-            var target = RelatedItems.FirstOrDefault(s => s.Id == ids[i + 1]);
+            // var bridge = RelatedItems.FirstOrDefault(s => s.Id == ids[i]); //todo: dict yap
+            // var target = RelatedItems.FirstOrDefault(s => s.Id == ids[i + 1]);
+            var bridge = RelatedItems[ids[i]];
+            var target = RelatedItems[ids[i + 1]];
             bridge.Show(true);
             bridge.Stretch(target.Id); //ids[i+1]
         }
@@ -31,7 +35,7 @@ public class BridgeEventListener : TowerRelatedEventListener<BridgeRoot>
 
     void DisableAll()
     {
-        foreach (var relatedItem in RelatedItems)
+        foreach (var relatedItem in RelatedItems.Values)
         {
             relatedItem.Show(false);
         }

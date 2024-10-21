@@ -8,7 +8,9 @@ using UnityEngine;
 public class ShootersEventListener : TowerRelatedEventListener<Shooter>
 {
     public CombatTimingData timingData;
-    protected override Shooter[] RelatedItems { get; set; }
+    //protected override Shooter[] RelatedItems { get; set; }
+    protected override Dictionary<int, Shooter> RelatedItems { get; set; } = new();
+
     public override void Subscribe()
     {
         CombatPairEvents.OnShoot += ShootByGivenShooter;
@@ -16,7 +18,7 @@ public class ShootersEventListener : TowerRelatedEventListener<Shooter>
 
     public override void Initialize()
     {
-        foreach (var shooter in RelatedItems)
+        foreach (var shooter in RelatedItems.Values)
         {
             shooter.SetDuration(timingData.shooterMotionDuration, timingData.ProjectileDuration);
         }
@@ -24,7 +26,8 @@ public class ShootersEventListener : TowerRelatedEventListener<Shooter>
 
     private void ShootByGivenShooter(CombatPair pair)
     {
-        var shooter = RelatedItems.FirstOrDefault(s => s.Id == pair.MainTowerData.UniqID);
+        //var shooter = RelatedItems.Values.FirstOrDefault(s => s.Id == pair.MainTowerData.UniqID);
+        var shooter = RelatedItems[pair.MainTowerData.UniqID];
         shooter.Shoot(pair);
     }
     

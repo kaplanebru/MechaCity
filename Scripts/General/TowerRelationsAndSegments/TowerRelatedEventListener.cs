@@ -6,10 +6,13 @@ using Object = UnityEngine.Object;
 
 public abstract class TowerRelatedEventListener<TRelated> : MonoBehaviour where TRelated : ITowerRelated
 {
-    protected abstract TRelated[] RelatedItems { get; set; }
+    //protected abstract TRelated[] RelatedItems { get; set; }
+    protected abstract Dictionary<int, TRelated> RelatedItems { get; set; } 
     private void OnEnable()
     {
-        GeneralEventbus.InitializerEvents.OnTowersCreated += GetItems;
+        //GeneralEventbus.InitializerEvents.OnTowersCreated += GetItems;
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet += GetItems;
+
         Subscribe();
     }
     public abstract void Subscribe();
@@ -18,7 +21,12 @@ public abstract class TowerRelatedEventListener<TRelated> : MonoBehaviour where 
 
     private void GetItems()
     {
-        RelatedItems = GetComponentsInChildren<TRelated>();
+        var items =  GetComponentsInChildren<TRelated>();
+        foreach (var item in items)
+        {
+            RelatedItems.Add(item.Id, item);
+        }
+        //RelatedItems = GetComponentsInChildren<TRelated>();
         Initialize();
     }
 
@@ -28,7 +36,9 @@ public abstract class TowerRelatedEventListener<TRelated> : MonoBehaviour where 
 
     private void OnDisable()
     {
-        GeneralEventbus.InitializerEvents.OnTowersCreated -= GetItems;
+       // GeneralEventbus.InitializerEvents.OnTowersCreated -= GetItems;
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet -= GetItems;
+
         Unsubscribe();
 
     }

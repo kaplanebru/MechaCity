@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class LocksEventListener : TowerRelatedEventListener<LockHolder>
 {
-    protected override LockHolder[] RelatedItems { get; set; }
+    //protected override LockHolder[] RelatedItems { get; set; }
+    protected override Dictionary<int, LockHolder> RelatedItems { get; set; } = new();
+
     public override void Subscribe()
     {
         Eventbus.TowerEvents.OnLock += LockGivenTower;
@@ -14,7 +16,8 @@ public class LocksEventListener : TowerRelatedEventListener<LockHolder>
 
     private void LockGivenTower(int limit, int id)
     {
-        var lockHolder = RelatedItems.FirstOrDefault(l => l.Id == id);
+        //var lockHolder = RelatedItems.FirstOrDefault(l => l.Id == id);
+        var lockHolder = RelatedItems[id];
         lockHolder.LockTower(limit);
     }
 

@@ -12,9 +12,11 @@ namespace Health
 {
     public class HealthUIEventListener : TowerRelatedEventListener<HealthHolder>
     {
-        protected override HealthHolder[] RelatedItems { get; set; } //bunları hep dict yapmak lazım.
+       // protected override HealthHolder[] RelatedItems { get; set; } //bunları hep dict yapmak lazım.
         private Dictionary<uint, HealthHolder> holdersByActor = new();
         public HealthHolder healthHolderPb;
+
+        protected override Dictionary<int, HealthHolder> RelatedItems { get; set; } = new();
 
         public override void Subscribe()
         {
@@ -26,14 +28,6 @@ namespace Health
         {
         }
 
-        // void SetHolderByActor()
-        // {
-        //     for (int i = 0; i < RelatedItems.Length; i++) //herkesin tekli başladığı senaryoda
-        //     {
-        //         holdersByActor.Add(ActorHolder.Registry.Keys.ElementAt(i), RelatedItems[i]);
-        //     }
-        // }
-
         private void AdjustHealthIcon(uint actorID)
         {
             var actor = ActorHolder.Registry[actorID];
@@ -43,7 +37,8 @@ namespace Health
                 if (actor.Type == ActorType.Standard)
                 {
                     var towerID = actor.TowerIDs.First();
-                    var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == towerID);
+                    //var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == towerID);
+                    var healthHolder = RelatedItems[towerID];
                     holdersByActor.Add(actorID, healthHolder);
                 }
                 else
@@ -90,7 +85,8 @@ namespace Health
             var actor = ActorHolder.Registry[actorID];
             var highestTower = actor.Towers.Aggregate((t1, t2) => t1.Height > t2.Height ? t1 : t2).UniqID;
             
-            var holder =  RelatedItems.FirstOrDefault(h => h.Id == highestTower);
+            //var holder =  RelatedItems.FirstOrDefault(h => h.Id == highestTower);
+            var holder = RelatedItems[highestTower];
             
              var pos = holder.transform.position;
              var tower = AllTowers.GetTower(highestTower);
@@ -105,7 +101,8 @@ namespace Health
 
             for (var i = 0; i < towerIDs.Length; i++)
             {
-                holders[i] = RelatedItems.FirstOrDefault(h => h.Id == towerIDs[i]);
+                //holders[i] = RelatedItems.FirstOrDefault(h => h.Id == towerIDs[i]);
+                holders[i] = RelatedItems[towerIDs[i]];
                 holders[i].DisableAll();
                 center += holders[i].transform.position;
             }
@@ -118,9 +115,7 @@ namespace Health
             holdersByActor.Add(actorID, holders[0]);
             
 
-            //var health = Instantiate(healthHolderPb, holders[0].transform.parent);
-            // health.transform.position = center;
-            // health.AdjustIcons(totalHealth);
+       
 
             //todo: iconlar diğer towerlardan ortaya dotweenle gelip toplanır, 10'a kadar çalışır
         }
