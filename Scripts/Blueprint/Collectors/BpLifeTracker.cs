@@ -11,15 +11,16 @@ namespace Blueprint
     public class BpLifeTracker: ITrackable //sadece enum tutabilir, sonra restore deriz
     {
         private BpType Type;
-        public BpLifeTracker(int lifespan, int relatedTower, BpType type)
+        public int Lifespan { get; set; }
+        public uint RelatedActor { get; set; }
+        public BpLifeTracker(int lifespan, uint relatedActor, BpType type)
         {
             Lifespan = lifespan;
-            RelatedTower = relatedTower;
+            RelatedActor = relatedActor;
             Type = type;
         }
 
-        public int Lifespan { get; set; }
-        public int RelatedTower { get; set; }
+        
 
         private bool skipMainTurn = true;
         
@@ -39,7 +40,7 @@ namespace Blueprint
             if (Lifespan <= 0)
             {
                 Debug.Log("expired");
-                BpEventbus.LifespanEvents.OnRestore?.Invoke(Type, RelatedTower);//bpmanagera gidiyor sorun yok
+                BpEventbus.LifespanEvents.OnRestore?.Invoke(Type, RelatedActor);//bpmanagera gidiyor sorun yok
                 BpEventbus.LifespanEvents.OnExpiredTracker?.Invoke(this);
             }
             Debug.Log("lifespan: "+Lifespan);

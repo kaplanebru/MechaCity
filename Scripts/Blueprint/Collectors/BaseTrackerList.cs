@@ -3,7 +3,7 @@ using System.Collections.Generic;
 public interface ITrackable
 {
     public int Lifespan { get; set; }
-    public int RelatedTower { get; set; }
+    public uint RelatedActor { get; set; }
 
     public void ReduceValue();
 }

@@ -8,7 +8,7 @@ namespace Blueprint
         {
             return new BpLifeTracker(
                 (int) args[0], 
-                (int) args[1], 
+                (uint) args[1], 
                 (BpType) args[2]);
         }
     }

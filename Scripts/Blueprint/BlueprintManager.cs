@@ -88,12 +88,12 @@ namespace Blueprint
             
             foreach (var item in selectedItems)
             {
-                // var tracker = bpTrackerList.CreateTracker(currentBlueprint.Lifespan, item, currentBlueprint.Type);  //TODO: LATER
-                // BpEventbus.LifespanEvents.OnTrackerRequest?.Invoke(tracker);
+                var tracker = bpTrackerList.CreateTracker(currentBlueprint.Lifespan, item, currentBlueprint.Type);  //TODO: LATER
+                BpEventbus.LifespanEvents.OnTrackerRequest?.Invoke(tracker);
             }
         }
 
-        private void RestoreFromBp(BpType type, int selectedItem)
+        private void RestoreFromBp(BpType type, uint selectedItem)
         {
            bpHolder.AllBlueprints[type].TryRestoreAction(selectedItem); //todo: bug. sadece 3 tane bp var. ama aynı bpnin birden fazla kullanımı olmalı, ve selected itemlerı farklı olmalı
         }

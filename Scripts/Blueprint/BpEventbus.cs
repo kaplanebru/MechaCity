@@ -37,7 +37,7 @@ public static class BpEventbus
     public static class LifespanEvents
     {
   
-        public static Action<BpType, int> OnRestore;
+        public static Action<BpType, uint> OnRestore;
         
         public static Action<ITrackable> OnTrackerRequest;
         public static Action<ITrackable> OnExpiredTracker;

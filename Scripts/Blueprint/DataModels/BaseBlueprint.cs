@@ -24,7 +24,7 @@ namespace Blueprint
 
         //public abstract void CheckSelectionConstraints(int[] selectedItems);
 
-        public abstract void TryRestoreAction(int selectedItem);
+        public abstract void TryRestoreAction(uint selectedItem);
     }
     
     public interface IBpActionProcessor<out TAction> where TAction : IBpAction

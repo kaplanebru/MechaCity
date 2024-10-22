@@ -30,7 +30,7 @@ namespace Blueprint
             return false;
         }
 
-        public override void TryRestoreAction(int selectedItem)
+        public override void TryRestoreAction(uint selectedItem)
         {
             BpAction.Restore(selectedItem);
         }
