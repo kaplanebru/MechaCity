@@ -17,12 +17,14 @@ namespace Network
             public static Action<TurnStateType> OnStateChangeRequestByServer;
             public static Action<BpType, int> OnBpSelectionByServer;
             public static Action<GameEndState> OnGameEndScreenRequest;
+            public static Action<uint[]> OnBpExecutionRequestByServer;
         }
 
         public static class TriggerEvents
         {
             public static Action<TurnStateType> OnStateChangeRequestByUser;
             public static Action<BpType, int> OnSetCurrentBpRequestByUser;
+            public static Action<uint[]> OnBpExecutionRequestByUser;
             public static Action<TeamType> OnGameEnds;
         }
 

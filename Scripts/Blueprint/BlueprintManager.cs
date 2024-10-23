@@ -29,8 +29,9 @@ namespace Blueprint
             BpEventbus.UIEvents.OnInteraction += ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
             
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer;
+            NetworkEventbus.RequestEvents.OnBpExecutionRequestByServer += TryExecuteBpBySystem;
             
-            BpEventbus.OnSendingSelectionsForExecution += TryExecuteBp;
+            BpEventbus.OnSendingSelectionsForExecution += SendBpExecutionRequestByUser;
             
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
@@ -71,13 +72,16 @@ namespace Blueprint
             bpTrackerList.RemoveFromTrackList(lifeTracker);
         }
 
-        private void TryExecuteBp([CanBeNull] uint[] selectedItems)
+        private void SendBpExecutionRequestByUser(uint[] selectedItems)
         {
-            //NETWORK
+            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(selectedItems);
+        }
+        
+        private void TryExecuteBpBySystem([CanBeNull] uint[] selectedItems)
+        {
             if (currentBlueprint.TryTakeAction(selectedItems))
             {
                 SetTracker(selectedItems);
-                //BpEventbus.StateEvents.OnStateChangeRequestFromIntruder?.Invoke();
             }
         }
 
@@ -124,11 +128,12 @@ namespace Blueprint
 
         public void Unsubscribe()
         {
-            BpEventbus.OnSendingSelectionsForExecution -= TryExecuteBp;
+            BpEventbus.OnSendingSelectionsForExecution -= SendBpExecutionRequestByUser;
 
             BpEventbus.UIEvents.OnInteraction -= ChangeStateAndSetBp;
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
             NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
+            NetworkEventbus.RequestEvents.OnBpExecutionRequestByServer -= TryExecuteBpBySystem;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
             bpTrackerList.Unsubscribe();

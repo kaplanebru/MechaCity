@@ -124,7 +124,6 @@ namespace Turn
 
         private void StateEndByUser()
         {
-            Debug.Log(currentState.StateType);
             if (currentState.StateType == TurnStateType.Intruder) //apply yapılan yerde enum olabilir
             {
                 IntruderExecutionAttempt();
@@ -139,7 +138,6 @@ namespace Turn
         {
             BpEventbus.StateEvents.OnIntruderExecutionAttempt?.Invoke();
             GetPreviousState();
-            //currentState.TryExecuteBp();
             //TODO: IntruderExecutionRequest(nextType); => bu durumda Get previous state'te state change request 2 kez çağrılmış olabilir.
         }
 
@@ -152,7 +150,7 @@ namespace Turn
         private void GetPreviousState(bool isDirect = false)
         {
             var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
-            if (isDirect)
+            if (!isDirect)
                 SendStateChangeRequest(previousType);
             else
                 ChangeStateBySystem(previousType);

@@ -40,11 +40,26 @@ namespace Network
             if (IsOwner)
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += StateChangeBeginServerRpc;
-                
                 NetworkEventbus.TriggerEvents.OnSetCurrentBpRequestByUser += ProcessBpSelectionServerRpc;
+                NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser += BpExecutionBeginServerRpc;
             }
         }
+
+        //BP EXE
+        [ServerRpc]
+        private void BpExecutionBeginServerRpc(uint[] selectedItems)
+        {
+            BpExecutionBeginClientRpc(selectedItems);
+        }
         
+        [ClientRpc]
+        private void BpExecutionBeginClientRpc(uint[] selectedItems)
+        {
+            NetworkEventbus.RequestEvents.OnBpExecutionRequestByServer?.Invoke(selectedItems);
+        }
+        //BP EXE
+        
+
         [ServerRpc]
         private void ProcessBpSelectionServerRpc(BpType bpType, int level)
         {
@@ -82,7 +97,7 @@ namespace Network
             if (IsOwner)
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser -= StateChangeBeginServerRpc;
-                
+                NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser -= BpExecutionBeginServerRpc;
                 NetworkEventbus.TriggerEvents.OnSetCurrentBpRequestByUser -= ProcessBpSelectionServerRpc;
             }
         }
