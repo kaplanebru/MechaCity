@@ -30,17 +30,7 @@ namespace Turn
         private TurnHelper turnHelper = new();
 
         private bool firstTurn = true;
-
-       
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                //todo: test
-            }
-        }
-
+        
         private void OnEnable()
         {
             TeamEvents.OnTeamsSet += SetTurnTeams;
@@ -59,8 +49,7 @@ namespace Turn
             combatOperator.SetElements(combatTimingData, pairController);
 
         }
-
-
+        
         private void HighlightButtonRequest(bool enable)
         {
             UIEventbus.OnHighlightRequest?.Invoke(enable);
@@ -130,6 +119,7 @@ namespace Turn
         }
         private void StateEndRequestByUser()
         {
+            Debug.Log(currentState.StateType);
             if (currentState.StateType == TurnStateType.Intruder) //apply yapılan yerde enum olabilir
             {
                 IntruderAttempt();
@@ -143,6 +133,7 @@ namespace Turn
         void IntruderAttempt()
         {
             currentState.TryExecuteBp();
+            //TODO: IntruderExecutionRequest(nextType); => bu durumda Get previous state'te state change request 2 kez çağrılmış olabilir.
         }
 
         public void GetNextState()

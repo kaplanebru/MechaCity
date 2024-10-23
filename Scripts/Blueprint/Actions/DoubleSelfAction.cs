@@ -13,6 +13,7 @@ namespace Blueprint
     {
         public void Execute(params object[] obj)
         {
+            Debug.Log("execute double self");
             var selectedActors = (uint[]) obj[0];
             selectedActors = selectedActors.OrderBy(a => a).ToArray();
             

@@ -48,6 +48,8 @@ namespace Turn
                 return;
             }
 
+            
+            Debug.Log(bpSelector);
 
             bpSelector.Subscribe();
             bpSelector.SetTeamsAndBlock(TeamsByTurn);
@@ -58,6 +60,8 @@ namespace Turn
 
         public override void TryExecuteBp()
         {
+            
+            Debug.Log("try execute bp");
             BpEventbus.OnSendingSelectionsForExecution?.Invoke(
                 bpSelector?.SendAllTowers().ToArray()); 
             //burda tekrar networke gitmeye gerek yok!!
