@@ -23,7 +23,7 @@ namespace PlayerNetwork
         public override void OnNetworkSpawn()
         {
             if (IsOwner) NetworkEventbus.TriggerEvents.OnGameEnds += GameEndServerRpc;
-            NetworkEventbus.RequestEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
+            NetworkEventbus.ServerEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
         }
         
         #region SpawnTurnNetworkServerRpc
@@ -118,7 +118,7 @@ namespace PlayerNetwork
         {
             if (!IsOwner) return;
             Data.GameEndState = GameEndState.Win;
-            NetworkEventbus.RequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+            NetworkEventbus.ServerEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
         }
 
         [ClientRpc]
@@ -126,7 +126,7 @@ namespace PlayerNetwork
         {
             if (!IsOwner) return;
             Data.GameEndState = GameEndState.Lose;
-            NetworkEventbus.RequestEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+            NetworkEventbus.ServerEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
         }
 
         #endregion

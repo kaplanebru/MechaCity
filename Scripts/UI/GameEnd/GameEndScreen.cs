@@ -11,7 +11,7 @@ namespace GameUI
 
         private void OnEnable()
         {
-            NetworkEventbus.RequestEvents.OnGameEndScreenRequest += ShowPanel;
+            NetworkEventbus.ServerEvents.OnGameEndScreenRequest += ShowPanel;
             DisableAll();
         }
 
@@ -39,7 +39,7 @@ namespace GameUI
 
         private void OnDisable()
         {
-            NetworkEventbus.RequestEvents.OnGameEndScreenRequest -= ShowPanel;
+            NetworkEventbus.ServerEvents.OnGameEndScreenRequest -= ShowPanel;
         }
     }
 }

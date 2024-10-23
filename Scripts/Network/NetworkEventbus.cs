@@ -11,7 +11,7 @@ namespace Network
     {
         public static Action<object[]> OnAllClientsSet;
 
-        public static class RequestEvents
+        public static class ServerEvents
         {
             public static Action<Player, ulong> OnPlayerSpawned;
             public static Action<TurnStateType> OnStateChangeRequestByServer;

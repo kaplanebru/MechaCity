@@ -55,7 +55,7 @@ namespace Network
         [ClientRpc]
         private void BpExecutionBeginClientRpc(uint[] selectedItems)
         {
-            NetworkEventbus.RequestEvents.OnBpExecutionRequestByServer?.Invoke(selectedItems);
+            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer?.Invoke(selectedItems);
         }
         //BP EXE
         
@@ -70,7 +70,7 @@ namespace Network
         void ProcessBpSelectionClientRpc(BpType bpType, int level)
         {
            // print("owner");  //2 ownera da 1 kez gidiyor
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer?.Invoke(bpType, level);
+            NetworkEventbus.ServerEvents.OnBpSelectionByServer?.Invoke(bpType, level);
            
         }
 
@@ -85,7 +85,7 @@ namespace Network
 
         private void StateChangeBegin(TurnStateType previousvalue, TurnStateType newvalue)
         {
-            NetworkEventbus.RequestEvents.OnStateChangeRequestByServer?.Invoke(newvalue);
+            NetworkEventbus.ServerEvents.OnStateChangeRequestByServer?.Invoke(newvalue);
         }
 
         #endregion

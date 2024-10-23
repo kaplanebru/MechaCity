@@ -23,7 +23,7 @@ namespace Core
         private void OnEnable()
         {
             //GeneralEventbus.InitializerEvents.OnInitialize?.Invoke();
-            NetworkEventbus.RequestEvents.OnPlayerSpawned += AssignPlayers;
+            NetworkEventbus.ServerEvents.OnPlayerSpawned += AssignPlayers;
             GeneralEventbus.InitializerEvents.OnTowersCreated += ExecuteInitializer;
             ActorHolder.Initialize();
         }
@@ -104,7 +104,7 @@ namespace Core
 
         private void OnDisable()
         {
-            NetworkEventbus.RequestEvents.OnPlayerSpawned -= AssignPlayers;
+            NetworkEventbus.ServerEvents.OnPlayerSpawned -= AssignPlayers;
             GeneralEventbus.InitializerEvents.OnTowersCreated -= ExecuteInitializer;
             ActorHolder.Unsubscribe();
         }

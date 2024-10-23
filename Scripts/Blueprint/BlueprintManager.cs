@@ -28,8 +28,8 @@ namespace Blueprint
 
             BpEventbus.UIEvents.OnInteraction += ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
             
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer;
-            NetworkEventbus.RequestEvents.OnBpExecutionRequestByServer += TryExecuteBpBySystem;
+            NetworkEventbus.ServerEvents.OnBpSelectionByServer += SetCurrentBpByServer;
+            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer += TryExecuteBpBySystem;
             
             BpEventbus.OnSendingSelectionsForExecution += SendBpExecutionRequestByUser;
             
@@ -132,8 +132,8 @@ namespace Blueprint
 
             BpEventbus.UIEvents.OnInteraction -= ChangeStateAndSetBp;
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
-            NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
-            NetworkEventbus.RequestEvents.OnBpExecutionRequestByServer -= TryExecuteBpBySystem;
+            NetworkEventbus.ServerEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
+            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer -= TryExecuteBpBySystem;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
             bpTrackerList.Unsubscribe();
