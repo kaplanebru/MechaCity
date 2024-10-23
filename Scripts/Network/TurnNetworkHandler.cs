@@ -41,7 +41,7 @@ namespace Network
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser += StateChangeBeginServerRpc;
                 
-                NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser += ProcessBpSelectionServerRpc;
+                NetworkEventbus.TriggerEvents.OnSetCurrentBpRequestByUser += ProcessBpSelectionServerRpc;
             }
         }
         
@@ -83,7 +83,7 @@ namespace Network
             {
                 NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser -= StateChangeBeginServerRpc;
                 
-                NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser -= ProcessBpSelectionServerRpc;
+                NetworkEventbus.TriggerEvents.OnSetCurrentBpRequestByUser -= ProcessBpSelectionServerRpc;
             }
         }
     }

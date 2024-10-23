@@ -23,12 +23,17 @@ namespace Turn
         private BaseTurnTransferData incomingData;
 
         public override void Register() {}
-        public override void SubscribeToConstantEvents() {}
+
+        public override void SubscribeToConstantEvents()
+        {
+            BpEventbus.SelectionEvents.OnCurrentBpSet += GetBpSelector; 
+            BpEventbus.StateEvents.OnIntruderExecutionAttempt += SendSelections;
+        }
 
         public override void Subscribe()
         {
-            AllTowers.ResetTowerColors();
-            BpEventbus.SelectionEvents.OnCurrentBpSet += GetBpSelector; //permanent de olabilir
+            //AllTowers.ResetTowerColors();
+            //BpEventbus.SelectionEvents.OnCurrentBpSet += GetBpSelector;
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
@@ -39,44 +44,40 @@ namespace Turn
 
         private void GetBpSelector(SelectionType selectionType)
         {
+            Debug.Log(" GET SELECTOR");
             if (selectionType != SelectionType.None)
                 bpSelector = SelectionReferences.Instance.GetSelector(selectionType);
 
             else
             {
-                TryExecuteBp();
+                SendSelections(); //TODO: eski seçilmiş dataya burdan dolayı ihtiyaç duyulabilir, burdakiler gönderilir, nasılsa değişen bir selection olmayacak
                 return;
             }
-
             
-            Debug.Log(bpSelector);
+            AllTowers.ResetTowerColors();
 
             bpSelector.Subscribe();
             bpSelector.SetTeamsAndBlock(TeamsByTurn);
-
             bpSelector.RestartWithNewTowers(); //ContinueTowers(new List<int>());
-            //TODO: bp towers için resetlenen bir list tutulabilir
         }
 
-        public override void TryExecuteBp()
+        private void SendSelections()
         {
-            
             Debug.Log("try execute bp");
-            BpEventbus.OnSendingSelectionsForExecution?.Invoke(
-                bpSelector?.SendAllTowers().ToArray()); 
-            //burda tekrar networke gitmeye gerek yok!!
+            BpEventbus.OnSendingSelectionsForExecution?.Invoke(bpSelector?.SendAllTowers().ToArray()); 
         }
 
         public override void Unsubscribe()
         {
-            BpEventbus.SelectionEvents.OnCurrentBpSet -= GetBpSelector;
+            //BpEventbus.SelectionEvents.OnCurrentBpSet -= GetBpSelector;
             if (bpSelector != null) //TODO: CHECK MİGHT CAUSE TROUBLE FOR MP
                 bpSelector.Unsubscribe();
-           // incomingData.RestorePreviousSelectionColors();
         }
 
         public override void UnsubscribeFromConstantEvents()
         {
+            BpEventbus.SelectionEvents.OnCurrentBpSet -= GetBpSelector;
+            BpEventbus.StateEvents.OnIntruderExecutionAttempt -= SendSelections;
         }
     }
 }

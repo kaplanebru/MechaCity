@@ -18,14 +18,16 @@ public static class BpEventbus
 
     public class StateEvents
     {
-        public static Action OnStateChangeRequestByIntruder;
+        public static Action OnStateChangeRequestFromIntruder;
+        public static Action<TurnStateType> StateChangeRequestToIntruder;
+
+        public static Action OnIntruderExecutionAttempt;
     }
     public class ActionEvents
     {
         public static Action OnReverseActionTriggered;
         public static Action OnSelectionIncrementTriggered;
         public static Action OnRestoreSelectionAmount;
-
     }
 
     public static class SubscriberEvents
@@ -36,15 +38,10 @@ public static class BpEventbus
     
     public static class LifespanEvents
     {
-  
         public static Action<BpType, uint> OnRestore;
-        
         public static Action<ITrackable> OnTrackerRequest;
         public static Action<ITrackable> OnExpiredTracker;
-
     }
-    
-    
     public static class UIEvents
     {
         public static Action<BpType, int> OnInteraction;

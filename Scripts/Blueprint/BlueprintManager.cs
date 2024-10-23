@@ -26,7 +26,7 @@ namespace Blueprint
         {
             TurnStatusEvents.OnTurnEnding += UpdateBpTrackers;
 
-            BpEventbus.UIEvents.OnInteraction += StartBpSelection; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
+            BpEventbus.UIEvents.OnInteraction += ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
             
             NetworkEventbus.RequestEvents.OnBpSelectionByServer += SetCurrentBpByServer;
             
@@ -37,17 +37,19 @@ namespace Blueprint
             bpTrackerList.Subscribe();
         }
 
-        private void StartBpSelection(BpType type, int level)
+        private void ChangeStateAndSetBp(BpType type, int level)
         {
             StartCoroutine(BpSelectionDelay(type, level));
+            // BpEventbus.StateEvents.StateChangeRequestToIntruder?.Invoke(TurnStateType.Intruder);
+            // NetworkEventbus.TriggerEvents.OnSetCurrentBpRequestByUser?.Invoke(type, level);
         }
 
         IEnumerator BpSelectionDelay(BpType type, int level) //On Interaction : calls network
         {
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
+            //NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
+            BpEventbus.StateEvents.StateChangeRequestToIntruder?.Invoke(TurnStateType.Intruder);
             yield return new WaitForSeconds(.2f);
-            NetworkEventbus.TriggerEvents.OnBpSelectionRequestByUser?.Invoke(type, level);
-
+            NetworkEventbus.TriggerEvents.OnSetCurrentBpRequestByUser?.Invoke(type, level);
         }
         
         private void SetCurrentBpByServer(BpType type,int level) //network call
@@ -74,10 +76,11 @@ namespace Blueprint
 
         private void TryExecuteBp([CanBeNull] uint[] selectedItems)
         {
+            //NETWORK
             if (currentBlueprint.TryTakeAction(selectedItems))
             {
                 SetTracker(selectedItems);
-                BpEventbus.StateEvents.OnStateChangeRequestByIntruder?.Invoke();
+                //BpEventbus.StateEvents.OnStateChangeRequestFromIntruder?.Invoke();
             }
         }
 
@@ -126,7 +129,7 @@ namespace Blueprint
         {
             BpEventbus.OnSendingSelectionsForExecution -= TryExecuteBp;
 
-            BpEventbus.UIEvents.OnInteraction -= StartBpSelection;
+            BpEventbus.UIEvents.OnInteraction -= ChangeStateAndSetBp;
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
             NetworkEventbus.RequestEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;

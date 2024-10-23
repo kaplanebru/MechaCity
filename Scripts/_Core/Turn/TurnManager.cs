@@ -41,8 +41,10 @@ namespace Turn
             
             
             UIEventbus.OnApplyPossibility += HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
-            UIEventbus.OnButtonClicked += StateEndRequestByUser;
-            BpEventbus.StateEvents.OnStateChangeRequestByIntruder += GetPreviousState;
+            UIEventbus.OnButtonClicked += StateEndByUser;
+            
+            //BpEventbus.StateEvents.OnStateChangeRequestFromIntruder += GetPreviousState;
+            BpEventbus.StateEvents.StateChangeRequestToIntruder += SendStateChangeRequest;
             
             bpEventHandler = new BlueprintEventHandler(this);
             pairController.Subscribe();
@@ -117,12 +119,12 @@ namespace Turn
             NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(type);
             UIEventbus.OnStateShift?.Invoke(type);
         }
-        private void StateEndRequestByUser()
+        private void StateEndByUser()
         {
             Debug.Log(currentState.StateType);
             if (currentState.StateType == TurnStateType.Intruder) //apply yapılan yerde enum olabilir
             {
-                IntruderAttempt();
+                IntruderExecutionAttempt();
             }
             else
             {
@@ -130,9 +132,11 @@ namespace Turn
             }
         }
         
-        void IntruderAttempt()
+        void IntruderExecutionAttempt()
         {
-            currentState.TryExecuteBp();
+            BpEventbus.StateEvents.OnIntruderExecutionAttempt?.Invoke();
+            GetPreviousState();
+            //currentState.TryExecuteBp();
             //TODO: IntruderExecutionRequest(nextType); => bu durumda Get previous state'te state change request 2 kez çağrılmış olabilir.
         }
 
@@ -197,8 +201,10 @@ namespace Turn
 
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnApplyPossibility -= HighlightButtonRequest;
-            UIEventbus.OnButtonClicked -= StateEndRequestByUser;
-            BpEventbus.StateEvents.OnStateChangeRequestByIntruder -= GetPreviousState;
+            UIEventbus.OnButtonClicked -= StateEndByUser;
+            
+            //BpEventbus.StateEvents.OnStateChangeRequestFromIntruder -= GetPreviousState;
+            BpEventbus.StateEvents.StateChangeRequestToIntruder -= SendStateChangeRequest;
             
             pairController.Unsubscribe();
             turnHelper.Unsubscribe();
