@@ -18,7 +18,7 @@ public static class BpEventbus
 
     public class StateEvents
     {
-        public static Action OnStateChangeRequestFromIntruder;
+        public static Action<bool> OnDirectStateChangeFromIntruder;
         public static Action<TurnStateType> StateChangeRequestToIntruder;
 
         public static Action OnIntruderExecutionAttempt;

@@ -32,7 +32,7 @@ namespace Turn
 
         public override void Subscribe()
         {
-            //AllTowers.ResetTowerColors();
+            AllTowers.ResetTowerColors();
             //BpEventbus.SelectionEvents.OnCurrentBpSet += GetBpSelector;
         }
 
@@ -51,10 +51,11 @@ namespace Turn
             else
             {
                 SendSelections(); //TODO: eski seçilmiş dataya burdan dolayı ihtiyaç duyulabilir, burdakiler gönderilir, nasılsa değişen bir selection olmayacak
+                BpEventbus.StateEvents.OnDirectStateChangeFromIntruder?.Invoke(true); //buraya networkten geliniyor, butona tıklama yok, networkten değişmemesi lazım
                 return;
             }
             
-            AllTowers.ResetTowerColors();
+            //AllTowers.ResetTowerColors();
 
             bpSelector.Subscribe();
             bpSelector.SetTeamsAndBlock(TeamsByTurn);

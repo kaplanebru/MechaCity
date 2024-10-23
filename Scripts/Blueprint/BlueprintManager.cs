@@ -40,13 +40,10 @@ namespace Blueprint
         private void ChangeStateAndSetBp(BpType type, int level)
         {
             StartCoroutine(BpSelectionDelay(type, level));
-            // BpEventbus.StateEvents.StateChangeRequestToIntruder?.Invoke(TurnStateType.Intruder);
-            // NetworkEventbus.TriggerEvents.OnSetCurrentBpRequestByUser?.Invoke(type, level);
         }
 
         IEnumerator BpSelectionDelay(BpType type, int level) //On Interaction : calls network
         {
-            //NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser.Invoke(TurnStateType.Intruder);
             BpEventbus.StateEvents.StateChangeRequestToIntruder?.Invoke(TurnStateType.Intruder);
             yield return new WaitForSeconds(.2f);
             NetworkEventbus.TriggerEvents.OnSetCurrentBpRequestByUser?.Invoke(type, level);
