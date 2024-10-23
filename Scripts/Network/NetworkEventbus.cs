@@ -20,7 +20,7 @@ namespace Network
             public static Action<uint[]> OnBpExecutionRequestByServer;
         }
 
-        public static class TriggerEvents
+        public static class UserEvents
         {
             public static Action<TurnStateType> OnStateChangeRequestByUser;
             public static Action<BpType, int> OnSetCurrentBpRequestByUser;

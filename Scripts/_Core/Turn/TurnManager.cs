@@ -116,7 +116,7 @@ namespace Turn
 
         private void SendStateChangeRequest(TurnStateType type)
         {
-            NetworkEventbus.TriggerEvents.OnStateChangeRequestByUser?.Invoke(type);
+            NetworkEventbus.UserEvents.OnStateChangeRequestByUser?.Invoke(type);
 
             if (type != TurnStateType.Intruder)
                 UIEventbus.OnStateShift?.Invoke(type);

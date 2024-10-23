@@ -47,7 +47,7 @@ namespace Blueprint
         {
             BpEventbus.StateEvents.StateChangeRequestToIntruder?.Invoke(TurnStateType.Intruder);
             yield return new WaitForSeconds(.2f);
-            NetworkEventbus.TriggerEvents.OnSetCurrentBpRequestByUser?.Invoke(type, level);
+            NetworkEventbus.UserEvents.OnSetCurrentBpRequestByUser?.Invoke(type, level);
         }
         
         private void SetCurrentBpByServer(BpType type,int level) //network call
@@ -74,7 +74,7 @@ namespace Blueprint
 
         private void SendBpExecutionRequestByUser(uint[] selectedItems)
         {
-            NetworkEventbus.TriggerEvents.OnBpExecutionRequestByUser?.Invoke(selectedItems);
+            NetworkEventbus.UserEvents.OnBpExecutionRequestByUser?.Invoke(selectedItems);
         }
         
         private void TryExecuteBpBySystem([CanBeNull] uint[] selectedItems)
