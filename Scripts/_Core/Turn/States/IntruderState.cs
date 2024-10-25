@@ -52,6 +52,7 @@ namespace Turn
             {
                 //SendSelections(); //TODO: eski seçilmiş dataya burdan dolayı ihtiyaç duyulabilir, burdakiler gönderilir, nasılsa değişen bir selection olmayacak
                 //TODO: direct execution by system
+                BpEventbus.OnDirectBpExecution?.Invoke(null);
                 BpEventbus.StateEvents.OnDirectStateChangeFromIntruder?.Invoke(true); //buraya networkten geliniyor, butona tıklama yok, networkten değişmemesi lazım
                 return;
             }

@@ -32,6 +32,7 @@ namespace Blueprint
             NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer += TryExecuteBpBySystem;
             
             BpEventbus.OnSendingSelectionsForExecution += SendBpExecutionRequestByUser;
+            BpEventbus.OnDirectBpExecution += TryExecuteBpBySystem;
             
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
@@ -129,6 +130,8 @@ namespace Blueprint
         public void Unsubscribe()
         {
             BpEventbus.OnSendingSelectionsForExecution -= SendBpExecutionRequestByUser;
+            BpEventbus.OnDirectBpExecution -= TryExecuteBpBySystem;
+
 
             BpEventbus.UIEvents.OnInteraction -= ChangeStateAndSetBp;
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
