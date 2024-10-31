@@ -14230,7 +14230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ef5335cecd104ab9ee485fbb0a9e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMultiplayerOn: 1
+  isMultiplayerOn: 0
   isTestingWithoutCombat: 0
   fasterCombat: 0
 --- !u!4 &521987823
@@ -17039,7 +17039,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1765083794}
         m_TargetAssemblyTypeName: SelectionTable, Scripts.Selectors
-        m_MethodName: ResetSelections
+        m_MethodName: ResetTable
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

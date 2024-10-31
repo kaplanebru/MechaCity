@@ -35,7 +35,7 @@ namespace Blueprint
             BpAction.Restore(selectedItem);
         }
 
-        private bool CheckBpConstraints(uint[] selectedItems) //yanında olup olmadığına bakıyor double'ın
+        private bool CheckBpConstraints(uint[] selectedItems) //yanında olup olmadığına bakıyor double'ın, dışardan da check edilebilir
         {
             // actors = actors.OrderBy(a => a.ID).ToArray();
 
