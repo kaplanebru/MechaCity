@@ -34,6 +34,7 @@ public class Cam : MonoBehaviour
     {
         startPos = transform.position;
         startRot = transform.rotation;
+        LinkCam.SetOffsets(linkDistance, linkRotationOffset);
     }
 
     void SwitchToLinkCam(List<uint> ids)
@@ -44,12 +45,8 @@ public class Cam : MonoBehaviour
             centers.Add(ActorHolder.GetActor(id).Center);
         }
 
-        var center = LinkCam.GetCenter(centers.ToArray());
-        var dir = (center - transform.position).normalized;
-        var rot = Quaternion.LookRotation(dir);
-        rot *= Quaternion.Euler(-linkRotationOffset, 0, 0);
-        //center = new Vector3(center.x, 0, center.z) + linkTransform.position;
-        Move(dir * -linkDistance + center, rot);
+        var center = LinkCam.GetLinkPos(transform, centers.ToArray());
+        Move(center.position, center.rotation);
     }
 
     void SwitchToCombatCam()
