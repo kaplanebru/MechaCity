@@ -9,23 +9,25 @@ public class LinkCam
 
    private float _distance;
    private float _rotationOffset;
+   private float _worldDistance;
+   private Vector3 _worldCenter;
    
-   public void SetOffsets(float distance, float rotationOffset)
+   public void Setup(float distance, float rotationOffset, float worldDistance)
    {
       _distance = distance;
       _rotationOffset = rotationOffset;
+      _worldDistance = worldDistance;
+      _worldCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, _worldDistance));
    }
    
   
-   public (Vector3 position, Quaternion rotation) GetLinkPos(Transform cam, params Vector3[] centers)
+   public (Vector3 position, Quaternion rotation) GetLinkPos(Vector3[] centers)
    {
       CalculateCenter(centers);
-      var dir = (center - cam.transform.position).normalized;
+      var dir = (center - _worldCenter).normalized;
       
       CenterWithDistance(dir);
       return (center, RotationWithOffset(dir));
-      
-      //todo: niyeyse tam ortayı vermiyor, check et
    }
 
    void CalculateCenter(Vector3[] centers)

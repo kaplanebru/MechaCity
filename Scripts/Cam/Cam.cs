@@ -10,6 +10,8 @@ public class Cam : MonoBehaviour
     
     public float linkDistance = 15;
     public float linkRotationOffset = 10;
+    public float worldDistance = 7;
+
 
     public CombatTimingData timingData;
     public Ease ease;
@@ -34,7 +36,7 @@ public class Cam : MonoBehaviour
     {
         startPos = transform.position;
         startRot = transform.rotation;
-        LinkCam.SetOffsets(linkDistance, linkRotationOffset);
+        LinkCam.Setup(linkDistance, linkRotationOffset, worldDistance);
     }
 
     void SwitchToLinkCam(List<uint> ids)
@@ -45,7 +47,7 @@ public class Cam : MonoBehaviour
             centers.Add(ActorHolder.GetActor(id).Center);
         }
 
-        var center = LinkCam.GetLinkPos(transform, centers.ToArray());
+        var center = LinkCam.GetLinkPos(centers.ToArray());
         Move(center.position, center.rotation);
     }
 
