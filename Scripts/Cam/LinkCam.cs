@@ -6,18 +6,13 @@ using UnityEngine;
 public class LinkCam
 {
    private Vector3 center;
-
-   private float _distance;
-   private float _rotationOffset;
-   private float _worldDistance;
+   private LinkCamData Data;
    private Vector3 _worldCenter;
    
-   public void Setup(float distance, float rotationOffset, float worldDistance)
+   public void Setup(LinkCamData data)
    {
-      _distance = distance;
-      _rotationOffset = rotationOffset;
-      _worldDistance = worldDistance;
-      _worldCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, _worldDistance));
+      Data = data;
+      _worldCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, Data.WorldDistance));
    }
    
   
@@ -42,13 +37,13 @@ public class LinkCam
 
    void CenterWithDistance(Vector3 dir)
    {
-      center += dir * -_distance;
+      center += dir * -Data.Distance;
    }
 
    Quaternion RotationWithOffset(Vector3 dir)
    {
       var rot = Quaternion.LookRotation(dir);
-      rot *= Quaternion.Euler(-_rotationOffset, 0, 0);
+      rot *= Quaternion.Euler(-Data.RotationOffset, 0, 0);
       return rot;
    }
    

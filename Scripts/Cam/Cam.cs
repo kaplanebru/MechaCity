@@ -7,18 +7,13 @@ using UnityEngine;
 public class Cam : MonoBehaviour
 {
     public Transform combatTransform;
-    
-    public float linkDistance = 15;
-    public float linkRotationOffset = 10;
-    public float worldDistance = 7;
-
-
     public CombatTimingData timingData;
     public Ease ease;
     private Vector3 startPos;
     private Quaternion startRot;
 
     private LinkCam LinkCam = new();
+    public LinkCamData LinkCamData = new();
 
     private void OnEnable()
     {
@@ -36,7 +31,7 @@ public class Cam : MonoBehaviour
     {
         startPos = transform.position;
         startRot = transform.rotation;
-        LinkCam.Setup(linkDistance, linkRotationOffset, worldDistance);
+        LinkCam.Setup(LinkCamData);
     }
 
     void SwitchToLinkCam(List<uint> ids)
