@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Enums;
+using UnityEngine;
 
 public static class Eventbus
 {
@@ -31,6 +32,7 @@ public static class Eventbus
     {
         public static Action OnLinkStateBegin;
         public static Action<List<int>> OnLinkLoading;
+        public static Action<List<uint>> OnLinkActorsLoaded;
         public static Action<List<int>> OnLinkingTowers;
         public static Action<List<int>> OnUnlink;
         public static Action OnFloorsOpened;

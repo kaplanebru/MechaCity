@@ -53,6 +53,8 @@ namespace Turn
             TransferData.Actors = data.Actors;
             TransferData.towers = ActorHolder.ResolveTowersFromActors(TransferData.Actors.ToArray()).ToList();
             
+            Eventbus.LinkEvents.OnLinkActorsLoaded?.Invoke(TransferData.Actors);
+            
             SetLinkOperatorAndSubscribe();
             currentLinkOperator.SetTowers(TransferData.Actors.ToArray());
             
