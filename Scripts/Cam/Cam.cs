@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Actor;
 using DataModels;
 using DG.Tweening;
+using Towers;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Cam : MonoBehaviour
@@ -39,7 +41,19 @@ public class Cam : MonoBehaviour
         List<Vector3> centers = new();
         foreach (var id in ids)
         {
-            centers.Add(ActorHolder.GetActor(id).Center);
+            var actor = ActorHolder.GetActor(id);
+            //todo: 
+            // foreach (var towerData in actor.Towers)
+            // {
+            //     var tower = AllTowers.GetTower(towerData.UniqID);
+            //     var dir = (LinkCam.WorldCenter -tower.transform.position ).normalized;
+            //     var rot = Quaternion.LookRotation(dir);
+            //     rot = Quaternion.Euler(0, rot.y, 0);
+            //     tower.transform.rotation = rot;
+            // }
+
+           
+            centers.Add(actor.Center);
         }
 
         var center = LinkCam.GetLinkPos(centers.ToArray());

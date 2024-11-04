@@ -7,19 +7,19 @@ public class LinkCam
 {
    private Vector3 center;
    private LinkCamData Data;
-   private Vector3 _worldCenter;
+   public static Vector3 WorldCenter;
    
    public void Setup(LinkCamData data)
    {
       Data = data;
-      _worldCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, Data.WorldDistance));
+      WorldCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, Data.WorldDistance));
    }
    
   
    public (Vector3 position, Quaternion rotation) GetLinkPos(Vector3[] centers)
    {
       CalculateCenter(centers);
-      var dir = (center - _worldCenter).normalized;
+      var dir = (center - WorldCenter).normalized;
       
       CenterWithDistance(dir);
       return (center, RotationWithOffset(dir));
