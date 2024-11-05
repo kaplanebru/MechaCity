@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Blueprint
 {
-    [CreateAssetMenu(menuName = "Classes/" + nameof(PersonaData), fileName = nameof(PersonaData))]
+    [CreateAssetMenu(menuName = "Personas/" + nameof(PersonaData), fileName = nameof(PersonaData))]
     public class PersonaData : ScriptableObject
     {
         public PersonaType Type;

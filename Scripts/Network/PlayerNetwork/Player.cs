@@ -12,6 +12,7 @@ namespace PlayerNetwork
     public class PlayerData
     {
         public TeamType TeamType;
+        public PersonaType PersonaType;
         public GameEndState GameEndState = GameEndState.GameStarted;
         public TurnNetworkHandler turnNetworkHandlerPrefab;
     }

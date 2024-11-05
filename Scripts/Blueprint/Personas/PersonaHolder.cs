@@ -8,13 +8,13 @@ namespace Blueprint
 {
     public class PersonaHolder : MonoBehaviour
     {
-        public Dictionary<PersonaType, Persona> personas = new();
+        public static Dictionary<PersonaType, Persona> Personas = new();
         public TypeDataCouple<PersonaType, PersonaData>[] dataByTypeSerialized;
         
         private OtherBpProvider _otherBpProvider;
         private Dictionary<PersonaType, PersonaData> dataByType = new();
         
-        public Persona GetPersona(PersonaType type) => personas[type];
+        public Persona GetPersona(PersonaType type) => Personas[type];
         public IEnumerable GetOtherBP(PersonaType ownType, int amount) => _otherBpProvider.GetBlueprints(ownType, amount);
         
         private void OnEnable()
@@ -26,7 +26,7 @@ namespace Blueprint
         {
             SetDataByType();
             CreatePersonas();
-            _otherBpProvider = new OtherBpProvider(personas);
+            _otherBpProvider = new OtherBpProvider(Personas);
         }
 
         void SetDataByType() //TODO: generalize
@@ -39,9 +39,9 @@ namespace Blueprint
         
         void CreatePersonas()
         {
-            personas.Add(PersonaType.Jester, new Jester(dataByType[PersonaType.Jester]));
-            personas.Add(PersonaType.Fighter, new Fighter(dataByType[PersonaType.Fighter]));
-            personas.Add(PersonaType.Defender, new Defender(dataByType[PersonaType.Defender]));
+            Personas.Add(PersonaType.Jester, new Jester(dataByType[PersonaType.Jester]));
+            Personas.Add(PersonaType.Fighter, new Fighter(dataByType[PersonaType.Fighter]));
+            Personas.Add(PersonaType.Defender, new Defender(dataByType[PersonaType.Defender]));
         }
         
     }
