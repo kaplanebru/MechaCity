@@ -89,6 +89,13 @@ namespace Enums
         None
     }
 
+    public enum PersonaType
+    {
+        Jester,
+        Fighter,
+        Defender
+    }
+
    
 
    
