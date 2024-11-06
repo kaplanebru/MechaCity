@@ -11,8 +11,6 @@ namespace Blueprint
     public class BpHolder 
     {
         public static Dictionary<BpType, BaseBlueprint> AllBlueprints = new();
-
-       
         public static void CreateBlueprints() //Burası ortadaki kısımla ilgili
         {
             AllBlueprints.Add(BpType.Reverse, new BpReverse());

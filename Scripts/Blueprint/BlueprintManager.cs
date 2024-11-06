@@ -10,18 +10,29 @@ using UnityEngine;
 
 namespace Blueprint
 {
+    public class PlayerPersona //ayrıca bunun save'i alınabilir
+    {
+        public Persona Persona;
+        public List<BpType> ActiveBlueprints = new(); //eklenip çıkacak
+        public int Fund = 10;
+        
+        public void SetActiveBlueprints(IEnumerable<BpType> otherBps)
+        {
+            ActiveBlueprints.Clear();
+            ActiveBlueprints.AddRange(Persona.Data.BpTypes);
+            ActiveBlueprints.AddRange(otherBps);
+            //_otherBpProvider.GetBlueprints(playerPersona.Type, 1)
+        }
+        
+    }
     public class BlueprintManager : MonoBehaviour
     {
-       
-        public Persona playerPersona;
-        public List<BpType> activeBlueprints = new();
+        
+        public PlayerPersona playerPersona = new();
         private BaseBlueprint currentBlueprint;
-        
         public BPSlotHolder slotHolder;
-        public BPDataHolder bpDataHolder;
         public BpTrackerList bpTrackerList = new ();
-
-        
+        private OtherBpProvider _otherBpProvider = new();
         public void Subscribe()
         {
             TurnStatusEvents.OnTurnEnding += UpdateBpTrackers;
@@ -40,9 +51,25 @@ namespace Blueprint
             NetworkEventbus.ServerEvents.OnPlayerPersonaSet += SetPlayerPersona;
             bpTrackerList.Subscribe();
         }
+        
+        void Start()
+        {
+            Initialize();
+        }
 
-      
-
+        public void Initialize()
+        {
+            BpHolder.CreateBlueprints();
+            Subscribe();
+        }
+        
+        
+        private void SetPlayerPersona(PersonaType type)
+        {
+            playerPersona.Persona = PersonaHolder.GetPersona(type);
+            playerPersona.SetActiveBlueprints(_otherBpProvider.GetBlueprints(type, 1));
+            slotHolder.Setup(playerPersona.ActiveBlueprints);
+        }
         private void ChangeStateAndSetBp(BpType type, int level)
         {
             StartCoroutine(BpSelectionDelay(type, level));
@@ -106,40 +133,7 @@ namespace Blueprint
            BpHolder.AllBlueprints[type].TryRestoreAction(selectedItem); //todo: bug. sadece 3 tane bp var. ama aynı bpnin birden fazla kullanımı olmalı, ve selected itemlerı farklı olmalı
         }
         
-        void Start()
-        {
-            Initialize();
-        }
-
-        public void Initialize()
-        {
-            Subscribe();
-            
-            //BpHolder.CreateBlueprints();
-            //GetActiveBlueprints();
-            //slotHolder.Setup(activeBlueprints);
-        }
-
-        private OtherBpProvider _otherBpProvider;
-        public void GetActiveBlueprints()
-        {
-          
-            activeBlueprints.Clear();
-            activeBlueprints.AddRange(playerPersona.Data.BpTypes);
-            Debug.Log(playerPersona.Type);
-            //activeBlueprints.AddRange(_otherBpProvider.GetBlueprints(playerPersona.Type, 1));
-        }
-        
-        private void SetPlayerPersona(PersonaType type)
-        {
-            playerPersona = PersonaHolder.GetPersona(type);
-            Debug.Log(playerPersona.Type);
-           
-            BpHolder.CreateBlueprints();
-            GetActiveBlueprints();
-            slotHolder.Setup(activeBlueprints);
-        }
-
+       
 
         public void Unsubscribe()
         {
