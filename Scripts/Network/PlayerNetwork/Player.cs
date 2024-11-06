@@ -19,7 +19,7 @@ namespace PlayerNetwork
     public class PlayerData
     {
         public TeamType TeamType { get; set; } //bu teamle geliyor
-        public PersonaType PersonaType; // { get; set; }//bu seçimle geliyor aslında
+        public PersonaType PersonaType{ get; set; }//bu seçimle geliyor aslında
         public int Funds = 10; //bu da eşit gelecek zaten
         public PlayerRunData RunData { get; set; } //bu da oynadıkça belrleniyor
     }
@@ -43,7 +43,6 @@ namespace PlayerNetwork
         private void SetPersonaType(PersonaType type)
         {
             Data.PersonaType = type;
-            Debug.Log(type);
         }
         
         #region SpawnTurnNetworkServerRpc

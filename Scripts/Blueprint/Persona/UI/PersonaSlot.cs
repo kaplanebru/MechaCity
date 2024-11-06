@@ -6,18 +6,26 @@ using UnityEngine.UI;
 
 public class PersonaSlot : MonoBehaviour
 {
-   private PersonaType type;
+   public PersonaType Type { get; private set; }
    public Image imageHolder;
+   public Image canceledImageHolder;
    public Button button;
 
    public void Setup(PersonaSlotData data)
    {
-      type = data.Type;
+      Type = data.Type;
       imageHolder.sprite = data.Sprite;
    }
 
    public void OnClick()
    {
-      BpEventbus.PersonaEvents.OnPersonaSlotClicked?.Invoke(type);
+      button.interactable = false;
+      BpEventbus.PersonaEvents.OnPersonaSlotClicked?.Invoke(Type);
+   }
+
+   public void Cancel()
+   {
+      button.interactable = false;
+      canceledImageHolder.gameObject.SetActive(true);
    }
 }

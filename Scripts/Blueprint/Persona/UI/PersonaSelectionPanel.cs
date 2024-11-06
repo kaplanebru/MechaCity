@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Enums;
 using Network;
+using PlayerNetwork;
 using UnityEngine;
 //using UnityEngine.UIElements;
 using UnityEngine.UI;
@@ -12,12 +13,21 @@ using UnityEngine.UI;
 public class PersonaSelectionPanel : MonoBehaviour
 {
     public PersonaSlotData[] slotsData;
+    [SerializeField] private GameObject content;
     private PersonaSlot[] slots;
+    private PersonaType selectedType;
 
     private void OnEnable()
     {
-        SetSlots();
+        NetworkEventbus.ServerEvents.OnPlayerSpawned += EnableContent;
+       
         BpEventbus.PersonaEvents.OnPersonaSlotClicked += PersonaSlotClicked;
+    }
+
+    private void EnableContent(Player arg1, ulong arg2)
+    {
+        content.SetActive(true);
+        SetSlots();
     }
 
     private void SetSlots()
@@ -32,22 +42,32 @@ public class PersonaSelectionPanel : MonoBehaviour
 
     public void PersonaSlotClicked(PersonaType type)
     {
-        DisableAll();
-        NetworkEventbus.UserEvents.OnPersonaSelectedByUser?.Invoke(type);
+        selectedType = type;
+        DisableOthers();
+        NetworkEventbus.UserEvents.OnPersonaSelectedByUser?.Invoke(selectedType);
+        
+        Invoke(nameof(DisableThis), 0.5f);
+    }
+
+    void DisableThis()
+    {
+        gameObject.SetActive(false);
     }
     
-
-    private void DisableAll()
+    private void DisableOthers()
     {
         foreach (var slot in slots)
         {
-            slot.button.interactable = false;
+            if(slot.Type == selectedType) continue;
+            slot.Cancel();
         }
     }
 
     private void OnDisable()
     {
         BpEventbus.PersonaEvents.OnPersonaSlotClicked -= PersonaSlotClicked;
+        NetworkEventbus.ServerEvents.OnPlayerSpawned -= EnableContent;
+
     }
 }
 
