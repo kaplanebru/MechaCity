@@ -10,13 +10,10 @@ namespace Blueprint
 {
     public class BpHolder 
     {
-        public Dictionary<BpType, BaseBlueprint> AllBlueprints = new();
+        public static Dictionary<BpType, BaseBlueprint> AllBlueprints = new();
 
-        public void Initialize()
-        {
-            CreateBlueprints();
-        }
-        void CreateBlueprints() //Burası ortadaki kısımla ilgili
+       
+        public static void CreateBlueprints() //Burası ortadaki kısımla ilgili
         {
             AllBlueprints.Add(BpType.Reverse, new BpReverse());
             AllBlueprints.Add(BpType.Freeze, new BpFreeze());

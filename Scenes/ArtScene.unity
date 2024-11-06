@@ -10567,7 +10567,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7524c88f2624e1244ad88416a52e89d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _teams: []
 --- !u!1 &398285726
 GameObject:
   m_ObjectHideFlags: 0
@@ -13897,7 +13896,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkUIController: {fileID: 923155417}
-  assetHolder: {fileID: 11400000, guid: a2d96ec40fc3ed3408057310e9159772, type: 2}
+  PlayersData: []
+  TeamsData:
+  - {fileID: 11400000, guid: ad79e5d9b1d96584e88989bed0822846, type: 2}
+  - {fileID: 11400000, guid: f40655befaa22a74d84f28b045e11717, type: 2}
 --- !u!1 &508542193
 GameObject:
   m_ObjectHideFlags: 0

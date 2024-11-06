@@ -16,8 +16,10 @@ namespace Core
     public class Initializer : MonoBehaviour
     {
         public Transform NetworkUIController;
-        public static Team[] Teams;
-        public TeamsHolder assetHolder;
+        public Team[] Teams;
+        public PlayerData[] PlayersData;
+        public TeamData[] TeamsData;
+       
         public ActorHolder ActorHolder = new();
 
         private void OnEnable()
@@ -35,11 +37,11 @@ namespace Core
 
         void CreateTeams()
         {
-            Teams = new Team[assetHolder.Teams.Length];
+            Teams = new Team[TeamsData.Length];
            
             for (int i = 0; i < Teams.Length; i++)
             {
-                Teams[i] = Instantiate(assetHolder.Teams[i], transform);
+                Teams[i] = new Team(TeamsData[i]);//Instantiate(assetHolder.Teams[i], transform);
                 Teams[i].SetTowers();
             }
             

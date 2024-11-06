@@ -8,9 +8,14 @@ using UnityEngine;
 
 namespace Teams
 {
-    public class Team : MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : TeamData
+    public class Team //: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : TeamData
     {
         public TeamData Data;
+
+        public Team(TeamData data)
+        {
+            Data = data;
+        }
         
         public void SetTowers()
         {

@@ -14,9 +14,7 @@ namespace Blueprint
     {
         public List<BpType> activeBlueprints = new();
         private BaseBlueprint currentBlueprint;
-
-        private BpHolder bpHolder = new BpHolder();
-
+        
         public BPSlotHolder slotHolder;
         public BPDataHolder bpDataHolder;
         public BpTrackerList bpTrackerList = new ();
@@ -53,7 +51,7 @@ namespace Blueprint
         
         private void SetCurrentBpByServer(BpType type,int level) //network call
         {
-            currentBlueprint = bpHolder.AllBlueprints[type];
+            currentBlueprint = BpHolder.AllBlueprints[type];
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
 
             currentBlueprint.Level = level;
@@ -99,10 +97,8 @@ namespace Blueprint
 
         private void RestoreFromBp(BpType type, uint selectedItem)
         {
-           bpHolder.AllBlueprints[type].TryRestoreAction(selectedItem); //todo: bug. sadece 3 tane bp var. ama aynı bpnin birden fazla kullanımı olmalı, ve selected itemlerı farklı olmalı
+           BpHolder.AllBlueprints[type].TryRestoreAction(selectedItem); //todo: bug. sadece 3 tane bp var. ama aynı bpnin birden fazla kullanımı olmalı, ve selected itemlerı farklı olmalı
         }
-
-      
         
         void Start()
         {
@@ -112,7 +108,7 @@ namespace Blueprint
         public void Initialize()
         {
             Subscribe();
-            bpHolder.Initialize();
+            BpHolder.CreateBlueprints();
             GetActiveBlueprints();
 
             slotHolder.Setup(activeBlueprints);
@@ -120,9 +116,9 @@ namespace Blueprint
 
         public void GetActiveBlueprints()
         {
-            for (int i = 0; i <bpHolder.AllBlueprints.Count; i++) //TODO: Temp
+            for (int i = 0; i <BpHolder.AllBlueprints.Count; i++) //TODO: Temp
             {
-                activeBlueprints.Add(bpHolder.AllBlueprints.Keys.ElementAt(i));
+                activeBlueprints.Add(BpHolder.AllBlueprints.Keys.ElementAt(i));
             }
         }
 

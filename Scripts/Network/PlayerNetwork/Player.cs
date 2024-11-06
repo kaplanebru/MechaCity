@@ -13,13 +13,15 @@ namespace PlayerNetwork
     {
         public TeamType TeamType;
         public PersonaType PersonaType;
-        public GameEndState GameEndState = GameEndState.GameStarted;
-        public TurnNetworkHandler turnNetworkHandlerPrefab;
+        public int Funds = 10;
+
     }
 
     public class Player : NetworkBehaviour
     {
         public PlayerData Data = new();
+        public GameEndState gameEndState = GameEndState.GameStarted;
+        public TurnNetworkHandler turnNetworkHandlerPrefab;
 
         public override void OnNetworkSpawn()
         {
@@ -34,7 +36,7 @@ namespace PlayerNetwork
         {
             var clientId = serverRpcParams.Receive.SenderClientId;
             // print("sender client id: " + clientId);
-            var turnNetworkHandler = Instantiate(Data.turnNetworkHandlerPrefab);
+            var turnNetworkHandler = Instantiate(turnNetworkHandlerPrefab);
             turnNetworkHandler.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
         }
         #endregion
@@ -118,16 +120,16 @@ namespace PlayerNetwork
         void WinClientRpc(ClientRpcParams clientRpcParams)
         {
             if (!IsOwner) return;
-            Data.GameEndState = GameEndState.Win;
-            NetworkEventbus.ServerEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+            gameEndState = GameEndState.Win;
+            NetworkEventbus.ServerEvents.OnGameEndScreenRequest?.Invoke(gameEndState);
         }
 
         [ClientRpc]
         void LoseClientRpc(ClientRpcParams clientRpcParams)
         {
             if (!IsOwner) return;
-            Data.GameEndState = GameEndState.Lose;
-            NetworkEventbus.ServerEvents.OnGameEndScreenRequest?.Invoke(Data.GameEndState);
+            gameEndState = GameEndState.Lose;
+            NetworkEventbus.ServerEvents.OnGameEndScreenRequest?.Invoke(gameEndState);
         }
 
         #endregion
