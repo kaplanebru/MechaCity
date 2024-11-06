@@ -12,6 +12,8 @@ namespace Blueprint
 {
     public class BlueprintManager : MonoBehaviour
     {
+       
+        public Persona playerPersona;
         public List<BpType> activeBlueprints = new();
         private BaseBlueprint currentBlueprint;
         
@@ -34,8 +36,12 @@ namespace Blueprint
             
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
+            
+            NetworkEventbus.ServerEvents.OnPlayerPersonaSet += SetPlayerPersona;
             bpTrackerList.Subscribe();
         }
+
+      
 
         private void ChangeStateAndSetBp(BpType type, int level)
         {
@@ -108,18 +114,30 @@ namespace Blueprint
         public void Initialize()
         {
             Subscribe();
-            BpHolder.CreateBlueprints();
-            GetActiveBlueprints();
-
-            slotHolder.Setup(activeBlueprints);
+            
+            //BpHolder.CreateBlueprints();
+            //GetActiveBlueprints();
+            //slotHolder.Setup(activeBlueprints);
         }
 
+        private OtherBpProvider _otherBpProvider;
         public void GetActiveBlueprints()
         {
-            for (int i = 0; i <BpHolder.AllBlueprints.Count; i++) //TODO: Temp
-            {
-                activeBlueprints.Add(BpHolder.AllBlueprints.Keys.ElementAt(i));
-            }
+          
+            activeBlueprints.Clear();
+            activeBlueprints.AddRange(playerPersona.Data.BpTypes);
+            Debug.Log(playerPersona.Type);
+            //activeBlueprints.AddRange(_otherBpProvider.GetBlueprints(playerPersona.Type, 1));
+        }
+        
+        private void SetPlayerPersona(PersonaType type)
+        {
+            playerPersona = PersonaHolder.GetPersona(type);
+            Debug.Log(playerPersona.Type);
+           
+            BpHolder.CreateBlueprints();
+            GetActiveBlueprints();
+            slotHolder.Setup(activeBlueprints);
         }
 
 
@@ -135,6 +153,8 @@ namespace Blueprint
             NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer -= TryExecuteBpBySystem;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
+            NetworkEventbus.ServerEvents.OnPlayerPersonaSet -= SetPlayerPersona;
+
             bpTrackerList.Unsubscribe();
         }
 

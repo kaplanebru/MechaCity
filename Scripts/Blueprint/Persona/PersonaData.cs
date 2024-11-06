@@ -10,6 +10,5 @@ namespace Blueprint
     {
         public PersonaType Type;
         public BpType[] BpTypes;
-        public BaseBlueprint[] Blueprints;
     }
 }

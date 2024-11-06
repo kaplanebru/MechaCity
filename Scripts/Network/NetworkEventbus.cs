@@ -18,6 +18,7 @@ namespace Network
             public static Action<BpType, int> OnBpSelectionByServer;
             public static Action<GameEndState> OnGameEndScreenRequest;
             public static Action<uint[]> OnBpExecutionRequestByServer;
+            public static Action<PersonaType> OnPlayerPersonaSet;
         }
 
         public static class UserEvents

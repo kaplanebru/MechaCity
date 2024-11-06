@@ -8,18 +8,13 @@ namespace Blueprint
     public class OtherBpProvider
     {
         private static readonly Random _random = new Random();
-        private Dictionary<PersonaType, Persona> _personas = new();
+        
         private List<BpType> otherBlueprints = new();
-
-        public OtherBpProvider(Dictionary<PersonaType, Persona> personas)
-        {
-            _personas = personas;
-        }
-
+        
         public IEnumerable<BpType> GetBlueprints(PersonaType ownType, int amount)
         {
             otherBlueprints.Clear();
-            otherBlueprints = _personas
+            otherBlueprints = PersonaHolder.Personas
                 .Where(p => p.Key != ownType)
                 .SelectMany(p => p.Value.Data.BpTypes)
                 .ToList();

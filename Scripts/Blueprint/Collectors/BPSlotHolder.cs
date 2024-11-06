@@ -16,7 +16,7 @@ namespace Blueprint
             slots = GetComponentsInChildren<BPSlot>();
         }
 
-        public void Setup(List<BpType> activeBlueprints)
+        public void Setup(List<BpType> activeBlueprints) //LEVELA GÖRE VE PERSONAYA GÖRE
         {
             _activeBlueprints = activeBlueprints;
 

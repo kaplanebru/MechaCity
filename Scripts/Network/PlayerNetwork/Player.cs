@@ -40,9 +40,10 @@ namespace PlayerNetwork
             NetworkEventbus.ServerEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
         }
 
-        private void SetPersonaType(PersonaType type)
+        private void SetPersonaType(PersonaType type) //not: save alınırken tutmak için
         {
             Data.PersonaType = type;
+            NetworkEventbus.ServerEvents.OnPlayerPersonaSet?.Invoke(type);
         }
         
         #region SpawnTurnNetworkServerRpc

@@ -14937,7 +14937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ef5335cecd104ab9ee485fbb0a9e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMultiplayerOn: 1
+  isMultiplayerOn: 0
   isTestingWithoutCombat: 0
   fasterCombat: 0
 --- !u!4 &521987823
@@ -41392,7 +41392,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1453585754
 Transform:
   m_ObjectHideFlags: 0
@@ -47285,7 +47285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8144178763596916269, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8237143229930366686, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
       propertyPath: level
@@ -48472,7 +48472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8144178763596916269, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8785274088260217153, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
       propertyPath: m_SizeDelta.x
@@ -59334,7 +59334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8144178763596916269, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8785274088260217153, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
       propertyPath: m_SizeDelta.x
@@ -62193,7 +62193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8144178763596916269, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 214601836918434976, guid: dd5394e71bb7bf948862430d1f264d49, type: 3}

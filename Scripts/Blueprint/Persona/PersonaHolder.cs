@@ -9,13 +9,14 @@ namespace Blueprint
     public class PersonaHolder : MonoBehaviour
     {
         public static Dictionary<PersonaType, Persona> Personas = new();
+        public static Persona GetPersona(PersonaType type) => Personas[type];
+
         public TypeDataCouple<PersonaType, PersonaData>[] dataByTypeSerialized;
         
         private OtherBpProvider _otherBpProvider;
         private Dictionary<PersonaType, PersonaData> dataByType = new();
         
-        public Persona GetPersona(PersonaType type) => Personas[type];
-        public IEnumerable GetOtherBP(PersonaType ownType, int amount) => _otherBpProvider.GetBlueprints(ownType, amount);
+        public IEnumerable GetOtherBp(PersonaType ownType, int amount) => _otherBpProvider.GetBlueprints(ownType, amount);
         
         private void OnEnable()
         {
@@ -26,7 +27,6 @@ namespace Blueprint
         {
             SetDataByType();
             CreatePersonas();
-            _otherBpProvider = new OtherBpProvider(Personas);
         }
 
         void SetDataByType() //TODO: generalize
