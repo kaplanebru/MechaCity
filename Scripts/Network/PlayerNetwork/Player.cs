@@ -8,13 +8,20 @@ using Enums;
 
 namespace PlayerNetwork
 {
+    public class PlayerRunData
+    {
+        public int Win;
+        public int Fail;
+        public int Draw;
+    }
+    
     [Serializable]
     public class PlayerData
     {
-        public TeamType TeamType;
-        public PersonaType PersonaType;
-        public int Funds = 10;
-
+        public TeamType TeamType { get; set; } //bu teamle geliyor
+        public PersonaType PersonaType; // { get; set; }//bu seçimle geliyor aslında
+        public int Funds = 10; //bu da eşit gelecek zaten
+        public PlayerRunData RunData { get; set; } //bu da oynadıkça belrleniyor
     }
 
     public class Player : NetworkBehaviour
@@ -25,8 +32,18 @@ namespace PlayerNetwork
 
         public override void OnNetworkSpawn()
         {
-            if (IsOwner) NetworkEventbus.UserEvents.OnGameEnds += GameEndServerRpc;
+            if (IsOwner)
+            {
+                NetworkEventbus.UserEvents.OnGameEnds += GameEndServerRpc;
+                NetworkEventbus.UserEvents.OnPersonaSelectedByUser += SetPersonaType;
+            }
             NetworkEventbus.ServerEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
+        }
+
+        private void SetPersonaType(PersonaType type)
+        {
+            Data.PersonaType = type;
+            Debug.Log(type);
         }
         
         #region SpawnTurnNetworkServerRpc
@@ -138,7 +155,10 @@ namespace PlayerNetwork
         public override void OnNetworkDespawn()
         {
             if (IsOwner)
+            {
                 NetworkEventbus.UserEvents.OnGameEnds -= GameEndServerRpc;
+                NetworkEventbus.UserEvents.OnPersonaSelectedByUser -= SetPersonaType;
+            }
         }
     }
     

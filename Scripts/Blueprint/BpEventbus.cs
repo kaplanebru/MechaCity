@@ -50,6 +50,10 @@ public static class BpEventbus
         public static Action<BpType> OnBpInstallBegin;
         public static Action OnBpReset;
     }
-    
+
+    public static class PersonaEvents
+    {
+        public static Action<PersonaType> OnPersonaSlotClicked;
+    }
  
 }

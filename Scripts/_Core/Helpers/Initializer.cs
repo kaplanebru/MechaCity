@@ -17,9 +17,7 @@ namespace Core
     {
         public Transform NetworkUIController;
         public Team[] Teams;
-        public PlayerData[] PlayersData;
         public TeamData[] TeamsData;
-       
         public ActorHolder ActorHolder = new();
 
         private void OnEnable()
