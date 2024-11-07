@@ -15,30 +15,40 @@ namespace TowerExternal
             startHeight = parts[0].localScale.y;
         }
 
-        public void Open( bool closeAtTheEnd = false)
+        public void ShowGear()
         {
             gear.gameObject.SetActive(true);
-        
-            foreach (var part in parts)
-            {
-                part.DOScaleY(Data.OpenSize, Data.Duration).OnComplete(() =>
-                    {
-                        if (closeAtTheEnd)
-                        {
-                            DOVirtual.DelayedCall(Data.CloseDelay, () => RestoreHeight()); //todo: belki game started yazısı gelir
-                        }
-                    });
-            }
+        }
+
+        public void HideGear()
+        {
+            gear.gameObject.SetActive(false);
+        }
+
+        public void Open( bool closeAtTheEnd = false)
+        {
+            //gear.gameObject.SetActive(true);
+            
+            // foreach (var part in parts)
+            // {
+            //     part.DOScaleY(Data.OpenSize, Data.Duration).OnComplete(() =>
+            //         {
+            //             if (closeAtTheEnd)
+            //             {
+            //                 DOVirtual.DelayedCall(Data.CloseDelay, () => RestoreHeight()); //todo: belki game started yazısı gelir
+            //             }
+            //         });
+            // }
         }
 
         public void RestoreHeight()
         {
-            gear.gameObject.SetActive(false);
-        
-            foreach (var part in parts)
-            {
-                part.DOScaleY(startHeight, Data.Duration);
-            }
+            //gear.gameObject.SetActive(false);
+            
+            // foreach (var part in parts)
+            // {
+            //     part.DOScaleY(startHeight, Data.Duration);
+            // }
         }
 
         public int Id { get; set; }

@@ -30,7 +30,8 @@ namespace TowerExternal
             {
                 var floor = _group.FirstOrDefault(f => f.Id == id);
                 selectedFloors.Add(floor);
-                floor.Open();
+                //floor.Open();
+                floor.ShowGear();
             }
     
             GeneralEventbus.OnCoroutineTrigger?.Invoke(this); //todo: temp
@@ -40,7 +41,8 @@ namespace TowerExternal
         {
             foreach (var floor in _group)
             {
-                floor.Open(true);
+                //floor.Open(true);
+                floor.HideGear();
             }
         }
     
@@ -53,7 +55,8 @@ namespace TowerExternal
         {
             foreach (var floor in selectedFloors)
             {
-                floor.RestoreHeight();
+                //floor.RestoreHeight();
+                floor.HideGear();
             }
             selectedFloors.Clear();
         }

@@ -5325,14 +5325,12 @@ MonoBehaviour:
   ConstantData: {fileID: 11400000, guid: 24382b7643f9bbb4d826eaf0d7c75384, type: 2}
   Data:
     UniqID: 0
-    AvailableHeight: 0
     SlotId: 0
-    TeamType: 0
-    LinkedTowerIDs: 
-    NeighbourIDs: 
+    AvailableHeight: 0
     _bulletAmountt: 0
-    _health: 1
     DamagePower: 0
+    TeamType: 0
+    NeighbourIDs: 
     IsClickable: 1
     LockStatus:
       Locked: 0
@@ -5350,6 +5348,7 @@ MonoBehaviour:
         RiseFallData:
           ActiveHolder: {fileID: 4634288368227671964}
           PassiveHolder: {fileID: 4634288368307197951}
+          Light: {fileID: 0}
           PassiveParts:
           - {fileID: 6678535424241232063}
           - {fileID: 8031784240193922467}
