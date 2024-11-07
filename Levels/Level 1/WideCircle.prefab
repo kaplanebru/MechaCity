@@ -201,7 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5579547957973982615}
   m_Layer: 0
-  m_Name: NewAllTowers 1
+  m_Name: WideCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
