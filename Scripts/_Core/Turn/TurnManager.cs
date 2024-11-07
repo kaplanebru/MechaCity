@@ -11,8 +11,37 @@ using Testing;
 
 namespace Turn
 {
+    public class TurnSubscriber : Subscriber<TurnManager>
+    {
+        public TurnSubscriber(TurnManager mainClass) : base(mainClass)
+        {
+        }
+
+        public override void Subscribe()
+        {
+            // TeamEvents.OnTeamsSet += MainClass.SetTurnTeams;
+            // NetworkEventbus.OnAllClientsSet += MainClass.FirstTurn;
+            //
+            // NetworkEventbus.ServerEvents.OnStateChangeRequestByServer += MainClass.ChangeStateBySystem;
+            // Eventbus.CombatEvents.OnCombatTerminated += MainClass.EndTurn;
+            //
+            //
+            // UIEventbus.OnApplyPossibility += MainClass.HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
+            // UIEventbus.OnButtonClicked += MainClass.StateEndByUser;
+            //
+            // BpEventbus.StateEvents.OnDirectStateChangeFromIntruder += MainClass.GetPreviousState;
+            // BpEventbus.StateEvents.StateChangeRequestToIntruder += MainClass.SendStateChangeRequest;
+        }
+
+        public override void Unsubscribe()
+        {
+            
+        }
+    }
+
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
+        public TurnSubscriber Subscriber;
         public static int TurnTracker => _turnTracker; //no setter
         public CombatTimingData combatTimingData;
 
@@ -32,19 +61,10 @@ namespace Turn
 
         private void OnEnable()
         {
-            TeamEvents.OnTeamsSet += SetTurnTeams;
-            NetworkEventbus.OnAllClientsSet += FirstTurn;
-
-            NetworkEventbus.ServerEvents.OnStateChangeRequestByServer += ChangeStateBySystem;
-            Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
-
-
-            UIEventbus.OnApplyPossibility +=
-                HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
-            UIEventbus.OnButtonClicked += StateEndByUser;
-
-            BpEventbus.StateEvents.OnDirectStateChangeFromIntruder += GetPreviousState;
-            BpEventbus.StateEvents.StateChangeRequestToIntruder += SendStateChangeRequest;
+            Subscriber = new(this);
+            Subscriber.Subscribe();
+            
+           
 
             bpEventHandler = new BlueprintEventHandler(this);
             pairController.Subscribe();

@@ -2,41 +2,40 @@ using Network;
 
 namespace Blueprint
 {
-    public class BPSubscriber
+    public class BPSubscriber : Subscriber<BlueprintManager>
     {
-        private BlueprintManager Manager;
-        public BPSubscriber(BlueprintManager manager)
+        public BPSubscriber(BlueprintManager mainClass) : base(mainClass) {}
+        
+        public override void Subscribe()
         {
-            Manager = manager;
-        }
-        internal void Subscribe()
-        {
-            BpEventbus.UIEvents.OnInteraction += Manager.ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
-            BpEventbus.OnSendingSelectionsForExecution += Manager.SendBpExecutionRequestByUser;
-            BpEventbus.OnDirectBpExecution += Manager.TryExecuteBpBySystem;
-            BpEventbus.LifespanEvents.OnRestore += Manager.RestoreFromBp;
-            BpEventbus.LifespanEvents.OnExpiredTracker += Manager.RemoveExpiredBp;
+            BpEventbus.UIEvents.OnInteraction += MainClass.ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
+            BpEventbus.OnSendingSelectionsForExecution += MainClass.SendBpExecutionRequestByUser;
+            BpEventbus.OnDirectBpExecution += MainClass.TryExecuteBpBySystem;
+            BpEventbus.LifespanEvents.OnRestore += MainClass.RestoreFromBp;
+            BpEventbus.LifespanEvents.OnExpiredTracker += MainClass.RemoveExpiredBp;
 
-            NetworkEventbus.ServerEvents.OnBpSelectionByServer += Manager.SetCurrentBpByServer;
-            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer += Manager.TryExecuteBpBySystem;
-            NetworkEventbus.ServerEvents.OnPlayerPersonaSet += Manager.PlayerPersona.SetPlayerPersona;
+            NetworkEventbus.ServerEvents.OnBpSelectionByServer += MainClass.SetCurrentBpByServer;
+            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer += MainClass.TryExecuteBpBySystem;
+            NetworkEventbus.ServerEvents.OnPlayerPersonaSet += MainClass.PlayerPersona.SetPlayerPersona;
 
-            TurnStatusEvents.OnTurnEnding += Manager.UpdateBpTrackers;
+            TurnStatusEvents.OnTurnEnding += MainClass.UpdateBpTrackers;
         }
 
-        internal void Unsubscribe()
+        public override void Unsubscribe()
         {
-            BpEventbus.OnSendingSelectionsForExecution -= Manager.SendBpExecutionRequestByUser;
-            BpEventbus.OnDirectBpExecution -= Manager.TryExecuteBpBySystem;
-            BpEventbus.UIEvents.OnInteraction -= Manager.ChangeStateAndSetBp;
-            BpEventbus.LifespanEvents.OnRestore -= Manager.RestoreFromBp;
-            BpEventbus.LifespanEvents.OnExpiredTracker -= Manager.RemoveExpiredBp;
+            BpEventbus.OnSendingSelectionsForExecution -= MainClass.SendBpExecutionRequestByUser;
+            BpEventbus.OnDirectBpExecution -= MainClass.TryExecuteBpBySystem;
+            BpEventbus.UIEvents.OnInteraction -= MainClass.ChangeStateAndSetBp;
+            BpEventbus.LifespanEvents.OnRestore -= MainClass.RestoreFromBp;
+            BpEventbus.LifespanEvents.OnExpiredTracker -= MainClass.RemoveExpiredBp;
 
-            NetworkEventbus.ServerEvents.OnBpSelectionByServer -= Manager.SetCurrentBpByServer;
-            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer -= Manager.TryExecuteBpBySystem;
-            NetworkEventbus.ServerEvents.OnPlayerPersonaSet -= Manager.PlayerPersona.SetPlayerPersona;
+            NetworkEventbus.ServerEvents.OnBpSelectionByServer -= MainClass.SetCurrentBpByServer;
+            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer -= MainClass.TryExecuteBpBySystem;
+            NetworkEventbus.ServerEvents.OnPlayerPersonaSet -= MainClass.PlayerPersona.SetPlayerPersona;
 
-            TurnStatusEvents.OnTurnEnding -= Manager.UpdateBpTrackers;
+            TurnStatusEvents.OnTurnEnding -= MainClass.UpdateBpTrackers;
         }
+
+       
     }
 }
