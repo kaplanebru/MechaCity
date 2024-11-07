@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class BlueprintEventHandler
 {
-    private TurnManager _manager;
-    public BlueprintEventHandler(TurnManager manager)
+    
+    public BlueprintEventHandler()
     {
-        _manager = manager;
         SubscribeToBlueprintEvents();
     }
     
