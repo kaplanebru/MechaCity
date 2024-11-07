@@ -16,7 +16,7 @@ namespace Blueprint
             otherBlueprints.Clear();
             otherBlueprints = PersonaHolder.Personas
                 .Where(p => p.Key != ownType)
-                .SelectMany(p => p.Value.Data.BpTypes)
+                .SelectMany(p => p.Value.BpTypes)
                 .ToList();
             
             otherBlueprints = otherBlueprints.OrderBy(_ => _random.Next()).ToList();

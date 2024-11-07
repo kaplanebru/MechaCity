@@ -17934,9 +17934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54e5875e086557d48a09b5172a46fed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeBlueprints: 
-  slotHolder: {fileID: 724132464}
-  bpDataHolder: {fileID: 11400000, guid: 3ad40b982c1569f439a4486446dd0309, type: 2}
+  bpSlotHolder: {fileID: 724132464}
 --- !u!1 &600238671
 GameObject:
   m_ObjectHideFlags: 0
