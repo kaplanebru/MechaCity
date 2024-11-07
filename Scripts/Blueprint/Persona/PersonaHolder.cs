@@ -10,13 +10,8 @@ namespace Blueprint
     {
         public static Dictionary<PersonaType, PersonaData> Personas = new();
         public static PersonaData GetPersona(PersonaType type) => Personas[type];
-
         public TypeDataCouple<PersonaType, PersonaData>[] dataByTypeSerialized;
-        
-        private OtherBpProvider _otherBpProvider;
         private Dictionary<PersonaType, PersonaData> dataByType = new();
-        
-        public IEnumerable GetOtherBp(PersonaType ownType, int amount) => _otherBpProvider.GetBlueprints(ownType, amount);
         
         private void OnEnable()
         {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Enums;
 
 namespace Blueprint
@@ -7,6 +8,7 @@ namespace Blueprint
     {
         public PersonaData PersonaData;
         public List<BpType> ActiveBlueprints = new(); //eklenip çıkacak
+        public List<BpType> OtherBpTypes = new();
         public int Fund = 10;
     }
     public class PlayerPersona
@@ -22,7 +24,8 @@ namespace Blueprint
         public void SetPlayerPersona(PersonaType type)
         {
             Data.PersonaData = PersonaHolder.GetPersona(type);
-            SetActiveBlueprints(_otherBpProvider.GetBlueprints(type, 1));
+            Data.OtherBpTypes = _otherBpProvider.GetBlueprints(type, 1).ToList();
+            SetActiveBlueprints(Data.OtherBpTypes);
             _bpSlotHolder.Setup(Data.ActiveBlueprints);
         }
         

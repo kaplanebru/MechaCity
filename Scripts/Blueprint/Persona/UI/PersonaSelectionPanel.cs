@@ -12,15 +12,15 @@ using UnityEngine.UI;
 
 public class PersonaSelectionPanel : MonoBehaviour
 {
-    public PersonaSlotData[] slotsData;
+    [SerializeField] private PersonaSlotData[] slotsData;
     [SerializeField] private GameObject content;
+    [SerializeField] private float delay = 1;
     private PersonaSlot[] slots;
     private PersonaType selectedType;
 
     private void OnEnable()
     {
         NetworkEventbus.ServerEvents.OnPlayerSpawned += EnableContent;
-       
         BpEventbus.PersonaEvents.OnPersonaSlotClicked += PersonaSlotClicked;
     }
 
@@ -46,7 +46,7 @@ public class PersonaSelectionPanel : MonoBehaviour
         DisableOthers();
         NetworkEventbus.UserEvents.OnPersonaSelectedByUser?.Invoke(selectedType);
         
-        Invoke(nameof(DisableThis), 0.5f);
+        Invoke(nameof(DisableThis), delay);
     }
 
     void DisableThis()
@@ -67,7 +67,6 @@ public class PersonaSelectionPanel : MonoBehaviour
     {
         BpEventbus.PersonaEvents.OnPersonaSlotClicked -= PersonaSlotClicked;
         NetworkEventbus.ServerEvents.OnPlayerSpawned -= EnableContent;
-
     }
 }
 
