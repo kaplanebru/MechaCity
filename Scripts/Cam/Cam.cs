@@ -19,7 +19,7 @@ public class Cam : MonoBehaviour
 
     private void OnEnable()
     {
-        Eventbus.LinkEvents.OnLinkActorsLoaded += SwitchToLinkCam;
+        //Eventbus.LinkEvents.OnLinkActorsLoaded += SwitchToLinkCam;
         Eventbus.CombatEvents.OnCombatReady += SwitchToCombatCam;
         Eventbus.CombatEvents.OnCombatTerminated += ResetCam;
     }
