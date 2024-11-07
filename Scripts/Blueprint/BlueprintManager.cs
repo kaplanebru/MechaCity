@@ -14,23 +14,14 @@ namespace Blueprint
     {
         public BPSlotHolder bpSlotHolder;
 
-        private PlayerPersona PlayerPersona; // = new();
+        private BPSubscriber subscriber;
+        internal PlayerPersona PlayerPersona; // = new();
         private BpTrackerList bpTrackerList = new();
         private BaseBlueprint currentBlueprint;
-
         public void Subscribe()
         {
-            BpEventbus.UIEvents.OnInteraction += ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
-            BpEventbus.OnSendingSelectionsForExecution += SendBpExecutionRequestByUser;
-            BpEventbus.OnDirectBpExecution += TryExecuteBpBySystem;
-            BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
-            BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
-
-            NetworkEventbus.ServerEvents.OnBpSelectionByServer += SetCurrentBpByServer;
-            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer += TryExecuteBpBySystem;
-            NetworkEventbus.ServerEvents.OnPlayerPersonaSet += PlayerPersona.SetPlayerPersona;
-
-            TurnStatusEvents.OnTurnEnding += UpdateBpTrackers;
+            subscriber = new BPSubscriber(this);
+            subscriber.Subscribe();
             bpTrackerList.Subscribe();
         }
 
@@ -46,7 +37,7 @@ namespace Blueprint
             Subscribe();
         }
 
-        private void ChangeStateAndSetBp(BpType type, int level)
+        internal void ChangeStateAndSetBp(BpType type, int level)
         {
             StartCoroutine(BpSelectionDelay(type, level));
         }
@@ -58,7 +49,7 @@ namespace Blueprint
             NetworkEventbus.UserEvents.OnSetCurrentBpRequestByUser?.Invoke(type, level);
         }
 
-        private void SetCurrentBpByServer(BpType type, int level) //network call
+        internal void SetCurrentBpByServer(BpType type, int level) //network call
         {
             currentBlueprint = BpHolder.AllBlueprints[type];
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
@@ -67,22 +58,22 @@ namespace Blueprint
             BpEventbus.SelectionEvents.OnCurrentBpSet?.Invoke(currentBlueprint.SelectionType);
         }
 
-        private void UpdateBpTrackers()
+        internal void UpdateBpTrackers()
         {
             bpTrackerList.ReduceValueForAll();
         }
 
-        private void RemoveExpiredBp(ITrackable lifeTracker)
+        internal void RemoveExpiredBp(ITrackable lifeTracker)
         {
             bpTrackerList.RemoveFromTrackList(lifeTracker);
         }
 
-        private void SendBpExecutionRequestByUser(uint[] selectedItems)
+        internal void SendBpExecutionRequestByUser(uint[] selectedItems)
         {
             NetworkEventbus.UserEvents.OnBpExecutionRequestByUser?.Invoke(selectedItems);
         }
 
-        private void TryExecuteBpBySystem([CanBeNull] uint[] selectedItems)
+        internal void TryExecuteBpBySystem([CanBeNull] uint[] selectedItems)
         {
             if (currentBlueprint.TryTakeAction(selectedItems))
             {
@@ -102,7 +93,7 @@ namespace Blueprint
             }
         }
 
-        private void RestoreFromBp(BpType type, uint selectedItem)
+        internal void RestoreFromBp(BpType type, uint selectedItem)
         {
             BpHolder.AllBlueprints[type]
                 .TryRestoreAction(
@@ -111,17 +102,7 @@ namespace Blueprint
 
         public void Unsubscribe()
         {
-            BpEventbus.OnSendingSelectionsForExecution -= SendBpExecutionRequestByUser;
-            BpEventbus.OnDirectBpExecution -= TryExecuteBpBySystem;
-            BpEventbus.UIEvents.OnInteraction -= ChangeStateAndSetBp;
-            BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
-            BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
-
-            NetworkEventbus.ServerEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
-            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer -= TryExecuteBpBySystem;
-            NetworkEventbus.ServerEvents.OnPlayerPersonaSet -= PlayerPersona.SetPlayerPersona;
-
-            TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
+            subscriber.Unsubscribe();
             bpTrackerList.Unsubscribe();
         }
 
