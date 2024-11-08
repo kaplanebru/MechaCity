@@ -24,7 +24,6 @@ namespace UX
         private void Start()
         {
             pointCreator.Setup(start.position, end.position, curveDirection, edgeDistance, pointDistance);
-            
             CreateCurve();
           
         }
@@ -32,9 +31,9 @@ namespace UX
         void TilingDots()
         {
             Material lineMaterial = new Material(Shader.Find("Unlit/Transparent")); 
-            lineMaterial.mainTexture = texture; // Assign your texture here
+            lineMaterial.mainTexture = texture;
             lr.material = lineMaterial;
-            float textureRepeat = lr.positionCount/3f; // / 2.0f; // Adjust this value based on your texture and line length
+            float textureRepeat = lr.positionCount/3f;
             lr.material.mainTextureScale = new Vector2(textureRepeat, 1);
         }
 
