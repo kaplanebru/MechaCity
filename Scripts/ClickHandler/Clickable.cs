@@ -1,5 +1,5 @@
 using Enums;
-
+using UnityEngine;
 
 
 namespace Clicks
@@ -9,6 +9,27 @@ namespace Clicks
         public uint id;
         public TeamType teamType;
    
+        
+        void OnMouseEnter()
+        {
+            ShowTowerInfo();
+        }
+
+        void OnMouseExit()
+        {
+            HideTowerInfo();
+        }
+
+        void ShowTowerInfo()
+        {
+            Eventbus.IndicatorEvents.OnActorHover?.Invoke(id);
+            Debug.Log("Hovering over: " + gameObject.name);
+        }
+
+        void HideTowerInfo()
+        {
+            // Hide tower information
+        }
 
         protected override void Setup()
         {

@@ -438,7 +438,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7926878747429208139
 Transform:
   m_ObjectHideFlags: 0
@@ -711,8 +711,7 @@ MonoBehaviour:
   edgeDistance: 3
   start: {fileID: 3634139566220654499}
   end: {fileID: 6300210015973689488}
-  curveDirection: 0
-  texture: {fileID: 0}
+  curveDirection: 1
 --- !u!1 &9046966026521428017
 GameObject:
   m_ObjectHideFlags: 0
