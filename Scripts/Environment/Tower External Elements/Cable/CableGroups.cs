@@ -18,9 +18,9 @@ namespace TowerExternal
 
         public void Subscribe()
         {
-            Eventbus.LinkEvents.OnLinkStateBegin += DeselectAll;
-            GeneralEventbus.OnTowerColorChange += ToSelection;
-            GeneralEventbus.OnTurnTowerDeselect += Deselect;
+            // Eventbus.LinkEvents.OnLinkStateBegin += DeselectAll;
+            // GeneralEventbus.OnTowerColorChange += ToSelection;
+            // GeneralEventbus.OnTurnTowerDeselect += Deselect;
         }
 
         public void SetColor(Color selection, Color defaultColor)
