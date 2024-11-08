@@ -52622,7 +52622,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1790350504}
-  - component: {fileID: 1790350503}
   m_Layer: 0
   m_Name: IndicatorHolder
   m_TagString: Untagged
@@ -52630,18 +52629,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1790350503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1790350502}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b5bd34c0cfe2c74cb484487c6c5dd50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1790350504
 Transform:
   m_ObjectHideFlags: 0
@@ -55536,6 +55523,7 @@ MonoBehaviour:
   lr: {fileID: 1007581119}
   pointDistance: 0.1
   edgeDistance: 3
+  heightOffset: 2
   curveDirection: 0
 --- !u!1 &1891295410
 GameObject:

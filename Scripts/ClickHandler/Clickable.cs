@@ -1,3 +1,4 @@
+using System;
 using Enums;
 using UnityEngine;
 
@@ -8,8 +9,20 @@ namespace Clicks
     {
         public uint id;
         public TeamType teamType;
-   
-        
+        private Collider collider;
+
+        private void Awake()
+        {
+            collider = GetComponent<Collider>();
+            collider.enabled = false;
+            Invoke(nameof(EnableSelection), 3); //todo
+        }
+
+        void EnableSelection()
+        {
+            collider.enabled = true;
+        }
+
         void OnMouseEnter()
         {
             ShowTowerInfo();

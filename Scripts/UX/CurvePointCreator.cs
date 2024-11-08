@@ -60,10 +60,10 @@ namespace UX
         public IEnumerable<Vector3> GetCurvePoints()
         {
             float t = 0;
-            while (t < 1)
+            while (t <= 1)
             {
-                t += _pointGap;
                 yield return GetPoint(t); //points.Add(GetCurvePoint(gap));
+                t += _pointGap;
             }
         }
     }
