@@ -51,11 +51,7 @@ public static class Eventbus
         public static Action<int[]> OnBridgeAttempt; 
     }
     
-    public static class IndicatorEvents
-    {
-        public static Action<uint> OnActorHover; //Vector3, Vector3[]
-        public static Action<Vector3, Vector3[]> OnGettingIndicatorData;
-    }
+   
 
 
 

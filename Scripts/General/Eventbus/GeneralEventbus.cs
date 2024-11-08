@@ -22,5 +22,11 @@ public static class GeneralEventbus
     public static Action<int> OnTurnTowerDeselect;
     
     public static Action OnResetMaxSelectionFromEditor;
+    
+    public static class IndicatorEvents
+    {
+        public static Action<uint> OnActorHover; //Vector3, Vector3[]
+        public static Action<Vector3, Vector3[]> OnGettingIndicatorData;
+    }
 
 }

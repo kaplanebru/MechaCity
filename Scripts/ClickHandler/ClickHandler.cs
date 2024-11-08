@@ -21,7 +21,7 @@ namespace Clicks
         {
             foreach (var clickable in _clickables)
             {
-                clickable.id = id;
+                clickable.SetID(id);
             }
         }
 

@@ -20,7 +20,7 @@ namespace Actor
         {
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += FillRegistry;
             Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
-            Eventbus.IndicatorEvents.OnActorHover += SendTowersToIndicator;
+            GeneralEventbus.IndicatorEvents.OnActorHover += SendTowersToIndicator;
         }
 
         private void SendTowersToIndicator(uint actorID)
@@ -34,7 +34,7 @@ namespace Actor
                 othersPos.Add(Registry[linkedActor].Center);
             }
             
-            Eventbus.IndicatorEvents.OnGettingIndicatorData?.Invoke(actor.Center,othersPos.ToArray());
+            GeneralEventbus.IndicatorEvents.OnGettingIndicatorData?.Invoke(actor.Center,othersPos.ToArray());
             
         }
 
@@ -151,7 +151,7 @@ namespace Actor
             }
             Eventbus.ActorEvents.OnDoubleTowerCreated -= RegisterDouble;
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= FillRegistry;
-            Eventbus.IndicatorEvents.OnActorHover -= SendTowersToIndicator;
+            GeneralEventbus.IndicatorEvents.OnActorHover -= SendTowersToIndicator;
 
             Registry.Clear();
         }

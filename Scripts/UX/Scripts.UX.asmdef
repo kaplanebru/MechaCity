@@ -1,10 +1,8 @@
 {
-    "name": "Scripts.Clicks",
+    "name": "Scripts.UX",
     "rootNamespace": "",
     "references": [
-        "GUID:8bb426bd7b6f04b41bd053132e8170af",
-        "GUID:c64b13ec877346c48a1158d0e05eb30e",
-        "GUID:11a708fee14f65148a8528c0df4108d3"
+        "GUID:c64b13ec877346c48a1158d0e05eb30e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -28,7 +28,7 @@ namespace UX
         private void OnEnable()
         {
             pointCreator = new(edgeDistance, pointDistance, heightOffset);
-            Eventbus.IndicatorEvents.OnGettingIndicatorData += ShowLines;
+            GeneralEventbus.IndicatorEvents.OnGettingIndicatorData += ShowLines;
         }
 
         private void ShowLines(Vector3 start, params Vector3[] endPositions)
@@ -51,7 +51,7 @@ namespace UX
         
         private void OnDisable()
         {
-            Eventbus.IndicatorEvents.OnGettingIndicatorData -= ShowLines;
+            GeneralEventbus.IndicatorEvents.OnGettingIndicatorData -= ShowLines;
         }
 
         #region Tiling

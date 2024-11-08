@@ -8710,6 +8710,7 @@ MonoBehaviour:
   clickableParent: 0
   id: 0
   teamType: 0
+  indicatorScanner: {fileID: 0}
 --- !u!114 &6947819271387855357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8722,6 +8723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5bd34c0cfe2c74cb484487c6c5dd50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canHover: 1
 --- !u!1 &1852314313355286233
 GameObject:
   m_ObjectHideFlags: 0
