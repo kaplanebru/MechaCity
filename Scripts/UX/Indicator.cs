@@ -19,10 +19,19 @@ namespace UX
         private CurvePointCreator pointCreator = new();
         private Vector3[] linePoints ;
 
+     
         private void Start()
         {
             pointCreator.Setup(start.position, end.position, curveDirection, edgeDistance, pointDistance);
+          
+
+        
+            // float textureRepeat = pointCreator.GetCurvePoints().Count() / 2.0f; // Adjust this value based on your texture and line length
+            // lr.material.mainTextureScale = new Vector2(textureRepeat, 1);
+           
             CreateCurve();
+            
+           
         }
 
         void CreateCurve()
@@ -88,7 +97,6 @@ namespace UX
                 t += _pointGap;
                 yield return GetPoint(t); //points.Add(GetCurvePoint(gap));
             }
-            Debug.Log("point amount: " + points.Count);
         }
 
     }
