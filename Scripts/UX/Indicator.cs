@@ -11,27 +11,31 @@ namespace UX
         public LineRenderer lr;
         public float pointDistance = 0.1f;
         public float edgeDistance = 3;
-        
+
         public Transform start;
         public Transform end;
         public CurveDirection curveDirection;
 
         private CurvePointCreator pointCreator = new();
-        private Vector3[] linePoints ;
+        private Vector3[] linePoints;
+        public Texture texture;
 
-     
+
         private void Start()
         {
             pointCreator.Setup(start.position, end.position, curveDirection, edgeDistance, pointDistance);
-          
-
-        
-            // float textureRepeat = pointCreator.GetCurvePoints().Count() / 2.0f; // Adjust this value based on your texture and line length
-            // lr.material.mainTextureScale = new Vector2(textureRepeat, 1);
-           
-            CreateCurve();
             
-           
+            CreateCurve();
+          
+        }
+
+        void TilingDots()
+        {
+            Material lineMaterial = new Material(Shader.Find("Unlit/Transparent")); 
+            lineMaterial.mainTexture = texture; // Assign your texture here
+            lr.material = lineMaterial;
+            float textureRepeat = lr.positionCount/3f; // / 2.0f; // Adjust this value based on your texture and line length
+            lr.material.mainTextureScale = new Vector2(textureRepeat, 1);
         }
 
         void CreateCurve()
@@ -44,7 +48,8 @@ namespace UX
 
     public enum CurveDirection
     {
-        Right, Left
+        Right,
+        Left
     }
 
     public class CurvePointCreator
@@ -57,13 +62,14 @@ namespace UX
         //sabit
         private float _edgeDistance;
         private float _pointGap;
-        
+
         private Vector3 curveTangent;
         private Vector3 middle;
         private List<Vector3> points = new();
 
 
-        public void Setup(Vector3 startPoint, Vector3 endPoint, CurveDirection direction, float edgeDistance, float pointGap)
+        public void Setup(Vector3 startPoint, Vector3 endPoint, CurveDirection direction, float edgeDistance,
+            float pointGap)
         {
             start = startPoint;
             end = endPoint;
@@ -92,13 +98,11 @@ namespace UX
         public IEnumerable<Vector3> GetCurvePoints()
         {
             float t = 0;
-            while (t<1)
+            while (t < 1)
             {
                 t += _pointGap;
                 yield return GetPoint(t); //points.Add(GetCurvePoint(gap));
             }
         }
-
     }
-
 }

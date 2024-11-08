@@ -78,7 +78,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.3
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -712,6 +712,7 @@ MonoBehaviour:
   start: {fileID: 3634139566220654499}
   end: {fileID: 6300210015973689488}
   curveDirection: 0
+  texture: {fileID: 0}
 --- !u!1 &9046966026521428017
 GameObject:
   m_ObjectHideFlags: 0
