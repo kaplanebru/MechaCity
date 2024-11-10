@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,40 +5,32 @@ using System.Linq;
 
 namespace UX
 {
-    public class PointGroup
+    public class IndicatorController : MonoBehaviour
     {
-        public int Index;
-        public Vector3[] Points;
-
-        public PointGroup(int index, Vector3[] points)
-        {
-            Index = index;
-            Points = points;
-        }
-    }
-
-    public class Indicator : MonoBehaviour
-    {
-        public LineRenderer[] lineRenderers;
-        public float pointDistance = 0.1f;
-        public float edgeDistance = 3;
-        public float heightOffset = 2;
-
+        public IndicatorData Data;
+        
+        private LineHolder LineHolder;
+        private CurvePointCreator pointCreator;
+        
         private Dictionary<uint, List<PointGroup>> pointGroupsByActor = new();
         private uint currentActor;
 
-        private CurvePointCreator pointCreator;
-        private Vector3[] linePoints;
-
         private void OnEnable()
         {
-            pointCreator = new(edgeDistance, pointDistance, heightOffset);
-
-            GeneralEventbus.IndicatorEvents.OnActorsResolved += RestorePointGroups;
-            GeneralEventbus.IndicatorEvents.OnActorHover += ShowLinesByActor;
+            Subscribe();
         }
 
-        private void RestorePointGroups(Dictionary<uint, List<Vector3>> actorsAndEdgesData)
+        public void Subscribe()
+        {
+            pointCreator = new(Data.EdgeDistance, Data.PointDistance, Data.HeightOffset);
+            LineHolder = new LineHolder(Data.LineRenderers);
+
+            GeneralEventbus.IndicatorEvents.OnActorsResolved += SetPointGroupsByActors;
+            GeneralEventbus.IndicatorEvents.OnActorHover += ShowLinesByActor;
+            GeneralEventbus.IndicatorEvents.OnLeavingActor += HideLines;
+        }
+        
+        private void SetPointGroupsByActors(Dictionary<uint, List<Vector3>> actorsAndEdgesData)
         {
             pointGroupsByActor.Clear();
          
@@ -55,7 +46,6 @@ namespace UX
                     pointCreator.Setup(start, end);
                     pointGroupsByActor[actorAndEdges.Key].Add(new PointGroup(i, pointCreator.GetCurvePoints().ToArray()));
                 }
-                
             }
         }
 
@@ -63,46 +53,39 @@ namespace UX
         {
             if (actorID == currentActor)
             {
-                int lineAmount = pointGroupsByActor[actorID].Count;
-                for (int i = 0; i < lineAmount; i++)
-                {
-                    lineRenderers[i].enabled = true;
-                }
-
+                LineHolder.EnableLines(pointGroupsByActor[actorID].Count);
                 return true;
             }
-
             return false;
         }
 
         private void ShowLinesByActor(uint actorID)
         {
             if (!pointGroupsByActor.ContainsKey(actorID)) return;
-            Debug.Log("show: " + actorID);
-
             if (IsActorSame(actorID)) return;
             currentActor = actorID;
 
             foreach (var pointGroup in pointGroupsByActor[actorID])
             {
-                PointsToLines(pointGroup.Index, pointGroup.Points);
-                Debug.Log(pointGroup.Points[0]);
+                LineHolder.PointsToLines(pointGroup.Index, pointGroup.Points);
             }
         }
-
-        private void PointsToLines(int index, Vector3[] points)
+        
+        private void HideLines()
         {
-            var lr = lineRenderers[index]; //todo test
-            lr.enabled = true;
-            lr.positionCount = 0;
-            lr.positionCount = points.Length;
-            lr.SetPositions(points);
+            LineHolder.DisableLines();
+        }
+        
+        public void Unsubscribe()
+        {
+            GeneralEventbus.IndicatorEvents.OnActorHover -= ShowLinesByActor;
+            GeneralEventbus.IndicatorEvents.OnActorsResolved -= SetPointGroupsByActors;
+            GeneralEventbus.IndicatorEvents.OnLeavingActor -= HideLines;
         }
 
         private void OnDisable()
         {
-            GeneralEventbus.IndicatorEvents.OnActorHover -= ShowLinesByActor;
-            GeneralEventbus.IndicatorEvents.OnActorsResolved -= RestorePointGroups;
+            Unsubscribe();
         }
 
         #region Tiling

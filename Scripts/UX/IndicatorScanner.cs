@@ -9,13 +9,13 @@ public class IndicatorScanner : MonoBehaviour
     void OnMouseEnter()
     {
         if(!canHover) return;
-        ShowTowerInfo();
+        ShowLines();
     }
 
     void OnMouseExit()
     {
         if(!canHover) return;
-        HideTowerInfo();
+        HideLines();
     }
 
     public void EnableHover(bool enable)
@@ -27,13 +27,13 @@ public class IndicatorScanner : MonoBehaviour
     {
         ID = id;
     }
-    void ShowTowerInfo()
+    void ShowLines()
     {
         GeneralEventbus.IndicatorEvents.OnActorHover?.Invoke(ID);
     }
 
-    void HideTowerInfo()
+    void HideLines()
     {
-        //todo
+        GeneralEventbus.IndicatorEvents.OnLeavingActor?.Invoke();
     }
 }
