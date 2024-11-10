@@ -19,16 +19,12 @@ namespace Actor
             foreach (var actorID in actorIDs)
             {
                 var actor = ActorHolder.Registry[actorID];
-                
-                List<Vector3> edgePoints = new();
-                edgePoints.Add(actor.Center);
+                EdgesByActors.Add(actorID, new List<Vector3> { actor.Center});
                 
                 foreach (var linkedActor in actor.LinkedActors)
                 {
-                    edgePoints.Add(ActorHolder.Registry[linkedActor].Center);
+                    EdgesByActors[actorID].Add(ActorHolder.Registry[linkedActor].Center);
                 }
-                
-                EdgesByActors.Add(actorID, edgePoints);
             }
             GeneralEventbus.IndicatorEvents.OnActorsResolved?.Invoke(EdgesByActors);
         }

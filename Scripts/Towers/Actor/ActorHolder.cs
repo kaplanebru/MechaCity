@@ -24,20 +24,6 @@ namespace Actor
             IndicatorMediator.Subscribe();
         }
 
-        private void SendTowersToIndicator(uint actorID)
-        {
-            var actor = Registry[actorID];
-            //actor.Towers[0] //TODO: DOUBLE
-
-            List<Vector3> othersPos = new();
-            foreach (var linkedActor in actor.LinkedActors)
-            {
-                othersPos.Add(Registry[linkedActor].Center);
-            }
-            
-            
-        }
-
         public void Initialize()
         {
             SetControllers();
