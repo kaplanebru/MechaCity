@@ -26,7 +26,8 @@ public static class GeneralEventbus
     public static class IndicatorEvents
     {
         public static Action<uint> OnActorHover; //Vector3, Vector3[]
-        public static Action<Vector3, Vector3[]> OnGettingIndicatorData;
+        public static Action<Dictionary<uint, List<Vector3>>> OnActorsResolved;
+        
     }
 
 }

@@ -55520,11 +55520,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e8c39f8c51fc943ac0c1d058471ba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lr: {fileID: 1007581119}
+  lineRenderers:
+  - {fileID: 1007581119}
   pointDistance: 0.1
   edgeDistance: 3
   heightOffset: 2
-  curveDirection: 0
 --- !u!1 &1891295410
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ namespace Actor
     {
         public static Dictionary<uint, ActorData> Registry { get; private set; } = new();
         private Dictionary<Enums.ActorUnit, ActorUnit> units = new();
+        private ActorToIndicator IndicatorMediator = new();
 
         public static ActorData GetActor(uint id) => Registry[id];
         public static int[] GetTowerIDs(uint id) => Registry[id].TowerIDs;
@@ -20,7 +21,7 @@ namespace Actor
         {
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += FillRegistry;
             Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
-            GeneralEventbus.IndicatorEvents.OnActorHover += SendTowersToIndicator;
+            IndicatorMediator.Subscribe();
         }
 
         private void SendTowersToIndicator(uint actorID)
@@ -34,7 +35,6 @@ namespace Actor
                 othersPos.Add(Registry[linkedActor].Center);
             }
             
-            GeneralEventbus.IndicatorEvents.OnGettingIndicatorData?.Invoke(actor.Center,othersPos.ToArray());
             
         }
 
@@ -108,7 +108,6 @@ namespace Actor
         void OnRegistryUpdate()
         {
             ((RelationUnit)units[Enums.ActorUnit.Relation]).SetRelations(Registry.Keys.ToList());
-            //Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(); //Restore pairs
         }
 
         void OrderRegistry()
@@ -151,7 +150,7 @@ namespace Actor
             }
             Eventbus.ActorEvents.OnDoubleTowerCreated -= RegisterDouble;
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= FillRegistry;
-            GeneralEventbus.IndicatorEvents.OnActorHover -= SendTowersToIndicator;
+            IndicatorMediator.Unsubscribe();
 
             Registry.Clear();
         }
