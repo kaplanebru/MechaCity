@@ -14,12 +14,14 @@ namespace DataModels
         [Header("Slot Data")]
         public Color Color;
         public Sprite Sprite;
+        public GameObject ReliefModel;
         public Color GlowColor;
         
         //TODO: değişken dataya göre belirlenir
         public string Title; //örn 2 tur 1 tower freeze
         public string Description;
         public string Instruction;
+        public int Price;
         
         //Değişken Data
         [Header("Turn Related Data")]

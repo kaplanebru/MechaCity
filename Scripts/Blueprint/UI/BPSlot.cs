@@ -10,7 +10,6 @@ namespace Blueprint
 {
     public class BPSlot : MonoBehaviour
     {
-       
         public BpType currentBpType;
         public BlueprintData Data;
         public int level = 1;
