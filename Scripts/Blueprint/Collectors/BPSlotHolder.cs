@@ -9,26 +9,45 @@ namespace Blueprint
     public class BPSlotHolder : MonoBehaviour
     {
         public BPDataHolder bpDataHolder;
-        public BPSlot[] slots;
+        public CardSlot[] slots;
         private List<BpType> _activeBlueprints = new();
         private void OnEnable()
         {
-            slots = GetComponentsInChildren<BPSlot>(true);
+            slots = GetComponentsInChildren<CardSlot>(true);
         }
 
         public void Setup(List<BpType> activeBlueprints) //LEVELA GÖRE VE PERSONAYA GÖRE
         {
             _activeBlueprints = activeBlueprints;
             DisableAll();
-
+            
             for (var i = 0; i < activeBlueprints.Count; i++)
             {
-                var slot = slots[i];
-                slot.gameObject.SetActive(true);
-                slot.SetType(_activeBlueprints[i]);
-                slot.Setup(bpDataHolder.TypeDataPair[slot.currentBpType]);
+                if (i == 0)
+                    SetFrontSlot();
+                else
+                    SetSlot(slots[i], i);
             }
         }
+
+
+        private void SetSlot(CardSlot slot, int index)
+        {
+            slot.gameObject.SetActive(true);
+            slot.SetType(_activeBlueprints[index]);
+            slot.Setup(bpDataHolder.TypeDataPair[slot.currentBpType]);
+        }
+        
+        private void SetFrontSlot()
+        {
+            CardSlotFront front = slots[0] as CardSlotFront;
+            SetSlot(front, 0);
+            // front.gameObject.SetActive(true);
+            // front.SetType(_activeBlueprints[0]);
+            // front.Setup(bpDataHolder.TypeDataPair[front.currentBpType]);
+            front.SetReliefModel();
+        }
+        
 
         void DisableAll()
         {

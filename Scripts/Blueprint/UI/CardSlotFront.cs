@@ -12,13 +12,8 @@ namespace Blueprint
         public GameObject reliefModel;
         public TextMeshPro descriptionHolder;
         
-        public override void Setup(BlueprintData data)
-        {
-            base.Setup(data);
-            SetReliefModel();
-        }
         
-        void SetReliefModel()
+        public void SetReliefModel()
         {
             reliefModel = Data.ReliefModel;
             //instantiate?

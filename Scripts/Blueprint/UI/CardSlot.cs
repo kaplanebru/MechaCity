@@ -22,7 +22,7 @@ namespace Blueprint
             Data = data;
             SetTexts();
             Data.Level = level; //todo: check, ref type diye burdan yapılabilir diye düşündüm
-            bpInteraction.Setup(data);
+            //bpInteraction.Setup(data);
         }
 
         public void SetType(BpType type)
