@@ -24,7 +24,7 @@ namespace Blueprint
         private void OnMouseEnter()
         {
             //HoverImage();
-            print("select: "+_currentBpData.Type);
+           // print("select: "+_currentBpData.Type);
         }
     
        
