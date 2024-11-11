@@ -8,86 +8,109 @@ namespace Curves
     public class IndicatorController : MonoBehaviour
     {
         public IndicatorData Data;
-        
+
         private LineCreator lineCreator;
         private CurvePointCreator pointCreator;
-        
+
         private Dictionary<uint, List<PointGroup>> pointGroupsByActor = new();
-        private uint currentActor;
+
 
         private void OnEnable()
+        {
+            pointCreator = new(Data.EdgeDistance, Data.PointDistance, Data.HeightOffset);
+            lineCreator = new LineCreator(Data.LineRenderers);
+            
+            SubscribePermanently();
+            HideLines();
+            
+        }
+
+        private void SubscribePermanently()
+        {
+            GeneralEventbus.IndicatorEvents.OnActorsResolved += SetPointGroupsByActors;
+            Eventbus.LinkEvents.OnLinkStateBegin += DisableIndicatorHover;
+            Eventbus.SelectionEvents.OnSelectionStateBegin += EnableIndicatorHover;
+        }
+        public void Subscribe()
+        {
+            GeneralEventbus.IndicatorEvents.OnActorHover += ShowLinesByActor;
+            GeneralEventbus.IndicatorEvents.OnLeavingActor += HideLines;
+        }
+        private void EnableIndicatorHover()
         {
             Subscribe();
         }
 
-        public void Subscribe()
+        private void DisableIndicatorHover()
         {
-            pointCreator = new(Data.EdgeDistance, Data.PointDistance, Data.HeightOffset);
-            lineCreator = new LineCreator(Data.LineRenderers);
-            HideLines();
-
-            GeneralEventbus.IndicatorEvents.OnActorsResolved += SetPointGroupsByActors;
-            GeneralEventbus.IndicatorEvents.OnActorHover += ShowLinesByActor;
-            GeneralEventbus.IndicatorEvents.OnLeavingActor += HideLines;
+            Unsubscribe();
         }
-        
         private void SetPointGroupsByActors(Dictionary<uint, List<Vector3>> actorsAndEdgesData)
         {
             pointGroupsByActor.Clear();
-         
+
             foreach (var actorAndEdges in actorsAndEdgesData)
             {
                 var start = actorAndEdges.Value[0];
                 pointGroupsByActor.Add(actorAndEdges.Key, new List<PointGroup>());
-                
+
                 for (var i = 1; i < actorAndEdges.Value.Count; i++)
                 {
                     var end = actorAndEdges.Value[i];
-                    pointGroupsByActor[actorAndEdges.Key].Add(new PointGroup(i, pointCreator.GetCurvePoints(start, end).ToArray()));
+                    pointGroupsByActor[actorAndEdges.Key]
+                        .Add(new PointGroup(i, pointCreator.GetCurvePoints(start, end).ToArray()));
                 }
             }
         }
-
-       
-
+        
         private void ShowLinesByActor(uint actorID)
         {
             if (!pointGroupsByActor.ContainsKey(actorID)) return;
-            currentActor = actorID;
+
 
             foreach (var pointGroup in pointGroupsByActor[actorID])
             {
                 lineCreator.PointsToLines(pointGroup.Index, pointGroup.Points);
             }
         }
-        
+
         private void HideLines()
         {
             lineCreator.DisableLines();
         }
-        
+
+        private void UnsubscribePermanently()
+        {
+            Eventbus.LinkEvents.OnLinkStateBegin -= DisableIndicatorHover;
+            Eventbus.SelectionEvents.OnSelectionStateBegin -= EnableIndicatorHover;
+            GeneralEventbus.IndicatorEvents.OnActorsResolved -= SetPointGroupsByActors;
+
+        }
+
         public void Unsubscribe()
         {
             GeneralEventbus.IndicatorEvents.OnActorHover -= ShowLinesByActor;
-            GeneralEventbus.IndicatorEvents.OnActorsResolved -= SetPointGroupsByActors;
             GeneralEventbus.IndicatorEvents.OnLeavingActor -= HideLines;
         }
 
         private void OnDisable()
         {
             Unsubscribe();
+            UnsubscribePermanently();
         }
-        
+
         #region Same
-        private bool IsActorSame(uint actorID)
-        {
-            if (actorID == currentActor)
-            {
-                lineCreator.EnableLines(pointGroupsByActor[actorID].Count);
-                return true;
-            }
-            return false;
-        }
+
+        // private bool IsActorSame(uint actorID)
+        // {
+        //     if (actorID == currentActor)
+        //     {
+        //         lineCreator.EnableLines(pointGroupsByActor[actorID].Count);
+        //         return true;
+        //     }
+        //     return false;
+        // }
+
         #endregion
 
         #region Tiling

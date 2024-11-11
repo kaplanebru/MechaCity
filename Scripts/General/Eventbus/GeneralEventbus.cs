@@ -28,8 +28,6 @@ public static class GeneralEventbus
         public static Action<uint> OnActorHover;
         public static Action OnLeavingActor;
         public static Action<Dictionary<uint, List<Vector3>>> OnActorsResolved;
-        
-        
     }
 
 }

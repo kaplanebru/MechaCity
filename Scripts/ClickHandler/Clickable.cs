@@ -17,7 +17,7 @@ namespace Clicks
             _collider = GetComponent<Collider>();
             indicatorScanner = GetComponent<IndicatorScanner>();
             // _collider.enabled = false;
-            Invoke(nameof(EnableHover), 3); //todo
+            
         }
 
         public void SetID(uint Id)
@@ -31,10 +31,7 @@ namespace Clicks
             indicatorScanner.Setup(id);
         }
 
-        void EnableHover()
-        {
-           indicatorScanner.EnableHover(true);
-        }
+       
         protected override void Setup() {}
 
         public override void UnsubscribeFromEvent() {}

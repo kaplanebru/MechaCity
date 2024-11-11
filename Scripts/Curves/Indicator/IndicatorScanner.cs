@@ -5,22 +5,14 @@ using UnityEngine;
 public class IndicatorScanner : MonoBehaviour
 {
     private uint ID;
-    private bool canHover = false;
     void OnMouseEnter()
     {
-        if(!canHover) return;
         ShowLines();
     }
 
     void OnMouseExit()
     {
-        if(!canHover) return;
         HideLines();
-    }
-
-    public void EnableHover(bool enable)
-    {
-        canHover = enable;
     }
 
     public void Setup(uint id)
