@@ -8,53 +8,41 @@ namespace TowerExternal
         public Transform[] parts;
         public Transform gear;
         public FloorData Data;
-
-        private float startHeight;
+        
+        private float startPosY;
+        private Quaternion startRot;
         private void OnEnable()
         {
-            startHeight = parts[0].localScale.y;
+            startPosY = gear.transform.localPosition.y;
+            startRot = parts[1].transform.localRotation;
+        }
+        
+        public int Id { get; set; }
+        public void Initialize(int id)
+        {
+            Id = id;
         }
 
         public void ShowGear()
         {
             gear.gameObject.SetActive(true);
+            gear.DOLocalMoveY(Data.OpenPosY, Data.Duration);
+            
+            parts[1].DOLocalRotateQuaternion(Quaternion.Euler(0, 180, 0), Data.Duration);
         }
 
         public void HideGear()
         {
+            gear.DOLocalMoveY(startPosY, Data.Duration).OnComplete(() =>
+            {
+                gear.gameObject.SetActive(false);
+            });
+            parts[1].localRotation = startRot;
+        }
+
+        public void TurnOffGear()
+        {
             gear.gameObject.SetActive(false);
-        }
-
-        public void Open( bool closeAtTheEnd = false)
-        {
-            //gear.gameObject.SetActive(true);
-            
-            // foreach (var part in parts)
-            // {
-            //     part.DOScaleY(Data.OpenSize, Data.Duration).OnComplete(() =>
-            //         {
-            //             if (closeAtTheEnd)
-            //             {
-            //                 DOVirtual.DelayedCall(Data.CloseDelay, () => RestoreHeight()); //todo: belki game started yazısı gelir
-            //             }
-            //         });
-            // }
-        }
-
-        public void RestoreHeight()
-        {
-            //gear.gameObject.SetActive(false);
-            
-            // foreach (var part in parts)
-            // {
-            //     part.DOScaleY(startHeight, Data.Duration);
-            // }
-        }
-
-        public int Id { get; set; }
-        public void Initialize(int id)
-        {
-            Id = id;
         }
     }
 }

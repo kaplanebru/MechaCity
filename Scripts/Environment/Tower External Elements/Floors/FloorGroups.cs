@@ -20,7 +20,7 @@ namespace TowerExternal
             Eventbus.LinkEvents.OnLinkLoading += OpenFloors;
             Eventbus.LinkEvents.OnUnlink += ResetFloors;
 
-            GeneralEventbus.InitializerEvents.OnExternalElementsReady += OpenAll;
+            GeneralEventbus.InitializerEvents.OnExternalElementsReady += HideAll;
         }
         
     
@@ -30,19 +30,17 @@ namespace TowerExternal
             {
                 var floor = _group.FirstOrDefault(f => f.Id == id);
                 selectedFloors.Add(floor);
-                //floor.Open();
                 floor.ShowGear();
             }
     
             GeneralEventbus.OnCoroutineTrigger?.Invoke(this); //todo: temp
         }
 
-        void OpenAll()
+        void HideAll()
         {
             foreach (var floor in _group)
             {
-                //floor.Open(true);
-                floor.HideGear();
+                floor.TurnOffGear();
             }
         }
     
@@ -55,7 +53,6 @@ namespace TowerExternal
         {
             foreach (var floor in selectedFloors)
             {
-                //floor.RestoreHeight();
                 floor.HideGear();
             }
             selectedFloors.Clear();
@@ -66,7 +63,7 @@ namespace TowerExternal
             Eventbus.LinkEvents.OnLinkLoading -= OpenFloors;
             Eventbus.LinkEvents.OnUnlink -= ResetFloors;
             
-            GeneralEventbus.InitializerEvents.OnExternalElementsReady -= OpenAll;
+            GeneralEventbus.InitializerEvents.OnExternalElementsReady -= HideAll;
         }
 
 
