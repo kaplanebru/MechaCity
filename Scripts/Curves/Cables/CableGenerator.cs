@@ -12,19 +12,17 @@ public class CableData
     public Transform CurveTangent;
     public LineRenderer LineRenderer;
 }
-public class CableHolder : MonoBehaviour
+public class CableGenerator : MonoBehaviour
 {
-    public CableData[] data;
     public Transform center;
     public float pointGap;
-
+    public CableData[] data;
+    
     private CurvePointCreator pointCreator;
- 
-
+    
     private void OnEnable()
     {
         pointCreator = new CurvePointCreator(pointGap);
-        //GeneralEventbus.InitializerEvents.OnTowersCreated += CreateCables;
     }
 
     private void Start()
@@ -36,19 +34,14 @@ public class CableHolder : MonoBehaviour
     {
         foreach (var structure in data)
         {
-            // pointCreator.GetCurveTangentFromOutside(structure.CurveTangent.position);
-            // var points = pointCreator.GetCurvePoints(
-            //     structure.TowerTransform.position,
-            //     center.position,
-            //     false).ToArray();
-            //
-            // LineCreator lineCreator = new LineCreator(structure.LineRenderer);
-            // lineCreator.PointsToLines(0, points);
+            pointCreator.GetCurveTangentFromOutside(structure.CurveTangent.position);
+            var points = pointCreator.GetCurvePoints(
+                structure.TowerTransform.position,
+                center.position,
+                false).ToArray();
+            
+            LineCreator lineCreator = new LineCreator(structure.LineRenderer);
+            lineCreator.PointsToLines(0, points);
         }
-    }
-
-    private void OnDisable()
-    {
-        
     }
 }

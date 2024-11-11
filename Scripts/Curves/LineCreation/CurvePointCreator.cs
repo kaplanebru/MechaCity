@@ -33,7 +33,7 @@ namespace Curves
             curveDirection = CalculateDirection();
         }
 
-        public void SetTips(Vector3 start, Vector3 end)
+        private void SetTips(Vector3 start, Vector3 end)
         {
             _start = start;
             _end = end;
@@ -46,10 +46,12 @@ namespace Curves
             return Vector3.Lerp(lerp1, lerp2, t) - Vector3.up * _heightOffset;
         }
 
-        public IEnumerable<Vector3> GetCurvePoints(bool setCurveTangent = true)
+        public IEnumerable<Vector3> GetCurvePoints(Vector3 start, Vector3 end, bool setCurveTangent = true)
         {
+            SetTips(start, end);
+            
             if(setCurveTangent)
-                SetCurveTangent();
+                SetCurveTangent(); //not: set tips önce yapılmalı çünkü middle hesaplanıyor
             
             float t = 0;
             while (t <= 1)
@@ -71,8 +73,11 @@ namespace Curves
         }
         private void SetCurveTangent()
         {
+            float pole = curveDirection == CurveDirection.Right ? -1 : 1; 
+            //not: circle yukardan aşağı dizili olduğu için son 3 towerda +lar - oluyor,
+            //o yüzden aynı direction işe yarıyor, ama circle dışı dizilimlerde bu çaışmayabilir
+
             middle = (_start + _end) / 2;
-            float pole = curveDirection == CurveDirection.Right ? -1 : 1;
             Vector3 direction = middle.normalized * pole;
             _curveTangent = middle + direction * _edgeDistance;
         }

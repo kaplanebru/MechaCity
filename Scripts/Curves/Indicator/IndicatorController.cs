@@ -42,9 +42,7 @@ namespace Curves
                 for (var i = 1; i < actorAndEdges.Value.Count; i++)
                 {
                     var end = actorAndEdges.Value[i];
-
-                    pointCreator.SetTips(start, end);
-                    pointGroupsByActor[actorAndEdges.Key].Add(new PointGroup(i, pointCreator.GetCurvePoints().ToArray()));
+                    pointGroupsByActor[actorAndEdges.Key].Add(new PointGroup(i, pointCreator.GetCurvePoints(start, end).ToArray()));
                 }
             }
         }
