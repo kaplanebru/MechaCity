@@ -65,7 +65,7 @@ namespace Towers
 
         public TowerSegmentDataHolder SegmentData = new();
         public List<ITowerSegment> TowerSegments = new();
-
+        
         public TowerMover Mover;
         public ColorHandler ColorHandler;
         public TowerUIHandler UIHandler;

@@ -14,6 +14,8 @@ public static class GeneralEventbus
         public static Action OnTowerRelatedIDsSet;
         public static Action OnTowersAndTeamsReady;
         public static Action OnExternalElementsReady;
+
+        public static Action<Vector3> OnOrienterReady;
     }
 
     public static Action<IEnumeratorContainer> OnCoroutineTrigger;

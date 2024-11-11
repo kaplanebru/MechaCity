@@ -27,7 +27,7 @@ namespace Towers
         {
             initializer.Setup(teamData);
         }
-        
+
         public void SetTeam(TeamTowerData teamData)
         {
             Data.TeamType = teamData.TeamType;
@@ -62,12 +62,11 @@ namespace Towers
             Data.BulletAmount = ConstantData.MaxBullet;
         }
 
-       
-       
 
         private void OnDisable()
         {
             Eventbus.TowerEvents.OnTurnBegin -= FirstMotion;
+            Data.Mover.Unsubscribe();
         }
     }
 }

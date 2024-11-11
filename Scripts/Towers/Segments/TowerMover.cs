@@ -12,6 +12,7 @@ namespace Towers
     [Serializable]
     public class TowerMoverData : TowerSegmentData
     {
+        public Transform Body;
         public Transform Top;
         public Transform Middle;
         public float TopOffset = 0;
@@ -35,6 +36,18 @@ namespace Towers
         {
             Data = data as TowerMoverData;
             riseFallMotion = new RiseFallMotion(Data.RiseFallData);
+            Subscribe();
+        }
+
+        public void Subscribe()
+        {
+            GeneralEventbus.InitializerEvents.OnOrienterReady += OrientVersTarget;
+
+        }
+
+        public void Unsubscribe()
+        {
+            GeneralEventbus.InitializerEvents.OnOrienterReady -= OrientVersTarget;
         }
         
         public void SetId(int id)
@@ -50,9 +63,15 @@ namespace Towers
                 Data.Middle.transform,
                 Data.TimingData.shakeDuration,
                 Data.ShakeMagnitude));
+
         }
 
-      
+        public void OrientVersTarget(Vector3 target)
+        {
+            var rot = Quaternion.LookRotation(target-Data.Body.position);
+          
+            Data.Body.rotation = Quaternion.Euler(Data.Body.rotation.eulerAngles.x, rot.eulerAngles.y, Data.Body.rotation.eulerAngles.z);
+        }
 
         public void ChangeHeightPhysically(float newHeight, bool isRising)
         {

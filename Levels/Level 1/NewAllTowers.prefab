@@ -1191,7 +1191,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4102430995906786725}
   - component: {fileID: 5617955071633870499}
-  - component: {fileID: 6035809684255803687}
   m_Layer: 0
   m_Name: TowerHolder
   m_TagString: Untagged
@@ -1239,40 +1238,6 @@ MonoBehaviour:
     Floors: []
     CableSelectionColor: {r: 0.8962264, g: 0.4895143, b: 0.16402629, a: 0}
     CableDefaultColor: {r: 0.27953008, g: 0.49056602, b: 0.45310616, a: 0}
---- !u!114 &6035809684255803687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5009329517350809432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04ef684b5ef9deb4ca286c630370fee9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  center: {fileID: 844350306773532138}
-  pointGap: 0.025
-  data:
-  - TowerTransform: {fileID: 3634139566220654499}
-    CurveTangent: {fileID: 3937946451834941283}
-    LineRenderer: {fileID: 129032986115422070}
-  - TowerTransform: {fileID: 1871687205011616180}
-    CurveTangent: {fileID: 2853496605319826328}
-    LineRenderer: {fileID: 7357526802701060577}
-  - TowerTransform: {fileID: 6300210015973689488}
-    CurveTangent: {fileID: 6427076452833534843}
-    LineRenderer: {fileID: 7546908714057269201}
-  - TowerTransform: {fileID: 1871687205380861016}
-    CurveTangent: {fileID: 322405074630195645}
-    LineRenderer: {fileID: 5783464131306081196}
-  - TowerTransform: {fileID: 8057390765870810844}
-    CurveTangent: {fileID: 3324540676831390180}
-    LineRenderer: {fileID: 3424235344776313208}
-  - TowerTransform: {fileID: 1871687206136705513}
-    CurveTangent: {fileID: 3477758889438130725}
-    LineRenderer: {fileID: 1176385128117724416}
-  closeTangentMesh: 1
 --- !u!1 &5112960590360003345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1448,6 +1413,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5579547957973982615}
+  - component: {fileID: 4831313534355225008}
+  - component: {fileID: 5989120409043181519}
   m_Layer: 0
   m_Name: NewAllTowers
   m_TagString: Untagged
@@ -1473,6 +1440,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4831313534355225008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579547957973982614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04ef684b5ef9deb4ca286c630370fee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {fileID: 844350306773532138}
+  pointGap: 0.025
+  data:
+  - TowerTransform: {fileID: 3634139566220654499}
+    CurveTangent: {fileID: 3937946451834941283}
+    LineRenderer: {fileID: 129032986115422070}
+  - TowerTransform: {fileID: 1871687205011616180}
+    CurveTangent: {fileID: 2853496605319826328}
+    LineRenderer: {fileID: 7357526802701060577}
+  - TowerTransform: {fileID: 6300210015973689488}
+    CurveTangent: {fileID: 6427076452833534843}
+    LineRenderer: {fileID: 7546908714057269201}
+  - TowerTransform: {fileID: 1871687205380861016}
+    CurveTangent: {fileID: 322405074630195645}
+    LineRenderer: {fileID: 5783464131306081196}
+  - TowerTransform: {fileID: 8057390765870810844}
+    CurveTangent: {fileID: 3324540676831390180}
+    LineRenderer: {fileID: 3424235344776313208}
+  - TowerTransform: {fileID: 1871687206136705513}
+    CurveTangent: {fileID: 3477758889438130725}
+    LineRenderer: {fileID: 1176385128117724416}
+  closeTangentMesh: 1
+--- !u!114 &5989120409043181519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579547957973982614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1161080d4be69a4418d025a52eb01db5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {fileID: 844350306773532138}
 --- !u!1 &5851970688230018429
 GameObject:
   m_ObjectHideFlags: 0
