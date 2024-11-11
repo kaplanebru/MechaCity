@@ -24,6 +24,7 @@ namespace Curves
         {
             pointCreator = new(Data.EdgeDistance, Data.PointDistance, Data.HeightOffset);
             lineCreator = new LineCreator(Data.LineRenderers);
+            HideLines();
 
             GeneralEventbus.IndicatorEvents.OnActorsResolved += SetPointGroupsByActors;
             GeneralEventbus.IndicatorEvents.OnActorHover += ShowLinesByActor;
@@ -47,20 +48,11 @@ namespace Curves
             }
         }
 
-        private bool IsActorSame(uint actorID)
-        {
-            if (actorID == currentActor)
-            {
-                lineCreator.EnableLines(pointGroupsByActor[actorID].Count);
-                return true;
-            }
-            return false;
-        }
+       
 
         private void ShowLinesByActor(uint actorID)
         {
             if (!pointGroupsByActor.ContainsKey(actorID)) return;
-            if (IsActorSame(actorID)) return;
             currentActor = actorID;
 
             foreach (var pointGroup in pointGroupsByActor[actorID])
@@ -85,6 +77,18 @@ namespace Curves
         {
             Unsubscribe();
         }
+        
+        #region Same
+        private bool IsActorSame(uint actorID)
+        {
+            if (actorID == currentActor)
+            {
+                lineCreator.EnableLines(pointGroupsByActor[actorID].Count);
+                return true;
+            }
+            return false;
+        }
+        #endregion
 
         #region Tiling
 
