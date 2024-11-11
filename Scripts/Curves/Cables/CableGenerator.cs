@@ -17,6 +17,7 @@ public class CableGenerator : MonoBehaviour
     public Transform center;
     public float pointGap;
     public CableData[] data;
+    public bool closeTangentMesh = true;
     
     private CurvePointCreator pointCreator;
     
@@ -42,6 +43,15 @@ public class CableGenerator : MonoBehaviour
             
             LineCreator lineCreator = new LineCreator(structure.LineRenderer);
             lineCreator.PointsToLines(0, points);
+            
+            CloseTangentMesh(structure.CurveTangent);
         }
+    }
+
+    void CloseTangentMesh(Transform tangent)
+    {
+        if(!closeTangentMesh) return;
+        var mesh = tangent.GetComponent<MeshRenderer>();
+        mesh.enabled = false;
     }
 }
