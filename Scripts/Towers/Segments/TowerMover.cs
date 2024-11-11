@@ -68,9 +68,10 @@ namespace Towers
 
         public void OrientVersTarget(Vector3 target)
         {
-            var rot = Quaternion.LookRotation(target-Data.Body.position);
+            var newRot = Quaternion.LookRotation(target-Data.Body.position) * Quaternion.Euler(0, 180 ,0);
+            var towerRot = Data.Body.eulerAngles;
           
-            Data.Body.rotation = Quaternion.Euler(Data.Body.rotation.eulerAngles.x, rot.eulerAngles.y, Data.Body.rotation.eulerAngles.z);
+            Data.Body.rotation = Quaternion.Euler(towerRot.x, newRot.eulerAngles.y, towerRot.z);
         }
 
         public void ChangeHeightPhysically(float newHeight, bool isRising)

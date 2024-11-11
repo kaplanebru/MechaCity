@@ -21,6 +21,15 @@ namespace Towers
             _towers = _towers.OrderBy(t => t.Height).ToList();
             _amount = _towers.Count;
         }
+
+        private void SeRegarde() //iptal, arkasını dönsün istemeyiz
+        {
+            // for (var i = 0; i < _towers.Count; i++)
+            // {
+            //     var tower = _towers[i];
+            //     tower.Mover.OrientVersTarget();
+            // }
+        }
         public void Equalize() //bridgeden önce olmalı
         {
             int totalHeight = 0;

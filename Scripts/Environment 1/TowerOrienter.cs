@@ -14,7 +14,7 @@ public class TowerOrienter : MonoBehaviour
 
     void Orient()
     {
-        GeneralEventbus.InitializerEvents.OnOrienterReady?.Invoke(center.position);
+        //GeneralEventbus.InitializerEvents.OnOrienterReady?.Invoke(center.position);
     }
 
     private void OnDisable()
