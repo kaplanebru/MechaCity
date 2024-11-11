@@ -13,7 +13,7 @@ namespace Blueprint
         public BlueprintData Data;
         public int level = 1;
         
-        public BPInteraction bpInteraction;
+        public CardInteraction cardInteraction;
         public TextMeshPro titleHolder;
         public TextMeshPro priceHolder;
         
@@ -22,7 +22,7 @@ namespace Blueprint
             Data = data;
             SetTexts();
             Data.Level = level; //todo: check, ref type diye burdan yapılabilir diye düşündüm
-            //bpInteraction.Setup(data);
+            cardInteraction.Setup(data);
         }
 
         public void SetType(BpType type)

@@ -363,6 +363,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2882228448692333283 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6589313521583095538, guid: 0cd64e7ca51f2d444af115faa244b3c8, type: 3}
+  m_PrefabInstance: {fileID: 8975192731814433809}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da10d3c6a2f90ab4da91d0c2e49faa93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3255426914462518415 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5882778340380596382, guid: 0cd64e7ca51f2d444af115faa244b3c8, type: 3}
@@ -394,7 +405,7 @@ MonoBehaviour:
   currentBpType: 0
   Data: {fileID: 0}
   level: 1
-  bpInteraction: {fileID: 0}
+  cardInteraction: {fileID: 2882228448692333283}
   titleHolder: {fileID: 4043995787795487}
   priceHolder: {fileID: 3255426914462518415}
   reliefModel: {fileID: 0}
