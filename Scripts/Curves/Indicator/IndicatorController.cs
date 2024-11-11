@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-namespace UX
+namespace Curves
 {
     public class IndicatorController : MonoBehaviour
     {
         public IndicatorData Data;
         
-        private LineHolder LineHolder;
+        private LineCreator lineCreator;
         private CurvePointCreator pointCreator;
         
         private Dictionary<uint, List<PointGroup>> pointGroupsByActor = new();
@@ -23,7 +23,7 @@ namespace UX
         public void Subscribe()
         {
             pointCreator = new(Data.EdgeDistance, Data.PointDistance, Data.HeightOffset);
-            LineHolder = new LineHolder(Data.LineRenderers);
+            lineCreator = new LineCreator(Data.LineRenderers);
 
             GeneralEventbus.IndicatorEvents.OnActorsResolved += SetPointGroupsByActors;
             GeneralEventbus.IndicatorEvents.OnActorHover += ShowLinesByActor;
@@ -43,7 +43,7 @@ namespace UX
                 {
                     var end = actorAndEdges.Value[i];
 
-                    pointCreator.Setup(start, end);
+                    pointCreator.SetTips(start, end);
                     pointGroupsByActor[actorAndEdges.Key].Add(new PointGroup(i, pointCreator.GetCurvePoints().ToArray()));
                 }
             }
@@ -53,7 +53,7 @@ namespace UX
         {
             if (actorID == currentActor)
             {
-                LineHolder.EnableLines(pointGroupsByActor[actorID].Count);
+                lineCreator.EnableLines(pointGroupsByActor[actorID].Count);
                 return true;
             }
             return false;
@@ -67,13 +67,13 @@ namespace UX
 
             foreach (var pointGroup in pointGroupsByActor[actorID])
             {
-                LineHolder.PointsToLines(pointGroup.Index, pointGroup.Points);
+                lineCreator.PointsToLines(pointGroup.Index, pointGroup.Points);
             }
         }
         
         private void HideLines()
         {
-            LineHolder.DisableLines();
+            lineCreator.DisableLines();
         }
         
         public void Unsubscribe()

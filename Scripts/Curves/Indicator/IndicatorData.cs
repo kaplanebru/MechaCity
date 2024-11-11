@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UX
+namespace Curves
 {
     [Serializable]
     public class IndicatorData

@@ -1,12 +1,12 @@
 using UnityEngine;
 
-namespace UX
+namespace Curves
 {
-    public class LineHolder
+    public class LineCreator
     {
         private LineRenderer[] LineRenderers;
 
-        public LineHolder(LineRenderer[] lineRenderers)
+        public LineCreator(params LineRenderer[] lineRenderers)
         {
             LineRenderers = lineRenderers;
         }

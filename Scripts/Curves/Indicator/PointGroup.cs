@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UX
+namespace Curves
 {
     public class PointGroup
     {
