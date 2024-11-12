@@ -27,6 +27,7 @@ namespace Blueprint
             }
 
             Debug.Log("doesnt conform to constraints");
+            //TODO: tekrar double'a yolla
             return false;
         }
 

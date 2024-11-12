@@ -39,22 +39,24 @@ namespace Towers
             }
 
             int averageHeight = totalHeight / _amount;
-            int rest = averageHeight % _amount;
-            
-            foreach (var tower in _towers)
+            int rest = totalHeight % averageHeight;
+
+            for (var i = _towers.Count - 1; i >= 0; i--)
             {
+                var tower = _towers[i];
                 int extra = 0;
                 if (rest > 0)
                 {
                     extra = 1;
                     rest--;
                 }
+
                 var newHeight = averageHeight + extra;
-                if(newHeight == tower.Height) continue;
-                
+                if (newHeight == tower.Height) continue;
+
                 int surplus = newHeight - tower.Height;
-                
-                if(surplus==0)continue;
+
+                if (surplus == 0) continue;
                 tower.UpdateHeight(surplus);
                 AllTowers.GetTower(tower.UniqID).StartRiseFallRoutine(true); //Todo: düzelt
             }
