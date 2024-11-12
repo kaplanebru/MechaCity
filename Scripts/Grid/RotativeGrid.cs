@@ -29,16 +29,18 @@ public class RotativeGrid : MonoBehaviour
 
     public void FillGridWithActors()
     {
-        int i = 0;
-        while (i < Data.slots.Length)  //actor sayısı slot sayısından az olabilir
+        int slot = 0;
+        int act = 0;
+        while (slot < Data.slots.Length)  //actor sayısı slot sayısından az olabilir
         {
-            var actor = ActorHolder.Registry[_actors[i]];
+            var actor = ActorHolder.Registry[_actors[act]]; //atlanan actor oluyor
 
             for (int j = 0; j < actor.Towers.Length; j++)
             {
-                actorsBySlots.Add(Data.slots[i].Id, actor);
-                i++;
+                actorsBySlots.Add(Data.slots[slot].Id, actor);
+                slot++;
             }
+            act++;
         }
     }
 
@@ -47,6 +49,7 @@ public class RotativeGrid : MonoBehaviour
         foreach (var slot in Data.slots)
         {
             var actor = actorsBySlots[slot.Id];
+            actor.LinkedActors.Clear();
 
             foreach (var relatedSlot in slot.RelatedSlots)
             {
@@ -66,6 +69,7 @@ public class RotativeGrid : MonoBehaviour
         foreach (var slot in Data.slots)
         {
             var actor = actorsBySlots[slot.Id];
+            actor.Neighbours.Clear();
 
             foreach (var neighbourSlot in slot.Neighbours)
             {
@@ -73,7 +77,7 @@ public class RotativeGrid : MonoBehaviour
                 if(neighbourActor == actor) continue;
                 
                 actor.Neighbours.Add(neighbourActor.ID);
-                Debug.Log("actor: " + actor.ID + " neighbour actor: " + neighbourActor.ID);
+                //Debug.Log("actor: " + actor.ID + " neighbour actor: " + neighbourActor.ID);
             }
         }
     }
