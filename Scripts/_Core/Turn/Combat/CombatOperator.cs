@@ -99,7 +99,7 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
             yield return new WaitForSeconds(_timingData.cameraDelay);
 
-            for (int i = 0; i <  _pairController.PairAmount; i++) //ActorHolder.Registry.Count
+            for (int i = 0; i < ActorHolder.Registry.Count; i++) //_pairController.PairAmount değil çünkü pair sayısı fazla olabilir
             {
                 Eventbus.CombatEvents.OnNextActor?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);

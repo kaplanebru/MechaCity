@@ -28,24 +28,12 @@ namespace Actor
 
         public void SetRelations(List<uint> actors)
         {
-            SetLinkedActors(actors);
-            SetNeighbours(actors);
-            
-            Eventbus.ActorEvents.OnRelationsSet?.Invoke(actors, isReversed);
+            // SetLinkedActors(actors);
+            // SetNeighbours(actors);
+            //
+            // Eventbus.ActorEvents.OnRelationsSet?.Invoke(actors, isReversed);
         }
         
-        private void SetLinkedActors(List<uint> actors) 
-        {
-            var actorsAmount = actors.Count;
-            for (var i = 0; i < actorsAmount ; i++)
-            {
-                var mainID = actors[i];
-                var nextIDInOrder = actors[(i + 1) % actorsAmount];
-                //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
-                
-                ActorHolder.Registry[mainID].LinkActors(nextIDInOrder); //burda patlar, double'ın elemanı olup registeryde bulunmayabilir!
-            }
-        }
 
         private void SetNeighbours(List<uint> actors)
         {

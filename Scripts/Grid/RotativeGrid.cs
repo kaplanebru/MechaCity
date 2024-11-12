@@ -57,7 +57,7 @@ public class RotativeGrid : MonoBehaviour
             }
         }
         
-        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), true);
+        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), false);
     }
 
     private void OnDisable()
