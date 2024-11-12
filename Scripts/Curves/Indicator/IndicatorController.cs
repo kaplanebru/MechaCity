@@ -58,7 +58,7 @@ namespace Curves
                 {
                     var end = actorAndEdges.Value[i];
                     pointGroupsByActor[actorAndEdges.Key]
-                        .Add(new PointGroup(i, pointCreator.GetCurvePoints(start, end).ToArray()));
+                        .Add(new PointGroup(i-1, pointCreator.GetCurvePoints(start, end).ToArray()));
                 }
             }
         }
