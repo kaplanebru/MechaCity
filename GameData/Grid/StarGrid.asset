@@ -15,13 +15,19 @@ MonoBehaviour:
   slots:
   - Id: 0
     RelatedSlots: 0100000002000000
+    Neighbours: 0100000005000000
   - Id: 1
     RelatedSlots: 04000000
+    Neighbours: 000000000200000004000000
   - Id: 2
     RelatedSlots: 03000000
+    Neighbours: 0100000003000000
   - Id: 3
     RelatedSlots: 0400000005000000
+    Neighbours: 0200000004000000
   - Id: 4
     RelatedSlots: 05000000
+    Neighbours: 030000000500000001000000
   - Id: 5
     RelatedSlots: 00000000
+    Neighbours: 0400000000000000

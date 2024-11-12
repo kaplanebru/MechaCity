@@ -24,12 +24,13 @@ public class RotativeGrid : MonoBehaviour
         actorsBySlots.Clear();
         FillGridWithActors();
         ResolveLinkedActorsFromGrid();
+        SetNeighbours();
     }
 
     public void FillGridWithActors()
     {
         int i = 0;
-        while (i < Data.slots.Length)
+        while (i < Data.slots.Length)  //actor sayısı slot sayısından az olabilir
         {
             var actor = ActorHolder.Registry[_actors[i]];
 
@@ -41,7 +42,7 @@ public class RotativeGrid : MonoBehaviour
         }
     }
 
-    public void ResolveLinkedActorsFromGrid()
+    private void ResolveLinkedActorsFromGrid()
     {
         foreach (var slot in Data.slots)
         {
@@ -58,6 +59,23 @@ public class RotativeGrid : MonoBehaviour
         }
         
         Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), false);
+    }
+
+    private void SetNeighbours()
+    {
+        foreach (var slot in Data.slots)
+        {
+            var actor = actorsBySlots[slot.Id];
+
+            foreach (var neighbourSlot in slot.Neighbours)
+            {
+                var neighbourActor = actorsBySlots[neighbourSlot];
+                if(neighbourActor == actor) continue;
+                
+                actor.Neighbours.Add(neighbourActor.ID);
+                Debug.Log("actor: " + actor.ID + " neighbour actor: " + neighbourActor.ID);
+            }
+        }
     }
 
     private void OnDisable()

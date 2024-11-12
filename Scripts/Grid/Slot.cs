@@ -10,6 +10,7 @@ namespace Grid
     {
         public int Id;
         public int[] RelatedSlots;
+        public int[] Neighbours;
     }
 
 }
