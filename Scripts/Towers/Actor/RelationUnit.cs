@@ -63,31 +63,8 @@ namespace Actor
                 mainActor.SetNeighbours(previousID, nextID);
                 
             }
-            //----
-            // for (var i = 0; i < TowersCount; i++)
-            // {
-            //     TowerDatas[i].NeighbourIDs.Clear();
-            //     
-            //     int previousID = i - 1;
-            //     if (previousID < 0)
-            //         previousID = TowersCount - 1;
-            //     int previous =  TowerDatas[previousID].UniqID;
-            //     
-            //     int next = TowerDatas[(i + 1) % TowersCount].UniqID;
-            //     
-            //     TowerDatas[i].NeighbourIDs.Add(previous);
-            //     TowerDatas[i].NeighbourIDs.Add(next);
-            // }
+          
         }
-
-        // private void ResetAllLinks()
-        // {
-        //     foreach (var registry in ActorHolder.Registry.Values)
-        //     {
-        //         registry.LinkedActors.Clear();
-        //     }
-        // }
-
         public override void Unsubscribe()
         {
             Eventbus.ActorEvents.OnReverseRelations -= ReverseRelations;
