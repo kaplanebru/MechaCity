@@ -21,11 +21,11 @@ public class IndicatorScanner : MonoBehaviour
     }
     void ShowLines()
     {
-        GeneralEventbus.IndicatorEvents.OnActorHover?.Invoke(ID);
+        GeneralEventbus.IndicatorEvents.OnActorHoverByUser?.Invoke(ID);
     }
 
     void HideLines()
     {
-        GeneralEventbus.IndicatorEvents.OnLeavingActor?.Invoke();
+        GeneralEventbus.IndicatorEvents.OnActorLeftByUser?.Invoke();
     }
 }

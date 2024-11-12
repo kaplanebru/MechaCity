@@ -27,8 +27,11 @@ public static class GeneralEventbus
     
     public static class IndicatorEvents
     {
-        public static Action<uint> OnActorHover;
-        public static Action OnLeavingActor;
+        public static Action<uint> OnActorHoverByUser;
+        public static Action OnActorLeftByUser;
+
+        public static Action<uint> OnActorHoverByCombat;
+        public static Action OnActorLeftByCombat;
         public static Action<Dictionary<uint, List<Vector3>>> OnActorsResolved;
     }
 

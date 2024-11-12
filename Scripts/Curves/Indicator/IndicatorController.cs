@@ -24,17 +24,19 @@ namespace Curves
             HideLines();
             
         }
-
         private void SubscribePermanently()
         {
-            GeneralEventbus.IndicatorEvents.OnActorsResolved += SetPointGroupsByActors;
             Eventbus.LinkEvents.OnLinkStateBegin += DisableIndicatorHover;
             Eventbus.SelectionEvents.OnSelectionStateBegin += EnableIndicatorHover;
+            
+            GeneralEventbus.IndicatorEvents.OnActorsResolved += SetPointGroupsByActors;
+            GeneralEventbus.IndicatorEvents.OnActorHoverByCombat += ShowLinesByActor;
+            GeneralEventbus.IndicatorEvents.OnActorLeftByCombat += HideLines;
         }
         public void Subscribe()
         {
-            GeneralEventbus.IndicatorEvents.OnActorHover += ShowLinesByActor;
-            GeneralEventbus.IndicatorEvents.OnLeavingActor += HideLines;
+            GeneralEventbus.IndicatorEvents.OnActorHoverByUser += ShowLinesByActor;
+            GeneralEventbus.IndicatorEvents.OnActorLeftByUser += HideLines;
         }
         private void EnableIndicatorHover()
         {
@@ -79,20 +81,21 @@ namespace Curves
             lineCreator.DisableLines();
         }
 
+        public void Unsubscribe()
+        {
+            GeneralEventbus.IndicatorEvents.OnActorHoverByUser -= ShowLinesByActor;
+            GeneralEventbus.IndicatorEvents.OnActorLeftByUser -= HideLines;
+        }
         private void UnsubscribePermanently()
         {
             Eventbus.LinkEvents.OnLinkStateBegin -= DisableIndicatorHover;
             Eventbus.SelectionEvents.OnSelectionStateBegin -= EnableIndicatorHover;
+            
             GeneralEventbus.IndicatorEvents.OnActorsResolved -= SetPointGroupsByActors;
-
+            GeneralEventbus.IndicatorEvents.OnActorHoverByCombat -= ShowLinesByActor;
+            GeneralEventbus.IndicatorEvents.OnActorLeftByCombat -= HideLines;
         }
-
-        public void Unsubscribe()
-        {
-            GeneralEventbus.IndicatorEvents.OnActorHover -= ShowLinesByActor;
-            GeneralEventbus.IndicatorEvents.OnLeavingActor -= HideLines;
-        }
-
+        
         private void OnDisable()
         {
             Unsubscribe();

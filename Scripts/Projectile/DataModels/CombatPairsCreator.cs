@@ -9,9 +9,9 @@ using UnityEngine;
 
 public class CombatPairsCreator
 {
-    List<CombatPair> _combatPairs;
+    Dictionary<uint,List<CombatPair>> _combatPairs;
 
-    public CombatPairsCreator(List<CombatPair> combatPairs)
+    public CombatPairsCreator(Dictionary<uint,List<CombatPair>> combatPairs)
     {
         _combatPairs = combatPairs;
     }
@@ -19,10 +19,10 @@ public class CombatPairsCreator
     public void CreateCombatPairs(List<uint> tempActors, bool isReversed = false)
     {
         _combatPairs.Clear();
-        tempActors.ForEach(id => CombatPairByTower(ActorHolder.Registry[id], isReversed));
+        tempActors.ForEach(id => CombatPairByActor(ActorHolder.Registry[id], isReversed));
     }
     
-    public void CombatPairByTower(ActorData mainActor, bool isReversed = false)
+    public void CombatPairByActor(ActorData mainActor, bool isReversed = false)
     {
         //OrderLinkedTowersByID(tower); //todo: birden fazla linked varsa diye, in further update
         
@@ -38,7 +38,12 @@ public class CombatPairsCreator
     CombatPair AddToPair(ActorData actor1, ActorData actor2)
     {
         var pair = new CombatPair(actor1, actor2);
-        _combatPairs.Add(pair);
+        
+        if(!_combatPairs.ContainsKey(actor1.ID))
+            _combatPairs.Add(actor1.ID, new List<CombatPair> {pair});
+        else
+            _combatPairs[actor1.ID].Add(pair);
+
         return pair;
     }
 

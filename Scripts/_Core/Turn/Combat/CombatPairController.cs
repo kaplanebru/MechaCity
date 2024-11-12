@@ -8,7 +8,7 @@ namespace Turn
 {
     public class CombatPairController
     {
-        private List<CombatPair> CombatPairs = new();
+        private Dictionary<uint, List<CombatPair>> CombatPairs = new();
         private CombatPairsCreator combatPairsCreator;
 
 
@@ -18,13 +18,16 @@ namespace Turn
             Eventbus.ActorEvents.OnRelationsSet += SetCombatPairs;
         }
 
-        public CombatPair GetPairByIndex(int index) => CombatPairs[index];
+        public List<CombatPair> GetPairByActorID(uint actorID) => CombatPairs[actorID];
 
         public int PairAmount => CombatPairs.Count;
 
         public void ResetCombatCompletedForAll()
         {
-            CombatPairs.ForEach(p=> p.CombatCompleted = false);
+            foreach (var pairs in CombatPairs.Values)
+            {
+                pairs.ForEach(p=> p.CombatCompleted = false);
+            }
         }
 
         private void SetCombatPairs(List<uint> actors, bool isReversed)

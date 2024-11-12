@@ -73,6 +73,7 @@ namespace Turn
                     tower.ColorHandler.ToSelectionColor();
                 }
                 
+                GeneralEventbus.IndicatorEvents.OnActorHoverByCombat?.Invoke(pair.MainActor.ID);
                 Eventbus.CombatEvents.OnTurnTowerSelection?.Invoke(pair.MainActor.ID);
             }
             else
@@ -82,6 +83,7 @@ namespace Turn
                     tower.ColorHandler.ToOriginalColor();
                 }
                 
+                GeneralEventbus.IndicatorEvents.OnActorLeftByCombat?.Invoke();
                 Eventbus.CombatEvents.OnTurnTowerDeselect?.Invoke();
             }
         }
@@ -98,30 +100,31 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
             yield return new WaitForSeconds(_timingData.cameraDelay);
-
-            for (int i = 0; i < ActorHolder.Registry.Count; i++) //_pairController.PairAmount değil çünkü pair sayısı fazla olabilir
+            foreach (var actorID in ActorHolder.Registry.Keys)
             {
                 Eventbus.CombatEvents.OnNextActor?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
-
-                var pair = _pairController.GetPairByIndex(i);
-                SetSelectionColor(pair);
-                //Debug.Log(pair.MainActor.Row);
-
-                yield return new WaitForSeconds(Data.selectionDelay);
                 
-                if (pair.Combat())
+                var pairs = _pairController.GetPairByActorID(actorID);
+                pairs.ForEach(p=>SetSelectionColor(p));
+                
+                yield return new WaitForSeconds(Data.selectionDelay);
+
+                foreach (var pair in pairs)
                 {
-                    yield return new WaitUntil(() => pair.CombatCompleted);
-                }
-                else
-                {
-                    yield return new WaitForSeconds(_timingData.skipDelay);
-                    yield return new WaitForSeconds(Data.afterCombatDelay);
-                    SetSelectionColor(pair, false);
+                    if (pair.Combat())
+                    {
+                        yield return new WaitUntil(() => pair.CombatCompleted);
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(_timingData.skipDelay);
+                        yield return new WaitForSeconds(Data.afterCombatDelay);
+                        SetSelectionColor(pair, false);
+                    }
                 }
             }
-
+            
             Eventbus.CombatEvents.OnCombatEnding?.Invoke();
             yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
