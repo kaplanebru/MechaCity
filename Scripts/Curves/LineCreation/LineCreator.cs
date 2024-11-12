@@ -9,6 +9,7 @@ namespace Curves
         public LineCreator(params LineRenderer[] lineRenderers)
         {
             LineRenderers = lineRenderers;
+            Debug.Log( "lr: "+LineRenderers.Length);
         }
 
         public void EnableLines(int lineAmount)

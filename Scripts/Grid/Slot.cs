@@ -10,8 +10,6 @@ namespace Grid
     {
         public int Id;
         public int[] RelatedSlots;
-        
-        public ActorData Actor { get; set; }
     }
 
 }

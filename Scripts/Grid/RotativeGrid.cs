@@ -1,29 +1,41 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Actor;
 using Grid;
+using Towers;
 using UnityEngine;
 
 public class RotativeGrid : MonoBehaviour
 {
     public GridData Data;
-    public Dictionary<ActorData, List<Slot>> GridRegistry = new();
     private Dictionary<int, ActorData> actorsBySlots = new();
+    private uint[] _actors;
 
-    public void FillGridWithActors(List<uint> actors)
+    private void OnEnable()
+    {
+        Eventbus.ActorEvents.OnRegistryUpdate += SetGrid;
+    }
+
+    void SetGrid(uint[] actors)
+    {
+        _actors = actors;
+        actorsBySlots.Clear();
+        FillGridWithActors();
+        ResolveLinkedActorsFromGrid();
+    }
+
+    public void FillGridWithActors()
     {
         int i = 0;
         while (i < Data.slots.Length)
         {
-            var actor = ActorHolder.Registry[actors[i]];
-            //GridRegistry.Add(actor, new List<Slot>());
+            var actor = ActorHolder.Registry[_actors[i]];
 
-            int j = 0;
-            while (j < actor.Towers.Length)
+            for (int j = 0; j < actor.Towers.Length; j++)
             {
                 actorsBySlots.Add(Data.slots[i].Id, actor);
-                //Data.slots[i].Actor = actor;
-                //GridRegistry[actor].Add(Data.slots[i]);
                 i++;
             }
         }
@@ -39,9 +51,17 @@ public class RotativeGrid : MonoBehaviour
             {
                 var relatedActor = actorsBySlots[relatedSlot];
                 if(relatedActor == actor) continue;
+                
                 actor.LinkedActors.Add(relatedActor.ID);
+               // Debug.Log("actor: " + actor.ID + " related: " + relatedActor.ID);
             }
         }
+        
+        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), true);
     }
-    
+
+    private void OnDisable()
+    {
+        Eventbus.ActorEvents.OnRegistryUpdate -= SetGrid;
+    }
 }

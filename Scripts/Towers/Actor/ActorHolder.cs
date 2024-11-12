@@ -93,7 +93,8 @@ namespace Actor
 
         void OnRegistryUpdate()
         {
-            ((RelationUnit)units[Enums.ActorUnit.Relation]).SetRelations(Registry.Keys.ToList());
+            //((RelationUnit)units[Enums.ActorUnit.Relation]).SetRelations(Registry.Keys.ToList());
+            Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(Registry.Keys.ToArray());
         }
 
         void OrderRegistry()
