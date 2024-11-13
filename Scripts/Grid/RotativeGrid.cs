@@ -22,9 +22,52 @@ public class RotativeGrid : MonoBehaviour
     {
         _actors = actors;
         actorsBySlots.Clear();
+        
         FillGridWithActors();
-        ResolveLinkedActorsFromGrid();
-        SetNeighbours();
+        ResolveTargetActors();
+        ResolveNeighbours();
+        
+        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), false);
+    }
+
+    void ResolveTargetActors()
+    {
+        ResolveRelationsFromGrid(
+            actor => actor.LinkedActors, 
+            slot => slot.RelatedSlots);
+    }
+
+    void ResolveTargetActorsReversed()
+    {
+        ResolveRelationsFromGrid(
+            actor => actor.LinkedActors, 
+            slot => slot.ReverseRelatedSlots);
+    }
+
+    void ResolveNeighbours()
+    {
+        ResolveRelationsFromGrid(
+            actor => actor.Neighbours, 
+            slot => slot.Neighbours);
+    }
+    
+    private void ResolveRelationsFromGrid(
+        Func<ActorData, List<uint>> getRelatedActors, 
+        Func<Slot, int[]> getRelatedSlots)
+    {
+        foreach (var slot in Data.slots)
+        {
+            var actor = actorsBySlots[slot.Id];
+            getRelatedActors(actor).Clear();
+        
+            foreach (var relatedSlotId in getRelatedSlots(slot))
+            {
+                var relatedActor = actorsBySlots[relatedSlotId];
+                if (relatedActor == actor) continue;
+            
+                getRelatedActors(actor).Add(relatedActor.ID);
+            }
+        }
     }
 
     public void FillGridWithActors()
@@ -41,44 +84,6 @@ public class RotativeGrid : MonoBehaviour
                 slot++;
             }
             act++;
-        }
-    }
-
-    private void ResolveLinkedActorsFromGrid()
-    {
-        foreach (var slot in Data.slots)
-        {
-            var actor = actorsBySlots[slot.Id];
-            actor.LinkedActors.Clear();
-
-            foreach (var relatedSlot in slot.RelatedSlots)
-            {
-                var relatedActor = actorsBySlots[relatedSlot];
-                if(relatedActor == actor) continue;
-                
-                actor.LinkedActors.Add(relatedActor.ID);
-               // Debug.Log("actor: " + actor.ID + " related: " + relatedActor.ID);
-            }
-        }
-        
-        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), false);
-    }
-
-    private void SetNeighbours()
-    {
-        foreach (var slot in Data.slots)
-        {
-            var actor = actorsBySlots[slot.Id];
-            actor.Neighbours.Clear();
-
-            foreach (var neighbourSlot in slot.Neighbours)
-            {
-                var neighbourActor = actorsBySlots[neighbourSlot];
-                if(neighbourActor == actor) continue;
-                
-                actor.Neighbours.Add(neighbourActor.ID);
-                //Debug.Log("actor: " + actor.ID + " neighbour actor: " + neighbourActor.ID);
-            }
         }
     }
 
