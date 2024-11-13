@@ -9,8 +9,8 @@ namespace Grid
     public class Slot
     {
         public int Id;
-        public int[] RelatedSlots;
-        public int[] ReverseRelatedSlots;
+        public int[] TargetSlots;
+        public int[] ReversedTargetSlots;
         public int[] Neighbours;
     }
 

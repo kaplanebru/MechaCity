@@ -20,7 +20,7 @@ namespace Actor
         public int Health;
         public int InitialHealth;
         
-        public List<uint> LinkedActors = new();
+        public List<uint> TargetActors = new();
         public List<uint> Neighbours = new();
 
         public ActorData(uint id, ActorType type, params int[] towerIDs)
@@ -48,10 +48,7 @@ namespace Actor
         }
         
 
-        public void LinkActors(params uint[] linkedActors)
-        {
-            LinkedActors = linkedActors.ToList();
-        }
+       
 
         public void SetNeighbours(params uint[] neighbours)
         {

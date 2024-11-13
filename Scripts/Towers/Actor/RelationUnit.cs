@@ -28,10 +28,7 @@ namespace Actor
 
         public void SetRelations(List<uint> actors)
         {
-            // SetLinkedActors(actors);
-            // SetNeighbours(actors);
-            //
-            // Eventbus.ActorEvents.OnRelationsSet?.Invoke(actors, isReversed);
+           
         }
         
 

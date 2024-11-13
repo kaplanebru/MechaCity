@@ -24,13 +24,13 @@ public class CombatPairsCreator
     
     public void CombatPairByActor(ActorData mainActor, bool isReversed = false)
     {
-        //OrderLinkedTowersByID(tower); //todo: birden fazla linked varsa diye, in further update
+        //OrderTargetTowersByID(tower); //todo: birden fazla linked varsa diye, in further update
         
-        var linkedActors = mainActor.LinkedActors;
-        foreach (var id in linkedActors)
+        var targetActors = mainActor.TargetActors;
+        foreach (var id in targetActors)
         {
-            var linkedActor = ActorHolder.Registry[id];
-            var pair = AddToPair(mainActor, linkedActor);
+            var targetActor = ActorHolder.Registry[id];
+            var pair = AddToPair(mainActor, targetActor);
             pair.OrderTowers(isReversed);
         }
     }
@@ -47,7 +47,7 @@ public class CombatPairsCreator
         return pair;
     }
 
-    void OrderLinkedTowersByID(TowerData tower)
+    void OrderTargetTowersByID(TowerData tower)
     {
         //TODO: NEDEN SLOT ID? uzaklık için mi. SlotId towers'daki sıralama olarak set edilebilir!
         // tower.LinkedTowerIDs =

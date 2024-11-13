@@ -33,15 +33,15 @@ public class RotativeGrid : MonoBehaviour
     void ResolveTargetActors()
     {
         ResolveRelationsFromGrid(
-            actor => actor.LinkedActors, 
-            slot => slot.RelatedSlots);
+            actor => actor.TargetActors, 
+            slot => slot.TargetSlots);
     }
 
     void ResolveTargetActorsReversed()
     {
         ResolveRelationsFromGrid(
-            actor => actor.LinkedActors, 
-            slot => slot.ReverseRelatedSlots);
+            actor => actor.TargetActors, 
+            slot => slot.ReversedTargetSlots);
     }
 
     void ResolveNeighbours()
