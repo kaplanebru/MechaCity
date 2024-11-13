@@ -14,26 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slots:
   - Id: 0
-    RelatedSlots: 01000000
-    ReverseRelatedSlots: 05000000
+    TargetSlots: 01000000
+    ReversedTargetSlots: 05000000
     Neighbours: 0100000005000000
   - Id: 1
-    RelatedSlots: 02000000
-    ReverseRelatedSlots: 00000000
+    TargetSlots: 02000000
+    ReversedTargetSlots: 00000000
     Neighbours: 0000000002000000
   - Id: 2
-    RelatedSlots: 03000000
-    ReverseRelatedSlots: 01000000
+    TargetSlots: 03000000
+    ReversedTargetSlots: 01000000
     Neighbours: 0100000003000000
   - Id: 3
-    RelatedSlots: 04000000
-    ReverseRelatedSlots: 02000000
+    TargetSlots: 04000000
+    ReversedTargetSlots: 02000000
     Neighbours: 0200000004000000
   - Id: 4
-    RelatedSlots: 05000000
-    ReverseRelatedSlots: 03000000
+    TargetSlots: 05000000
+    ReversedTargetSlots: 03000000
     Neighbours: 0300000005000000
   - Id: 5
-    RelatedSlots: 00000000
-    ReverseRelatedSlots: 04000000
+    TargetSlots: 00000000
+    ReversedTargetSlots: 04000000
     Neighbours: 0400000000000000

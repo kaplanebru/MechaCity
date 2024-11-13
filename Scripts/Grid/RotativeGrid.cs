@@ -34,11 +34,10 @@ public class RotativeGrid : MonoBehaviour
         actorsBySlots.Clear();
         
         FillGridWithActors();
-        ResolveTargetActors();
-        // if(!isReversed)
-        //     ResolveTargetActors();
-        // else
-        //     ResolveTargetActorsReversed();
+        if(!isReversed)
+            ResolveTargetActors();
+        else
+            ResolveTargetActorsReversed();
         
         ResolveNeighbours();
         
