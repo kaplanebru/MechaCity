@@ -8,13 +8,14 @@ namespace Turn
         public TurnSubscriber(TurnManager mainClass) : base(mainClass) {}
         public override void Subscribe()
         {
+            MainClass.BpEventHandler.SubscribeToBlueprintEvents();
+            MainClass.StateHolder.Setup();
+            
             TeamEvents.OnTeamsSet += MainClass.SetTurnTeams;
             NetworkEventbus.OnAllClientsSet += MainClass.FirstTurn;
-
             NetworkEventbus.ServerEvents.OnStateChangeRequestByServer += MainClass.ChangeStateBySystem;
+            
             Eventbus.CombatEvents.OnCombatTerminated += MainClass.EndTurn;
-
-
             UIEventbus.OnApplyPossibility += MainClass.HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
             UIEventbus.OnButtonClicked += MainClass.StateEndByUser;
 

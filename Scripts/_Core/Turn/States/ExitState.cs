@@ -22,12 +22,27 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     {
         //SelectionEvents.OnSelectionTerminated?.Invoke();
     }
-    public override void SubscribeToConstantEvents() {}
+
+    public override void SubscribeToConstantEvents()
+    {
+        Eventbus.ActorEvents.OnReverseGrid += ReverseCombatDirection;
+
+    }
+
+    private void ReverseCombatDirection()
+    {
+        CombatOperator.ReverseCombatDirection();
+        Debug.Log("combat reversed: ");
+
+    }
+
     public override void Register() {}
 
     public void SetCombatOperator(CombatOperator combatOperator)
     {
         CombatOperator = combatOperator;
+        
+
     }
     public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
     {
@@ -40,8 +55,11 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     {
         CombatOperator.Fire();
     }
-    
-    public override void UnsubscribeFromConstantEvents() { }
+
+    public override void UnsubscribeFromConstantEvents()
+    {
+        Eventbus.ActorEvents.OnReverseGrid -= ReverseCombatDirection;
+    }
     public override void Unsubscribe() {}
 
 

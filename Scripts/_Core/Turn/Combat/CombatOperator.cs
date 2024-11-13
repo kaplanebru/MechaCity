@@ -37,14 +37,11 @@ namespace Turn
         private bool isReversed = false;
 
 
-        public void SubscribeToConstantEvents()
-        {
-            Eventbus.ActorEvents.OnReverseGrid += ReverseCombatDirection;
-        }
 
-        private void ReverseCombatDirection()
+        public void ReverseCombatDirection()
         {
             isReversed = !isReversed;
+            // Debug.Log("combat reversed: " + isReversed);
         }
 
         public void SetElements(CombatTimingData combatTimingData, CombatPairController pairController)
@@ -102,9 +99,15 @@ namespace Turn
 
         uint[] GetActors()
         {
-            return !isReversed ? 
-                ActorHolder.Registry.Keys.ToArray() : 
-                ActorHolder.Registry.Keys.Reverse().ToArray();
+            if (isReversed == true)
+            {
+                Debug.Log("get reversed actors");
+                return ActorHolder.Registry.Keys.ToArray().Reverse().ToArray();
+            }
+            else
+            {
+                return ActorHolder.Registry.Keys.ToArray();
+            }
         }
         public IEnumerator LeCoroutine()
         {
@@ -122,6 +125,7 @@ namespace Turn
             var actors = GetActors();
             foreach (var actorID in actors)
             {
+                Debug.Log("actor: " + actorID);
                 Eventbus.CombatEvents.OnNextActor?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
                 
@@ -171,9 +175,5 @@ namespace Turn
             DeselectAlteredTowers();
         }
         
-        public void UnsubscribeFromConstantEvents()
-        {
-            Eventbus.ActorEvents.OnReverseGrid += ReverseCombatDirection;
-        }
     }
 }

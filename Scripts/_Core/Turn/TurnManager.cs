@@ -34,6 +34,7 @@ namespace Turn
         {
             Subscriber = new(this);
             Subscriber.Subscribe();
+            
             combatOperator.SetElements(combatTimingData, PairController);
         }
 
@@ -176,11 +177,12 @@ namespace Turn
         void FastenTurn()
         {
             combatTimingData.AccelerateValues();
-            combatOperator.Fasten();
+            //combatOperator.Fasten();
         }
 
         private void OnDisable()
         {
+           
             Subscriber.Unsubscribe();
         }
     }

@@ -24,19 +24,41 @@ public class RotativeGrid : MonoBehaviour
     
     private void ReverseTargets()
     {
-        isReversed = !isReversed;
-        _actors = _actors.Reverse().ToArray();
-        SetReversedGrid(_actors);
+         isReversed = !isReversed;
+         
+         if (isReversed)
+         {
+             var reversedActors =  _actors.Reverse().ToArray();
+             SetReversedGrid(reversedActors);
+         }
+         else
+         {
+             SetGrid(_actors);
+         }
+    
+         //_actors = _actors.Reverse().ToArray();
+        // foreach (var actor in _actors)
+        // {
+        //     Debug.Log(actor);
+        // }
+        
     }
 
     void SetReversedGrid(uint[] actors)
     {
-        
+        Debug.Log("set reversed grid");
         actorsBySlots.Clear();
         FillGridWithActors();
         ResolveTargetActorsReversed();
         ResolveNeighbours();
-        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), false);
+        Eventbus.ActorEvents.OnRelationsSet?.Invoke(actors.ToList(), true);
+        //Invoke(nameof(SendSetEvent), .5f);
+    }
+
+    void SendSetEvent()
+    {
+        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), true);
+
     }
 
     void SetGrid(uint[] actors)
@@ -53,6 +75,7 @@ public class RotativeGrid : MonoBehaviour
         ResolveNeighbours();
         
         Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), false);
+
     }
 
     void ResolveTargetActors()
@@ -67,6 +90,16 @@ public class RotativeGrid : MonoBehaviour
         ResolveRelationsFromGrid(
             actor => actor.TargetActors, 
             slot => slot.ReversedTargetSlots);
+
+        foreach (var id in _actors)
+        {
+            var actor = ActorHolder.Registry[id];
+            foreach (var target in actor.TargetActors)
+            {
+                Debug.Log(actor.ID + " target:" + target);
+
+            }
+        }
     }
 
     void ResolveNeighbours()

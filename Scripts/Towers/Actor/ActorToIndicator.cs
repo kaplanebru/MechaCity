@@ -15,6 +15,8 @@ namespace Actor
        
         private void ResolveRelations(List<uint> actorIDs, bool isReversed)
         {
+            Debug.Log("res");
+            
             EdgesByActors.Clear();
             foreach (var actorID in actorIDs)
             {
@@ -24,6 +26,8 @@ namespace Actor
                 foreach (var targetActor in actor.TargetActors)
                 {
                     EdgesByActors[actorID].Add(ActorHolder.Registry[targetActor].Center);
+                    //Debug.Log(actor.ID + " target:" + targetActor);
+                   
                 }
             }
             GeneralEventbus.IndicatorEvents.OnActorsResolved?.Invoke(EdgesByActors);

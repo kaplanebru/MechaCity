@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Enums;
+using UnityEngine;
 
 namespace Turn
 {
@@ -18,10 +19,11 @@ namespace Turn
 
         public TurnStateHolder()
         {
-            Setup();
         }
-        void Setup()
+        
+        public void Setup()
         {
+
             _statesByType.Add(TurnStateType.Selection, SelectionState);
             _statesByType.Add(TurnStateType.Link, LinkState);
             _statesByType.Add(TurnStateType.Exit, ExitState);

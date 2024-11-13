@@ -6,10 +6,10 @@ public class BlueprintEventHandler
     
     public BlueprintEventHandler()
     {
-        SubscribeToBlueprintEvents();
+       //BUG: 2 KEZ YARATILIYOR
     }
     
-    void SubscribeToBlueprintEvents()
+    public void SubscribeToBlueprintEvents()
     {
         BpEventbus.ActionEvents.OnReverseActionTriggered += PublishReverseOrderAction;
         BpEventbus.ActionEvents.OnSelectionIncrementTriggered += PublishSelectionIncrementAction;
