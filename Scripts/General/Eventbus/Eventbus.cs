@@ -10,7 +10,7 @@ public static class Eventbus
         public static Action<uint[]> OnDoubleTowerCreated;
         public static Action<uint[]> OnRegistryUpdate;
         public static Action<List<uint>, bool> OnRelationsSet;
-        public static Action OnReverseRelations;
+        public static Action OnReverseGrid;
     }
     public static class CombatEvents
     {

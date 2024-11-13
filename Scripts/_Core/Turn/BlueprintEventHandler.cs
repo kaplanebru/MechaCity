@@ -20,7 +20,7 @@ public class BlueprintEventHandler
     void PublishReverseOrderAction()
     {
         Debug.Log("publish reverse");
-        Eventbus.ActorEvents.OnReverseRelations?.Invoke();
+        Eventbus.ActorEvents.OnReverseGrid?.Invoke();
     }
 
     void PublishSelectionIncrementAction()

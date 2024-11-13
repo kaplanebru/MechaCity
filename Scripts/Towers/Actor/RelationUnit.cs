@@ -12,7 +12,7 @@ namespace Actor
 
         public override void Subscribe()
         {
-            Eventbus.ActorEvents.OnReverseRelations += ReverseRelations;
+            Eventbus.ActorEvents.OnReverseGrid += ReverseRelations;
         }
 
         private void ReverseRelations()
@@ -52,7 +52,7 @@ namespace Actor
         }
         public override void Unsubscribe()
         {
-            Eventbus.ActorEvents.OnReverseRelations -= ReverseRelations;
+            Eventbus.ActorEvents.OnReverseGrid -= ReverseRelations;
         }
 
     }

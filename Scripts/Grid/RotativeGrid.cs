@@ -10,12 +10,22 @@ using UnityEngine;
 public class RotativeGrid : MonoBehaviour
 {
     public GridData Data;
+    
     private Dictionary<int, ActorData> actorsBySlots = new();
     private uint[] _actors;
+    private bool isReversed = false;
+
 
     private void OnEnable()
     {
         Eventbus.ActorEvents.OnRegistryUpdate += SetGrid;
+        Eventbus.ActorEvents.OnReverseGrid += ReverseTargets;
+    }
+    
+    private void ReverseTargets()
+    {
+        isReversed = !isReversed;
+        SetGrid(_actors);
     }
 
     void SetGrid(uint[] actors)
@@ -25,6 +35,11 @@ public class RotativeGrid : MonoBehaviour
         
         FillGridWithActors();
         ResolveTargetActors();
+        // if(!isReversed)
+        //     ResolveTargetActors();
+        // else
+        //     ResolveTargetActorsReversed();
+        
         ResolveNeighbours();
         
         Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), false);
@@ -90,5 +105,7 @@ public class RotativeGrid : MonoBehaviour
     private void OnDisable()
     {
         Eventbus.ActorEvents.OnRegistryUpdate -= SetGrid;
+        Eventbus.ActorEvents.OnReverseGrid -= ReverseTargets;
+
     }
 }
