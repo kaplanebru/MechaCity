@@ -25,41 +25,20 @@ public class RotativeGrid : MonoBehaviour
     private void ReverseTargets()
     {
          isReversed = !isReversed;
-         
-         if (isReversed)
-         {
-             var reversedActors =  _actors.Reverse().ToArray();
-             SetReversedGrid(reversedActors);
-         }
-         else
-         {
-             SetGrid(_actors);
-         }
-    
-         //_actors = _actors.Reverse().ToArray();
-        // foreach (var actor in _actors)
-        // {
-        //     Debug.Log(actor);
-        // }
+         _actors = _actors.Reverse().ToArray();
+         SetReversedGrid();
+    }
+
+    void SetReversedGrid()
+    {
+        if (isReversed)
+            ResolveTargetActorsReversed();
+        else
+            ResolveTargetActors();
         
+        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), isReversed);
     }
-
-    void SetReversedGrid(uint[] actors)
-    {
-        Debug.Log("set reversed grid");
-        actorsBySlots.Clear();
-        FillGridWithActors();
-        ResolveTargetActorsReversed();
-        ResolveNeighbours();
-        Eventbus.ActorEvents.OnRelationsSet?.Invoke(actors.ToList(), true);
-        //Invoke(nameof(SendSetEvent), .5f);
-    }
-
-    void SendSetEvent()
-    {
-        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), true);
-
-    }
+    
 
     void SetGrid(uint[] actors)
     {
@@ -67,11 +46,7 @@ public class RotativeGrid : MonoBehaviour
         actorsBySlots.Clear();
         
         FillGridWithActors();
-        if(!isReversed)
-            ResolveTargetActors();
-        else
-            ResolveTargetActorsReversed();
-        
+        ResolveTargetActors();
         ResolveNeighbours();
         
         Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), false);
@@ -90,14 +65,16 @@ public class RotativeGrid : MonoBehaviour
         ResolveRelationsFromGrid(
             actor => actor.TargetActors, 
             slot => slot.ReversedTargetSlots);
+    }
 
+    void DebugActors()
+    {
         foreach (var id in _actors)
         {
             var actor = ActorHolder.Registry[id];
             foreach (var target in actor.TargetActors)
             {
                 Debug.Log(actor.ID + " target:" + target);
-
             }
         }
     }
