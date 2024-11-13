@@ -138,19 +138,19 @@ namespace Towers
         
 
 
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.yellow;
-            foreach (var relation in TowersRelationManager.Relations)
-            {
-                var tower = GetTower(relation.Key);
-                foreach (var linkedTowerID in relation.Value.LinkedTowers)
-                {
-                    if (tower == null) continue;
-                    Gizmos.DrawLine(tower.transform.position, GetTower(linkedTowerID).transform.position);
-                }
-            }
-        }
+        // private void OnDrawGizmos()
+        // {
+        //     Gizmos.color = Color.yellow;
+        //     foreach (var relation in TowersRelationManager.Relations)
+        //     {
+        //         var tower = GetTower(relation.Key);
+        //         foreach (var linkedTowerID in relation.Value.LinkedTowers)
+        //         {
+        //             if (tower == null) continue;
+        //             Gizmos.DrawLine(tower.transform.position, GetTower(linkedTowerID).transform.position);
+        //         }
+        //     }
+        // }
         
         private void OnDisable()
         {

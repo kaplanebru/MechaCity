@@ -33,7 +33,6 @@ namespace Actor
         void SetControllers()
         {
             units[Enums.ActorUnit.Health] = new HealthUnit(this);
-            units[Enums.ActorUnit.Relation] = new RelationUnit(this);
 
             foreach (var unit in units.Values)
             {
@@ -93,7 +92,6 @@ namespace Actor
 
         void OnRegistryUpdate()
         {
-            //((RelationUnit)units[Enums.ActorUnit.Relation]).SetRelations(Registry.Keys.ToList());
             Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(Registry.Keys.ToArray());
         }
 
