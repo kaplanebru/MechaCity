@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Actor;
 using DataModels;
 using Testing;
@@ -33,7 +34,18 @@ namespace Turn
         private List<TowerData> _towers = new();
 
         private CombatTimingData _timingData;
-        
+        private bool isReversed = false;
+
+
+        public void SubscribeToConstantEvents()
+        {
+            Eventbus.ActorEvents.OnReverseGrid += ReverseCombatDirection;
+        }
+
+        private void ReverseCombatDirection()
+        {
+            isReversed = !isReversed;
+        }
 
         public void SetElements(CombatTimingData combatTimingData, CombatPairController pairController)
         {
@@ -41,7 +53,7 @@ namespace Turn
             _pairController = pairController;
         }
 
-        public void Subscribe(List<uint> actors)
+        public void Setup(List<uint> actors)
         {
             _towers.Clear();
             foreach (var actorID in actors)
@@ -88,6 +100,12 @@ namespace Turn
             }
         }
 
+        uint[] GetActors()
+        {
+            return !isReversed ? 
+                ActorHolder.Registry.Keys.ToArray() : 
+                ActorHolder.Registry.Keys.Reverse().ToArray();
+        }
         public IEnumerator LeCoroutine()
         {
             if (MultiplayerSetter.IsTestingWithoutCombat)
@@ -100,7 +118,9 @@ namespace Turn
             Eventbus.CombatEvents.OnCombatReady?.Invoke();
             Eventbus.CombatEvents.OnCombatStarted?.Invoke();
             yield return new WaitForSeconds(_timingData.cameraDelay);
-            foreach (var actorID in ActorHolder.Registry.Keys)
+
+            var actors = GetActors();
+            foreach (var actorID in actors)
             {
                 Eventbus.CombatEvents.OnNextActor?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
@@ -149,6 +169,11 @@ namespace Turn
         public void Unsubscribe()
         {
             DeselectAlteredTowers();
+        }
+        
+        public void UnsubscribeFromConstantEvents()
+        {
+            Eventbus.ActorEvents.OnReverseGrid += ReverseCombatDirection;
         }
     }
 }

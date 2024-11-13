@@ -32,7 +32,7 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)
     {
         TransferData.Actors = data.Actors;
-        CombatOperator.Subscribe(TransferData.Actors);
+        CombatOperator.Setup(TransferData.Actors);
         ExecuteCombat();
     }
     

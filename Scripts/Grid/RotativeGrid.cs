@@ -25,7 +25,18 @@ public class RotativeGrid : MonoBehaviour
     private void ReverseTargets()
     {
         isReversed = !isReversed;
-        SetGrid(_actors);
+        _actors = _actors.Reverse().ToArray();
+        SetReversedGrid(_actors);
+    }
+
+    void SetReversedGrid(uint[] actors)
+    {
+        
+        actorsBySlots.Clear();
+        FillGridWithActors();
+        ResolveTargetActorsReversed();
+        ResolveNeighbours();
+        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), false);
     }
 
     void SetGrid(uint[] actors)

@@ -35,5 +35,5 @@ MonoBehaviour:
     Neighbours: 030000000500000001000000
   - Id: 5
     TargetSlots: 00000000
-    ReversedTargetSlots: 0400000000000000
+    ReversedTargetSlots: 0400000003000000
     Neighbours: 0400000000000000
