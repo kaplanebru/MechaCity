@@ -125,7 +125,6 @@ namespace Turn
             var actors = GetActors();
             foreach (var actorID in actors)
             {
-                Debug.Log("actor: " + actorID);
                 Eventbus.CombatEvents.OnNextActor?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
                 

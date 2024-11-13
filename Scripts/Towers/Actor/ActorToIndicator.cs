@@ -15,8 +15,6 @@ namespace Actor
        
         private void ResolveRelations(List<uint> actorIDs, bool isReversed)
         {
-            Debug.Log("res");
-            
             EdgesByActors.Clear();
             foreach (var actorID in actorIDs)
             {

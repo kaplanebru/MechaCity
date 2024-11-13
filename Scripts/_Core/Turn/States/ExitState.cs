@@ -32,8 +32,6 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     private void ReverseCombatDirection()
     {
         CombatOperator.ReverseCombatDirection();
-        Debug.Log("combat reversed: ");
-
     }
 
     public override void Register() {}

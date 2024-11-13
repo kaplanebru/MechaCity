@@ -38,8 +38,6 @@ public class CombatCursor : MonoBehaviour
         BpEventbus.UIEvents.OnBpInstallBegin += SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset += ResetBpImage;
         
-        BpEventbus.ActionEvents.OnReverseActionTriggered += ReverseAngle;
-
         
         SetVisualReferences();
         installEffect = GetComponentInChildren<BpInstallEffect>();
@@ -154,8 +152,6 @@ public class CombatCursor : MonoBehaviour
         BpEventbus.UIEvents.OnBpInstallBegin -= SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset -= ResetBpImage;
         
-        BpEventbus.ActionEvents.OnReverseActionTriggered -= ReverseAngle;
-
         
     }
 }
