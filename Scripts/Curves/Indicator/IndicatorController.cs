@@ -15,6 +15,9 @@ namespace Curves
     public class IndicatorController : MonoBehaviour
     {
         public CurveData curveData;
+        
+        [SerializeField]private Gradient[] gradients;
+        private Dictionary<IndicatorState, Gradient> gradientByState = new();
 
         private LineCreator lineCreator;
         private CurvePointCreator pointCreator;
@@ -26,10 +29,10 @@ namespace Curves
         {
             pointCreator = new(curveData.EdgeDistance, curveData.PointDistance, curveData.HeightOffset);
             lineCreator = new LineCreator(curveData.LineRenderers);
+            SetGradientsByState();
             
             SubscribePermanently();
             HideLines();
-            
         }
         private void SubscribePermanently()
         {
@@ -46,6 +49,11 @@ namespace Curves
             GeneralEventbus.IndicatorEvents.OnActorLeftByUser += HideLines;
         }
 
+        void SetGradientsByState()
+        {
+            gradientByState.Add(IndicatorState.Enemy, gradients[0]);
+            gradientByState.Add(IndicatorState.Friendly, gradients[1]);
+        }
         private void SetIndicators(List<IndicatorGridData> gridDatas)
         {
             indicatorsByActor.Clear();
@@ -62,7 +70,6 @@ namespace Curves
                 }
             }
         }
-
         void ShowLinesByActor(uint actorID)
         {
             if(!indicatorsByActor.ContainsKey(actorID)) return;
@@ -70,7 +77,7 @@ namespace Curves
             var indicators = indicatorsByActor[actorID];
             for (int i = 0; i < indicators.Count; i++)
             {
-                lineCreator.PointsToLines(i, indicators[i].Points);
+                lineCreator.PointsToLinesWithColor(i, indicators[i].Points, gradientByState[indicators[i].State]);
             }
         }
         
