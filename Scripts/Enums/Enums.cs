@@ -96,6 +96,12 @@ namespace Enums
         Defender
     }
 
+    public enum IndicatorState
+    {
+        Friendly,
+        Enemy
+    }
+
    
 
    
