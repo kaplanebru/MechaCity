@@ -32,6 +32,7 @@ namespace Turn
 
         public override void Subscribe()
         {
+            Eventbus.IntruderEvents.OnIntruderStateBegin?.Invoke();
             AllTowers.ResetTowerColors();
             //BpEventbus.SelectionEvents.OnCurrentBpSet += GetBpSelector;
         }

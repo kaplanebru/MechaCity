@@ -42,6 +42,17 @@ public static class Eventbus
     {
         public static Action OnSelectionStateBegin;
     }
+    
+    public static class IntruderEvents
+    {
+        public static Action OnIntruderStateBegin;
+    }
+    
+    public static class TeamStateEvents
+    {
+        public static Action<TeamState> OnTeamStateBegin;
+
+    }
     public static class HealthEvents
     {
         public static Action<uint, int, Action> OnShoot;

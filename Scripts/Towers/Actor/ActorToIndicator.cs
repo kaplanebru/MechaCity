@@ -9,11 +9,11 @@ namespace Actor
         private Dictionary<uint, List<Vector3>> EdgesByActors = new();
         public void Subscribe()
         {
-            Eventbus.ActorEvents.OnRelationsSet += ResolveRelations;
+            Eventbus.ActorEvents.OnRelationsSet += RestoreActorEdges;
         }
 
        
-        private void ResolveRelations(List<uint> actorIDs, bool isReversed)
+        private void RestoreActorEdges(List<uint> actorIDs, bool isReversed)
         {
             EdgesByActors.Clear();
             foreach (var actorID in actorIDs)
@@ -28,12 +28,12 @@ namespace Actor
                    
                 }
             }
-            GeneralEventbus.IndicatorEvents.OnActorsResolved?.Invoke(EdgesByActors);
+            GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored?.Invoke(EdgesByActors);
         }
 
         public void Unsubscribe()
         {
-            Eventbus.ActorEvents.OnRelationsSet -= ResolveRelations;
+            Eventbus.ActorEvents.OnRelationsSet -= RestoreActorEdges;
         }
     }
 

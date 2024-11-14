@@ -28,8 +28,9 @@ namespace Curves
         {
             Eventbus.LinkEvents.OnLinkStateBegin += DisableIndicatorHover;
             Eventbus.SelectionEvents.OnSelectionStateBegin += EnableIndicatorHover;
+            Eventbus.IntruderEvents.OnIntruderStateBegin += DisableIndicatorHover;
             
-            GeneralEventbus.IndicatorEvents.OnActorsResolved += SetPointGroupsByActors;
+            GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored += SetPointGroupsByActors;
             GeneralEventbus.IndicatorEvents.OnActorHoverByCombat += ShowLinesByActor;
             GeneralEventbus.IndicatorEvents.OnActorLeftByCombat += HideLines;
         }
@@ -90,8 +91,10 @@ namespace Curves
         {
             Eventbus.LinkEvents.OnLinkStateBegin -= DisableIndicatorHover;
             Eventbus.SelectionEvents.OnSelectionStateBegin -= EnableIndicatorHover;
+            Eventbus.IntruderEvents.OnIntruderStateBegin -= DisableIndicatorHover;
+
             
-            GeneralEventbus.IndicatorEvents.OnActorsResolved -= SetPointGroupsByActors;
+            GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored -= SetPointGroupsByActors;
             GeneralEventbus.IndicatorEvents.OnActorHoverByCombat -= ShowLinesByActor;
             GeneralEventbus.IndicatorEvents.OnActorLeftByCombat -= HideLines;
         }

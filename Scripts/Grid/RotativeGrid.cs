@@ -21,37 +21,25 @@ public class RotativeGrid : MonoBehaviour
         Eventbus.ActorEvents.OnRegistryUpdate += SetGrid;
         Eventbus.ActorEvents.OnReverseGrid += ReverseTargets;
     }
+    private void ResolveRelationsFromGrid(
+        Func<ActorData, List<uint>> getRelatedActors, 
+        Func<Slot, int[]> getRelatedSlots)
+    {
+        foreach (var slot in Data.slots)
+        {
+            var actor = actorsBySlots[slot.Id];
+            getRelatedActors(actor).Clear();
+        
+            foreach (var relatedSlotId in getRelatedSlots(slot))
+            {
+                var relatedActor = actorsBySlots[relatedSlotId];
+                if (relatedActor == actor) continue;
+            
+                getRelatedActors(actor).Add(relatedActor.ID);
+            }
+        }
+    }
     
-    private void ReverseTargets()
-    {
-         isReversed = !isReversed;
-         _actors = _actors.Reverse().ToArray();
-         SetReversedGrid();
-    }
-
-    void SetReversedGrid()
-    {
-        if (isReversed)
-            ResolveTargetActorsReversed();
-        else
-            ResolveTargetActors();
-        
-        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), isReversed);
-    }
-    
-
-    void SetGrid(uint[] actors)
-    {
-        _actors = actors;
-        actorsBySlots.Clear();
-        
-        FillGridWithActors();
-        ResolveTargetActors();
-        ResolveNeighbours();
-        
-        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), false);
-    }
-
     void ResolveTargetActors()
     {
         ResolveRelationsFromGrid(
@@ -73,25 +61,39 @@ public class RotativeGrid : MonoBehaviour
             slot => slot.Neighbours);
     }
     
-    private void ResolveRelationsFromGrid(
-        Func<ActorData, List<uint>> getRelatedActors, 
-        Func<Slot, int[]> getRelatedSlots)
+    private void ReverseTargets()
     {
-        foreach (var slot in Data.slots)
-        {
-            var actor = actorsBySlots[slot.Id];
-            getRelatedActors(actor).Clear();
-        
-            foreach (var relatedSlotId in getRelatedSlots(slot))
-            {
-                var relatedActor = actorsBySlots[relatedSlotId];
-                if (relatedActor == actor) continue;
-            
-                getRelatedActors(actor).Add(relatedActor.ID);
-            }
-        }
+         isReversed = !isReversed;
+         _actors = _actors.Reverse().ToArray();
+         SetReversedGrid();
     }
 
+    void SetReversedGrid()
+    {
+        if (isReversed)
+            ResolveTargetActorsReversed();
+        else
+            ResolveTargetActors();
+        
+        SendRelations(isReversed);
+    }
+
+    void SetGrid(uint[] actors)
+    {
+        _actors = actors;
+        actorsBySlots.Clear();
+        
+        FillGridWithActors();
+        ResolveTargetActors();
+        ResolveNeighbours();
+        
+        SendRelations(false);
+    }
+
+    void SendRelations(bool reversed)
+    {
+        Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), reversed);
+    }
     private void FillGridWithActors()
     {
         int slot = 0;

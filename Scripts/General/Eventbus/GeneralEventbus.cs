@@ -32,7 +32,7 @@ public static class GeneralEventbus
 
         public static Action<uint> OnActorHoverByCombat;
         public static Action OnActorLeftByCombat;
-        public static Action<Dictionary<uint, List<Vector3>>> OnActorsResolved;
+        public static Action<Dictionary<uint, List<Vector3>>> OnActorsEdgesRestored;
     }
 
 }
