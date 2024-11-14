@@ -12,7 +12,6 @@ namespace Actor
     {
         public static Dictionary<uint, ActorData> Registry { get; private set; } = new();
         private Dictionary<Enums.ActorUnit, ActorUnit> units = new();
-        private ActorToIndicator IndicatorMediator = new();
 
         public static ActorData GetActor(uint id) => Registry[id];
         public static int[] GetTowerIDs(uint id) => Registry[id].TowerIDs;
@@ -21,7 +20,6 @@ namespace Actor
         {
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += FillRegistry;
             Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
-            IndicatorMediator.Subscribe();
         }
 
         public void Initialize()
@@ -135,7 +133,6 @@ namespace Actor
             }
             Eventbus.ActorEvents.OnDoubleTowerCreated -= RegisterDouble;
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= FillRegistry;
-            IndicatorMediator.Unsubscribe();
 
             Registry.Clear();
         }

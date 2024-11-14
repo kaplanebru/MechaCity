@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Enums;
 using UnityEngine;
 
-public class IndicatorGridData //ortak asmdf yapılır
+public class IndicatorGridData 
 {
     public uint ActorID;
     public Vector3 StartPos;

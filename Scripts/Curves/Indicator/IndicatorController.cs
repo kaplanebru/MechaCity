@@ -19,7 +19,6 @@ namespace Curves
         private LineCreator lineCreator;
         private CurvePointCreator pointCreator;
 
-        private Dictionary<uint, List<PointGroup>> pointGroupsByActor = new();
         private Dictionary<uint, List<IndicatorData>> indicatorsByActor = new();
 
 
@@ -37,9 +36,14 @@ namespace Curves
             Eventbus.TurnStateEvents.OnTurnStateBegin += HoverEnable;
             IndicatorEvents.OnIndicatorGridDatasSet += SetIndicators;
             
-            //GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored += SetPointGroupsByActors;
             GeneralEventbus.IndicatorEvents.OnActorHoverByCombat += ShowLinesByActor;
             GeneralEventbus.IndicatorEvents.OnActorLeftByCombat += HideLines;
+        }
+        
+        public void Subscribe()
+        {
+            GeneralEventbus.IndicatorEvents.OnActorHoverByUser += ShowLinesByActor;
+            GeneralEventbus.IndicatorEvents.OnActorLeftByUser += HideLines;
         }
 
         private void SetIndicators(List<IndicatorGridData> gridDatas)
@@ -66,45 +70,10 @@ namespace Curves
             var indicators = indicatorsByActor[actorID];
             for (int i = 0; i < indicators.Count; i++)
             {
-                
                 lineCreator.PointsToLines(i, indicators[i].Points);
             }
         }
         
-        // private void ShowLinesByActor(uint actorID)
-        // {
-        //     if (!pointGroupsByActor.ContainsKey(actorID)) return;
-        //
-        //
-        //     foreach (var pointGroup in pointGroupsByActor[actorID])
-        //     {
-        //         lineCreator.PointsToLines(pointGroup.Index, pointGroup.Points);
-        //     }
-        // }
-
-        // private void SetPointGroupsByActors(Dictionary<uint, List<Vector3>> actorsAndEdgesData)
-        // {
-        //     pointGroupsByActor.Clear();
-        //
-        //     foreach (var actorAndEdges in actorsAndEdgesData)
-        //     {
-        //         var start = actorAndEdges.Value[0];
-        //         pointGroupsByActor.Add(actorAndEdges.Key, new List<PointGroup>());
-        //
-        //         for (var i = 1; i < actorAndEdges.Value.Count; i++)
-        //         {
-        //             var end = actorAndEdges.Value[i];
-        //             pointGroupsByActor[actorAndEdges.Key]
-        //                 .Add(new PointGroup(i-1, pointCreator.GetCurvePoints(start, end).ToArray()));
-        //         }
-        //     }
-        // }
-
-        public void Subscribe()
-        {
-            GeneralEventbus.IndicatorEvents.OnActorHoverByUser += ShowLinesByActor;
-            GeneralEventbus.IndicatorEvents.OnActorLeftByUser += HideLines;
-        }
         private void HoverEnable(TurnStateType turnState)
         {
             Debug.Log(turnState);
@@ -114,8 +83,6 @@ namespace Curves
                 Unsubscribe();
         }
         
-       
-
         private void HideLines()
         {
             lineCreator.DisableLines();
@@ -131,8 +98,6 @@ namespace Curves
             Eventbus.TurnStateEvents.OnTurnStateBegin -= HoverEnable;
             IndicatorEvents.OnIndicatorGridDatasSet -= SetIndicators;
             
-            
-            //GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored -= SetPointGroupsByActors;
             GeneralEventbus.IndicatorEvents.OnActorHoverByCombat -= ShowLinesByActor;
             GeneralEventbus.IndicatorEvents.OnActorLeftByCombat -= HideLines;
         }
@@ -142,33 +107,6 @@ namespace Curves
             Unsubscribe();
             UnsubscribePermanently();
         }
-
-        #region Same
-
-        // private bool IsActorSame(uint actorID)
-        // {
-        //     if (actorID == currentActor)
-        //     {
-        //         lineCreator.EnableLines(pointGroupsByActor[actorID].Count);
-        //         return true;
-        //     }
-        //     return false;
-        // }
-
-        #endregion
-
-        #region Tiling
-
-        // void TilingDots()
-        // {
-        //     Material lineMaterial = new Material(Shader.Find("Unlit/Transparent")); 
-        //     lineMaterial.mainTexture = texture;
-        //     lr.material = lineMaterial;
-        //     float textureRepeat = lr.positionCount/3f;
-        //     lr.material.mainTextureScale = new Vector2(textureRepeat, 1);
-        // }
-
-        #endregion
     }
 
     public enum CurveDirection
