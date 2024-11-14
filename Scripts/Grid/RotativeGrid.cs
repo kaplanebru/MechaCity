@@ -96,19 +96,35 @@ public class RotativeGrid : MonoBehaviour
     }
     private void FillGridWithActors()
     {
-        int slot = 0;
-        int act = 0;
-        while (slot < Data.slots.Length)  //actor sayısı slot sayısından az olabilir
-        {
-            var actor = ActorHolder.Registry[_actors[act]]; //atlanan actor oluyor
+        // int slot = 0;
+        // int act = 0;
+        // while (slot < Data.slots.Length)  //actor sayısı slot sayısından az olabilir
+        // {
+        //     var actor = ActorHolder.Registry[_actors[act]]; //atlanan actor oluyor
+        //
+        //     for (int j = 0; j < actor.Towers.Length; j++)
+        //     {
+        //         actorsBySlots.Add(Data.slots[slot].Id, actor);
+        //         slot++;
+        //     }
+        //     act++;
+        // }
 
-            for (int j = 0; j < actor.Towers.Length; j++)
+        int i = 0;
+        foreach (var actorID in _actors)
+        {
+            var actor = ActorHolder.Registry[actorID];
+
+            for (var j = 0; j < ActorHolder.Registry[actorID].Towers.Length; j++)
             {
-                actorsBySlots.Add(Data.slots[slot].Id, actor);
-                slot++;
+                actorsBySlots.Add(i, actor);
+                i++;
             }
-            act++;
+
+            
         }
+
+
     }
 
     private void OnDisable()

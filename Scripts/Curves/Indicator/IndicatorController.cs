@@ -34,6 +34,13 @@ namespace Curves
             GeneralEventbus.IndicatorEvents.OnActorLeftByCombat += HideLines;
         }
 
+        
+
+        public void Subscribe()
+        {
+            GeneralEventbus.IndicatorEvents.OnActorHoverByUser += ShowLinesByActor;
+            GeneralEventbus.IndicatorEvents.OnActorLeftByUser += HideLines;
+        }
         private void HoverEnable(TurnStateType turnState)
         {
             Debug.Log(turnState);
@@ -41,23 +48,13 @@ namespace Curves
                 Subscribe();
             else
                 Unsubscribe();
-            
         }
-
-        public void Subscribe()
-        {
-            GeneralEventbus.IndicatorEvents.OnActorHoverByUser += ShowLinesByActor;
-            GeneralEventbus.IndicatorEvents.OnActorLeftByUser += HideLines;
-        }
-        private void EnableIndicatorHover()
-        {
-            Subscribe();
-        }
-
-        private void DisableIndicatorHover()
-        {
-            Unsubscribe();
-        }
+        
+        
+        
+        /// //
+      
+       
         private void SetPointGroupsByActors(Dictionary<uint, List<Vector3>> actorsAndEdgesData)
         {
             pointGroupsByActor.Clear();
