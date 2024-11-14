@@ -14,6 +14,7 @@ public class RotativeGrid : MonoBehaviour
     private Dictionary<int, ActorData> slotsWithActors = new();
     private uint[] _actors;
     private bool isReversed = false;
+    private GridToIndicator gridToIndicator = new();
 
 
     private void OnEnable()
@@ -45,6 +46,8 @@ public class RotativeGrid : MonoBehaviour
         ResolveRelationsFromGrid(
             actor => actor.TargetActors, 
             slot => slot.TargetSlots);
+        
+        gridToIndicator.SetIndicatorDatas(_actors);
     }
 
     void ResolveTargetActorsReversed()
@@ -52,6 +55,8 @@ public class RotativeGrid : MonoBehaviour
         ResolveRelationsFromGrid(
             actor => actor.TargetActors, 
             slot => slot.ReversedTargetSlots);
+        
+        gridToIndicator.SetIndicatorDatas(_actors);
     }
     
     void ResolveNeighbours()

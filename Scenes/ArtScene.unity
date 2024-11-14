@@ -55776,7 +55776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e8c39f8c51fc943ac0c1d058471ba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data:
+  curveData:
     PointDistance: 0.1
     EdgeDistance: 3
     HeightOffset: 2

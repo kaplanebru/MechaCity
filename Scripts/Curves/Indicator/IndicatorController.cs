@@ -6,20 +6,27 @@ using Enums;
 
 namespace Curves
 {
+    public class IndicatorData
+    {
+        //public int Index;
+        public Vector3[] Points;
+        public IndicatorState State;
+    }
     public class IndicatorController : MonoBehaviour
     {
-        public IndicatorData Data;
+        public CurveData curveData;
 
         private LineCreator lineCreator;
         private CurvePointCreator pointCreator;
 
         private Dictionary<uint, List<PointGroup>> pointGroupsByActor = new();
+        private Dictionary<uint, List<IndicatorData>> indicatorsByActor = new();
 
 
         private void OnEnable()
         {
-            pointCreator = new(Data.EdgeDistance, Data.PointDistance, Data.HeightOffset);
-            lineCreator = new LineCreator(Data.LineRenderers);
+            pointCreator = new(curveData.EdgeDistance, curveData.PointDistance, curveData.HeightOffset);
+            lineCreator = new LineCreator(curveData.LineRenderers);
             
             SubscribePermanently();
             HideLines();
@@ -28,13 +35,70 @@ namespace Curves
         private void SubscribePermanently()
         {
             Eventbus.TurnStateEvents.OnTurnStateBegin += HoverEnable;
+            IndicatorEvents.OnIndicatorGridDatasSet += SetIndicators;
             
-            GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored += SetPointGroupsByActors;
+            //GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored += SetPointGroupsByActors;
             GeneralEventbus.IndicatorEvents.OnActorHoverByCombat += ShowLinesByActor;
             GeneralEventbus.IndicatorEvents.OnActorLeftByCombat += HideLines;
         }
 
+        private void SetIndicators(List<IndicatorGridData> gridDatas)
+        {
+            indicatorsByActor.Clear();
+            foreach (var gridData in gridDatas)
+            {
+                indicatorsByActor.Add(gridData.ActorID, new List<IndicatorData>());
+                foreach (var targetPos in gridData.TargetPositions)
+                {
+                    var indicatorData = new IndicatorData();
+                    indicatorData.Points = pointCreator.GetCurvePoints(gridData.StartPos, targetPos).ToArray();
+                    indicatorData.State = gridData.TargetStates[targetPos];
+                    
+                    indicatorsByActor[gridData.ActorID].Add(indicatorData);
+                }
+            }
+        }
+
+        void ShowLinesByActor(uint actorID)
+        {
+            if(!indicatorsByActor.ContainsKey(actorID)) return;
+
+            var indicators = indicatorsByActor[actorID];
+            for (int i = 0; i < indicators.Count; i++)
+            {
+                
+                lineCreator.PointsToLines(i, indicators[i].Points);
+            }
+        }
         
+        // private void ShowLinesByActor(uint actorID)
+        // {
+        //     if (!pointGroupsByActor.ContainsKey(actorID)) return;
+        //
+        //
+        //     foreach (var pointGroup in pointGroupsByActor[actorID])
+        //     {
+        //         lineCreator.PointsToLines(pointGroup.Index, pointGroup.Points);
+        //     }
+        // }
+
+        // private void SetPointGroupsByActors(Dictionary<uint, List<Vector3>> actorsAndEdgesData)
+        // {
+        //     pointGroupsByActor.Clear();
+        //
+        //     foreach (var actorAndEdges in actorsAndEdgesData)
+        //     {
+        //         var start = actorAndEdges.Value[0];
+        //         pointGroupsByActor.Add(actorAndEdges.Key, new List<PointGroup>());
+        //
+        //         for (var i = 1; i < actorAndEdges.Value.Count; i++)
+        //         {
+        //             var end = actorAndEdges.Value[i];
+        //             pointGroupsByActor[actorAndEdges.Key]
+        //                 .Add(new PointGroup(i-1, pointCreator.GetCurvePoints(start, end).ToArray()));
+        //         }
+        //     }
+        // }
 
         public void Subscribe()
         {
@@ -50,39 +114,7 @@ namespace Curves
                 Unsubscribe();
         }
         
-        
-        
-        /// //
-      
        
-        private void SetPointGroupsByActors(Dictionary<uint, List<Vector3>> actorsAndEdgesData)
-        {
-            pointGroupsByActor.Clear();
-
-            foreach (var actorAndEdges in actorsAndEdgesData)
-            {
-                var start = actorAndEdges.Value[0];
-                pointGroupsByActor.Add(actorAndEdges.Key, new List<PointGroup>());
-
-                for (var i = 1; i < actorAndEdges.Value.Count; i++)
-                {
-                    var end = actorAndEdges.Value[i];
-                    pointGroupsByActor[actorAndEdges.Key]
-                        .Add(new PointGroup(i-1, pointCreator.GetCurvePoints(start, end).ToArray()));
-                }
-            }
-        }
-        
-        private void ShowLinesByActor(uint actorID)
-        {
-            if (!pointGroupsByActor.ContainsKey(actorID)) return;
-
-
-            foreach (var pointGroup in pointGroupsByActor[actorID])
-            {
-                lineCreator.PointsToLines(pointGroup.Index, pointGroup.Points);
-            }
-        }
 
         private void HideLines()
         {
@@ -97,10 +129,10 @@ namespace Curves
         private void UnsubscribePermanently()
         {
             Eventbus.TurnStateEvents.OnTurnStateBegin -= HoverEnable;
-
-
+            IndicatorEvents.OnIndicatorGridDatasSet -= SetIndicators;
             
-            GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored -= SetPointGroupsByActors;
+            
+            //GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored -= SetPointGroupsByActors;
             GeneralEventbus.IndicatorEvents.OnActorHoverByCombat -= ShowLinesByActor;
             GeneralEventbus.IndicatorEvents.OnActorLeftByCombat -= HideLines;
         }

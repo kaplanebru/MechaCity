@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Curves
 {
     [Serializable]
-    public class IndicatorData
+    public class CurveData
     {
         public float PointDistance = 0.1f;
         public float EdgeDistance = 3;
