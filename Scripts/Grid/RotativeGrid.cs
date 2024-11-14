@@ -11,7 +11,7 @@ public class RotativeGrid : MonoBehaviour
 {
     public GridData Data;
     
-    private Dictionary<int, ActorData> actorsBySlots = new();
+    private Dictionary<int, ActorData> slotsWithActors = new();
     private uint[] _actors;
     private bool isReversed = false;
 
@@ -27,12 +27,12 @@ public class RotativeGrid : MonoBehaviour
     {
         foreach (var slot in Data.slots)
         {
-            var actor = actorsBySlots[slot.Id];
+            var actor = slotsWithActors[slot.Id];
             getRelatedActors(actor).Clear();
         
             foreach (var relatedSlotId in getRelatedSlots(slot))
             {
-                var relatedActor = actorsBySlots[relatedSlotId];
+                var relatedActor = slotsWithActors[relatedSlotId];
                 if (relatedActor == actor) continue;
             
                 getRelatedActors(actor).Add(relatedActor.ID);
@@ -81,7 +81,7 @@ public class RotativeGrid : MonoBehaviour
     void SetGrid(uint[] actors)
     {
         _actors = actors;
-        actorsBySlots.Clear();
+        slotsWithActors.Clear();
         
         FillGridWithActors();
         ResolveTargetActors();
@@ -96,43 +96,39 @@ public class RotativeGrid : MonoBehaviour
     }
     private void FillGridWithActors()
     {
-        // int slot = 0;
-        // int act = 0;
-        // while (slot < Data.slots.Length)  //actor sayısı slot sayısından az olabilir
-        // {
-        //     var actor = ActorHolder.Registry[_actors[act]]; //atlanan actor oluyor
-        //
-        //     for (int j = 0; j < actor.Towers.Length; j++)
-        //     {
-        //         actorsBySlots.Add(Data.slots[slot].Id, actor);
-        //         slot++;
-        //     }
-        //     act++;
-        // }
-
         int i = 0;
         foreach (var actorID in _actors)
         {
             var actor = ActorHolder.Registry[actorID];
-
-            for (var j = 0; j < ActorHolder.Registry[actorID].Towers.Length; j++)
+        
+            for (var j = 0; j < actor.Towers.Length; j++)
             {
-                actorsBySlots.Add(i, actor);
+                slotsWithActors.Add(i, actor);
                 i++;
             }
-
-            
         }
-
-
     }
-
     private void OnDisable()
     {
         Eventbus.ActorEvents.OnRegistryUpdate -= SetGrid;
         Eventbus.ActorEvents.OnReverseGrid -= ReverseTargets;
     }
     
+    //private Dictionary<ActorData, List<int>> slotsByActors = new();
+    void GetSlotsByActors()
+    {
+        // int i = 0;
+        // foreach (var actorID in _actors)
+        // {
+        //     var actor = ActorHolder.Registry[actorID];
+        //     slotsByActors.Add(actor, new List<int>());
+        //     for (var j = 0; j < actor.Towers.Length; j++)
+        //     {
+        //         slotsByActors[actor].Add(i);
+        //         i++;
+        //     }
+        // }
+    }
     void DebugActors()
     {
         foreach (var id in _actors)
