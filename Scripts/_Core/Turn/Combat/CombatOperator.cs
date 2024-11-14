@@ -12,7 +12,6 @@ namespace Turn
 {
     public class CombatData
     {
-
         [ReadOnly] public float afterCombatDelay = .3f;
         public float selectionDelay = 0.3f;
         public float cursorDuration = 0.5f;
@@ -37,7 +36,6 @@ namespace Turn
         private bool isReversed = false;
 
 
-
         public void ReverseCombatDirection()
         {
             isReversed = !isReversed;
@@ -58,8 +56,8 @@ namespace Turn
                 var actor = ActorHolder.Registry[actorID];
                 _towers.AddRange(actor.Towers);
             }
-            
-            _towers?.ForEach(t =>t.ColorHandler.ToOriginalColor());
+
+            _towers?.ForEach(t => t.ColorHandler.ToOriginalColor());
         }
 
         public void Fasten()
@@ -72,26 +70,26 @@ namespace Turn
             GeneralEventbus.OnCoroutineTrigger?.Invoke(this);
         }
 
-        
+
         void SetSelectionColor(CombatPair pair, bool select = true)
         {
             if (select)
             {
-                foreach (var tower in  pair.MainActor.Towers)
+                foreach (var tower in pair.MainActor.Towers)
                 {
                     tower.ColorHandler.ToSelectionColor();
                 }
-                
+
                 GeneralEventbus.IndicatorEvents.OnActorHoverByCombat?.Invoke(pair.MainActor.ID);
                 Eventbus.CombatEvents.OnTurnTowerSelection?.Invoke(pair.MainActor.ID);
             }
             else
             {
-                foreach (var tower in  pair.MainActor.Towers)
+                foreach (var tower in pair.MainActor.Towers)
                 {
                     tower.ColorHandler.ToOriginalColor();
                 }
-                
+
                 GeneralEventbus.IndicatorEvents.OnActorLeftByCombat?.Invoke();
                 Eventbus.CombatEvents.OnTurnTowerDeselect?.Invoke();
             }
@@ -99,16 +97,11 @@ namespace Turn
 
         uint[] GetActors()
         {
-            if (isReversed == true)
-            {
-                Debug.Log("get reversed actors");
-                return ActorHolder.Registry.Keys.ToArray().Reverse().ToArray();
-            }
-            else
-            {
-                return ActorHolder.Registry.Keys.ToArray();
-            }
+            return isReversed
+                ? ActorHolder.Registry.Keys.ToArray().Reverse().ToArray()
+                : ActorHolder.Registry.Keys.ToArray();
         }
+
         public IEnumerator LeCoroutine()
         {
             if (MultiplayerSetter.IsTestingWithoutCombat)
@@ -127,10 +120,10 @@ namespace Turn
             {
                 Eventbus.CombatEvents.OnNextActor?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
-                
+
                 var pairs = _pairController.GetPairByActorID(actorID);
-                pairs.ForEach(p=>SetSelectionColor(p));
-                
+                pairs.ForEach(p => SetSelectionColor(p));
+
                 yield return new WaitForSeconds(Data.selectionDelay);
 
                 foreach (var pair in pairs)
@@ -147,7 +140,7 @@ namespace Turn
                     }
                 }
             }
-            
+
             Eventbus.CombatEvents.OnCombatEnding?.Invoke();
             yield return new WaitForSeconds(0.5f);
             AllTowers.RestoreBullets();
@@ -166,13 +159,12 @@ namespace Turn
 
         void DeselectAlteredTowers()
         {
-            _towers?.ForEach(t =>t.ColorHandler.ToOriginalColor());
+            _towers?.ForEach(t => t.ColorHandler.ToOriginalColor());
         }
 
         public void Unsubscribe()
         {
             DeselectAlteredTowers();
         }
-        
     }
 }

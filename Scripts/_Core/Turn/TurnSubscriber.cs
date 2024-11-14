@@ -10,7 +10,7 @@ namespace Turn
         {
             MainClass.BpEventHandler.SubscribeToBlueprintEvents();
             MainClass.StateHolder.Setup();
-            
+
             TeamEvents.OnTeamsSet += MainClass.SetTurnTeams;
             NetworkEventbus.OnAllClientsSet += MainClass.FirstTurn;
             NetworkEventbus.ServerEvents.OnStateChangeRequestByServer += MainClass.ChangeStateBySystem;
@@ -22,6 +22,7 @@ namespace Turn
             BpEventbus.StateEvents.OnDirectStateChangeFromIntruder += MainClass.GetPreviousState;
             BpEventbus.StateEvents.StateChangeRequestToIntruder += MainClass.SendStateChangeRequest;
             MainClass.PairController.Subscribe();
+            MainClass.TurnHelper.Subscribe();
         }
 
         public override void Unsubscribe()

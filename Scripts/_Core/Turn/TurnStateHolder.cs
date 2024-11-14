@@ -17,13 +17,8 @@ namespace Turn
         private ExitState ExitState = new ExitState();
         private IntruderState IntruderState = new IntruderState();
 
-        public TurnStateHolder()
-        {
-        }
-        
         public void Setup()
         {
-
             _statesByType.Add(TurnStateType.Selection, SelectionState);
             _statesByType.Add(TurnStateType.Link, LinkState);
             _statesByType.Add(TurnStateType.Exit, ExitState);

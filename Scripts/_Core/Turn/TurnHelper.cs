@@ -19,7 +19,6 @@ public class TurnHelper
 
     public void Subscribe()
     {
-        Debug.Log("subscribe to turn helper");
         Teams.TeamEvents.OnTeamsRequest += SendTeams;
     }
 

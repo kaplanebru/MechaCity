@@ -48,7 +48,7 @@ namespace Turn
             StateHolder.RegisterStates();
             StateHolder.SubscribeToConstantEvents();
 
-            TurnHelper.Subscribe();
+            //TurnHelper.Subscribe();
             ((ExitState) StateHolder.GetStateByType(TurnStateType.Exit)).SetCombatOperator(combatOperator);
 
             if (MultiplayerSetter.FasterCombat)
@@ -182,7 +182,6 @@ namespace Turn
 
         private void OnDisable()
         {
-           
             Subscriber.Unsubscribe();
         }
     }
