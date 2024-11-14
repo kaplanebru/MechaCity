@@ -30,7 +30,6 @@ public static class Eventbus
 
     public static class LinkEvents
     {
-        public static Action OnLinkStateBegin;
         public static Action<List<int>> OnLinkLoading;
         public static Action<List<uint>> OnLinkActorsLoaded;
         public static Action<List<int>> OnLinkingTowers;
@@ -38,19 +37,13 @@ public static class Eventbus
         public static Action OnFloorsOpened;
     }
     
-    public static class SelectionEvents
-    {
-        public static Action OnSelectionStateBegin;
-    }
+   
     
-    public static class IntruderEvents
-    {
-        public static Action OnIntruderStateBegin;
-    }
+   
     
-    public static class TeamStateEvents
+    public static class TurnStateEvents
     {
-        public static Action<TeamState> OnTeamStateBegin;
+        public static Action<TurnStateType> OnTurnStateBegin;
 
     }
     public static class HealthEvents

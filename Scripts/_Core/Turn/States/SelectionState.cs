@@ -43,7 +43,6 @@ namespace Turn
         {
             mainSelector.Subscribe();
             mainSelector.SetTeamsAndBlock(TeamsByTurn);
-            Eventbus.SelectionEvents.OnSelectionStateBegin?.Invoke();
         }
 
         private void UpdateSelectionAmount()

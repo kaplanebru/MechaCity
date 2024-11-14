@@ -22,6 +22,7 @@ namespace Turn
         public void EnterState(TurnManager tturnManager = null)
         {
             turnAction = TurnAction.Started;
+            Eventbus.TurnStateEvents.OnTurnStateBegin?.Invoke(StateType);
             Subscribe();
         }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Enums;
 
 namespace Curves
 {
@@ -26,14 +27,23 @@ namespace Curves
         }
         private void SubscribePermanently()
         {
-            Eventbus.LinkEvents.OnLinkStateBegin += DisableIndicatorHover;
-            Eventbus.SelectionEvents.OnSelectionStateBegin += EnableIndicatorHover;
-            Eventbus.IntruderEvents.OnIntruderStateBegin += DisableIndicatorHover;
+            Eventbus.TurnStateEvents.OnTurnStateBegin += HoverEnable;
             
             GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored += SetPointGroupsByActors;
             GeneralEventbus.IndicatorEvents.OnActorHoverByCombat += ShowLinesByActor;
             GeneralEventbus.IndicatorEvents.OnActorLeftByCombat += HideLines;
         }
+
+        private void HoverEnable(TurnStateType turnState)
+        {
+            Debug.Log(turnState);
+            if(turnState == TurnStateType.Selection)
+                Subscribe();
+            else
+                Unsubscribe();
+            
+        }
+
         public void Subscribe()
         {
             GeneralEventbus.IndicatorEvents.OnActorHoverByUser += ShowLinesByActor;
@@ -89,9 +99,8 @@ namespace Curves
         }
         private void UnsubscribePermanently()
         {
-            Eventbus.LinkEvents.OnLinkStateBegin -= DisableIndicatorHover;
-            Eventbus.SelectionEvents.OnSelectionStateBegin -= EnableIndicatorHover;
-            Eventbus.IntruderEvents.OnIntruderStateBegin -= DisableIndicatorHover;
+            Eventbus.TurnStateEvents.OnTurnStateBegin -= HoverEnable;
+
 
             
             GeneralEventbus.IndicatorEvents.OnActorsEdgesRestored -= SetPointGroupsByActors;

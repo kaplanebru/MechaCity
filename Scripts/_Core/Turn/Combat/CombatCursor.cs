@@ -33,7 +33,7 @@ public class CombatCursor : MonoBehaviour
         Eventbus.CombatEvents.OnCombatStarted += StartCursor;
         Eventbus.CombatEvents.OnCombatEnding += EndCursor;
 
-        Eventbus.LinkEvents.OnLinkStateBegin += Swallow;
+        Eventbus.TurnStateEvents.OnTurnStateBegin += Swallow;
         
         BpEventbus.UIEvents.OnBpInstallBegin += SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset += ResetBpImage;
@@ -117,9 +117,10 @@ public class CombatCursor : MonoBehaviour
         ToCenter();
     }
 
-    private void Swallow()
+    private void Swallow(TurnStateType turnState)
     {
-        cursorObj.transform.DOMoveY(center.y - 1, 1);
+        if(turnState == TurnStateType.Link)
+            cursorObj.transform.DOMoveY(center.y - 1, 1);
     }
    
     void SetupAndInstall(BpType type)
@@ -147,7 +148,7 @@ public class CombatCursor : MonoBehaviour
 
         Eventbus.CombatEvents.OnCombatStarted -= StartCursor;
         Eventbus.CombatEvents.OnCombatEnding -= EndCursor;
-        Eventbus.LinkEvents.OnLinkStateBegin -= Swallow;
+        Eventbus.TurnStateEvents.OnTurnStateBegin -= Swallow;
         
         BpEventbus.UIEvents.OnBpInstallBegin -= SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset -= ResetBpImage;

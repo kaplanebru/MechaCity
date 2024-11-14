@@ -42,10 +42,7 @@ namespace Turn
             currentLinkOperator = linkOperators[ActorType.Standard];
         }
         
-        public override void Subscribe()
-        {
-            Eventbus.LinkEvents.OnLinkStateBegin?.Invoke();
-        }
+        public override void Subscribe() {}
 
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
