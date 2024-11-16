@@ -24,7 +24,7 @@ public class RotativeGrid : MonoBehaviour
         gridToIndicator.Subscribe();
     }
     private void ResolveRelationsFromGrid(
-        Func<ActorData, List<uint>> getRelatedActors, 
+        Func<ActorData, HashSet<uint>> getRelatedActors, 
         Func<Slot, int[]> getRelatedSlots)
     {
         foreach (var slot in Data.slots)

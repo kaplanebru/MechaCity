@@ -20,8 +20,8 @@ namespace Actor
         public int Health;
         public int InitialHealth;
         
-        public List<uint> TargetActors = new();
-        public List<uint> Neighbours = new();
+        public HashSet<uint> TargetActors = new();
+        public HashSet<uint> Neighbours = new();
 
         public ActorData(uint id, ActorType type, params int[] towerIDs)
         {
@@ -47,13 +47,7 @@ namespace Actor
             Towers = Towers.OrderBy(t => t.AvailableHeight).ToArray(); //İD'NİN LİNKAGE İÇİN YER DEĞİŞTİRMEMESİ Gerekebilir
         }
         
-
-       
-
-        public void SetNeighbours(params uint[] neighbours)
-        {
-            Neighbours = neighbours.ToList();
-        }
+        
 
         void SetCenter()
         {

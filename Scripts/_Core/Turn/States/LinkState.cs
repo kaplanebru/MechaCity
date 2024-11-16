@@ -65,7 +65,6 @@ namespace Turn
                 ? linkOperators[ActorType.MultiTower]
                 : linkOperators[ActorType.Standard];
             
-            Debug.Log(currentLinkOperator);
             
             NetworkEventbus.InputEvents.OnObjectClicked += currentLinkOperator.TowerSelected;
         }

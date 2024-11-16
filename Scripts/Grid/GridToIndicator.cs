@@ -40,6 +40,7 @@ public class GridToIndicator
         indicatorData.TargetPositions.Clear(); //for update
         indicatorData.TargetStates.Clear(); //for update
 
+       
         foreach (var targetID in actor.TargetActors)
         {
             var targetActor = ActorHolder.Registry[targetID];
@@ -47,6 +48,7 @@ public class GridToIndicator
             var targetPos = targetActor.Center;
             indicatorData.TargetPositions.Add(targetPos);
 
+           
             indicatorData.TargetStates.Add(targetPos,
                 actor.Towers[0].TeamType == targetActor.Towers[0].TeamType
                     ? IndicatorState.Friendly

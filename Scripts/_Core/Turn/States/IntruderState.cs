@@ -44,7 +44,6 @@ namespace Turn
 
         private void GetBpSelector(SelectionType selectionType)
         {
-            Debug.Log(" GET SELECTOR");
             if (selectionType != SelectionType.None)
                 bpSelector = SelectionReferences.Instance.GetSelector(selectionType);
 

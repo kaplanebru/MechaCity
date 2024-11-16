@@ -81,7 +81,6 @@ namespace Curves
         
         private void HoverEnable(TurnStateType turnState)
         {
-            Debug.Log(turnState);
             if(turnState == TurnStateType.Selection)
                 Subscribe();
             else
