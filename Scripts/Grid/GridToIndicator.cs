@@ -10,13 +10,12 @@ using UnityEngine;
 public class GridToIndicator
 {
     private uint[] _actors;
-    private List<IndicatorGridData> indicatorDatas = new();
+    private Dictionary<uint, IndicatorGridData> indicatorDatas = new();
 
     public void Subscribe()
     {
         Eventbus.CombatEvents.OnActorKilled += UpdateIndicatorState;
     }
-
     public void SetIndicatorDatas(uint[] actors)
     {
         _actors = actors;
@@ -29,26 +28,25 @@ public class GridToIndicator
 
             indicatorData.ActorID = actorID;
             indicatorData.StartPos = actor.Center; //actor.Towers[0]
+
             SetTargets(actor, indicatorData);
-
-            indicatorDatas.Add(indicatorData);
+            indicatorDatas.Add(actorID, indicatorData);
         }
-
-        IndicatorEvents.OnIndicatorGridDatasSet?.Invoke(indicatorDatas);
+        SendIndicatorDatas();
     }
 
     void SetTargets(ActorData actor, IndicatorGridData indicatorData)
     {
-        indicatorData.TargetPositions.Clear();//for update
-        indicatorData.TargetStates.Clear();//for update
-        
+        indicatorData.TargetPositions.Clear(); //for update
+        indicatorData.TargetStates.Clear(); //for update
+
         foreach (var targetID in actor.TargetActors)
         {
             var targetActor = ActorHolder.Registry[targetID];
-            
+
             var targetPos = targetActor.Center;
             indicatorData.TargetPositions.Add(targetPos);
-            
+
             indicatorData.TargetStates.Add(targetPos,
                 actor.Towers[0].TeamType == targetActor.Towers[0].TeamType
                     ? IndicatorState.Friendly
@@ -58,22 +56,34 @@ public class GridToIndicator
 
     private void UpdateIndicatorState(uint actorID) //todo: on tower died
     {
-        var deadActor = ActorHolder.Registry[actorID];
-        var deadIndicator = indicatorDatas.FirstOrDefault(i => i.ActorID == actorID);
-        SetTargets(deadActor, deadIndicator);
+        UpdateDeadIndicator(actorID);
+        UpdateRoverIndicators(actorID);
+        SendIndicatorDatas();
+    }
 
-        //ölen actor'ü target alanları da yenilemek lazım
+    void UpdateDeadIndicator(uint actorID)
+    {
+        var deadActor = ActorHolder.Registry[actorID];
+        var deadIndicator = indicatorDatas[actorID];
+        SetTargets(deadActor, deadIndicator);
+    }
+
+    void UpdateRoverIndicators(uint actorID)
+    {
         foreach (var roverID in _actors)
         {
             var rover = ActorHolder.Registry[roverID];
             if (rover.TargetActors.Contains(actorID))
             {
-                var roverIndicator = indicatorDatas.FirstOrDefault(i => i.ActorID == roverID);
+                var roverIndicator = indicatorDatas[roverID];
                 SetTargets(rover, roverIndicator);
             }
         }
-        
-        IndicatorEvents.OnIndicatorGridDatasSet?.Invoke(indicatorDatas);
+    }
+
+    void SendIndicatorDatas()
+    {
+        IndicatorEvents.OnIndicatorGridDatasSet?.Invoke(indicatorDatas.Values.ToArray());
     }
 
     public void Unsubscribe()

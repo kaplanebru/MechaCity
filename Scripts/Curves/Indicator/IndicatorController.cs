@@ -8,7 +8,6 @@ namespace Curves
 {
     public class IndicatorData
     {
-        //public int Index;
         public Vector3[] Points;
         public IndicatorState State;
     }
@@ -53,7 +52,7 @@ namespace Curves
             gradientByState.Add(IndicatorState.Enemy, gradients[0]);
             gradientByState.Add(IndicatorState.Friendly, gradients[1]);
         }
-        private void SetIndicators(List<IndicatorGridData> gridDatas)
+        private void SetIndicators(IndicatorGridData[] gridDatas)
         {
             indicatorsByActor.Clear();
             foreach (var gridData in gridDatas)

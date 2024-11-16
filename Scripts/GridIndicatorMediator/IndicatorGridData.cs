@@ -13,5 +13,5 @@ public class IndicatorGridData
 
 public static class IndicatorEvents
 {
-    public static Action<List<IndicatorGridData>> OnIndicatorGridDatasSet;
+    public static Action<IndicatorGridData[]> OnIndicatorGridDatasSet;
 }
