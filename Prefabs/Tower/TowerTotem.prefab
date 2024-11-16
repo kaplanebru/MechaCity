@@ -1267,6 +1267,7 @@ MonoBehaviour:
   - {fileID: 2424158229490792371}
   - {fileID: 2368684382563243271}
   offset: 1
+  yOffset: 2.3
 --- !u!1 &352096349684211116
 GameObject:
   m_ObjectHideFlags: 0
@@ -22194,7 +22195,6 @@ MonoBehaviour:
   - {fileID: 9132393093036413494}
   gear: {fileID: 8478454695056217681}
   Data: {fileID: 11400000, guid: 689413a7e0ac91343b98344717ba1b7a, type: 2}
-  newPosY: -3
 --- !u!1 &4651886813789671023
 GameObject:
   m_ObjectHideFlags: 0
