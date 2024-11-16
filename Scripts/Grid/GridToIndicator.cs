@@ -58,25 +58,22 @@ public class GridToIndicator
 
     private void UpdateIndicatorState(uint actorID) //todo: on tower died
     {
-        var actor = ActorHolder.Registry[actorID];
-        var indicatorData = indicatorDatas.FirstOrDefault(i => i.ActorID == actorID);
+        var deadActor = ActorHolder.Registry[actorID];
+        var deadIndicator = indicatorDatas.FirstOrDefault(i => i.ActorID == actorID);
+        SetTargets(deadActor, deadIndicator);
 
-        SetTargets(actor, indicatorData);
+        //ölen actor'ü target alanları da yenilemek lazım
+        foreach (var roverID in _actors)
+        {
+            var rover = ActorHolder.Registry[roverID];
+            if (rover.TargetActors.Contains(actorID))
+            {
+                var roverIndicator = indicatorDatas.FirstOrDefault(i => i.ActorID == roverID);
+                SetTargets(rover, roverIndicator);
+            }
+        }
         
         IndicatorEvents.OnIndicatorGridDatasSet?.Invoke(indicatorDatas);
-        //todo: bu actoru eventle indicator controllera yolla, ordaki sadece buna ait olan datayı değiştirsin
-
-        // foreach (var targetID in actor.TargetActors)
-        // {
-        //     var targetActor = ActorHolder.Registry[targetID];
-        //     var targetPos = targetActor.Center;
-        //     
-        //     indicatorData.TargetStates.Add(targetPos,
-        //         actor.Towers[0].TeamType == targetActor.Towers[0].TeamType
-        //             ? IndicatorState.Friendly
-        //             : IndicatorState.Enemy);
-        // }
-
     }
 
     public void Unsubscribe()
