@@ -24,7 +24,6 @@ namespace Curves
 
         private Dictionary<uint, List<IndicatorData>> indicatorsByActor = new();
 
-
         private void OnEnable()
         {
             pointCreator = new(curveData.EdgeDistance, curveData.PointDistance, curveData.HeightOffset);

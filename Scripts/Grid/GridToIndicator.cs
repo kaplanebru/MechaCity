@@ -12,6 +12,11 @@ public class GridToIndicator
     private uint[] _actors;
     private List<IndicatorGridData> indicatorDatas = new();
 
+    public void Subscribe()
+    {
+        Eventbus.CombatEvents.OnActorKilled += UpdateIndicatorState;
+    }
+
     public void SetIndicatorDatas(uint[] actors)
     {
         _actors = actors;
@@ -51,12 +56,14 @@ public class GridToIndicator
         }
     }
 
-    public void UpdateIndicatorState(uint actorID) //todo: on tower died
+    private void UpdateIndicatorState(uint actorID) //todo: on tower died
     {
         var actor = ActorHolder.Registry[actorID];
         var indicatorData = indicatorDatas.FirstOrDefault(i => i.ActorID == actorID);
 
         SetTargets(actor, indicatorData);
+        
+        IndicatorEvents.OnIndicatorGridDatasSet?.Invoke(indicatorDatas);
         //todo: bu actoru eventle indicator controllera yolla, ordaki sadece buna ait olan datayı değiştirsin
 
         // foreach (var targetID in actor.TargetActors)
@@ -70,5 +77,10 @@ public class GridToIndicator
         //             : IndicatorState.Enemy);
         // }
 
+    }
+
+    public void Unsubscribe()
+    {
+        Eventbus.CombatEvents.OnActorKilled -= UpdateIndicatorState;
     }
 }

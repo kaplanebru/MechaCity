@@ -21,6 +21,7 @@ public class RotativeGrid : MonoBehaviour
     {
         Eventbus.ActorEvents.OnRegistryUpdate += SetGrid;
         Eventbus.ActorEvents.OnReverseGrid += ReverseTargets;
+        gridToIndicator.Subscribe();
     }
     private void ResolveRelationsFromGrid(
         Func<ActorData, List<uint>> getRelatedActors, 
@@ -117,6 +118,7 @@ public class RotativeGrid : MonoBehaviour
     {
         Eventbus.ActorEvents.OnRegistryUpdate -= SetGrid;
         Eventbus.ActorEvents.OnReverseGrid -= ReverseTargets;
+        gridToIndicator.Unsubscribe();
     }
     
     //private Dictionary<ActorData, List<int>> slotsByActors = new();
