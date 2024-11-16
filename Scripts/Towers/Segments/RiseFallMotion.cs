@@ -176,7 +176,7 @@ public class RiseFallMotion
     
     void ScaleLight(Vector3 scale)
     {
-        scale.y =  Mathf.MoveTowards(scale.y, Data.TargetHeight*unit/2, speed );//speed/2
+        scale.y =  Mathf.MoveTowards(scale.y, Data.TargetHeight*unit/2, speed*unit/2 );//speed/2
         Data.Light.localScale = scale;
     }
     void Move(Vector3 pos)
