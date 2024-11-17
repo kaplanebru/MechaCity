@@ -52,30 +52,12 @@ namespace Turn
             TransferData.towers = ActorHolder.ResolveTowersFromActors(TransferData.Actors.ToArray()).ToList();
             
             Eventbus.LinkEvents.OnLinkActorsLoaded?.Invoke(TransferData.Actors);
-            
-            CheckInterruption();
-            
-            
+           
             SetLinkOperatorAndSubscribe();
             currentLinkOperator.SetTowers(TransferData.Actors.ToArray());
             
             Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.towers);
         }
-
-        void CheckInterruption()
-        {
-            var hasInterruption = Eventbus.LinkEvents.OnInterruptionCheck?.Invoke(TransferData.Actors.ToArray());
-            if (hasInterruption.Value.Success)
-            {
-                var interruptedActor = hasInterruption.Value.InterruptedActor;
-                
-                //todo: test
-                var towerID = ActorHolder.Registry[interruptedActor].Towers[0].UniqID;
-                var tower = AllTowers.GetTower(towerID);
-                tower.transform.DOLocalMoveX(tower.transform.position.x + 4, .5f);
-            }
-        }
-        
 
         private void SetLinkOperatorAndSubscribe()
         {
