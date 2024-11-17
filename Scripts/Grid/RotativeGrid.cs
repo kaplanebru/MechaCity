@@ -14,55 +14,24 @@ namespace Grid
     {
         public GridData Data;
 
-        private Dictionary<int, ActorData> actorBySlot = new();
-        private List<InterruptionByActor> interruptionActors = new();
+        public static Dictionary<int, ActorData> actorBySlot = new();
 
         private uint[] _actors;
         private bool isReversed = false;
         private GridToIndicator gridToIndicator = new();
+        private InterruptionController interruptionController;
 
 
         private void OnEnable()
         {
+            interruptionController = new InterruptionController(Data);
             Eventbus.ActorEvents.OnRegistryUpdate += SetGrid;
             Eventbus.ActorEvents.OnReverseGrid += ReverseTargets;
-            Eventbus.LinkEvents.OnLinkActorsLoaded += TryCheckInterruptions;
+            Eventbus.LinkEvents.OnLinkActorsLoaded += interruptionController.TryCheckInterruptions;
             gridToIndicator.Subscribe();
         }
 
-        public void TryCheckInterruptions(List<uint> linkedActors)
-        {
-            foreach (var interruption in interruptionActors)
-            {
-                if (linkedActors.Contains(interruption.Interrupted)) continue;
-                if (!linkedActors.All(interruption.Interrupters.Contains)) continue;
-                
-                Eventbus.LinkEvents.OnInterruptionDetected?.Invoke(interruption.Interrupted, interruption.Offset);
-                return;
-            }
-        }
-
-
-        void SetInterruptionActors() //her actor yenilendiğinde
-        {
-            interruptionActors.Clear();
-            foreach (var interruptionSlot in Data.interruptions)
-            {
-                InterruptionByActor interruptionByActor = new();
-
-                interruptionByActor.id = interruptionSlot.id;
-                interruptionByActor.Interrupted = actorBySlot[interruptionSlot.Interrupted].ID;
-                interruptionByActor.Offset = interruptionSlot.Offset;
-
-                foreach (var slot in interruptionSlot.Interrupters)
-                {
-                    interruptionByActor.Interrupters.Add(actorBySlot[slot].ID);
-                }
-                interruptionActors.Add(interruptionByActor);
-            }
-        }
-
-
+        
         private void ResolveRelationsFromGrid(
             Func<ActorData, HashSet<uint>> getRelatedActors,
             Func<Slot, int[]> getRelatedSlots)
@@ -132,7 +101,7 @@ namespace Grid
             FillGridWithActors();
             ResolveTargetActors();
             ResolveNeighbours();
-            SetInterruptionActors();
+            interruptionController.SetInterruptionActors();
 
             SendRelations(false);
         }
@@ -161,7 +130,7 @@ namespace Grid
         {
             Eventbus.ActorEvents.OnRegistryUpdate -= SetGrid;
             Eventbus.ActorEvents.OnReverseGrid -= ReverseTargets;
-            Eventbus.LinkEvents.OnLinkActorsLoaded -= TryCheckInterruptions;
+            Eventbus.LinkEvents.OnLinkActorsLoaded -= interruptionController.TryCheckInterruptions;
             gridToIndicator.Unsubscribe();
         }
 
