@@ -50,7 +50,9 @@ public class RotativeGrid : MonoBehaviour
 
             var interruptionCouple = Data.InterruptionCouplesByID[data.Key];
             var slot = interruptionCouple.Interrupted;
+            
             interruptedActor = actorBySlot[slot].ID;
+            if(linkedActors.Contains(interruptedActor)) continue;
             
             return true;
         }
