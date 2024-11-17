@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Grid
@@ -6,6 +7,15 @@ namespace Grid
     public class GridData : ScriptableObject
     {
         public Slot[] slots;
-        //TODO: reversi de elle girmek lazım
+        public InterruptionCouple[] interruptions;
+        public Dictionary<int, InterruptionCouple> InterruptionCouplesByID = new();
+
+        public void Setup()
+        {
+            foreach (var interruptionCouple in interruptions)
+            {
+                InterruptionCouplesByID.Add(interruptionCouple.id, interruptionCouple);
+            }
+        }
     }
 }

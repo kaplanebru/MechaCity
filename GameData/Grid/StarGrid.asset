@@ -37,3 +37,16 @@ MonoBehaviour:
     TargetSlots: 00000000
     ReversedTargetSlots: 0400000003000000
     Neighbours: 040000000300000000000000
+  interruptions:
+  - id: 0
+    Interrupter: 0300000005000000
+    Interrupted: 4
+  - id: 1
+    Interrupter: 0200000005000000
+    Interrupted: 4
+  - id: 2
+    Interrupter: 0000000002000000
+    Interrupted: 1
+  - id: 3
+    Interrupter: 0000000003000000
+    Interrupted: 1

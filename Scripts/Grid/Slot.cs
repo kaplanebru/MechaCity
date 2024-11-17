@@ -14,4 +14,12 @@ namespace Grid
         public int[] Neighbours;
     }
 
+    [Serializable]
+    public class InterruptionCouple
+    {
+        public int id;
+        public int[] Interrupter;
+        public int Interrupted;
+    }
+
 }
