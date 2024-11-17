@@ -42,7 +42,7 @@ namespace Grid
                 //todo test
                 var towerID = ActorHolder.Registry[interruptedActor].Towers[0].UniqID;
                 var tower = AllTowers.GetTower(towerID);
-                tower.transform.DOLocalMoveX(tower.transform.position.x + 4, .5f);
+                tower.transform.DOLocalMove(tower.transform.localPosition + interruption.Offset, .5f); 
                 return;
             }
         }
@@ -57,12 +57,12 @@ namespace Grid
 
                 interruptionByActor.id = interruptionSlot.id;
                 interruptionByActor.Interrupted = actorBySlot[interruptionSlot.Interrupted].ID;
+                interruptionByActor.Offset = interruptionSlot.Offset;
 
                 foreach (var slot in interruptionSlot.Interrupters)
                 {
                     interruptionByActor.Interrupters.Add(actorBySlot[slot].ID);
                 }
-
                 interruptionActors.Add(interruptionByActor);
             }
         }

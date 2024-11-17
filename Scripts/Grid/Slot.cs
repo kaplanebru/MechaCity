@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Actor;
 using Towers;
+using UnityEngine;
 
 
 namespace Grid
@@ -21,6 +22,8 @@ namespace Grid
         public int id;
         public int[] Interrupters;
         public int Interrupted;
+        
+        public Vector3 Offset;
     }
 
     public class InterruptionByActor
@@ -28,6 +31,7 @@ namespace Grid
         public int id;
         public List<uint> Interrupters = new();
         public uint Interrupted;
+        public Vector3 Offset;
     }
 
 }

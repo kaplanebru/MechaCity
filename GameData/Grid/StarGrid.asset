@@ -41,12 +41,16 @@ MonoBehaviour:
   - id: 0
     Interrupters: 0300000005000000
     Interrupted: 4
+    Offset: {x: -5.5, y: 0, z: 0}
   - id: 1
     Interrupters: 0200000005000000
     Interrupted: 4
+    Offset: {x: 2, y: 0, z: 0}
   - id: 2
     Interrupters: 0000000002000000
     Interrupted: 1
+    Offset: {x: -4, y: 0, z: 1}
   - id: 3
     Interrupters: 0000000003000000
     Interrupted: 1
+    Offset: {x: -2, y: 0, z: 0}
