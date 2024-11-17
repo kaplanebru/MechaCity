@@ -43,57 +43,21 @@ public class RotativeGrid : MonoBehaviour
     public bool TryCheckInterruptions(uint[] linkedActors, out uint interruptedActor)
     {
         interruptedActor = 0;
+
         foreach (var data in interruptionActors)
         {
-            if(!data.Value.All(linkedActors.Contains)) continue;
+            if(!linkedActors.All(data.Value.Contains)) continue;
 
             var interruptionCouple = Data.InterruptionCouplesByID[data.Key];
             var slot = interruptionCouple.Interrupted;
             interruptedActor = actorBySlot[slot].ID;
+            
             return true;
         }
-
         return false;
-
-
-        // foreach (var interruptionCouple in Data.interruptions)
-        // {
-        //     ScanData:
-        //     foreach (var interrupter in interruptionCouple.Interrupter)
-        //     {
-        //         var interrupterActor = slotsWithActors[interrupter].ID;
-        //         var hasAnyActor = linkedActors.Any(a => a == interrupterActor);
-        //         
-        //         if(!hasAnyActor) goto ScanData;
-        //         else
-        //         {
-        //             
-        //         }
-        //     }
-        // }
-
-        // foreach (var actorID in linkedActors)
-        // {
-        //     foreach (var slotsWithActor in slotsWithActors)
-        //     {
-        //         if (slotsWithActor.Value.ID == actorID)
-        //         {
-        //             linkedSlots.Add(slotsWithActor.Key);
-        //         }
-        //     }
-        // }
     }
 
-    void GetSlotByActor(uint actorID)
-    {
-        foreach (var slotsWithActor in actorBySlot)
-        {
-            if (slotsWithActor.Value.ID == actorID)
-            {
-                // linkedSlots.Add(slotsWithActor.Key);
-            }
-        }
-    }
+   
 
     private void ResolveRelationsFromGrid(
         Func<ActorData, HashSet<uint>> getRelatedActors,
@@ -164,6 +128,7 @@ public class RotativeGrid : MonoBehaviour
         FillGridWithActors();
         ResolveTargetActors();
         ResolveNeighbours();
+        SetInterruptionActors();
 
         SendRelations(false);
     }
