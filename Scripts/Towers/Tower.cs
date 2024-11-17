@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Actor;
 using Blueprint;
 using Clicks;
 using DataModels;
@@ -16,11 +17,13 @@ namespace Towers
         public TowerConstantData ConstantData;
         public TowerData Data;
         private TowerInitializer initializer;
+        private InterruptionMotion interruptionMotion = new();
 
         private void OnEnable()
         {
             initializer = new TowerInitializer(this);
             Eventbus.TowerEvents.OnTurnBegin += FirstMotion;
+            interruptionMotion.Subscribe();
         }
 
         public void Setup(TeamTowerData teamData)
@@ -67,6 +70,8 @@ namespace Towers
         {
             Eventbus.TowerEvents.OnTurnBegin -= FirstMotion;
             Data.Mover.Unsubscribe();
+            interruptionMotion.Unsubscribe();
+
         }
     }
 }

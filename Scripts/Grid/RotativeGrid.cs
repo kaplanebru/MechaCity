@@ -36,13 +36,8 @@ namespace Grid
             {
                 if (linkedActors.Contains(interruption.Interrupted)) continue;
                 if (!linkedActors.All(interruption.Interrupters.Contains)) continue;
-
-                var interruptedActor = interruption.Interrupted;
                 
-                //todo test
-                var towerID = ActorHolder.Registry[interruptedActor].Towers[0].UniqID;
-                var tower = AllTowers.GetTower(towerID);
-                tower.transform.DOLocalMove(tower.transform.localPosition + interruption.Offset, .5f); 
+                Eventbus.LinkEvents.OnInterruptionDetected?.Invoke(interruption.Interrupted, interruption.Offset);
                 return;
             }
         }
