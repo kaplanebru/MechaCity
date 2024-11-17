@@ -8,14 +8,14 @@ namespace Grid
     {
         public Slot[] slots;
         public InterruptionCouple[] interruptions;
-        public Dictionary<int, InterruptionCouple> InterruptionCouplesByID = new();
-
-        public void Setup()
-        {
-            foreach (var interruptionCouple in interruptions)
-            {
-                InterruptionCouplesByID.Add(interruptionCouple.id, interruptionCouple);
-            }
-        }
+        // public Dictionary<int, InterruptionCouple> InterruptionCouplesByID = new();
+        //
+        // public void Setup()
+        // {
+        //     foreach (var interruptionCouple in interruptions)
+        //     {
+        //         InterruptionCouplesByID.Add(interruptionCouple.id, interruptionCouple);
+        //     }
+        // }
     }
 }

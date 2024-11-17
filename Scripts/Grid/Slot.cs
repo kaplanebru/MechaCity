@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Actor;
 using Towers;
 
@@ -18,8 +19,15 @@ namespace Grid
     public class InterruptionCouple
     {
         public int id;
-        public int[] Interrupter;
+        public int[] Interrupters;
         public int Interrupted;
+    }
+
+    public class InterruptionByActor
+    {
+        public int id;
+        public List<uint> Interrupters = new();
+        public uint Interrupted;
     }
 
 }

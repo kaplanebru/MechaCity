@@ -14,7 +14,8 @@ namespace Grid
         public GridData Data;
 
         private Dictionary<int, ActorData> actorBySlot = new();
-        private Dictionary<int, List<uint>> interruptionActors = new();
+        private List<InterruptionByActor> interruptionActors = new();
+
         private uint[] _actors;
         private bool isReversed = false;
         private GridToIndicator gridToIndicator = new();
@@ -22,7 +23,6 @@ namespace Grid
 
         private void OnEnable()
         {
-            Data.Setup();
             Eventbus.ActorEvents.OnRegistryUpdate += SetGrid;
             Eventbus.ActorEvents.OnReverseGrid += ReverseTargets;
             gridToIndicator.Subscribe();
@@ -32,13 +32,19 @@ namespace Grid
         void SetInterruptionActors() //her actor yenilendiğinde
         {
             interruptionActors.Clear();
-            foreach (var interruptionCouple in Data.interruptions)
+            foreach (var interruptionSlot in Data.interruptions)
             {
-                interruptionActors.Add(interruptionCouple.id, new List<uint>());
-                foreach (var interrupter in interruptionCouple.Interrupter)
+                InterruptionByActor interruptionByActor = new();
+                
+                interruptionByActor.id = interruptionSlot.id;
+                interruptionByActor.Interrupted = actorBySlot[interruptionSlot.Interrupted].ID;
+                
+                foreach (var slot in interruptionSlot.Interrupters)
                 {
-                    interruptionActors[interruptionCouple.id].Add(actorBySlot[interrupter].ID);
+                    interruptionByActor.Interrupters.Add(actorBySlot[slot].ID);
                 }
+                
+                interruptionActors.Add(interruptionByActor);
             }
         }
 
@@ -46,16 +52,12 @@ namespace Grid
         {
             interruptedActor = 0;
 
-            foreach (var data in interruptionActors)
+            foreach (var interruption in interruptionActors)
             {
-                if (!linkedActors.All(data.Value.Contains)) continue;
+                if(linkedActors.Contains(interruption.Interrupted)) continue;
+                if(linkedActors.All(interruption.Interrupters.Contains)) continue;
 
-                var interruptionCouple = Data.InterruptionCouplesByID[data.Key];
-                var slot = interruptionCouple.Interrupted;
-
-                interruptedActor = actorBySlot[slot].ID;
-                if (linkedActors.Contains(interruptedActor)) continue;
-
+                interruptedActor = interruption.Interrupted;
                 return true;
             }
 
