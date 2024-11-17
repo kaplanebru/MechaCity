@@ -25,8 +25,28 @@ namespace Grid
         {
             Eventbus.ActorEvents.OnRegistryUpdate += SetGrid;
             Eventbus.ActorEvents.OnReverseGrid += ReverseTargets;
+            Eventbus.LinkEvents.OnInterruptionCheck += TryCheckInterruptions;
             gridToIndicator.Subscribe();
         }
+
+        public (bool Success, uint InterruptedActor) TryCheckInterruptions(uint[] linkedActors) //, out uint interruptedActor)
+        {
+            //interruptedActor = 0;
+
+            foreach (var interruption in interruptionActors)
+            {
+                if(linkedActors.Contains(interruption.Interrupted)) continue;
+                if(linkedActors.All(interruption.Interrupters.Contains)) continue;
+
+                // interruptedActor = interruption.Interrupted;
+                // return true;
+                return (true, interruption.Interrupted);
+            }
+
+            return (false, 0);
+        }
+
+       
 
 
         void SetInterruptionActors() //her actor yenilendiğinde
@@ -48,22 +68,7 @@ namespace Grid
             }
         }
 
-        public bool TryCheckInterruptions(uint[] linkedActors, out uint interruptedActor)
-        {
-            interruptedActor = 0;
-
-            foreach (var interruption in interruptionActors)
-            {
-                if(linkedActors.Contains(interruption.Interrupted)) continue;
-                if(linkedActors.All(interruption.Interrupters.Contains)) continue;
-
-                interruptedActor = interruption.Interrupted;
-                return true;
-            }
-
-            return false;
-        }
-
+        
 
         private void ResolveRelationsFromGrid(
             Func<ActorData, HashSet<uint>> getRelatedActors,
@@ -163,6 +168,7 @@ namespace Grid
         {
             Eventbus.ActorEvents.OnRegistryUpdate -= SetGrid;
             Eventbus.ActorEvents.OnReverseGrid -= ReverseTargets;
+            Eventbus.LinkEvents.OnInterruptionCheck -= TryCheckInterruptions;
             gridToIndicator.Unsubscribe();
         }
 

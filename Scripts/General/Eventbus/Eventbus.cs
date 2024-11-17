@@ -35,6 +35,7 @@ public static class Eventbus
         public static Action<List<int>> OnLinkingTowers;
         public static Action<List<int>> OnUnlink;
         public static Action OnFloorsOpened;
+        public static Func<uint[], (bool Success, uint InterruptedActor)> OnInterruptionCheck;
     }
     
    

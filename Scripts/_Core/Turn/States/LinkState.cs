@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Actor;
+using DG.Tweening;
 using Enums;
 using GameUI;
 using Network;
@@ -52,10 +53,27 @@ namespace Turn
             
             Eventbus.LinkEvents.OnLinkActorsLoaded?.Invoke(TransferData.Actors);
             
+            CheckInterruption();
+            
+            
             SetLinkOperatorAndSubscribe();
             currentLinkOperator.SetTowers(TransferData.Actors.ToArray());
             
             Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.towers);
+        }
+
+        void CheckInterruption()
+        {
+            var hasInterruption = Eventbus.LinkEvents.OnInterruptionCheck?.Invoke(TransferData.Actors.ToArray());
+            if (hasInterruption.Value.Success)
+            {
+                var interruptedActor = hasInterruption.Value.InterruptedActor;
+                
+                //todo: test
+                var towerID = ActorHolder.Registry[interruptedActor].Towers[0].UniqID;
+                var tower = AllTowers.GetTower(towerID);
+                tower.transform.DOLocalMoveX(tower.transform.position.x + 4, .5f);
+            }
         }
         
 
