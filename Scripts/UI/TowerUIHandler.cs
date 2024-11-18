@@ -8,6 +8,7 @@ namespace GameUI
     public class TowerUIData : TowerSegmentData
     {
         public TextMeshPro[] HeightTexts;
+        public TextMeshPro IDText;
         public CommonData CommonData;
     }
     public class TowerUIHandler : ITowerSegment
@@ -25,7 +26,10 @@ namespace GameUI
             Id = id;
         }
 
-        public void Initialize() {}
+        public void Initialize()
+        {
+            SetIDText();
+        }
         
         public void ChangeHeightUI(float height)
         {
@@ -35,6 +39,11 @@ namespace GameUI
                 if(heightText != null)
                     heightText.text = heightInt.ToString();
             }
+        }
+
+        private void SetIDText()
+        {
+            Data.IDText.text = RomanNumberConverter.IntToRoman(Id + 1);
         }
     }
 }

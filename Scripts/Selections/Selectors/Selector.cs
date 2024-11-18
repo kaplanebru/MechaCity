@@ -85,7 +85,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
         
         SetSelectionColor(actor);
 
-        SelectionEvents.OnSelection?.Invoke(actor.ID.ToString(), actor.ID); //todo: name
+        SelectionEvents.OnSelection?.Invoke(actor.ID); //todo: name
 
     }
     private void Deselect(uint newSelection)

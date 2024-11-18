@@ -37,9 +37,9 @@ public class SelectionTable : MonoBehaviour
         emptySlots = activeSlots.ToList();
     }
 
-    private void AddToTable(string towerName, uint actorID)
+    private void AddToTable(uint actorID)
     {
-        emptySlots.First().Fill(towerName, actorID);
+        emptySlots.First().Fill(RomanNumberConverter.IntToRoman((int)actorID+1), actorID);
         emptySlots.RemoveAt(0);
         
         //dolmuşsa resetlemek lazım
