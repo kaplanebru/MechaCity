@@ -39,12 +39,16 @@ namespace Actor
         void RestoreActorPosition(TurnStateType stateType)
         {
             if(stateType != TurnStateType.Exit) return;
+            if(currentActor == null) return;
+            
             for (var i = 0; i < currentActor.Towers.Length; i++)
             {
                 var tower = AllTowers.GetTower(currentActor.Towers[i].UniqID);
                 tower.transform.DOLocalMove(startPositions[i], .5f);
             }
+            
             startPositions.Clear();
+            currentActor = null;
         }
 
         public void Unsubscribe()

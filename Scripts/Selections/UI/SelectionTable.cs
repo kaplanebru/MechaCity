@@ -39,7 +39,7 @@ public class SelectionTable : MonoBehaviour
 
     private void AddToTable(uint actorID)
     {
-        emptySlots.First().Fill(RomanNumberConverter.IntToRoman((int)actorID+1), actorID);
+        emptySlots.First().Fill(actorID);
         emptySlots.RemoveAt(0);
         
         //dolmuşsa resetlemek lazım

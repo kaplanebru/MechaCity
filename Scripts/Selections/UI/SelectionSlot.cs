@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Actor;
 using Teams;
 using TMPro;
 using UnityEngine;
@@ -20,10 +21,30 @@ public class SelectionSlot : MonoBehaviour
         actorID = 0; //-1
     }
 
-    public void Fill(string towerName, uint id)
+    public void Fill(uint actorId)
     {
-        text.text = towerName;
-        actorID = id;
+        text.text = SetText(actorId);
+        actorID = actorId;
+    }
+
+    string SetText(uint actorId)
+    {
+        string towerText = "";
+        var actor = ActorHolder.Registry[actorId];
+        for (var i = 0; i < actor.TowerIDs.Length; i++)
+        {
+            var towerID = actor.TowerIDs[i];
+            if (i == 0)
+            {
+                towerText = RomanNumberConverter.IntToRoman(towerID + 1);
+            }
+            else
+            {
+                towerText = towerText + " - " + RomanNumberConverter.IntToRoman(towerID + 1);
+            }
+        }
+
+        return towerText;
     }
 
     public void SetTeamColor(Team team)
