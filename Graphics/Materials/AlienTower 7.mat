@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AlienTower 3
+  m_Name: AlienTower 7
   m_Shader: {fileID: 4800000, guid: e4468eb8a8320f7488ddbb0e591f9fbc, type: 3}
   m_ValidKeywords:
   - _EMISSIVE_SIMPLE
@@ -496,10 +496,10 @@ Material:
     - _AngelRingMaskColor: {r: 0, g: 1, b: 0, a: 1}
     - _AngelRing_Color: {r: 1, g: 1, b: 1, a: 1}
     - _Ap_RimLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor: {r: 0.33333334, g: 0.34509805, b: 0.39607844, a: 1}
+    - _BaseColor: {r: 0.33333334, g: 0.39607844, b: 0.3882353, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColorMaskColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.3333333, g: 0.34509802, b: 0.3960784, a: 1}
+    - _Color: {r: 0.3333333, g: 0.3960784, b: 0.38823527, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
