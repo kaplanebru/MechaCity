@@ -26,7 +26,6 @@ public class ShootersEventListener : TowerRelatedEventListener<Shooter>
 
     private void ShootByGivenShooter(CombatPair pair)
     {
-        //var shooter = RelatedItems.Values.FirstOrDefault(s => s.Id == pair.MainTowerData.UniqID);
         var shooter = RelatedItems[pair.MainTowerData.UniqID];
         shooter.Shoot(pair);
     }

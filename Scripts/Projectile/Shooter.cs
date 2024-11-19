@@ -12,6 +12,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
 {
     public float motionDistance = 1;
     public Transform shootingSlot;
+    public Transform cover;
     
     private CombatPair _pair;
     private float _motionDuration;
@@ -35,14 +36,24 @@ public class Shooter : MonoBehaviour, ITowerRelated
     public void Shoot(CombatPair pair)
     {
         _pair = pair;
+        OpenCover();
         RevealSelf();
     }
 
+    private Tweener coverRoutine;
+    void OpenCover()
+    {
+        coverRoutine = cover.DOLocalRotate(new Vector3(90, 0, 0), .5f);
+        
+    }
     public void RevealSelf()
     {
-        transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration).OnComplete(() => 
+        coverRoutine.OnComplete(() =>
         {
-            SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, _projectileDuration);
+            transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration).OnComplete(() =>
+            {
+                SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, _projectileDuration);
+            });
         });
     }
 
