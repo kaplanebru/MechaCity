@@ -44,7 +44,11 @@ public class Shooter : MonoBehaviour, ITowerRelated
     void OpenCover()
     {
         coverRoutine = cover.DOLocalRotate(new Vector3(90, 0, 0), .5f);
-        
+    }
+
+    void CloseCover()
+    {
+        cover.DOLocalRotate(Vector3.zero, .5f);
     }
     public void RevealSelf()
     {
@@ -60,6 +64,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
     private void Hide()
     {
         transform.DOLocalMoveY(hiddenPosY, _motionDuration);
+        CloseCover();
     }
     
     void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
