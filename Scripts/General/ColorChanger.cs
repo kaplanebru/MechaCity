@@ -28,12 +28,11 @@ public class ColorChanger
         mesh.material.DOColor(newColor, _timingData.colorFadeDuration);
     }
     
-    public void SetMats(MeshRenderer[] meshes, Material[] mats)
+    public void SetMaterial(Material mat, params MeshRenderer[] meshes)
     {
-        meshes[0].material = mats[0];
-        for (var i = 1; i < meshes.Length; i++)
+        foreach (var mesh in meshes)
         {
-            meshes[i].material = mats[1];
+            mesh.material = mat;
         }
     }
 

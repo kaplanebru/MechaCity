@@ -25,6 +25,7 @@ namespace Towers
     {
         public int Id { get; set; }
         private TowerColorData Data;
+        private List<MeshRenderer> combinedRenderers = new();
         public ColorHandler(TowerSegmentData data)
         {
             Data = data as TowerColorData;
@@ -44,18 +45,18 @@ namespace Towers
         {
             Data.TeamData = teamData;
             SetCombinedMeshes();
+            
             FadeColor();
-            SetTeamLogo();
+            //SetTeamLogo();
         }
         
         private void SetCombinedMeshes()
         {
             foreach (var meshCombiner in Data.MeshCombiners)
             {
-                meshCombiner.CombineMeshes();
-                meshCombiner.SetMaterial(Data.TeamData.CombinedMat[0]);
+                meshCombiner.CombineMeshes(out MeshRenderer renderer);
+                combinedRenderers.Add(renderer);
             }
-        
         }
         void SetTeamLogo()
         {
@@ -77,11 +78,12 @@ namespace Towers
         
         private void SetMats(Material[] mats)
         {
-            colorChanger.SetMats(Data.MiddleMeshes, mats);
-            foreach (var meshCombiner in Data.MeshCombiners)
-            {
-                meshCombiner.SetMaterial(Data.TeamData.CombinedMat[0]);
-            }
+            colorChanger.SetMaterial(mats[0], Data.MiddleMeshes);
+            colorChanger.SetMaterial(Data.TeamData.CombinedMat[0],combinedRenderers.ToArray());
+            // foreach (var meshCombiner in Data.MeshCombiners)
+            // {
+            //     meshCombiner.SetMaterial(Data.TeamData.CombinedMat[0]);
+            // }
             
         }
         

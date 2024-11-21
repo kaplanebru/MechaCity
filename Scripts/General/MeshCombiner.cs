@@ -12,7 +12,7 @@ public class MeshCombiner : MonoBehaviour
     {
         parentRenderer.material = combinedMat;
     }
-    public void CombineMeshes()
+    public void CombineMeshes(out MeshRenderer newRenderer)
     {
         
         MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
@@ -37,10 +37,10 @@ public class MeshCombiner : MonoBehaviour
             meshFilters[i].gameObject.SetActive(false); // Disable child object
         }
 
-        AssignCombinedMesh(combine);
+        AssignCombinedMesh(combine, out newRenderer);
 
     }
-    private void AssignCombinedMesh(CombineInstance[] combine)
+    private void AssignCombinedMesh(CombineInstance[] combine,  out MeshRenderer newRenderer)
     {
         if (parentMeshFilter == null)
             parentMeshFilter = gameObject.AddComponent<MeshFilter>();
@@ -52,6 +52,7 @@ public class MeshCombiner : MonoBehaviour
         Mesh combinedMesh = new Mesh();
         combinedMesh.CombineMeshes(combine, true, true);
         parentMeshFilter.mesh = combinedMesh;
+        newRenderer = parentRenderer;
     }
 
     
