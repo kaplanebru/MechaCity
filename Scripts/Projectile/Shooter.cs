@@ -54,27 +54,44 @@ public class Shooter : MonoBehaviour, ITowerRelated
     }
     public void RevealSelf()
     {
-        coverRoutine.OnComplete(() =>
+        // coverRoutine.OnComplete(() =>
+        // {
+        //     transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration).OnComplete(() =>
+        //     {
+        //         transform.DORotateQuaternion(
+        //             Quaternion.LookRotation(_pair.OtherTowerData.Mover.Data.Top.transform.position - transform.position) * Quaternion.Euler(0, 180, 0),
+        //             _motionDuration/2).OnComplete(() =>
+        //         {
+        //             SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, _projectileDuration);
+        //         });
+        //     });
+        // });
+        
+        
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(coverRoutine);
+        sequence.Append(transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration));
+        sequence.Append(transform.DORotateQuaternion(
+            Quaternion.LookRotation(
+                _pair.OtherTowerData.Mover.Data.Top.transform.position - transform.position
+            ) * Quaternion.Euler(0, 180, 0), _motionDuration / 2
+        ));
+
+        sequence.AppendCallback(() =>
         {
-            transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration).OnComplete(() =>
-            {
-                transform.DORotateQuaternion(
-                    Quaternion.LookRotation(_pair.OtherTowerData.Mover.Data.Top.transform.position - transform.position) * Quaternion.Euler(0, 90, 0),
-                    _motionDuration/2).OnComplete(() =>
-                {
-                    SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, _projectileDuration);
-                });
-            });
+            SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, _projectileDuration);
         });
     }
 
     private void Hide()
     {
-        transform.DOLocalMoveY(hiddenPosY, _motionDuration).OnComplete(() =>
+        transform.DORotateQuaternion(startRot, _motionDuration/2).OnComplete(() =>
         {
-            transform.DORotateQuaternion(startRot, _motionDuration);
+            transform.DOLocalMoveY(hiddenPosY, _motionDuration);
+            CloseCover();
         });
-        CloseCover();
+       
+        
     }
     
     void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
