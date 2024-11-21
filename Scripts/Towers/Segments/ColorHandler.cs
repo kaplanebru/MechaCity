@@ -78,6 +78,11 @@ namespace Towers
         private void SetMats(Material[] mats)
         {
             colorChanger.SetMats(Data.MiddleMeshes, mats);
+            foreach (var meshCombiner in Data.MeshCombiners)
+            {
+                meshCombiner.SetMaterial(Data.TeamData.CombinedMat[0]);
+            }
+            
         }
         
         public void SetColorByColorType(ColorType type)

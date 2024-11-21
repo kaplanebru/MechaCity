@@ -4506,6 +4506,8 @@ MonoBehaviour:
         - {fileID: 7914926590600308079}
         MiddleMeshes:
         - {fileID: 6606844829339026536}
+        - {fileID: 7827256818296853647}
+        - {fileID: 3551314135799062048}
         TimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
       UIData:
         HeightTexts:
@@ -45371,6 +45373,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b6b6dd5bdd3b3b34683e4072ad2da3d1, type: 3}
   m_PrefabInstance: {fileID: 2776848252081980068}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &3551314135799062048 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: b6b6dd5bdd3b3b34683e4072ad2da3d1, type: 3}
+  m_PrefabInstance: {fileID: 2776848252081980068}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2806375865624084876
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46309,6 +46316,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1a169d21544e2144a7df8eb2daaa853, type: 3}
+--- !u!23 &7827256818296853647 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: a1a169d21544e2144a7df8eb2daaa853, type: 3}
+  m_PrefabInstance: {fileID: 8890551219487246347}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9001336966373535712 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a1a169d21544e2144a7df8eb2daaa853, type: 3}

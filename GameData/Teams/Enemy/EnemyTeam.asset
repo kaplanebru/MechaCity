@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TeamType: 1
   DefaultMaterial:
-  - {fileID: 2100000, guid: b0cd489f3f3640d43a02787bcd6d6aeb, type: 2}
-  - {fileID: 2100000, guid: ff9e011226261cc48a802cd60972597f, type: 2}
+  - {fileID: 2100000, guid: f2ff29d1d75aec1419b7ae09b40c0c81, type: 2}
+  - {fileID: 2100000, guid: eda524a7c0fc3ac4cac49ca7e3af53a6, type: 2}
   CombinedMat:
   - {fileID: 2100000, guid: 765b20b9f3353e649814014eeb1e8a22, type: 2}
   SelectedMaterial:
