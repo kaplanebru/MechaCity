@@ -13,17 +13,17 @@ public class ColorChanger
         _timingData = timingData;
     }
     
-    public void FadeColors(MeshRenderer[] meshes, Color[] teamColors)
-    {
-        FadeColor(meshes[0], teamColors[0]);
-        if(meshes.Length < 2) return;
-        
-        for (var i = 1; i < meshes.Length; i++)
-        {
-            FadeColor(meshes[i], teamColors[1]);
-        }
-    }
-    private void FadeColor(MeshRenderer mesh, Color newColor)
+    // public void FadeColors(MeshRenderer[] meshes, Color[] teamColors)
+    // {
+    //     FadeColor(meshes[0], teamColors[0]);
+    //     if(meshes.Length < 2) return;
+    //     
+    //     for (var i = 1; i < meshes.Length; i++)
+    //     {
+    //         FadeColor(meshes[i], teamColors[1]);
+    //     }
+    // }
+    public void FadeColor(MeshRenderer mesh, Color newColor)
     {
         mesh.material.DOColor(newColor, _timingData.colorFadeDuration);
     }

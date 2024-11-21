@@ -60,7 +60,7 @@ namespace Core
         private void AssignPlayers(Player newPlayer, ulong id)
         {
             Teams[id].Data.Player = newPlayer;
-            newPlayer.Setup(Teams[id].Data.TeamTowerData.TeamType);
+            newPlayer.Setup(Teams[id].Data.teamColorData.TeamType);
             UIEventbus.OnPlayerSet?.Invoke(Teams[id].Data.Name);
 
             if (!MultiplayerSetter.IsMultiplayerOn)

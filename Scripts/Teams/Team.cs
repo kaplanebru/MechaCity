@@ -32,7 +32,7 @@ namespace Teams
                 if (t.ConstantData.StartTeam == Data.TeamType)
                 {
                     Data.Towers.Add(t.Data);
-                    t.Setup(Data.TeamTowerData);
+                    t.Setup(Data.teamColorData);
                 }
             }
         }
@@ -47,7 +47,7 @@ namespace Teams
             Data.Towers.Add(tower);
 
             Tower towerObj = AllTowers.GetTower(tower.UniqID);
-            towerObj.SetTeam(Data.TeamTowerData);
+            towerObj.SetTeam(Data.teamColorData);
         }
 
         public void RemoveTower(TowerData tower)

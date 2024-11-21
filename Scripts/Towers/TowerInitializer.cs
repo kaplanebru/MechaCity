@@ -19,7 +19,7 @@ namespace Towers
             Data = _tower.Data;
         }
         
-        public void Setup(TeamTowerData teamData)
+        public void Setup(TeamColorData teamData)
         {
             Data.Height = ConstantData.StartHeight;
             Data.DamagePower = ConstantData.DamagePower;

@@ -49,7 +49,7 @@ public class SelectionSlot : MonoBehaviour
 
     public void SetTeamColor(Team team)
     {
-        image.color = team.Data.TeamTowerData.TeamColors[0]; //temp. Uİ Color da ekli olabilir belki
+        image.color = team.Data.teamColorData.TeamColor; //temp. Uİ Color da ekli olabilir belki
     }
 
     public void SetIndex(int index)

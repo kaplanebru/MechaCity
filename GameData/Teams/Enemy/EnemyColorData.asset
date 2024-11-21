@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fe8c36c6213cd34aadd74f5d453a03b, type: 3}
+  m_Name: EnemyColorData
+  m_EditorClassIdentifier: 
+  TeamType: 1
+  DefaultMaterial: {fileID: 2100000, guid: f2ff29d1d75aec1419b7ae09b40c0c81, type: 2}
+  SelectedMaterial: {fileID: 2100000, guid: 9167352f794f0a248b724ae17c39bca1, type: 2}
+  BlueprintMaterial: {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}
+  FreezeMaterial: {fileID: 2100000, guid: f5e02e4ddefe6824cae128d863098725, type: 2}
+  CombinedMat: {fileID: 2100000, guid: 765b20b9f3353e649814014eeb1e8a22, type: 2}
+  SelectedCombinedMat: {fileID: 2100000, guid: 9167352f794f0a248b724ae17c39bca1, type: 2}
+  BpCombinedMat: {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}
+  FreezeCombinedMat: {fileID: 2100000, guid: f5e02e4ddefe6824cae128d863098725, type: 2}

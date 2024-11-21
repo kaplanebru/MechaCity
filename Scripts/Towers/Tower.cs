@@ -26,12 +26,12 @@ namespace Towers
             interruptionMotion.Subscribe();
         }
 
-        public void Setup(TeamTowerData teamData)
+        public void Setup(TeamColorData teamData)
         {
             initializer.Setup(teamData);
         }
 
-        public void SetTeam(TeamTowerData teamData)
+        public void SetTeam(TeamColorData teamData)
         {
             Data.TeamType = teamData.TeamType;
             Data.ColorHandler.SetTeamVisuals(teamData);

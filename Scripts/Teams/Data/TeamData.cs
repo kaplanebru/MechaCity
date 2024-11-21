@@ -18,7 +18,7 @@ namespace Teams
         public Player Player;
         public List<TowerData> Towers = new();
         
-        public TeamTowerData TeamTowerData;
+        public TeamColorData teamColorData;
        
     }
     
