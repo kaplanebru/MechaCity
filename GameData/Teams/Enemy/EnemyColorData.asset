@@ -13,6 +13,17 @@ MonoBehaviour:
   m_Name: EnemyColorData
   m_EditorClassIdentifier: 
   TeamType: 1
+  ColorDatas:
+  - DistrictType: 0
+    DefaultMaterial: {fileID: 2100000, guid: f2ff29d1d75aec1419b7ae09b40c0c81, type: 2}
+    SelectedMaterial: {fileID: 2100000, guid: 9167352f794f0a248b724ae17c39bca1, type: 2}
+    BlueprintMaterial: {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}
+    FreezeMaterial: {fileID: 2100000, guid: f5e02e4ddefe6824cae128d863098725, type: 2}
+  - DistrictType: 1
+    DefaultMaterial: {fileID: 2100000, guid: 765b20b9f3353e649814014eeb1e8a22, type: 2}
+    SelectedMaterial: {fileID: 2100000, guid: 9167352f794f0a248b724ae17c39bca1, type: 2}
+    BlueprintMaterial: {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}
+    FreezeMaterial: {fileID: 2100000, guid: f5e02e4ddefe6824cae128d863098725, type: 2}
   DefaultMaterial: {fileID: 2100000, guid: f2ff29d1d75aec1419b7ae09b40c0c81, type: 2}
   SelectedMaterial: {fileID: 2100000, guid: 9167352f794f0a248b724ae17c39bca1, type: 2}
   BlueprintMaterial: {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}

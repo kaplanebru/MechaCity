@@ -36,6 +36,13 @@ namespace Enums
             Blueprint,
             Freeze
         }
+
+        public enum ColorDistrict
+        {
+            OuterShell,
+            InnerShell,
+            Inside
+        }
     }
 
     public enum ActorType

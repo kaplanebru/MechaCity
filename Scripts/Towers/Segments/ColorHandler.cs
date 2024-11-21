@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DataModels;
 using DG.Tweening;
 using Enums;
@@ -73,23 +74,23 @@ namespace Towers
 
         public void ToFreezeColor()
         {
-            SetMats(Data.TeamData.FreezeMaterial, Data.TeamData.FreezeCombinedMat);
+            SetMats(Data.TeamData.ColorDatas.Select(c=>c.FreezeMaterial).ToArray());
         }
 
         public void ToBlueprintColor()
         {
-            SetMats(Data.TeamData.BlueprintMaterial, Data.TeamData.BpCombinedMat);
+            SetMats(Data.TeamData.ColorDatas.Select(c=>c.BlueprintMaterial).ToArray());
         }
 
         public void ToSelectionColor()
         {
-            SetMats(Data.TeamData.SelectedMaterial, Data.TeamData.SelectedCombinedMat);
+            SetMats(Data.TeamData.ColorDatas.Select(c=>c.SelectedMaterial).ToArray());
             GeneralEventbus.OnTowerColorChange?.Invoke(Id);
         }
 
         public void ToOriginalColor()
         {
-            SetMats(Data.TeamData.DefaultMaterial, Data.TeamData.CombinedMat);
+            SetMats(Data.TeamData.ColorDatas.Select(c=>c.DefaultMaterial).ToArray());
             GeneralEventbus.OnTurnTowerDeselect?.Invoke(Id);
         }
         

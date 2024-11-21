@@ -13,6 +13,17 @@ MonoBehaviour:
   m_Name: PlayerColorData
   m_EditorClassIdentifier: 
   TeamType: 0
+  ColorDatas:
+  - DistrictType: 0
+    DefaultMaterial: {fileID: 2100000, guid: c506bdf6567352449b0408d65cc3c3b4, type: 2}
+    SelectedMaterial: {fileID: 2100000, guid: 56fccc219304f4345a43b6fff7e9b4b9, type: 2}
+    BlueprintMaterial: {fileID: 2100000, guid: 0aa7bef47f2ac83499a077f51f6fb1f5, type: 2}
+    FreezeMaterial: {fileID: 2100000, guid: 306b62ebcdc1d0a499a07cf2090c2c7a, type: 2}
+  - DistrictType: 1
+    DefaultMaterial: {fileID: 2100000, guid: 4cb09656eb0473249bed5fa95480f449, type: 2}
+    SelectedMaterial: {fileID: 2100000, guid: 56fccc219304f4345a43b6fff7e9b4b9, type: 2}
+    BlueprintMaterial: {fileID: 2100000, guid: 0aa7bef47f2ac83499a077f51f6fb1f5, type: 2}
+    FreezeMaterial: {fileID: 2100000, guid: 306b62ebcdc1d0a499a07cf2090c2c7a, type: 2}
   DefaultMaterial: {fileID: 2100000, guid: c506bdf6567352449b0408d65cc3c3b4, type: 2}
   SelectedMaterial: {fileID: 2100000, guid: 56fccc219304f4345a43b6fff7e9b4b9, type: 2}
   BlueprintMaterial: {fileID: 2100000, guid: 0aa7bef47f2ac83499a077f51f6fb1f5, type: 2}
