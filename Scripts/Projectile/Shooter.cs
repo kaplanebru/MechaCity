@@ -17,6 +17,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
     private CombatPair _pair;
     private float _motionDuration;
     private float _projectileDuration;
+    private Quaternion startRot;
     
     private float hiddenPosY;
     public int Id { get; set; }
@@ -24,6 +25,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
     {
         Id = id;
         hiddenPosY = transform.localPosition.y;
+        startRot = transform.rotation;
     }
 
 
@@ -56,14 +58,22 @@ public class Shooter : MonoBehaviour, ITowerRelated
         {
             transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration).OnComplete(() =>
             {
-                SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, _projectileDuration);
+                transform.DORotateQuaternion(
+                    Quaternion.LookRotation(_pair.OtherTowerData.Mover.Data.Top.transform.position - transform.position) * Quaternion.Euler(0, 90, 0),
+                    _motionDuration/2).OnComplete(() =>
+                {
+                    SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, _projectileDuration);
+                });
             });
         });
     }
 
     private void Hide()
     {
-        transform.DOLocalMoveY(hiddenPosY, _motionDuration);
+        transform.DOLocalMoveY(hiddenPosY, _motionDuration).OnComplete(() =>
+        {
+            transform.DORotateQuaternion(startRot, _motionDuration);
+        });
         CloseCover();
     }
     

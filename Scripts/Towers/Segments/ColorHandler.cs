@@ -40,12 +40,12 @@ namespace Towers
         public void Initialize()
         {
             colorChanger = new ColorChanger(Data.TimingData);
+            SetCombinedMeshes();
         }
        
         public void SetTeamVisuals(TeamColorData teamData)
         {
             Data.TeamData = teamData;
-            SetCombinedMeshes();
             
             //FadeColor();
             //SetTeamLogo();
