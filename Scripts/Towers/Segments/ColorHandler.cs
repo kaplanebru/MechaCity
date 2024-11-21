@@ -17,6 +17,7 @@ namespace Towers
         
         public TeamTowerData TeamData;
         public SpriteRenderer Logo;
+        public MeshCombiner[] MeshCombiners;
         public MeshRenderer[] MiddleMeshes;
         public CombatTimingData TimingData;
     }
@@ -42,10 +43,19 @@ namespace Towers
         public void SetTeamVisuals(TeamTowerData teamData)
         {
             Data.TeamData = teamData;
+            SetCombinedMeshes();
             FadeColor();
             SetTeamLogo();
         }
         
+        private void SetCombinedMeshes()
+        {
+            foreach (var meshCombiner in Data.MeshCombiners)
+            {
+                meshCombiner.CombineMeshes(Data.TeamData.CombinedMat[0]);
+            }
+        
+        }
         void SetTeamLogo()
         {
             
@@ -68,9 +78,7 @@ namespace Towers
         {
             colorChanger.SetMats(Data.MiddleMeshes, mats);
         }
-
-       
-
+        
         public void SetColorByColorType(ColorType type)
         {
             SetMats(Data.TeamData.GetColorByType(type));

@@ -11,6 +11,7 @@ namespace Towers
     {
         public TeamType TeamType;
         public Material[] DefaultMaterial;
+        public Material[] CombinedMat;
         public Material[] SelectedMaterial;
         public Material[] BlueprintMaterial;
         public Material[] FreezeMaterial;

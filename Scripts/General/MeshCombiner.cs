@@ -5,13 +5,8 @@ using UnityEngine;
 
 public class MeshCombiner : MonoBehaviour
 {
-    public Material combinedMat;
-    private void Start()
-    {
-        CombineMeshes();
-    }
-
-    public void CombineMeshes()
+    
+    public void CombineMeshes(Material combinedMat)
     {
         MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
         

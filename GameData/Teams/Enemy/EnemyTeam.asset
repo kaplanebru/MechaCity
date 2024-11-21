@@ -16,6 +16,8 @@ MonoBehaviour:
   DefaultMaterial:
   - {fileID: 2100000, guid: b0cd489f3f3640d43a02787bcd6d6aeb, type: 2}
   - {fileID: 2100000, guid: ff9e011226261cc48a802cd60972597f, type: 2}
+  CombinedMat:
+  - {fileID: 2100000, guid: 765b20b9f3353e649814014eeb1e8a22, type: 2}
   SelectedMaterial:
   - {fileID: 2100000, guid: 771247f80f323b34eab275691a30263a, type: 2}
   - {fileID: 2100000, guid: 9167352f794f0a248b724ae17c39bca1, type: 2}
