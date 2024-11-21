@@ -5,24 +5,31 @@ using UnityEngine;
 
 public class MeshCombiner : MonoBehaviour
 {
-    
-    public void CombineMeshes(Material combinedMat)
+    private MeshFilter parentMeshFilter;
+    private MeshRenderer parentRenderer;
+
+    public void SetMaterial(Material combinedMat)
     {
-        MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
+        parentRenderer.material = combinedMat;
+    }
+    public void CombineMeshes()
+    {
         
+        MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
+
         // Array to hold combine instances
         CombineInstance[] combine = new CombineInstance[meshFilters.Length];
         Matrix4x4 parentTransform = transform.worldToLocalMatrix;
 
         // Iterate through MeshFilters
+        parentMeshFilter = GetComponent<MeshFilter>();
         for (int i = 0; i < meshFilters.Length; i++)
         {
-            // Skip the parent object
-            if (meshFilters[i] == GetComponent<MeshFilter>()) 
+            if (meshFilters[i] == parentMeshFilter)
                 continue;
 
             Mesh mesh = meshFilters[i].sharedMesh;
-            if (mesh == null) 
+            if (mesh == null)
                 continue;
 
             combine[i].mesh = mesh;
@@ -30,20 +37,22 @@ public class MeshCombiner : MonoBehaviour
             meshFilters[i].gameObject.SetActive(false); // Disable child object
         }
 
-        // Assign the combined mesh to the parent
-        MeshFilter parentMeshFilter = GetComponent<MeshFilter>();
+        AssignCombinedMesh(combine);
+
+    }
+    private void AssignCombinedMesh(CombineInstance[] combine)
+    {
         if (parentMeshFilter == null)
             parentMeshFilter = gameObject.AddComponent<MeshFilter>();
 
-        MeshRenderer parentRenderer = GetComponent<MeshRenderer>();
+        parentRenderer = GetComponent<MeshRenderer>();
         if (parentRenderer == null)
             parentRenderer = gameObject.AddComponent<MeshRenderer>();
 
         Mesh combinedMesh = new Mesh();
         combinedMesh.CombineMeshes(combine, true, true);
         parentMeshFilter.mesh = combinedMesh;
-
-        parentRenderer.material = combinedMat;
-        
     }
+
+    
 }

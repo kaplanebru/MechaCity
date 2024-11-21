@@ -52,7 +52,8 @@ namespace Towers
         {
             foreach (var meshCombiner in Data.MeshCombiners)
             {
-                meshCombiner.CombineMeshes(Data.TeamData.CombinedMat[0]);
+                meshCombiner.CombineMeshes();
+                meshCombiner.SetMaterial(Data.TeamData.CombinedMat[0]);
             }
         
         }
