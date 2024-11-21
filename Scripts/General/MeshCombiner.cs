@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MeshCombiner : MonoBehaviour
 {
+    public Material combinedMat;
     private void Start()
     {
         CombineMeshes();
@@ -47,7 +48,7 @@ public class MeshCombiner : MonoBehaviour
         combinedMesh.CombineMeshes(combine, true, true);
         parentMeshFilter.mesh = combinedMesh;
 
-        //parentRenderer.material.color = Color.green;
+        parentRenderer.material = combinedMat;
         
     }
 }
