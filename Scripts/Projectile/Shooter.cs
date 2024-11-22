@@ -18,6 +18,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
     private float _motionDuration;
     private float _projectileDuration;
     private Quaternion startRot;
+    private Quaternion coverStartRot;
     
     private float hiddenPosY;
     public int Id { get; set; }
@@ -26,6 +27,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
         Id = id;
         hiddenPosY = transform.localPosition.y;
         startRot = transform.rotation;
+        coverStartRot = cover.transform.localRotation;
     }
 
 
@@ -45,12 +47,12 @@ public class Shooter : MonoBehaviour, ITowerRelated
     private Tweener coverRoutine;
     void OpenCover()
     {
-        coverRoutine = cover.DOLocalRotate(new Vector3(90, 0, 0), .5f);
+        coverRoutine = cover.DOLocalRotateQuaternion(coverStartRot * Quaternion.Euler(90, 0, 0), .5f);
     }
 
     void CloseCover()
     {
-        cover.DOLocalRotate(Vector3.zero, .5f);
+        cover.DOLocalRotateQuaternion(coverStartRot, .5f);
     }
     public void RevealSelf()
     {
