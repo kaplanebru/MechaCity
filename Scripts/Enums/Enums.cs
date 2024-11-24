@@ -93,6 +93,7 @@ namespace Enums
         Double,
         SelectionIncrement,
         DoubleSelf,
+        Shield,
         None
     }
 
