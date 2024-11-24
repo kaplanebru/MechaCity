@@ -18,7 +18,7 @@ MonoBehaviour:
   ReliefModel: {fileID: 0}
   GlowColor: {r: 0, g: 0, b: 0, a: 0}
   Title: Shield
-  Description: Protects tower
+  Description: Protects selected tower
   Instruction: 
   Price: 1
   Level: 1

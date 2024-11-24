@@ -10,6 +10,7 @@ namespace TowerExternal
         public Cable[] Cables;
         public Floor[] Floors;
         public IGear[] IGears;
+        public Shield[] Shields;
         
         public Color CableSelectionColor;
         public Color CableDefaultColor;

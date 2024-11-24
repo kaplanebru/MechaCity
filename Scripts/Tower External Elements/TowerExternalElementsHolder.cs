@@ -9,6 +9,7 @@ namespace TowerExternal
         public CableGroups CableGroups;
         public FloorGroups FloorGroups;
         public GearGroup GearGroup;
+        public ShieldGroups ShieldGroups;
 
         private void OnEnable()
         {
@@ -26,6 +27,7 @@ namespace TowerExternal
             Data.Cables = GetComponentsInChildren<Cable>();
             Data.Floors = GetComponentsInChildren<Floor>();
             Data.IGears = GetComponentsInChildren<IGear>();
+            Data.Shields = GetComponentsInChildren<Shield>();
             //.Where(g => g.GameObject.tag != "Cosmetic").ToArray();
         }
 
@@ -34,6 +36,8 @@ namespace TowerExternal
             CableGroups = new CableGroups(Data.Cables);
             FloorGroups = new FloorGroups(Data.Floors);
             GearGroup = new GearGroup(Data.IGears.ToArray());
+            ShieldGroups = new ShieldGroups(Data.Shields);
+            
             
             CableGroups.SetColor(Data.CableSelectionColor, Data.CableDefaultColor);
             SubscribeToGroups();

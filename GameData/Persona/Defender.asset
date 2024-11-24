@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Defender
   m_EditorClassIdentifier: 
   Type: 2
-  BpTypes: 010000000100000001000000
+  BpTypes: 050000000100000001000000
