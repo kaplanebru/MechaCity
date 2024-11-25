@@ -5,14 +5,12 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class FloorGroups: IEnumeratorContainer
+    public class FloorGroups: BaseTowerExternalGroup<Floor> ,IEnumeratorContainer
     {
-        [SerializeField]private Floor[] _group;
+      
         private List<Floor> selectedFloors = new();
-
-        public FloorGroups(Floor[] group)
+        public FloorGroups(Floor[] group) : base(group)
         {
-            _group = group;
         }
 
         public void Subscribe()
@@ -28,7 +26,7 @@ namespace TowerExternal
         {
             foreach (var id in ids)
             {
-                var floor = _group.FirstOrDefault(f => f.Id == id);
+                var floor = Group[id]; //Group.FirstOrDefault(f => f.Id == id);
                 selectedFloors.Add(floor);
                 floor.ShowGear();
             }
@@ -38,7 +36,7 @@ namespace TowerExternal
 
         void HideAll()
         {
-            foreach (var floor in _group)
+            foreach (var floor in Group.Values)
             {
                 floor.TurnOffGear();
             }

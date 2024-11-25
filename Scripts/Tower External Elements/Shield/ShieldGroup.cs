@@ -5,15 +5,12 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class ShieldGroups
+    public class ShieldGroup: BaseTowerExternalGroup<Shield>
     {
-        private Shield[] _group;
-
-        public ShieldGroups(Shield[] group)
+        public ShieldGroup(Shield[] group) : base(group)
         {
-            _group = group;
         }
-
+     
         public void Subscribe()
         {
             BpEventbus.ActionEvents.OnShieldActionTriggered += RevealShields;
@@ -24,8 +21,8 @@ namespace TowerExternal
         {
             foreach (var towerID in towerIDs)
             {
-                var selectedShield = _group.FirstOrDefault(s => s.Id == towerID);
-                //selectedShield.RevealShield(); //todo: tower height
+                var shield = Group[towerID];
+                //shield.RevealShield(); //todo: tower height
             }
         }
 
@@ -35,5 +32,8 @@ namespace TowerExternal
             BpEventbus.ActionEvents.OnShieldActionTriggered -= RevealShields;
 
         }
+
+
+       
     }
 }
