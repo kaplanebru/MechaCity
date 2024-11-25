@@ -29,7 +29,7 @@ public static class BpEventbus
         public static Action OnReverseActionTriggered;
         public static Action OnSelectionIncrementTriggered;
         public static Action OnRestoreSelectionAmount;
-        public static Action<int[]> OnShieldActionTriggered;
+        public static Action<Vector2Int[]> OnShieldActionTriggered;
     }
 
     public static class SubscriberEvents

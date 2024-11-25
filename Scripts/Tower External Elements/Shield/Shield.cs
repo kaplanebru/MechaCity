@@ -23,6 +23,7 @@ namespace TowerExternal
         {
             currentHeight = height;
             shieldObject.gameObject.SetActive(true);
+            ShowShieldParts();
         }
 
         void ShowShieldParts()

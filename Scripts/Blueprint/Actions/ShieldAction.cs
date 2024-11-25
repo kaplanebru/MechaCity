@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Actor;
+using Towers;
 using UnityEngine;
 
 namespace Blueprint
@@ -11,8 +13,9 @@ namespace Blueprint
         {
             Debug.Log("execute shield");
             var selectedActors = (uint[]) obj[0];
-            var towers = ActorHolder.Registry[selectedActors[0]].TowerIDs;
-            BpEventbus.ActionEvents.OnShieldActionTriggered?.Invoke(towers);
+            var towers = ActorHolder.Registry[selectedActors[0]].Towers;
+
+            BpEventbus.ActionEvents.OnShieldActionTriggered?.Invoke(towers.Select(tower => new Vector2Int(tower.UniqID, tower.Height)).ToArray());
         }
     }
 }

@@ -17,12 +17,12 @@ namespace TowerExternal
 
         }
 
-        private void RevealShields(int[] towerIDs)
+        private void RevealShields(Vector2Int[] towersAndHeight)
         {
-            foreach (var towerID in towerIDs)
+            foreach (var item in towersAndHeight)
             {
-                var shield = Group[towerID];
-                //shield.RevealShield(); //todo: tower height
+                var shield = Group[item.x];
+                shield.RevealShield(item.y);
             }
         }
 
