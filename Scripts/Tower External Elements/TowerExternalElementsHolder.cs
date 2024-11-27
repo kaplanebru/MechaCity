@@ -53,6 +53,7 @@ namespace TowerExternal
             CableGroups.Subscribe();
             FloorGroups.Subscribe();
             GearGroup.Subscribe();
+            ShieldGroup.Subscribe();
         }
 
         void UnsubscribeFromGroups()
@@ -60,6 +61,7 @@ namespace TowerExternal
             CableGroups.Unsubscribe();
             FloorGroups.Unsubscribe();
             GearGroup.Unsubscribe();
+            ShieldGroup.Unsubscribe();
         }
 
         private void OnDisable()
