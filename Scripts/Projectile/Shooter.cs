@@ -97,6 +97,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
             if (victim.ShieldData.HasEffectiveShield(victim.Height))
             {
                 //TODO: shield effect
+                _pair.CompleteCombat();
                 return;
             }
             Eventbus.HealthEvents.OnShoot?.Invoke(_pair.OtherActor.ID, perpetrator.DamagePower, _pair.CompleteCombat);

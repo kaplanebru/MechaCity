@@ -35,7 +35,9 @@ namespace Blueprint
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                BpEventbus.ActionEvents.OnShieldActionTriggered?.Invoke(new Vector2Int[] {new Vector2Int(0, AllTowers.GetData(0).Height)});
+                var tower = AllTowers.GetData(0);
+                tower.ShieldData.SetShield(tower.Height);
+                BpEventbus.ActionEvents.OnShieldActionTriggered?.Invoke(new Vector2Int[] {new Vector2Int(0, tower.Height)});
             }
         }
 
