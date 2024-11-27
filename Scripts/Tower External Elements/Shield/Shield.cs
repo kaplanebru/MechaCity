@@ -21,6 +21,8 @@ namespace TowerExternal
 
         public void RevealShield(int height)
         {
+            DisableAllParts();
+            
             currentHeight = height;
             shieldObject.gameObject.SetActive(true);
             ShowShieldParts();
@@ -28,14 +30,27 @@ namespace TowerExternal
 
         void ShowShieldParts()
         {
+            ResetShieldParts();
+            
             for (int i = 0; i < currentHeight; i++)
             {
                 var part = shieldParts[i];
-                part.DOLocalMoveY(CommonData.TowerHeightPerStep * (i + 1), riseDuration);
+                part.gameObject.SetActive(true);
+                part.DOLocalMoveY(CommonData.TowerHeightPerStep * (i), riseDuration);
             }
         }
 
-        void ResetShieldParts() 
+        void ResetShieldParts()
+        {
+            for (var i = 0; i < currentHeight; i++)
+            {
+                shieldParts[i].transform.localPosition = Vector3.zero;
+            }
+        }
+
+       
+
+        void DisableAllParts()
         {
             foreach (var shieldPart in shieldParts)
             {
