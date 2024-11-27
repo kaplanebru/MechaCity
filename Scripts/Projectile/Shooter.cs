@@ -56,20 +56,6 @@ public class Shooter : MonoBehaviour, ITowerRelated
     }
     public void RevealSelf()
     {
-        // coverRoutine.OnComplete(() =>
-        // {
-        //     transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration).OnComplete(() =>
-        //     {
-        //         transform.DORotateQuaternion(
-        //             Quaternion.LookRotation(_pair.OtherTowerData.Mover.Data.Top.transform.position - transform.position) * Quaternion.Euler(0, 180, 0),
-        //             _motionDuration/2).OnComplete(() =>
-        //         {
-        //             SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, _projectileDuration);
-        //         });
-        //     });
-        // });
-        
-        
         Sequence sequence = DOTween.Sequence();
         sequence.Append(coverRoutine);
         sequence.Append(transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration));
@@ -106,10 +92,16 @@ public class Shooter : MonoBehaviour, ITowerRelated
         projectile.Move(() =>
         {
             perpetrator.ColorHandler.ToOriginalColor();
-           
+
+            Hide();
+            if (victim.ShieldData.HasEffectiveShield(victim.Height))
+            {
+                //TODO: shield effect
+                return;
+            }
             Eventbus.HealthEvents.OnShoot?.Invoke(_pair.OtherActor.ID, perpetrator.DamagePower, _pair.CompleteCombat);
             
-            Hide();
+            //Hide();
         });
     }
 }

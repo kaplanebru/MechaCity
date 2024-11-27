@@ -19,6 +19,7 @@ namespace Towers
 
         //HEIGHT
         private int height;
+
         public int Height
         {
             get => height;
@@ -35,8 +36,9 @@ namespace Towers
                 }
             }
         }
+
         public int AvailableHeight;
-        
+
         //SHOOTING
         public bool CanShoot { get; private set; }
 
@@ -51,8 +53,9 @@ namespace Towers
                 CanShoot = value > 0;
             }
         }
+
         public int DamagePower;
-        
+
         public TeamType TeamType;
         public List<int> NeighbourIDs = new();
 
@@ -62,10 +65,11 @@ namespace Towers
         public BpTowerData BpTowerData;
         public CombatTimingData timingData;
         public ClickHandler clickHandler;
+        public ShieldData ShieldData = new();
 
         public TowerSegmentDataHolder SegmentData = new();
         public List<ITowerSegment> TowerSegments = new();
-        
+
         public TowerMover Mover;
         public ColorHandler ColorHandler;
         public TowerUIHandler UIHandler;
@@ -116,7 +120,27 @@ namespace Towers
         {
             Mover.Shake();
         }
-        
+    }
+
+    public class ShieldData
+    {
+        //actorde heightler farklı olabilir shieldler için
+        public int Height { get; private set; } = 0;
+
+        public void SetShield(int height)
+        {
+            Height = height;
+        }
+
+        public bool HasEffectiveShield(int towerHeight)
+        {
+            return towerHeight <= Height;
+        }
+
+        public void ResetShield()
+        {
+            Height = 0;
+        }
     }
 
     [Serializable]

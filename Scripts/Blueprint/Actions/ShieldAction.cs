@@ -15,6 +15,10 @@ namespace Blueprint
             var selectedActors = (uint[]) obj[0];
             var towers = ActorHolder.Registry[selectedActors[0]].Towers;
 
+            foreach (var tower in towers)
+            {
+                tower.ShieldData.SetShield(tower.Height);
+            }
             BpEventbus.ActionEvents.OnShieldActionTriggered?.Invoke(towers.Select(tower => new Vector2Int(tower.UniqID, tower.Height)).ToArray());
         }
     }
