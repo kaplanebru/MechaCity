@@ -19,6 +19,7 @@ namespace Blueprint
             AllBlueprints.Add(BpType.DoubleSelf, new BpDoubleSelf());
             AllBlueprints.Add(BpType.Double, new BpDouble());
             AllBlueprints.Add(BpType.Shield, new BpShield());
+            AllBlueprints.Add(BpType.BreakShield, new BpBreakShield());
         }
     }
 

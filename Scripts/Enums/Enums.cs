@@ -20,6 +20,7 @@ namespace Enums
             PlayerOnlyBp,
             RivalOnlyBp,
             SinglePlayerOnlyBP,
+            SingleRivalOnlyBP,
             All, 
             None
         }
@@ -95,6 +96,7 @@ namespace Enums
         SelectionIncrement,
         DoubleSelf,
         Shield,
+        BreakShield,
         None
     }
 

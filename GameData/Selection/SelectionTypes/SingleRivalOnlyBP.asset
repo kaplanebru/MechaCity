@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1987cd20271c39046ab45e2166068a4f, type: 3}
-  m_Name: Jester
+  m_Script: {fileID: 11500000, guid: 7f00e7d641d64aaab67b2caa5c7fa711, type: 3}
+  m_Name: SingleRivalOnlyBP
   m_EditorClassIdentifier: 
-  Type: 0
-  BpTypes: 060000000000000000000000
+  Type: 4
+  Groups:
+  - Index: 0
+    MaxTowers: 1
+    SelectionColorType: 2
+    BlockType: 0
