@@ -19,6 +19,7 @@ namespace Enums
             PlayerOnlyStd,
             PlayerOnlyBp,
             RivalOnlyBp,
+            SinglePlayerOnlyBP,
             All, 
             None
         }
