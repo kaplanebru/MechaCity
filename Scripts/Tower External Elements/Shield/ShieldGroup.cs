@@ -10,11 +10,20 @@ namespace TowerExternal
         public ShieldGroup(Shield[] group) : base(group)
         {
         }
-     
+
         public void Subscribe()
         {
             BpEventbus.ActionEvents.OnShieldActionTriggered += RevealShields;
+            BpEventbus.ActionEvents.OnBreakShieldActionTriggered += BreakSelectedShield;
+        }
 
+        private void BreakSelectedShield(int[] towerIDs)
+        {
+            foreach (var id in towerIDs)
+            {
+                var shield = Group[id];
+                shield.BreakShield();
+            }
         }
 
         private void RevealShields(Vector2Int[] towersAndHeight)
@@ -30,7 +39,7 @@ namespace TowerExternal
         public void Unsubscribe()
         {
             BpEventbus.ActionEvents.OnShieldActionTriggered -= RevealShields;
-
+            BpEventbus.ActionEvents.OnBreakShieldActionTriggered -= BreakSelectedShield;
         }
 
 

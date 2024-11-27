@@ -6,6 +6,7 @@ using DataModels;
 using Enums;
 using JetBrains.Annotations;
 using Network;
+using Towers;
 using UnityEngine;
 
 namespace Blueprint
@@ -28,6 +29,14 @@ namespace Blueprint
         void Start()
         {
             Initialize();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                BpEventbus.ActionEvents.OnShieldActionTriggered?.Invoke(new Vector2Int[] {new Vector2Int(0, AllTowers.GetData(0).Height)});
+            }
         }
 
         public void Initialize()
