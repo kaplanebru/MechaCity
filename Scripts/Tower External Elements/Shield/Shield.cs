@@ -9,8 +9,8 @@ namespace TowerExternal
     {
         public int Id { get; set; }
         public Transform shieldObject;
-        public Transform[] shieldParts;
-        public List<Transform> openParts = new();
+        public Fence[] fences;
+        public List<Fence> openFences = new();
         public float riseDuration = 1;
         public CommonData CommonData;
 
@@ -22,62 +22,51 @@ namespace TowerExternal
 
         public void RevealShield(int height)
         {
-            DisableAllParts();
+            DisableAllFences();
             
             currentHeight = height;
             shieldObject.gameObject.SetActive(true);
-            ShowShieldParts();
+            ShowFences();
         }
 
-        void ShowShieldParts()
+        void ShowFences()
         {
-            ResetShieldParts();
+            ResetFences();
             
             for (int i = 0; i < currentHeight; i++)
             {
-                var part = shieldParts[i];
-                openParts.Add(part);
-                part.gameObject.SetActive(true);
-                part.DOLocalMoveY(CommonData.TowerHeightPerStep * (i), riseDuration);
+                var fence = fences[i];
+                openFences.Add(fence);
+                fence.gameObject.SetActive(true);
+                fence.transform.DOLocalMoveY(CommonData.TowerHeightPerStep * (i), riseDuration);
             }
         }
 
-        void ResetShieldParts()
+        void ResetFences()
         {
-            openParts.Clear();
+            openFences.Clear();
             for (var i = 0; i < currentHeight; i++)
             {
-                shieldParts[i].transform.localPosition = Vector3.zero;
+                fences[i].transform.localPosition = Vector3.zero;
             }
         }
         
-        void DisableAllParts()
+        void DisableAllFences()
         {
-            foreach (var shieldPart in shieldParts)
+            foreach (var fence in fences)
             {
-                shieldPart.gameObject.SetActive(false);
+                fence.gameObject.SetActive(false);
             }
         }
 
-        public void BreakShield() //parçalanıp yere düşsün, sonra yok olsun
+        public void BreakShield()
         {
-            Debug.Log(openParts.Count);
-            foreach (var part in openParts)
+            foreach (var fence in openFences)
             {
-                var smallParts = part.GetComponentsInChildren<Transform>(); //todo test
-                foreach (var smallPart in smallParts)
-                {
-                    var pos = transform.position + Random.onUnitSphere * 4;
-                    pos.y = 0;
-                    smallPart.transform.position = pos;
-                    smallPart.transform.rotation = Quaternion.Euler(GetRandomAngle(), GetRandomAngle(), GetRandomAngle());
-                }
+                fence.Explode();
             }
         }
 
-        float GetRandomAngle()
-        {
-            return Random.Range(0, 360);
-        }
+        
     }
 }
