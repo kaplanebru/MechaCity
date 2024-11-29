@@ -104,7 +104,8 @@ namespace Enums
     {
         Jester,
         Fighter,
-        Defender
+        Defender,
+        Common
     }
 
     public enum IndicatorState

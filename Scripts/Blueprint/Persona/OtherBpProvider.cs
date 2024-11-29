@@ -15,7 +15,7 @@ namespace Blueprint
         {
             otherBlueprints.Clear();
             otherBlueprints = PersonaHolder.Personas
-                .Where(p => p.Key != ownType)
+                .Where(p => p.Key != ownType && p.Key != PersonaType.Common)
                 .SelectMany(p => p.Value.BpTypes)
                 .ToList();
             

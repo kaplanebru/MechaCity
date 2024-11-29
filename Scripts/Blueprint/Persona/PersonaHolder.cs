@@ -37,6 +37,7 @@ namespace Blueprint
             Personas.Add(PersonaType.Jester, dataByType[PersonaType.Jester]);
             Personas.Add(PersonaType.Fighter,dataByType[PersonaType.Fighter]);
             Personas.Add(PersonaType.Defender, dataByType[PersonaType.Defender]);
+            Personas.Add(PersonaType.Common, dataByType[PersonaType.Common]);
         }
         
     }
