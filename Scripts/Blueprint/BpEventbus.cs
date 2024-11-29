@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Blueprint;
 using Enums;
 using Enums.Selections;
-using Towers;
 using UnityEngine;
 
 public static class BpEventbus
@@ -29,7 +28,6 @@ public static class BpEventbus
         public static Action OnReverseActionTriggered;
         public static Action OnSelectionIncrementTriggered;
         public static Action OnRestoreSelectionAmount;
-        public static Action<Vector2Int[]> OnShieldActionTriggered;
         public static Action<int[]> OnBreakShieldActionTriggered;
     }
 

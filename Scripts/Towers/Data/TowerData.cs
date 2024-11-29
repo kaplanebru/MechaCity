@@ -122,27 +122,6 @@ namespace Towers
         }
     }
 
-    public class ShieldData
-    {
-        //actorde heightler farklı olabilir shieldler için
-        public int Height { get; private set; } = 0;
-
-        public void SetShield(int height)
-        {
-            Height = height;
-        }
-
-        public bool HasEffectiveShield(int towerHeight)
-        {
-            return towerHeight <= Height;
-        }
-
-        public void ResetShield()
-        {
-            Height = 0;
-        }
-    }
-
     [Serializable]
     public class TowerSegmentDataHolder
     {

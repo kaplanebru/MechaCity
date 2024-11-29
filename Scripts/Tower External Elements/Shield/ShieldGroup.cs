@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class ShieldGroup: BaseTowerExternalGroup<Shield>
+    public class ShieldGroup : BaseTowerExternalGroup<Shield>
     {
         public ShieldGroup(Shield[] group) : base(group)
         {
@@ -13,7 +13,7 @@ namespace TowerExternal
 
         public void Subscribe()
         {
-            BpEventbus.ActionEvents.OnShieldActionTriggered += RevealShields;
+            Eventbus.TowerEvents.OnShieldActionTriggered += RevealShields;
             BpEventbus.ActionEvents.OnBreakShieldActionTriggered += BreakSelectedShield;
         }
 
@@ -26,23 +26,17 @@ namespace TowerExternal
             }
         }
 
-        private void RevealShields(Vector2Int[] towersAndHeight)
+        private void RevealShields(int towerID, int towerHeight)
         {
-            foreach (var item in towersAndHeight)
-            {
-                var shield = Group[item.x];
-                shield.RevealShield(item.y);
-            }
+            var shield = Group[towerID];
+            shield.RevealShield(towerHeight);
         }
 
 
         public void Unsubscribe()
         {
-            BpEventbus.ActionEvents.OnShieldActionTriggered -= RevealShields;
+            Eventbus.TowerEvents.OnShieldActionTriggered -= RevealShields;
             BpEventbus.ActionEvents.OnBreakShieldActionTriggered -= BreakSelectedShield;
         }
-
-
-       
     }
 }

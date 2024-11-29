@@ -16,7 +16,7 @@ namespace Towers
     {
         public TowerConstantData ConstantData;
         public TowerData Data;
-        private TowerInitializer initializer;
+        public TowerInitializer initializer;
         private InterruptionMotion interruptionMotion = new();
 
         private void OnEnable()

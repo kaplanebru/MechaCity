@@ -24,6 +24,7 @@ namespace Towers
             Data.Height = ConstantData.StartHeight;
             Data.DamagePower = ConstantData.DamagePower;
             Data.LockStatus = ConstantData.StartLockStatus;
+            Data.ShieldData.Initialize(Data.UniqID, ConstantData.ShieldHeight);
             
             _tower.RestoreBullets();
             Data.BpTowerData = new BpTowerData(Data.UniqID);
@@ -56,7 +57,12 @@ namespace Towers
                 related.Initialize(Data.UniqID);
             }
         }
-        
+
+        public void ExecuteAfterSetup()
+        {
+            Data.ShieldData.SetPhysically();
+        }
+
     }
 
 }

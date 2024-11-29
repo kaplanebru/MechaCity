@@ -19,7 +19,6 @@ namespace Blueprint
             {
                 tower.ShieldData.SetShield(tower.Height);
             }
-            BpEventbus.ActionEvents.OnShieldActionTriggered?.Invoke(towers.Select(tower => new Vector2Int(tower.UniqID, tower.Height)).ToArray());
         }
     }
 }

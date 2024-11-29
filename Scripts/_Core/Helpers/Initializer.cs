@@ -90,17 +90,25 @@ namespace Core
                 }
             );
             
-            foreach (var t in AllTowers.TowerDatas)
-            {
-                //t.Mover.ChangeHeight(t.Height, true); //TODO: OPEN
-                if(t.LockStatus.Locked)
-                    Eventbus.TowerEvents.OnLock?.Invoke(t.LockStatus.Limit, t.UniqID);
-            }
+           
+            
+            ExecuteAfterSetup();
 
 
             print("Game Started");
         }
 
+        public void ExecuteAfterSetup()
+        {
+            foreach (var tower in AllTowers.Towers)
+            {
+                var data = tower.Data;
+                if(data.LockStatus.Locked)
+                    Eventbus.TowerEvents.OnLock?.Invoke(data.LockStatus.Limit, data.UniqID);
+                
+                tower.initializer.ExecuteAfterSetup();
+            }
+        }
 
         private void OnDisable()
         {

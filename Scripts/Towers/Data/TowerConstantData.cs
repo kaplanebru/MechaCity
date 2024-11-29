@@ -14,6 +14,7 @@ namespace Towers
         public int StartHealth = 1;
         public int DamagePower = 1;
         public int MaxBullet = 1;
+        public int ShieldHeight = 0;
         public TeamType StartTeam;
         public LockStatus StartLockStatus;
     }
