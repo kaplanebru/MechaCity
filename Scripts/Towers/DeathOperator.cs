@@ -14,16 +14,16 @@ namespace Towers
         }
 
 
-        public void HandleDeath(uint actorID, Action teamSwitchCallback, Action completeCombat)
+        public void HandleDeath(uint actorID, Action teamSwitchCallback, int pairID)
         {
             
-                StartCoroutine(DeathRoutine(teamSwitchCallback, completeCombat, ActorHolder.Registry[actorID]));
+                StartCoroutine(DeathRoutine(teamSwitchCallback, pairID, ActorHolder.Registry[actorID]));
             
             
         }
         
         
-        public IEnumerator DeathRoutine(Action teamSwitchCallback, Action completeCombat, ActorData actor)
+        public IEnumerator DeathRoutine(Action teamSwitchCallback, int pairID, ActorData actor)
         {
             yield return new WaitForSeconds(actor.Towers[0].timingData.shakeDuration);
             yield return new WaitForSeconds(.3f);
@@ -37,7 +37,7 @@ namespace Towers
             teamSwitchCallback.Invoke();
 
             yield return new WaitForSeconds(actor.Towers[0].timingData.colorFadeDuration);
-            completeCombat.Invoke();
+            Eventbus.CombatEvents.OnCombatCompleteRequest?.Invoke(pairID);
         }
     }
 }

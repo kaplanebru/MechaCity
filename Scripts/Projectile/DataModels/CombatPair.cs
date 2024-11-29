@@ -18,6 +18,7 @@ namespace DataModels
    
     public class CombatPair
     {
+        public int ID;
         public ActorData MainActor;
         public ActorData OtherActor;
         public TowerData MainTowerData { get; private set; }
@@ -44,6 +45,11 @@ namespace DataModels
                 OtherTowerData = AllTowers.GetData(OtherActor.TowerIDs.Last());
             }
            
+        }
+
+        public bool ContainsMainActor(uint actorID)
+        {
+            return MainActor.ID == actorID;
         }
 
         public bool Contains(int newTower)

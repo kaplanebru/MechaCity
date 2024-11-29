@@ -15,25 +15,26 @@ namespace Actor
         
        
         
-        void ApplyDamage(uint actorID, int damage, Action completeCall)
+        void ApplyDamage(uint actorID, int damage, int pairID)
         {
             var actor = ActorHolder.Registry[actorID]; //eski bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
             var health = actor.Health - damage;
             
             SetHealth(actor, health);
             
-            if (IsDead(actorID, completeCall)) return;
+            if (IsDead(actorID, pairID)) return;
 
-            completeCall();
+            
+            Eventbus.CombatEvents.OnCombatCompleteRequest?.Invoke(pairID);
         }
 
-        private bool IsDead(uint actorID, Action completeCall)
+        private bool IsDead(uint actorID, int pairID)
         {
             if (ActorHolder.Registry[actorID].Health <= 0)
             {
                 DeathOperator.Instance.HandleDeath(actorID, 
                     () => Eventbus.CombatEvents.OnActorKilled?.Invoke(actorID), 
-                    completeCall);
+                    pairID);
 
                 return true;
             }

@@ -1,44 +1,56 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Actor;
 using DataModels;
 using Towers;
+using UnityEngine;
 
 namespace Turn
 {
+ 
     public class CombatPairController
     {
-        private Dictionary<uint, List<CombatPair>> CombatPairs = new();
-        private CombatPairsCreator combatPairsCreator;
-
-
+        private Dictionary<uint, List<CombatPair>> pairGroupsByActor = new();
+        private Dictionary<int, CombatPair> allPairs = new();
+        private CombatPairsCreator combatPairsCreator = new();
+        
         public void Subscribe()
         {
-            combatPairsCreator = new CombatPairsCreator(CombatPairs);
             Eventbus.ActorEvents.OnRelationsSet += SetCombatPairs;
+            Eventbus.CombatEvents.OnCombatCompleteRequest += CompleteCombatForPair;
         }
 
-        public List<CombatPair> GetPairByActorID(uint actorID) => CombatPairs[actorID];
+        private void CompleteCombatForPair(int pairID)
+        {
+            allPairs[pairID].CompleteCombat();
+        }
+        public CombatPair GetCombatPairByID(int pairID) => allPairs[pairID];
+        public List<CombatPair> GetPairGroupByActorID(uint actorID) => pairGroupsByActor[actorID];
 
-        public int PairAmount => CombatPairs.Count;
+        public int PairAmount => pairGroupsByActor.Count;
 
         public void ResetCombatCompletedForAll()
         {
-            foreach (var pairs in CombatPairs.Values)
+            foreach (var pairs in allPairs.Values)
             {
-                pairs.ForEach(p=> p.CombatCompleted = false);
+                pairs.CombatCompleted = false;
             }
         }
 
         private void SetCombatPairs(List<uint> actors, bool isReversed)
         {
-            combatPairsCreator.CreateCombatPairs(actors, isReversed);
+            var tuple = combatPairsCreator.CreateCombatPairs(actors, isReversed);
+            pairGroupsByActor = tuple.Item1;
+            allPairs = tuple.Item2;
+            
             Eventbus.CombatEvents.OnPairsSet?.Invoke(isReversed);
         }
         
         public void Unsubscribe()
         {
             Eventbus.ActorEvents.OnRelationsSet -= SetCombatPairs;
+            Eventbus.CombatEvents.OnCombatCompleteRequest -= CompleteCombatForPair;
         }
 
     }

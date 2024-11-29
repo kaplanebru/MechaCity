@@ -18,7 +18,8 @@ public static class Eventbus
         public static Action<uint> OnTeamSwitch;
         public static Action <float> OnNextActor;
         public static Action <bool> OnPairsSet;
-        
+        public static Action<int> OnCombatCompleteRequest;
+
         public static Action OnCombatStarted;
         public static Action OnCombatReady;
         public static Action OnCombatEnding;
@@ -51,7 +52,7 @@ public static class Eventbus
     }
     public static class HealthEvents
     {
-        public static Action<uint, int, Action> OnShoot;
+        public static Action<uint, int, int> OnShoot;
         public static Action<uint> OnHealthChange;
         public static Action<int[]> OnRemoveFromRegistry;
     }

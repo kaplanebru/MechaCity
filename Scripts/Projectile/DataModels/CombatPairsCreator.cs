@@ -9,17 +9,16 @@ using UnityEngine;
 
 public class CombatPairsCreator
 {
-    Dictionary<uint,List<CombatPair>> _combatPairs;
-
-    public CombatPairsCreator(Dictionary<uint,List<CombatPair>> combatPairs)
-    {
-        _combatPairs = combatPairs;
-    }
+    Dictionary<uint,List<CombatPair>> _pairGroupsByActor = new();
+    private Dictionary<int, CombatPair> _allPairs = new();
     
-    public void CreateCombatPairs(List<uint> tempActors, bool isReversed = false)
+    public  (Dictionary<uint,List<CombatPair>>, Dictionary<int, CombatPair>) CreateCombatPairs(List<uint> tempActors, bool isReversed = false)
     {
-        _combatPairs.Clear();
+        _allPairs.Clear();
+        _pairGroupsByActor.Clear();
         tempActors.ForEach(id => CombatPairByActor(ActorHolder.Registry[id], isReversed));
+        return (_pairGroupsByActor, _allPairs);
+       
     }
     
     public void CombatPairByActor(ActorData mainActor, bool isReversed = false)
@@ -37,13 +36,16 @@ public class CombatPairsCreator
 
     CombatPair AddToPair(ActorData actor1, ActorData actor2)
     {
+      
         var pair = new CombatPair(actor1, actor2);
+        pair.ID = UniqueIdGenerator.IntId();
         
-        if(!_combatPairs.ContainsKey(actor1.ID))
-            _combatPairs.Add(actor1.ID, new List<CombatPair> {pair});
+        if(!_pairGroupsByActor.ContainsKey(actor1.ID))
+            _pairGroupsByActor.Add(actor1.ID, new List<CombatPair> {pair});
         else
-            _combatPairs[actor1.ID].Add(pair);
-
+            _pairGroupsByActor[actor1.ID].Add(pair);
+        
+        _allPairs.Add(pair.ID, pair);
         return pair;
     }
 

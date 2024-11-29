@@ -71,21 +71,22 @@ namespace Turn
         }
 
 
-        void SetSelectionColor(CombatPair pair, bool select = true)
+        void SetSelectionColor(uint mainActorID, bool select = true)
         {
+            var mainActor = ActorHolder.Registry[mainActorID];
             if (select)
             {
-                foreach (var tower in pair.MainActor.Towers)
+                foreach (var tower in mainActor.Towers)
                 {
                     tower.ColorHandler.ToSelectionColor();
                 }
 
-                GeneralEventbus.IndicatorEvents.OnActorHoverByCombat?.Invoke(pair.MainActor.ID);
-                Eventbus.CombatEvents.OnTurnTowerSelection?.Invoke(pair.MainActor.ID);
+                GeneralEventbus.IndicatorEvents.OnActorHoverByCombat?.Invoke(mainActorID);
+                Eventbus.CombatEvents.OnTurnTowerSelection?.Invoke(mainActorID);
             }
             else
             {
-                foreach (var tower in pair.MainActor.Towers)
+                foreach (var tower in mainActor.Towers)
                 {
                     tower.ColorHandler.ToOriginalColor();
                 }
@@ -121,8 +122,8 @@ namespace Turn
                 Eventbus.CombatEvents.OnNextActor?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
 
-                var pairs = _pairController.GetPairByActorID(actorID);
-                pairs.ForEach(p => SetSelectionColor(p));
+                var pairs = _pairController.GetPairGroupByActorID(actorID);
+                SetSelectionColor(actorID);
 
                 yield return new WaitForSeconds(Data.selectionDelay);
 
@@ -136,7 +137,7 @@ namespace Turn
                     {
                         yield return new WaitForSeconds(_timingData.skipDelay);
                         yield return new WaitForSeconds(Data.afterCombatDelay);
-                        SetSelectionColor(pair, false);
+                        SetSelectionColor(actorID, false);
                     }
                 }
             }

@@ -100,7 +100,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
                 _pair.CompleteCombat();
                 return;
             }
-            Eventbus.HealthEvents.OnShoot?.Invoke(_pair.OtherActor.ID, perpetrator.DamagePower, _pair.CompleteCombat);
+            Eventbus.HealthEvents.OnShoot?.Invoke(_pair.OtherActor.ID, perpetrator.DamagePower, _pair.ID);
             
             //Hide();
         });
