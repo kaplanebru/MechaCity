@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Enums;
-using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Blueprint
 {
@@ -40,13 +41,23 @@ namespace Blueprint
         {
             Data.ActiveBlueprints.Clear();
             Data.ActiveBlueprints.AddRange(Data.PersonaData.BpTypes);
-            Data.ActiveBlueprints.Add(GetRandomCommonBp());
+            Data.ActiveBlueprints.AddRange(GetRandomCommonBp(1));
             Data.ActiveBlueprints.AddRange(otherBps);
         }
 
-        private BpType GetRandomCommonBp()
+        private IEnumerable<BpType> GetRandomCommonBp(int amount)
         {
-            return Data.CommonPersona.BpTypes.ElementAt(Random.Range(0, Data.CommonPersona.BpTypes.Length));
+            List<int> indexes = new();
+            for (int i = 0; i < Data.CommonPersona.BpTypes.Length; i++)
+            {
+                indexes.Add(i);
+            }
+            indexes = indexes.OrderBy(_ => Guid.NewGuid()).ToList();
+            
+            for (int i = 0; i < amount; i++)
+            {
+                yield return Data.CommonPersona.BpTypes.ElementAt(indexes[i]);
+            }
         }
     }
 }
