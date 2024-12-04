@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Blueprint;
+using Enums;
 using GameUI;
 using UnityEngine;
 
@@ -24,17 +25,19 @@ namespace Towers
             Data.Height = ConstantData.StartHeight;
             Data.DamagePower = ConstantData.DamagePower;
             Data.LockStatus = ConstantData.StartLockStatus;
-            Data.ShieldData.Initialize(Data.UniqID, ConstantData.ShieldHeight);
-            
             Data.BpTowerData = new BpTowerData(Data.UniqID);
             
             Data.CreateSegments();
+            Data.CreateVisualSupportedDatas(new Dictionary<VisualDataType, int>
+            {
+                { VisualDataType.Shield, ConstantData.ShieldHeight },
+                { VisualDataType.Attack, ConstantData.ShotAmount }
+            });
+            
             SetSegments();
             SetTowerRelatedIds();
             
             _tower.SetTeam(teamData);
-            
-            
             
             //UIEventbus.OnHealthChange.Invoke(Data.Health, Data.UniqID);
            // Data.Mover.riseFallMotion.SetZeroHeight(0); //warning: bug sebebi (0'la başlarsa y<1 olur ve ekstra passive part açar
@@ -59,7 +62,10 @@ namespace Towers
 
         public void ExecuteAfterSetup()
         {
-            Data.ShieldData.SetVisually();
+            foreach (var visualSupportedData in Data.VisualSupportedDatas)
+            {
+                visualSupportedData.Value.SetVisually();
+            }
         }
 
     }

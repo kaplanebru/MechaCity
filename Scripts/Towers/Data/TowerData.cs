@@ -41,7 +41,8 @@ namespace Towers
         public bool CanShoot { get; private set; } = true; //todo: for freeze + IsActive instead
 
         public int DamagePower;
-        public ShieldData ShieldData = new();
+        public Dictionary<VisualDataType, BaseVisualSupportedData> VisualSupportedDatas = new();
+        
 
 
         public TeamType TeamType;
@@ -70,6 +71,17 @@ namespace Towers
             TowerSegments.Add(Mover);
             TowerSegments.Add(ColorHandler);
             TowerSegments.Add(UIHandler);
+        }
+
+        public void CreateVisualSupportedDatas(Dictionary<VisualDataType, int> startValues)
+        {
+            VisualSupportedDatas.Add(VisualDataType.Shield, new ShieldData());
+            VisualSupportedDatas.Add(VisualDataType.Attack, new AttackData());
+            
+            foreach (var visualData in VisualSupportedDatas)
+            {
+                visualData.Value.Initialize(UniqID, startValues[visualData.Key]);
+            }
         }
 
         public void EnableSelection()

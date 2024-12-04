@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Actor;
+using Enums;
 using UnityEngine;
 
 namespace Blueprint
@@ -15,7 +16,7 @@ namespace Blueprint
 
             foreach (var tower in towers)
             {
-                tower.ShieldData.ResetShieldDataOnly();
+                tower.VisualSupportedDatas[VisualDataType.Shield].ResetDataOnly(0);
             }
             BpEventbus.ActionEvents.OnBreakShieldActionTriggered?.Invoke(ActorHolder.Registry[selectedActors[0]].TowerIDs);
         }

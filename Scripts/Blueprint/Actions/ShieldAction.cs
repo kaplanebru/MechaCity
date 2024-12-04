@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Actor;
+using Enums;
 using Towers;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace Blueprint
 
             foreach (var tower in towers)
             {
-                tower.ShieldData.SetDataAndVisuals(tower.Height);
+                tower.VisualSupportedDatas[VisualDataType.Shield].SetDataAndVisuals(tower.Height);
             }
         }
     }

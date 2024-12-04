@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DataModels;
 using DG.Tweening;
+using Enums;
 using GameUI;
 using Health;
 using ProjectileHandler;
@@ -92,7 +93,8 @@ public class Shooter : MonoBehaviour, ITowerRelated
             perpetrator.ColorHandler.ToOriginalColor();
 
             Hide();
-            if (victim.ShieldData.HasEffectiveShield(victim.Height))
+            ShieldData shieldData = victim.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
+            if (shieldData.HasEffectiveShield(victim.Height))
             {
                 //TODO: shield effect
                 _pair.CompleteCombat();

@@ -17,6 +17,8 @@ MonoBehaviour:
   StartHealth: 1
   DamagePower: 1
   MaxBullet: 1
+  ShieldHeight: 0
+  ShotAmount: 1
   StartTeam: 0
   StartLockStatus:
     Locked: 0

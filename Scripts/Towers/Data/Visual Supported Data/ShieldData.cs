@@ -1,17 +1,20 @@
+using Enums;
 using UnityEngine;
 
 namespace Towers
 {
     public class ShieldData : BaseVisualSupportedData
     {
+        public override VisualDataType Type { get; set; } = VisualDataType.Shield;
         //actorde heightler farklı olabilir shieldler için
         protected override bool SatisfyRequirements()
         {
             return Amount > 0;
         }
-
+        
         public override void SetVisually()
         {
+            if(!SatisfyRequirements()) return;
             Eventbus.TowerEvents.OnShieldActionTriggered?.Invoke(TowerID, Amount);
         }
        
@@ -19,10 +22,6 @@ namespace Towers
         {
             return towerHeight <= Amount;
         }
-
-        public void ResetShieldDataOnly()
-        {
-            Amount = 0;
-        }
+        
     }
 }

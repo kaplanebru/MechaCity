@@ -115,6 +115,12 @@ namespace Enums
         Enemy
     }
 
+    public enum VisualDataType
+    {
+        Shield,
+        Attack
+    }
+
    
 
    
