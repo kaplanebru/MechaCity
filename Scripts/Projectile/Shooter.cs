@@ -85,9 +85,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
     void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
     {
         var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = shootingSlot.position);
-        projectile.Setup(duration, victim.Mover.Data.Top.transform.position - Vector3.up * 1.5f); 
-
-        perpetrator.BulletAmount--;
+        projectile.Setup(duration, victim.Mover.Data.Top.transform.position - Vector3.up * 1.5f);
 
         projectile.Move(() =>
         {

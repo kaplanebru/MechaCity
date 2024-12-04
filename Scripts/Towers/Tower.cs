@@ -60,11 +60,7 @@ namespace Towers
             }
         }
 
-        public void RestoreBullets() //Todo: name change: bullet hakkı
-        {
-            Data.BulletAmount = ConstantData.MaxBullet;
-        }
-
+      
 
         private void OnDisable()
         {

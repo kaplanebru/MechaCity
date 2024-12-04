@@ -40,19 +40,8 @@ namespace Towers
         public int AvailableHeight;
 
         //SHOOTING
-        public bool CanShoot { get; private set; }
-
-        [SerializeField] private int _bulletAmountt = 1;
-
-        public int BulletAmount
-        {
-            get => _bulletAmountt;
-            set
-            {
-                _bulletAmountt = value;
-                CanShoot = value > 0;
-            }
-        }
+        public bool CanShoot { get; private set; } = true;
+        
 
         public int DamagePower;
 

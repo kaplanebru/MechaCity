@@ -144,8 +144,7 @@ namespace Turn
 
             Eventbus.CombatEvents.OnCombatEnding?.Invoke();
             yield return new WaitForSeconds(0.5f);
-            AllTowers.RestoreBullets();
-
+           
             EndCombat();
         }
 

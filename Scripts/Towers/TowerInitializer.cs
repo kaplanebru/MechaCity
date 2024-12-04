@@ -26,7 +26,6 @@ namespace Towers
             Data.LockStatus = ConstantData.StartLockStatus;
             Data.ShieldData.Initialize(Data.UniqID, ConstantData.ShieldHeight);
             
-            _tower.RestoreBullets();
             Data.BpTowerData = new BpTowerData(Data.UniqID);
             
             Data.CreateSegments();

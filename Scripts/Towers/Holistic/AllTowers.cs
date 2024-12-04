@@ -115,11 +115,7 @@ namespace Towers
                 TowerDatas[i].NeighbourIDs.Add(next);
             }
         }
-
-        public static void RestoreBullets()
-        {
-            Towers.ForEach(t => t.RestoreBullets());
-        }
+        
 
         public static void ResetTowerColors()
         {
