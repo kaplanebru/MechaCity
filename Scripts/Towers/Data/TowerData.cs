@@ -15,11 +15,9 @@ namespace Towers
     public class TowerData
     {
         public int UniqID;
-        public int SlotId;
-
+        
         //HEIGHT
         private int height;
-
         public int Height
         {
             get => height;
@@ -39,11 +37,12 @@ namespace Towers
 
         public int AvailableHeight;
 
-        //SHOOTING
-        public bool CanShoot { get; private set; } = true;
-        
+        //ATTACK
+        public bool CanShoot { get; private set; } = true; //todo: for freeze + IsActive instead
 
         public int DamagePower;
+        public ShieldData ShieldData = new();
+
 
         public TeamType TeamType;
         public List<int> NeighbourIDs = new();
@@ -54,7 +53,6 @@ namespace Towers
         public BpTowerData BpTowerData;
         public CombatTimingData timingData;
         public ClickHandler clickHandler;
-        public ShieldData ShieldData = new();
 
         public TowerSegmentDataHolder SegmentData = new();
         public List<ITowerSegment> TowerSegments = new();

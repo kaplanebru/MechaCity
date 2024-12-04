@@ -17,7 +17,7 @@ namespace Blueprint
 
             foreach (var tower in towers)
             {
-                tower.ShieldData.SetShield(tower.Height);
+                tower.ShieldData.SetDataAndVisuals(tower.Height);
             }
         }
     }

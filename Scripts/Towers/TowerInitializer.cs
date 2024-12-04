@@ -59,7 +59,7 @@ namespace Towers
 
         public void ExecuteAfterSetup()
         {
-            Data.ShieldData.SetPhysically();
+            Data.ShieldData.SetVisually();
         }
 
     }

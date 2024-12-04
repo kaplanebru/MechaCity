@@ -15,7 +15,7 @@ namespace Blueprint
 
             foreach (var tower in towers)
             {
-                tower.ShieldData.ResetShield();
+                tower.ShieldData.ResetShieldDataOnly();
             }
             BpEventbus.ActionEvents.OnBreakShieldActionTriggered?.Invoke(ActorHolder.Registry[selectedActors[0]].TowerIDs);
         }

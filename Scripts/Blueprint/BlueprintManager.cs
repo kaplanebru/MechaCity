@@ -36,7 +36,7 @@ namespace Blueprint
             if (Input.GetKeyDown(KeyCode.A))
             {
                 var tower = AllTowers.GetData(0);
-                tower.ShieldData.SetShield(tower.Height);
+                tower.ShieldData.SetDataAndVisuals(tower.Height);
                 //Eventbus.TowerEvents.OnShieldActionTriggered?.Invoke(new Vector2Int[] {new Vector2Int(0, tower.Height)});
             }
         }
