@@ -97,6 +97,7 @@ namespace Enums
         DoubleSelf,
         Shield,
         BreakShield,
+        MultiShot,
         None
     }
 

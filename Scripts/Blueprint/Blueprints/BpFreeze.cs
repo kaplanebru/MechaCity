@@ -14,7 +14,7 @@ namespace Blueprint
 
         public override bool TryTakeAction(uint[] selectedItems)
         {
-            Debug.Log("EXECUTE");
+            Debug.Log("EXECUTE freeze");
             BpAction.Execute(selectedItems);
             return true;
         }
