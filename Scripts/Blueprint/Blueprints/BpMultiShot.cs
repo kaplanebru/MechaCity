@@ -17,6 +17,7 @@ namespace Blueprint
         {
             Debug.Log("execute multiShot");
             BpAction.Execute(selectedItems);
+            DeselectAfterExecution();
             return true;
         }
 

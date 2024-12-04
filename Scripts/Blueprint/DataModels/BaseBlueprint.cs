@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using Actor;
 using Enums;
 using Enums.Selections;
 using JetBrains.Annotations;
+using Towers;
 
 namespace Blueprint
 {
@@ -25,6 +27,18 @@ namespace Blueprint
         //public abstract void CheckSelectionConstraints(int[] selectedItems);
 
         public abstract void TryRestoreAction(uint selectedItem);
+
+        public void DeselectAfterExecution() //[CanBeNull] uint[] selectedItems
+        {
+            // foreach (var actorID in selectedItems)
+            // {
+            //     ActorHolder.Registry[actorID].Towers.
+            // }
+            
+            AllTowers.ResetTowerColors();
+        }
+       
+        
     }
     
     public interface IBpActionProcessor<out TAction> where TAction : IBpAction

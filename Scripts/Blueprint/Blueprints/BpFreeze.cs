@@ -16,6 +16,7 @@ namespace Blueprint
         {
             Debug.Log("EXECUTE freeze");
             BpAction.Execute(selectedItems);
+            DeselectAfterExecution();
             return true;
         }
 

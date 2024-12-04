@@ -16,6 +16,7 @@ namespace Blueprint
         public override bool TryTakeAction(uint[] selectedItems)
         {
             BpAction.Execute(selectedItems);
+            DeselectAfterExecution();
             return true;
         }
 

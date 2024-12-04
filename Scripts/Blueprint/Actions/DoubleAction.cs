@@ -8,7 +8,7 @@ namespace Blueprint
     {
         DoubleWithRival doubleWithRival = new DoubleWithRival();
 
-        public void Execute(params object[] obj)
+        public void Execute(params object[] obj) //TODO: with actors
         {
             Debug.Log("execute bp");
             var selectedTowers = (int[]) obj[0];

@@ -18,6 +18,7 @@ namespace Blueprint
         {
             Debug.Log("EXECUTE");
             BpAction.Execute();
+            DeselectAfterExecution();
             return true;
         }
 

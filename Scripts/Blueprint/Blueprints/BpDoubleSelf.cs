@@ -23,6 +23,7 @@ namespace Blueprint
             if (CheckBpConstraints(selectedItems))
             {
                 BpAction.Execute(selectedItems);
+                DeselectAfterExecution();
                 return true;
             }
 

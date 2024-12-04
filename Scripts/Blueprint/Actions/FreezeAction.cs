@@ -1,4 +1,5 @@
 
+using Actor;
 using Towers;
 using UnityEngine;
 
@@ -8,12 +9,11 @@ namespace Blueprint
     {
         public void Execute(params object[] obj)
         {
-            var selectedTowers = (int[]) obj[0];
-
-            foreach (var selectedTower in selectedTowers)
+            var selectedActors = (uint[]) obj[0];
+            var selectedTowers = ActorHolder.Registry[selectedActors[0]].Towers;
+            
+            foreach (var tower in selectedTowers)
             {
-                var tower = AllTowers.GetData(selectedTower);
-                
                 tower.ColorHandler.ToFreezeColor();
                 tower.BpTowerData.IsFreezing = true;
             }
