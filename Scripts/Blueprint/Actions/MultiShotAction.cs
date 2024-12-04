@@ -9,7 +9,7 @@ namespace Blueprint
     {
         public void Execute(params object[] obj)
         {
-        
+            var selectedTower = ((int[]) obj[0])[0];
         }
     }
 
