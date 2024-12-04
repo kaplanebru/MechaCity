@@ -17,7 +17,16 @@ namespace TowerExternal
 
         private void RevealMultiShot(int towerID, int shooterAmount)//shooter amountu pas geçebiliriz
         {
-            
+            var multiShooter = Group[towerID];
+            if (shooterAmount == 2)
+            {
+                multiShooter.ShowShootingTable();
+                multiShooter.RevealNewShooter(0);
+            }
+            else if(shooterAmount > 2)
+            {
+                multiShooter.RevealNewShooter(1);
+            }
         }
 
         public void Unsubscribe()

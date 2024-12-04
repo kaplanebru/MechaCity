@@ -10,6 +10,7 @@ namespace TowerExternal
         public FloorGroups FloorGroups;
         public GearGroup GearGroup;
         public ShieldGroup ShieldGroup;
+        public MultiShooterGroup MultiShooterGroup;
 
         private void OnEnable()
         {
@@ -28,6 +29,7 @@ namespace TowerExternal
             Data.Floors = GetComponentsInChildren<Floor>();
             Data.IGears = GetComponentsInChildren<IGear>();
             Data.Shields = GetComponentsInChildren<Shield>();
+            Data.MultiShooters = GetComponentsInChildren<MultiShooter>();
         }
 
         void CreateAndSetGroups()
@@ -36,6 +38,7 @@ namespace TowerExternal
             FloorGroups = new FloorGroups(Data.Floors);
             GearGroup = new GearGroup(Data.IGears.ToArray());
             ShieldGroup = new ShieldGroup(Data.Shields);
+            MultiShooterGroup = new MultiShooterGroup(Data.MultiShooters);
             
             
             CableGroups.SetColor(Data.CableSelectionColor, Data.CableDefaultColor);
@@ -54,6 +57,7 @@ namespace TowerExternal
             FloorGroups.Subscribe();
             GearGroup.Subscribe();
             ShieldGroup.Subscribe();
+            MultiShooterGroup.Subscribe();
         }
 
         void UnsubscribeFromGroups()
@@ -62,6 +66,7 @@ namespace TowerExternal
             FloorGroups.Unsubscribe();
             GearGroup.Unsubscribe();
             ShieldGroup.Unsubscribe();
+            MultiShooterGroup.Unsubscribe();
         }
 
         private void OnDisable()

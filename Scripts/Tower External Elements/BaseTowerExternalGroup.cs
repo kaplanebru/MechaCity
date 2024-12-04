@@ -14,7 +14,15 @@ namespace TowerExternal
             foreach (var item in group)
             {
                 // var id = ((ITowerRelated) item).Id;
-                Group.Add(item.Id, item);
+                if (Group.ContainsKey(item.Id))
+                {
+                    Debug.Log(item.Id);
+                }
+                else
+                {
+                    Group.Add(item.Id, item);
+
+                }
             }
         }
     }

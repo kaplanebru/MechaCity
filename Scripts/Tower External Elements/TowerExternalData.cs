@@ -11,6 +11,7 @@ namespace TowerExternal
         public Floor[] Floors;
         public IGear[] IGears;
         public Shield[] Shields;
+        public MultiShooter[] MultiShooters;
         
         public Color CableSelectionColor;
         public Color CableDefaultColor;
