@@ -24,6 +24,11 @@ namespace Towers
             SetVisually();
         }
 
+        public void IncreaseDataAndVisuals(int increaseAmount)
+        {
+            Amount += increaseAmount;
+            SetVisually();
+        }
         protected abstract bool SatisfyRequirements();
 
         public void ResetDataOnly(int amount)

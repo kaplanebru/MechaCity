@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Actor;
 using Blueprint;
+using Enums;
 using UnityEngine;
 
 namespace Blueprint
@@ -9,7 +11,14 @@ namespace Blueprint
     {
         public void Execute(params object[] obj)
         {
-            var selectedTower = ((int[]) obj[0])[0];
+            var selectedActors = (uint[]) obj[0];
+            var towers = ActorHolder.Registry[selectedActors[0]].Towers;
+            
+            foreach (var tower in towers)
+            {
+                var attackData = tower.VisualSupportedDatas[VisualDataType.Attack];
+                attackData.IncreaseDataAndVisuals(1);
+            }
         }
     }
 
