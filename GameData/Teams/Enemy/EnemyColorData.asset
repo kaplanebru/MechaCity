@@ -14,21 +14,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TeamType: 1
   ColorDatas:
-  - DistrictType: 0
-    DefaultMaterial: {fileID: 2100000, guid: f2ff29d1d75aec1419b7ae09b40c0c81, type: 2}
-    SelectedMaterial: {fileID: 2100000, guid: 9167352f794f0a248b724ae17c39bca1, type: 2}
-    BlueprintMaterial: {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}
-    FreezeMaterial: {fileID: 2100000, guid: f5e02e4ddefe6824cae128d863098725, type: 2}
+  - DistrictType: 2
+    DefaultMaterials:
+    - {fileID: 2100000, guid: 86e79d8c89c38eb478b35827f61d9f62, type: 2}
+    - {fileID: 2100000, guid: bcfa843977a14bf42b84f84d0d5a179d, type: 2}
+    SelectedMaterials:
+    - {fileID: 2100000, guid: 05d488e27bd650c47a8a93bba2f3d5ed, type: 2}
+    - {fileID: 2100000, guid: c783eb276f25e16409e9435c94a9d588, type: 2}
+    BlueprintMaterials:
+    - {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}
+    - {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}
+    FreezeMaterials:
+    - {fileID: 2100000, guid: f5e02e4ddefe6824cae128d863098725, type: 2}
+    - {fileID: 2100000, guid: f5e02e4ddefe6824cae128d863098725, type: 2}
   - DistrictType: 1
-    DefaultMaterial: {fileID: 2100000, guid: 765b20b9f3353e649814014eeb1e8a22, type: 2}
-    SelectedMaterial: {fileID: 2100000, guid: 9167352f794f0a248b724ae17c39bca1, type: 2}
-    BlueprintMaterial: {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}
-    FreezeMaterial: {fileID: 2100000, guid: f5e02e4ddefe6824cae128d863098725, type: 2}
-  DefaultMaterial: {fileID: 2100000, guid: f2ff29d1d75aec1419b7ae09b40c0c81, type: 2}
-  SelectedMaterial: {fileID: 2100000, guid: 9167352f794f0a248b724ae17c39bca1, type: 2}
-  BlueprintMaterial: {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}
-  FreezeMaterial: {fileID: 2100000, guid: f5e02e4ddefe6824cae128d863098725, type: 2}
-  CombinedMat: {fileID: 2100000, guid: 765b20b9f3353e649814014eeb1e8a22, type: 2}
-  SelectedCombinedMat: {fileID: 2100000, guid: 9167352f794f0a248b724ae17c39bca1, type: 2}
-  BpCombinedMat: {fileID: 2100000, guid: f964ee3e7afcea3489ac2f817402cf21, type: 2}
-  FreezeCombinedMat: {fileID: 2100000, guid: f5e02e4ddefe6824cae128d863098725, type: 2}
+    DefaultMaterials:
+    - {fileID: 2100000, guid: f2ff29d1d75aec1419b7ae09b40c0c81, type: 2}
+    - {fileID: 2100000, guid: 765b20b9f3353e649814014eeb1e8a22, type: 2}
+    SelectedMaterials: []
+    BlueprintMaterials: []
+    FreezeMaterials: []
+  - DistrictType: 0
+    DefaultMaterials:
+    - {fileID: 2100000, guid: f2ff29d1d75aec1419b7ae09b40c0c81, type: 2}
+    - {fileID: 2100000, guid: 765b20b9f3353e649814014eeb1e8a22, type: 2}
+    SelectedMaterials: []
+    BlueprintMaterials: []
+    FreezeMaterials: []

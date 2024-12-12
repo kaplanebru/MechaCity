@@ -16,9 +16,9 @@ MonoBehaviour:
   Groups:
   - Index: 0
     MaxTowers: 1
-    SelectionColorType: 2
+    selectionColorState: 1
     BlockType: 1
   - Index: 1
     MaxTowers: 1
-    SelectionColorType: 2
+    selectionColorState: 1
     BlockType: 0

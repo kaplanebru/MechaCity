@@ -15,12 +15,19 @@ namespace Towers
     [Serializable]
     public class TowerColorData : TowerSegmentData
     {
-        
         public TeamColorData TeamData;
         public SpriteRenderer Logo;
         public MeshCombiner[] MeshCombiners;
         public MeshRenderer[] MiddleMeshes;
+        public SelectionMeshes SelectionMeshes;
         public CombatTimingData TimingData;
+    }
+
+    [Serializable]
+    public class SelectionMeshes
+    {
+        public MeshRenderer Light;
+        public MeshRenderer[] Head;
     }
     public class ColorHandler : ITowerSegment
     {
@@ -46,9 +53,9 @@ namespace Towers
         public void SetTeamVisuals(TeamColorData teamData)
         {
             Data.TeamData = teamData;
-            
-            //FadeColor();
-            //SetTeamLogo();
+            SetTeamMats(teamData.GetColorsByType(ColorDistrict.InnerShell, ColorState.Default));
+            SetTeamMats(teamData.GetColorsByType(ColorDistrict.OuterShell, ColorState.Default));
+            SetSelectionMats(teamData.GetColorsByType(ColorDistrict.Inside, ColorState.Default));
         }
         
         private void SetCombinedMeshes()
@@ -60,59 +67,45 @@ namespace Towers
             }
         }
 
-        private void SetMats(params Material[] mats)
+        private void SetTeamMats(params Material[] mats)
         {
             colorChanger.SetMaterial(mats[0], Data.MiddleMeshes);
             colorChanger.SetMaterial(mats[1],combinedRenderers.ToArray());
         }
-        
-        public void SetColorByColorType(ColorType type)
+
+        private void SetSelectionMats(params Material[] mats)
         {
-            SetMats(Data.TeamData.GetColorsByType(type));
+            colorChanger.SetMaterial(mats[0], Data.SelectionMeshes.Light);
+            colorChanger.SetMaterial(mats[1], Data.SelectionMeshes.Head);
+        }
+        
+        public void SetColorByColorType(ColorState state)
+        {
+            SetSelectionMats(Data.TeamData.GetColorsByType(ColorDistrict.Inside, state));
             GeneralEventbus.OnTowerColorChange?.Invoke(Id);
         }
 
         public void ToFreezeColor()
         {
-            SetMats(Data.TeamData.ColorDatas.Select(c=>c.FreezeMaterial).ToArray());
+            SetSelectionMats(Data.TeamData.GetColorsByType(ColorDistrict.Inside, ColorState.Freeze));
         }
 
         public void ToBlueprintColor()
         {
-            SetMats(Data.TeamData.ColorDatas.Select(c=>c.BlueprintMaterial).ToArray());
+            SetSelectionMats(Data.TeamData.GetColorsByType(ColorDistrict.Inside, ColorState.Blueprint));
         }
 
         public void ToSelectionColor()
         {
-            SetMats(Data.TeamData.ColorDatas.Select(c=>c.SelectedMaterial).ToArray());
+            SetSelectionMats(Data.TeamData.GetColorsByType(ColorDistrict.Inside, ColorState.Selection));
             GeneralEventbus.OnTowerColorChange?.Invoke(Id);
         }
 
         public void ToOriginalColor()
         {
-            SetMats(Data.TeamData.ColorDatas.Select(c=>c.DefaultMaterial).ToArray());
+            SetSelectionMats(Data.TeamData.GetColorsByType(ColorDistrict.Inside, ColorState.Default));
             GeneralEventbus.OnTurnTowerDeselect?.Invoke(Id);
         }
-        
-        
-        // void SetTeamLogo()
-        // {
-        //     
-        //     Data.Logo.transform.DOScale(Vector3.zero, Data.TimingData.colorFadeDuration / 2).
-        //         OnComplete(() =>
-        //     {
-        //         Data.Logo.sprite = Data.TeamData.TeamLogo;
-        //         Data.Logo.color = Data.TeamData.LogoMat.color;
-        //        
-        //         Data.Logo.transform.DOScale(Vector3.one, Data.TimingData.colorFadeDuration / 2);
-        //     });
-        // }
-        
-        // void FadeColor()
-        // {
-        //     colorChanger.FadeColors(Data.MiddleMeshes, Data.TeamData.TeamColor);
-        // }
-        
     }
 
 }

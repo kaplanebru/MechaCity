@@ -4417,6 +4417,15 @@ MonoBehaviour:
         - {fileID: 7827256818296853647}
         - {fileID: 3551314135799062048}
         - {fileID: 7706612787776036599}
+        SelectionMeshes:
+          Light: {fileID: 1776863158456280355}
+          Head:
+          - {fileID: 9181092705817725031}
+          - {fileID: 7582449153515488787}
+          - {fileID: 4575632031180546314}
+          - {fileID: 269359661968104163}
+          - {fileID: 1051235070364031175}
+          - {fileID: 6738121896055944329}
         TimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
       UIData:
         HeightTexts:

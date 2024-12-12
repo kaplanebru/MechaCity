@@ -16,5 +16,5 @@ MonoBehaviour:
   Groups:
   - Index: 0
     MaxTowers: 1
-    SelectionColorType: 2
+    selectionColorState: 2
     BlockType: 0

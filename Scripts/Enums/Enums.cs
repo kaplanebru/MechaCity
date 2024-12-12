@@ -31,7 +31,7 @@ namespace Enums
             None
         }
 
-        public enum ColorType
+        public enum ColorState
         {
             Default,
             Selection,

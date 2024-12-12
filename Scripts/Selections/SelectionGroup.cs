@@ -12,7 +12,7 @@ public class SelectionGroup
 {
     public int Index;
     public int MaxTowers = 1;
-    public ColorType SelectionColorType;
+    public ColorState selectionColorState;
     public List<uint> SelectedActors { get; set; } = new();
     
     public BlockType BlockType;

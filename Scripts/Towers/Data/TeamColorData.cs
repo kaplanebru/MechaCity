@@ -7,30 +7,40 @@ using UnityEngine;
 
 namespace Towers
 {
+
     [Serializable]
-    public  class ColorData
+    public class ColorData
     {
         public ColorDistrict DistrictType;
-        public Material DefaultMaterial;
-        public Material SelectedMaterial;
-        public Material BlueprintMaterial;
-        public Material FreezeMaterial;
+        public Material[] DefaultMaterials;
+        public Material[] SelectedMaterials;
+        public Material[] BlueprintMaterials;
+        public Material[] FreezeMaterials;
+    }
+
+    public class DistrictColors
+    {
+        public ColorDistrict District;
+        public Dictionary<ColorState, Material[]> ColorsByState = new();
     }
     
     [CreateAssetMenu(fileName = nameof(TeamColorData))]
     public class TeamColorData : ScriptableObject
     {
         public TeamType TeamType;
-
         public ColorData[] ColorDatas;
+        private Dictionary<ColorDistrict, DistrictColors> DistrictColors = new();
         
 
-        // public Sprite TeamLogo;
-        // public Material LogoMat;
+     
         public Color TeamColor { get; set; }
 
-        private Dictionary<ColorType, Material[]> ColorsByType = new();
-        public Material[] GetColorsByType(ColorType type) => ColorsByType[type];
+        private Dictionary<ColorState, Material[]> ColorsByColorType = new();
+
+        public Material[] GetColorsByType(ColorDistrict districtType, ColorState state)
+        {
+           return DistrictColors[districtType].ColorsByState[state];
+        } 
 
         private void OnEnable() //todo: fix
         {
@@ -39,16 +49,26 @@ namespace Towers
 
         private void SetTeamColors()
         {
-            TeamColor = ColorDatas[0].DefaultMaterial.color;
-            SetColorsByType();
+            SetDistrictColors();
+            TeamColor = DistrictColors[ColorDistrict.OuterShell].ColorsByState[ColorState.Default][0].color;
         }
 
-        private void SetColorsByType()
+        private void SetDistrictColors()
         {
-            ColorsByType.Add(ColorType.Default, ColorDatas.Select(c=>c.DefaultMaterial).ToArray()); 
-            ColorsByType.Add(ColorType.Selection, ColorDatas.Select(c=>c.SelectedMaterial).ToArray());
-            ColorsByType.Add(ColorType.Blueprint,  ColorDatas.Select(c=>c.BlueprintMaterial).ToArray());
-            ColorsByType.Add(ColorType.Freeze, ColorDatas.Select(c=>c.FreezeMaterial).ToArray());
+            foreach (ColorDistrict colorDistrict in Enum.GetValues(typeof(ColorDistrict)))
+            {
+                DistrictColors.Add(colorDistrict, new DistrictColors());
+                DistrictColors[colorDistrict].District = colorDistrict;
+                
+                var colorData = ColorDatas.FirstOrDefault(cd => cd.DistrictType == colorDistrict);
+                var colorsByState = DistrictColors[colorDistrict].ColorsByState;
+                
+                colorsByState.Add(ColorState.Default, colorData.DefaultMaterials);
+                colorsByState.Add(ColorState.Selection, colorData.SelectedMaterials);
+                colorsByState.Add(ColorState.Blueprint, colorData.BlueprintMaterials);
+                colorsByState.Add(ColorState.Freeze, colorData.FreezeMaterials);
+            }
         }
+        
     }
 }
