@@ -15114,6 +15114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1644729824918897551}
+  - component: {fileID: 3221368348478457662}
   m_Layer: 0
   m_Name: ShootingTable
   m_TagString: Untagged
@@ -15140,6 +15141,24 @@ Transform:
   m_Father: {fileID: 4581321759149382265}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3221368348478457662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2941670987056522107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac2d423f3743bad40966d6639691fd68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parts:
+  - {fileID: 2621681773624985448}
+  - {fileID: 5679179319145881159}
+  - {fileID: 5028677425007953097}
+  - {fileID: 7700065310099978580}
+  startHeight: 0
 --- !u!1 &2960736086398704222
 GameObject:
   m_ObjectHideFlags: 0
@@ -24164,7 +24183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e3a85e87d986754aa40ebcbda526cf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootingTable: {fileID: 1644729824918897551}
+  shootingTable: {fileID: 3221368348478457662}
   faces:
   - {fileID: 4328021154564639688}
   - {fileID: 3604014078163434811}

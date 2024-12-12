@@ -7,7 +7,7 @@ namespace TowerExternal
     public class MultiShooter : MonoBehaviour, ITowerRelated, ITowerExternal
     {
         public int Id { get; set; }
-        public Transform shootingTable;
+        public ShootingTable shootingTable;
         public Transform[] faces;
         public void Initialize(int id)
         {
@@ -16,7 +16,7 @@ namespace TowerExternal
 
         public void ShowShootingTable()
         {
-            shootingTable.gameObject.SetActive(true);
+            shootingTable.Reveal();
         }
 
         public void RevealNewShooter(int index)
