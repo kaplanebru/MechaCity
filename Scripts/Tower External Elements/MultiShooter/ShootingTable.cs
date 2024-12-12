@@ -13,7 +13,7 @@ namespace TowerExternal
 
         public void Awake()
         {
-            startHeight = parts[0].transform.localScale.z;
+            startHeight = parts[0].transform.localScale.x;
         }
 
         public void Reveal()
@@ -27,7 +27,7 @@ namespace TowerExternal
             foreach (var part in parts)
             {
                 var scale = part.transform.localScale;
-                scale.z = 0;
+                scale.x = 0;
                 part.transform.localScale = scale;
             }
         }
@@ -36,7 +36,7 @@ namespace TowerExternal
         {
             foreach (var part in parts)
             {
-                part.transform.DOScaleZ(0.175401f, 1); //todo fix later
+                part.transform.DOScaleX(1, 1); //todo fix later
             }
         }
     }
