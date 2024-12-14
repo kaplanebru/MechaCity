@@ -46,23 +46,24 @@ namespace Turn
         public override void Subscribe() {}
 
 
+        private uint[] activeActors;
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             TransferData.Actors = data.Actors;
-            var activeActors = ActorHolder.GetActiveActors(TransferData.Actors.ToArray()).ToArray();
+            activeActors = ActorHolder.GetActiveActors(TransferData.Actors.ToArray()).ToArray();
             TransferData.towers = ActorHolder.ResolveTowersFromActors(activeActors).ToList();
             
-            Eventbus.LinkEvents.OnLinkActorsLoaded?.Invoke(TransferData.Actors);
+            Eventbus.LinkEvents.OnLinkActorsLoaded?.Invoke(activeActors.ToList());
            
             SetLinkOperatorAndSubscribe();
-            currentLinkOperator.SetTowers(TransferData.Actors.ToArray());
+            currentLinkOperator.SetTowers(activeActors);
             
             Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.towers);
         }
 
         private void SetLinkOperatorAndSubscribe()
         {
-            currentLinkOperator = TransferData.Actors.Any(a => ActorHolder.Registry[a].Type == ActorType.MultiTower)
+            currentLinkOperator = activeActors.Any(a => ActorHolder.Registry[a].Type == ActorType.MultiTower)
                 ? linkOperators[ActorType.MultiTower]
                 : linkOperators[ActorType.Standard];
             
@@ -77,7 +78,7 @@ namespace Turn
         {
             AllTowers.DisableClickability();
             
-            if(TransferData.towers.Count <= 1) return;
+            if(activeActors.Length <= 1) return;
             Eventbus.LinkEvents.OnLinkingTowers?.Invoke(TransferData.towers);
             MediatorEventbus.ChainLinkEvents.OnLinkedTowers?.Invoke(TransferData.towers.ToArray());
         }

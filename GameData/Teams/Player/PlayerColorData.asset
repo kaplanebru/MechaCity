@@ -40,4 +40,6 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 4cb09656eb0473249bed5fa95480f449, type: 2}
     SelectedMaterials: []
     BlueprintMaterials: []
-    FreezeMaterials: []
+    FreezeMaterials:
+    - {fileID: 2100000, guid: ac0fe3824c76d374bac55c991b356a91, type: 2}
+    - {fileID: 2100000, guid: ac0fe3824c76d374bac55c991b356a91, type: 2}
