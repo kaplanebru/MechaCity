@@ -15,7 +15,7 @@ namespace DataModels
     {
         public static Action<CombatPair> OnShoot;
     }
-   
+
     public class CombatPair
     {
         public int ID;
@@ -26,7 +26,8 @@ namespace DataModels
 
         public bool CombatCompleted { get; set; } = false;
 
-        public CombatPair(ActorData mainActor, ActorData otherActor)//(TowerData mainTowerData, TowerData otherTowerData)
+        public CombatPair(ActorData mainActor,
+            ActorData otherActor) //(TowerData mainTowerData, TowerData otherTowerData)
         {
             MainActor = mainActor;
             OtherActor = otherActor;
@@ -36,15 +37,14 @@ namespace DataModels
         {
             if (!isReversed)
             {
-                MainTowerData = AllTowers.GetData(MainActor.TowerIDs.Last());  //not: dizilim bozulmasın diye towers almıyorum
+                MainTowerData = AllTowers.GetData(MainActor.TowerIDs.Last());
                 OtherTowerData = AllTowers.GetData(OtherActor.TowerIDs.First());
             }
             else
             {
-                MainTowerData = AllTowers.GetData(MainActor.TowerIDs.First());  
+                MainTowerData = AllTowers.GetData(MainActor.TowerIDs.First());
                 OtherTowerData = AllTowers.GetData(OtherActor.TowerIDs.Last());
             }
-           
         }
 
         public bool ContainsMainActor(uint actorID)
@@ -60,26 +60,22 @@ namespace DataModels
         public bool Combat()
         {
             if (OtherTowerData.TeamType == MainTowerData.TeamType)
-            {
-                SkipCombat();
-                return false;
-            }
-
+                goto Skip;
+            
+            if (!MainActor.ActivityStatus.CanShoot)
+                goto Skip;
+            
             if (MainTowerData.Height > OtherTowerData.Height)
             {
-                if (MainTowerData.CanShoot)
-                {
-                    CombatPairEvents.OnShoot?.Invoke(this);
-                    return true;
-                }
-
-                return false;
+                CombatPairEvents.OnShoot?.Invoke(this);
+                return true;
             }
-            
+
+            Skip:
             SkipCombat();
             return false;
         }
-        
+
 
         void SkipCombat()
         {

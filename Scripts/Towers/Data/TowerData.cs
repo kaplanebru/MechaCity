@@ -38,7 +38,6 @@ namespace Towers
         public int AvailableHeight;
 
         //ATTACK
-        public bool CanShoot { get; private set; } = true; //todo: for freeze + IsActive instead
 
         public int DamagePower;
         public Dictionary<VisualDataType, BaseVisualSupportedData> VisualSupportedDatas = new();

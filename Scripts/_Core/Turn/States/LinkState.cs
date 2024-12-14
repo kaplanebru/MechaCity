@@ -31,7 +31,7 @@ namespace Turn
         
         public override void SubscribeToConstantEvents()
         {
-            Eventbus.LinkEvents.OnFloorsOpened += LinkTowers;
+            //Eventbus.LinkEvents.OnFloorsOpened += LinkTowers;
             SetLinkOperators();
         }
 
@@ -49,7 +49,8 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             TransferData.Actors = data.Actors;
-            TransferData.towers = ActorHolder.ResolveTowersFromActors(TransferData.Actors.ToArray()).ToList();
+            var activeActors = ActorHolder.GetActiveActors(TransferData.Actors.ToArray()).ToArray();
+            TransferData.towers = ActorHolder.ResolveTowersFromActors(activeActors).ToList();
             
             Eventbus.LinkEvents.OnLinkActorsLoaded?.Invoke(TransferData.Actors);
            
@@ -67,12 +68,16 @@ namespace Turn
             
             
             NetworkEventbus.InputEvents.OnObjectClicked += currentLinkOperator.TowerSelected;
+            Eventbus.LinkEvents.OnFloorsOpened += LinkTowers;
+
         }
         
 
         private void LinkTowers()
         {
             AllTowers.DisableClickability();
+            
+            if(TransferData.towers.Count <= 1) return;
             Eventbus.LinkEvents.OnLinkingTowers?.Invoke(TransferData.towers);
             MediatorEventbus.ChainLinkEvents.OnLinkedTowers?.Invoke(TransferData.towers.ToArray());
         }
@@ -83,6 +88,8 @@ namespace Turn
             MediatorEventbus.ChainLinkEvents.OnLinkBroken?.Invoke();
 
             NetworkEventbus.InputEvents.OnObjectClicked -= currentLinkOperator.TowerSelected;
+            Eventbus.LinkEvents.OnFloorsOpened -= LinkTowers;
+            
             AllTowers.EnableClickability();
 
             SelectionEvents.OnSelectionTerminated?.Invoke();
@@ -90,7 +97,7 @@ namespace Turn
 
         public override void UnsubscribeFromConstantEvents()
         {
-            Eventbus.LinkEvents.OnFloorsOpened -= LinkTowers;
+            //Eventbus.LinkEvents.OnFloorsOpened -= LinkTowers;
         }
     }
 }

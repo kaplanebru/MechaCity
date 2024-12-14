@@ -97,26 +97,30 @@ namespace Actor
         {
             Registry = Registry.OrderBy(a => a.Value.Row).ToDictionary(a => a.Key, a => a.Value);
         }
-        
-        public static List<int> ResolveTowersFromActors(uint[] actorIDs)
+        public static List<int> ResolveTowersFromActors(ActorData[] actors)
         {
             List<int> towers = new();
-            foreach (var actorID in actorIDs)
+            foreach (var actor in actors)
             {
-                foreach (var tower in Registry[actorID].TowerIDs)
+                foreach (var tower in actor.TowerIDs)
                 {
                     towers.Add(tower);
                 }
             }
-
             return towers;
         }
-
-        // ActorData GetActorByTowerID(int towerID)
-        // {
-        //     var actorEntry = Registry.FirstOrDefault(a => a.Value.TowerIDs.Contains(towerID));
-        //     return actorEntry.Value ?? null;
-        // }
+      
+        
+        public static IEnumerable<ActorData> GetActiveActors(uint[] actorIDs)
+        {
+            foreach (var actorID in actorIDs)
+            {
+                var actor = Registry[actorID];
+                if (!actor.ActivityStatus.CanMove) continue;
+                yield return actor;
+            }
+        }
+        
         
         private void RemoveItem(ActorData actor)
         {

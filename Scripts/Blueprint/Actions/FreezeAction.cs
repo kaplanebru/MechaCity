@@ -9,23 +9,30 @@ namespace Blueprint
     {
         public void Execute(params object[] obj)
         {
-            var selectedActors = (uint[]) obj[0];
-            var selectedTowers = ActorHolder.Registry[selectedActors[0]].Towers;
+            var selectedActorID = (uint[]) obj[0];
+            var selectedActor = ActorHolder.Registry[selectedActorID[0]];
+            var selectedTowers = selectedActor.Towers;
+
+            selectedActor.ActivityStatus.CanMove = false;
             
             foreach (var tower in selectedTowers)
             {
                 tower.ColorHandler.ToFreezeColor();
-                tower.BpTowerData.IsFreezing = true;
             }
         }
 
         public void Restore(params object[] obj)
         {
-            var selectedTower = (int) obj[0];
-            var tower = AllTowers.GetData(selectedTower);
+            var selectedActorID = (uint[]) obj[0];
+            var selectedActor = ActorHolder.Registry[selectedActorID[0]];
+            var selectedTowers = selectedActor.Towers;
+        
+            selectedActor.ActivityStatus.CanMove = true;
             
-            tower.ColorHandler.ToOriginalColor();
-            tower.BpTowerData.IsFreezing = false;
+            foreach (var tower in selectedTowers)
+            {
+                tower.ColorHandler.ToOriginalColor();
+            }
         }
     }
 }

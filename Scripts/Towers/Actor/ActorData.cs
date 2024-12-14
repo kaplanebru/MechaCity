@@ -6,14 +6,19 @@ using UnityEngine;
 
 namespace Actor
 {
+    public class ActivityStatus
+    {
+        public bool CanMove = true;
+        public bool CanShoot = true;
+    }
     public class ActorData
     {
         public uint ID;
         public int Row;
         public ActorType Type;
+        
         public int[] TowerIDs;
         public TowerData[] Towers;
-        //public Transform HealthParent;
         public int TowerAmount { get; set; }
         public Vector3 Center;
         
@@ -22,7 +27,7 @@ namespace Actor
         
         public HashSet<uint> TargetActors = new();
         public HashSet<uint> Neighbours = new();
-
+        public ActivityStatus ActivityStatus = new();
         public ActorData(uint id, ActorType type, params int[] towerIDs)
         {
             ID = id;
