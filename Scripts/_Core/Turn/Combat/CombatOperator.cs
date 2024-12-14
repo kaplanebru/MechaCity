@@ -57,7 +57,7 @@ namespace Turn
                 _towers.AddRange(actor.Towers);
             }
 
-            _towers?.ForEach(t => t.ColorHandler.ToOriginalColor());
+            _towers?.ForEach(t => t.ColorHandler.ToOriginalSelectionColor());
         }
 
         public void Fasten()
@@ -88,7 +88,7 @@ namespace Turn
             {
                 foreach (var tower in mainActor.Towers)
                 {
-                    tower.ColorHandler.ToOriginalColor();
+                    tower.ColorHandler.ToOriginalSelectionColor();
                 }
 
                 GeneralEventbus.IndicatorEvents.OnActorLeftByCombat?.Invoke();
@@ -159,7 +159,7 @@ namespace Turn
 
         void DeselectAlteredTowers()
         {
-            _towers?.ForEach(t => t.ColorHandler.ToOriginalColor());
+            _towers?.ForEach(t => t.ColorHandler.ToOriginalSelectionColor());
         }
 
         public void Unsubscribe()

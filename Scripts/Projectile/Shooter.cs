@@ -90,7 +90,7 @@ public class Shooter : MonoBehaviour, ITowerRelated
 
         projectile.Move(() =>
         {
-            perpetrator.ColorHandler.ToOriginalColor();
+            perpetrator.ColorHandler.ToOriginalSelectionColor();
 
             Hide();
             ShieldData shieldData = victim.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;

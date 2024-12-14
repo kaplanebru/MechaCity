@@ -50,12 +50,18 @@ namespace Towers
             SetCombinedMeshes();
         }
        
-        public void SetTeamVisuals(TeamColorData teamData)
+        public void SetDefaultTeamVisuals(TeamColorData newTeamData = null)
         {
-            Data.TeamData = teamData;
-            SetTeamMats(teamData.GetColorsByType(ColorDistrict.InnerShell, ColorState.Default));
-            SetTeamMats(teamData.GetColorsByType(ColorDistrict.OuterShell, ColorState.Default));
-            SetSelectionMats(teamData.GetColorsByType(ColorDistrict.Inside, ColorState.Default));
+            if(newTeamData != null)
+                Data.TeamData = newTeamData;
+            else
+            {
+                newTeamData = Data.TeamData;
+            }
+          
+            SetTeamMats(Data.TeamData.GetColorsByType(ColorDistrict.InnerShell, ColorState.Default));
+            SetTeamMats(Data.TeamData.GetColorsByType(ColorDistrict.OuterShell, ColorState.Default));
+            SetSelectionMats(Data.TeamData.GetColorsByType(ColorDistrict.Inside, ColorState.Default));
         }
         
         private void SetCombinedMeshes()
@@ -75,11 +81,12 @@ namespace Towers
 
         private void SetSelectionMats(params Material[] mats)
         {
+            Debug.Log("freeze mat:" + mats[0].name);
             colorChanger.SetMaterial(mats[0], Data.SelectionMeshes.Light);
             colorChanger.SetMaterial(mats[1], Data.SelectionMeshes.Head);
         }
         
-        public void SetColorByColorType(ColorState state)
+        public void SetColorByGivenState(ColorState state)
         {
             SetSelectionMats(Data.TeamData.GetColorsByType(ColorDistrict.Inside, state));
             GeneralEventbus.OnTowerColorChange?.Invoke(Id);
@@ -87,7 +94,7 @@ namespace Towers
 
         public void ToFreezeColor()
         {
-            SetSelectionMats(Data.TeamData.GetColorsByType(ColorDistrict.Inside, ColorState.Freeze));
+            SetTeamMats(Data.TeamData.GetColorsByType(ColorDistrict.OuterShell, ColorState.Freeze));
         }
 
         public void ToBlueprintColor()
@@ -101,7 +108,7 @@ namespace Towers
             GeneralEventbus.OnTowerColorChange?.Invoke(Id);
         }
 
-        public void ToOriginalColor()
+        public void ToOriginalSelectionColor()
         {
             SetSelectionMats(Data.TeamData.GetColorsByType(ColorDistrict.Inside, ColorState.Default));
             GeneralEventbus.OnTurnTowerDeselect?.Invoke(Id);

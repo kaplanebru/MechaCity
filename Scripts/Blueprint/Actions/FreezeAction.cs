@@ -31,7 +31,7 @@ namespace Blueprint
             
             foreach (var tower in selectedTowers)
             {
-                tower.ColorHandler.ToOriginalColor();
+                tower.ColorHandler.SetDefaultTeamVisuals();
             }
         }
     }

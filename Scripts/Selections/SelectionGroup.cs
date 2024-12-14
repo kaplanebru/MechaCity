@@ -53,7 +53,7 @@ public class SelectionGroup
             ActorData actor = ActorHolder.Registry[actorID];
             foreach (var tower in actor.Towers)
             {
-                tower.ColorHandler.ToOriginalColor();
+                tower.ColorHandler.ToOriginalSelectionColor();
             }
         }
         SelectedActors.Clear();
