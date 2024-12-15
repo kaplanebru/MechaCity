@@ -22,6 +22,7 @@ namespace Blueprint
             AllBlueprints.Add(BpType.BreakShield, new BpBreakShield());
             AllBlueprints.Add(BpType.MultiShot, new BpMultiShot());
             AllBlueprints.Add(BpType.Disarmament, new BpDisarmament());
+            AllBlueprints.Add(BpType.Earthquake, new BpEarthquake());
         }
     }
 

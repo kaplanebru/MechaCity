@@ -99,6 +99,7 @@ namespace Enums
         BreakShield,
         MultiShot,
         Disarmament,
+        Earthquake,
         None
     }
 
