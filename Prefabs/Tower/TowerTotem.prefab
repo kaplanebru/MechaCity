@@ -12517,7 +12517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6066641485996702992
 Transform:
   m_ObjectHideFlags: 0
@@ -30097,6 +30097,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1700895131221956560}
+  - component: {fileID: 4344147505993662964}
   m_Layer: 0
   m_Name: DisarmamentSignHolder
   m_TagString: Untagged
@@ -30120,6 +30121,22 @@ Transform:
   m_Father: {fileID: 4472923296964375759}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4344147505993662964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6276436491062215448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e2643d739409964ca75ffe052c4506f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disarmSignObject: {fileID: 6066641485996702992}
+  parts:
+  - {fileID: 5489407286617203689}
+  - {fileID: 5603655794490189690}
 --- !u!1 &6291870924330755390
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,5 +25,8 @@ namespace TowerExternal
                 }
             }
         }
+
+        public abstract void Subscribe();
+        public abstract void Unsubscribe();
     }
 }

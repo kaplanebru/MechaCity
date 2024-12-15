@@ -11,6 +11,7 @@ namespace TowerExternal
         public GearGroup GearGroup;
         public ShieldGroup ShieldGroup;
         public MultiShooterGroup MultiShooterGroup;
+        public DisarmSignGroup DisarmSignGroup;
 
         private void OnEnable()
         {
@@ -30,6 +31,8 @@ namespace TowerExternal
             Data.IGears = GetComponentsInChildren<IGear>();
             Data.Shields = GetComponentsInChildren<Shield>();
             Data.MultiShooters = GetComponentsInChildren<MultiShooter>();
+            Data.DisarmSigns = GetComponentsInChildren<DisarmSign>();
+
         }
 
         void CreateAndSetGroups()
@@ -39,8 +42,8 @@ namespace TowerExternal
             GearGroup = new GearGroup(Data.IGears.ToArray());
             ShieldGroup = new ShieldGroup(Data.Shields);
             MultiShooterGroup = new MultiShooterGroup(Data.MultiShooters);
-            
-            
+            DisarmSignGroup = new DisarmSignGroup(Data.DisarmSigns);
+
             CableGroups.SetColor(Data.CableSelectionColor, Data.CableDefaultColor);
             SubscribeToGroups();
             ReadyCall();
@@ -58,6 +61,7 @@ namespace TowerExternal
             GearGroup.Subscribe();
             ShieldGroup.Subscribe();
             MultiShooterGroup.Subscribe();
+            DisarmSignGroup.Subscribe();
         }
 
         void UnsubscribeFromGroups()
@@ -67,6 +71,7 @@ namespace TowerExternal
             GearGroup.Unsubscribe();
             ShieldGroup.Unsubscribe();
             MultiShooterGroup.Unsubscribe();
+            DisarmSignGroup.Unsubscribe();
         }
 
         private void OnDisable()

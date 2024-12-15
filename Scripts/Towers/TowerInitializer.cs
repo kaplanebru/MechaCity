@@ -28,10 +28,11 @@ namespace Towers
             Data.BpTowerData = new BpTowerData(Data.UniqID);
             
             Data.CreateSegments();
-            Data.CreateVisualSupportedDatas(new Dictionary<VisualDataType, int>
+            Data.CreateVisualSupportedDatas(new Dictionary<VisualDataType, int> //TODO: Bunlar bp trigger edilerek de yapılamaz, user lazım
             {
                 { VisualDataType.Shield, ConstantData.ShieldHeight },
-                { VisualDataType.Attack, ConstantData.ShotAmount }
+                { VisualDataType.Attack, ConstantData.ShotAmount },
+                { VisualDataType.Disarm, ConstantData.IsDisarmed ? 0 : 1}
             });
             
             SetSegments();

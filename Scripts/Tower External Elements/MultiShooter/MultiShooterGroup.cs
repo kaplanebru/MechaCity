@@ -10,7 +10,7 @@ namespace TowerExternal
         {
         }
 
-        public void Subscribe()
+        public override void Subscribe()
         {
             Eventbus.TowerEvents.OnMultiShotActionTriggered += RevealMultiShot;
         }
@@ -29,7 +29,7 @@ namespace TowerExternal
             }
         }
 
-        public void Unsubscribe()
+        public override void Unsubscribe()
         {
             Eventbus.TowerEvents.OnMultiShotActionTriggered -= RevealMultiShot;
         }

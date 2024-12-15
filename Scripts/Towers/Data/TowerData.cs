@@ -76,6 +76,7 @@ namespace Towers
         {
             VisualSupportedDatas.Add(VisualDataType.Shield, new ShieldData());
             VisualSupportedDatas.Add(VisualDataType.Attack, new AttackData());
+            VisualSupportedDatas.Add(VisualDataType.Disarm, new DisarmData());
             
             foreach (var visualData in VisualSupportedDatas)
             {

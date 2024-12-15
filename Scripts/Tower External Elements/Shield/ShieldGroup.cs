@@ -11,7 +11,7 @@ namespace TowerExternal
         {
         }
 
-        public void Subscribe()
+        public override void Subscribe()
         {
             Eventbus.TowerEvents.OnShieldActionTriggered += RevealShields;
             BpEventbus.ActionEvents.OnBreakShieldActionTriggered += BreakSelectedShield;
@@ -33,7 +33,7 @@ namespace TowerExternal
         }
 
 
-        public void Unsubscribe()
+        public override void Unsubscribe()
         {
             Eventbus.TowerEvents.OnShieldActionTriggered -= RevealShields;
             BpEventbus.ActionEvents.OnBreakShieldActionTriggered -= BreakSelectedShield;

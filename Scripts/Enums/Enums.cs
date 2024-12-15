@@ -119,7 +119,8 @@ namespace Enums
     public enum VisualDataType
     {
         Shield,
-        Attack
+        Attack,
+        Disarm
     }
 
    

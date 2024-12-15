@@ -13,7 +13,7 @@ namespace TowerExternal
         {
         }
 
-        public void Subscribe()
+        public override void Subscribe()
         {
             Eventbus.LinkEvents.OnLinkLoading += OpenFloors;
             Eventbus.LinkEvents.OnUnlink += ResetFloors;
@@ -56,7 +56,7 @@ namespace TowerExternal
             selectedFloors.Clear();
         }
         
-        public void Unsubscribe()
+        public override void Unsubscribe()
         {
             Eventbus.LinkEvents.OnLinkLoading -= OpenFloors;
             Eventbus.LinkEvents.OnUnlink -= ResetFloors;

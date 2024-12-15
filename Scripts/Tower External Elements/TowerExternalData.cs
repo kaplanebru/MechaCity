@@ -12,6 +12,7 @@ namespace TowerExternal
         public IGear[] IGears;
         public Shield[] Shields;
         public MultiShooter[] MultiShooters;
+        public DisarmSign[] DisarmSigns;
         
         public Color CableSelectionColor;
         public Color CableDefaultColor;
