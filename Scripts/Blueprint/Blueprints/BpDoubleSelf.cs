@@ -14,7 +14,6 @@ namespace Blueprint
         public override BpType Type { get; set; } = BpType.DoubleSelf;
         public override SelectionType SelectionType { get; set; } = SelectionType.PlayerOnlyBp;
         public override int Lifespan { get; set; } = 1;
-        public override int MaxSelectionAmount { get; set; } = 1;
         public DoubleSelfAction BpAction { get; } = new DoubleSelfAction();
 
 

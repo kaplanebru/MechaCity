@@ -12,7 +12,6 @@ namespace Blueprint
         public override BpType Type { get; set; } = BpType.MultiShot;
         public override SelectionType SelectionType { get; set; } = SelectionType.SinglePlayerOnlyBP;
         public override int Lifespan { get; set; } = 1;
-        public override int MaxSelectionAmount { get; set; } = 1;
         public override bool TryTakeAction(uint[] selectedItems)
         {
             Debug.Log("execute multiShot");

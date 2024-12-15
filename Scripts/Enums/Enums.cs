@@ -98,6 +98,7 @@ namespace Enums
         Shield,
         BreakShield,
         MultiShot,
+        Disarmament,
         None
     }
 

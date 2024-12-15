@@ -81,7 +81,6 @@ namespace Towers
 
         private void SetSelectionMats(params Material[] mats)
         {
-            Debug.Log("freeze mat:" + mats[0].name);
             colorChanger.SetMaterial(mats[0], Data.SelectionMeshes.Light);
             colorChanger.SetMaterial(mats[1], Data.SelectionMeshes.Head);
         }
