@@ -19,4 +19,14 @@ namespace Towers
         public TeamType StartTeam;
         public LockStatus StartLockStatus;
     }
+
+    public class BpStartData //todo: maybe
+    {
+        public bool HasShield = false;
+        public bool CantMove = false;
+        public bool CantShoot = false;
+        
+        public int ShieldHeight = 0;
+        public int ShotAmount = 1;
+    }
 }

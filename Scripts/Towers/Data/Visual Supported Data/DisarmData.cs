@@ -11,10 +11,14 @@ namespace Towers
         public override VisualDataType Type { get; set; } = VisualDataType.Disarm;
         public override void SetVisually()
         {
-            Eventbus.TowerEvents.OnDisarmamentActionTriggered?.Invoke(TowerID);
+            if(SatisfyRequirements())
+                Eventbus.TowerEvents.OnDisarmamentActionTriggered?.Invoke(TowerID);
         }
 
-        protected override bool SatisfyRequirements() => true;
+        protected override bool SatisfyRequirements()
+        {
+            return Amount == 0;
+        }
     }
 
 }
