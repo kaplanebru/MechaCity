@@ -35,9 +35,8 @@ namespace Towers
             _tower.SetTeamVisuals(teamData);
         }
 
-        public void RelatedsSetup()
+        public void TowerBPElementsDataSetup()
         {
-            SetTowerRelatedIds();
             Data.CreateVisualSupportedDatas(new Dictionary<VisualDataType, int> //TODO: Bunlar bp trigger edilerek de yapılabilir
             {
                 { VisualDataType.Shield, ConstantData.ShieldHeight },
@@ -54,7 +53,7 @@ namespace Towers
             }
         }
 
-        void SetTowerRelatedIds()
+        public void SetTowerRelatedIds()
         {
             var towerRelations =_tower.GetComponentsInChildren<ITowerRelated>();
             foreach (var related in towerRelations)
@@ -63,7 +62,7 @@ namespace Towers
             }
         }
 
-        public void ExecuteAfterSetup()
+        public void ExecuteVisualsAfterSetup()
         {
             foreach (var visualSupportedData in Data.VisualSupportedDatas)
             {

@@ -26,7 +26,6 @@ namespace Towers
         
         private void UIHeightChangeRequest(float height, int id)
         {
-            //print(id);
             var tower = towers.FirstOrDefault(t=>t.UniqID == id);
             tower?.UIHandler.ChangeHeightUI(height);
         }

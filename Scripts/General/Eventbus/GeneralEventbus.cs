@@ -9,7 +9,6 @@ public static class GeneralEventbus
 
     public static class InitializerEvents
     {
-        public static Action OnInitialize;
         public static Action OnActorsCreated;
         public static Action OnTowerRelatedIDsSet;
         public static Action OnTowersAndTeamsReady;

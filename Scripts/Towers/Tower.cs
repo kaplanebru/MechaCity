@@ -21,7 +21,6 @@ namespace Towers
 
         private void OnEnable()
         {
-            // initializer = new TowerInitializer(this);
             Eventbus.TowerEvents.OnTurnBegin += FirstMotion;
             interruptionMotion.Subscribe();
         }

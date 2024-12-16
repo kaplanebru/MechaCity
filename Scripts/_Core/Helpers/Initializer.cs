@@ -36,7 +36,11 @@ namespace Core
 
         void ExecuteInitializer()
         {
-            Invoke(nameof(CreateTeams), 1);
+            CreateTeams();
+            SetTowerExternalElements();
+            Invoke(nameof(TowerAndTeamsReadyCall), .5f); //cable floor sheild vs hepsinin gameobjecti için
+            Invoke(nameof(StartNetwork), .6f);
+
         }
 
         void CreateTeams()
@@ -46,15 +50,27 @@ namespace Core
             for (int i = 0; i < Teams.Length; i++)
             {
                 Teams[i] = new Team(TeamsData[i]);
-                Teams[i].SetTeamActors();
+                Teams[i].DistributeTeamActors();
             }
             
-            NetworkUIController.gameObject.SetActive(true);
 
             TeamEvents.OnTeamsSet?.Invoke(Teams);
-            GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet?.Invoke();
             
-            Invoke(nameof(TowerAndTeamsReadyCall), 1.5f); //todo: later, henüz extralar eklenmemişse olmaz
+        }
+
+        void SetTowerExternalElements()
+        {
+            foreach (var tower in AllTowers.Towers)
+            {
+                tower.initializer.SetTowerRelatedIds();
+                tower.initializer.TowerBPElementsDataSetup();
+            }
+            GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet?.Invoke();
+        }
+
+        private void StartNetwork()
+        {
+            NetworkUIController.gameObject.SetActive(true);
         }
 
         void TowerAndTeamsReadyCall() //todo: temp
@@ -111,8 +127,8 @@ namespace Core
                 var data = tower.Data;
                 if(data.LockStatus.Locked)
                     Eventbus.TowerEvents.OnLock?.Invoke(data.LockStatus.Limit, data.UniqID);
-                
-                tower.initializer.ExecuteAfterSetup();
+
+                tower.initializer.ExecuteVisualsAfterSetup();
             }
         }
 

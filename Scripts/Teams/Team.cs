@@ -17,7 +17,7 @@ namespace Teams
             Data = data;
         }
         
-        public void SetTeamActors()
+        public void DistributeTeamActors()
         {
             Data.Actors.Clear();
 
@@ -29,9 +29,7 @@ namespace Teams
                 }
             }
         }
-
-  
-
+        
         public void TakeActorFromRival(ActorData actor)
         {
             Data.Actors.Add(actor);

@@ -16,7 +16,7 @@ public class ActorsInitializer : MonoBehaviour
         ActorHolder.Initialize();
         AllTowers.Subscribe();
 
-        Invoke(nameof(FoundActorsWithTowers), .5f);
+        Invoke(nameof(FoundActorsWithTowers), .5f); //diğer on enable getcomponentlar çalışsın diye
     }
 
     public void FoundActorsWithTowers()
@@ -87,13 +87,13 @@ public class ActorFounderData
         {
             var towerObject = TowerObjects[i];
             
-            var towerInitializer = new TowerInitializer(towerObject);
-            towerInitializer.DataSetup();
-            towerInitializer.DataVisualCorrespondenceSetup(ActorData.TeamVisualData);
+            towerObject.initializer = new TowerInitializer(towerObject);
+            towerObject.initializer .DataSetup();
+            towerObject.initializer.DataVisualCorrespondenceSetup(ActorData.TeamVisualData);
             
             ActorData.TowerIDs[i] = towerObject.Data.UniqID;
             ActorData.Towers[i] = towerObject.Data;
-            ActorData.Towers[i].SetClickHandlerID(ActorData.ID);
+            ActorData.Towers[i].SetClickHandlerID(ActorData.ID); //todo: bu her set teamde tekrarlanmalı
             ActorData.OrderTowerDataByHeight();
 
             ActorData.TargetActors = new();
