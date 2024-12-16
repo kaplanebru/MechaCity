@@ -8,7 +8,6 @@ using UnityEngine;
 public class ShootersEventListener : TowerRelatedEventListener<Shooter>
 {
     public CombatTimingData timingData;
-    //protected override Shooter[] RelatedItems { get; set; }
     protected override Dictionary<int, Shooter> RelatedItems { get; set; } = new();
 
     public override void Subscribe()

@@ -18,6 +18,7 @@ namespace Core
         public Transform NetworkUIController;
         public Team[] Teams;
         public TeamData[] TeamsData;
+        [SerializeField] private Transform allTowers;
         [SerializeField] Transform levelPrefab;
      
         
@@ -31,13 +32,13 @@ namespace Core
         
         void InstantiateLevelPrefab()
         {
-            Instantiate(levelPrefab, transform);
+            Instantiate(levelPrefab, allTowers);
         }
 
         void ExecuteInitializer()
         {
             CreateTeams();
-            SetTowerExternalElements();
+            SetTowerRelatedIDs();
             Invoke(nameof(TowerAndTeamsReadyCall), .5f); //cable floor sheild vs hepsinin gameobjecti için
             Invoke(nameof(StartNetwork), .6f);
 
@@ -58,7 +59,7 @@ namespace Core
             
         }
 
-        void SetTowerExternalElements()
+        void SetTowerRelatedIDs()
         {
             foreach (var tower in AllTowers.Towers)
             {
@@ -66,6 +67,7 @@ namespace Core
                 tower.initializer.TowerBPElementsDataSetup();
             }
             GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet?.Invoke();
+
         }
 
         private void StartNetwork()
@@ -77,6 +79,7 @@ namespace Core
         {
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady?.Invoke();
         }
+        
 
 
         private void AssignPlayers(Player newPlayer, ulong id)
