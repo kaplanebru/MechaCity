@@ -13,7 +13,6 @@ namespace TowerExternal
         {
             foreach (var item in collection)
             {
-                // var id = ((ITowerRelated) item).Id;
                 if (Collection.ContainsKey(item.Id))
                 {
                     Debug.Log(item.Id);
@@ -21,7 +20,6 @@ namespace TowerExternal
                 else
                 {
                     Collection.Add(item.Id, item);
-
                 }
             }
         }

@@ -13,22 +13,19 @@ namespace TowerExternal
     public enum TowerRelatedType
     {
         Floor,
-        Gear,
+        Shield,
+        DisarmSign,
+        MultiShooter,
         Shooter,
         Health,
         Lock,
-        Shield,
         Bridge,
-        DisarmSign,
-        MultiShooter
     }
-    public class TowerExternalElementsDatabase : MonoBehaviour
+    public class DBTowerRelatedCollections : MonoBehaviour
     {
-        public TowerRelatedElementDataBase dataBase;
         private Dictionary<TowerRelatedType, ITowerRelatedCollection> registry = new ();
         private GearCollection gearCollection;
-     
-
+        
         private void OnEnable()
         {
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += Initialize;
@@ -36,33 +33,25 @@ namespace TowerExternal
         
         private void Initialize()
         {
-            FillRelatedElementData();
-            FillRegistry();
-            SubscribeToGroups();
+            FillCollectionsRegistry();
+            SubscribeToCollections();
             GeneralEventbus.InitializerEvents.OnExternalElementsReady?.Invoke();
         }
 
-        void FillRelatedElementData()
-        {
-            dataBase.Floors = GetComponentsInChildren<Floor>();
-            dataBase.IGears = GetComponentsInChildren<IGear>();
-            dataBase.Shields = GetComponentsInChildren<Shield>();
-            dataBase.MultiShooters = GetComponentsInChildren<MultiShooter>();
-            dataBase.DisarmSigns = GetComponentsInChildren<DisarmSign>();
-        }
         
-        void FillRegistry()
+        
+        void FillCollectionsRegistry()
         {
-            registry.Add(TowerRelatedType.Floor, new FloorCollection(dataBase.Floors));
-            registry.Add(TowerRelatedType.Shield, new ShieldCollection(dataBase.Shields));
-            registry.Add(TowerRelatedType.MultiShooter, new MultiShooterCollection(dataBase.MultiShooters));
-            registry.Add(TowerRelatedType.DisarmSign, new DisarmSignCollection(dataBase.DisarmSigns));
+            registry.Add(TowerRelatedType.Floor, new FloorCollection(GetComponentsInChildren<Floor>()));
+            registry.Add(TowerRelatedType.Shield, new ShieldCollection(GetComponentsInChildren<Shield>()));
+            registry.Add(TowerRelatedType.MultiShooter, new MultiShooterCollection(GetComponentsInChildren<MultiShooter>()));
+            registry.Add(TowerRelatedType.DisarmSign, new DisarmSignCollection(GetComponentsInChildren<DisarmSign>()));
             
-            gearCollection = new GearCollection(dataBase.IGears.ToArray());
+            gearCollection = new GearCollection(GetComponentsInChildren<IGear>());
         }
 
 
-        void SubscribeToGroups()
+        void SubscribeToCollections()
         {
             foreach (var group in registry.Values)
             {
@@ -71,7 +60,7 @@ namespace TowerExternal
             gearCollection.Subscribe();
         }
 
-        void UnsubscribeFromGroups()
+        void UnsubscribeFromCollections()
         {
             foreach (var group in registry.Values)
             {
@@ -83,7 +72,7 @@ namespace TowerExternal
         private void OnDisable()
         {
             GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= Initialize;
-            UnsubscribeFromGroups();
+            UnsubscribeFromCollections();
         }
     }
 }
