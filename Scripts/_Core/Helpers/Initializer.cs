@@ -39,24 +39,22 @@ namespace Core
         {
             CreateTeams();
             SetTowerRelatedIDs();
+            SetTowerBpElementsData();
+            
             Invoke(nameof(TowerAndTeamsReadyCall), .5f); //cable floor sheild vs hepsinin gameobjecti için
             Invoke(nameof(StartNetwork), .6f);
-
         }
 
         void CreateTeams()
         {
             Teams = new Team[TeamsData.Length];
-           
             for (int i = 0; i < Teams.Length; i++)
             {
                 Teams[i] = new Team(TeamsData[i]);
                 Teams[i].DistributeTeamActors();
             }
             
-
             TeamEvents.OnTeamsSet?.Invoke(Teams);
-            
         }
 
         void SetTowerRelatedIDs()
@@ -64,10 +62,16 @@ namespace Core
             foreach (var tower in AllTowers.Towers)
             {
                 tower.initializer.SetTowerRelatedIds();
-                tower.initializer.TowerBPElementsDataSetup();
             }
             GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet?.Invoke();
+        }
 
+        void SetTowerBpElementsData()
+        {
+            foreach (var tower in AllTowers.Towers)
+            {
+                tower.initializer.TowerBPElementsDataSetup();
+            }
         }
 
         private void StartNetwork()
