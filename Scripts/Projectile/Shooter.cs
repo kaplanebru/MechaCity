@@ -9,7 +9,7 @@ using ProjectileHandler;
 using Towers;
 using UnityEngine;
 
-public class Shooter : MonoBehaviour, ITowerRelated
+public class Shooter : MonoBehaviour, ITowerRelatedElement
 {
     public float motionDistance = 1;
     public Transform shootingSlot;

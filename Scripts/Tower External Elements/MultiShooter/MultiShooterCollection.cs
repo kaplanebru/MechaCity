@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class MultiShooterGroup : BaseTowerExternalGroup<MultiShooter>
+    public class MultiShooterCollection : BaseTowerRelatedCollection<MultiShooter>
     {
-        public MultiShooterGroup(MultiShooter[] group) : base(group)
+        public MultiShooterCollection(MultiShooter[] collection) : base(collection)
         {
         }
 
@@ -17,7 +17,7 @@ namespace TowerExternal
 
         private void RevealMultiShot(int towerID, int shooterAmount)//shooter amountu pas geçebiliriz
         {
-            var multiShooter = Group[towerID];
+            var multiShooter = Collection[towerID];
             if (shooterAmount == 2)
             {
                 multiShooter.ShowShootingTable();

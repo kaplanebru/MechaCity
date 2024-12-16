@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class GearIdentifier : MonoBehaviour, ITowerRelated
+    public class GearIdentifier : MonoBehaviour, ITowerRelatedElement
     {
         private Rotater _rotater;
 

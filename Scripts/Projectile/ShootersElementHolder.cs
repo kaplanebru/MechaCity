@@ -5,7 +5,7 @@ using System.Linq;
 using DataModels;
 using UnityEngine;
 
-public class ShootersEventListener : TowerRelatedEventListener<Shooter>
+public class ShootersElementHolder : TowerRelatedElementHolder<Shooter>
 {
     public CombatTimingData timingData;
     protected override Dictionary<int, Shooter> RelatedItems { get; set; } = new();

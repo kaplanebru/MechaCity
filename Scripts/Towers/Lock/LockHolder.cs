@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LockHolder : MonoBehaviour, ITowerRelated
+public class LockHolder : MonoBehaviour, ITowerRelatedElement
 {
     public int Id { get; set; }
 

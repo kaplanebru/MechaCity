@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class GearGroup 
+    public class GearCollection 
     {
         [SerializeField]private IGear[] IGears;
         [SerializeField] private List<GearIdentifier> _gearIdentifiers = new();
 
-        public GearGroup(IGear[] gears)
+        public GearCollection(IGear[] gears)
         {
             IGears = gears;
             Setup();

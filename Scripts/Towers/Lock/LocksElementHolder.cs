@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LocksEventListener : TowerRelatedEventListener<LockHolder>
+public class LocksElementHolder : TowerRelatedElementHolder<LockHolder>
 {
     //protected override LockHolder[] RelatedItems { get; set; }
     protected override Dictionary<int, LockHolder> RelatedItems { get; set; } = new();

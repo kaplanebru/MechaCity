@@ -5,28 +5,29 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public abstract class BaseTowerExternalGroup<T> where T : ITowerExternal, ITowerRelated
+    public abstract class BaseTowerRelatedCollection<T> : ITowerRelatedCollection where T : ITowerRelatedElement
     {
-        protected Dictionary<int, T> Group { get; } = new();
+        protected Dictionary<int, T> Collection { get; } = new();
     
-        public BaseTowerExternalGroup(T[] group)
+        public BaseTowerRelatedCollection(T[] collection)
         {
-            foreach (var item in group)
+            foreach (var item in collection)
             {
                 // var id = ((ITowerRelated) item).Id;
-                if (Group.ContainsKey(item.Id))
+                if (Collection.ContainsKey(item.Id))
                 {
                     Debug.Log(item.Id);
                 }
                 else
                 {
-                    Group.Add(item.Id, item);
+                    Collection.Add(item.Id, item);
 
                 }
             }
         }
 
-        public abstract void Subscribe();
-        public abstract void Unsubscribe();
+        public virtual void Subscribe() {}
+
+        public virtual void Unsubscribe() {}
     }
 }

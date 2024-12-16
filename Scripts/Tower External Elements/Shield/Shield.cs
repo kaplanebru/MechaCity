@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class Shield : MonoBehaviour, ITowerRelated, ITowerExternal
+    public class Shield : MonoBehaviour, ITowerRelatedElement
     {
         public int Id { get; set; }
         public Transform shieldObject;

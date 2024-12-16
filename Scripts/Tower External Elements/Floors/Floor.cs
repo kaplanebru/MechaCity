@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class Floor : MonoBehaviour, ITowerRelated, ITowerExternal
+    public class Floor : MonoBehaviour, ITowerRelatedElement
     {
         public Transform[] parts;
         public Transform gear;

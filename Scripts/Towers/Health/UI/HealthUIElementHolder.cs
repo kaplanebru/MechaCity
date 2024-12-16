@@ -10,11 +10,9 @@ using UnityEngine;
 
 namespace Health
 {
-    public class HealthUIEventListener : TowerRelatedEventListener<HealthHolder>
+    public class HealthUIElementHolder : TowerRelatedElementHolder<HealthHolder>
     {
-       // protected override HealthHolder[] RelatedItems { get; set; } //bunları hep dict yapmak lazım.
         private Dictionary<uint, HealthHolder> holdersByActor = new();
-        public HealthHolder healthHolderPb;
 
         protected override Dictionary<int, HealthHolder> RelatedItems { get; set; } = new();
 

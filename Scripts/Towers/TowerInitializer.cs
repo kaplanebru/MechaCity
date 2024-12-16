@@ -55,7 +55,7 @@ namespace Towers
 
         public void SetTowerRelatedIds()
         {
-            var towerRelations =_tower.GetComponentsInChildren<ITowerRelated>();
+            var towerRelations =_tower.GetComponentsInChildren<ITowerRelatedElement>();
             foreach (var related in towerRelations)
             {
                 related.Initialize(Data.UniqID);

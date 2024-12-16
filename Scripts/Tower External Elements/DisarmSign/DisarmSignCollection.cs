@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class DisarmSignGroup : BaseTowerExternalGroup<DisarmSign>
+    public class DisarmSignCollection : BaseTowerRelatedCollection<DisarmSign>
     {
-        public DisarmSignGroup(DisarmSign[] group) : base(group)
+        public DisarmSignCollection(DisarmSign[] collection) : base(collection)
         {
         }
 
@@ -18,13 +18,13 @@ namespace TowerExternal
 
         private void RevealSign(int towerID)
         {
-            var sign = Group[towerID];
+            var sign = Collection[towerID];
             sign.RevealSign();
         }
 
         private void HideSign(int towerID)
         {
-            var sign = Group[towerID];
+            var sign = Collection[towerID];
             sign.HideSign();
         }
 

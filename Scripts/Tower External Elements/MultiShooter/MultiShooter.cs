@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class MultiShooter : MonoBehaviour, ITowerRelated, ITowerExternal
+    public class MultiShooter : MonoBehaviour, ITowerRelatedElement
     {
         public int Id { get; set; }
         public ShootingTable shootingTable;

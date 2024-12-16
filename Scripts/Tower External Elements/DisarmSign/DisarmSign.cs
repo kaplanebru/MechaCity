@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class DisarmSign : MonoBehaviour, ITowerRelated, ITowerExternal
+    public class DisarmSign : MonoBehaviour, ITowerRelatedElement
     {
         public int Id { get; set; }
         public Transform disarmSignObject;

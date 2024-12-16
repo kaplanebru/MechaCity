@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Health
 {
-    public class HealthHolder : MonoBehaviour, ITowerRelated
+    public class HealthHolder : MonoBehaviour, ITowerRelatedElement
 {
     public HealthIcon iconPrefab;
     public List<HealthIcon> icons;

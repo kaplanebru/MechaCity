@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class ShieldGroup : BaseTowerExternalGroup<Shield>
+    public class ShieldCollection : BaseTowerRelatedCollection<Shield>
     {
-        public ShieldGroup(Shield[] group) : base(group)
+        public ShieldCollection(Shield[] collection) : base(collection)
         {
         }
 
@@ -21,14 +21,14 @@ namespace TowerExternal
         {
             foreach (var id in towerIDs)
             {
-                var shield = Group[id];
+                var shield = Collection[id];
                 shield.BreakShield();
             }
         }
 
         private void RevealShields(int towerID, int towerHeight)
         {
-            var shield = Group[towerID];
+            var shield = Collection[towerID];
             shield.RevealShield(towerHeight);
         }
 

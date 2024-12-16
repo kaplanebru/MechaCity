@@ -5,7 +5,7 @@ using DG.Tweening;
 using Towers;
 using UnityEngine;
 
-public class BridgeRoot : MonoBehaviour, ITowerRelated
+public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
 {
     public int Id { get; set; }
     public Transform[] roots;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public abstract class TowerRelatedEventListener<TRelated> : MonoBehaviour where TRelated : ITowerRelated
+public abstract class TowerRelatedElementHolder<TRelated> : MonoBehaviour where TRelated : ITowerRelatedElement
 {
     protected abstract Dictionary<int, TRelated> RelatedItems { get; set; }
 

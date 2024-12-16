@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BridgeEventListener : TowerRelatedEventListener<BridgeRoot>
+public class BridgeElementHolder : TowerRelatedElementHolder<BridgeRoot>
 {
     //protected override BridgeRoot[] RelatedItems { get; set; }
 
