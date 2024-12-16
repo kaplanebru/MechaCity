@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BridgeElementHolder : TowerRelatedElementHolder<BridgeRoot>
+public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
 {
     //protected override BridgeRoot[] RelatedItems { get; set; }
 
@@ -12,7 +12,7 @@ public class BridgeElementHolder : TowerRelatedElementHolder<BridgeRoot>
        DisableAll();
     }
 
-    protected override Dictionary<int, BridgeRoot> RelatedItems { get; set; } = new();
+    protected override Dictionary<int, BridgeRoot> Collection { get; set; } = new();
 
     public override void Subscribe()
     {
@@ -26,8 +26,8 @@ public class BridgeElementHolder : TowerRelatedElementHolder<BridgeRoot>
         {
             // var bridge = RelatedItems.FirstOrDefault(s => s.Id == ids[i]); //todo: dict yap
             // var target = RelatedItems.FirstOrDefault(s => s.Id == ids[i + 1]);
-            var bridge = RelatedItems[ids[i]];
-            var target = RelatedItems[ids[i + 1]];
+            var bridge = Collection[ids[i]];
+            var target = Collection[ids[i + 1]];
             bridge.Show(true);
             bridge.Stretch(target.Id); //ids[i+1]
         }
@@ -35,7 +35,7 @@ public class BridgeElementHolder : TowerRelatedElementHolder<BridgeRoot>
 
     void DisableAll()
     {
-        foreach (var relatedItem in RelatedItems.Values)
+        foreach (var relatedItem in Collection.Values)
         {
             relatedItem.Show(false);
         }

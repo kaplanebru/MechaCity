@@ -10,11 +10,11 @@ using UnityEngine;
 
 namespace Health
 {
-    public class HealthUIElementHolder : TowerRelatedElementHolder<HealthHolder>
+    public class HealthUICollection : TowerRelatedElementCollection<HealthHolder>
     {
         private Dictionary<uint, HealthHolder> holdersByActor = new();
 
-        protected override Dictionary<int, HealthHolder> RelatedItems { get; set; } = new();
+        protected override Dictionary<int, HealthHolder> Collection { get; set; } = new();
 
         public override void Subscribe()
         {
@@ -36,7 +36,7 @@ namespace Health
                 {
                     var towerID = actor.TowerIDs.First();
                     //var healthHolder = RelatedItems.FirstOrDefault(h => h.Id == towerID);
-                    var healthHolder = RelatedItems[towerID];
+                    var healthHolder = Collection[towerID];
                     holdersByActor.Add(actorID, healthHolder);
                 }
                 else
@@ -52,7 +52,7 @@ namespace Health
         {
             foreach (var towerID in towers)
             {
-                RelatedItems[towerID].icons.ForEach(i => i.gameObject.SetActive(false));
+                Collection[towerID].icons.ForEach(i => i.gameObject.SetActive(false));
             }
         }
         
@@ -84,7 +84,7 @@ namespace Health
             var highestTower = actor.Towers.Aggregate((t1, t2) => t1.Height > t2.Height ? t1 : t2).UniqID;
             
             //var holder =  RelatedItems.FirstOrDefault(h => h.Id == highestTower);
-            var holder = RelatedItems[highestTower];
+            var holder = Collection[highestTower];
             
              var pos = holder.transform.position;
              var tower = AllTowers.GetTower(highestTower);
@@ -100,7 +100,7 @@ namespace Health
             for (var i = 0; i < towerIDs.Length; i++)
             {
                 //holders[i] = RelatedItems.FirstOrDefault(h => h.Id == towerIDs[i]);
-                holders[i] = RelatedItems[towerIDs[i]];
+                holders[i] = Collection[towerIDs[i]];
                 holders[i].DisableAll();
                 center += holders[i].transform.position;
             }

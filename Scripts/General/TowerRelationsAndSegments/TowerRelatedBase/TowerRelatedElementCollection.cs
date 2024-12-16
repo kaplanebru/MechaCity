@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public abstract class TowerRelatedElementHolder<TRelated> : MonoBehaviour where TRelated : ITowerRelatedElement
+public abstract class TowerRelatedElementCollection<TRelatedElement> : MonoBehaviour where TRelatedElement : ITowerRelatedElement
 {
-    protected abstract Dictionary<int, TRelated> RelatedItems { get; set; }
+    protected abstract Dictionary<int, TRelatedElement> Collection { get; set; }
 
     private void OnEnable()
     {
@@ -20,10 +20,10 @@ public abstract class TowerRelatedElementHolder<TRelated> : MonoBehaviour where 
 
     private void GetItems()
     {
-        var items = GetComponentsInChildren<TRelated>();
+        var items = GetComponentsInChildren<TRelatedElement>();
         foreach (var item in items)
         {
-            RelatedItems.Add(item.Id, item);
+            Collection.Add(item.Id, item);
         }
         Initialize();
     }

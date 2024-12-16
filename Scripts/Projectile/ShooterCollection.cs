@@ -5,10 +5,10 @@ using System.Linq;
 using DataModels;
 using UnityEngine;
 
-public class ShootersElementHolder : TowerRelatedElementHolder<Shooter>
+public class ShooterCollection : TowerRelatedElementCollection<Shooter>
 {
     public CombatTimingData timingData;
-    protected override Dictionary<int, Shooter> RelatedItems { get; set; } = new();
+    protected override Dictionary<int, Shooter> Collection { get; set; } = new();
 
     public override void Subscribe()
     {
@@ -17,7 +17,7 @@ public class ShootersElementHolder : TowerRelatedElementHolder<Shooter>
 
     public override void Initialize()
     {
-        foreach (var shooter in RelatedItems.Values)
+        foreach (var shooter in Collection.Values)
         {
             shooter.SetDuration(timingData.shooterMotionDuration, timingData.ProjectileDuration);
         }
@@ -25,7 +25,7 @@ public class ShootersElementHolder : TowerRelatedElementHolder<Shooter>
 
     private void ShootByGivenShooter(CombatPair pair)
     {
-        var shooter = RelatedItems[pair.MainTowerData.UniqID];
+        var shooter = Collection[pair.MainTowerData.UniqID];
         shooter.Shoot(pair);
     }
     

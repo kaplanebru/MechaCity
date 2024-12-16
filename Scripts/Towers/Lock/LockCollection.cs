@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class LocksElementHolder : TowerRelatedElementHolder<LockHolder>
+public class LockCollection : TowerRelatedElementCollection<LockHolder>
 {
     //protected override LockHolder[] RelatedItems { get; set; }
-    protected override Dictionary<int, LockHolder> RelatedItems { get; set; } = new();
+    protected override Dictionary<int, LockHolder> Collection { get; set; } = new();
 
     public override void Subscribe()
     {
@@ -17,7 +17,7 @@ public class LocksElementHolder : TowerRelatedElementHolder<LockHolder>
     private void LockGivenTower(int limit, int id)
     {
         //var lockHolder = RelatedItems.FirstOrDefault(l => l.Id == id);
-        var lockHolder = RelatedItems[id];
+        var lockHolder = Collection[id];
         lockHolder.LockTower(limit);
     }
 
