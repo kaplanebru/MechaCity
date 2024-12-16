@@ -20,32 +20,34 @@ namespace Towers
             Data = _tower.Data;
         }
         
-        public void Setup(TeamColorData teamData)
+        public void DataSetup()
         {
             Data.Height = ConstantData.StartHeight;
             Data.DamagePower = ConstantData.DamagePower;
             Data.LockStatus = ConstantData.StartLockStatus;
             Data.BpTowerData = new BpTowerData(Data.UniqID);
-            
+        }
+
+        public void DataVisualCorrespondenceSetup(TeamColorData teamData)
+        {
             Data.CreateSegments();
-            Data.CreateVisualSupportedDatas(new Dictionary<VisualDataType, int> //TODO: Bunlar bp trigger edilerek de yapılamaz, user lazım
+            SetSegments();
+            _tower.SetTeamVisuals(teamData);
+        }
+
+        public void RelatedsSetup()
+        {
+            SetTowerRelatedIds();
+            Data.CreateVisualSupportedDatas(new Dictionary<VisualDataType, int> //TODO: Bunlar bp trigger edilerek de yapılabilir
             {
                 { VisualDataType.Shield, ConstantData.ShieldHeight },
                 { VisualDataType.Attack, ConstantData.ShotAmount },
                 { VisualDataType.Disarm, ConstantData.IsDisarmed ? 0 : 1}
             });
-            
-            SetSegments();
-            SetTowerRelatedIds();
-            
-            _tower.SetTeam(teamData);
-            
-            //UIEventbus.OnHealthChange.Invoke(Data.Health, Data.UniqID);
-           // Data.Mover.riseFallMotion.SetZeroHeight(0); //warning: bug sebebi (0'la başlarsa y<1 olur ve ekstra passive part açar
         }
         void SetSegments()
         {
-            foreach (var segment in Data.TowerSegments )
+            foreach (var segment in Data.TowerSegments)
             {
                 segment.SetId(Data.UniqID);
                 segment.Initialize();

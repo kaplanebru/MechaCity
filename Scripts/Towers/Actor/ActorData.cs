@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Enums;
@@ -11,19 +12,24 @@ namespace Actor
         public bool CanMove = true;
         public bool CanShoot = true;
     }
+    
+    [Serializable]
     public class ActorData
     {
-        public uint ID;
-        public int Row;
+        public uint ID { get; set; }
+       
         public ActorType Type;
+        public TeamType TeamType;
+        public TeamColorData TeamVisualData;
+        public int Row;
         
-        public int[] TowerIDs;
-        public TowerData[] Towers;
-        public int TowerAmount { get; set; }
-        public Vector3 Center;
-        
-        public int Health;
+       
         public int InitialHealth;
+        public int Health { get; set; }
+        public TowerData[] Towers { get; set; }
+        public int[] TowerIDs { get; set; }
+        public int TowerAmount { get; set; }
+        public Vector3 Center { get; set; }
         
         public HashSet<uint> TargetActors = new();
         public HashSet<uint> Neighbours = new();
@@ -33,27 +39,31 @@ namespace Actor
             ID = id;
             Type = type;
 
-            SetTowers(towerIDs);
+            ResolveTowers(towerIDs);
             SetCenter();
         }
-
-        void SetTowers(params int[] towerIDs)
+        
+        void ResolveTowers(params int[] towerIDs)
         {
-            TowerIDs = towerIDs;//towerIDs.OrderBy(i=>i).ToArray();
+            TowerIDs = towerIDs;
             Towers = new TowerData[TowerIDs.Length]; //TODO: make dict int,Data
             TowerAmount = Towers.Length;
-          
-
+            
             for (var i = 0; i < TowerIDs.Length; i++)
             {
                 TowerData tower = AllTowers.GetData(TowerIDs[i]);
                 Towers[i] = tower;
             }
+            
+            OrderTowerDataByHeight();
+        }
+
+        internal void OrderTowerDataByHeight()
+        {
             Towers = Towers.OrderBy(t => t.AvailableHeight).ToArray(); //İD'NİN LİNKAGE İÇİN YER DEĞİŞTİRMEMESİ Gerekebilir
+
         }
         
-        
-
         void SetCenter()
         {
             Center = Vector3.zero;
@@ -62,9 +72,7 @@ namespace Actor
                 Center += AllTowers.GetTower(tower).transform.position;
             }
 
-            //HealthParent = AllTowers.GetTower(Towers.Last().UniqID).transform; //todo: health holderı almalı aslında, towerı değil
             Center /= TowerAmount;
-           // Center.y = HealthParent.position.y;
         }
         public int GetFreeResource(int step) =>  TowerAmount * step;
         public int TryGetAvailableHeight(int step)

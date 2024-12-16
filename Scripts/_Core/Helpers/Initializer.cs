@@ -18,14 +18,20 @@ namespace Core
         public Transform NetworkUIController;
         public Team[] Teams;
         public TeamData[] TeamsData;
-        public ActorHolder ActorHolder = new();
-
+        [SerializeField] Transform levelPrefab;
+     
+        
         private void OnEnable()
         {
-            //GeneralEventbus.InitializerEvents.OnInitialize?.Invoke();
             NetworkEventbus.ServerEvents.OnPlayerSpawned += AssignPlayers;
-            GeneralEventbus.InitializerEvents.OnTowersCreated += ExecuteInitializer;
-            ActorHolder.Initialize();
+            GeneralEventbus.InitializerEvents.OnActorsCreated += ExecuteInitializer;
+          
+            InstantiateLevelPrefab();
+        }
+        
+        void InstantiateLevelPrefab()
+        {
+            Instantiate(levelPrefab, transform);
         }
 
         void ExecuteInitializer()
@@ -39,8 +45,8 @@ namespace Core
            
             for (int i = 0; i < Teams.Length; i++)
             {
-                Teams[i] = new Team(TeamsData[i]);//Instantiate(assetHolder.Teams[i], transform);
-                Teams[i].SetTowers();
+                Teams[i] = new Team(TeamsData[i]);
+                Teams[i].SetTeamActors();
             }
             
             NetworkUIController.gameObject.SetActive(true);
@@ -48,7 +54,7 @@ namespace Core
             TeamEvents.OnTeamsSet?.Invoke(Teams);
             GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet?.Invoke();
             
-            Invoke(nameof(TowerAndTeamsReadyCall), 0.5f);
+            Invoke(nameof(TowerAndTeamsReadyCall), 1.5f); //todo: later, henüz extralar eklenmemişse olmaz
         }
 
         void TowerAndTeamsReadyCall() //todo: temp
@@ -113,8 +119,7 @@ namespace Core
         private void OnDisable()
         {
             NetworkEventbus.ServerEvents.OnPlayerSpawned -= AssignPlayers;
-            GeneralEventbus.InitializerEvents.OnTowersCreated -= ExecuteInitializer;
-            ActorHolder.Unsubscribe();
+            GeneralEventbus.InitializerEvents.OnActorsCreated -= ExecuteInitializer;
         }
     }
 }

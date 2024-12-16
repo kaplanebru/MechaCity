@@ -17,7 +17,7 @@ namespace Turn
         private void OnEnable()
         {
             TeamEvents.OnTeamsSet += GetTeams;
-            Eventbus.CombatEvents.OnActorKilled += ExchangeTowers;
+            Eventbus.CombatEvents.OnActorKilled += ExchangeActors;
         }
 
         public void GetTeams(Team[] teams)
@@ -29,26 +29,22 @@ namespace Turn
 
         private uint _deadActorID;
 
-        private void ExchangeTowers(uint actorID)
+        private void ExchangeActors(uint actorID)
         {
             _deadActorID = actorID;
             var actor = ActorHolder.Registry[actorID];
-            foreach (var tower in actor.Towers)
-            {
-                ExchangeTower(tower);
-            }
-
-
+            ExchangeActor(actor);
+            
             Invoke(nameof(ResetHealth), 1f); //todo: temporary
         }
 
-        private void ExchangeTower(TowerData deadTower)
+        private void ExchangeActor(ActorData deadActor)
         {
-            Team oldTeam = GetTeamDataByTeamType(deadTower.TeamType);
+            Team oldTeam = GetTeamDataByTeamType(deadActor.TeamType);
             Team newTeam = _teams.FirstOrDefault(t => t != oldTeam);
 
-            oldTeam.RemoveTower(deadTower);
-            newTeam.TakeTowerFromRival(deadTower);
+            oldTeam.RemoveTower(deadActor);
+            newTeam.TakeActorFromRival(deadActor);
         }
 
         void ResetHealth()
@@ -59,7 +55,7 @@ namespace Turn
         private void OnDisable()
         {
             TeamEvents.OnTeamsSet -= GetTeams;
-            Eventbus.CombatEvents.OnActorKilled -= ExchangeTowers;
+            Eventbus.CombatEvents.OnActorKilled -= ExchangeActors;
         }
     }
 }

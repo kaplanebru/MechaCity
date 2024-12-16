@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Actor;
 using Enums;
 using UnityEngine;
 using Grid;
@@ -16,7 +17,7 @@ namespace Teams
         public string Name;
         public TeamType TeamType;
         public Player Player;
-        public List<TowerData> Towers = new();
+        public List<ActorData> Actors = new();
         
         public TeamColorData teamColorData;
        

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Actor;
 using Enums;
 using Towers;
 using UnityEngine;
-
 
 
 namespace Teams
@@ -17,45 +17,44 @@ namespace Teams
             Data = data;
         }
         
-        public void SetTowers()
+        public void SetTeamActors()
         {
-            GetTeamTowers();
-            SetGrid();
-        }
+            Data.Actors.Clear();
 
-        void GetTeamTowers()
-        {
-            Data.Towers.Clear(); //TODO: team so olmayabilir
-
-            foreach (var t in AllTowers.Towers)
+            foreach (var actor in ActorHolder.Registry.Values)
             {
-                if (t.ConstantData.StartTeam == Data.TeamType)
+                if (actor.TeamType == Data.TeamType)
                 {
-                    Data.Towers.Add(t.Data);
-                    t.Setup(Data.teamColorData);
+                    Data.Actors.Add(actor);
                 }
             }
         }
-        
-        void SetGrid()
+
+  
+
+        public void TakeActorFromRival(ActorData actor)
         {
-            //Data.Grid.Initialize(Data.Towers);
+            Data.Actors.Add(actor);
+
+            foreach (var towerID in actor.TowerIDs)
+            {
+               AllTowers.GetTower(towerID).SetTeamVisuals(Data.teamColorData);
+            }
         }
 
-        public void TakeTowerFromRival(TowerData tower)
+        public void RemoveTower(ActorData actor)
         {
-            Data.Towers.Add(tower);
-
-            Tower towerObj = AllTowers.GetTower(tower.UniqID);
-            towerObj.SetTeam(Data.teamColorData);
+            Data.Actors.Remove(actor);
         }
 
-        public void RemoveTower(TowerData tower)
+        void ShuffleActorsInTeams()
         {
-            Data.Towers.Remove(tower);
+            foreach (var tower in Data.Actors) //how about actors?
+            {
+            }
         }
     }
-    
+
     public static class TeamEvents
     {
         public static Action<Dictionary<TeamState, Team>> OnTeamsSent;

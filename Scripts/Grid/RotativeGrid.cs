@@ -39,6 +39,9 @@ namespace Grid
             foreach (var slot in Data.slots)
             {
                 var actor = actorBySlot[slot.Id];
+                
+                //Debug.Log(actor.TargetActors.Count);
+                //Debug.Log(getRelatedActors(actor).Count);
                 getRelatedActors(actor).Clear();
 
                 foreach (var relatedSlotId in getRelatedSlots(slot))

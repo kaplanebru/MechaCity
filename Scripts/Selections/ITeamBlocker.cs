@@ -28,7 +28,13 @@ namespace _Core.Turn.Selectors
         {
             if(BlockType == BlockType.None) return;
             TeamData teamToBlock = teams[blockedTeam].Data;
-            teamToBlock.Towers.ForEach(t => t.DisableSelection());
+            teamToBlock.Actors.ForEach(a =>
+            {
+                foreach (var tower in a.Towers)
+                {
+                   tower.DisableSelection();
+                }
+            });
         }
     }
 }

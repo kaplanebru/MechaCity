@@ -6,33 +6,32 @@ using UnityEngine;
 
 namespace Towers
 {
-    public class AllTowers : MonoBehaviour
+    public class AllTowers 
     {
         public static int TowersCount;
         public static List<Tower> Towers { get; private set; } = new();
         public static List<TowerData> TowerDatas { get; private set; } = new();
-     
         
         public static Tower GetTower(int id) => Towers[id];
         public static TowerData GetData(int id) => TowerDatas[id]; //todo? firstordefault? Ya da id'ye göre order ettir kesinliği için
-
-        [SerializeField] Transform levelPrefab;
-        Transform _level;
-        
-        private void Start()
-        {
-            CreateTowers();
-        }
-
-        private void OnEnable()
+        public void Subscribe()
         {
             Eventbus.LinkEvents.OnLinkingTowers += SetLinkedTowersAndStartRiseFallRoutine;
             Eventbus.LinkEvents.OnUnlink += ResetLinkedTowers;
         }
-
-        public static TowerData[] GetTowerGroup(IEnumerable<int> ids)
+        public void ReceiveTowers(List<Tower> towers)
         {
-            return TowerDatas.Where(t => ids.Contains(t.UniqID)).ToArray();
+            Towers = towers;
+            TowersCount = Towers.Count;
+            ReceiveTowerData();
+        }
+
+        private void ReceiveTowerData()
+        {
+            for (int i = 0; i < TowersCount; i++)
+            {
+                TowerDatas.Add(Towers[i].Data);
+            }
         }
 
         private void ResetLinkedTowers(List<int> towerIds)
@@ -54,69 +53,6 @@ namespace Towers
             }
         }
         
-        void CreateTowers()
-        {
-            InstantiateLevelPrefab();
-            ReceiveTowers();
-            ReceiveTowerData();
-
-            //LinkingTowers(_towerDatas);
-            SettingNeighbours();
-
-            GeneralEventbus.InitializerEvents.OnTowersCreated?.Invoke();
-        }
-
-        void InstantiateLevelPrefab()
-        {
-            _level = Instantiate(levelPrefab, transform);
-        }
-
-        void ReceiveTowers()
-        {
-            Towers = _level.GetComponentsInChildren<Tower>().ToList();
-            TowersCount = Towers.Count;
-        }
-
-        void ReceiveTowerData()
-        {
-            for (int i = 0; i < TowersCount; i++)
-            {
-                TowerDatas.Add(Towers[i].Data);
-            }
-        }
-
-        // public static void LinkingTowers(List<TowerData> towers) //ters de gelebilir
-        // {
-        //     for (var i = 0; i < TowersCount; i++)
-        //     {
-        //         towers[i].LinkedTowerIDs.Clear();
-        //
-        //         int next = towers[(i + 1) % TowersCount].UniqID; //sonra gelenin id'sini alıyor, bu artan da olabilir azalan da
-        //         towers[i].LinkedTowerIDs.Add(next);
-        //         
-        //        // print("index: " + (i + 1) % TowersCount + " id: " + next);
-        //     }
-        // }
-
-        public void SettingNeighbours()
-        {
-            for (var i = 0; i < TowersCount; i++)
-            {
-                TowerDatas[i].NeighbourIDs.Clear();
-                
-                int previousID = i - 1;
-                if (previousID < 0)
-                    previousID = TowersCount - 1;
-                int previous =  TowerDatas[previousID].UniqID;
-                
-                int next = TowerDatas[(i + 1) % TowersCount].UniqID;
-                
-                TowerDatas[i].NeighbourIDs.Add(previous);
-                TowerDatas[i].NeighbourIDs.Add(next);
-            }
-        }
-        
-
         public static void ResetTowerColors()
         {
             TowerDatas.ForEach(t=>t.ColorHandler.ToOriginalSelectionColor());
@@ -131,24 +67,8 @@ namespace Towers
         {
             TowerDatas.ForEach(t=>t.DisableSelection());
         }
-        
 
-
-        // private void OnDrawGizmos()
-        // {
-        //     Gizmos.color = Color.yellow;
-        //     foreach (var relation in TowersRelationManager.Relations)
-        //     {
-        //         var tower = GetTower(relation.Key);
-        //         foreach (var linkedTowerID in relation.Value.LinkedTowers)
-        //         {
-        //             if (tower == null) continue;
-        //             Gizmos.DrawLine(tower.transform.position, GetTower(linkedTowerID).transform.position);
-        //         }
-        //     }
-        // }
-        
-        private void OnDisable()
+        public void Unsubscribe()
         {
             Eventbus.LinkEvents.OnLinkingTowers -= SetLinkedTowersAndStartRiseFallRoutine;
             Eventbus.LinkEvents.OnUnlink -= ResetLinkedTowers;

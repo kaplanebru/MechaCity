@@ -21,17 +21,17 @@ namespace Towers
 
         private void OnEnable()
         {
-            initializer = new TowerInitializer(this);
+            // initializer = new TowerInitializer(this);
             Eventbus.TowerEvents.OnTurnBegin += FirstMotion;
             interruptionMotion.Subscribe();
         }
 
-        public void Setup(TeamColorData teamData)
-        {
-            initializer.Setup(teamData);
-        }
+        // public void Setup(TeamColorData teamData)
+        // {
+        //     initializer.Setup(teamData);
+        // }
 
-        public void SetTeam(TeamColorData teamData)
+        public void SetTeamVisuals(TeamColorData teamData)
         {
             Data.TeamType = teamData.TeamType;
             Data.ColorHandler.SetDefaultTeamVisuals(teamData);
@@ -59,9 +59,6 @@ namespace Towers
                 riseRoutine = null;
             }
         }
-
-      
-
         private void OnDisable()
         {
             Eventbus.TowerEvents.OnTurnBegin -= FirstMotion;

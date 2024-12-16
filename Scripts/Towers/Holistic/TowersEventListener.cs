@@ -14,7 +14,7 @@ namespace Towers
 
         private void OnEnable()
         {
-            GeneralEventbus.InitializerEvents.OnTowersCreated += GetTowers;
+            GeneralEventbus.InitializerEvents.OnActorsCreated += GetTowers;
             UIEventbus.OnTowerHeightChange += UIHeightChangeRequest;
         }
         
@@ -33,7 +33,7 @@ namespace Towers
 
         private void OnDisable()
         {
-            GeneralEventbus.InitializerEvents.OnTowersCreated -= GetTowers;
+            GeneralEventbus.InitializerEvents.OnActorsCreated -= GetTowers;
             UIEventbus.OnTowerHeightChange -= UIHeightChangeRequest;
         }
     }

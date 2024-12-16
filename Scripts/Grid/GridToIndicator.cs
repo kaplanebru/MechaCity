@@ -50,7 +50,7 @@ public class GridToIndicator
 
            
             indicatorData.TargetStates.Add(targetPos,
-                actor.Towers[0].TeamType == targetActor.Towers[0].TeamType
+                actor.TeamType == targetActor.TeamType
                     ? IndicatorState.Friendly
                     : IndicatorState.Enemy);
         }

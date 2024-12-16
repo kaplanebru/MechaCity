@@ -16,9 +16,10 @@ namespace Actor
         public static ActorData GetActor(uint id) => Registry[id];
         public static int[] GetTowerIDs(uint id) => Registry[id].TowerIDs;
         public static List<TowerData> GetTowersData(uint id) => Registry[id].Towers.ToList();
+
+        
         public void Subscribe()
         {
-            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += FillRegistry;
             Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
         }
 
@@ -40,12 +41,11 @@ namespace Actor
 
         public void FillRegistry()
         {
-            //todo linkler yapılabilir
-            foreach (var tower in AllTowers.Towers)
-            {
-                var towerID = tower.Data.UniqID;
-                RegisterItem(ActorType.Standard,towerID, tower.ConstantData.StartHealth, towerID);
-            }
+            // foreach (var tower in AllTowers.Towers)
+            // {
+            //     var towerID = tower.Data.UniqID;
+            //     RegisterItem(ActorType.Standard,towerID, tower.ConstantData.StartHealth, towerID);
+            // }
             OrderRegistry();
             OnRegistryUpdate();
         }
@@ -54,6 +54,7 @@ namespace Actor
         {
             var id = UniqueIdGenerator.UIntId();
             var actor = new ActorData(id, type, ownTowers);
+            actor.TeamType = AllTowers.GetData(ownTowers[0]).TeamType; //todo: temporary
            
             Registry.Add(id, actor);
             actor.Row = row;
@@ -88,12 +89,12 @@ namespace Actor
             OnRegistryUpdate();
         }
 
-        void OnRegistryUpdate()
+        internal void OnRegistryUpdate()
         {
             Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(Registry.Keys.ToArray());
         }
 
-        void OrderRegistry()
+        internal void OrderRegistry()
         {
             Registry = Registry.OrderBy(a => a.Value.Row).ToDictionary(a => a.Key, a => a.Value);
         }
@@ -137,9 +138,10 @@ namespace Actor
                 unit.Unsubscribe();
             }
             Eventbus.ActorEvents.OnDoubleTowerCreated -= RegisterDouble;
-            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= FillRegistry;
 
             Registry.Clear();
         }
+
+       
     }
 }
