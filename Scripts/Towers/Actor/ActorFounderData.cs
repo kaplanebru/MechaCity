@@ -18,9 +18,7 @@ public class ActorFounderData
     void AllocateCollections()
     {
         ActorData.TowerAmount = TowerObjects.Length;
-        ActorData.TowerIDs = new int [ActorData.TowerAmount];
-        ActorData.Towers = new TowerData[ActorData.TowerAmount];
-        
+
         ActorData.TargetActors = new();
         ActorData.Neighbours = new();
         ActorData.ActivityStatus = new();
@@ -31,11 +29,11 @@ public class ActorFounderData
         SetID();
         AllocateCollections();
         
-        SetActorCenter();
-        ActorData.Health = ActorData.InitialHealth;
-        
         InitializeTowersByActor();
-        RegisterTowers(TowerObjects.Select(t=>t.Data).ToArray());
+        ActorData.RegisterTowersAutonomously(TowerObjects.Select(t=>t.Data).ToArray());
+        ActorData.SetCenterAutonomously(TowerObjects);
+        
+        ActorData.Health = ActorData.InitialHealth;
         AddActorToRegistry();
     }
 
@@ -49,25 +47,18 @@ public class ActorFounderData
             towerObject.Data.SetClickHandlerID(ActorData.ID);
         }
     }
-    
-    void RegisterTowers(TowerData[] towers)
-    {
-        ActorData.Towers = towers;
-        ActorData.TowerIDs = towers.Select(t => t.UniqID).ToArray();
-        ActorData.OrderTowerDataByHeight();
-    }
-    
-    private void SetActorCenter()
-    {
-        var center = Vector3.zero;
-        foreach (var tower in  TowerObjects)
-        {
-            center += tower.transform.position;
-        }
-        
-        center /= ActorData.TowerAmount;
-        ActorData.Center = center;
-    }
+
+    // private void SetCenterAutonomously()
+    // {
+    //     var center = Vector3.zero;
+    //     foreach (var tower in  TowerObjects)
+    //     {
+    //         center += tower.transform.position;
+    //     }
+    //     
+    //     center /= ActorData.TowerAmount;
+    //     ActorData.Center = center;
+    // }
     
     private void AddActorToRegistry()
     {

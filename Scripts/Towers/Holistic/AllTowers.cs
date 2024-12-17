@@ -14,6 +14,8 @@ namespace Towers
         
         public static Tower GetTower(int id) => Towers[id];
         public static TowerData GetData(int id) => TowerDatas[id]; //todo? firstordefault? Ya da id'ye göre order ettir kesinliği için
+
+        public static Vector3 GetTowerPos(int id) => Towers[id].transform.position;
         public void Subscribe()
         {
             Eventbus.LinkEvents.OnLinkingTowers += SetLinkedTowersAndStartRiseFallRoutine;
@@ -41,6 +43,11 @@ namespace Towers
                 var tower = GetTower(id);
                 tower.StopRiseFallRoutine();
             }
+        }
+        
+        public static IEnumerable<TowerData> GetTowerDatasByIDs(params int[] towerIDs)
+        {
+            return towerIDs.Select(id => GetData(id));
         }
 
         private void SetLinkedTowersAndStartRiseFallRoutine(List<int> towerIds)
