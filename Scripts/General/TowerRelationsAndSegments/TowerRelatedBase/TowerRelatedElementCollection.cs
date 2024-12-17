@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 
 public abstract class TowerRelatedElementCollection<TRelatedElement> : MonoBehaviour where TRelatedElement : ITowerRelatedElement
 {
-    protected abstract Dictionary<int, TRelatedElement> Collection { get; set; }
+    protected Dictionary<int, TRelatedElement> Collection { get; set; } = new();
 
     private void OnEnable()
     {

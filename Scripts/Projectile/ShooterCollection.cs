@@ -8,7 +8,6 @@ using UnityEngine;
 public class ShooterCollection : TowerRelatedElementCollection<Shooter>
 {
     public CombatTimingData timingData;
-    protected override Dictionary<int, Shooter> Collection { get; set; } = new();
 
     public override void Subscribe()
     {

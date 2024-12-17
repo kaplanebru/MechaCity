@@ -5,14 +5,9 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class FloorCollection: BaseTowerRelatedCollection<Floor> ,IEnumeratorContainer
+    public class FloorCollection: TowerRelatedElementCollection<Floor>,IEnumeratorContainer
     {
-      
         private List<Floor> selectedFloors = new();
-        public FloorCollection(Floor[] collection) : base(collection)
-        {
-        }
-
         public override void Subscribe()
         {
             Eventbus.LinkEvents.OnLinkLoading += OpenFloors;
@@ -20,8 +15,12 @@ namespace TowerExternal
 
             GeneralEventbus.InitializerEvents.OnExternalElementsReady += HideAll;
         }
+
+        public override void Initialize()
+        {
+            
+        }
         
-    
         private void OpenFloors(List<int> ids)
         {
             foreach (var id in ids)
@@ -30,8 +29,9 @@ namespace TowerExternal
                 selectedFloors.Add(floor);
                 floor.ShowGear();
             }
-    
-            GeneralEventbus.OnCoroutineTrigger?.Invoke(this); //todo: temp
+
+            StartCoroutine(nameof(LeCoroutine));
+            //GeneralEventbus.OnCoroutineTrigger?.Invoke(this); //todo: temp
         }
 
         void HideAll()
@@ -69,6 +69,7 @@ namespace TowerExternal
         {
             yield return new WaitForSeconds(0.5f);
             FloorsOpenedCall();
+            yield break;
         }
     }
 }

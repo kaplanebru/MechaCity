@@ -5,16 +5,18 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class ShieldCollection : BaseTowerRelatedCollection<Shield>
+    public class ShieldCollection : TowerRelatedElementCollection<Shield>
     {
-        public ShieldCollection(Shield[] collection) : base(collection)
-        {
-        }
-
+       
         public override void Subscribe()
         {
             Eventbus.TowerEvents.OnShieldActionTriggered += RevealShields;
             //BpEventbus.ActionEvents.OnBreakShieldActionTriggered += BreakSelectedShield;
+        }
+
+        public override void Initialize()
+        {
+            
         }
 
         private void BreakSelectedShield(int[] towerIDs)

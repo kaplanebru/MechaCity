@@ -4,16 +4,17 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class DisarmSignCollection : BaseTowerRelatedCollection<DisarmSign>
+    public class DisarmSignCollection : TowerRelatedElementCollection<DisarmSign> 
     {
-        public DisarmSignCollection(DisarmSign[] collection) : base(collection)
-        {
-        }
-
-
+        
         public override void Subscribe()
         {
             Eventbus.TowerEvents.OnDisarmamentActionTriggered += RevealSign;
+        }
+
+        public override void Initialize()
+        {
+            
         }
 
         private void RevealSign(int towerID)

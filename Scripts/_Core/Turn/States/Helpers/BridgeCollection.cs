@@ -9,9 +9,7 @@ public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
     {
        DisableAll();
     }
-
-    protected override Dictionary<int, BridgeRoot> Collection { get; set; } = new();
-
+    
     public override void Subscribe()
     {
         Eventbus.TowerEvents.OnBridgeAttempt += ConstructBridge;

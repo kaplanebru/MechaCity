@@ -13,9 +13,7 @@ namespace Health
     public class HealthUICollection : TowerRelatedElementCollection<HealthHolder>
     {
         private Dictionary<uint, HealthHolder> holdersByActor = new();
-
-        protected override Dictionary<int, HealthHolder> Collection { get; set; } = new();
-
+        
         public override void Subscribe()
         {
             Eventbus.HealthEvents.OnHealthChange += AdjustHealthIcon;

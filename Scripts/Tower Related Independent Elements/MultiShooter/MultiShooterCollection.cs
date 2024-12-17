@@ -4,15 +4,18 @@ using UnityEngine;
 
 namespace TowerExternal
 {
-    public class MultiShooterCollection : BaseTowerRelatedCollection<MultiShooter>
+    public class MultiShooterCollection : TowerRelatedElementCollection<MultiShooter>
     {
-        public MultiShooterCollection(MultiShooter[] collection) : base(collection)
-        {
-        }
+       
 
         public override void Subscribe()
         {
             Eventbus.TowerEvents.OnMultiShotActionTriggered += RevealMultiShot;
+        }
+
+        public override void Initialize()
+        {
+            
         }
 
         private void RevealMultiShot(int towerID, int shooterAmount)//shooter amountu pas geçebiliriz
