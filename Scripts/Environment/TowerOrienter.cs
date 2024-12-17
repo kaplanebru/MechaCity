@@ -9,7 +9,7 @@ public class TowerOrienter : MonoBehaviour
 
     private void OnEnable()
     {
-        GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += Orient;
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet += Orient;
     }
 
     void Orient()
@@ -19,6 +19,6 @@ public class TowerOrienter : MonoBehaviour
 
     private void OnDisable()
     {
-        GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= Orient;
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet -= Orient;
     }
 }

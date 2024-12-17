@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace TowerExternal
+namespace TowerRelated
 {
     public class FloorCollection: TowerRelatedElementCollection<Floor>,IEnumeratorContainer
     {
@@ -13,7 +13,7 @@ namespace TowerExternal
             Eventbus.LinkEvents.OnLinkLoading += OpenFloors;
             Eventbus.LinkEvents.OnUnlink += ResetFloors;
 
-            GeneralEventbus.InitializerEvents.OnExternalElementsReady += HideAll;
+            GeneralEventbus.InitializerEvents.OnMediatorElementsReady += HideAll;
         }
 
         public override void Initialize()
@@ -61,7 +61,7 @@ namespace TowerExternal
             Eventbus.LinkEvents.OnLinkLoading -= OpenFloors;
             Eventbus.LinkEvents.OnUnlink -= ResetFloors;
             
-            GeneralEventbus.InitializerEvents.OnExternalElementsReady -= HideAll;
+            GeneralEventbus.InitializerEvents.OnMediatorElementsReady -= HideAll;
         }
 
 

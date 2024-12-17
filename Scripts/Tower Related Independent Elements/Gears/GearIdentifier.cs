@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-namespace TowerExternal
+namespace TowerRelated
 {
     public class GearIdentifier : MonoBehaviour, ITowerRelatedElement
     {

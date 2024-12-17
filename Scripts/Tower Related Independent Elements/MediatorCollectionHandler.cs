@@ -2,32 +2,30 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace TowerExternal
+namespace TowerRelated
 {
-    public class DBTowerRelatedCollections : MonoBehaviour
+    public class MediatorCollectionHandler : MonoBehaviour
     {
         private GearCollection gearCollection;
         
         private void OnEnable()
         {
-            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady += Initialize;
+            GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet += Initialize;
         }
         
         private void Initialize()
         {
             FillCollectionsRegistry();
             SubscribeToCollections();
-            GeneralEventbus.InitializerEvents.OnExternalElementsReady?.Invoke();
+            GeneralEventbus.InitializerEvents.OnMediatorElementsReady?.Invoke();
         }
-
         
         
         void FillCollectionsRegistry()
         {
             gearCollection = new GearCollection(GetComponentsInChildren<IGear>());
         }
-
-
+        
         void SubscribeToCollections()
         {
             gearCollection.Subscribe();
@@ -40,7 +38,7 @@ namespace TowerExternal
 
         private void OnDisable()
         {
-            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady -= Initialize;
+            GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet -= Initialize;
             UnsubscribeFromCollections();
         }
     }

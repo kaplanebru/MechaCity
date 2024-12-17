@@ -5,7 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace TowerExternal
+namespace TowerRelated
 {
     public class Fence : MonoBehaviour
     {

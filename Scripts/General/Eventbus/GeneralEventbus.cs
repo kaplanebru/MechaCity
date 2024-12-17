@@ -11,8 +11,7 @@ public static class GeneralEventbus
     {
         public static Action OnActorsCreated;
         public static Action OnTowerRelatedIDsSet;
-        public static Action OnTowersAndTeamsReady;
-        public static Action OnExternalElementsReady;
+        public static Action OnMediatorElementsReady;
 
         public static Action<Vector3> OnOrienterReady;
     }

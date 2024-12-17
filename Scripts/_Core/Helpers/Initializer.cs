@@ -41,7 +41,6 @@ namespace Core
             SetTowerRelatedIDs();
             SetTowerBpElementsData();
             
-            Invoke(nameof(TowerAndTeamsReadyCall), .5f); //cable floor sheild vs hepsinin gameobjecti için
             Invoke(nameof(StartNetwork), .6f);
         }
 
@@ -79,10 +78,7 @@ namespace Core
             NetworkUIController.gameObject.SetActive(true);
         }
 
-        void TowerAndTeamsReadyCall() //todo: temp
-        {
-            GeneralEventbus.InitializerEvents.OnTowersAndTeamsReady?.Invoke();
-        }
+       
         
 
 

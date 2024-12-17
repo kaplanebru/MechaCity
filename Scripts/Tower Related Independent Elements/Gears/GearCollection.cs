@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace TowerExternal
+namespace TowerRelated
 {
     public class GearCollection 
     {
@@ -33,7 +33,7 @@ namespace TowerExternal
         public void Subscribe()
         {
             MediatorEventbus.EffectEvents.OnDeathEffect += Rotate;
-            GeneralEventbus.InitializerEvents.OnExternalElementsReady += RotateAll;
+            GeneralEventbus.InitializerEvents.OnMediatorElementsReady += RotateAll;
         }
 
         private void RotateAll()
@@ -52,7 +52,7 @@ namespace TowerExternal
         public void Unsubscribe()
         {
             MediatorEventbus.EffectEvents.OnDeathEffect -= Rotate;
-            GeneralEventbus.InitializerEvents.OnExternalElementsReady -= RotateAll;
+            GeneralEventbus.InitializerEvents.OnMediatorElementsReady -= RotateAll;
         }
         
     }

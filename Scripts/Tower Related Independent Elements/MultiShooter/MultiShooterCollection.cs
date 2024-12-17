@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TowerExternal
+namespace TowerRelated
 {
     public class MultiShooterCollection : TowerRelatedElementCollection<MultiShooter>
     {

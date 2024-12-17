@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace TowerExternal
+namespace TowerRelated
 {
     public class Floor : MonoBehaviour, ITowerRelatedElement
     {

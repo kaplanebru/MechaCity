@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using TowerExternal;
+using TowerRelated;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ExternalElements/" + nameof(FloorData), fileName = nameof(FloorData))]
