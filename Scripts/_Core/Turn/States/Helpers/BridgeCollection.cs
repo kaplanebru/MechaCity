@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
 {
-    //protected override BridgeRoot[] RelatedItems { get; set; }
-
     public override void Initialize()
     {
        DisableAll();
@@ -24,8 +22,6 @@ public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
     {
         for (int i = 0; i < ids.Length-1; i++)
         {
-            // var bridge = RelatedItems.FirstOrDefault(s => s.Id == ids[i]); //todo: dict yap
-            // var target = RelatedItems.FirstOrDefault(s => s.Id == ids[i + 1]);
             var bridge = Collection[ids[i]];
             var target = Collection[ids[i + 1]];
             bridge.Show(true);

@@ -10,7 +10,7 @@ public abstract class TowerRelatedElementCollection<TRelatedElement> : MonoBehav
 
     private void OnEnable()
     {
-        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet += GetItems;
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet += RegisterItems;
         Subscribe();
     }
 
@@ -18,7 +18,7 @@ public abstract class TowerRelatedElementCollection<TRelatedElement> : MonoBehav
 
     public abstract void Initialize();
 
-    private void GetItems()
+    private void RegisterItems()
     {
         var items = GetComponentsInChildren<TRelatedElement>();
         foreach (var item in items)
@@ -33,7 +33,7 @@ public abstract class TowerRelatedElementCollection<TRelatedElement> : MonoBehav
 
     private void OnDisable()
     {
-        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet -= GetItems;
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet -= RegisterItems;
         Unsubscribe();
     }
 }
