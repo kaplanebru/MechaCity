@@ -11,7 +11,7 @@ namespace Towers
         private int[] _towerIDs;
         private List<TowerData> _towers = new();
         private int _amount;
-        public DoubleTowerPhysical(uint[] actorIDs)
+        public DoubleTowerPhysical(params uint[] actorIDs)
         {
             foreach (var actorID in actorIDs)
             {
@@ -19,6 +19,12 @@ namespace Towers
             }
             
             _towers = _towers.OrderBy(t => t.Height).ToList();
+            _amount = _towers.Count;
+        }
+
+        public DoubleTowerPhysical(TowerData[] towers)
+        {
+            _towers = towers.OrderBy(t => t.Height).ToList();
             _amount = _towers.Count;
         }
 

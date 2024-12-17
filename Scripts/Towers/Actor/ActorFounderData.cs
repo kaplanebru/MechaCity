@@ -34,6 +34,7 @@ public class ActorFounderData
         ActorData.SetCenterAutonomously(TowerObjects);
         
         ActorData.Health = ActorData.InitialHealth;
+        OnDoubleCase();
         AddActorToRegistry();
     }
 
@@ -48,17 +49,13 @@ public class ActorFounderData
         }
     }
 
-    // private void SetCenterAutonomously()
-    // {
-    //     var center = Vector3.zero;
-    //     foreach (var tower in  TowerObjects)
-    //     {
-    //         center += tower.transform.position;
-    //     }
-    //     
-    //     center /= ActorData.TowerAmount;
-    //     ActorData.Center = center;
-    // }
+    void OnDoubleCase()
+    {
+        var newDouble = new DoubleTowerPhysical(ActorData.Towers);
+        //newDouble.Equalize();//todo later
+        //todo: healthlerin de ortak yapılması lazım
+        newDouble.CreateBridge(); //todo: bridgeler de hazır değil. execute afterda yapılması lazım bunların
+    }
     
     private void AddActorToRegistry()
     {

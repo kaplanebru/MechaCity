@@ -60,7 +60,7 @@ namespace Actor
             actor.Row = row;
             ((HealthUnit)units[Enums.ActorUnit.Health]).SetHealth(Registry[id], health, true);
             
-            foreach (var towerID in ownTowers)
+            foreach (var towerID in ownTowers) //todo: register actor dataya eklenebilir
             {
                 var tower = AllTowers.GetData(towerID);
                 tower.SetClickHandlerID(id);

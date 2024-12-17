@@ -1276,13 +1276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81db6eebfd3f2004daccb1322fc032bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data:
-    Floors: []
-    Shields: []
-    MultiShooters: []
-    DisarmSigns: []
-    CableSelectionColor: {r: 0.8962264, g: 0.4895143, b: 0.16402629, a: 0}
-    CableDefaultColor: {r: 0.27953008, g: 0.49056602, b: 0.45310616, a: 0}
 --- !u!1 &5112960590360003345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1533,20 +1526,13 @@ MonoBehaviour:
     TowerObjects:
     - {fileID: 7831488675262799457}
   - ActorData:
-      Type: 0
+      Type: 1
       TeamType: 0
       TeamVisualData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
       Row: 4
       InitialHealth: 1
     TowerObjects:
     - {fileID: 1911499708760077541}
-  - ActorData:
-      Type: 0
-      TeamType: 1
-      TeamVisualData: {fileID: 11400000, guid: bbc84b53b875dfb4c9ba3a5ea1d7bc66, type: 2}
-      Row: 5
-      InitialHealth: 1
-    TowerObjects:
     - {fileID: 7831488676558128080}
 --- !u!114 &4831313534355225008
 MonoBehaviour:
