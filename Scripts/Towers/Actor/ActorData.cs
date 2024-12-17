@@ -39,14 +39,14 @@ namespace Actor
             ID = id;
             Type = type;
 
-            ResolveTowers(towerIDs);
+            RegisterTowersByIDs(towerIDs);
             SetCenter();
         }
         
-        void ResolveTowers(params int[] towerIDs)
+        void RegisterTowersByIDs(params int[] towerIDs)
         {
             TowerIDs = towerIDs;
-            Towers = new TowerData[TowerIDs.Length]; //TODO: make dict int,Data
+            Towers = new TowerData[TowerIDs.Length];
             TowerAmount = Towers.Length;
             
             for (var i = 0; i < TowerIDs.Length; i++)
