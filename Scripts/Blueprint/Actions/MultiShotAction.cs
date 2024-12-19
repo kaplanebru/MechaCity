@@ -12,7 +12,7 @@ namespace Blueprint
         public void Execute(params object[] obj)
         {
             var selectedActors = (uint[]) obj[0];
-            var towers = ActorHolder.Registry[selectedActors[0]].Towers;
+            var towers = ActorDB.Registry[selectedActors[0]].Towers;
             
             foreach (var tower in towers)
             {

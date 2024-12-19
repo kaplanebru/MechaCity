@@ -17,7 +17,7 @@ namespace Turn
         
         public void Subscribe()
         {
-            Eventbus.ActorEvents.OnRelationsSet += SetCombatPairs;
+            Eventbus.ActorEvents.OnGridRegistrySet += SetCombatPairs;
             Eventbus.CombatEvents.OnCombatCompleteRequest += CompleteCombatForPair;
         }
 
@@ -49,7 +49,7 @@ namespace Turn
         
         public void Unsubscribe()
         {
-            Eventbus.ActorEvents.OnRelationsSet -= SetCombatPairs;
+            Eventbus.ActorEvents.OnGridRegistrySet -= SetCombatPairs;
             Eventbus.CombatEvents.OnCombatCompleteRequest -= CompleteCombatForPair;
         }
 

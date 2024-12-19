@@ -26,7 +26,7 @@ namespace Health
 
         private void AdjustHealthIcon(uint actorID)
         {
-            var actor = ActorHolder.Registry[actorID];
+            var actor = ActorDB.Registry[actorID];
 
             if (!holdersByActor.ContainsKey(actorID))
             {
@@ -60,12 +60,12 @@ namespace Health
             HealthHolder[] holders = new HealthHolder[actorIDs.Length];
             for (var i = 0; i < actorIDs.Length; i++)
             {
-                actors[i] = ActorHolder.Registry[actorIDs[i]];
+                actors[i] = ActorDB.Registry[actorIDs[i]];
             }
 
             foreach (var actorID in actorIDs)
             {
-                var actor = ActorHolder.Registry[actorID];
+                var actor = ActorDB.Registry[actorID];
                 var holder = holdersByActor[actorID];
                 
                 var pos = holder.transform.position;
@@ -78,7 +78,7 @@ namespace Health
 
         void OnDoubleSeparated(uint actorID)
         {
-            var actor = ActorHolder.Registry[actorID];
+            var actor = ActorDB.Registry[actorID];
             var highestTower = actor.Towers.Aggregate((t1, t2) => t1.Height > t2.Height ? t1 : t2).UniqID;
             
             //var holder =  RelatedItems.FirstOrDefault(h => h.Id == highestTower);

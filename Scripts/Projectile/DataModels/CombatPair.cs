@@ -33,17 +33,17 @@ namespace DataModels
             OtherActor = otherActor;
         }
 
-        public void OrderTowers(bool isReversed)
+        public void OrderTowersByGridDirection(bool isReversed)
         {
             if (!isReversed)
             {
-                MainTowerData = AllTowers.GetData(MainActor.TowerIDs.Last());
-                OtherTowerData = AllTowers.GetData(OtherActor.TowerIDs.First());
+                MainTowerData = MainActor.Towers.OrderBy(t => t.UniqID).Last();//AllTowers.GetData(MainActor.TowerIDs.Last());
+                OtherTowerData = OtherActor.Towers.OrderBy(t => t.UniqID).First(); //AllTowers.GetData(OtherActor.TowerIDs.First());
             }
             else
             {
-                MainTowerData = AllTowers.GetData(MainActor.TowerIDs.First());
-                OtherTowerData = AllTowers.GetData(OtherActor.TowerIDs.Last());
+                MainTowerData = MainActor.Towers.OrderBy(t => t.UniqID).First();//AllTowers.GetData(MainActor.TowerIDs.First());
+                OtherTowerData = OtherActor.Towers.OrderBy(t => t.UniqID).Last(); //AllTowers.GetData(OtherActor.TowerIDs.Last());
             }
         }
 
@@ -59,7 +59,7 @@ namespace DataModels
 
         public bool Combat()
         {
-            if (OtherTowerData.TeamType == MainTowerData.TeamType)
+            if (OtherActor.TeamType == MainActor.TeamType)
                 goto Skip;
             
             if (!MainActor.ActivityStatus.CanShoot)

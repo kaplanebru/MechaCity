@@ -16,7 +16,7 @@ public class CombatPairsCreator
     {
         _allPairs.Clear();
         _pairGroupsByActor.Clear();
-        tempActors.ForEach(id => CombatPairByActor(ActorHolder.Registry[id], isReversed));
+        tempActors.ForEach(id => CombatPairByActor(ActorDB.Registry[id], isReversed));
         return (_pairGroupsByActor, _allPairs);
        
     }
@@ -28,9 +28,9 @@ public class CombatPairsCreator
         var targetActors = mainActor.TargetActors;
         foreach (var id in targetActors)
         {
-            var targetActor = ActorHolder.Registry[id];
+            var targetActor = ActorDB.Registry[id];
             var pair = AddToPair(mainActor, targetActor);
-            pair.OrderTowers(isReversed);
+            pair.OrderTowersByGridDirection(isReversed);
         }
     }
 

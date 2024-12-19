@@ -10,7 +10,8 @@ namespace Turn
         {
             MainClass.BpEventHandler.SubscribeToBlueprintEvents();
             MainClass.StateHolder.Setup();
-
+            
+            Eventbus.CombatEvents.OnPairsSet += MainClass.SendCombatPairs;
             TeamEvents.OnTeamsSet += MainClass.SetTurnTeams;
             NetworkEventbus.OnAllClientsSet += MainClass.FirstTurn;
             NetworkEventbus.ServerEvents.OnStateChangeRequestByServer += MainClass.ChangeStateBySystem;
@@ -30,6 +31,7 @@ namespace Turn
             MainClass.BpEventHandler.UnsubscribeFromBlueprintEvents();
             MainClass.StateHolder.UnsubscribeFromConstantEvents(); 
             
+            Eventbus.CombatEvents.OnPairsSet -= MainClass.SendCombatPairs;
             TeamEvents.OnTeamsSet -= MainClass.SetTurnTeams;
             NetworkEventbus.OnAllClientsSet -= MainClass.FirstTurn;
             NetworkEventbus.ServerEvents.OnStateChangeRequestByServer -= MainClass.ChangeStateBySystem;

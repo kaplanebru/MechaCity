@@ -9,7 +9,9 @@ public static class GeneralEventbus
 
     public static class InitializerEvents
     {
-        public static Action OnActorsCreated;
+        public static Action OnActorsInitiated;
+        public static Action OnActorsRegisteredToGrid;
+        
         public static Action OnTowerRelatedIDsSet;
         public static Action OnMediatorElementsReady;
 

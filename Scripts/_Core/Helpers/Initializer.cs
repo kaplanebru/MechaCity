@@ -25,7 +25,7 @@ namespace Core
         private void OnEnable()
         {
             NetworkEventbus.ServerEvents.OnPlayerSpawned += AssignPlayers;
-            GeneralEventbus.InitializerEvents.OnActorsCreated += ExecuteInitializer;
+            GeneralEventbus.InitializerEvents.OnActorsInitiated += ExecuteInitializer;
           
             InstantiateLevelPrefab();
         }
@@ -133,7 +133,7 @@ namespace Core
         private void OnDisable()
         {
             NetworkEventbus.ServerEvents.OnPlayerSpawned -= AssignPlayers;
-            GeneralEventbus.InitializerEvents.OnActorsCreated -= ExecuteInitializer;
+            GeneralEventbus.InitializerEvents.OnActorsInitiated -= ExecuteInitializer;
         }
     }
 }

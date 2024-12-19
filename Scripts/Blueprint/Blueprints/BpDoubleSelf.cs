@@ -39,7 +39,7 @@ namespace Blueprint
         private bool CheckBpConstraints(uint[] selectedItems)
         {
             var actorID = selectedItems[0];
-            var actor = ActorHolder.Registry[actorID];
+            var actor = ActorDB.Registry[actorID];
             
             int counter = 0;
             foreach (var selectedItem in selectedItems)
@@ -59,7 +59,7 @@ namespace Blueprint
             ActorData[] actors = new ActorData[selectedItems.Length];
             for (var i = 0; i < selectedItems.Length; i++)
             {
-                actors[i] = ActorHolder.GetActor(selectedItems[i]);
+                actors[i] = ActorDB.GetActor(selectedItems[i]);
             }
 
             return actors;

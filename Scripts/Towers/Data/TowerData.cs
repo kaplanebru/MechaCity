@@ -41,8 +41,7 @@ namespace Towers
 
         public int DamagePower;
         public Dictionary<VisualDataType, BaseVisualSupportedData> VisualSupportedDatas = new();
-
-
+        
         public TeamType TeamType;
         public List<int> NeighbourIDs = new();
 

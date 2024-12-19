@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Linq;
 using Actor;
@@ -15,6 +14,7 @@ namespace Towers
     {
         public TowerConstantData ConstantData;
         public TowerData Data;
+        public TowerNumericData NumericData;
         public TowerInitializer initializer;
         private InterruptionMotion interruptionMotion = new();
 

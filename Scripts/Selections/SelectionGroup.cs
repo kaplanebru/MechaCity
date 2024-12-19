@@ -50,7 +50,7 @@ public class SelectionGroup
         
         foreach (var actorID in SelectedActors)
         {
-            ActorData actor = ActorHolder.Registry[actorID];
+            ActorData actor = ActorDB.Registry[actorID];
             foreach (var tower in actor.Towers)
             {
                 tower.ColorHandler.ToOriginalSelectionColor();

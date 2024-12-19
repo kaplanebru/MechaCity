@@ -17,7 +17,7 @@ namespace Towers
         public void HandleDeath(uint actorID, Action teamSwitchCallback, int pairID)
         {
             
-                StartCoroutine(DeathRoutine(teamSwitchCallback, pairID, ActorHolder.Registry[actorID]));
+                StartCoroutine(DeathRoutine(teamSwitchCallback, pairID, ActorDB.Registry[actorID]));
             
             
         }

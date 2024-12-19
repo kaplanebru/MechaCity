@@ -11,24 +11,36 @@ namespace Towers
         private Tower _tower;
         private TowerConstantData ConstantData;
         private TowerData Data;
+        private TowerNumericData NumericData;
         
         public TowerInitializer(Tower tower)
         {
             _tower = tower;
             ConstantData = _tower.ConstantData;
+            NumericData = tower.NumericData;
             Data = _tower.Data;
         }
         
-        public void NumericDataSetup()
+        public void NumericDataInitialSetup(TeamType teamType)
         {
+            NumericData.Height = ConstantData.StartHeight;
+            NumericData.TeamType = teamType;
+            NumericData.LockStatus = ConstantData.StartLockStatus;
+            NumericData.ShotAmount = ConstantData.ShotAmount;
+            NumericData.ShieldHeight = ConstantData.ShieldHeight;
+
             Data.Height = ConstantData.StartHeight;
             Data.LockStatus = ConstantData.StartLockStatus;
             Data.DamagePower = ConstantData.DamagePower;
         }
 
-        public void VisualDataIdentification(TeamColorData teamData)
+        public void VisualDataIdentification()
         {
             Data.CreateSegmentsWithGivenVisualData();
+        }
+
+        public void VisualDataInitialSetup(TeamColorData teamData)
+        {
             SetSegments();
             Data.SetTeamVisuals(teamData);
         }

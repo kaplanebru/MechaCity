@@ -26,6 +26,8 @@ namespace Actor
 
         public int InitialHealth;
         public int Health { get; set; }
+
+        public TowerNumericData[] TowerNumericDatas { get; set; }
         public TowerData[] Towers { get; set; }
         public int[] TowerIDs { get; set; }
         public int TowerAmount { get; set; }
@@ -64,8 +66,7 @@ namespace Actor
 
         internal void OrderTowerDataByHeight()
         {
-            Towers = Towers.OrderBy(t => t.AvailableHeight)
-                .ToArray(); //İD'NİN LİNKAGE İÇİN YER DEĞİŞTİRMEMESİ Gerekebilir
+            Towers = Towers.OrderBy(t => t.AvailableHeight).ToArray();
         }
 
         internal void SetCenterDependently()

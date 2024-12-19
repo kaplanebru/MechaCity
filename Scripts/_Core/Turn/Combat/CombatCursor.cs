@@ -26,10 +26,19 @@ public class CombatCursor : MonoBehaviour
     
     private void OnEnable()
     {
-        Eventbus.CombatEvents.OnPairsSet += Setup;
+        SetVisualReferences();
+        installEffect = GetComponentInChildren<BpInstallEffect>();
+        installEffect.Initialize();
+        center = cursorObj.transform.position;
 
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet += Initiate;
+    }
+
+    private void Initiate()
+    {
+        Eventbus.CombatEvents.OnSendingCombatPairs += Setup;
         Eventbus.CombatEvents.OnNextActor += ShiftTarget;
-
+        
         Eventbus.CombatEvents.OnCombatStarted += StartCursor;
         Eventbus.CombatEvents.OnCombatEnding += EndCursor;
 
@@ -37,28 +46,22 @@ public class CombatCursor : MonoBehaviour
         
         BpEventbus.UIEvents.OnBpInstallBegin += SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset += ResetBpImage;
-        
-        
-        SetVisualReferences();
-        installEffect = GetComponentInChildren<BpInstallEffect>();
-        installEffect.Initialize();
-        center = cursorObj.transform.position;
     }
     
    
     void Setup(bool isReversed)
     {
-        FillActorPositions();
+        RegisterActorPositions();
         SetDirections();
         SetTargetPositions();
         if(isReversed)
             ReverseAngle();
     }
 
-    void FillActorPositions()
+    void RegisterActorPositions()
     {
         positions.Clear();
-        foreach (var actor in  ActorHolder.Registry.Values)
+        foreach (var actor in  ActorDB.Registry.Values)
         {
             positions.Add(actor.Center);
         }
@@ -141,9 +144,12 @@ public class CombatCursor : MonoBehaviour
         cursorSpriteHandler.ResetBpImage();
     }
     
+    
     private void OnDisable()
     {
-        Eventbus.CombatEvents.OnPairsSet -= Setup;
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet -= Initiate;
+
+        Eventbus.CombatEvents.OnSendingCombatPairs -= Setup;
         Eventbus.CombatEvents.OnNextActor -= ShiftTarget;
 
         Eventbus.CombatEvents.OnCombatStarted -= StartCursor;
@@ -152,7 +158,5 @@ public class CombatCursor : MonoBehaviour
         
         BpEventbus.UIEvents.OnBpInstallBegin -= SetupAndInstall;
         BpEventbus.UIEvents.OnBpReset -= ResetBpImage;
-        
-        
     }
 }

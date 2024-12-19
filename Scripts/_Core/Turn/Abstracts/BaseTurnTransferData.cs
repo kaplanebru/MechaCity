@@ -22,7 +22,7 @@ namespace Turn
         {
             foreach (var actorID in Actors)
             {
-                foreach (var tower in ActorHolder.GetTowerIDs(actorID))
+                foreach (var tower in ActorDB.GetTowerIDs(actorID))
                 {
                     AllTowers.GetData(tower).ColorHandler.ToSelectionColor();
                 }

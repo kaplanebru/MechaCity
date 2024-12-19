@@ -53,7 +53,7 @@ namespace Turn
             _towers.Clear();
             foreach (var actorID in actors)
             {
-                var actor = ActorHolder.Registry[actorID];
+                var actor = ActorDB.Registry[actorID];
                 _towers.AddRange(actor.Towers);
             }
 
@@ -73,7 +73,7 @@ namespace Turn
 
         void SetSelectionColor(uint mainActorID, bool select = true)
         {
-            var mainActor = ActorHolder.Registry[mainActorID];
+            var mainActor = ActorDB.Registry[mainActorID];
             if (select)
             {
                 foreach (var tower in mainActor.Towers)
@@ -99,8 +99,8 @@ namespace Turn
         uint[] GetActors()
         {
             return isReversed
-                ? ActorHolder.Registry.Keys.ToArray().Reverse().ToArray()
-                : ActorHolder.Registry.Keys.ToArray();
+                ? ActorDB.Registry.Keys.ToArray().Reverse().ToArray()
+                : ActorDB.Registry.Keys.ToArray();
         }
 
         public IEnumerator LeCoroutine()

@@ -30,7 +30,7 @@ public class SelectionSlot : MonoBehaviour
     string SetText(uint actorId)
     {
         string towerText = "";
-        var actor = ActorHolder.Registry[actorId];
+        var actor = ActorDB.Registry[actorId];
         for (var i = 0; i < actor.TowerIDs.Length; i++)
         {
             var towerID = actor.TowerIDs[i];

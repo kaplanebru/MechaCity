@@ -41,7 +41,7 @@ public class Cam : MonoBehaviour
         List<Vector3> centers = new();
         foreach (var id in ids)
         {
-            var actor = ActorHolder.GetActor(id);
+            var actor = ActorDB.GetActor(id);
             //todo: 
             // foreach (var towerData in actor.Towers)
             // {

@@ -23,7 +23,7 @@ public class GridToIndicator
 
         foreach (var actorID in _actors)
         {
-            var actor = ActorHolder.Registry[actorID];
+            var actor = ActorDB.Registry[actorID];
             var indicatorData = new IndicatorGridData();
 
             indicatorData.ActorID = actorID;
@@ -43,7 +43,7 @@ public class GridToIndicator
        
         foreach (var targetID in actor.TargetActors)
         {
-            var targetActor = ActorHolder.Registry[targetID];
+            var targetActor = ActorDB.Registry[targetID];
 
             var targetPos = targetActor.Center;
             indicatorData.TargetPositions.Add(targetPos);
@@ -65,7 +65,7 @@ public class GridToIndicator
 
     void UpdateDeadIndicator(uint actorID)
     {
-        var deadActor = ActorHolder.Registry[actorID];
+        var deadActor = ActorDB.Registry[actorID];
         var deadIndicator = indicatorDatas[actorID];
         SetTargets(deadActor, deadIndicator);
     }
@@ -74,7 +74,7 @@ public class GridToIndicator
     {
         foreach (var roverID in _actors)
         {
-            var rover = ActorHolder.Registry[roverID];
+            var rover = ActorDB.Registry[roverID];
             if (rover.TargetActors.Contains(actorID))
             {
                 var roverIndicator = indicatorDatas[roverID];

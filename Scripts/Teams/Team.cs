@@ -21,7 +21,7 @@ namespace Teams
         {
             Data.Actors.Clear();
 
-            foreach (var actor in ActorHolder.Registry.Values)
+            foreach (var actor in ActorDB.Registry.Values)
             {
                 if (actor.TeamType == Data.TeamType)
                 {

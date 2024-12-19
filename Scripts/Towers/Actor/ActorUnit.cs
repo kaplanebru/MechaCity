@@ -2,10 +2,10 @@ namespace Actor
 {
     public abstract class ActorUnit
     {
-        public ActorHolder Holder;
-        public ActorUnit(ActorHolder holder)
+        public ActorDB DB;
+        public ActorUnit(ActorDB db)
         {
-            Holder = holder;
+            DB = db;
         }
 
         public abstract void Subscribe();

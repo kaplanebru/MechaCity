@@ -32,7 +32,7 @@ namespace Turn
         private void ExchangeActors(uint actorID)
         {
             _deadActorID = actorID;
-            var actor = ActorHolder.Registry[actorID];
+            var actor = ActorDB.Registry[actorID];
             ExchangeActor(actor);
             
             Invoke(nameof(ResetHealth), 1f); //todo: temporary

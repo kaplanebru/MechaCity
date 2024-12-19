@@ -6,7 +6,7 @@ namespace Actor
 {
     public class HealthUnit : ActorUnit
     {
-        public HealthUnit(ActorHolder holder) : base(holder) {}
+        public HealthUnit(ActorDB db) : base(db) {}
         public override void Subscribe()
         {
             Eventbus.HealthEvents.OnShoot += ApplyDamage;
@@ -17,7 +17,7 @@ namespace Actor
         
         void ApplyDamage(uint actorID, int damage, int pairID)
         {
-            var actor = ActorHolder.Registry[actorID]; //eski bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
+            var actor = ActorDB.Registry[actorID]; //eski bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
             var health = actor.Health - damage;
             
             SetHealth(actor, health);
@@ -30,7 +30,7 @@ namespace Actor
 
         private bool IsDead(uint actorID, int pairID)
         {
-            if (ActorHolder.Registry[actorID].Health <= 0)
+            if (ActorDB.Registry[actorID].Health <= 0)
             {
                 DeathOperator.Instance.HandleDeath(actorID, 
                     () => Eventbus.CombatEvents.OnActorKilled?.Invoke(actorID), 
@@ -44,7 +44,7 @@ namespace Actor
 
         private void ResetHealth(uint actorID)
         {
-            var actor = ActorHolder.Registry[actorID];
+            var actor = ActorDB.Registry[actorID];
             actor.Health = actor.InitialHealth;
             
             Eventbus.HealthEvents.OnHealthChange?.Invoke(actorID);

@@ -21,7 +21,7 @@ namespace Actor
         
         void MoveOut(uint actorID, Vector3 offset)
         {
-            currentActor = ActorHolder.Registry[actorID];
+            currentActor = ActorDB.Registry[actorID];
            
             foreach (var tower in currentActor.Towers)
             {

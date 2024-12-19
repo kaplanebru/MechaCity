@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Actor
 {
-    public class ActorHolder
+    public class ActorDB
     {
         public static Dictionary<uint, ActorData> Registry { get; private set; } = new();
         private Dictionary<Enums.ActorUnit, ActorUnit> units = new();
@@ -18,7 +18,7 @@ namespace Actor
         public static List<TowerData> GetTowersData(uint id) => Registry[id].Towers.ToList();
 
         
-        public void Subscribe()
+        private void Subscribe()
         {
             Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
         }
@@ -37,17 +37,6 @@ namespace Actor
             {
                 unit.Subscribe();
             }
-        }
-
-        public void FillRegistry()
-        {
-            // foreach (var tower in AllTowers.Towers)
-            // {
-            //     var towerID = tower.Data.UniqID;
-            //     RegisterItem(ActorType.Standard,towerID, tower.ConstantData.StartHealth, towerID);
-            // }
-            OrderRegistry();
-            OnRegistryUpdate();
         }
 
         public uint RegisterItem(ActorType type,int row, int health, params int[] ownTowers)
@@ -85,7 +74,7 @@ namespace Actor
             
             RegisterItem(ActorType.MultiTower, abortedRow, totalHealth, ownTowers.ToArray());
             
-            OrderRegistry();
+            OrderRegistryByRow();
             OnRegistryUpdate();
         }
 
@@ -94,7 +83,7 @@ namespace Actor
             Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(Registry.Keys.ToArray());
         }
 
-        internal void OrderRegistry()
+        internal void OrderRegistryByRow()
         {
             Registry = Registry.OrderBy(a => a.Value.Row).ToDictionary(a => a.Key, a => a.Value);
         }
@@ -138,7 +127,7 @@ namespace Actor
                 unit.Unsubscribe();
             }
             Eventbus.ActorEvents.OnDoubleTowerCreated -= RegisterDouble;
-
+            
             Registry.Clear();
         }
 

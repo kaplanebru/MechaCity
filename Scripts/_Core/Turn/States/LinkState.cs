@@ -50,8 +50,8 @@ namespace Turn
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
             TransferData.Actors = data.Actors;
-            activeActors = ActorHolder.GetActiveActors(TransferData.Actors.ToArray()).ToArray();
-            TransferData.towers = ActorHolder.ResolveTowersFromActors(activeActors).ToList();
+            activeActors = ActorDB.GetActiveActors(TransferData.Actors.ToArray()).ToArray();
+            TransferData.towers = ActorDB.ResolveTowersFromActors(activeActors).ToList();
             
             Eventbus.LinkEvents.OnLinkActorsLoaded?.Invoke(activeActors.ToList());
            
@@ -63,7 +63,7 @@ namespace Turn
 
         private void SetLinkOperatorAndSubscribe()
         {
-            currentLinkOperator = activeActors.Any(a => ActorHolder.Registry[a].Type == ActorType.MultiTower)
+            currentLinkOperator = activeActors.Any(a => ActorDB.Registry[a].Type == ActorType.MultiTower)
                 ? linkOperators[ActorType.MultiTower]
                 : linkOperators[ActorType.Standard];
             

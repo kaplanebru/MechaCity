@@ -12,7 +12,7 @@ namespace Blueprint
         public void Execute(params object[] obj)
         {
             var selectedActorID = (uint[]) obj[0];
-            var selectedActor =ActorHolder.Registry[selectedActorID[0]];
+            var selectedActor =ActorDB.Registry[selectedActorID[0]];
             var towers = selectedActor.Towers;
 
             selectedActor.ActivityStatus.CanShoot = false;
@@ -26,7 +26,7 @@ namespace Blueprint
         public void Restore(params object[] obj)
         {
             var selectedActorID = (uint[]) obj[0];
-            var selectedActor = ActorHolder.Registry[selectedActorID[0]];
+            var selectedActor = ActorDB.Registry[selectedActorID[0]];
             var towers = selectedActor.Towers;
         
             selectedActor.ActivityStatus.CanShoot = true;

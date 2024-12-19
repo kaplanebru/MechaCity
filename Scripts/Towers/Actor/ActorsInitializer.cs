@@ -6,48 +6,61 @@ using UnityEngine;
 
 public class ActorsInitializer : MonoBehaviour
 {
-    public ActorFounderData[] actorFounderDatas;
+    public ActorStarterData[] ActorStarterDatas;
     private AllTowers AllTowers = new();
-    private ActorHolder ActorHolder = new();
+    private ActorDB ActorDB = new();
 
     private void OnEnable()
     {
-        ActorHolder.Initialize();
+        ActorDB.Initialize();
         AllTowers.Subscribe();
+        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid += InitiateActorTowers;
 
-        Invoke(nameof(FoundActorsWithTowers), .5f); //diğer on enable getcomponentlar çalışsın diye
+
+        Invoke(nameof(InitiateActorsForGridRegistry), .5f); //diğer on enable getcomponentlar çalışsın diye
     }
 
-    public void FoundActorsWithTowers()
+    public void InitiateActorsForGridRegistry()
     {
-        foreach (var actorFounder in actorFounderDatas)
+        foreach (var newActor in ActorStarterDatas)
         {
-            actorFounder.StartActorsAndSetTowers();
+            newActor.StartActorForGrid();
         }
-        FillAllTowers();
-        InitiateGrid();
+        // FillAllTowers();
+        RegisterToTheGrid();
         
-        GeneralEventbus.InitializerEvents.OnActorsCreated?.Invoke();
+        //GeneralEventbus.InitializerEvents.OnActorsInitiated?.Invoke();
     }
 
-    void InitiateGrid()
+    void RegisterToTheGrid()
     {
-        ActorHolder.OrderRegistry();
-        ActorHolder.OnRegistryUpdate();
+        ActorDB.OrderRegistryByRow();
+        ActorDB.OnRegistryUpdate();
     }
-
-    public void FillAllTowers()
+    
+    private void InitiateActorTowers()
     {
-        List<Tower> towers = new();
-        foreach (var actorFounder in actorFounderDatas)
+        foreach (var newActor in ActorStarterDatas)
         {
-            towers.AddRange(actorFounder.TowerObjects);
+            newActor.InitiateActorTowers();
         }
-        AllTowers.ReceiveTowers(towers);
     }
+
+    // public void FillAllTowers()
+    // {
+    //     List<Tower> towers = new();
+    //     foreach (var actorFounder in ActorFounderDatas)
+    //     {
+    //         towers.AddRange(actorFounder.TowerObjects);
+    //     }
+    //     AllTowers.ReceiveTowers(towers);
+    // }
     private void OnDisable()
     {
-        ActorHolder.Unsubscribe();
+        ActorDB.Unsubscribe();
         AllTowers.Unsubscribe();
+        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid -= InitiateActorTowers;
     }
+
+ 
 }

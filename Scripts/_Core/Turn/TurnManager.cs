@@ -43,6 +43,11 @@ namespace Turn
             UIEventbus.OnHighlightRequest?.Invoke(enable);
         }
 
+        internal void SendCombatPairs(bool isReversed)
+        {
+            Eventbus.CombatEvents.OnSendingCombatPairs?.Invoke(isReversed);
+        }
+
         private void Initialize()
         {
             StateHolder.RegisterStates();

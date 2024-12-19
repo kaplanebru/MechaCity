@@ -81,7 +81,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     private void Select(uint newSelection)
     {
         CurrentGroup.SelectedActors.Add(newSelection);
-        var actor = ActorHolder.Registry[newSelection];//AllTowers.GetData(newSelection);
+        var actor = ActorDB.Registry[newSelection];//AllTowers.GetData(newSelection);
         
         SetSelectionColor(actor);
 
@@ -91,7 +91,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     private void Deselect(uint newSelection)
     {
         CurrentGroup.SelectedActors.Remove(newSelection);
-        var actor = ActorHolder.Registry[newSelection];//AllTowers.GetData(newSelection);
+        var actor = ActorDB.Registry[newSelection];//AllTowers.GetData(newSelection);
 
         foreach (var tower in actor.Towers)
         {

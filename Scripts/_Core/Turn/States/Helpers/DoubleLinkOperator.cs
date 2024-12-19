@@ -23,7 +23,7 @@ namespace Turn
             _actors.Clear();
             foreach (var actorID in actors)
             {
-                _actors.Add(actorID, ActorHolder.Registry[actorID]);
+                _actors.Add(actorID, ActorDB.Registry[actorID]);
             }
         }
 

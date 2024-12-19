@@ -25,10 +25,24 @@ namespace Grid
         private void OnEnable()
         {
             interruptionController = new InterruptionController(Data);
-            Eventbus.ActorEvents.OnRegistryUpdate += SetGrid;
+            Eventbus.ActorEvents.OnRegistryUpdate += RegisterActors;
             Eventbus.ActorEvents.OnReverseGrid += ReverseTargets;
             Eventbus.LinkEvents.OnLinkActorsLoaded += interruptionController.TryCheckInterruptions;
             gridToIndicator.Subscribe();
+        }
+
+        void RegisterActors(uint[] actors)
+        {
+            _actors = actors;
+            actorBySlot.Clear();
+
+            AddMainActors();
+            ResolveTargetActors();
+            ResolveNeighbours();
+            interruptionController.SetInterruptionActors();
+
+            SendGridRegistry(false); //TODO SEPARATE
+            GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid?.Invoke();
         }
 
         
@@ -39,9 +53,6 @@ namespace Grid
             foreach (var slot in Data.slots)
             {
                 var actor = actorBySlot[slot.Id];
-                
-                //Debug.Log(actor.TargetActors.Count);
-                //Debug.Log(getRelatedActors(actor).Count);
                 getRelatedActors(actor).Clear();
 
                 foreach (var relatedSlotId in getRelatedSlots(slot))
@@ -79,6 +90,26 @@ namespace Grid
                 slot => slot.Neighbours);
         }
 
+        void SendGridRegistry(bool reversed)
+        {
+            Eventbus.ActorEvents.OnGridRegistrySet?.Invoke(_actors.ToList(), reversed);
+        }
+
+        private void AddMainActors()
+        {
+            int i = 0;
+            foreach (var actorID in _actors)
+            {
+                var actor = ActorDB.Registry[actorID];
+
+                for (var j = 0; j < actor.TowerAmount; j++)
+                {
+                    actorBySlot.Add(i, actor);
+                    i++;
+                }
+            }
+        }
+
         private void ReverseTargets()
         {
             isReversed = !isReversed;
@@ -93,71 +124,23 @@ namespace Grid
             else
                 ResolveTargetActors();
 
-            SendRelations(isReversed);
+            SendGridRegistry(isReversed);
         }
-
-        void SetGrid(uint[] actors)
-        {
-            _actors = actors;
-            actorBySlot.Clear();
-
-            FillGridWithActors();
-            ResolveTargetActors();
-            ResolveNeighbours();
-            interruptionController.SetInterruptionActors();
-
-            SendRelations(false);
-        }
-
-        void SendRelations(bool reversed)
-        {
-            Eventbus.ActorEvents.OnRelationsSet?.Invoke(_actors.ToList(), reversed);
-        }
-
-        private void FillGridWithActors()
-        {
-            int i = 0;
-            foreach (var actorID in _actors)
-            {
-                var actor = ActorHolder.Registry[actorID];
-
-                for (var j = 0; j < actor.Towers.Length; j++)
-                {
-                    actorBySlot.Add(i, actor);
-                    i++;
-                }
-            }
-        }
-
         private void OnDisable()
         {
-            Eventbus.ActorEvents.OnRegistryUpdate -= SetGrid;
+            Eventbus.ActorEvents.OnRegistryUpdate -= RegisterActors;
             Eventbus.ActorEvents.OnReverseGrid -= ReverseTargets;
             Eventbus.LinkEvents.OnLinkActorsLoaded -= interruptionController.TryCheckInterruptions;
             gridToIndicator.Unsubscribe();
         }
 
-        //private Dictionary<ActorData, List<int>> slotsByActors = new();
-        void GetSlotsByActors()
-        {
-            // int i = 0;
-            // foreach (var actorID in _actors)
-            // {
-            //     var actor = ActorHolder.Registry[actorID];
-            //     slotsByActors.Add(actor, new List<int>());
-            //     for (var j = 0; j < actor.Towers.Length; j++)
-            //     {
-            //         slotsByActors[actor].Add(i);
-            //         i++;
-            //     }
-            // }
-        }
+      
 
         void DebugActors()
         {
             foreach (var id in _actors)
             {
-                var actor = ActorHolder.Registry[id];
+                var actor = ActorDB.Registry[id];
                 foreach (var target in actor.TargetActors)
                 {
                     Debug.Log(actor.ID + " target:" + target);

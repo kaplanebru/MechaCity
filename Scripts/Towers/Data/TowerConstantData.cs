@@ -9,10 +9,8 @@ namespace Towers
     [CreateAssetMenu(fileName = nameof(TowerConstantData))]
     public class TowerConstantData : ScriptableObject
     {
-        public int Id;
         public TowerAssetHolder TowerAssetHolder; //TODO: fix later
         public int StartHeight = 2;
-        public int StartHealth = 1;
         public int DamagePower = 1;
         public int ShieldHeight = 0;
         public int ShotAmount = 1;

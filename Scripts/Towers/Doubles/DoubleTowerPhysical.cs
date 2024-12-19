@@ -15,7 +15,7 @@ namespace Towers
         {
             foreach (var actorID in actorIDs)
             {
-                _towers.AddRange(ActorHolder.GetTowersData(actorID).ToList());
+                _towers.AddRange(ActorDB.GetTowersData(actorID).ToList());
             }
             
             _towers = _towers.OrderBy(t => t.Height).ToList();
