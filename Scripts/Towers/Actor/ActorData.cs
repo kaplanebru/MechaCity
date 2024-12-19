@@ -7,6 +7,32 @@ using UnityEngine;
 
 namespace Actor
 {
+    public class TowerHeightCouple
+    {
+        public TowerNumericData Numeric;
+        public TowerData Visual;
+
+        public TowerHeightCouple(TowerNumericData numeric, TowerData visual)
+        {
+            Numeric = numeric;
+            Visual = visual;
+        }
+        
+        public void UpdateHeight(int extra)
+        {
+            if (extra == 0)
+            {
+                Debug.Log("EQUAL");
+                return;
+            }
+
+            int newHeight = Numeric.Height + extra;
+            bool isRising = newHeight > Numeric.Height;
+            Numeric.Height = newHeight;
+
+            Visual.Mover.ChangeHeightPhysically(newHeight, isRising);
+        }
+    }
     public class ActivityStatus
     {
         public bool CanMove = true;
@@ -31,6 +57,8 @@ namespace Actor
         public TowerData[] Towers { get; set; }
         public int[] TowerIDs { get; set; }
         public int TowerAmount { get; set; }
+
+        public List<TowerHeightCouple> TowerHeightCouples = new();
         public Vector3 Center { get; set; }
 
         public HashSet<uint> TargetActors = new();
@@ -51,24 +79,26 @@ namespace Actor
             TowerIDs = towerIDs;
             Towers = AllTowers.GetTowerDatasByIDs(towerIDs).ToArray();
             TowerAmount = Towers.Length;
-
-            OrderTowerDataByHeight();
+            SetTowerHeightCouple();
         }
 
-        public void RegisterTowersAutonomously(TowerData[] towers)
+        
+        private void OrderTowerDataByHeight()
         {
-            Towers = towers;
-            TowerIDs = towers.Select(t => t.UniqID).ToArray();
-            TowerAmount = Towers.Length;
+            //Towers = Towers.OrderBy(t => t.AvailableHeight).ToArray();
+            TowerHeightCouples = TowerHeightCouples.OrderBy(t => t.Numeric.AvailableHeight).ToList();
             
+        }
+
+        public void SetTowerHeightCouple()
+        {
+            TowerHeightCouples.Clear();
+            for (int i = 0; i < TowerAmount; i++)
+            {
+                TowerHeightCouples.Add(new TowerHeightCouple(TowerNumericDatas[i], Towers[i])); //order by height
+            }
             OrderTowerDataByHeight();
         }
-
-        internal void OrderTowerDataByHeight()
-        {
-            Towers = Towers.OrderBy(t => t.AvailableHeight).ToArray();
-        }
-
         internal void SetCenterDependently()
         {
             Center = Vector3.zero;
@@ -95,8 +125,8 @@ namespace Actor
 
         public int TryGetAvailableHeight(int step)
         {
-            int availableHeight = Towers.Sum(tower => tower.AvailableHeight);
-            return Towers[0].AvailableHeight < step ? 0 : availableHeight;
+            int availableHeight = TowerNumericDatas.Sum(tower => tower.AvailableHeight);
+            return TowerNumericDatas[0].AvailableHeight < step ? 0 : availableHeight;
         }
     }
 }

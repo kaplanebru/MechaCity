@@ -10,6 +10,7 @@ using UnityEngine;
 
 namespace Towers
 {
+
     public class Tower : MonoBehaviour
     {
         public TowerConstantData ConstantData;
@@ -24,11 +25,9 @@ namespace Towers
             interruptionMotion.Subscribe();
         }
         
-       
-
         void FirstMotion()
         {
-            Data.Mover.ChangeHeightPhysically(Data.Height, true);
+            Data.Mover.ChangeHeightPhysically(NumericData.Height, true);
             StartRiseFallRoutine(true);
         }
 
@@ -52,7 +51,21 @@ namespace Towers
             Eventbus.TowerEvents.OnTurnBegin -= FirstMotion;
             Data.Mover.Unsubscribe();
             interruptionMotion.Unsubscribe();
+        }
+        
+        public void UpdateHeight(int extra)
+        {
+            if (extra == 0)
+            {
+                Debug.Log("EQUAL");
+                return;
+            }
 
+            int newHeight = NumericData.Height + extra;
+            bool isRising = newHeight > NumericData.Height;
+            NumericData.Height = newHeight;
+
+            Data.Mover.ChangeHeightPhysically(newHeight, isRising);
         }
     }
 }

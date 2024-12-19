@@ -38,6 +38,11 @@ namespace Teams
             {
                tower.SetTeamVisuals(Data.teamColorData);
             }
+
+            foreach (var data in actor.TowerNumericDatas)
+            {
+                data.TeamType = actor.TeamType;
+            }
         }
 
         public void RemoveTower(ActorData actor)

@@ -57,18 +57,21 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
     }
     public void RevealSelf()
     {
+        var mainTower = AllTowers.GetTower(_pair.MainTowerData.UniqID);
+        var otherTower = AllTowers.GetTower(_pair.OtherTowerData.UniqID);
+        
         Sequence sequence = DOTween.Sequence();
         sequence.Append(coverRoutine);
         sequence.Append(transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration));
         sequence.Append(transform.DORotateQuaternion(
             Quaternion.LookRotation(
-                _pair.OtherTowerData.Mover.Data.Top.transform.position - transform.position
+               otherTower.Data.Mover.Data.Top.transform.position - transform.position
             ) * Quaternion.Euler(0, 180, 0), _motionDuration / 2
         ));
 
         sequence.AppendCallback(() =>
         {
-            SendProjectile(_pair.MainTowerData, _pair.OtherTowerData, _projectileDuration);
+            SendProjectile(mainTower, otherTower, _projectileDuration);
         });
     }
 
@@ -83,24 +86,24 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
         
     }
     
-    void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
+    void SendProjectile(Tower perpetrator, Tower victim, float duration)
     {
         var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = shootingSlot.position);
-        projectile.Setup(duration, victim.Mover.Data.Top.transform.position - Vector3.up * 1.5f);
+        projectile.Setup(duration, victim.Data.Mover.Data.Top.transform.position - Vector3.up * 1.5f);
 
         projectile.Move(() =>
         {
-            perpetrator.ColorHandler.ToOriginalSelectionColor();
+            perpetrator.Data.ColorHandler.ToOriginalSelectionColor();
 
             Hide();
-            ShieldData shieldData = victim.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
-            if (shieldData.HasEffectiveShield(victim.Height))
+            ShieldData shieldData = victim.Data.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
+            if (shieldData.HasEffectiveShield(victim.NumericData.Height))
             {
                 //TODO: shield effect
                 _pair.CompleteCombat();
                 return;
             }
-            Eventbus.HealthEvents.OnShoot?.Invoke(_pair.OtherActor.ID, perpetrator.DamagePower, _pair.ID);
+            Eventbus.HealthEvents.OnShoot?.Invoke(_pair.OtherActor.ID, perpetrator.NumericData.DamagePower, _pair.ID);
             
             //Hide();
         });

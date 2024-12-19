@@ -9,20 +9,24 @@ namespace Towers
     public class DoubleTowerPhysical
     {
         private int[] _towerIDs;
-        private List<TowerData> _towers = new();
+
+        private List<TowerHeightCouple> _towerHeightCouples = new();
+        private List<TowerNumericData> _towers = new();
         private int _amount;
         public DoubleTowerPhysical(params uint[] actorIDs)
         {
             foreach (var actorID in actorIDs)
             {
                 _towers.AddRange(ActorDB.GetTowersData(actorID).ToList());
+                _towerHeightCouples.AddRange(ActorDB.GetTowerHeightCouples(actorID));
             }
             
+           
             _towers = _towers.OrderBy(t => t.Height).ToList();
             _amount = _towers.Count;
         }
 
-        public DoubleTowerPhysical(TowerData[] towers)
+        public DoubleTowerPhysical(TowerNumericData[] towers)
         {
             _towers = towers.OrderBy(t => t.Height).ToList();
             _amount = _towers.Count;
@@ -63,7 +67,7 @@ namespace Towers
                 int surplus = newHeight - tower.Height;
 
                 if (surplus == 0) continue;
-                tower.UpdateHeight(surplus);
+                _towerHeightCouples[tower.UniqID].UpdateHeight(surplus);
                 AllTowers.GetTower(tower.UniqID).StartRiseFallRoutine(true); //Todo: düzelt
             }
         }

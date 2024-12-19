@@ -15,10 +15,13 @@ namespace Blueprint
             Debug.Log("execute shield");
             var selectedActors = (uint[]) obj[0];
             var towers = ActorDB.Registry[selectedActors[0]].Towers;
+            var towerNumericDatas = ActorDB.Registry[selectedActors[0]].TowerNumericDatas;
 
-            foreach (var tower in towers)
+            for (var i = 0; i < towers.Length; i++)
             {
-                tower.VisualSupportedDatas[VisualDataType.Shield].SetDataAndVisuals(tower.Height);
+                var tower = towers[i];
+                var towerNumeric = towerNumericDatas[i];
+                tower.VisualSupportedDatas[VisualDataType.Shield].SetDataAndVisuals(towerNumeric.Height);
             }
         }
     }

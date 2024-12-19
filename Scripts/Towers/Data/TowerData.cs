@@ -9,41 +9,13 @@ using UnityEngine;
 
 namespace Towers
 {
-    // [CreateAssetMenu(fileName = nameof(TowerData))]
     [Serializable]
     public class TowerData
     {
-        public int UniqID;
-
-        //HEIGHT
-        private int height;
-
-        public int Height
-        {
-            get => height;
-            set
-            {
-                height = value;
-                if (!LockStatus.Locked)
-                {
-                    AvailableHeight = value - 1; //-1ler yeni eklendi
-                }
-                else
-                {
-                    AvailableHeight = value - 1 - LockStatus.Limit + 1; //+1 limiti sıfırlayabilmek için
-                }
-            }
-        }
-
-        public int AvailableHeight;
-
-        //ATTACK
-
-        public int DamagePower;
+        public int UniqID { get; set; }
+        
         public Dictionary<VisualDataType, BaseVisualSupportedData> VisualSupportedDatas = new();
         
-        public TeamType TeamType;
-        public List<int> NeighbourIDs = new();
 
         public bool IsClickable = true;
         public LockStatus LockStatus;
@@ -81,11 +53,10 @@ namespace Towers
             }
         }
 
-        public void SetTeamVisuals(TeamColorData teamData)
+        public void SetTeamVisuals(TeamColorData teamVisualData)
         {
-            TeamType = teamData.TeamType;
-            ColorHandler.SetDefaultTeamVisuals(teamData);
-            clickHandler.SetClickableTeams(teamData.TeamType);
+            ColorHandler.SetDefaultTeamVisuals(teamVisualData);
+            clickHandler.SetClickableTeams(teamVisualData.TeamType);
         }
 
         public void EnableSelection()
@@ -104,20 +75,20 @@ namespace Towers
             clickHandler.SetClickableIds(id);
         }
 
-        public void UpdateHeight(int extra)
-        {
-            if (extra == 0)
-            {
-                Debug.Log("EQUAL");
-                return;
-            }
-
-            int newHeight = Height + extra;
-            bool isRising = newHeight > Height;
-            Height = newHeight;
-
-            Mover.ChangeHeightPhysically(newHeight, isRising);
-        }
+        // public void UpdateHeight(int extra, TowerNumericData numericData)
+        // {
+        //     if (extra == 0)
+        //     {
+        //         Debug.Log("EQUAL");
+        //         return;
+        //     }
+        //
+        //     int newHeight = numericData.Height + extra;
+        //     bool isRising = newHeight > numericData.Height;
+        //     numericData.Height = newHeight;
+        //
+        //     Mover.ChangeHeightPhysically(newHeight, isRising);
+        // }
 
         public void Shake()
         {

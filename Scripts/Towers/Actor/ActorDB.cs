@@ -15,9 +15,12 @@ namespace Actor
 
         public static ActorData GetActor(uint id) => Registry[id];
         public static int[] GetTowerIDs(uint id) => Registry[id].TowerIDs;
-        public static List<TowerData> GetTowersData(uint id) => Registry[id].Towers.ToList();
+        public static List<TowerNumericData> GetTowersData(uint id) => Registry[id].TowerNumericDatas.ToList();
 
-        
+        public static List<TowerHeightCouple> GetTowerHeightCouples(uint id) =>
+            Registry[id].TowerHeightCouples.ToList();
+
+
         private void Subscribe()
         {
             Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
@@ -28,7 +31,7 @@ namespace Actor
             SetControllers();
             Subscribe();
         }
-        
+
         void SetControllers()
         {
             units[Enums.ActorUnit.Health] = new HealthUnit(this);
@@ -39,21 +42,22 @@ namespace Actor
             }
         }
 
-        public uint RegisterItem(ActorType type,int row, int health, params int[] ownTowers)
+        public uint RegisterItem(ActorType type, int row, int health, params int[] ownTowers)
         {
             var id = UniqueIdGenerator.UIntId();
             var actor = new ActorData(id, type, ownTowers);
-            actor.TeamType = AllTowers.GetData(ownTowers[0]).TeamType; //todo: temporary
-           
+            actor.TeamType = AllTowers.GetNumericData(ownTowers[0]).TeamType; //todo: temporary
+
             Registry.Add(id, actor);
             actor.Row = row;
-            ((HealthUnit)units[Enums.ActorUnit.Health]).SetHealth(Registry[id], health, true);
-            
+            ((HealthUnit) units[Enums.ActorUnit.Health]).SetHealth(Registry[id], health, true);
+
             foreach (var towerID in ownTowers) //todo: register actor dataya eklenebilir
             {
                 var tower = AllTowers.GetData(towerID);
                 tower.SetClickHandlerID(id);
             }
+
             return id;
         }
 
@@ -62,18 +66,18 @@ namespace Actor
             int totalHealth = 0;
             List<int> ownTowers = new();
             int abortedRow = Registry[oldActors.First()].Row;
-            
+
             foreach (var actorID in oldActors)
             {
                 var actor = Registry[actorID];
-                
+
                 totalHealth += actor.Health;
                 ownTowers.AddRange(actor.TowerIDs);
                 RemoveItem(actor); //NOT: removelar'dan sonra register edildiği için doğru index'e geliyor, ama sona eklenip bug çıkarır sanıyordum.
             }
-            
+
             RegisterItem(ActorType.MultiTower, abortedRow, totalHealth, ownTowers.ToArray());
-            
+
             OrderRegistryByRow();
             OnRegistryUpdate();
         }
@@ -87,7 +91,7 @@ namespace Actor
         {
             Registry = Registry.OrderBy(a => a.Value.Row).ToDictionary(a => a.Key, a => a.Value);
         }
-     
+
         public static List<int> ResolveTowersFromActors(uint[] actorIDs)
         {
             List<int> towers = new();
@@ -98,10 +102,10 @@ namespace Actor
                     towers.Add(tower);
                 }
             }
-        
+
             return towers;
         }
-        
+
         public static IEnumerable<uint> GetActiveActors(uint[] actorIDs)
         {
             foreach (var actorID in actorIDs)
@@ -111,14 +115,14 @@ namespace Actor
                 yield return actorID;
             }
         }
-        
-        
+
+
         private void RemoveItem(ActorData actor)
         {
             Registry.Remove(actor.ID);
             Eventbus.HealthEvents.OnRemoveFromRegistry?.Invoke(actor.TowerIDs);
         }
-        
+
 
         public void Unsubscribe()
         {
@@ -126,11 +130,10 @@ namespace Actor
             {
                 unit.Unsubscribe();
             }
+
             Eventbus.ActorEvents.OnDoubleTowerCreated -= RegisterDouble;
-            
+
             Registry.Clear();
         }
-
-       
     }
 }

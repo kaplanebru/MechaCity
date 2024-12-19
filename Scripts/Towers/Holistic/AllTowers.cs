@@ -11,9 +11,13 @@ namespace Towers
         public static int TowersCount;
         public static List<Tower> Towers { get; private set; } = new();
         public static List<TowerData> TowerDatas { get; private set; } = new();
-        
+
+        public static List<TowerNumericData> TowerNumericDatas { get; } = new();
+
         public static Tower GetTower(int id) => Towers[id];
         public static TowerData GetData(int id) => TowerDatas[id]; //todo? firstordefault? Ya da id'ye göre order ettir kesinliği için
+
+        public static TowerNumericData GetNumericData(int id) => TowerNumericDatas[id];
 
         public static Vector3 GetTowerPos(int id) => Towers[id].transform.position;
         public void Subscribe()
@@ -26,6 +30,7 @@ namespace Towers
             Towers = towers;
             TowersCount = Towers.Count;
             ReceiveTowerData();
+            ReceiveTowerNumericData();
         }
 
         private void ReceiveTowerData()
@@ -33,6 +38,14 @@ namespace Towers
             for (int i = 0; i < TowersCount; i++)
             {
                 TowerDatas.Add(Towers[i].Data);
+            }
+        }
+
+        private void ReceiveTowerNumericData()
+        {
+            for (int i = 0; i < TowersCount; i++)
+            {
+                TowerNumericDatas.Add(Towers[i].NumericData);
             }
         }
 

@@ -10,17 +10,16 @@ namespace Turn
     public class SafeGroup
     {
         public List<ActorData> Actors = new();
-        public Dictionary<TowerData, int> StepsPerTower = new();
-        private List<TowerData> Towers = new();
+        public Dictionary<TowerNumericData, int> StepsPerTower = new();
         public int TowerCount => StepsPerTower.Count;
 
-        public int GetStepsToRemove(TowerData tower) => StepsPerTower[tower];
+        public int GetStepsToRemove(TowerNumericData towerNumericData) => StepsPerTower[towerNumericData];
 
         public void Add(ActorData actor)
         {
             Actors.Add(actor);
 
-            foreach (var tower in actor.Towers)
+            foreach (var tower in actor.TowerNumericDatas)
             {
                 StepsPerTower.Add(tower, 0);
 
@@ -40,7 +39,7 @@ namespace Turn
         {
             Actors.Remove(actor);
 
-            foreach (var tower in actor.Towers)
+            foreach (var tower in actor.TowerNumericDatas)
             {
                 StepsPerTower.Remove(tower);
             }
@@ -48,7 +47,7 @@ namespace Turn
 
         public void OrderByDescending()
         {
-            Actors = Actors.OrderByDescending(a => a.Towers[0].AvailableHeight).ToList();
+            Actors = Actors.OrderByDescending(a => a.TowerNumericDatas[0].AvailableHeight).ToList();
             StepsPerTower = StepsPerTower.OrderByDescending(t => t.Key.AvailableHeight).ToDictionary(t => t.Key, t => t.Value);
         }
         

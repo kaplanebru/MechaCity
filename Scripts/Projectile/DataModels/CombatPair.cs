@@ -21,8 +21,8 @@ namespace DataModels
         public int ID;
         public ActorData MainActor;
         public ActorData OtherActor;
-        public TowerData MainTowerData { get; private set; }
-        public TowerData OtherTowerData { get; private set; }
+        public TowerNumericData MainTowerData { get; private set; }
+        public TowerNumericData OtherTowerData { get; private set; }
 
         public bool CombatCompleted { get; set; } = false;
 
@@ -37,13 +37,13 @@ namespace DataModels
         {
             if (!isReversed)
             {
-                MainTowerData = MainActor.Towers.OrderBy(t => t.UniqID).Last();//AllTowers.GetData(MainActor.TowerIDs.Last());
-                OtherTowerData = OtherActor.Towers.OrderBy(t => t.UniqID).First(); //AllTowers.GetData(OtherActor.TowerIDs.First());
+                MainTowerData = MainActor.TowerNumericDatas.OrderBy(t => t.UniqID).Last();//AllTowers.GetData(MainActor.TowerIDs.Last());
+                OtherTowerData = OtherActor.TowerNumericDatas.OrderBy(t => t.UniqID).First(); //AllTowers.GetData(OtherActor.TowerIDs.First());
             }
             else
             {
-                MainTowerData = MainActor.Towers.OrderBy(t => t.UniqID).First();//AllTowers.GetData(MainActor.TowerIDs.First());
-                OtherTowerData = OtherActor.Towers.OrderBy(t => t.UniqID).Last(); //AllTowers.GetData(OtherActor.TowerIDs.Last());
+                MainTowerData = MainActor.TowerNumericDatas.OrderBy(t => t.UniqID).First();//AllTowers.GetData(MainActor.TowerIDs.First());
+                OtherTowerData = OtherActor.TowerNumericDatas.OrderBy(t => t.UniqID).Last(); //AllTowers.GetData(OtherActor.TowerIDs.Last());
             }
         }
 

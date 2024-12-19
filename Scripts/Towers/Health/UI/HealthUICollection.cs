@@ -79,7 +79,7 @@ namespace Health
         void OnDoubleSeparated(uint actorID)
         {
             var actor = ActorDB.Registry[actorID];
-            var highestTower = actor.Towers.Aggregate((t1, t2) => t1.Height > t2.Height ? t1 : t2).UniqID;
+            var highestTower = actor.TowerNumericDatas.Aggregate((t1, t2) => t1.Height > t2.Height ? t1 : t2).UniqID;
             
             //var holder =  RelatedItems.FirstOrDefault(h => h.Id == highestTower);
             var holder = Collection[highestTower];

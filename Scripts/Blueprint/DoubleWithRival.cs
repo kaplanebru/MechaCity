@@ -11,14 +11,14 @@ namespace Blueprint
         
         public void HighlightNeighbours(int selectedTower)
         {
-            var tower = AllTowers.GetData(selectedTower);
-            foreach (var neighbourID in tower.NeighbourIDs)
-            {
-                var neighbour = AllTowers.GetData(neighbourID);
-                neighbour. ColorHandler.ToSelectionColor();
-                
-                Debug.Log(neighbourID);
-            }
+            // var tower = AllTowers.GetData(selectedTower);
+            // foreach (var neighbourID in tower.NeighbourIDs)
+            // {
+            //     var neighbour = AllTowers.GetData(neighbourID);
+            //     neighbour. ColorHandler.ToSelectionColor();
+            //     
+            //     Debug.Log(neighbourID);
+            // }
         }
     }
 

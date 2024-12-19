@@ -11,7 +11,7 @@ namespace Turn
     public class LinkOperator: ILinkOperator
     {
         private int[] Towers { get; set; }
-        public List<TowerData> SafeGroup { get; set; } = new();
+        public List<Tower> SafeGroup { get; set; } = new();
         
         public void SetTowers(uint[] actors)
         {
@@ -28,36 +28,38 @@ namespace Turn
             UIEventbus.OnApplyPossibility?.Invoke(true); //todo: temp
 
             uint actorID = (uint) args[0];
+            var actor = ActorDB.Registry[actorID];
             var towerID = ActorDB.GetTowerIDs(actorID)[0];  
             
-            Rise(AllTowers.GetData(towerID), 1);
+            Rise(actor.TowerHeightCouples[0], 1);
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
         
-        void Rise(TowerData selectedTower, int step)
+        void Rise(TowerHeightCouple selectedTowerData, int step)
         {
-            int riseStep = GetRiseHeight(selectedTower, step);
+            int riseStep = GetRiseHeight(selectedTowerData.Numeric, step);
             if (riseStep == 0)
             {
-                Fall(selectedTower, step);
+                Fall(selectedTowerData, step);
                 return;
             }
+            
+            selectedTowerData.UpdateHeight(riseStep);
 
-            selectedTower.UpdateHeight(riseStep);
-
-            foreach (var tower in SafeGroup)
+            foreach (var safeTower in SafeGroup)
             {
-                tower.UpdateHeight(-step);
+                safeTower.UpdateHeight(-step);
             }
         }
 
-        void Fall(TowerData selectedTower, int step)
+        void Fall(TowerHeightCouple selectedTowerData, int step)
         {
-            if (selectedTower.AvailableHeight >= step)
+            if (selectedTowerData.Numeric.AvailableHeight >= step)
             {
-                selectedTower.UpdateHeight(-step);
+                selectedTowerData.UpdateHeight(-step);
                 
-                var randomTower = GetRandomOtherTower(selectedTower.UniqID);
+                var randomTower = GetRandomOtherTower(selectedTowerData.Numeric.UniqID);
+                
                 randomTower.UpdateHeight(step);
             }
             else
@@ -65,7 +67,7 @@ namespace Turn
                 Debug.Log("Not enough resource to lift that tower!");
             }
         }
-        int GetRiseHeight(TowerData selectedTower, int step)
+        int GetRiseHeight(TowerNumericData selectedTower, int step)
         {
             SafeGroup.Clear();
             foreach (var towerID in Towers)
@@ -73,9 +75,9 @@ namespace Turn
                 if (towerID == selectedTower.UniqID)
                     continue;
 
-                var tower = AllTowers.GetData(towerID);
+                var tower = AllTowers.GetTower(towerID);
 
-                if (tower.AvailableHeight >= step) //todo eşit sonradan eklend,
+                if (tower.NumericData.AvailableHeight >= step) //todo eşit sonradan eklend,
                 {
                     SafeGroup.Add(tower);
                 }
@@ -83,7 +85,7 @@ namespace Turn
 
             return SafeGroup.Count * step;
         }
-        private TowerData GetRandomOtherTower(int selectedTowerId)
+        private Tower GetRandomOtherTower(int selectedTowerId)
         {
             int randomId;
             
@@ -94,7 +96,7 @@ namespace Turn
             } 
             while (randomId == selectedTowerId);
 
-            return AllTowers.GetData(randomId);
+            return AllTowers.GetTower(randomId);
         }
     }
 

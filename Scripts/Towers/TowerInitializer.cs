@@ -12,7 +12,7 @@ namespace Towers
         private TowerConstantData ConstantData;
         private TowerData Data;
         private TowerNumericData NumericData;
-        
+
         public TowerInitializer(Tower tower)
         {
             _tower = tower;
@@ -20,7 +20,7 @@ namespace Towers
             NumericData = tower.NumericData;
             Data = _tower.Data;
         }
-        
+
         public void NumericDataInitialSetup(TeamType teamType)
         {
             NumericData.Height = ConstantData.StartHeight;
@@ -28,10 +28,10 @@ namespace Towers
             NumericData.LockStatus = ConstantData.StartLockStatus;
             NumericData.ShotAmount = ConstantData.ShotAmount;
             NumericData.ShieldHeight = ConstantData.ShieldHeight;
+            NumericData.DamagePower = ConstantData.DamagePower;
 
-            Data.Height = ConstantData.StartHeight;
-            Data.LockStatus = ConstantData.StartLockStatus;
-            Data.DamagePower = ConstantData.DamagePower;
+            // Data.Height = ConstantData.StartHeight;
+            Data.UniqID = NumericData.UniqID;
         }
 
         public void VisualDataIdentification()
@@ -47,13 +47,15 @@ namespace Towers
 
         public void TowerBPElementsDataSetup()
         {
-            Data.CreateVisualSupportedDatas(new Dictionary<VisualDataType, int> //TODO: Bunlar bp trigger edilerek de yapılabilir
-            {
-                { VisualDataType.Shield, ConstantData.ShieldHeight },
-                { VisualDataType.Attack, ConstantData.ShotAmount },
-                { VisualDataType.Disarm, ConstantData.IsDisarmed ? 0 : 1}
-            });
+            Data.CreateVisualSupportedDatas(
+                new Dictionary<VisualDataType, int> //TODO: Bunlar bp trigger edilerek de yapılabilir
+                {
+                    {VisualDataType.Shield, ConstantData.ShieldHeight},
+                    {VisualDataType.Attack, ConstantData.ShotAmount},
+                    {VisualDataType.Disarm, ConstantData.IsDisarmed ? 0 : 1}
+                });
         }
+
         void SetSegments()
         {
             foreach (var segment in Data.TowerSegments)
@@ -65,7 +67,7 @@ namespace Towers
 
         public void SetTowerRelatedIds()
         {
-            var towerRelations =_tower.GetComponentsInChildren<ITowerRelatedElement>();
+            var towerRelations = _tower.GetComponentsInChildren<ITowerRelatedElement>();
             foreach (var related in towerRelations)
             {
                 related.Initialize(Data.UniqID);
@@ -79,7 +81,5 @@ namespace Towers
                 visualSupportedData.Value.SetVisually();
             }
         }
-
     }
-
 }
