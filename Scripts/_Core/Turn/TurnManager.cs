@@ -48,7 +48,6 @@ namespace Turn
             StateHolder.RegisterStates();
             StateHolder.SubscribeToConstantEvents();
 
-            //TurnHelper.Subscribe();
             ((ExitState) StateHolder.GetStateByType(TurnStateType.Exit)).SetCombatOperator(combatOperator);
 
             if (MultiplayerSetter.FasterCombat)
@@ -56,7 +55,7 @@ namespace Turn
                 FastenTurn();
             }
 
-            Eventbus.TowerEvents.OnTurnBegin?.Invoke();
+            Eventbus.TowerEvents.OnTurnBegin?.Invoke(); //FIRST ACT
         }
 
         internal void SetTurnTeams(Team[] teams)

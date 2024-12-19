@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Linq;
 using Actor;
-using Blueprint;
 using Clicks;
 using DataModels;
 using DG.Tweening;
@@ -24,18 +23,8 @@ namespace Towers
             Eventbus.TowerEvents.OnTurnBegin += FirstMotion;
             interruptionMotion.Subscribe();
         }
-
-        // public void Setup(TeamColorData teamData)
-        // {
-        //     initializer.Setup(teamData);
-        // }
-
-        public void SetTeamVisuals(TeamColorData teamData)
-        {
-            Data.TeamType = teamData.TeamType;
-            Data.ColorHandler.SetDefaultTeamVisuals(teamData);
-            Data.clickHandler.SetClickableTeams(teamData.TeamType);
-        }
+        
+       
 
         void FirstMotion()
         {

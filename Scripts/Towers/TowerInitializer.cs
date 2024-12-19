@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Blueprint;
 using Enums;
 using GameUI;
 using UnityEngine;
@@ -20,19 +19,18 @@ namespace Towers
             Data = _tower.Data;
         }
         
-        public void DataSetup()
+        public void NumericDataSetup()
         {
             Data.Height = ConstantData.StartHeight;
-            Data.DamagePower = ConstantData.DamagePower;
             Data.LockStatus = ConstantData.StartLockStatus;
-            Data.BpTowerData = new BpTowerData(Data.UniqID);
+            Data.DamagePower = ConstantData.DamagePower;
         }
 
-        public void DataVisualCorrespondenceSetup(TeamColorData teamData)
+        public void VisualDataIdentification(TeamColorData teamData)
         {
-            Data.CreateSegments();
+            Data.CreateSegmentsWithGivenVisualData();
             SetSegments();
-            _tower.SetTeamVisuals(teamData);
+            Data.SetTeamVisuals(teamData);
         }
 
         public void TowerBPElementsDataSetup()

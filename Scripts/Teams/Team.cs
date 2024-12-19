@@ -34,9 +34,9 @@ namespace Teams
         {
             Data.Actors.Add(actor);
 
-            foreach (var towerID in actor.TowerIDs)
+            foreach (var tower in actor.Towers)
             {
-               AllTowers.GetTower(towerID).SetTeamVisuals(Data.teamColorData);
+               tower.SetTeamVisuals(Data.teamColorData);
             }
         }
 

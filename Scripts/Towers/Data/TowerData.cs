@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Blueprint;
 using Clicks;
 using DataModels;
 using Enums;
@@ -15,9 +14,10 @@ namespace Towers
     public class TowerData
     {
         public int UniqID;
-        
+
         //HEIGHT
         private int height;
+
         public int Height
         {
             get => height;
@@ -41,7 +41,6 @@ namespace Towers
 
         public int DamagePower;
         public Dictionary<VisualDataType, BaseVisualSupportedData> VisualSupportedDatas = new();
-        
 
 
         public TeamType TeamType;
@@ -50,7 +49,6 @@ namespace Towers
         public bool IsClickable = true;
         public LockStatus LockStatus;
 
-        public BpTowerData BpTowerData;
         public CombatTimingData timingData;
         public ClickHandler clickHandler;
 
@@ -61,7 +59,7 @@ namespace Towers
         public ColorHandler ColorHandler;
         public TowerUIHandler UIHandler;
 
-        public void CreateSegments()
+        public void CreateSegmentsWithGivenVisualData()
         {
             Mover = new TowerMover(SegmentData.MoverData);
             ColorHandler = new ColorHandler(SegmentData.ColorData);
@@ -77,11 +75,18 @@ namespace Towers
             VisualSupportedDatas.Add(VisualDataType.Shield, new ShieldData());
             VisualSupportedDatas.Add(VisualDataType.Attack, new AttackData());
             VisualSupportedDatas.Add(VisualDataType.Disarm, new DisarmData());
-            
+
             foreach (var visualData in VisualSupportedDatas)
             {
                 visualData.Value.Initialize(UniqID, startValues[visualData.Key]);
             }
+        }
+
+        public void SetTeamVisuals(TeamColorData teamData)
+        {
+            TeamType = teamData.TeamType;
+            ColorHandler.SetDefaultTeamVisuals(teamData);
+            clickHandler.SetClickableTeams(teamData.TeamType);
         }
 
         public void EnableSelection()

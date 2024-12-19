@@ -77,11 +77,6 @@ namespace Core
         {
             NetworkUIController.gameObject.SetActive(true);
         }
-
-       
-        
-
-
         private void AssignPlayers(Player newPlayer, ulong id)
         {
             Teams[id].Data.Player = newPlayer;
@@ -117,7 +112,7 @@ namespace Core
             
            
             
-            ExecuteAfterSetup();
+            //ExecuteAfterSetup();
 
 
             print("Game Started");

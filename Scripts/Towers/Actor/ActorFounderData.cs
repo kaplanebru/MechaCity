@@ -34,7 +34,7 @@ public class ActorFounderData
         ActorData.SetCenterAutonomously(TowerObjects);
         
         ActorData.Health = ActorData.InitialHealth;
-        OnDoubleCase();
+        //OnDoubleCase();
         AddActorToRegistry();
     }
 
@@ -43,8 +43,8 @@ public class ActorFounderData
         foreach (var towerObject in TowerObjects)
         {
             towerObject.initializer = new TowerInitializer(towerObject);
-            towerObject.initializer.DataSetup();
-            towerObject.initializer.DataVisualCorrespondenceSetup(ActorData.TeamVisualData);
+            towerObject.initializer.NumericDataSetup();
+            towerObject.initializer.VisualDataIdentification(ActorData.TeamVisualData);
             towerObject.Data.SetClickHandlerID(ActorData.ID);
         }
     }
