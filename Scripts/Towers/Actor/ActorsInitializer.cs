@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Actor;
 using Towers;
 using UnityEngine;
@@ -45,6 +46,7 @@ public class ActorsInitializer : MonoBehaviour
         }
         
         FillAllTowers();
+        SetTowerRelatedIDs();
         GeneralEventbus.InitializerEvents.OnActorsAndTowersInitiated?.Invoke();
     }
 
@@ -56,6 +58,15 @@ public class ActorsInitializer : MonoBehaviour
             towers.AddRange(actorStarter.TowerObjects);
         }
         AllTowers.ReceiveTowers(towers);
+    }
+    
+    void SetTowerRelatedIDs()
+    {
+        foreach (var tower in AllTowers.Towers)
+        {
+            tower.initializer.SetTowerRelatedIds();
+        }
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet?.Invoke();
     }
     private void OnDisable()
     {

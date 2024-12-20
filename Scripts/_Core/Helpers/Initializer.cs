@@ -38,7 +38,6 @@ namespace Core
         void ExecuteInitializer()
         {
             CreateTeams();
-            SetTowerRelatedIDs();
             SetTowerBpElementsData();
             
             Invoke(nameof(StartNetwork), .6f);
@@ -56,14 +55,7 @@ namespace Core
             TeamEvents.OnTeamsSet?.Invoke(Teams);
         }
 
-        void SetTowerRelatedIDs()
-        {
-            foreach (var tower in AllTowers.Towers)
-            {
-                tower.initializer.SetTowerRelatedIds();
-            }
-            GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet?.Invoke();
-        }
+      
 
         void SetTowerBpElementsData()
         {
