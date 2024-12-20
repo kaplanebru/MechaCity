@@ -52,13 +52,13 @@ namespace Actor
             TowerIDs = towerIDs;
             Towers = AllTowers.GetTowerDatasByIDs(towerIDs).ToArray();
             TowerAmount = Towers.Length;
-            OrderTowerDataByHeight();
+            OrderTowerNumericDataByHeight();
         }
 
         
-        public void OrderTowerDataByHeight()
+        public void OrderTowerNumericDataByHeight()
         {
-            Towers = Towers.OrderBy(t => t.NumericData.AvailableHeight).ToArray();
+            TowerNumericDatas = TowerNumericDatas.OrderBy(t => t.AvailableHeight).ToArray();
         }
 
         

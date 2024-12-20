@@ -18,7 +18,6 @@ public class ActorStarterData
     void AllocateCollections()
     {
         ActorData.TowerAmount = TowerObjects.Length;
-
         ActorData.TargetActors = new();
         ActorData.Neighbours = new();
         ActorData.ActivityStatus = new();
@@ -28,8 +27,8 @@ public class ActorStarterData
     {
         SetID();
         AllocateCollections();
+        InitiateTowers();
         
-        ActorData.TowerIDs = TowerObjects.Select(t => t.Data.NumericData.UniqID).ToArray();
         ActorData.SetCenterAutonomously(TowerObjects);
         AddActorToDBRegistry();
     }
@@ -38,30 +37,33 @@ public class ActorStarterData
         ActorDB.Registry.Add(ActorData.ID, ActorData);
     }
 
-    public void InitiateActorTowers()
+    void InitiateTowers()
     {
-        ActorData.Towers = TowerObjects.Select(t => t.Data).ToArray();
+        ActorData.TowerIDs = TowerObjects.Select(t => t.Data.NumericData.UniqID).ToArray();
         ActorData.TowerNumericDatas = TowerObjects.Select(t => t.Data.NumericData).ToArray();
-        
+        ActorData.Towers = TowerObjects.Select(t => t.Data).ToArray();//bu sonra eklenebilir: esasen visual datayla ilgili
+    }
+
+    public void SetTowersNumericData()
+    {
         foreach (var towerObject in TowerObjects)
         {
             towerObject.initializer = new TowerInitializer(towerObject);
             towerObject.initializer.NumericDataInitialSetup(ActorData.TeamType);
         }
-        
-        ActorData.OrderTowerDataByHeight();
+        ActorData.OrderTowerNumericDataByHeight();
     }
-    
-    // void InitializeTowersVisualData()
-    // {
-    //     foreach (var towerObject in TowerObjects)
-    //     {
-    //         towerObject.initializer.VisualDataIdentification(); //bu 3ü aslında execution ile ilgili, yani daha sonra gelebilir.
-    //         towerObject.initializer.VisualDataInitialSetup(ActorData.TeamVisualData);
-    //         towerObject.Data.SetClickHandlerID(ActorData.ID);
-    //     }
-    // }
-    //
+
+    public void SetTowersVisualData()
+    {
+        foreach (var towerObject in TowerObjects)
+        {
+            towerObject.initializer.VisualDataIdentification(); //bu 3ü aslında execution ile ilgili, yani daha sonra gelebilir.
+            towerObject.initializer.VisualDataInitialSetup(ActorData.TeamVisualData);
+            towerObject.Data.VisualData.SetClickHandlerID(ActorData.ID);
+        }
+    }
+  
     // void OnDoubleCase()
     // {
     //     var newDouble = new DoubleTowerPhysical(ActorData.Towers);

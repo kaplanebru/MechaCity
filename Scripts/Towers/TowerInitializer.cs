@@ -8,46 +8,45 @@ namespace Towers
 {
     public class TowerInitializer
     {
-        private TowerObject towerObject;
+        private TowerObject _towerObject;
         private TowerConstantData ConstantData;
-        private TowerVisualData visualData;
+        private TowerData InclusiveData;
         private TowerNumericData NumericData;
 
         public TowerInitializer(TowerObject towerObject)
         {
-            this.towerObject = towerObject;
-            ConstantData = this.towerObject.ConstantData;
+            _towerObject = towerObject;
+            ConstantData = _towerObject.ConstantData;
             NumericData = towerObject.Data.NumericData;
-            visualData = this.towerObject.Data.VisualData;
+            InclusiveData = _towerObject.Data;
         }
 
         public void NumericDataInitialSetup(TeamType teamType)
         {
+            NumericData.LockStatus = ConstantData.StartLockStatus;
             NumericData.Height = ConstantData.StartHeight;
             NumericData.TeamType = teamType;
-            NumericData.LockStatus = ConstantData.StartLockStatus;
             NumericData.ShotAmount = ConstantData.ShotAmount;
             NumericData.ShieldHeight = ConstantData.ShieldHeight;
             NumericData.DamagePower = ConstantData.DamagePower;
 
-            // Data.Height = ConstantData.StartHeight;
-            visualData.UniqID = NumericData.UniqID;
+            InclusiveData.VisualData.UniqID = NumericData.UniqID;
         }
 
         public void VisualDataIdentification()
         {
-            visualData.CreateSegmentsWithGivenVisualData();
+            InclusiveData.VisualData.CreateSegmentsWithGivenVisualData();
         }
 
         public void VisualDataInitialSetup(TeamColorData teamData)
         {
             SetSegments();
-            visualData.SetTeamVisuals(teamData);
+            InclusiveData.VisualData.SetTeamVisuals(teamData);
         }
 
         public void TowerBPElementsDataSetup()
         {
-            visualData.CreateVisualSupportedDatas(
+            InclusiveData.VisualData.CreateVisualSupportedDatas(
                 new Dictionary<VisualDataType, int> //TODO: Bunlar bp trigger edilerek de yapılabilir
                 {
                     {VisualDataType.Shield, ConstantData.ShieldHeight},
@@ -58,25 +57,25 @@ namespace Towers
 
         void SetSegments()
         {
-            foreach (var segment in visualData.TowerSegments)
+            foreach (var segment in InclusiveData.VisualData.TowerSegments)
             {
-                segment.SetId(visualData.UniqID);
+                segment.SetId(NumericData.UniqID);
                 segment.Initialize();
             }
         }
 
         public void SetTowerRelatedIds()
         {
-            var towerRelations = towerObject.GetComponentsInChildren<ITowerRelatedElement>();
+            var towerRelations = _towerObject.GetComponentsInChildren<ITowerRelatedElement>();
             foreach (var related in towerRelations)
             {
-                related.Initialize(visualData.UniqID);
+                related.Initialize(NumericData.UniqID);
             }
         }
 
         public void ExecuteVisualsAfterSetup()
         {
-            foreach (var visualSupportedData in visualData.VisualSupportedDatas)
+            foreach (var visualSupportedData in InclusiveData.VisualData.VisualSupportedDatas)
             {
                 visualSupportedData.Value.SetVisually();
             }

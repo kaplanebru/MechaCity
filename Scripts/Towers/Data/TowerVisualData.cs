@@ -16,13 +16,11 @@ namespace Towers
         
         public Dictionary<VisualDataType, BaseVisualSupportedData> VisualSupportedDatas = new();
         
-
         public bool IsClickable = true;
-        public LockStatus LockStatus;
-
-        public CombatTimingData timingData;
         public ClickHandler clickHandler;
 
+        public CombatTimingData timingData;
+        
         public TowerSegmentDataHolder SegmentData = new();
         public List<ITowerSegment> TowerSegments = new();
 
@@ -74,21 +72,6 @@ namespace Towers
         {
             clickHandler.SetClickableIds(id);
         }
-
-        // public void UpdateHeight(int extra, TowerNumericData numericData)
-        // {
-        //     if (extra == 0)
-        //     {
-        //         Debug.Log("EQUAL");
-        //         return;
-        //     }
-        //
-        //     int newHeight = numericData.Height + extra;
-        //     bool isRising = newHeight > numericData.Height;
-        //     numericData.Height = newHeight;
-        //
-        //     Mover.ChangeHeightPhysically(newHeight, isRising);
-        // }
 
         public void Shake()
         {

@@ -12,7 +12,7 @@ namespace Towers
         public static List<TowerObject> Towers { get; private set; } = new();
         public static List<TowerData> TowerDatas { get; private set; } = new();
 
-        public static List<TowerNumericData> TowerNumericDatas { get; } = new();
+        public static List<TowerNumericData> TowerNumericDatas { get; private set; } = new();
 
         public static TowerObject GetTower(int id) => Towers[id];
         public static TowerData GetData(int id) => TowerDatas[id]; //todo? firstordefault? Ya da id'ye göre order ettir kesinliği için
@@ -29,25 +29,10 @@ namespace Towers
         {
             Towers = towers;
             TowersCount = Towers.Count;
-            ReceiveTowerData();
-            ReceiveTowerNumericData();
+            TowerDatas = Towers.Select(t => t.Data).ToList();
+            TowerNumericDatas = Towers.Select(t => t.Data.NumericData).ToList();
         }
-
-        private void ReceiveTowerData()
-        {
-            for (int i = 0; i < TowersCount; i++)
-            {
-                TowerDatas.Add(TowerDatas[i]);
-            }
-        }
-
-        private void ReceiveTowerNumericData()
-        {
-            for (int i = 0; i < TowersCount; i++)
-            {
-                TowerNumericDatas.Add(TowerDatas[i].NumericData);
-            }
-        }
+        
 
         private void ResetLinkedTowers(List<int> towerIds)
         {

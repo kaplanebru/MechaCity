@@ -14,7 +14,7 @@ public class ActorsInitializer : MonoBehaviour
     {
         ActorDB.Initialize();
         AllTowers.Subscribe();
-        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid += InitiateActorTowers;
+        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid += SetTowers;
 
 
         Invoke(nameof(InitiateActorsForGridRegistry), .5f); //diğer on enable getcomponentlar çalışsın diye
@@ -28,8 +28,6 @@ public class ActorsInitializer : MonoBehaviour
         }
         // FillAllTowers();
         RegisterToTheGrid();
-        
-        //GeneralEventbus.InitializerEvents.OnActorsInitiated?.Invoke();
     }
 
     void RegisterToTheGrid()
@@ -38,28 +36,32 @@ public class ActorsInitializer : MonoBehaviour
         ActorDB.OnRegistryUpdate();
     }
     
-    private void InitiateActorTowers()
+    private void SetTowers()
     {
         foreach (var newActor in ActorStarterDatas)
         {
-            newActor.InitiateActorTowers();
+            newActor.SetTowersNumericData();
+            newActor.SetTowersVisualData(); //todo: test
         }
+        
+        FillAllTowers();
+        GeneralEventbus.InitializerEvents.OnActorsAndTowersInitiated?.Invoke();
     }
 
-    // public void FillAllTowers()
-    // {
-    //     List<Tower> towers = new();
-    //     foreach (var actorFounder in ActorFounderDatas)
-    //     {
-    //         towers.AddRange(actorFounder.TowerObjects);
-    //     }
-    //     AllTowers.ReceiveTowers(towers);
-    // }
+    public void FillAllTowers()
+    {
+        List<TowerObject> towers = new();
+        foreach (var actorStarter in ActorStarterDatas)
+        {
+            towers.AddRange(actorStarter.TowerObjects);
+        }
+        AllTowers.ReceiveTowers(towers);
+    }
     private void OnDisable()
     {
         ActorDB.Unsubscribe();
         AllTowers.Unsubscribe();
-        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid -= InitiateActorTowers;
+        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid -= SetTowers;
     }
 
  
