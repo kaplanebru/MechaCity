@@ -51,7 +51,7 @@ public class ActorStarterData
             towerObject.initializer = new TowerInitializer(towerObject);
             towerObject.initializer.NumericDataInitialSetup(ActorData.TeamType);
         }
-        ActorData.OrderTowerNumericDataByHeight();
+        ActorData.OrderTowerDataByHeight();
     }
 
     public void SetTowersVisualData()

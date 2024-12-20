@@ -52,15 +52,15 @@ namespace Actor
             TowerIDs = towerIDs;
             Towers = AllTowers.GetTowerDatasByIDs(towerIDs).ToArray();
             TowerAmount = Towers.Length;
-            OrderTowerNumericDataByHeight();
+            OrderTowerDataByHeight();
         }
 
         
-        public void OrderTowerNumericDataByHeight()
+        public void OrderTowerDataByHeight()
         {
             TowerNumericDatas = TowerNumericDatas.OrderBy(t => t.AvailableHeight).ToArray();
+            Towers = Towers.OrderBy(t => t.NumericData.AvailableHeight).ToArray();
         }
-
         
         internal void SetCenterDependently()
         {
