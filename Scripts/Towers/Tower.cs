@@ -1,56 +1,18 @@
 using System.Collections;
-using System.Linq;
-using Actor;
-using Clicks;
-using DataModels;
-using DG.Tweening;
-using GameUI;
+using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace Towers
 {
-
-    public class Tower : MonoBehaviour
+    public class Tower
     {
-        public TowerConstantData ConstantData;
-        public TowerData Data;
         public TowerNumericData NumericData;
-        public TowerInitializer initializer;
-        private InterruptionMotion interruptionMotion = new();
-
-        private void OnEnable()
-        {
-            Eventbus.TowerEvents.OnTurnBegin += FirstMotion;
-            interruptionMotion.Subscribe();
-        }
+        public TowerData VisualData;
         
-        void FirstMotion()
+        public Tower(TowerNumericData numeric, TowerData visual)
         {
-            Data.Mover.ChangeHeightPhysically(NumericData.Height, true);
-            StartRiseFallRoutine(true);
-        }
-
-        private Coroutine riseRoutine;
-
-        public void StartRiseFallRoutine(bool forOnce = false)
-        {
-            riseRoutine = StartCoroutine(Data.Mover.riseFallMotion.RiseRoutine(forOnce));
-        }
-
-        public void StopRiseFallRoutine()
-        {
-            if (riseRoutine != null)
-            {
-                StopCoroutine(riseRoutine);
-                riseRoutine = null;
-            }
-        }
-        private void OnDisable()
-        {
-            Eventbus.TowerEvents.OnTurnBegin -= FirstMotion;
-            Data.Mover.Unsubscribe();
-            interruptionMotion.Unsubscribe();
+            NumericData = numeric;
+            VisualData = visual;
         }
         
         public void UpdateHeight(int extra)
@@ -65,7 +27,8 @@ namespace Towers
             bool isRising = newHeight > NumericData.Height;
             NumericData.Height = newHeight;
 
-            Data.Mover.ChangeHeightPhysically(newHeight, isRising);
+            VisualData.Mover.ChangeHeightPhysically(newHeight, isRising);
         }
     }
+
 }

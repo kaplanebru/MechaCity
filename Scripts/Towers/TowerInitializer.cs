@@ -8,17 +8,17 @@ namespace Towers
 {
     public class TowerInitializer
     {
-        private Tower _tower;
+        private TowerObject towerObject;
         private TowerConstantData ConstantData;
         private TowerData Data;
         private TowerNumericData NumericData;
 
-        public TowerInitializer(Tower tower)
+        public TowerInitializer(TowerObject towerObject)
         {
-            _tower = tower;
-            ConstantData = _tower.ConstantData;
-            NumericData = tower.NumericData;
-            Data = _tower.Data;
+            this.towerObject = towerObject;
+            ConstantData = this.towerObject.ConstantData;
+            NumericData = towerObject.NumericData;
+            Data = this.towerObject.Data;
         }
 
         public void NumericDataInitialSetup(TeamType teamType)
@@ -67,7 +67,7 @@ namespace Towers
 
         public void SetTowerRelatedIds()
         {
-            var towerRelations = _tower.GetComponentsInChildren<ITowerRelatedElement>();
+            var towerRelations = towerObject.GetComponentsInChildren<ITowerRelatedElement>();
             foreach (var related in towerRelations)
             {
                 related.Initialize(Data.UniqID);

@@ -110,7 +110,7 @@ namespace Actor
             Center /= TowerAmount;
         }
         
-        internal void SetCenterAutonomously(Tower[] towerObjects)
+        internal void SetCenterAutonomously(TowerObject[] towerObjects)
         {
             Center = Vector3.zero;
             foreach (var towerObject in  towerObjects)

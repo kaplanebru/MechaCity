@@ -8,7 +8,7 @@ using UnityEngine;
 public class ActorStarterData
 {
     public ActorData ActorData;
-    public Tower[] TowerObjects;
+    public TowerObject[] TowerObjects;
 
     void SetID()
     {

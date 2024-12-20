@@ -9,12 +9,12 @@ namespace Towers
     public class AllTowers 
     {
         public static int TowersCount;
-        public static List<Tower> Towers { get; private set; } = new();
+        public static List<TowerObject> Towers { get; private set; } = new();
         public static List<TowerData> TowerDatas { get; private set; } = new();
 
         public static List<TowerNumericData> TowerNumericDatas { get; } = new();
 
-        public static Tower GetTower(int id) => Towers[id];
+        public static TowerObject GetTower(int id) => Towers[id];
         public static TowerData GetData(int id) => TowerDatas[id]; //todo? firstordefault? Ya da id'ye göre order ettir kesinliği için
 
         public static TowerNumericData GetNumericData(int id) => TowerNumericDatas[id];
@@ -25,7 +25,7 @@ namespace Towers
             Eventbus.LinkEvents.OnLinkingTowers += SetLinkedTowersAndStartRiseFallRoutine;
             Eventbus.LinkEvents.OnUnlink += ResetLinkedTowers;
         }
-        public void ReceiveTowers(List<Tower> towers)
+        public void ReceiveTowers(List<TowerObject> towers)
         {
             Towers = towers;
             TowersCount = Towers.Count;

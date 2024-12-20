@@ -12,19 +12,19 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
     public float offset = 1;
     public float yOffset = 2.4f;
     
-    private Tower mainTower;
-    private Tower targetTower;
+    private TowerObject mainTowerObject;
+    private TowerObject targetTowerObject;
     private Vector3 direction;
     public void Initialize(int id)
     {
         Id = id;
-        mainTower = AllTowers.GetTower(Id);
+        mainTowerObject = AllTowers.GetTower(Id);
     }
 
     public void Stretch(int targetId)
     {
-        targetTower = AllTowers.GetTower(targetId);
-        var distance = Vector3.Distance(transform.position, targetTower.transform.position);
+        targetTowerObject = AllTowers.GetTower(targetId);
+        var distance = Vector3.Distance(transform.position, targetTowerObject.transform.position);
 
         SetDirection();
         
@@ -41,7 +41,7 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
 
     void SetDirection()
     {
-        direction = (targetTower.transform.position - mainTower.transform.position).normalized;
+        direction = (targetTowerObject.transform.position - mainTowerObject.transform.position).normalized;
     }
 
     public void Show(bool isShowing)

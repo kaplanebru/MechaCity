@@ -11,7 +11,7 @@ namespace Turn
     public class LinkOperator: ILinkOperator
     {
         private int[] Towers { get; set; }
-        public List<Tower> SafeGroup { get; set; } = new();
+        public List<TowerObject> SafeGroup { get; set; } = new();
         
         public void SetTowers(uint[] actors)
         {
@@ -85,7 +85,7 @@ namespace Turn
 
             return SafeGroup.Count * step;
         }
-        private Tower GetRandomOtherTower(int selectedTowerId)
+        private TowerObject GetRandomOtherTower(int selectedTowerId)
         {
             int randomId;
             

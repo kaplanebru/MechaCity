@@ -27,7 +27,7 @@ namespace Towers
             }
         }
 
-        public int AvailableHeight;
+        public int AvailableHeight { get; set; }
 
         public int ShotAmount { get; set; } = 1;
         public int ShieldHeight { get; set; }= 0;

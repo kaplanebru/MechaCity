@@ -29,10 +29,10 @@ namespace Actor
             }
         }
 
-        void MoveTower(Tower tower, Vector3 offset)
+        void MoveTower(TowerObject towerObject, Vector3 offset)
         {
-            startPositions.Add(tower.transform.localPosition);
-            tower.transform.DOLocalMove(tower.transform.localPosition + offset, .5f);
+            startPositions.Add(towerObject.transform.localPosition);
+            towerObject.transform.DOLocalMove(towerObject.transform.localPosition + offset, .5f);
         }
 
         
