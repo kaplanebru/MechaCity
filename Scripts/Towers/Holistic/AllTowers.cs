@@ -9,6 +9,8 @@ namespace Towers
     public class AllTowers 
     {
         public static int TowersCount;
+
+        private TowerRelatedsInitializer towerRelatedsInitializer = new();
         public static List<TowerObject> Towers { get; private set; } = new();
         public static List<TowerData> TowerDatas { get; private set; } = new();
 
@@ -24,6 +26,7 @@ namespace Towers
         {
             Eventbus.LinkEvents.OnLinkingTowers += SetLinkedTowersAndStartRiseFallRoutine;
             Eventbus.LinkEvents.OnUnlink += ResetLinkedTowers;
+            towerRelatedsInitializer.Subscribe();
         }
         public void ReceiveTowers(List<TowerObject> towers)
         {
@@ -77,6 +80,7 @@ namespace Towers
         {
             Eventbus.LinkEvents.OnLinkingTowers -= SetLinkedTowersAndStartRiseFallRoutine;
             Eventbus.LinkEvents.OnUnlink -= ResetLinkedTowers;
+            towerRelatedsInitializer.Unsubscribe();
         }
     }
 }

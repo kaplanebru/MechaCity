@@ -25,7 +25,7 @@ namespace Core
         private void OnEnable()
         {
             NetworkEventbus.ServerEvents.OnPlayerSpawned += AssignPlayers;
-            GeneralEventbus.InitializerEvents.OnActorsAndTowersInitiated += ExecuteInitializer;
+            GeneralEventbus.InitializerEvents.OnActorsAndTowersReady += ExecuteInitializer;
           
             InstantiateLevelPrefab();
         }
@@ -38,8 +38,6 @@ namespace Core
         void ExecuteInitializer()
         {
             CreateTeams();
-            SetTowerBpElementsData();
-            
             Invoke(nameof(StartNetwork), .6f);
         }
 
@@ -54,17 +52,7 @@ namespace Core
             
             TeamEvents.OnTeamsSet?.Invoke(Teams);
         }
-
-      
-
-        void SetTowerBpElementsData()
-        {
-            foreach (var tower in AllTowers.Towers)
-            {
-                tower.initializer.TowerBPElementsDataSetup();
-            }
-        }
-
+        
         private void StartNetwork()
         {
             NetworkUIController.gameObject.SetActive(true);
@@ -102,30 +90,16 @@ namespace Core
                 }
             );
             
-           
+            GeneralEventbus.InitializerEvents.OnTeamsAndClientsSet?.Invoke();
             
-            //ExecuteAfterSetup();
-
-
             print("Game Started");
         }
 
-        public void ExecuteAfterSetup()
-        {
-            foreach (var tower in AllTowers.Towers)
-            {
-                var data = tower.Data.NumericData;
-                if(data.LockStatus.Locked)
-                    Eventbus.TowerEvents.OnLock?.Invoke(data.LockStatus.Limit, data.UniqID);
-
-                tower.initializer.ExecuteVisualsAfterSetup();
-            }
-        }
 
         private void OnDisable()
         {
             NetworkEventbus.ServerEvents.OnPlayerSpawned -= AssignPlayers;
-            GeneralEventbus.InitializerEvents.OnActorsAndTowersInitiated -= ExecuteInitializer;
+            GeneralEventbus.InitializerEvents.OnActorsAndTowersReady -= ExecuteInitializer;
         }
     }
 }
