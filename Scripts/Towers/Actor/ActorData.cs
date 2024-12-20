@@ -24,7 +24,7 @@ namespace Actor
         public int Row;
 
 
-        public int InitialHealth;
+        public int InitialHealth = 1;
         public int Health { get; set; }
 
         public TowerNumericData[] TowerNumericDatas { get; set; }

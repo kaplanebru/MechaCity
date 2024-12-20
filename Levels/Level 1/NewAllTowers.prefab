@@ -1492,7 +1492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9e39e7e9a9bbd49924f2c6e184972a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorFounderDatas:
+  ActorStarterDatas:
   - ActorData:
       Type: 0
       TeamType: 0
