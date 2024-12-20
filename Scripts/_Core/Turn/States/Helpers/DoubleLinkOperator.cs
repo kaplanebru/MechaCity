@@ -61,7 +61,7 @@ namespace Turn
             OthersFall();
 
             var totalResource = SafeGroup.TowerCount * step;
-            selectedActor.TowerHeightCouples[0].UpdateHeight(totalResource);
+            selectedActor.Towers[0].UpdateHeight(totalResource);
             
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
@@ -79,7 +79,7 @@ namespace Turn
 
             for (var i = 0; i < selectedActor.Towers.Length; i++)
             {
-                selectedActor.TowerHeightCouples[i].UpdateHeight(singleStep); //todo: burdaki singlestep kaydedilebilir remove için
+                selectedActor.Towers[i].UpdateHeight(singleStep); //todo: burdaki singlestep kaydedilebilir remove için
             }
 
             OthersFall();
@@ -180,8 +180,7 @@ namespace Turn
         {
             foreach (var safeTower in SafeGroup.StepsPerTower.Keys)
             {
-                var tower = AllTowers.GetTower(safeTower.UniqID);
-                tower.UpdateHeight(-SafeGroup.GetStepsToRemove(safeTower)); 
+                safeTower.UpdateHeight(-SafeGroup.GetStepsToRemove(safeTower)); 
             }
         }
         

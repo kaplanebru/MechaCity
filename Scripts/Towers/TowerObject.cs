@@ -14,8 +14,8 @@ namespace Towers
     public class TowerObject : MonoBehaviour
     {
         public TowerConstantData ConstantData;
-        public TowerNumericData NumericData;
         public TowerData Data;
+        
         public TowerInitializer initializer;
         private InterruptionMotion interruptionMotion = new();
 
@@ -27,7 +27,7 @@ namespace Towers
         
         void FirstMotion()
         {
-            Data.Mover.ChangeHeightPhysically(NumericData.Height, true);
+            Data.VisualData.Mover.ChangeHeightPhysically(Data.NumericData.Height, true);
             StartRiseFallRoutine(true);
         }
 
@@ -35,7 +35,7 @@ namespace Towers
 
         public void StartRiseFallRoutine(bool forOnce = false)
         {
-            riseRoutine = StartCoroutine(Data.Mover.riseFallMotion.RiseRoutine(forOnce));
+            riseRoutine = StartCoroutine(Data.VisualData.Mover.riseFallMotion.RiseRoutine(forOnce));
         }
 
         public void StopRiseFallRoutine()
@@ -49,23 +49,8 @@ namespace Towers
         private void OnDisable()
         {
             Eventbus.TowerEvents.OnTurnBegin -= FirstMotion;
-            Data.Mover.Unsubscribe();
+            Data.VisualData.Mover.Unsubscribe();
             interruptionMotion.Unsubscribe();
-        }
-        
-        public void UpdateHeight(int extra)
-        {
-            if (extra == 0)
-            {
-                Debug.Log("EQUAL");
-                return;
-            }
-
-            int newHeight = NumericData.Height + extra;
-            bool isRising = newHeight > NumericData.Height;
-            NumericData.Height = newHeight;
-
-            Data.Mover.ChangeHeightPhysically(newHeight, isRising);
         }
     }
 }

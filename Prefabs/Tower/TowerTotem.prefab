@@ -4337,11 +4337,73 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConstantData: {fileID: 11400000, guid: 24382b7643f9bbb4d826eaf0d7c75384, type: 2}
   Data:
+    NumericData:
+      UniqID: 0
+      DamagePower: 0
+    VisualData:
+      IsClickable: 1
+      LockStatus:
+        Locked: 0
+        Limit: 1
+      timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
+      clickHandler: {fileID: 1183604849590895228}
+      SegmentData:
+        MoverData:
+          Body: {fileID: 9139943182935945852}
+          Top: {fileID: 16387687648852039}
+          Middle: {fileID: 2376249443096567679}
+          TopOffset: 0.5
+          ShakeMagnitude: 0.03
+          TimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
+          CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
+          RiseFallData:
+            ActiveHolder: {fileID: 4634288368227671964}
+            PassiveHolder: {fileID: 4634288368307197951}
+            Light: {fileID: 7137178604214540418}
+            PassiveParts:
+            - {fileID: 4618275167607076274}
+            - {fileID: 1414968109903918431}
+            - {fileID: 6678535424241232063}
+            - {fileID: 8031784240193922467}
+            - {fileID: 6409681217529868635}
+            ActiveParts:
+            - {fileID: 458587706314466722}
+            RiseState: 0
+            TargetHeight: 0
+            CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
+        ColorData:
+          TeamData: {fileID: 0}
+          Logo: {fileID: 0}
+          MeshCombiners:
+          - {fileID: 6614235340657874909}
+          - {fileID: 1496806842629179433}
+          - {fileID: 7967889688986573879}
+          - {fileID: 5993717765664023715}
+          - {fileID: 7914926590600308079}
+          MiddleMeshes:
+          - {fileID: 6606844829339026536}
+          - {fileID: 7827256818296853647}
+          - {fileID: 3551314135799062048}
+          - {fileID: 7706612787776036599}
+          SelectionMeshes:
+            Light: {fileID: 1776863158456280355}
+            Head:
+            - {fileID: 9181092705817725031}
+            - {fileID: 7582449153515488787}
+            - {fileID: 4575632031180546314}
+            - {fileID: 269359661968104163}
+            - {fileID: 1051235070364031175}
+            - {fileID: 6738121896055944329}
+          TimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
+        UIData:
+          HeightTexts:
+          - {fileID: 2809648641299329637}
+          IDText: {fileID: 9171921855417414690}
+          CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
+  NumericData:
     UniqID: 0
-    AvailableHeight: 0
     DamagePower: 0
-    TeamType: 0
-    NeighbourIDs: 
+  visualData:
     IsClickable: 1
     LockStatus:
       Locked: 0

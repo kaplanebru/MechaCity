@@ -10,14 +10,14 @@ namespace Blueprint
 
         public void Execute(params object[] obj) //TODO: with actors
         {
-            Debug.Log("execute bp");
-            var selectedTowers = (int[]) obj[0];
-
-            foreach (var selectedTower in selectedTowers)
-            {
-                var tower = AllTowers.GetData(selectedTower);
-                doubleWithRival.HighlightNeighbours(tower.UniqID);
-            }
+            // Debug.Log("execute bp");
+            // var selectedTowers = (int[]) obj[0];
+            //
+            // foreach (var selectedTower in selectedTowers)
+            // {
+            //     var tower = AllTowers.GetData(selectedTower);
+            //     doubleWithRival.HighlightNeighbours(tower.NumericData.UniqID);
+            // }
         }
         public void Restore(params object[] obj)
         {

@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Towers
 {
     [Serializable]
-    public class TowerData
+    public class TowerVisualData
     {
         public int UniqID { get; set; }
         

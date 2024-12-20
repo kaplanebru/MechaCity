@@ -29,7 +29,7 @@ public class ActorStarterData
         SetID();
         AllocateCollections();
         
-        ActorData.TowerIDs = TowerObjects.Select(t => t.NumericData.UniqID).ToArray();
+        ActorData.TowerIDs = TowerObjects.Select(t => t.Data.NumericData.UniqID).ToArray();
         ActorData.SetCenterAutonomously(TowerObjects);
         AddActorToDBRegistry();
     }
@@ -40,14 +40,16 @@ public class ActorStarterData
 
     public void InitiateActorTowers()
     {
-        ActorData.TowerNumericDatas = TowerObjects.Select(t => t.NumericData).ToArray();
+        ActorData.Towers = TowerObjects.Select(t => t.Data).ToArray();
+        ActorData.TowerNumericDatas = TowerObjects.Select(t => t.Data.NumericData).ToArray();
+        
         foreach (var towerObject in TowerObjects)
         {
             towerObject.initializer = new TowerInitializer(towerObject);
             towerObject.initializer.NumericDataInitialSetup(ActorData.TeamType);
         }
         
-        ActorData.SetTowerHeightCouple();
+        ActorData.OrderTowerDataByHeight();
     }
     
     // void InitializeTowersVisualData()

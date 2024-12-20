@@ -36,7 +36,7 @@ namespace Teams
 
             foreach (var tower in actor.Towers)
             {
-               tower.SetTeamVisuals(Data.teamColorData);
+               tower.VisualData.SetTeamVisuals(Data.teamColorData);
             }
 
             foreach (var data in actor.TowerNumericDatas)

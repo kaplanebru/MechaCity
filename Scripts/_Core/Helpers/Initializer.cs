@@ -122,7 +122,7 @@ namespace Core
         {
             foreach (var tower in AllTowers.Towers)
             {
-                var data = tower.Data;
+                var data = tower.Data.NumericData;
                 if(data.LockStatus.Locked)
                     Eventbus.TowerEvents.OnLock?.Invoke(data.LockStatus.Limit, data.UniqID);
 

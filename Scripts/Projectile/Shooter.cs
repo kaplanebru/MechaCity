@@ -57,15 +57,15 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
     }
     public void RevealSelf()
     {
-        var mainTower = AllTowers.GetTower(_pair.MainTowerData.UniqID);
-        var otherTower = AllTowers.GetTower(_pair.OtherTowerData.UniqID);
+        var mainTower = AllTowers.GetData(_pair.MainTowerData.UniqID);
+        var otherTower = AllTowers.GetData(_pair.OtherTowerData.UniqID);
         
         Sequence sequence = DOTween.Sequence();
         sequence.Append(coverRoutine);
         sequence.Append(transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration));
         sequence.Append(transform.DORotateQuaternion(
             Quaternion.LookRotation(
-               otherTower.Data.Mover.Data.Top.transform.position - transform.position
+               otherTower.VisualData.Mover.Data.Top.transform.position - transform.position
             ) * Quaternion.Euler(0, 180, 0), _motionDuration / 2
         ));
 
@@ -86,17 +86,17 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
         
     }
     
-    void SendProjectile(TowerObject perpetrator, TowerObject victim, float duration)
+    void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
     {
         var projectile = ProjectilePool.Instance.GetItem(p => p.transform.position = shootingSlot.position);
-        projectile.Setup(duration, victim.Data.Mover.Data.Top.transform.position - Vector3.up * 1.5f);
+        projectile.Setup(duration, victim.VisualData.Mover.Data.Top.transform.position - Vector3.up * 1.5f);
 
         projectile.Move(() =>
         {
-            perpetrator.Data.ColorHandler.ToOriginalSelectionColor();
+            perpetrator.VisualData.ColorHandler.ToOriginalSelectionColor();
 
             Hide();
-            ShieldData shieldData = victim.Data.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
+            ShieldData shieldData = victim.VisualData.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
             if (shieldData.HasEffectiveShield(victim.NumericData.Height))
             {
                 //TODO: shield effect

@@ -17,7 +17,7 @@ namespace Blueprint
             
             foreach (var tower in selectedTowers)
             {
-                tower.ColorHandler.ToFreezeColor();
+                tower.VisualData.ColorHandler.ToFreezeColor();
             }
         }
 
@@ -31,7 +31,7 @@ namespace Blueprint
             
             foreach (var tower in selectedTowers)
             {
-                tower.ColorHandler.SetDefaultTeamVisuals();
+                tower.VisualData.ColorHandler.SetDefaultTeamVisuals();
             }
         }
     }

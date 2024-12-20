@@ -25,7 +25,7 @@ namespace Actor
            
             foreach (var tower in currentActor.Towers)
             {
-                MoveTower(AllTowers.GetTower(tower.UniqID), offset);
+                MoveTower(AllTowers.GetTower(tower.NumericData.UniqID), offset);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Actor
             
             for (var i = 0; i < currentActor.Towers.Length; i++)
             {
-                var tower = AllTowers.GetTower(currentActor.Towers[i].UniqID);
+                var tower = AllTowers.GetTower(currentActor.Towers[i].NumericData.UniqID);
                 tower.transform.DOLocalMove(startPositions[i], .5f);
             }
             

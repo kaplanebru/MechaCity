@@ -49,7 +49,7 @@ public class CombatPairsCreator
         return pair;
     }
 
-    void OrderTargetTowersByID(TowerData tower)
+    void OrderTargetTowersByID(TowerVisualData towerVisual)
     {
         //TODO: NEDEN SLOT ID? uzaklık için mi. SlotId towers'daki sıralama olarak set edilebilir!
         // tower.LinkedTowerIDs =

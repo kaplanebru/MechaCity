@@ -30,7 +30,7 @@ namespace Turn
     {
         private readonly CombatData Data = new();
         private CombatPairController _pairController;
-        private List<TowerData> _towers = new();
+        private List<TowerData> _towers = new(); //todo: sadece visual tutulabilir
 
         private CombatTimingData _timingData;
         private bool isReversed = false;
@@ -57,7 +57,7 @@ namespace Turn
                 _towers.AddRange(actor.Towers);
             }
 
-            _towers?.ForEach(t => t.ColorHandler.ToOriginalSelectionColor());
+            _towers?.ForEach(t => t.VisualData.ColorHandler.ToOriginalSelectionColor());
         }
 
         public void Fasten()
@@ -78,7 +78,7 @@ namespace Turn
             {
                 foreach (var tower in mainActor.Towers)
                 {
-                    tower.ColorHandler.ToSelectionColor();
+                    tower.VisualData.ColorHandler.ToSelectionColor();
                 }
 
                 GeneralEventbus.IndicatorEvents.OnActorHoverByCombat?.Invoke(mainActorID);
@@ -88,7 +88,7 @@ namespace Turn
             {
                 foreach (var tower in mainActor.Towers)
                 {
-                    tower.ColorHandler.ToOriginalSelectionColor();
+                    tower.VisualData.ColorHandler.ToOriginalSelectionColor();
                 }
 
                 GeneralEventbus.IndicatorEvents.OnActorLeftByCombat?.Invoke();
@@ -159,7 +159,7 @@ namespace Turn
 
         void DeselectAlteredTowers()
         {
-            _towers?.ForEach(t => t.ColorHandler.ToOriginalSelectionColor());
+            _towers?.ForEach(t => t.VisualData.ColorHandler.ToOriginalSelectionColor());
         }
 
         public void Unsubscribe()

@@ -1,15 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Towers
 {
-    public class Tower
+    [Serializable]
+    public class TowerData
     {
         public TowerNumericData NumericData;
-        public TowerData VisualData;
+        public TowerVisualData VisualData;
         
-        public Tower(TowerNumericData numeric, TowerData visual)
+        public TowerData(TowerNumericData numeric, TowerVisualData visual)
         {
             NumericData = numeric;
             VisualData = visual;

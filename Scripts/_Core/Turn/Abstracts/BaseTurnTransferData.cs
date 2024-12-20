@@ -24,7 +24,7 @@ namespace Turn
             {
                 foreach (var tower in ActorDB.GetTowerIDs(actorID))
                 {
-                    AllTowers.GetData(tower).ColorHandler.ToSelectionColor();
+                    AllTowers.GetData(tower).VisualData.ColorHandler.ToSelectionColor();
                 }
             }
         }

@@ -10,15 +10,15 @@ namespace Towers
     {
         private TowerObject towerObject;
         private TowerConstantData ConstantData;
-        private TowerData Data;
+        private TowerVisualData visualData;
         private TowerNumericData NumericData;
 
         public TowerInitializer(TowerObject towerObject)
         {
             this.towerObject = towerObject;
             ConstantData = this.towerObject.ConstantData;
-            NumericData = towerObject.NumericData;
-            Data = this.towerObject.Data;
+            NumericData = towerObject.Data.NumericData;
+            visualData = this.towerObject.Data.VisualData;
         }
 
         public void NumericDataInitialSetup(TeamType teamType)
@@ -31,23 +31,23 @@ namespace Towers
             NumericData.DamagePower = ConstantData.DamagePower;
 
             // Data.Height = ConstantData.StartHeight;
-            Data.UniqID = NumericData.UniqID;
+            visualData.UniqID = NumericData.UniqID;
         }
 
         public void VisualDataIdentification()
         {
-            Data.CreateSegmentsWithGivenVisualData();
+            visualData.CreateSegmentsWithGivenVisualData();
         }
 
         public void VisualDataInitialSetup(TeamColorData teamData)
         {
             SetSegments();
-            Data.SetTeamVisuals(teamData);
+            visualData.SetTeamVisuals(teamData);
         }
 
         public void TowerBPElementsDataSetup()
         {
-            Data.CreateVisualSupportedDatas(
+            visualData.CreateVisualSupportedDatas(
                 new Dictionary<VisualDataType, int> //TODO: Bunlar bp trigger edilerek de yapılabilir
                 {
                     {VisualDataType.Shield, ConstantData.ShieldHeight},
@@ -58,9 +58,9 @@ namespace Towers
 
         void SetSegments()
         {
-            foreach (var segment in Data.TowerSegments)
+            foreach (var segment in visualData.TowerSegments)
             {
-                segment.SetId(Data.UniqID);
+                segment.SetId(visualData.UniqID);
                 segment.Initialize();
             }
         }
@@ -70,13 +70,13 @@ namespace Towers
             var towerRelations = towerObject.GetComponentsInChildren<ITowerRelatedElement>();
             foreach (var related in towerRelations)
             {
-                related.Initialize(Data.UniqID);
+                related.Initialize(visualData.UniqID);
             }
         }
 
         public void ExecuteVisualsAfterSetup()
         {
-            foreach (var visualSupportedData in Data.VisualSupportedDatas)
+            foreach (var visualSupportedData in visualData.VisualSupportedDatas)
             {
                 visualSupportedData.Value.SetVisually();
             }

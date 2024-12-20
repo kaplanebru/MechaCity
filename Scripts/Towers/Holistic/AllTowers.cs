@@ -37,7 +37,7 @@ namespace Towers
         {
             for (int i = 0; i < TowersCount; i++)
             {
-                TowerDatas.Add(Towers[i].Data);
+                TowerDatas.Add(TowerDatas[i]);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Towers
         {
             for (int i = 0; i < TowersCount; i++)
             {
-                TowerNumericDatas.Add(Towers[i].NumericData);
+                TowerNumericDatas.Add(TowerDatas[i].NumericData);
             }
         }
 
@@ -68,24 +68,24 @@ namespace Towers
             foreach (var id in towerIds)
             {
                 var tower = GetTower(id);
-                tower.Data.clickHandler.EnableSelection();
+                tower.Data.VisualData.clickHandler.EnableSelection();
                 tower.StartRiseFallRoutine();
             }
         }
         
         public static void ResetTowerColors()
         {
-            TowerDatas.ForEach(t=>t.ColorHandler.ToOriginalSelectionColor());
+            TowerDatas.ForEach(t=>t.VisualData.ColorHandler.ToOriginalSelectionColor());
         }
 
         public static void EnableClickability()
         {
-            TowerDatas.ForEach(t=>t.EnableSelection());
+            TowerDatas.ForEach(t=>t.VisualData.EnableSelection());
         }
 
         public static void DisableClickability()
         {
-            TowerDatas.ForEach(t=>t.DisableSelection());
+            TowerDatas.ForEach(t=>t.VisualData.DisableSelection());
         }
 
         public void Unsubscribe()

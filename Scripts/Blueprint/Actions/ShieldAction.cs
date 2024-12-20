@@ -21,7 +21,7 @@ namespace Blueprint
             {
                 var tower = towers[i];
                 var towerNumeric = towerNumericDatas[i];
-                tower.VisualSupportedDatas[VisualDataType.Shield].SetDataAndVisuals(towerNumeric.Height);
+                tower.VisualData.VisualSupportedDatas[VisualDataType.Shield].SetDataAndVisuals(towerNumeric.Height);
             }
         }
     }

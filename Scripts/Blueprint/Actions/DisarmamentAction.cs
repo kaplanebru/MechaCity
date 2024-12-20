@@ -19,7 +19,7 @@ namespace Blueprint
             
             foreach (var tower in towers)
             {
-               tower.VisualSupportedDatas[VisualDataType.Disarm].SetDataAndVisuals(0);
+               tower.VisualData.VisualSupportedDatas[VisualDataType.Disarm].SetDataAndVisuals(0);
             }
         }
         

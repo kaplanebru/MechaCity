@@ -16,7 +16,7 @@ namespace Blueprint
 
             foreach (var tower in towers)
             {
-                tower.VisualSupportedDatas[VisualDataType.Shield].ResetDataOnly(0);
+                tower.VisualData.VisualSupportedDatas[VisualDataType.Shield].ResetDataOnly(0);
             }
             BpEventbus.ActionEvents.OnBreakShieldActionTriggered?.Invoke(ActorDB.Registry[selectedActors[0]].TowerIDs);
         }

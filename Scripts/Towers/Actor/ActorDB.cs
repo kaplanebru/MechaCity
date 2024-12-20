@@ -17,8 +17,8 @@ namespace Actor
         public static int[] GetTowerIDs(uint id) => Registry[id].TowerIDs;
         public static List<TowerNumericData> GetTowersData(uint id) => Registry[id].TowerNumericDatas.ToList();
 
-        public static List<TowerHeightCouple> GetTowerHeightCouples(uint id) =>
-            Registry[id].TowerHeightCouples.ToList();
+        public static List<TowerData> GetTowerHeightCouples(uint id) =>
+            Registry[id].Towers.ToList();
 
 
         private void Subscribe()
@@ -55,7 +55,7 @@ namespace Actor
             foreach (var towerID in ownTowers) //todo: register actor dataya eklenebilir
             {
                 var tower = AllTowers.GetData(towerID);
-                tower.SetClickHandlerID(id);
+                tower.VisualData.SetClickHandlerID(id);
             }
 
             return id;

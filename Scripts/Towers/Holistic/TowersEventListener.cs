@@ -10,7 +10,7 @@ namespace Towers
 {
     public class TowersEventListener : MonoBehaviour
     {
-        public List<TowerData> towers = new();
+        public List<TowerVisualData> towers = new();
 
         private void OnEnable()
         {
@@ -21,7 +21,7 @@ namespace Towers
 
         void GetTowers()
         {
-            towers = AllTowers.TowerDatas.ToList();
+            towers = AllTowers.TowerDatas.Select(t=>t.VisualData).ToList();
         }
         
         private void UIHeightChangeRequest(float height, int id)

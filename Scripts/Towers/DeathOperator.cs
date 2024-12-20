@@ -25,18 +25,18 @@ namespace Towers
         
         public IEnumerator DeathRoutine(Action teamSwitchCallback, int pairID, ActorData actor)
         {
-            yield return new WaitForSeconds(actor.Towers[0].timingData.shakeDuration);
+            yield return new WaitForSeconds(actor.Towers[0].VisualData.timingData.shakeDuration);
             yield return new WaitForSeconds(.3f);
 
             foreach (var tower in actor.Towers)
             {
-                MediatorEventbus.EffectEvents.OnDeathEffect?.Invoke(tower.UniqID);
-                tower.Mover.RotateMiddle();
+                MediatorEventbus.EffectEvents.OnDeathEffect?.Invoke(tower.NumericData.UniqID);
+                tower.VisualData.Mover.RotateMiddle();
             }
            
             teamSwitchCallback.Invoke();
 
-            yield return new WaitForSeconds(actor.Towers[0].timingData.colorFadeDuration);
+            yield return new WaitForSeconds(actor.Towers[0].VisualData.timingData.colorFadeDuration);
             Eventbus.CombatEvents.OnCombatCompleteRequest?.Invoke(pairID);
         }
     }

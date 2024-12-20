@@ -32,7 +32,7 @@ namespace _Core.Turn.Selectors
             {
                 foreach (var tower in a.Towers)
                 {
-                   tower.DisableSelection();
+                   tower.VisualData.DisableSelection();
                 }
             });
         }

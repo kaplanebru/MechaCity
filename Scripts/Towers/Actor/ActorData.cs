@@ -7,32 +7,6 @@ using UnityEngine;
 
 namespace Actor
 {
-    public class TowerHeightCouple
-    {
-        public TowerNumericData Numeric;
-        public TowerData Visual;
-
-        public TowerHeightCouple(TowerNumericData numeric, TowerData visual)
-        {
-            Numeric = numeric;
-            Visual = visual;
-        }
-        
-        public void UpdateHeight(int extra)
-        {
-            if (extra == 0)
-            {
-                Debug.Log("EQUAL");
-                return;
-            }
-
-            int newHeight = Numeric.Height + extra;
-            bool isRising = newHeight > Numeric.Height;
-            Numeric.Height = newHeight;
-
-            Visual.Mover.ChangeHeightPhysically(newHeight, isRising);
-        }
-    }
     public class ActivityStatus
     {
         public bool CanMove = true;
@@ -58,7 +32,6 @@ namespace Actor
         public int[] TowerIDs { get; set; }
         public int TowerAmount { get; set; }
 
-        public List<TowerHeightCouple> TowerHeightCouples = new();
         public Vector3 Center { get; set; }
 
         public HashSet<uint> TargetActors = new();
@@ -79,26 +52,16 @@ namespace Actor
             TowerIDs = towerIDs;
             Towers = AllTowers.GetTowerDatasByIDs(towerIDs).ToArray();
             TowerAmount = Towers.Length;
-            SetTowerHeightCouple();
+            OrderTowerDataByHeight();
         }
 
         
-        private void OrderTowerDataByHeight()
+        public void OrderTowerDataByHeight()
         {
-            //Towers = Towers.OrderBy(t => t.AvailableHeight).ToArray();
-            TowerHeightCouples = TowerHeightCouples.OrderBy(t => t.Numeric.AvailableHeight).ToList();
-            
+            Towers = Towers.OrderBy(t => t.NumericData.AvailableHeight).ToArray();
         }
 
-        public void SetTowerHeightCouple()
-        {
-            TowerHeightCouples.Clear();
-            for (int i = 0; i < TowerAmount; i++)
-            {
-                TowerHeightCouples.Add(new TowerHeightCouple(TowerNumericDatas[i], Towers[i])); //order by height
-            }
-            OrderTowerDataByHeight();
-        }
+        
         internal void SetCenterDependently()
         {
             Center = Vector3.zero;

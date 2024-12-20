@@ -10,26 +10,26 @@ namespace Towers
     {
         private int[] _towerIDs;
 
-        private List<TowerHeightCouple> _towerHeightCouples = new();
-        private List<TowerNumericData> _towers = new();
+        private List<TowerData> _towerVisualDatas = new();
+        private List<TowerNumericData> _towerNumerics = new();
         private int _amount;
         public DoubleTowerPhysical(params uint[] actorIDs)
         {
             foreach (var actorID in actorIDs)
             {
-                _towers.AddRange(ActorDB.GetTowersData(actorID).ToList());
-                _towerHeightCouples.AddRange(ActorDB.GetTowerHeightCouples(actorID));
+                _towerNumerics.AddRange(ActorDB.GetTowersData(actorID).ToList());
+                _towerVisualDatas.AddRange(ActorDB.GetTowerHeightCouples(actorID));
             }
             
            
-            _towers = _towers.OrderBy(t => t.Height).ToList();
-            _amount = _towers.Count;
+            _towerNumerics = _towerNumerics.OrderBy(t => t.Height).ToList();
+            _amount = _towerNumerics.Count;
         }
 
         public DoubleTowerPhysical(TowerNumericData[] towers)
         {
-            _towers = towers.OrderBy(t => t.Height).ToList();
-            _amount = _towers.Count;
+            _towerNumerics = towers.OrderBy(t => t.Height).ToList();
+            _amount = _towerNumerics.Count;
         }
 
         private void SeRegarde() //iptal, arkasını dönsün istemeyiz
@@ -43,7 +43,7 @@ namespace Towers
         public void Equalize() //bridgeden önce olmalı
         {
             int totalHeight = 0;
-            foreach (var tower in _towers)
+            foreach (var tower in _towerNumerics)
             {
                 totalHeight += tower.Height;
             }
@@ -51,9 +51,9 @@ namespace Towers
             int averageHeight = totalHeight / _amount;
             int rest = totalHeight % averageHeight;
 
-            for (var i = _towers.Count - 1; i >= 0; i--)
+            for (var i = _towerNumerics.Count - 1; i >= 0; i--)
             {
-                var tower = _towers[i];
+                var tower = _towerNumerics[i];
                 int extra = 0;
                 if (rest > 0)
                 {
@@ -67,7 +67,7 @@ namespace Towers
                 int surplus = newHeight - tower.Height;
 
                 if (surplus == 0) continue;
-                _towerHeightCouples[tower.UniqID].UpdateHeight(surplus);
+                _towerVisualDatas[tower.UniqID].UpdateHeight(surplus);
                 AllTowers.GetTower(tower.UniqID).StartRiseFallRoutine(true); //Todo: düzelt
             }
         }
@@ -75,7 +75,7 @@ namespace Towers
         public void CreateBridge()
         {
             //_towerIDs = _towers.Select(t => t.UniqID).ToArray();
-            _towerIDs = _towers.OrderBy(tower => tower.Height).Select(tower => tower.UniqID).ToArray();   
+            _towerIDs = _towerNumerics.OrderBy(tower => tower.Height).Select(tower => tower.UniqID).ToArray();   
             Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towerIDs);
         }
         

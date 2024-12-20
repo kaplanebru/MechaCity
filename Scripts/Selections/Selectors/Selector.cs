@@ -95,7 +95,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
 
         foreach (var tower in actor.Towers)
         {
-            tower.ColorHandler.ToOriginalSelectionColor();
+            tower.VisualData.ColorHandler.ToOriginalSelectionColor();
         }
        
         
@@ -143,7 +143,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     {
         foreach (var tower in actor.Towers)
         {
-            tower.ColorHandler.SetColorByGivenState(CurrentGroup.selectionColorState);
+            tower.VisualData.ColorHandler.SetColorByGivenState(CurrentGroup.selectionColorState);
         }
     }
     protected void HighlightApply(bool enable)

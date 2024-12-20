@@ -16,7 +16,7 @@ namespace Blueprint
             
             foreach (var tower in towers)
             {
-                var attackData = tower.VisualSupportedDatas[VisualDataType.Attack];
+                var attackData = tower.VisualData.VisualSupportedDatas[VisualDataType.Attack];
                 attackData.IncreaseDataAndVisuals(1);
             }
         }
