@@ -1498,7 +1498,7 @@ MonoBehaviour:
       TeamType: 0
       TeamVisualData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
       Row: 0
-      InitialHealth: 1
+      InitialHealth: 2
     TowerObjects:
     - {fileID: 5132298468832839066}
   - ActorData:

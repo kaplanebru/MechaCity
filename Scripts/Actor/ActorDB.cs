@@ -11,7 +11,7 @@ namespace Actor
     public class ActorDB
     {
         public static Dictionary<uint, ActorData> Registry { get; private set; } = new();
-        private Dictionary<Enums.ActorUnit, ActorUnit> units = new();
+        public static Dictionary<Enums.ActorUnit, ActorUnit> Units = new();
 
         public static ActorData GetActor(uint id) => Registry[id];
         public static int[] GetTowerIDs(uint id) => Registry[id].TowerIDs;
@@ -34,9 +34,9 @@ namespace Actor
 
         void SetControllers()
         {
-            units[Enums.ActorUnit.Health] = new HealthUnit(this);
+            Units[Enums.ActorUnit.Health] = new HealthUnit(this);
 
-            foreach (var unit in units.Values)
+            foreach (var unit in Units.Values)
             {
                 unit.Subscribe();
             }
@@ -50,7 +50,7 @@ namespace Actor
 
             Registry.Add(id, actor);
             actor.Row = row;
-            ((HealthUnit) units[Enums.ActorUnit.Health]).SetHealth(Registry[id], health, true);
+            ((HealthUnit) Units[Enums.ActorUnit.Health]).SetHealth(Registry[id], health, true);
 
             foreach (var towerID in ownTowers) //todo: register actor dataya eklenebilir
             {
@@ -60,6 +60,8 @@ namespace Actor
 
             return id;
         }
+
+       
 
         private void RegisterDouble(uint[] oldActors)
         {
@@ -126,7 +128,7 @@ namespace Actor
 
         public void Unsubscribe()
         {
-            foreach (var unit in units.Values)
+            foreach (var unit in Units.Values)
             {
                 unit.Unsubscribe();
             }

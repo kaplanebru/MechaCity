@@ -60,6 +60,21 @@ public class ActorsInitializer : MonoBehaviour
 
     private void ExecuteVisuals()
     {
+       SetActorDoubleCase();
+       StartHealthVisualsForAll();
+    }
+    
+    
+    public void StartHealthVisualsForAll()
+    {
+        foreach (var actor in ActorDB.Registry.Keys)
+        {
+            ((HealthUnit) ActorDB.Units[Enums.ActorUnit.Health]).ResetHealth(actor);
+        }
+    }
+
+    private void SetActorDoubleCase()
+    {
         foreach (var newActor in ActorStarterDatas)
         {
             newActor.OnDoubleCase();
@@ -72,6 +87,4 @@ public class ActorsInitializer : MonoBehaviour
         AllTowers.Unsubscribe();
         GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid -= ProcessTowersByActorData;
     }
-
- 
 }

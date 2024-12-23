@@ -68,10 +68,10 @@ public class ActorStarterData
     public void OnDoubleCase()
     {
         var newDouble = new DoubleTowerPhysical(ActorData.TowerNumericDatas);
-        newDouble.Equalize();//todo later
-        //todo: healthlerin de ortak yapılması lazım
-        newDouble.CreateBridge(); //todo: bridgeler de hazır değil. execute afterda yapılması lazım bunların
+        newDouble.Equalize();
+        newDouble.CreateBridge();
     }
     
+   
    
 }

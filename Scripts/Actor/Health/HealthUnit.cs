@@ -42,7 +42,7 @@ namespace Actor
             return false;
         }
 
-        private void ResetHealth(uint actorID)
+        public void ResetHealth(uint actorID)
         {
             var actor = ActorDB.Registry[actorID];
             actor.Health = actor.InitialHealth;
