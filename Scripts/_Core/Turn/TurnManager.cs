@@ -50,6 +50,8 @@ namespace Turn
 
         private void Initialize()
         {
+            SendCombatPairs(false); //false todo, hep aynı yönde başlamasın
+
             StateHolder.RegisterStates();
             StateHolder.SubscribeToConstantEvents();
 
