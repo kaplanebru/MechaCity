@@ -9,7 +9,7 @@ namespace Towers
         public void Subscribe()
         {
             GeneralEventbus.InitializerEvents.OnActorsAndTowersReady += SetTowerRelateds;
-            GeneralEventbus.InitializerEvents.OnTeamsAndClientsSet += ExecuteVisualElements;
+            GeneralEventbus.InitializerEvents.OnTeamsAndClientsSet += ExecuteVisualTowerElements;
         }
 
         void SetTowerRelateds()
@@ -34,7 +34,7 @@ namespace Towers
             }
         }
         
-        private void ExecuteVisualElements()
+        private void ExecuteVisualTowerElements()
         {
             foreach (var tower in AllTowers.Towers)
             {
@@ -48,7 +48,7 @@ namespace Towers
         public void Unsubscribe()
         {
             GeneralEventbus.InitializerEvents.OnActorsAndTowersReady -= SetTowerRelateds;
-            GeneralEventbus.InitializerEvents.OnTeamsAndClientsSet -= ExecuteVisualElements;
+            GeneralEventbus.InitializerEvents.OnTeamsAndClientsSet -= ExecuteVisualTowerElements;
         }
     }
 

@@ -18,6 +18,7 @@ public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
 
     void ConstructBridge(int[] ids)
     {
+        print(Collection.Count);
         for (int i = 0; i < ids.Length-1; i++)
         {
             var bridge = Collection[ids[i]];

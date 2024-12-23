@@ -15,7 +15,7 @@ public class ActorsInitializer : MonoBehaviour
     {
         ActorDB.Initialize();
         AllTowers.Subscribe();
-        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid += SetTowers;
+        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid += ProcessTowersByActorData;
         
         Invoke(nameof(InitiateActorsForGridRegistry), .5f); //diğer on enable getcomponentlar çalışsın diye
     }
@@ -34,6 +34,15 @@ public class ActorsInitializer : MonoBehaviour
         ActorDB.OrderRegistryByRow();
         ActorDB.OnRegistryUpdate();
     }
+
+    private void ProcessTowersByActorData()
+    {
+        SetTowers();
+        FillAllTowers();
+        GeneralEventbus.InitializerEvents.OnActorsAndTowersReady?.Invoke();
+        
+        ExecuteVisuals(); //1-2 sn geciktirilebilir
+    }
     
     private void SetTowers()
     {
@@ -42,21 +51,26 @@ public class ActorsInitializer : MonoBehaviour
             newActor.SetTowersNumericData();
             newActor.SetTowersVisualData(); //todo: test
         }
-        
-        FillAllTowers();
-        GeneralEventbus.InitializerEvents.OnActorsAndTowersReady?.Invoke();
     }
-    public void FillAllTowers()
+    private void FillAllTowers()
     {
         List<TowerObject> towers = ActorStarterDatas.SelectMany(a => a.TowerObjects).ToList();
         AllTowers.ReceiveTowers(towers);
+    }
+
+    private void ExecuteVisuals()
+    {
+        foreach (var newActor in ActorStarterDatas)
+        {
+            newActor.OnDoubleCase();
+        }
     }
     
     private void OnDisable()
     {
         ActorDB.Unsubscribe();
         AllTowers.Unsubscribe();
-        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid -= SetTowers;
+        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid -= ProcessTowersByActorData;
     }
 
  

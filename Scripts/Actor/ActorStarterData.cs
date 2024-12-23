@@ -62,15 +62,16 @@ public class ActorStarterData
             towerObject.initializer.VisualDataInitialSetup(ActorData.TeamVisualData);
             towerObject.Data.VisualData.SetClickHandlerID(ActorData.ID);
         }
+       
     }
   
-    // void OnDoubleCase()
-    // {
-    //     var newDouble = new DoubleTowerPhysical(ActorData.Towers);
-    //     //newDouble.Equalize();//todo later
-    //     //todo: healthlerin de ortak yapılması lazım
-    //     newDouble.CreateBridge(); //todo: bridgeler de hazır değil. execute afterda yapılması lazım bunların
-    // }
+    public void OnDoubleCase()
+    {
+        var newDouble = new DoubleTowerPhysical(ActorData.TowerNumericDatas);
+        newDouble.Equalize();//todo later
+        //todo: healthlerin de ortak yapılması lazım
+        newDouble.CreateBridge(); //todo: bridgeler de hazır değil. execute afterda yapılması lazım bunların
+    }
     
    
 }
