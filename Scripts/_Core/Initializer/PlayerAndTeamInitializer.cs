@@ -13,28 +13,19 @@ using Towers;
 
 namespace Core
 {
-    public class Initializer : MonoBehaviour
+    public class PlayerAndTeamInitializer : MonoBehaviour
     {
         public Transform NetworkUIController;
         public Team[] Teams;
         public TeamData[] TeamsData;
-        [SerializeField] private Transform allTowers;
-        [SerializeField] Transform levelPrefab;
-     
+       
         
         private void OnEnable()
         {
             NetworkEventbus.ServerEvents.OnPlayerSpawned += AssignPlayers;
             GeneralEventbus.InitializerEvents.OnActorsAndTowersReady += ExecuteInitializer;
-          
-            InstantiateLevelPrefab();
         }
         
-        void InstantiateLevelPrefab()
-        {
-            Instantiate(levelPrefab, allTowers);
-        }
-
         void ExecuteInitializer()
         {
             CreateTeams();
