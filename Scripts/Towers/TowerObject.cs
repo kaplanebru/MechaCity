@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Linq;
-using Actor;
 using Clicks;
 using DataModels;
 using DG.Tweening;
@@ -16,12 +15,12 @@ namespace Towers
         public TowerConstantData ConstantData;
         public TowerData Data;
         public TowerInitializer initializer;
-        private InterruptionMotion interruptionMotion = new();
+        //private InterruptionMotion interruptionMotion = new();
 
         private void OnEnable()
         {
             Eventbus.TowerEvents.OnTurnBegin += FirstMotion;
-            interruptionMotion.Subscribe();
+           // interruptionMotion.Subscribe();
         }
         
         void FirstMotion()
@@ -49,7 +48,7 @@ namespace Towers
         {
             Eventbus.TowerEvents.OnTurnBegin -= FirstMotion;
             Data.VisualData.Mover.Unsubscribe();
-            interruptionMotion.Unsubscribe();
+            //interruptionMotion.Unsubscribe();
         }
     }
 }
