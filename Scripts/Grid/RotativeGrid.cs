@@ -20,11 +20,15 @@ namespace Grid
         private bool isReversed = false;
         private GridToIndicator gridToIndicator = new();
         private InterruptionController interruptionController;
+        private InterruptionMotion interruptionMotion = new();
+
 
 
         private void OnEnable()
         {
             interruptionController = new InterruptionController(Data);
+            interruptionMotion.Subscribe();
+            
             Eventbus.ActorEvents.OnRegistryUpdate += RegisterActors;
             Eventbus.ActorEvents.OnReverseGrid += ReverseTargets;
             Eventbus.LinkEvents.OnLinkActorsLoaded += interruptionController.TryCheckInterruptions;
@@ -132,6 +136,7 @@ namespace Grid
             Eventbus.ActorEvents.OnReverseGrid -= ReverseTargets;
             Eventbus.LinkEvents.OnLinkActorsLoaded -= interruptionController.TryCheckInterruptions;
             gridToIndicator.Unsubscribe();
+            interruptionMotion.Unsubscribe();
         }
 
       
