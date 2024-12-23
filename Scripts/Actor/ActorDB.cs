@@ -42,7 +42,7 @@ namespace Actor
             }
         }
 
-        public uint RegisterItem(ActorType type, int row, int health, params int[] ownTowers)
+        public void RegisterItem(ActorType type, int row, int health, params int[] ownTowers)
         {
             var id = UniqueIdGenerator.UIntId();
             var actor = new ActorData(id, type, ownTowers);
@@ -57,8 +57,6 @@ namespace Actor
                 var tower = AllTowers.GetData(towerID);
                 tower.VisualData.SetClickHandlerID(id);
             }
-
-            return id;
         }
 
        

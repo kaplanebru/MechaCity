@@ -86,10 +86,15 @@ namespace Actor
 
         public int GetFreeResource(int step) => TowerAmount * step;
 
-        public int TryGetAvailableHeight(int step)
+        public int TryGetAvailableHeightByStep(int step)
         {
-            int availableHeight = TowerNumericDatas.Sum(tower => tower.AvailableHeight);
+            int availableHeight = GetTotalHeight();
             return TowerNumericDatas[0].AvailableHeight < step ? 0 : availableHeight;
+        }
+
+        public int GetTotalHeight()
+        {
+            return TowerNumericDatas.Sum(tower => tower.AvailableHeight);
         }
     }
 }

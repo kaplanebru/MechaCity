@@ -98,10 +98,10 @@ namespace Turn
             {
                 if(selectedActor == actor) continue;
 
-                int availableHeight = actor.TryGetAvailableHeight(step);
+                int availableHeight = actor.TryGetAvailableHeightByStep(step);
                 if (availableHeight > 0)
                 {
-                    totalAvailableHeight += actor.TryGetAvailableHeight(step);
+                    totalAvailableHeight += actor.TryGetAvailableHeightByStep(step);
                     tempGroup.Add(actor);
                 }
             }
@@ -189,7 +189,7 @@ namespace Turn
         private uint randomKey;
         void SelectedActorFall(int step)
         {
-            if (selectedActor.TryGetAvailableHeight(step) == 0)
+            if (selectedActor.TryGetAvailableHeightByStep(step) == 0)
             {
                 NoResourceUI();
                 return;
