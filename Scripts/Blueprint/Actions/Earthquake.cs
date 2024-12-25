@@ -61,14 +61,8 @@ namespace Blueprint
             for (var i = 0; i < totalTowers.Length; i++)
             {
                 var towerNumeric = totalTowers[i].NumericData;
-                if(IsEqualInHeight(towerNumeric, randomHeights[i] ))break;
-                    // if (towerNumeric.Height == randomHeights[i]) //eşit gelmemesi için
-                // {
-                //     randomHeightByTowerID.Clear();
-                //     randomHeights.Clear();
-                //     SetRandomHeight(totalHeight, towerAmount);
-                //     break;
-                // }
+                if(IsEqualInHeight(towerNumeric, randomHeights[i] )) 
+                    break;
                 randomHeightByTowerID.Add(towerNumeric.UniqID, randomHeights[i]);
             }
         }
