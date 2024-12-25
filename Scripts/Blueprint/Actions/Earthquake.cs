@@ -17,7 +17,7 @@ namespace Blueprint
             var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamState.RivalTeam);
             StartEarthquake(rivalTeam.Data.Actors);
         }
-        
+
         void StartEarthquake(List<ActorData> actors) //rakibe atılsın sadece
         {
             var totalHeight = actors.Sum(a => a.GetTotalHeight());
@@ -25,13 +25,11 @@ namespace Blueprint
 
             randomHeights.Clear();
             SetRandomHeight(totalHeight, towerAmount);
-            MatchTowersWithHeights(actors); 
+            MatchTowersWithHeights(actors);
             //todo: varsa random lock da eklenir
-            //ExecuteNewHeights();
             ExecuteHeights(actors);
-         
         }
-        
+
         List<int> randomHeights = new();
 
         void SetRandomHeight(int totalHeight, int towerAmount)
@@ -43,16 +41,17 @@ namespace Blueprint
                 randomHeights.Add(newHeight);
                 return;
             }
-            
+
             int max = totalHeight - (towerAmount - 1);
             newHeight = Random.Range(1, max + 1); //todo: Oyunun max heightiyle de sınırlanır
             randomHeights.Add(newHeight);
-            
-            SetRandomHeight(totalHeight-newHeight, towerAmount-1);
+
+            SetRandomHeight(totalHeight - newHeight, towerAmount - 1);
         }
 
         private Dictionary<int, int> randomHeightByTowerID = new();
         private TowerData[] totalTowers;
+
         void MatchTowersWithHeights(List<ActorData> actors)
         {
             randomHeightByTowerID.Clear();
@@ -63,19 +62,6 @@ namespace Blueprint
             }
         }
 
-        void ExecuteNewHeights()
-        {
-            foreach (var tower in totalTowers)
-            {
-                var towerID = tower.NumericData.UniqID;
-                var towerObject = AllTowers.GetTower(towerID);
-                
-                towerObject.Data.SetHeightAutonomously(randomHeightByTowerID[towerID]);
-                towerObject.StartRiseFallRoutine(true);
-                //tower.UpdateHeight(); //set Height de olmalı bir yerlerde yok mu, en başta?
-                //randomHeightByTowerID.Add(totalTowers[i].NumericData.UniqID, randomHeights[i]);
-            }
-        }
 
         void ExecuteHeights(List<ActorData> actors)
         {
@@ -83,43 +69,27 @@ namespace Blueprint
             {
                 if (actor.Type == ActorType.MultiTower)
                 {
-                    foreach (var tower in actor.Towers)
+                    foreach (var towerData in actor.Towers)
                     {
-                        var towerID = tower.NumericData.UniqID;
-                        var towerObject = AllTowers.GetTower(towerID);
-                        
-                        towerObject.Data.SetHeightAutonomously(randomHeightByTowerID[towerID]);
+                        SetNewHeight(towerData);
                     }
                     DoubleTowerEqualizer.Equalize(actor.Towers);
                 }
                 else
                 {
-                    foreach (var tower in actor.Towers)
-                    {
-                        var towerID = tower.NumericData.UniqID;
-                        var towerObject = AllTowers.GetTower(towerID);
-                
-                        towerObject.Data.SetHeightAutonomously(randomHeightByTowerID[towerID]);
-                        towerObject.StartRiseFallRoutine(true);
-                    }
+                    var towerObject = SetNewHeight(actor.Towers[0]);
+                    towerObject.StartRiseFallRoutine(true);
                 }
-              
             }
         }
 
-        void EqualizeDoubles(List<ActorData> actors)
+        private TowerObject SetNewHeight(TowerData tower)
         {
-            foreach (var actor in actors)
-            {
-                if (actor.Type != ActorType.MultiTower) continue;
+            var towerID = tower.NumericData.UniqID;
+            var towerObject = AllTowers.GetTower(towerID);
 
-                foreach (var tower in actor.TowerNumericDatas)
-                {
-                    //3 tane olduğunu düşün nasıl equalize edicen?
-                }
-               
-            }
+            towerObject.Data.SetHeightAutonomously(randomHeightByTowerID[towerID]);
+            return towerObject;
         }
     }
-
 }
