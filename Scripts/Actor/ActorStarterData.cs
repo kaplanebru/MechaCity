@@ -67,7 +67,7 @@ public class ActorStarterData
   
     public void OnDoubleCase()
     {
-        var newDouble = new DoubleTowerPhysical(ActorData.TowerNumericDatas);
+        var newDouble = new DoubleTowerPhysical(ActorData.TowerNumericDatas, ActorData.Towers);
         newDouble.Equalize();
         newDouble.CreateBridge();
     }

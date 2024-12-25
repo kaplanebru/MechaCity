@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Actor;
+using Enums;
 using Towers;
 using UnityEngine;
 
@@ -77,7 +78,8 @@ public class ActorsInitializer : MonoBehaviour
     {
         foreach (var newActor in ActorStarterDatas)
         {
-            newActor.OnDoubleCase();
+            if(newActor.ActorData.Type == ActorType.MultiTower)
+                newActor.OnDoubleCase();
         }
     }
     

@@ -27,9 +27,9 @@ namespace Blueprint
             SetRandomHeight(totalHeight, towerAmount);
             MatchTowersWithHeights(actors); 
             //todo: varsa random lock da eklenir
-            ExecuteNewHeights();
-            //Equalize
-            //Distribute heights to towers
+            //ExecuteNewHeights();
+            ExecuteHeights(actors);
+         
         }
         
         List<int> randomHeights = new();
@@ -65,15 +65,45 @@ namespace Blueprint
 
         void ExecuteNewHeights()
         {
-            for (var i = 0; i < totalTowers.Length; i++)
+            foreach (var tower in totalTowers)
             {
-                var towerID = totalTowers[i].NumericData.UniqID;
-                var tower = AllTowers.GetTower(towerID);
+                var towerID = tower.NumericData.UniqID;
+                var towerObject = AllTowers.GetTower(towerID);
                 
-                tower.Data.SetHeightAutonomously(randomHeightByTowerID[towerID]);
-                tower.StartRiseFallRoutine(true);
+                towerObject.Data.SetHeightAutonomously(randomHeightByTowerID[towerID]);
+                towerObject.StartRiseFallRoutine(true);
                 //tower.UpdateHeight(); //set Height de olmalı bir yerlerde yok mu, en başta?
                 //randomHeightByTowerID.Add(totalTowers[i].NumericData.UniqID, randomHeights[i]);
+            }
+        }
+
+        void ExecuteHeights(List<ActorData> actors)
+        {
+            foreach (var actor in actors)
+            {
+                if (actor.Type == ActorType.MultiTower)
+                {
+                    foreach (var tower in actor.Towers)
+                    {
+                        var towerID = tower.NumericData.UniqID;
+                        var towerObject = AllTowers.GetTower(towerID);
+                        
+                        towerObject.Data.SetHeightAutonomously(randomHeightByTowerID[towerID]);
+                    }
+                    DoubleTowerEqualizer.Equalize(actor.Towers);
+                }
+                else
+                {
+                    foreach (var tower in actor.Towers)
+                    {
+                        var towerID = tower.NumericData.UniqID;
+                        var towerObject = AllTowers.GetTower(towerID);
+                
+                        towerObject.Data.SetHeightAutonomously(randomHeightByTowerID[towerID]);
+                        towerObject.StartRiseFallRoutine(true);
+                    }
+                }
+              
             }
         }
 

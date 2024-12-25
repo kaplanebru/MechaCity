@@ -15,10 +15,9 @@ namespace Actor
 
         public static ActorData GetActor(uint id) => Registry[id];
         public static int[] GetTowerIDs(uint id) => Registry[id].TowerIDs;
-        public static List<TowerNumericData> GetTowersData(uint id) => Registry[id].TowerNumericDatas.ToList();
+        public static List<TowerNumericData> GetTowersNumericData(uint id) => Registry[id].TowerNumericDatas.ToList();
 
-        public static List<TowerData> GetTowerHeightCouples(uint id) =>
-            Registry[id].Towers.ToList();
+        public static List<TowerData> GetTowersData(uint id) => Registry[id].Towers.ToList();
 
 
         private void Subscribe()
