@@ -42,7 +42,6 @@ namespace Towers
         public void Subscribe()
         {
             GeneralEventbus.InitializerEvents.OnOrienterReady += OrientVersTarget;
-
         }
 
         public void Unsubscribe()
@@ -74,37 +73,13 @@ namespace Towers
             Data.Body.rotation = Quaternion.Euler(towerRot.x, newRot.eulerAngles.y, towerRot.z);
         }
 
-        public void ChangeHeightPhysically(float newHeight, bool isRising)
+        public void SetHeightPhysically(float newHeight, bool isRising)
         {
             newHeight *= Data.CommonData.TowerHeightPerStep;
             riseFallMotion.UpdateData(newHeight, isRising);
-          
-
-            // Data.Middle.transform.DOScaleY(newHeight, 1).OnComplete(() =>
-            // {
-            //     UIEventbus.OnTowerHeightChange?.Invoke(newHeight / Data.CommonData.TowerHeightPerStep, Id); //coroutine while loop bitimine
-            // });
-
             Data.Top.transform.DOLocalMoveY(newHeight + Data.TopOffset, 1);
         }
         
-
-        // public void SetHeight(float newHeight)
-        // {
-        //     newHeight *= Data.CommonData.TowerHeightPerStep;
-        //
-        //     var scale = Data.Middle.transform.localScale;
-        //     var pos = Data.Top.transform.localPosition;
-        //
-        //     scale.y = newHeight;
-        //     pos.y = newHeight;
-        //
-        //     Data.Middle.transform.localScale = scale;
-        //     Data.Top.transform.localPosition = pos;
-        //
-        //     UIEventbus.OnTowerHeightChange?.Invoke(newHeight, Id);
-        // }
-
         public void Shake()
         {
             GeneralEventbus.OnCoroutineTrigger?.Invoke(shaker);

@@ -23,14 +23,17 @@ namespace Towers
         
         void FirstMotion()
         {
-            Data.VisualData.Mover.ChangeHeightPhysically(Data.NumericData.Height, true);
+            Data.VisualData.Mover.SetHeightPhysically(Data.NumericData.Height, true);
+            //Data.SetHeight(Data.NumericData.Height);
             StartRiseFallRoutine(true);
         }
+        
 
-        private Coroutine riseRoutine;
+        private Coroutine riseRoutine = null;
 
         public void StartRiseFallRoutine(bool forOnce = false)
         {
+            //if(riseRoutine != null) return; //ya da stop start, todo: check
             riseRoutine = StartCoroutine(Data.VisualData.Mover.riseFallMotion.RiseRoutine(forOnce));
         }
 

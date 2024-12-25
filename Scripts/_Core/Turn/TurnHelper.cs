@@ -19,17 +19,17 @@ public class TurnHelper
 
     public void Subscribe()
     {
-        Teams.TeamEvents.OnTeamsRequest += SendTeams;
+        TeamEvents.OnBothTeamsRequest += SendTeams;
     }
 
     public void Unsubscribe()
     {
-        Teams.TeamEvents.OnTeamsRequest -= SendTeams;
+        TeamEvents.OnBothTeamsRequest -= SendTeams;
     }
     
     void SendTeams()
     {
-        Teams.TeamEvents.OnTeamsSent?.Invoke(TeamsByTurn);
+        TeamEvents.OnTeamsSent?.Invoke(TeamsByTurn);
     }
    
     public void GetPreviousStateData(BaseTurnState previousState, BaseTurnState currentState)

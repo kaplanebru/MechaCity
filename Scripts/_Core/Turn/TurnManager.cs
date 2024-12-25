@@ -48,6 +48,11 @@ namespace Turn
             Eventbus.CombatEvents.OnSendingCombatPairs?.Invoke(isReversed);
         }
 
+        internal Team SendTeam(TeamState teamState)
+        {
+            return TurnHelper.TeamsByTurn[teamState]; //TeamState.CurrentTeam
+        }
+
         private void Initialize()
         {
             SendCombatPairs(false); //false todo, hep aynı yönde başlamasın

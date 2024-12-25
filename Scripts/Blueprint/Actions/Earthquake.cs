@@ -4,6 +4,7 @@ using System.Linq;
 using Actor;
 using Blueprint;
 using Enums;
+using Teams;
 using Towers;
 using UnityEngine;
 
@@ -13,7 +14,8 @@ namespace Blueprint
     {
         public void Execute(params object[] obj)
         {
-            
+            var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamState.RivalTeam);
+            StartEarthquake(rivalTeam.Data.Actors);
         }
         
         void StartEarthquake(List<ActorData> actors) //rakibe atılsın sadece
@@ -24,6 +26,7 @@ namespace Blueprint
             randomHeights.Clear();
             SetRandomHeight(totalHeight, towerAmount);
             MatchTowersWithHeights(actors);
+            ExecuteNewHeights();
             //Equalize
             //Distribute heights to towers
         }
@@ -57,27 +60,15 @@ namespace Blueprint
             {
                 randomHeightByTowerID.Add(totalTowers[i].NumericData.UniqID, randomHeights[i]);
             }
-            
-            // for (var i = 0; i < actors.Count; i++)
-            // {
-            //     var actor = actors[i];
-            //     
-            //     if (actor.Type == ActorType.Standard)
-            //     {
-            //         randomHeightByTowerID.Add();
-            //     }
-            //     else
-            //     {
-            //         
-            //     }
-            // }
         }
 
         void ExecuteNewHeights()
         {
             for (var i = 0; i < totalTowers.Length; i++)
             {
-                var tower = totalTowers[i];
+                var tower = AllTowers.GetTower(totalTowers[i].NumericData.UniqID);
+                tower.Data.SetHeightAutonomously(randomHeightByTowerID[i]);
+                tower.StartRiseFallRoutine(true);
                 //tower.UpdateHeight(); //set Height de olmalı bir yerlerde yok mu, en başta?
                 //randomHeightByTowerID.Add(totalTowers[i].NumericData.UniqID, randomHeights[i]);
             }

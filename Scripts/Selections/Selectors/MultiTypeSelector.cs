@@ -21,7 +21,7 @@ public class MultiTypeSelector : Selector, IBlockable
         {
             group.SelectedActors.Clear(); 
         }
-
+        
         TeamEvents.OnTeamsSent += SetTeamsAndBlock;
     }
 
@@ -36,7 +36,7 @@ public class MultiTypeSelector : Selector, IBlockable
         DeselectAll();
 
         if (CurrentGroup.BlockType != BlockType.None) //bunu sileriz
-            TeamEvents.OnTeamsRequest?.Invoke();
+            TeamEvents.OnBothTeamsRequest?.Invoke();
     }
     
     protected override void GetActor(params object[] args)

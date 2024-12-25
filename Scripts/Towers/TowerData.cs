@@ -26,10 +26,15 @@ namespace Towers
             }
 
             int newHeight = NumericData.Height + extra;
+            SetHeightAutonomously(newHeight);
+        }
+
+        public void SetHeightAutonomously(int newHeight)
+        {
             bool isRising = newHeight > NumericData.Height;
             NumericData.Height = newHeight;
-
-            VisualData.Mover.ChangeHeightPhysically(newHeight, isRising);
+            
+            VisualData.Mover.SetHeightPhysically(newHeight, isRising);
         }
     }
 

@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Actor;
-using Enums;
 using Towers;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -55,11 +52,5 @@ namespace Teams
         // todo: separate
 
        
-    }
-
-    public static class TeamEvents
-    {
-        public static Action<Dictionary<TeamState, Team>> OnTeamsSent;
-        public static Action OnTeamsRequest;
     }
 }

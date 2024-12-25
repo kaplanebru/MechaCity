@@ -1,5 +1,6 @@
 using GameUI;
 using Network;
+using Teams;
 
 namespace Turn
 {
@@ -13,6 +14,7 @@ namespace Turn
             
             Eventbus.CombatEvents.OnPairsSet += MainClass.SendCombatPairs;
             TeamEvents.OnTeamsSet += MainClass.SetTurnTeams;
+            TeamEvents.OnSingleTeamDemand += MainClass.SendTeam;
             NetworkEventbus.OnAllClientsSet += MainClass.FirstTurn;
             NetworkEventbus.ServerEvents.OnStateChangeRequestByServer += MainClass.ChangeStateBySystem;
             
@@ -33,6 +35,8 @@ namespace Turn
             
             Eventbus.CombatEvents.OnPairsSet -= MainClass.SendCombatPairs;
             TeamEvents.OnTeamsSet -= MainClass.SetTurnTeams;
+            TeamEvents.OnSingleTeamDemand -= MainClass.SendTeam;
+
             NetworkEventbus.OnAllClientsSet -= MainClass.FirstTurn;
             NetworkEventbus.ServerEvents.OnStateChangeRequestByServer -= MainClass.ChangeStateBySystem;
 
@@ -44,6 +48,7 @@ namespace Turn
             BpEventbus.StateEvents.StateChangeRequestToIntruder -= MainClass.SendStateChangeRequest;
             MainClass.PairController.Unsubscribe();
             MainClass.TurnHelper.Unsubscribe();
+
         }
     }
 }
