@@ -88,13 +88,13 @@ namespace Actor
 
         public int TryGetAvailableHeightByStep(int step)
         {
-            int availableHeight = GetTotalHeight();
+            int availableHeight = TowerNumericDatas.Sum(tower => tower.AvailableHeight);
             return TowerNumericDatas[0].AvailableHeight < step ? 0 : availableHeight;
         }
 
         public int GetTotalHeight()
         {
-            return TowerNumericDatas.Sum(tower => tower.AvailableHeight);
+            return TowerNumericDatas.Sum(tower => tower.Height);
         }
     }
 }

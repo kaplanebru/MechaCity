@@ -25,7 +25,8 @@ namespace Blueprint
 
             randomHeights.Clear();
             SetRandomHeight(totalHeight, towerAmount);
-            MatchTowersWithHeights(actors);
+            MatchTowersWithHeights(actors); 
+            //todo: varsa random lock da eklenir
             ExecuteNewHeights();
             //Equalize
             //Distribute heights to towers
@@ -44,7 +45,7 @@ namespace Blueprint
             }
             
             int max = totalHeight - (towerAmount - 1);
-            newHeight = Random.Range(1, max + 1);
+            newHeight = Random.Range(1, max + 1); //todo: Oyunun max heightiyle de sınırlanır
             randomHeights.Add(newHeight);
             
             SetRandomHeight(totalHeight-newHeight, towerAmount-1);
