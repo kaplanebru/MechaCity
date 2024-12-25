@@ -40,6 +40,11 @@ namespace Towers
             //     tower.Mover.OrientVersTarget();
             // }
         }
+
+        public void ExecuteEqualHeight()
+        {
+            
+        }
         public void Equalize() //bridgeden önce olmalı
         {
             int totalHeight = 0;

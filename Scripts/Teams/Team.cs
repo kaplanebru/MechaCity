@@ -54,35 +54,7 @@ namespace Teams
         
         // todo: separate
 
-        void Earthquake() //rakibe atılsın sadece
-        {
-            var totalHeight = Data.Actors.Sum(a => a.GetTotalHeight());
-            var towerAmount = Data.Actors.Sum(a => a.TowerAmount);
-
-            randomHeights.Clear();
-            SetRandomHeight(totalHeight, towerAmount);
-            //Equalize
-            //Distribute heights to towers
-        }
-        
-        List<int> randomHeights = new();
-
-        void SetRandomHeight(int totalHeight, int towerAmount)
-        {
-            int newHeight;
-            if (towerAmount == 1)
-            {
-                newHeight = totalHeight;
-                randomHeights.Add(newHeight);
-                return;
-            }
-            
-            int max = totalHeight - (towerAmount - 1);
-            newHeight = Random.Range(1, max + 1);
-            randomHeights.Add(newHeight);
-            
-            SetRandomHeight(totalHeight-newHeight, towerAmount-1);
-        }
+       
     }
 
     public static class TeamEvents
