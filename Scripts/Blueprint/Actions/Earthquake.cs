@@ -12,6 +12,8 @@ namespace Blueprint
 {
     public class Earthquake : IBpAction
     {
+        private int totalHeight;
+        private int towerAmount;
         public void Execute(params object[] obj)
         {
             var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamState.RivalTeam);
@@ -20,8 +22,8 @@ namespace Blueprint
 
         void StartEarthquake(List<ActorData> actors) //rakibe atılsın sadece
         {
-            var totalHeight = actors.Sum(a => a.GetTotalHeight());
-            var towerAmount = actors.Sum(a => a.TowerAmount);
+            totalHeight = actors.Sum(a => a.GetTotalHeight());
+            towerAmount = actors.Sum(a => a.TowerAmount);
 
             randomHeights.Clear();
             SetRandomHeight(totalHeight, towerAmount);
@@ -58,8 +60,30 @@ namespace Blueprint
             totalTowers = actors.SelectMany(a => a.Towers).ToArray();
             for (var i = 0; i < totalTowers.Length; i++)
             {
-                randomHeightByTowerID.Add(totalTowers[i].NumericData.UniqID, randomHeights[i]);
+                var towerNumeric = totalTowers[i].NumericData;
+                if(IsEqualInHeight(towerNumeric, randomHeights[i] ))break;
+                    // if (towerNumeric.Height == randomHeights[i]) //eşit gelmemesi için
+                // {
+                //     randomHeightByTowerID.Clear();
+                //     randomHeights.Clear();
+                //     SetRandomHeight(totalHeight, towerAmount);
+                //     break;
+                // }
+                randomHeightByTowerID.Add(towerNumeric.UniqID, randomHeights[i]);
             }
+        }
+
+        private bool IsEqualInHeight(TowerNumericData towerNumeric, int randomHeight)
+        {
+            if (towerNumeric.Height == randomHeight) //eşit gelmemesi için
+            {
+                randomHeightByTowerID.Clear();
+                randomHeights.Clear();
+                SetRandomHeight(totalHeight, towerAmount);
+                return true;
+            }
+
+            return false;
         }
 
 
