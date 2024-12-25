@@ -21,7 +21,7 @@ namespace Towers
 
         void GetTowers()
         {
-            towers = AllTowers.TowerDatas.Select(t=>t.VisualData).ToList();
+            towers = AllTowers.TowerDatas.Values.Select(t=>t.VisualData).ToList();
         }
         
         private void UIHeightChangeRequest(float height, int id)

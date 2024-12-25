@@ -11,13 +11,13 @@ namespace Towers
         public static int TowersCount;
 
         private TowerRelatedsInitializer towerRelatedsInitializer = new();
-        public static List<TowerObject> Towers { get; private set; } = new();
-        public static List<TowerData> TowerDatas { get; private set; } = new();
+        public static Dictionary<int, TowerObject> Towers { get; private set; } = new();
+        public static Dictionary<int, TowerData> TowerDatas { get; private set; } = new();
 
-        public static List<TowerNumericData> TowerNumericDatas { get; private set; } = new();
+        public static Dictionary<int, TowerNumericData> TowerNumericDatas { get; private set; } = new();
 
         public static TowerObject GetTower(int id) => Towers[id];
-        public static TowerData GetData(int id) => TowerDatas[id]; //todo? firstordefault? Ya da id'ye göre order ettir kesinliği için
+        public static TowerData GetData(int id) => TowerDatas[id];
 
         public static TowerNumericData GetNumericData(int id) => TowerNumericDatas[id];
 
@@ -28,12 +28,21 @@ namespace Towers
             Eventbus.LinkEvents.OnUnlink += ResetLinkedTowers;
             towerRelatedsInitializer.Subscribe();
         }
-        public void ReceiveTowers(List<TowerObject> towers)
+        public void ReceiveTowers(List<TowerObject> towerObjects)
         {
-            Towers = towers;
-            TowersCount = Towers.Count;
-            TowerDatas = Towers.Select(t => t.Data).ToList();
-            TowerNumericDatas = Towers.Select(t => t.Data.NumericData).ToList();
+            TowersCount = towerObjects.Count;
+            foreach (var towerObject in towerObjects)
+            {
+                int id = towerObject.Data.NumericData.UniqID;
+                Towers.Add(id, towerObject);
+                TowerDatas.Add(id, towerObject.Data);
+                TowerNumericDatas.Add(id, towerObject.Data.NumericData);
+            }
+            
+            // Towers = towerObjects;
+            // TowersCount = Towers.Count;
+            // TowerDatas = Towers.Select(t => t.Data).ToList();
+            // TowerNumericDatas = Towers.Select(t => t.Data.NumericData).ToList();
         }
         
 
@@ -63,17 +72,17 @@ namespace Towers
         
         public static void ResetTowerColors()
         {
-            TowerDatas.ForEach(t=>t.VisualData.ColorHandler.ToOriginalSelectionColor());
+            TowerDatas.Values.ToList().ForEach(t=>t.VisualData.ColorHandler.ToOriginalSelectionColor());
         }
 
         public static void EnableClickability()
         {
-            TowerDatas.ForEach(t=>t.VisualData.EnableSelection());
+            TowerDatas.Values.ToList().ForEach(t=>t.VisualData.EnableSelection());
         }
 
         public static void DisableClickability()
         {
-            TowerDatas.ForEach(t=>t.VisualData.DisableSelection());
+            TowerDatas.Values.ToList().ForEach(t=>t.VisualData.DisableSelection());
         }
 
         public void Unsubscribe()

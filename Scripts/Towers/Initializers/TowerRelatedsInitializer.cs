@@ -19,7 +19,7 @@ namespace Towers
         }
         void SetTowerRelatedIDs()
         {
-            foreach (var tower in AllTowers.Towers)
+            foreach (var tower in AllTowers.Towers.Values)
             {
                 tower.initializer.SetTowerRelatedIds();
             }
@@ -28,7 +28,7 @@ namespace Towers
         
         void SetTowerBpElementsData()
         {
-            foreach (var tower in AllTowers.Towers)
+            foreach (var tower in AllTowers.Towers.Values)
             {
                 tower.initializer.TowerBPElementsDataSetup();
             }
@@ -36,7 +36,7 @@ namespace Towers
         
         private void ExecuteVisualTowerElements()
         {
-            foreach (var tower in AllTowers.Towers)
+            foreach (var tower in AllTowers.Towers.Values)
             {
                 var data = tower.Data.NumericData;
                 if(data.LockStatus.Locked)
