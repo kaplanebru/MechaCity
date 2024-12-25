@@ -66,8 +66,10 @@ namespace Blueprint
         {
             for (var i = 0; i < totalTowers.Length; i++)
             {
-                var tower = AllTowers.GetTower(totalTowers[i].NumericData.UniqID);
-                tower.Data.SetHeightAutonomously(randomHeightByTowerID[i]);
+                var towerID = totalTowers[i].NumericData.UniqID;
+                var tower = AllTowers.GetTower(towerID);
+                
+                tower.Data.SetHeightAutonomously(randomHeightByTowerID[towerID]);
                 tower.StartRiseFallRoutine(true);
                 //tower.UpdateHeight(); //set Height de olmalı bir yerlerde yok mu, en başta?
                 //randomHeightByTowerID.Add(totalTowers[i].NumericData.UniqID, randomHeights[i]);
