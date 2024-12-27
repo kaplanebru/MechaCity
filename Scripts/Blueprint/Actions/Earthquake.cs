@@ -14,16 +14,17 @@ namespace Blueprint
     {
         private int totalHeight;
         private int towerAmount;
-        private TowerData[] totalTowers;
+        private TowerData[] towerDatas;
+        private List<TowerObject> towerObjects = new();
         private List<ActorData> actors = new();
-        //private bool isFirstTime = true;
+        private bool isFirstTime = true;
         
         List<int> randomHeights = new();
         private Dictionary<int, int> randomHeightByTowerID = new();
         
-        private float waitTime = 1f; //1den küçük olursa coroutineler de patlıyor (light ve health için geçerli olan)
+        private float waitTime = .5f; //1den küçük olursa coroutineler de patlıyor (light ve health için geçerli olan)
         //TODO: RİSE ROUTİNE'İ HIZLANDIR VE ONA BAĞLI TWEENLERI DE AYNI ŞKEİLDE AYARLA HATTA SET BY SPEED YAP
-        private int frequence = 3;
+        private int frequence = 4;
         public void Execute(params object[] obj)
         {
             var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamState.RivalTeam);
@@ -34,13 +35,13 @@ namespace Blueprint
 
         private async void CreateEarthquake()
         {
+            isFirstTime = true;
             for (int i = 0; i < frequence; i++)
             {
                 CommitEarthquakePhase();
                 await DelayMaker.WaitForSeconds(waitTime);
-                Debug.Log(i);
-              
             }
+            towerObjects.ForEach(t=>t.StopRiseFallRoutine());
         }
 
         void ResetCollections()
@@ -54,15 +55,22 @@ namespace Blueprint
             actors = selectedActors;
             totalHeight = actors.Sum(a => a.GetTotalHeight());
             towerAmount = actors.Sum(a => a.TowerAmount);
-            totalTowers = actors.SelectMany(a => a.Towers).ToArray();
+            towerDatas = actors.SelectMany(a => a.Towers).ToArray();
+            foreach (var actor in actors)
+            {
+                foreach (var tower in actor.TowerNumericDatas)
+                {
+                    towerObjects.Add(AllTowers.GetTower(tower.UniqID));
+                }
+            }
+            
         }
 
         void CommitEarthquakePhase() //rakibe atılsın sadece
         {
             ResetCollections();
             SetRandomHeight(totalHeight, towerAmount);
-            //ExecuteHeights();
-        
+
             //todo: varsa random lock da eklenir
         }
 
@@ -77,12 +85,14 @@ namespace Blueprint
                 
                 if(!TryMatchTowersWithHeights())
                     return;
-                ExecuteHeights();
-                // if (isFirstTime)
-                // {
-                //     ExecuteHeights();
-                //     isFirstTime = false;
-                // }
+                
+                SetTowersHeightData();
+                
+                if (isFirstTime)
+                {
+                    StartMotion();
+                    isFirstTime = false;
+                }
                 return;
             }
 
@@ -97,9 +107,9 @@ namespace Blueprint
 
         private bool TryMatchTowersWithHeights()
         {
-            for (var i = 0; i < totalTowers.Length; i++)
+            for (var i = 0; i < towerDatas.Length; i++)
             {
-                var towerNumeric = totalTowers[i].NumericData;
+                var towerNumeric = towerDatas[i].NumericData;
                 if(IsEqualInHeight(towerNumeric, randomHeights[i] )) 
                    return false;
                 randomHeightByTowerID.Add(towerNumeric.UniqID, randomHeights[i]);
@@ -118,6 +128,22 @@ namespace Blueprint
             return false;
         }
 
+        void SetTowersHeightData()
+        {
+            foreach (var actor in actors)
+            {
+                var towerObject = SetNewHeight(actor.Towers[0]);
+            }
+        }
+
+
+        void StartMotion()
+        {
+            foreach (var towerObject in towerObjects)
+            {
+                towerObject.StartRiseFallRoutine();
+            }
+        }
 
         void ExecuteHeights()
         {
@@ -129,12 +155,12 @@ namespace Blueprint
                     {
                         SetNewHeight(towerData);
                     }
-                    DoubleTowerEqualizer.Equalize(actor.Towers);
+                    DoubleTowerEqualizer.Equalize(actor.Towers); //TODO: bu hep for once unutma
                 }
                 else
                 {
                     var towerObject = SetNewHeight(actor.Towers[0]);
-                    towerObject.StartRiseFallRoutine(true);
+                    towerObject.StartRiseFallRoutine(); //true
                 }
             }
         }
