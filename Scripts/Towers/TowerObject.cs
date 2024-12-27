@@ -33,6 +33,7 @@ namespace Towers
 
         public void StartRiseFallRoutine(bool forOnce = false)
         {
+            //print("start co: " + Data.NumericData.UniqID);
             if(riseRoutine != null) StopRiseFallRoutine(); //ya da stop start, todo: check
             riseRoutine = StartCoroutine(Data.VisualData.Mover.riseFallMotion.RiseRoutine(forOnce));
         }

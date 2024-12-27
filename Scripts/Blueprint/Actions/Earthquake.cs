@@ -81,9 +81,16 @@ namespace Blueprint
             {
                 newHeight = totalHeight;
                 randomHeights.Add(newHeight);
-                
-                if(TryMatchTowersWithHeights())
+
+                if (TryMatchTowersWithHeights())
+                {
                     SetTowersHeightData();
+                    if (isFirstTime)
+                    {
+                        StartMotion();
+                        isFirstTime = false;
+                    }
+                }
                 return;
             }
 
@@ -99,11 +106,6 @@ namespace Blueprint
             foreach (var actor in actors)
             { 
                 SetNewHeight(actor.Towers[0]);
-            }
-            if (isFirstTime)
-            {
-                StartMotion();
-                isFirstTime = false;
             }
         }
 
