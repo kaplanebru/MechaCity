@@ -14,25 +14,55 @@ namespace Blueprint
     {
         private int totalHeight;
         private int towerAmount;
+        private TowerData[] totalTowers;
+        private List<ActorData> actors = new();
+        
+        List<int> randomHeights = new();
+        private Dictionary<int, int> randomHeightByTowerID = new();
+        
+        private float waitTime = 1f; //1den küçük olursa coroutineler de patlıyor (light ve health için geçerli olan)
+        //TODO: RİSE ROUTİNE'İ HIZLANDIR VE ONA BAĞLI TWEENLERI DE AYNI ŞKEİLDE AYARLA HATTA SET BY SPEED YAP
+        private int frequence = 3;
         public void Execute(params object[] obj)
         {
             var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamState.RivalTeam);
-            StartEarthquake(rivalTeam.Data.Actors);
+            SetTowers(rivalTeam.Data.Actors);
+            CreateEarthquake();
         }
 
-        void StartEarthquake(List<ActorData> actors) //rakibe atılsın sadece
+        private async void CreateEarthquake()
         {
+            for (int i = 0; i < frequence; i++)
+            {
+                CommitEarthquakePhase();
+                await DelayMaker.WaitForSeconds(waitTime); // Wait asynchronously
+                //Debug.Log($"Phase {i} completed at {Time.time}");
+            }
+        }
+
+        void ResetCollections()
+        {
+            randomHeights.Clear();
+            randomHeightByTowerID.Clear();
+        }
+
+        void SetTowers(List<ActorData> selectedActors)
+        {
+            actors = selectedActors;
             totalHeight = actors.Sum(a => a.GetTotalHeight());
             towerAmount = actors.Sum(a => a.TowerAmount);
-
-            randomHeights.Clear();
-            SetRandomHeight(totalHeight, towerAmount);
-            MatchTowersWithHeights(actors);
-            //todo: varsa random lock da eklenir
-            ExecuteHeights(actors);
+            totalTowers = actors.SelectMany(a => a.Towers).ToArray();
+            Debug.Log( "total towers: " + totalTowers.Length);
         }
 
-        List<int> randomHeights = new();
+        void CommitEarthquakePhase() //rakibe atılsın sadece
+        {
+            ResetCollections();
+            SetRandomHeight(totalHeight, towerAmount);
+        
+            //todo: varsa random lock da eklenir
+        }
+
 
         void SetRandomHeight(int totalHeight, int towerAmount)
         {
@@ -41,6 +71,9 @@ namespace Blueprint
             {
                 newHeight = totalHeight;
                 randomHeights.Add(newHeight);
+                
+                MatchTowersWithHeights();
+                ExecuteHeights();  
                 return;
             }
 
@@ -51,13 +84,11 @@ namespace Blueprint
             SetRandomHeight(totalHeight - newHeight, towerAmount - 1);
         }
 
-        private Dictionary<int, int> randomHeightByTowerID = new();
-        private TowerData[] totalTowers;
+      
 
-        void MatchTowersWithHeights(List<ActorData> actors)
+        void MatchTowersWithHeights()
         {
-            randomHeightByTowerID.Clear();
-            totalTowers = actors.SelectMany(a => a.Towers).ToArray();
+            //randomHeightByTowerID.Clear();
             for (var i = 0; i < totalTowers.Length; i++)
             {
                 var towerNumeric = totalTowers[i].NumericData;
@@ -65,14 +96,14 @@ namespace Blueprint
                     break;
                 randomHeightByTowerID.Add(towerNumeric.UniqID, randomHeights[i]);
             }
+            
         }
 
         private bool IsEqualInHeight(TowerNumericData towerNumeric, int randomHeight)
         {
             if (towerNumeric.Height == randomHeight) //eşit gelmemesi için
             {
-                randomHeightByTowerID.Clear();
-                randomHeights.Clear();
+                ResetCollections();
                 SetRandomHeight(totalHeight, towerAmount);
                 return true;
             }
@@ -81,7 +112,7 @@ namespace Blueprint
         }
 
 
-        void ExecuteHeights(List<ActorData> actors)
+        void ExecuteHeights()
         {
             foreach (var actor in actors)
             {
