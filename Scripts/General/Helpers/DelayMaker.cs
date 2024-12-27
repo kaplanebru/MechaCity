@@ -24,4 +24,15 @@ public static class DelayMaker
         int milliseconds = (int)(seconds * 1000);
         await Task.Delay(milliseconds);
     }
+    
+    //EXECUTION EXAMPLE
+    // private async void CreateEarthquake()
+    // {
+    //     for (int i = 0; i < frequence; i++)
+    //     {
+    //         CommitEarthquakePhase();
+    //         await DelayMaker.WaitForSeconds(waitTime); // Wait asynchronously
+    //         //Debug.Log($"Phase {i} completed at {Time.time}");
+    //     }
+    // }
 }

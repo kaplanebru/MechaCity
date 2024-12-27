@@ -16,6 +16,7 @@ namespace Blueprint
         private int towerAmount;
         private TowerData[] totalTowers;
         private List<ActorData> actors = new();
+        //private bool isFirstTime = true;
         
         List<int> randomHeights = new();
         private Dictionary<int, int> randomHeightByTowerID = new();
@@ -28,6 +29,7 @@ namespace Blueprint
             var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamState.RivalTeam);
             SetTowers(rivalTeam.Data.Actors);
             CreateEarthquake();
+            CommitEarthquakePhase();
         }
 
         private async void CreateEarthquake()
@@ -35,8 +37,9 @@ namespace Blueprint
             for (int i = 0; i < frequence; i++)
             {
                 CommitEarthquakePhase();
-                await DelayMaker.WaitForSeconds(waitTime); // Wait asynchronously
-                //Debug.Log($"Phase {i} completed at {Time.time}");
+                await DelayMaker.WaitForSeconds(waitTime);
+                Debug.Log(i);
+              
             }
         }
 
@@ -52,13 +55,13 @@ namespace Blueprint
             totalHeight = actors.Sum(a => a.GetTotalHeight());
             towerAmount = actors.Sum(a => a.TowerAmount);
             totalTowers = actors.SelectMany(a => a.Towers).ToArray();
-            Debug.Log( "total towers: " + totalTowers.Length);
         }
 
         void CommitEarthquakePhase() //rakibe atılsın sadece
         {
             ResetCollections();
             SetRandomHeight(totalHeight, towerAmount);
+            //ExecuteHeights();
         
             //todo: varsa random lock da eklenir
         }
@@ -72,8 +75,14 @@ namespace Blueprint
                 newHeight = totalHeight;
                 randomHeights.Add(newHeight);
                 
-                MatchTowersWithHeights();
-                ExecuteHeights();  
+                if(!TryMatchTowersWithHeights())
+                    return;
+                ExecuteHeights();
+                // if (isFirstTime)
+                // {
+                //     ExecuteHeights();
+                //     isFirstTime = false;
+                // }
                 return;
             }
 
@@ -86,17 +95,16 @@ namespace Blueprint
 
       
 
-        void MatchTowersWithHeights()
+        private bool TryMatchTowersWithHeights()
         {
-            //randomHeightByTowerID.Clear();
             for (var i = 0; i < totalTowers.Length; i++)
             {
                 var towerNumeric = totalTowers[i].NumericData;
                 if(IsEqualInHeight(towerNumeric, randomHeights[i] )) 
-                    break;
+                   return false;
                 randomHeightByTowerID.Add(towerNumeric.UniqID, randomHeights[i]);
             }
-            
+            return true;
         }
 
         private bool IsEqualInHeight(TowerNumericData towerNumeric, int randomHeight)
@@ -107,7 +115,6 @@ namespace Blueprint
                 SetRandomHeight(totalHeight, towerAmount);
                 return true;
             }
-
             return false;
         }
 
