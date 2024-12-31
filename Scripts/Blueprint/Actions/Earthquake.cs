@@ -104,7 +104,18 @@ namespace Blueprint
         {
             foreach (var actor in actors)
             { 
-                SetNewHeight(actor.Towers[0]);
+                if(actor.Type == ActorType.Standard)
+                    SetNewHeight(actor.Towers[0]);
+                else
+                {
+                   
+                    var equalizedHeights = DoubleTowerEqualizer.EqualizeHeights(actor.Towers.Select(t =>  randomHeightByTowerID[t.NumericData.UniqID]).ToArray());
+                    for (var i = 0; i < actor.Towers.Length; i++)
+                    {
+                        var tower = actor.Towers[i];
+                        tower.SetHeightAutonomously(equalizedHeights[i]);
+                    }
+                }
             }
         }
 

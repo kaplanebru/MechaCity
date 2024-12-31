@@ -8,7 +8,7 @@ namespace Towers
     public static class DoubleTowerEqualizer
     {
         public static void Equalize(TowerData[] towers) //bridgeden önce olmalı
-        { 
+        {
             TowerNumericData[] datas = towers.Select(t => t.NumericData).ToArray();
             int amount = towers.Length;
             int totalHeight = 0;
@@ -40,7 +40,35 @@ namespace Towers
                 AllTowers.GetTower(data.UniqID).StartRiseFallRoutine(true); //Todo: düzelt
             }
         }
-   
-    }
 
+        public static List<int> EqualizeHeights(int[] heights)
+        {
+
+            List<int> newHeights = new();
+            int amount = heights.Length;
+            int totalHeight = 0;
+            foreach (var height in heights)
+            {
+                totalHeight += height;
+            }
+
+            int averageHeight = totalHeight / amount;
+            int rest = totalHeight % averageHeight;
+
+            for (var i = heights.Length - 1; i >= 0; i--)
+            {
+                int extra = 0;
+                if (rest > 0)
+                {
+                    extra = 1;
+                    rest--;
+                }
+
+                var newHeight = averageHeight + extra;
+                newHeights.Add(newHeight);
+            }
+
+            return newHeights;
+        }
+    }
 }
