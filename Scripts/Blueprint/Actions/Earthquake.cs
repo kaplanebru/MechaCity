@@ -30,7 +30,6 @@ namespace Blueprint
             var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamState.RivalTeam);
             SetTowers(rivalTeam.Data.Actors);
             CreateEarthquake();
-            CommitEarthquakePhase();
         }
 
         private async void CreateEarthquake()
