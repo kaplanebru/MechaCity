@@ -17,14 +17,16 @@ namespace Blueprint
         private TowerNumericData[] towerNumericDatas;
         private List<TowerObject> towerObjects = new();
         private List<ActorData> actors = new();
-        private bool isFirstTime = true;
+       
         
         List<int> randomHeights = new();
         private Dictionary<int, int> randomHeightByTowerID = new();
         
-        private float waitTime = .5f; //tower heightler arası en büyük farka göre değişse?
+        private float waitTime = .9f; //.5f
+        private float towerTime = 1f;
         //TODO: RİSE ROUTİNE'İ HIZLANDIR VE ONA BAĞLI TWEENLERI DE AYNI ŞKEİLDE AYARLA HATTA SET BY SPEED YAP
         private int frequence = 4;
+        private int stepTracker = 0;
         public void Execute(params object[] obj)
         {
             var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamState.RivalTeam);
@@ -34,11 +36,14 @@ namespace Blueprint
 
         private async void CreateEarthquake()
         {
-            isFirstTime = true;
+            
+            stepTracker = 0;
             for (int i = 0; i < frequence; i++)
             {
+                stepTracker++;
                 CommitEarthquakePhase();
-                await DelayMaker.WaitForSeconds(waitTime);
+                var delay = stepTracker == frequence ? towerTime : waitTime;
+                await DelayMaker.WaitForSeconds(delay);
             }
             towerObjects.ForEach(t=>t.StopRiseFallRoutine());
         }
@@ -84,10 +89,9 @@ namespace Blueprint
                 if (TryMatchTowersWithHeights())
                 {
                     SetTowersHeightData();
-                    if (isFirstTime)
+                    if (stepTracker == 1)
                     {
                         StartMotion();
-                        isFirstTime = false;
                     }
                 }
                 return;
@@ -108,12 +112,21 @@ namespace Blueprint
                     SetNewHeight(actor.Towers[0]);
                 else
                 {
-                   
-                    var equalizedHeights = DoubleTowerEqualizer.EqualizeHeights(actor.Towers.Select(t =>  randomHeightByTowerID[t.NumericData.UniqID]).ToArray());
-                    for (var i = 0; i < actor.Towers.Length; i++)
+                    if (stepTracker == frequence)
                     {
-                        var tower = actor.Towers[i];
-                        tower.SetHeightAutonomously(equalizedHeights[i]);
+                        var equalizedHeights = DoubleTowerEqualizer.EqualizeHeights(actor.Towers.Select(t =>  randomHeightByTowerID[t.NumericData.UniqID]).ToArray());
+                        for (var i = 0; i < actor.Towers.Length; i++)
+                        {
+                            var tower = actor.Towers[i];
+                            tower.SetHeightAutonomously(equalizedHeights[i]);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var tower in actor.Towers)
+                        {
+                            SetNewHeight(tower);
+                        }
                     }
                 }
             }
@@ -156,24 +169,6 @@ namespace Blueprint
             tower.SetHeightAutonomously(randomHeightByTowerID[towerID]);
         }
         
-        // void ExecuteHeights()
-        // {
-        //     foreach (var actor in actors)
-        //     {
-        //         if (actor.Type == ActorType.MultiTower)
-        //         {
-        //             foreach (var towerData in actor.Towers)
-        //             {
-        //                 SetNewHeight(towerData);
-        //             }
-        //             DoubleTowerEqualizer.Equalize(actor.Towers); //TODO: bu hep for once unutma
-        //         }
-        //         else
-        //         {
-        //             var towerObject = SetNewHeight(actor.Towers[0]);
-        //             towerObject.StartRiseFallRoutine(); //true
-        //         }
-        //     }
-        //}
+      
     }
 }
