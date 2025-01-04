@@ -31,13 +31,13 @@ namespace GameUI
             SetIDText();
         }
         
-        public void ChangeHeightUI(float height)
+        public void ChangeHeightUI(int height)
         {
-            int heightInt = Mathf.FloorToInt(height / Data.CommonData.TowerHeightPerStep); //todo: later
+            //int heightInt = Mathf.FloorToInt(height / Data.CommonData.TowerHeightPerStep); //todo: later
             foreach (var heightText in Data.HeightTexts)
             {
-                if(heightText != null)
-                    heightText.text = heightInt.ToString();
+                if (heightText != null)
+                    heightText.text = height.ToString(); //heightInt.ToString();
             }
         }
 

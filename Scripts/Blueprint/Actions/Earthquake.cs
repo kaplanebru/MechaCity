@@ -110,6 +110,8 @@ namespace Blueprint
                         StartMotion();
                     }
                 }
+                
+               
                 return;
             }
 
@@ -117,7 +119,7 @@ namespace Blueprint
             max = Mathf.Min(max, AllTowers.MaxTowerHeight-1);
             newHeight = Random.Range(1, max + 1); //todo: Oyunun max heightiyle de sınırlanır
            // newHeight = Mathf.Min(newHeight, AllTowers.MaxTowerHeight);
-            Debug.Log(newHeight);
+            //Debug.Log(newHeight);
             randomHeights.Add(newHeight);
 
             SetRandomHeight(totalHeight - newHeight, towerAmount - 1);

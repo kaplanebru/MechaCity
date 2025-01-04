@@ -13,7 +13,7 @@ namespace GameUI
         public static Action<bool> OnHighlightRequest;
         public static Action OnButtonClicked;
         
-        public static Action<float, int> OnTowerHeightChange;
+        public static Action<int> OnTowerHeightChange;
         
         public static Action<TeamType> OnTeamSwitch;
 

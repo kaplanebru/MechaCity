@@ -119,7 +119,7 @@ public class RiseFallMotion
                 }
                 
                 ResetStartHeight();
-                UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
+                UIEventbus.OnTowerHeightChange?.Invoke(Data.Id); //TODO: TEMP
                 
                 if(forOnce) yield break;
                 
@@ -153,7 +153,7 @@ public class RiseFallMotion
                 }
 
                 ResetStartHeight();
-                UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
+                UIEventbus.OnTowerHeightChange?.Invoke(Data.Id); //TODO: TEMP
                 if(forOnce) yield break;
 
                 if (Data.RiseState != RiseState.Rising)
