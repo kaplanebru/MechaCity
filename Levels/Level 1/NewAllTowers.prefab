@@ -1534,6 +1534,7 @@ MonoBehaviour:
     TowerObjects:
     - {fileID: 1911499708760077541}
     - {fileID: 7831488676558128080}
+  commonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
 --- !u!114 &4831313534355225008
 MonoBehaviour:
   m_ObjectHideFlags: 0

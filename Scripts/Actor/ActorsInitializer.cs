@@ -9,12 +9,14 @@ using UnityEngine;
 public class ActorsInitializer : MonoBehaviour
 {
     public ActorStarterData[] ActorStarterDatas;
-    private AllTowers AllTowers = new();
+    public CommonData commonData;
+    private AllTowers AllTowers;
     private ActorDB ActorDB = new();
 
     private void OnEnable()
     {
         ActorDB.Initialize();
+        AllTowers = new AllTowers(commonData.MaxTowerHeight);
         AllTowers.Subscribe();
         GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid += ProcessTowersByActorData;
         

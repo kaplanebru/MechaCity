@@ -8,14 +8,19 @@ namespace Towers
 {
     public class AllTowers 
     {
+        public AllTowers(int maxTowerHeight)
+        {
+            MaxTowerHeight = maxTowerHeight;
+        }
+        
         public static int TowersCount;
 
         private TowerRelatedsInitializer towerRelatedsInitializer = new();
         public static Dictionary<int, TowerObject> Towers { get; private set; } = new();
         public static Dictionary<int, TowerData> TowerDatas { get; private set; } = new();
 
-        public const int MaxTowerHeight = 6;
-
+        public static int MaxTowerHeight;
+        
         public static Dictionary<int, TowerNumericData> TowerNumericDatas { get; private set; } = new();
 
         public static TowerObject GetTower(int id) => Towers[id];

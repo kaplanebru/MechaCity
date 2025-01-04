@@ -36,7 +36,7 @@ namespace Turn
         void Rise(TowerData selectedTower, int step)
         {
             int riseStep = GetRiseHeight(selectedTower.NumericData, step);
-            if (riseStep == 0)
+            if (riseStep == 0 || (selectedTower.NumericData.Height + riseStep) > AllTowers.MaxTowerHeight) //test: devamı sonradan eklendi
             {
                 Fall(selectedTower, step);
                 return;

@@ -6,4 +6,6 @@ using UnityEngine;
 public class CommonData : ScriptableObject
 {
     public float TowerHeightPerStep = 1.5f;
+    public int MaxTowerHeight = 6;
 }
+
