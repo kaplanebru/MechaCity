@@ -22,7 +22,7 @@ namespace Blueprint
         List<int> randomHeights = new();
         private Dictionary<int, int> randomHeightByTowerID = new();
         
-        private float waitTime = .9f; //.5f
+        private float waitTime = .4f; //.5f
         private float towerTime = 1f;
         //TODO: RİSE ROUTİNE'İ HIZLANDIR VE ONA BAĞLI TWEENLERI DE AYNI ŞKEİLDE AYARLA HATTA SET BY SPEED YAP
         private int frequence = 4;

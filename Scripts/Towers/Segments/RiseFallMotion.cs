@@ -70,13 +70,11 @@ public class RiseFallMotion
 
     float RoundByCustomUnit(float number)
     {
-        //float residue = number % unit;
-        
-        float roundTolerance = 1e-6f;  // A small value to handle precision issues
+        float roundTolerance = 1e-6f;  //to handle precision issues
         float residue = number % unit;
         if (Mathf.Abs(residue) < roundTolerance)
         {
-            residue = 0;  // Ignore small floating-point errors
+            residue = 0; 
         }
 
         float result = residue > 0 ? number - residue + unit : number;
@@ -103,7 +101,6 @@ public class RiseFallMotion
                 {
                     if (Data.ActiveHolder.localPosition.y >= startHeight)
                     {
-                        
                         if (Data.PassiveParts.Count == 0)
                         {
                             Data.RiseState = RiseState.None;
@@ -124,12 +121,12 @@ public class RiseFallMotion
                 UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
                 
                 if(forOnce) yield break;
+                
                 if (Data.RiseState != RiseState.Falling)
                 {
                     Data.RiseState = RiseState.None;
                     speed = startSpeed;
                     MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
-                    //UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
                 }
             }
 
@@ -162,14 +159,8 @@ public class RiseFallMotion
                 {
                     Data.RiseState = RiseState.None;
                     speed = startSpeed;
-                    //MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                 }
-                
-                //UIEventbus.OnTowerHeightChange?.Invoke(Data.TargetHeight, Data.Id); //TODO: TEMP
             }
-
-            else {}
-            
             yield return null;
         }
     }
@@ -204,6 +195,12 @@ public class RiseFallMotion
     {
         var lastPart = Data.ActiveParts.Last();
         Data.ActiveParts.Remove(lastPart);
+
+        if (Data.ActiveParts.Count == 0)
+        {
+            Debug.Log("target height: " + Data.TargetHeight);
+            Debug.LogError("active parts empty: " + Data.Id);
+        }
         Data.PassiveParts.Add(lastPart);
 
         lastPart.SetParent(Data.PassiveHolder);
