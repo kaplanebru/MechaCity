@@ -106,10 +106,23 @@ namespace Turn
                 }
             }
             
-            if (totalAvailableHeight >= selectedActor.GetMaxHeightChangeAmount(step))
+            if (totalAvailableHeight >= selectedActor.GetTowerAmountsPlusStep(step))
             {
-                var possibleResource = tempGroup.Sum(a=>a.TowerAmount) * step;
-                if (possibleResource + selectedActor.GetTotalHeight() > AllTowers.MaxTowerHeight)
+                int maxTowerHeightInActor = 0;
+                int possibleResource;
+                if (selectedActor.Type == ActorType.Standard)
+                    possibleResource = tempGroup.Sum(a=>a.TowerAmount) * step;
+                
+                else
+                    possibleResource = selectedActor.GetTowerAmountsPlusStep(step);
+                
+                var endTotalHeight = possibleResource + selectedActor.GetTotalHeight();
+                maxTowerHeightInActor = endTotalHeight/selectedActor.GetTowerAmountsPlusStep(step) +
+                                        endTotalHeight % selectedActor.GetTowerAmountsPlusStep(step);
+              
+                // Debug.Log(possibleResource + " " + selectedActor.GetTotalHeight());
+                // Debug.Log(endTotalHeight + " "+ endTotalHeight / selectedActor.TowerAmount +" " +  endTotalHeight % selectedActor.TowerAmount);
+                if(maxTowerHeightInActor> AllTowers.MaxTowerHeight)
                     return false;
                 
                 SafeGroup.Convert(tempGroup);
@@ -132,7 +145,7 @@ namespace Turn
 
         int ResourceByLessPopulation(int step) //1 stepten fazla azalacaklar, selected double'a yetişmek için
         {
-            int doubleFreeResource = selectedActor.GetMaxHeightChangeAmount(step);
+            int doubleFreeResource = selectedActor.GetTowerAmountsPlusStep(step);
             
             int counter = doubleFreeResource;
 

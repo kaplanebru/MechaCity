@@ -84,7 +84,7 @@ namespace Actor
             Center /= TowerAmount;
         }
 
-        public int GetMaxHeightChangeAmount(int step) => TowerAmount * step;
+        public int GetTowerAmountsPlusStep(int step) => TowerAmount * step;
 
         public int TryGetAvailableHeightByStep(int step)
         {

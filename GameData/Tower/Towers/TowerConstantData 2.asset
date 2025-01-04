@@ -12,10 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b21e65fc3f6b854409936f0a3f63c62e, type: 3}
   m_Name: TowerConstantData 2
   m_EditorClassIdentifier: 
-  Id: 5
   TowerAssetHolder: {fileID: 11400000, guid: 5a6ab34051a43b7448f07f21f6378188, type: 2}
-  StartHeight: 3
-  StartHealth: 1
+  StartHeight: 6
   DamagePower: 1
   ShieldHeight: 0
   ShotAmount: 1
