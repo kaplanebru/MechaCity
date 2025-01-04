@@ -51,7 +51,6 @@ namespace Turn
 
         void SelectedSingleRise(int step)
         {
-            int totalResource = 0;
             if (!CanRiseByOthers(step))
             {
                 SelectedActorFall(step);
@@ -61,7 +60,7 @@ namespace Turn
             SafeGroup.SetRemovalSteps(step);
             OthersFall();
 
-            totalResource = SafeGroup.TowerCount * step;
+            var totalResource = SafeGroup.TowerCount * step;
             selectedActor.Towers[0].UpdateHeight(totalResource);
             
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
@@ -109,13 +108,13 @@ namespace Turn
             
             if (totalAvailableHeight >= selectedActor.GetMaxHeightChangeAmount(step))
             {
+                var possibleResource = tempGroup.Sum(a=>a.TowerAmount) * step;
+                if (possibleResource + selectedActor.GetTotalHeight() > AllTowers.MaxTowerHeight)
+                    return false;
+                
                 SafeGroup.Convert(tempGroup);
                 SafeGroup.OrderByDescending();
                 
-                var totalResource = SafeGroup.TowerCount * step;
-                if (totalResource + selectedActor.GetTotalHeight() > AllTowers.MaxTowerHeight)
-                    return false;
-
                 return true;
             }
 
