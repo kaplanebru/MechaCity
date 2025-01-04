@@ -14,6 +14,10 @@ namespace Blueprint
     {
         private int totalHeight;
         private int towerAmount;
+
+        private int startTotalHeight;
+        private int startTowerAmount;
+        
         private TowerNumericData[] towerNumericDatas;
         private List<TowerObject> towerObjects = new();
         private List<ActorData> actors = new();
@@ -34,9 +38,14 @@ namespace Blueprint
             CreateEarthquake();
         }
 
+        void SetStartSettings()
+        {
+            startTotalHeight = totalHeight;
+            startTowerAmount = towerAmount;
+        }
+
         private async void CreateEarthquake()
         {
-            
             stepTracker = 0;
             for (int i = 0; i < frequence; i++)
             {
@@ -67,6 +76,7 @@ namespace Blueprint
                     towerObjects.Add(AllTowers.GetTower(tower.UniqID));
                 }
             }
+            SetStartSettings();
         }
 
         void CommitEarthquakePhase() //rakibe atılsın sadece
@@ -84,6 +94,12 @@ namespace Blueprint
             if (towerAmount == 1)
             {
                 newHeight = totalHeight;
+                if (newHeight > AllTowers.MaxTowerHeight)
+                {
+                    ResetCollections();
+                    SetRandomHeight(startTotalHeight, startTowerAmount);
+                    return;
+                }
                 randomHeights.Add(newHeight);
 
                 if (TryMatchTowersWithHeights())
@@ -98,7 +114,10 @@ namespace Blueprint
             }
 
             int max = totalHeight - (towerAmount - 1);
+            max = Mathf.Min(max, AllTowers.MaxTowerHeight-1);
             newHeight = Random.Range(1, max + 1); //todo: Oyunun max heightiyle de sınırlanır
+           // newHeight = Mathf.Min(newHeight, AllTowers.MaxTowerHeight);
+            Debug.Log(newHeight);
             randomHeights.Add(newHeight);
 
             SetRandomHeight(totalHeight - newHeight, towerAmount - 1);
@@ -137,7 +156,7 @@ namespace Blueprint
             for (var i = 0; i < towerNumericDatas.Length; i++)
             {
                 var towerNumeric = towerNumericDatas[i];
-                if(IsEqualInHeight(towerNumeric, randomHeights[i] )) 
+                if(IsEqualInHeight(towerNumeric, randomHeights[i])) 
                    return false;
                 randomHeightByTowerID.Add(towerNumeric.UniqID, randomHeights[i]);
             }
@@ -149,7 +168,7 @@ namespace Blueprint
             if (towerNumeric.Height == randomHeight) //eşit gelmemesi için
             {
                 ResetCollections();
-                SetRandomHeight(totalHeight, towerAmount);
+                SetRandomHeight(startTotalHeight, startTowerAmount);
                 return true;
             }
             return false;

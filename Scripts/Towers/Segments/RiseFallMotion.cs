@@ -104,6 +104,7 @@ public class RiseFallMotion
                         if (Data.PassiveParts.Count == 0)
                         {
                             Data.RiseState = RiseState.None;
+                            Debug.LogAssertion("max amount REACHED, iD: " +Data.Id + "target height: " + Data.TargetHeight / Data.CommonData.TowerHeightPerStep);
                             break;
                         }
 
