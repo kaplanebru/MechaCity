@@ -72,9 +72,9 @@ public class RiseFallMotion
     {
         //float residue = number % unit;
         
-        float tolerance = 1e-6f;  // A small value to handle precision issues
+        float roundTolerance = 1e-6f;  // A small value to handle precision issues
         float residue = number % unit;
-        if (Mathf.Abs(residue) < tolerance)
+        if (Mathf.Abs(residue) < roundTolerance)
         {
             residue = 0;  // Ignore small floating-point errors
         }

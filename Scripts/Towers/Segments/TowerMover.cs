@@ -78,7 +78,7 @@ namespace Towers
             newHeight *= Data.CommonData.TowerHeightPerStep;
             riseFallMotion.UpdateData(newHeight, isRising);
             
-            DOTween.KillAll(Data.Top.transform.gameObject); //for earthquake
+            //DOTween.KillAll(Data.Top.transform.gameObject); //for earthquake
             Data.Top.transform.DOLocalMoveY(newHeight + Data.TopOffset, 1);
         }
         
