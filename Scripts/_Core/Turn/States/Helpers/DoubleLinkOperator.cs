@@ -14,7 +14,7 @@ namespace Turn
     {
         private Dictionary<uint, ActorData> _actors = new();
         private SafeGroup SafeGroup = new();
-        
+
         //Açıklama: normalde çoklu seçimde rise fall'a göre belirleniyor. diğer towerların fall'u ne kadarsa seçilen tower'a o kadar ekleniyor.
         //Fakat double towers amount > others olduğunda tam tersi çalışıyor: Others  souble tower height'ine ulaşana kadar 1'den fazla iner
 
@@ -33,9 +33,8 @@ namespace Turn
         {
             uint actorID = (uint) args[0];
             selectedActor = _actors[actorID];
-           
+
             SelectOperation(_actors[actorID]);
-          
         }
 
         void SelectOperation(ActorData actor)
@@ -56,13 +55,13 @@ namespace Turn
                 SelectedActorFall(step);
                 return;
             }
-            
+
             SafeGroup.SetRemovalSteps(step);
             OthersFall();
 
             var totalResource = SafeGroup.TowerCount * step;
             selectedActor.Towers[0].UpdateHeight(totalResource);
-            
+
             MediatorEventbus.ChainMotionEvents.OnRising?.Invoke();
         }
 
@@ -70,7 +69,7 @@ namespace Turn
         {
             if (!CanRiseByOthers(step))
             {
-                SelectedActorFall( step);
+                SelectedActorFall(step);
                 return;
             }
 
@@ -89,6 +88,7 @@ namespace Turn
 
         int totalAvailableHeight;
         private List<ActorData> tempGroup = new();
+
         bool CanRiseByOthers(int step)
         {
             totalAvailableHeight = 0;
@@ -96,7 +96,7 @@ namespace Turn
 
             foreach (var actor in _actors.Values)
             {
-                if(selectedActor == actor) continue;
+                if (selectedActor == actor) continue;
 
                 int availableHeight = actor.TryGetAvailableHeightByStep(step);
                 if (availableHeight > 0)
@@ -105,35 +105,39 @@ namespace Turn
                     tempGroup.Add(actor);
                 }
             }
-            
+
             if (totalAvailableHeight >= selectedActor.GetTowerAmountsPlusStep(step))
             {
-                int maxTowerHeightInActor = 0;
-                int possibleResource;
-                if (selectedActor.Type == ActorType.Standard)
-                    possibleResource = tempGroup.Sum(a=>a.TowerAmount) * step;
-                
-                else
-                    possibleResource = selectedActor.GetTowerAmountsPlusStep(step);
-                
-                var endTotalHeight = possibleResource + selectedActor.GetTotalHeight();
-                maxTowerHeightInActor = endTotalHeight/selectedActor.GetTowerAmountsPlusStep(step) +
-                                        endTotalHeight % selectedActor.GetTowerAmountsPlusStep(step);
-              
-                // Debug.Log(possibleResource + " " + selectedActor.GetTotalHeight());
-                // Debug.Log(endTotalHeight + " "+ endTotalHeight / selectedActor.TowerAmount +" " +  endTotalHeight % selectedActor.TowerAmount);
-                if(maxTowerHeightInActor> AllTowers.MaxTowerHeight)
+                if (SurpassesMaxHeight(step))
                     return false;
-                
+
                 SafeGroup.Convert(tempGroup);
                 SafeGroup.OrderByDescending();
-                
+
                 return true;
             }
 
             return false;
         }
-        
+
+        bool SurpassesMaxHeight(int step)
+        {
+            int maxTowerHeightInActor = 0;
+            int possibleResource;
+            if (selectedActor.Type == ActorType.Standard)
+                possibleResource = tempGroup.Sum(a => a.TowerAmount) * step;
+
+            else
+                possibleResource = selectedActor.GetTowerAmountsPlusStep(step);
+
+            var endTotalHeight = possibleResource + selectedActor.GetTotalHeight();
+            maxTowerHeightInActor = endTotalHeight / selectedActor.GetTowerAmountsPlusStep(step) +
+                                    endTotalHeight % selectedActor.GetTowerAmountsPlusStep(step);
+
+            // Debug.Log(possibleResource + " " + selectedActor.GetTotalHeight());
+            // Debug.Log(endTotalHeight + " "+ endTotalHeight / selectedActor.TowerAmount +" " +  endTotalHeight % selectedActor.TowerAmount);
+            return maxTowerHeightInActor > AllTowers.MaxTowerHeight;
+        }
 
         int GetOthersResourceForDouble(int step)
         {
@@ -146,7 +150,7 @@ namespace Turn
         int ResourceByLessPopulation(int step) //1 stepten fazla azalacaklar, selected double'a yetişmek için
         {
             int doubleFreeResource = selectedActor.GetTowerAmountsPlusStep(step);
-            
+
             int counter = doubleFreeResource;
 
             while (counter > 0)
@@ -157,7 +161,7 @@ namespace Turn
                     counter--;
                 }
             }
-            
+
             return doubleFreeResource;
         }
 
@@ -189,22 +193,23 @@ namespace Turn
                     //not: sondakiler muhtemelen doubledır, double en son ekleniyor
                 }
             }
-            
+
             return SafeGroup.TowerCount * step;
         }
-        
+
 
         void OthersFall()
         {
             foreach (var safeTower in SafeGroup.StepsPerTower.Keys)
             {
-                safeTower.UpdateHeight(-SafeGroup.GetStepsToRemove(safeTower)); 
+                safeTower.UpdateHeight(-SafeGroup.GetStepsToRemove(safeTower));
             }
         }
-        
+
 
         System.Random random = new System.Random();
         private uint randomKey;
+
         void SelectedActorFall(int step)
         {
             if (selectedActor.TryGetAvailableHeightByStep(step) == 0)
@@ -212,7 +217,7 @@ namespace Turn
                 NoResourceUI();
                 return;
             }
-            
+
             do
             {
                 randomKey = _actors.Keys.ElementAt(random.Next(_actors.Count));
@@ -221,8 +226,8 @@ namespace Turn
             selectedActor = _actors[randomKey];
             SelectOperation(selectedActor);
         }
-        
-        
+
+
         void NoResourceUI()
         {
             Debug.Log("No possible motion with this resource"); //TODO: UI
