@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TowerConstantData 2
   m_EditorClassIdentifier: 
   TowerAssetHolder: {fileID: 11400000, guid: 5a6ab34051a43b7448f07f21f6378188, type: 2}
-  StartHeight: 6
+  StartHeight: 2
   DamagePower: 1
   ShieldHeight: 0
   ShotAmount: 1
