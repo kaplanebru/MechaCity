@@ -1526,13 +1526,20 @@ MonoBehaviour:
     TowerObjects:
     - {fileID: 7831488675262799457}
   - ActorData:
-      Type: 1
+      Type: 0
       TeamType: 0
       TeamVisualData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
       Row: 4
       InitialHealth: 1
     TowerObjects:
     - {fileID: 1911499708760077541}
+  - ActorData:
+      Type: 0
+      TeamType: 0
+      TeamVisualData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
+      Row: 5
+      InitialHealth: 1
+    TowerObjects:
     - {fileID: 7831488676558128080}
   commonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
 --- !u!114 &4831313534355225008
