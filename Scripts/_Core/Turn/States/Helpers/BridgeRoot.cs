@@ -8,7 +8,7 @@ using UnityEngine;
 public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
 {
     public int Id { get; set; }
-    public Transform[] roots;
+    public Transform root;
     public float offset = 1;
     public float yOffset = 2.4f;
     
@@ -30,10 +30,10 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
         
         //var side = GetSide();
         transform.rotation = Quaternion.LookRotation(direction);
-        roots[0].transform.DOMoveY(roots[0].transform.position.y + yOffset, .5f).OnComplete(() =>
+        root.transform.DOMoveY(root.transform.position.y + yOffset, .5f).OnComplete(() =>
         {
           
-            roots[0].transform.DOScaleZ(distance - offset, 1); //side
+            root.transform.DOScaleZ(distance - offset, 1); //side
         });
 
 
@@ -46,10 +46,7 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
 
     public void Show(bool isShowing)
     {
-        foreach (var root in roots)
-        {
-            root.gameObject.SetActive(isShowing);
-        }
+        root.gameObject.SetActive(isShowing);
     }
 
     // int GetSide()
