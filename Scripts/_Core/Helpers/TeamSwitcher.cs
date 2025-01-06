@@ -35,7 +35,7 @@ namespace Turn
             var actor = ActorDB.Registry[actorID];
             ExchangeActor(actor);
             
-            Invoke(nameof(ResetHealth), 1f); //todo: temporary
+            Invoke(nameof(ExchangeCompletedCall), 1f); //todo: temporary
         }
 
         private void ExchangeActor(ActorData deadActor)
@@ -47,9 +47,9 @@ namespace Turn
             newTeam.TakeActorFromRival(deadActor);
         }
 
-        void ResetHealth()
+        void ExchangeCompletedCall()
         {
-            Eventbus.CombatEvents.OnTeamSwitch?.Invoke(_deadActorID);
+            Eventbus.CombatEvents.OnTeamSwitched?.Invoke(_deadActorID);
         }
 
         private void OnDisable()

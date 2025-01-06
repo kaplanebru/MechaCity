@@ -10,7 +10,7 @@ namespace Actor
         public override void Subscribe()
         {
             Eventbus.HealthEvents.OnShoot += ApplyDamage;
-            Eventbus.CombatEvents.OnTeamSwitch += ResetHealth;
+            Eventbus.CombatEvents.OnTeamSwitched += ResetHealth;
         }
         
        
@@ -63,7 +63,7 @@ namespace Actor
         public override void Unsubscribe()
         {
             Eventbus.HealthEvents.OnShoot -= ApplyDamage;
-            Eventbus.CombatEvents.OnTeamSwitch -= ResetHealth;
+            Eventbus.CombatEvents.OnTeamSwitched -= ResetHealth;
         }
         
        

@@ -14,7 +14,7 @@ public class GridToIndicator
 
     public void Subscribe()
     {
-        Eventbus.CombatEvents.OnActorKilled += UpdateIndicatorState;
+        Eventbus.CombatEvents.OnTeamSwitched += UpdateIndicatorState;
     }
     public void SetIndicatorDatas(uint[] actors)
     {
@@ -90,6 +90,6 @@ public class GridToIndicator
 
     public void Unsubscribe()
     {
-        Eventbus.CombatEvents.OnActorKilled -= UpdateIndicatorState;
+        Eventbus.CombatEvents.OnTeamSwitched -= UpdateIndicatorState;
     }
 }
