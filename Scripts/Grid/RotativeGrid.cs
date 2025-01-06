@@ -37,15 +37,7 @@ namespace Grid
 
         private void RegisterActorsForTheFirstTime(uint[] actors)
         {
-            _actors = actors;
-            actorBySlot.Clear();
-
-            AddMainActors();
-            ResolveTargetActors();
-            ResolveNeighbours();
-            interruptionController.SetInterruptionActors();
-
-            SendGridRegistry(false); //TODO SEPARATE
+            RefreshGrid(actors);
             GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid?.Invoke();
         }
 

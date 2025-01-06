@@ -15,7 +15,6 @@ namespace Towers
         private int _amount;
         public DoubleTowerPhysical(params uint[] actorIDs)
         {
-            Debug.Log("this is a new double");
             foreach (var actorID in actorIDs)
             {
                 _towerNumerics.AddRange(ActorDB.GetTowersNumericData(actorID).ToList());
@@ -46,35 +45,6 @@ namespace Towers
         public void Equalize() //bridgeden önce olmalı
         {
             DoubleTowerEqualizer.Equalize(_towerDatas.ToArray());
-            
-            //  int totalHeight = 0;
-            //  foreach (var tower in _towerNumerics)
-            //  {
-            //      totalHeight += tower.Height;
-            //  }
-            //
-            //  int averageHeight = totalHeight / _amount;
-            //  int rest = totalHeight % averageHeight;
-            //
-            //  for (var i = _towerNumerics.Count - 1; i >= 0; i--)
-            //  {
-            //      var tower = _towerNumerics[i];
-            //      int extra = 0;
-            //      if (rest > 0)
-            //      {
-            //          extra = 1;
-            //          rest--;
-            //      }
-            //
-            //      var newHeight = averageHeight + extra;
-            //      if (newHeight == tower.Height) continue;
-            //
-            //      int surplus = newHeight - tower.Height;
-            //
-            //      if (surplus == 0) continue;
-            //      _towerDatas[tower.UniqID].UpdateHeight(surplus);
-            //      AllTowers.GetTower(tower.UniqID).StartRiseFallRoutine(true); //Todo: düzelt
-            // }
         }
         
         public void CreateBridge()

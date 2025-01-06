@@ -60,7 +60,6 @@ namespace Actor
 
         private void RegisterDouble(uint[] oldActors)
         {
-            Debug.Log("register new double in ACTOR DB");
             int totalHealth = 0;
             List<int> ownTowers = new();
             int abortedRow = Registry[oldActors.First()].Row;
