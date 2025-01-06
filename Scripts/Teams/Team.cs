@@ -32,6 +32,7 @@ namespace Teams
         public void TakeActorFromRival(ActorData actor)
         {
             Data.Actors.Add(actor);
+            actor.TeamType = Data.TeamType;
 
             foreach (var tower in actor.Towers)
             {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using Actor;
 using UnityEngine;
 
@@ -16,10 +17,7 @@ namespace Towers
 
         public void HandleDeath(uint actorID, Action teamSwitchCallback, int pairID)
         {
-            
-                StartCoroutine(DeathRoutine(teamSwitchCallback, pairID, ActorDB.Registry[actorID]));
-            
-            
+            StartCoroutine(DeathRoutine(teamSwitchCallback, pairID, ActorDB.Registry[actorID]));
         }
         
         
