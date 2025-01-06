@@ -13,7 +13,6 @@ namespace Turn
 {
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
-        public TurnSubscriber Subscriber;
         public static int TurnTracker => _turnTracker; //no setter
         public CombatTimingData combatTimingData;
 
@@ -23,18 +22,61 @@ namespace Turn
         private BaseTurnState previousState;
 
         internal TurnStateHolder StateHolder = new();
-        internal BlueprintEventHandler BpEventHandler = new ();
+        internal BlueprintEventHandler BpEventHandler = new();
         internal CombatPairController PairController = new();
         internal TurnHelper TurnHelper = new();
         private CombatOperator combatOperator = new();
 
         private bool firstTurn = true;
 
+        public void SubscribeToEvents()
+        {
+            BpEventHandler.SubscribeToBlueprintEvents();
+            StateHolder.Setup();
+
+            Eventbus.CombatEvents.OnPairsSet += SendCombatPairs;
+            TeamEvents.OnTeamsSet += SetTurnTeams;
+            TeamEvents.OnSingleTeamDemand += SendTeam;
+            NetworkEventbus.OnAllClientsSet += FirstTurn;
+            NetworkEventbus.ServerEvents.OnStateChangeRequestByServer += ChangeStateBySystem;
+
+            Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
+            UIEventbus.OnApplyPossibility +=
+                HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
+            UIEventbus.OnButtonClicked += StateEndByUser;
+
+            BpEventbus.StateEvents.OnDirectStateChangeFromIntruder += GetPreviousState;
+            BpEventbus.StateEvents.StateChangeRequestToIntruder += SendStateChangeRequest;
+            PairController.Subscribe();
+            TurnHelper.Subscribe();
+        }
+
+        public void UnsubscribeFromEvents()
+        {
+            BpEventHandler.UnsubscribeFromBlueprintEvents();
+            StateHolder.UnsubscribeFromConstantEvents();
+
+            Eventbus.CombatEvents.OnPairsSet -= SendCombatPairs;
+            TeamEvents.OnTeamsSet -= SetTurnTeams;
+            TeamEvents.OnSingleTeamDemand -= SendTeam;
+
+            NetworkEventbus.OnAllClientsSet -= FirstTurn;
+            NetworkEventbus.ServerEvents.OnStateChangeRequestByServer -= ChangeStateBySystem;
+
+            Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
+            UIEventbus.OnApplyPossibility -= HighlightButtonRequest;
+            UIEventbus.OnButtonClicked -= StateEndByUser;
+
+            BpEventbus.StateEvents.OnDirectStateChangeFromIntruder -= GetPreviousState;
+            BpEventbus.StateEvents.StateChangeRequestToIntruder -= SendStateChangeRequest;
+            PairController.Unsubscribe();
+            TurnHelper.Unsubscribe();
+        }
+
         private void OnEnable()
         {
-            Subscriber = new(this);
-            Subscriber.Subscribe();
-            
+            SubscribeToEvents();
+
             combatOperator.SetElements(combatTimingData, PairController);
         }
 
@@ -193,7 +235,7 @@ namespace Turn
 
         private void OnDisable()
         {
-            Subscriber.Unsubscribe();
+            UnsubscribeFromEvents();
         }
     }
 }

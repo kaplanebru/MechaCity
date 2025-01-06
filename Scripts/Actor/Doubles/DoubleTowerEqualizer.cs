@@ -36,14 +36,15 @@ namespace Towers
                 int surplus = newHeight - data.Height;
 
                 if (surplus == 0) continue;
-                towers[data.UniqID].UpdateHeight(surplus);
-                AllTowers.GetTower(data.UniqID).StartRiseFallRoutine(true); //Todo: düzelt
+
+                var tower = AllTowers.GetTower(data.UniqID);
+                tower.Data.UpdateHeight(surplus);
+                tower.StartRiseFallRoutine(true); //Todo: düzelt
             }
         }
 
         public static List<int> EqualizeHeights(int[] heights)
         {
-
             List<int> newHeights = new();
             int amount = heights.Length;
             int totalHeight = 0;

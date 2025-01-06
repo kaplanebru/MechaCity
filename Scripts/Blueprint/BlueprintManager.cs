@@ -15,14 +15,42 @@ namespace Blueprint
     {
         public BPSlotHolder bpSlotHolder;
 
-        private BPSubscriber subscriber;
         internal PlayerPersona PlayerPersona; // = new();
         private BpTrackerList bpTrackerList = new();
         private BaseBlueprint currentBlueprint;
+        
+        public void SubscribeToEvents()
+        {
+            BpEventbus.UIEvents.OnInteraction += ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
+            BpEventbus.OnSendingSelectionsForExecution += SendBpExecutionRequestByUser;
+            BpEventbus.OnDirectBpExecution += TryExecuteBpBySystem;
+            BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
+            BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
+
+            NetworkEventbus.ServerEvents.OnBpSelectionByServer += SetCurrentBpByServer;
+            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer += TryExecuteBpBySystem;
+            NetworkEventbus.ServerEvents.OnPlayerPersonaSet += PlayerPersona.SetPlayerPersona;
+
+            TurnStatusEvents.OnTurnEnding += UpdateBpTrackers;
+        }
+
+        public  void UnsubscribeFromEvents()
+        {
+            BpEventbus.OnSendingSelectionsForExecution -= SendBpExecutionRequestByUser;
+            BpEventbus.OnDirectBpExecution -= TryExecuteBpBySystem;
+            BpEventbus.UIEvents.OnInteraction -= ChangeStateAndSetBp;
+            BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
+            BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
+
+            NetworkEventbus.ServerEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
+            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer -= TryExecuteBpBySystem;
+            NetworkEventbus.ServerEvents.OnPlayerPersonaSet -= PlayerPersona.SetPlayerPersona;
+
+            TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
+        }
         public void Subscribe()
         {
-            subscriber = new BPSubscriber(this);
-            subscriber.Subscribe();
+            SubscribeToEvents();
             bpTrackerList.Subscribe();
         }
 
@@ -104,7 +132,7 @@ namespace Blueprint
 
         public void Unsubscribe()
         {
-            subscriber.Unsubscribe();
+           UnsubscribeFromEvents();
             bpTrackerList.Unsubscribe();
         }
 

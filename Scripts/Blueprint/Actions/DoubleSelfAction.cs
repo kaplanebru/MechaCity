@@ -21,7 +21,9 @@ namespace Blueprint
             newDouble.Equalize();
             newDouble.CreateBridge();
             
-            Eventbus.ActorEvents.OnDoubleTowerCreated?.Invoke(selectedActors);
+            Debug.Log("new double");
+            
+            //Eventbus.ActorEvents.OnDoubleTowerCreated?.Invoke(selectedActors);
             
         }
         public void Restore(params object[] obj)
