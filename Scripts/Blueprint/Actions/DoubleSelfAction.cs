@@ -23,7 +23,7 @@ namespace Blueprint
             
             Debug.Log("new double");
             
-            //Eventbus.ActorEvents.OnDoubleTowerCreated?.Invoke(selectedActors);
+            Eventbus.ActorEvents.OnDoubleTowerCreated?.Invoke(selectedActors);
             
         }
         public void Restore(params object[] obj)

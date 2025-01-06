@@ -67,6 +67,11 @@ namespace Towers
             return towerIDs.Select(id => GetData(id));
         }
 
+        public static IEnumerable<TowerNumericData> GetTowerNumericDatasByIDs(params int[] towerIDs)
+        {
+            return towerIDs.Select(id => GetNumericData(id));
+        }
+
         private void SetLinkedTowersAndStartRiseFallRoutine(List<int> towerIds)
         {
             foreach (var id in towerIds)

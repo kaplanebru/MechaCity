@@ -15,6 +15,7 @@ namespace Towers
         private int _amount;
         public DoubleTowerPhysical(params uint[] actorIDs)
         {
+            Debug.Log("this is a new double");
             foreach (var actorID in actorIDs)
             {
                 _towerNumerics.AddRange(ActorDB.GetTowersNumericData(actorID).ToList());

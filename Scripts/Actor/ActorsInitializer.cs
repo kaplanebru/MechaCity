@@ -35,7 +35,7 @@ public class ActorsInitializer : MonoBehaviour
     void RegisterToTheGrid()
     {
         ActorDB.OrderRegistryByRow();
-        ActorDB.OnRegistryUpdate();
+        ActorDB.OnRegistryStart();
     }
 
     private void ProcessTowersByActorData()
@@ -45,6 +45,7 @@ public class ActorsInitializer : MonoBehaviour
         GeneralEventbus.InitializerEvents.OnActorsAndTowersReady?.Invoke();
         
         ExecuteVisuals(); //1-2 sn geciktirilebilir
+        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid -= ProcessTowersByActorData;
     }
     
     private void SetTowers()
@@ -89,6 +90,6 @@ public class ActorsInitializer : MonoBehaviour
     {
         ActorDB.Unsubscribe();
         AllTowers.Unsubscribe();
-        GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid -= ProcessTowersByActorData;
+        //GeneralEventbus.InitializerEvents.OnActorsRegisteredToGrid -= ProcessTowersByActorData;
     }
 }

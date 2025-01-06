@@ -9,6 +9,7 @@ public static class Eventbus
     {
         public static Action<uint[]> OnDoubleTowerCreated;
         public static Action<uint[]> OnRegistryUpdate;
+        public static Action<uint[]> OnRegistryStart;
         public static Action<List<uint>, bool> OnGridRegistrySet;
         public static Action OnReverseGrid;
     }

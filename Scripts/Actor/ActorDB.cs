@@ -19,16 +19,15 @@ namespace Actor
 
         public static List<TowerData> GetTowersData(uint id) => Registry[id].Towers.ToList();
 
-
-        private void Subscribe()
-        {
-            Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
-        }
-
         public void Initialize()
         {
             SetControllers();
             Subscribe();
+        }
+
+        private void Subscribe()
+        {
+            Eventbus.ActorEvents.OnDoubleTowerCreated += RegisterDouble;
         }
 
         void SetControllers()
@@ -46,11 +45,11 @@ namespace Actor
             var id = UniqueIdGenerator.UIntId();
             var actor = new ActorData(id, type, ownTowers);
             actor.TeamType = AllTowers.GetNumericData(ownTowers[0]).TeamType; //todo: temporary
-
+            
             Registry.Add(id, actor);
             actor.Row = row;
             ((HealthUnit) Units[Enums.ActorUnit.Health]).SetHealth(Registry[id], health, true);
-
+            
             foreach (var towerID in ownTowers) //todo: register actor dataya eklenebilir
             {
                 var tower = AllTowers.GetData(towerID);
@@ -58,10 +57,10 @@ namespace Actor
             }
         }
 
-       
 
         private void RegisterDouble(uint[] oldActors)
         {
+            Debug.Log("register new double in ACTOR DB");
             int totalHealth = 0;
             List<int> ownTowers = new();
             int abortedRow = Registry[oldActors.First()].Row;
@@ -81,7 +80,12 @@ namespace Actor
             OnRegistryUpdate();
         }
 
-        internal void OnRegistryUpdate()
+        internal void OnRegistryStart()
+        {
+            Eventbus.ActorEvents.OnRegistryStart?.Invoke(Registry.Keys.ToArray());
+        }
+
+        private void OnRegistryUpdate()
         {
             Eventbus.ActorEvents.OnRegistryUpdate?.Invoke(Registry.Keys.ToArray());
         }

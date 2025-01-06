@@ -51,6 +51,8 @@ namespace Actor
         {
             TowerIDs = towerIDs;
             Towers = AllTowers.GetTowerDatasByIDs(towerIDs).ToArray();
+            TowerNumericDatas = AllTowers.GetTowerNumericDatasByIDs(towerIDs).ToArray();
+            //TowerNumericDatas = Towers.Select(t => t.NumericData).ToArray();
             TowerAmount = Towers.Length;
             OrderTowerDataByHeight();
         }

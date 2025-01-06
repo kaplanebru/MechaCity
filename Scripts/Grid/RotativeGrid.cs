@@ -23,19 +23,19 @@ namespace Grid
         private InterruptionMotion interruptionMotion = new();
 
 
-
         private void OnEnable()
         {
             interruptionController = new InterruptionController(Data);
             interruptionMotion.Subscribe();
-            
-            Eventbus.ActorEvents.OnRegistryUpdate += RegisterActors;
+
+            Eventbus.ActorEvents.OnRegistryUpdate += RefreshGrid;
+            Eventbus.ActorEvents.OnRegistryStart += RegisterActorsForTheFirstTime;
             Eventbus.ActorEvents.OnReverseGrid += ReverseTargets;
             Eventbus.LinkEvents.OnLinkActorsLoaded += interruptionController.TryCheckInterruptions;
             gridToIndicator.Subscribe();
         }
 
-        void RegisterActors(uint[] actors)
+        private void RegisterActorsForTheFirstTime(uint[] actors)
         {
             _actors = actors;
             actorBySlot.Clear();
@@ -50,6 +50,21 @@ namespace Grid
         }
 
         
+
+        void RefreshGrid(uint[] actors)
+        {
+            _actors = actors;
+            actorBySlot.Clear();
+
+            AddMainActors();
+            ResolveTargetActors();
+            ResolveNeighbours();
+            interruptionController.SetInterruptionActors();
+
+            SendGridRegistry(false); //TODO SEPARATE
+        }
+
+
         private void ResolveRelationsFromGrid(
             Func<ActorData, HashSet<uint>> getRelatedActors,
             Func<Slot, int[]> getRelatedSlots)
@@ -130,16 +145,18 @@ namespace Grid
 
             SendGridRegistry(isReversed);
         }
+
         private void OnDisable()
         {
-            Eventbus.ActorEvents.OnRegistryUpdate -= RegisterActors;
+            Eventbus.ActorEvents.OnRegistryUpdate -= RefreshGrid;
+            Eventbus.ActorEvents.OnRegistryStart -= RegisterActorsForTheFirstTime;
+
             Eventbus.ActorEvents.OnReverseGrid -= ReverseTargets;
             Eventbus.LinkEvents.OnLinkActorsLoaded -= interruptionController.TryCheckInterruptions;
             gridToIndicator.Unsubscribe();
             interruptionMotion.Unsubscribe();
         }
 
-      
 
         void DebugActors()
         {
