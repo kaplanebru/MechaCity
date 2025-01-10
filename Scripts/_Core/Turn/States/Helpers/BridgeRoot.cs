@@ -9,7 +9,7 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
 {
     public int Id { get; set; }
     public Transform root;
-    public float offset = 1;
+    public float offset = 2;
     public float yOffset = 2.4f;
     
     private TowerObject mainTowerObject;

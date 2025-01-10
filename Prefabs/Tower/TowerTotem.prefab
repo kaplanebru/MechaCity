@@ -1560,7 +1560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   root: {fileID: 8227581847573449621}
-  offset: 1.3
+  offset: 2
   yOffset: 2.3
 --- !u!1 &352096349684211116
 GameObject:
