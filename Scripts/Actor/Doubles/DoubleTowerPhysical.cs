@@ -46,12 +46,17 @@ namespace Towers
         {
             DoubleTowerEqualizer.Equalize(_towerDatas.ToArray());
         }
+
         
         public void CreateBridge()
         {
-            _towerIDs = _towerNumerics.OrderBy(tower => tower.Height).Select(tower => tower.UniqID).ToArray();   
-            Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towerIDs);
+            //_towerIDs = _towerNumerics.OrderBy(tower => tower.Height).Select(tower => tower.UniqID).ToArray();   
+            //Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towerIDs);
             //todo: aslında id'ye göre dizilmeli, 3lü tower olursa küçük ve büyük arası boşluk olabilir. Ama heighte göre dizilmezse de uzun olan kısalıyor falan
+
+            _towerIDs = _towerNumerics.Select(tower => tower.UniqID).ToArray();
+            Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towerIDs);
+          
             
             //önce id'ye göre diz
             //t1-t2 -- t2-t3 olacak şekilde grupla
@@ -59,6 +64,9 @@ namespace Towers
             //her grup için event at
             
         }
+        
+       
+        
         
         public void Shake()
         {
