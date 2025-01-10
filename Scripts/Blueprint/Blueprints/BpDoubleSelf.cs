@@ -25,9 +25,11 @@ namespace Blueprint
                 DeselectAfterExecution();
                 return true;
             }
-            
+
+            //todo: return double token
             Debug.Log("doesnt conform to constraints");
-            //TODO: tekrar double'a yolla
+            DeselectAfterExecution();
+            
             return false;
         }
 
@@ -40,7 +42,7 @@ namespace Blueprint
         {
             var actorID = selectedItems[0];
             var actor = ActorDB.Registry[actorID];
-            
+
             int counter = 0;
             foreach (var selectedItem in selectedItems)
             {
@@ -50,7 +52,7 @@ namespace Blueprint
                     counter++;
                 }
             }
-            
+
             return counter != selectedItems.Length - 1;
         }
 

@@ -10,6 +10,7 @@ namespace Towers
         public static void Equalize(TowerData[] towers) //bridgeden önce olmalı
         {
             TowerNumericData[] datas = towers.Select(t => t.NumericData).ToArray();
+            datas = datas.OrderBy(d => d.Height).ToArray();
             int amount = towers.Length;
             int totalHeight = 0;
             foreach (var tower in datas)

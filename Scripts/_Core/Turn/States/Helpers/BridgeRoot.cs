@@ -10,6 +10,7 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
     public int Id { get; set; }
     public Transform root;
     public float offset = 2;
+    public int modelDirection = -1;
     public float yOffset = 2.4f;
     
     private TowerObject mainTowerObject;
@@ -25,12 +26,13 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
     {
         targetTowerObject = AllTowers.GetTower(targetId);
         var distance = Vector3.Distance(transform.position, targetTowerObject.transform.position);
-        Debug.Log(distance);
         SetDirection();
         
         //var side = GetSide();
         root.transform.rotation = Quaternion.LookRotation(direction);
-        root.transform.DOScaleZ((distance - offset) * -1, 1); //distance - offset
+        distance = (distance - offset) * modelDirection;
+        //distance -= root.transform.localScale.z * 2; //temp
+        root.transform.DOScaleZ(distance, 1); //distance - offset
         // root.transform.DOMoveY(root.transform.position.y + yOffset, .5f).OnComplete(() =>
         // {
         //   
