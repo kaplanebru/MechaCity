@@ -25,16 +25,17 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
     {
         targetTowerObject = AllTowers.GetTower(targetId);
         var distance = Vector3.Distance(transform.position, targetTowerObject.transform.position);
-
+        Debug.Log(distance);
         SetDirection();
         
         //var side = GetSide();
-        transform.rotation = Quaternion.LookRotation(direction);
-        root.transform.DOMoveY(root.transform.position.y + yOffset, .5f).OnComplete(() =>
-        {
-          
-            root.transform.DOScaleZ(distance - offset, 1); //side
-        });
+        root.transform.rotation = Quaternion.LookRotation(direction);
+        root.transform.DOScaleZ((distance - offset) * -1, 1); //distance - offset
+        // root.transform.DOMoveY(root.transform.position.y + yOffset, .5f).OnComplete(() =>
+        // {
+        //   
+        //     root.transform.DOScaleZ(distance - offset, 1); //side
+        // });
 
 
     }
