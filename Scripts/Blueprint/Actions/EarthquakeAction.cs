@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Blueprint
 {
-    public class Earthquake : IBpAction
+    public class EarthquakeAction : IBpAction
     {
         private int totalHeight;
         private int towerAmount;
@@ -44,8 +44,27 @@ namespace Blueprint
             startTowerAmount = towerAmount;
         }
 
+        bool HasTowersToGetReady()
+        {
+            if (actors.All(a => a.Type == ActorType.Standard))
+                return false;
+                
+            foreach (var actor in actors)
+            {
+                if(actor.Type != ActorType.MultiTower) continue;
+                foreach (var tower in actor.Towers)
+                {
+                    Eventbus.TowerEvents.OnBridgeDestroyRequest?.Invoke(tower.NumericData.UniqID);
+                }
+            }
+            return true;
+        }
+
         private async void CreateEarthquake()
         {
+            if(HasTowersToGetReady())
+                await DelayMaker.WaitForSeconds(1);
+            
             stepTracker = 0;
             for (int i = 0; i < frequence; i++)
             {

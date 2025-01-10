@@ -63,7 +63,10 @@ public static class Eventbus
     {
         public static Action<int, int> OnLock;
         public static Action OnTurnBegin;
-        public static Action<int[]> OnBridgeAttempt; 
+        
+        public static Action<int[]> OnBridgeAttempt;
+        public static Action<int> OnBridgeDestroyRequest;
+        
         public static Action<int, int> OnShieldActionTriggered;
         public static Action<int, int> OnMultiShotActionTriggered;
         public static Action<int> OnDisarmamentActionTriggered;

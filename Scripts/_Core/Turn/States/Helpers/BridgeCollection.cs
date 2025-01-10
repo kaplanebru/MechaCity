@@ -13,6 +13,7 @@ public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
     public override void Subscribe()
     {
         Eventbus.TowerEvents.OnBridgeAttempt += ConstructBridge;
+        Eventbus.TowerEvents.OnBridgeDestroyRequest += RemoveBridge;
     }
 
 
@@ -27,6 +28,12 @@ public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
         }
     }
 
+    void RemoveBridge(int id)
+    {
+        var bridge = Collection[id];
+        bridge.RemoveBridge();
+    }
+
     void DisableAll()
     {
         foreach (var relatedItem in Collection.Values)
@@ -38,5 +45,6 @@ public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
     public override void Unsubscribe()
     {
         Eventbus.TowerEvents.OnBridgeAttempt -= ConstructBridge;
+        Eventbus.TowerEvents.OnBridgeDestroyRequest -= RemoveBridge;
     }
 }

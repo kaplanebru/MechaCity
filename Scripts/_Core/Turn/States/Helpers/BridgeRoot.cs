@@ -16,10 +16,12 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
     private TowerObject mainTowerObject;
     private TowerObject targetTowerObject;
     private Vector3 direction;
+    private float startScale;
     public void Initialize(int id)
     {
         Id = id;
         mainTowerObject = AllTowers.GetTower(Id);
+        startScale = root.transform.localScale.z;
     }
 
     public void Stretch(int targetId)
@@ -28,18 +30,15 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
         var distance = Vector3.Distance(transform.position, targetTowerObject.transform.position);
         SetDirection();
         
-        //var side = GetSide();
         root.transform.rotation = Quaternion.LookRotation(direction);
         distance = (distance - offset) * modelDirection;
         //distance -= root.transform.localScale.z * 2; //temp
         root.transform.DOScaleZ(distance, 1); //distance - offset
-        // root.transform.DOMoveY(root.transform.position.y + yOffset, .5f).OnComplete(() =>
-        // {
-        //   
-        //     root.transform.DOScaleZ(distance - offset, 1); //side
-        // });
+    }
 
-
+    public void RemoveBridge()
+    {
+        root.transform.DOScaleZ(startScale, 1);
     }
 
     void SetDirection()
