@@ -158,6 +158,7 @@ namespace Blueprint
                             var tower = actor.Towers[i];
                             tower.SetHeightAutonomously(equalizedHeights[i]);
                         }
+                        Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(actor.TowerIDs);
                     }
                     else
                     {

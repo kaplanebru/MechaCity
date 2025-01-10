@@ -38,7 +38,8 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
 
     public void RemoveBridge()
     {
-        root.transform.DOScaleZ(startScale, 1);
+        if(root.gameObject.activeInHierarchy)
+            root.transform.DOScaleZ(startScale, 1);
     }
 
     void SetDirection()
