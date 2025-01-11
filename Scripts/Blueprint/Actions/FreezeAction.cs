@@ -22,7 +22,7 @@ namespace Blueprint
             {
                 tower.VisualData.ColorHandler.ToFreezeColor();
             }
-            BpEventbus.ActionEvents.OnBpActionCompleted?.Invoke(BPType);
+            BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BPType);
         }
 
         public void Restore(params object[] obj)

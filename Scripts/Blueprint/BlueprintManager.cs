@@ -14,6 +14,7 @@ namespace Blueprint
     public class BlueprintManager : MonoBehaviour
     {
         public BPSlotHolder bpSlotHolder;
+        public BPTimingData timingData;
 
         internal PlayerPersona PlayerPersona; // = new();
         private BpTrackerList bpTrackerList = new();
@@ -27,7 +28,7 @@ namespace Blueprint
             BpEventbus.OnDirectBpExecution += TryExecuteBpBySystem;
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
-            BpEventbus.ActionEvents.OnBpActionCompleted += TerminateBp;
+            BpEventbus.ActionEvents.OnBpActionCompleteRequest += TerminateBp;
 
             NetworkEventbus.ServerEvents.OnBpSelectionByServer += SetCurrentBpByServer;
             NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer += TryExecuteBpBySystem;
@@ -43,7 +44,7 @@ namespace Blueprint
             BpEventbus.UIEvents.OnInteraction -= ChangeStateAndSetBp;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
-            BpEventbus.ActionEvents.OnBpActionCompleted -= TerminateBp;
+            BpEventbus.ActionEvents.OnBpActionCompleteRequest -= TerminateBp;
 
             NetworkEventbus.ServerEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
             NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer -= TryExecuteBpBySystem;
@@ -78,7 +79,7 @@ namespace Blueprint
 
         private void TerminateBp(BpType type)
         {
-            BpHolder.AllBlueprints[type].CompleteAction();
+            BpHolder.AllBlueprints[type].CompleteActionWithDelay(timingData.DurationByType[type]);
         }
 
         IEnumerator BpSelectionDelay(BpType type, int level) //On Interaction : calls network

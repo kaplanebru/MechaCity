@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Enums;
 using UnityEngine;
 
 namespace TowerRelated
@@ -13,6 +14,7 @@ namespace TowerRelated
         public List<Fence> openFences = new();
         public float riseDuration = 1;
         public CommonData CommonData;
+        public BPTimingData timingData;
 
         private int currentHeight;
         public void Initialize(int id)
@@ -38,7 +40,7 @@ namespace TowerRelated
                 var fence = fences[i];
                 openFences.Add(fence);
                 fence.gameObject.SetActive(true);
-                fence.transform.DOLocalMoveY(CommonData.TowerHeightPerStep * (i), riseDuration);
+                fence.transform.DOLocalMoveY(CommonData.TowerHeightPerStep * (i), timingData.DurationByType[BpType.Shield]);
             }
         }
 

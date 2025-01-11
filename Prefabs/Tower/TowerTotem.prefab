@@ -5271,6 +5271,7 @@ MonoBehaviour:
   openFences: []
   riseDuration: 1
   CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
+  timingData: {fileID: 11400000, guid: 2fe4c7698f4be474b91d8781ea4dd3dc, type: 2}
 --- !u!1 &1054667265570582394
 GameObject:
   m_ObjectHideFlags: 0

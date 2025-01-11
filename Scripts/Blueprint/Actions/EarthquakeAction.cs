@@ -91,7 +91,7 @@ namespace Blueprint
             MediatorEventbus.ChainLinkEvents.OnLinkBroken?.Invoke();
             Eventbus.LinkEvents.OnUnlink?.Invoke(towerIDs);
             
-            BpEventbus.ActionEvents.OnBpActionCompleted?.Invoke(BPType);
+            BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BPType);
         }
 
         void ResetCollections()

@@ -40,7 +40,7 @@ namespace Turn
         public void ReverseCombatDirection()
         {
             isReversed = !isReversed;
-            BpEventbus.ActionEvents.OnBpActionCompleted?.Invoke(BpType.Reverse);
+            BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BpType.Reverse);
             // Debug.Log("combat reversed: " + isReversed);
         }
 

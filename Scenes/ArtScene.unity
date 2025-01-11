@@ -25997,6 +25997,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpSlotHolder: {fileID: 724132464}
+  timingData: {fileID: 11400000, guid: 2fe4c7698f4be474b91d8781ea4dd3dc, type: 2}
 --- !u!1 &600238671
 GameObject:
   m_ObjectHideFlags: 0

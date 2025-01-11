@@ -48,7 +48,7 @@ namespace Turn
         private void UpdateSelectionAmount()
         {
             mainSelector.IncreaseMaxTowers();
-            BpEventbus.ActionEvents.OnBpActionCompleted?.Invoke(BpType.SelectionIncrement);
+            BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BpType.SelectionIncrement);
         }
 
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data)

@@ -16,7 +16,6 @@ namespace Blueprint
 
         public virtual int Level
         {
-            
             set => Lifespan = value; //duruma göre value+1 override
         }
 
@@ -24,14 +23,17 @@ namespace Blueprint
         
         public abstract bool TryTakeAction([CanBeNull] uint[] selectedItems);
 
-        public void CompleteAction()
+        private void CompleteAction()
         {
             IsActive = false;
+            BpEventbus.ActionEvents.OnBpActionCompleted?.Invoke(Type);
         }
 
         public async void CompleteActionWithDelay(float delay)
         {
-            await DelayMaker.WaitForSeconds(delay);
+            if(delay > 0)
+                await DelayMaker.WaitForSeconds(delay);
+            
             CompleteAction();
         }
 

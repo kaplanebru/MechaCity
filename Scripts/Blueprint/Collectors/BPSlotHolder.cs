@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DataModels;
 using Enums;
 using UnityEngine;
@@ -14,6 +16,13 @@ namespace Blueprint
         private void OnEnable()
         {
             slots = GetComponentsInChildren<CardSlot>(true);
+            BpEventbus.ActionEvents.OnBpActionCompleted += ActivateSlot;
+        }
+
+        private void ActivateSlot(BpType type)
+        {
+            var slot = slots.FirstOrDefault(b => b.Data.Type == type);
+            slot.cardInteraction.Activate();
         }
 
         public void Setup(List<BpType> activeBlueprints) //LEVELA GÖRE VE PERSONAYA GÖRE
@@ -55,6 +64,11 @@ namespace Blueprint
             {
                 slot.gameObject.SetActive(false);
             }
+        }
+
+        private void OnDisable()
+        {
+            BpEventbus.ActionEvents.OnBpActionCompleted -= ActivateSlot;
         }
     }
 }
