@@ -13,6 +13,9 @@ namespace Blueprint
         
         public override bool TryTakeAction(uint[] selectedItems)
         {
+            if (IsActive) return false;
+            IsActive = true;
+            
             BpAction.Execute();
             return true;
         }

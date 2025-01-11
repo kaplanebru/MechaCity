@@ -19,16 +19,19 @@ namespace Blueprint
 
         public override bool TryTakeAction(uint[] selectedItems)
         {
+            if (IsActive) return false;
+            IsActive = true;
+            
             if (CheckBpConstraints(selectedItems))
             {
                 BpAction.Execute(selectedItems);
-                DeselectAfterExecution();
+                DeselectItems();
                 return true;
             }
 
             //todo: return double token
             Debug.Log("doesnt conform to constraints");
-            DeselectAfterExecution();
+            DeselectItems();
             
             return false;
         }

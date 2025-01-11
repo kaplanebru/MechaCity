@@ -10,6 +10,7 @@ namespace Blueprint
     public abstract class BaseBlueprint
     {
         public abstract BpType Type { get; set; }
+        public bool IsActive { get; set; }
 
         public abstract SelectionType SelectionType { get; set; }
 
@@ -23,11 +24,16 @@ namespace Blueprint
         
         public abstract bool TryTakeAction([CanBeNull] uint[] selectedItems);
 
+        public void CompleteAction()
+        {
+            IsActive = false;
+        }
+
         //public abstract void CheckSelectionConstraints(int[] selectedItems);
 
         public abstract void TryRestoreAction(uint selectedItem);
 
-        public void DeselectAfterExecution() //[CanBeNull] uint[] selectedItems
+        public void DeselectItems() //[CanBeNull] uint[] selectedItems
         {
             // foreach (var actorID in selectedItems)
             // {

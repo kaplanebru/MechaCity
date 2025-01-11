@@ -1,4 +1,3 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using Enums;
@@ -7,24 +6,25 @@ using UnityEngine;
 
 namespace Blueprint
 {
-    public class BpShield: BaseBlueprint, IBpActionProcessor<ShieldAction>
+    public class BpShield : BaseBlueprint, IBpActionProcessor<ShieldAction>
     {
         public ShieldAction BpAction { get; } = new ShieldAction();
         public override BpType Type { get; set; } = BpType.Shield;
         public override SelectionType SelectionType { get; set; } = SelectionType.SinglePlayerOnlyBP;
-        public override int Lifespan { get; set; } = 1;//COOLDOWN
-        
+        public override int Lifespan { get; set; } = 1; //COOLDOWN
+
         public override bool TryTakeAction(uint[] selectedItems)
         {
-           BpAction.Execute(selectedItems);
-           DeselectAfterExecution();
-           return true;
+            if (IsActive) return false;
+            IsActive = true;
+
+            BpAction.Execute(selectedItems);
+            DeselectItems();
+            return true;
         }
 
         public override void TryRestoreAction(uint selectedItem)
         {
-            
         }
     }
-
 }
