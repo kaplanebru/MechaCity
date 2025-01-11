@@ -12,6 +12,7 @@ namespace Blueprint
 {
     public class EarthquakeAction : IBpAction
     {
+        public BpType BPType { get; set; } = BpType.Earthquake;
         private int totalHeight;
         private int towerAmount;
         private List<int> towerIDs = new();
@@ -32,6 +33,7 @@ namespace Blueprint
         //TODO: RİSE ROUTİNE'İ HIZLANDIR VE ONA BAĞLI TWEENLERI DE AYNI ŞKEİLDE AYARLA HATTA SET BY SPEED YAP
         private int frequence = 4;
         private int stepTracker = 0;
+
         public void Execute(params object[] obj)
         {
             var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamState.RivalTeam);
@@ -88,6 +90,8 @@ namespace Blueprint
             MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
             MediatorEventbus.ChainLinkEvents.OnLinkBroken?.Invoke();
             Eventbus.LinkEvents.OnUnlink?.Invoke(towerIDs);
+            
+            BpEventbus.ActionEvents.OnBpActionCompleted?.Invoke(BPType);
         }
 
         void ResetCollections()

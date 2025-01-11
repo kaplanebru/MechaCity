@@ -9,6 +9,8 @@ namespace Blueprint
 {
     public class MultiShotAction : IBpAction
     {
+        public BpType BPType { get; set; } = BpType.MultiShot;
+
         public void Execute(params object[] obj)
         {
             var selectedActors = (uint[]) obj[0];

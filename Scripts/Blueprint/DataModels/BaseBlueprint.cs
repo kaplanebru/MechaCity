@@ -55,6 +55,7 @@ namespace Blueprint
 
     public interface IBpAction
     {
+        public BpType BPType { get; set; }
         public void Execute(params object[] obj);
     }
 }

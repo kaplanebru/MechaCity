@@ -29,6 +29,7 @@ public static class BpEventbus
         public static Action OnSelectionIncrementTriggered;
         public static Action OnRestoreSelectionAmount;
         public static Action<int[]> OnBreakShieldActionTriggered;
+        public static Action<BpType> OnBpActionCompleted;
     }
 
     public static class SubscriberEvents

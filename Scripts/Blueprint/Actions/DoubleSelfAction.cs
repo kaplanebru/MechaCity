@@ -11,6 +11,8 @@ namespace Blueprint
 {
     public class DoubleSelfAction : IBpAction
     {
+        public BpType BPType { get; set; } = BpType.DoubleSelf;
+
         public void Execute(params object[] obj)
         {
             Debug.Log("execute double self");

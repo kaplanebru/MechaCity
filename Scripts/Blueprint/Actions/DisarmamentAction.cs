@@ -9,6 +9,8 @@ namespace Blueprint
 {
     public class DisarmamentAction : IBpAction
     {
+        public BpType BPType { get; set; } = BpType.Disarmament;
+
         public void Execute(params object[] obj)
         {
             var selectedActorID = (uint[]) obj[0];

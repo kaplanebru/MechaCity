@@ -1,5 +1,6 @@
 
 using Actor;
+using Enums;
 using Towers;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace Blueprint
 {
     public class FreezeAction : IBpAction
     {
+        public BpType BPType { get; set; } = BpType.Freeze;
+
         public void Execute(params object[] obj)
         {
             var selectedActorID = (uint[]) obj[0];

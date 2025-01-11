@@ -10,6 +10,8 @@ namespace Blueprint
 {
     public class ShieldAction: IBpAction
     {
+        public BpType BPType { get; set; } = BpType.Shield;
+
         public void Execute(params object[] obj)
         {
             Debug.Log("execute shield");

@@ -8,6 +8,8 @@ namespace Blueprint
 {
     public class BreakShieldAction : IBpAction
     {
+        public BpType BPType { get; set; } = BpType.BreakShield;
+
         public void Execute(params object[] obj)
         {
             Debug.Log("execute break shield");

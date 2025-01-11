@@ -1,4 +1,5 @@
 
+using Enums;
 using Towers;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace Blueprint
     public class DoubleAction : IBpAction
     {
         DoubleWithRival doubleWithRival = new DoubleWithRival();
+
+        public BpType BPType { get; set; } = BpType.Double;
 
         public void Execute(params object[] obj) //TODO: with actors
         {

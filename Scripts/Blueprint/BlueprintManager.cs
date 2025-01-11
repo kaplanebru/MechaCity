@@ -18,14 +18,16 @@ namespace Blueprint
         internal PlayerPersona PlayerPersona; // = new();
         private BpTrackerList bpTrackerList = new();
         private BaseBlueprint currentBlueprint;
-        
+
         public void SubscribeToEvents()
         {
-            BpEventbus.UIEvents.OnInteraction += ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
+            BpEventbus.UIEvents.OnInteraction +=
+                ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
             BpEventbus.OnSendingSelectionsForExecution += SendBpExecutionRequestByUser;
             BpEventbus.OnDirectBpExecution += TryExecuteBpBySystem;
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
+            BpEventbus.ActionEvents.OnBpActionCompleted += TerminateBp;
 
             NetworkEventbus.ServerEvents.OnBpSelectionByServer += SetCurrentBpByServer;
             NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer += TryExecuteBpBySystem;
@@ -34,13 +36,14 @@ namespace Blueprint
             TurnStatusEvents.OnTurnEnding += UpdateBpTrackers;
         }
 
-        public  void UnsubscribeFromEvents()
+        public void UnsubscribeFromEvents()
         {
             BpEventbus.OnSendingSelectionsForExecution -= SendBpExecutionRequestByUser;
             BpEventbus.OnDirectBpExecution -= TryExecuteBpBySystem;
             BpEventbus.UIEvents.OnInteraction -= ChangeStateAndSetBp;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
+            BpEventbus.ActionEvents.OnBpActionCompleted -= TerminateBp;
 
             NetworkEventbus.ServerEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
             NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer -= TryExecuteBpBySystem;
@@ -48,6 +51,7 @@ namespace Blueprint
 
             TurnStatusEvents.OnTurnEnding -= UpdateBpTrackers;
         }
+
         public void Subscribe()
         {
             SubscribeToEvents();
@@ -59,7 +63,7 @@ namespace Blueprint
             Initialize();
         }
 
-      
+
         public void Initialize()
         {
             BpHolder.CreateBlueprints();
@@ -70,6 +74,11 @@ namespace Blueprint
         internal void ChangeStateAndSetBp(BpType type, int level)
         {
             StartCoroutine(BpSelectionDelay(type, level));
+        }
+
+        private void TerminateBp(BpType type)
+        {
+            BpHolder.AllBlueprints[type].CompleteAction();
         }
 
         IEnumerator BpSelectionDelay(BpType type, int level) //On Interaction : calls network
@@ -132,7 +141,7 @@ namespace Blueprint
 
         public void Unsubscribe()
         {
-           UnsubscribeFromEvents();
+            UnsubscribeFromEvents();
             bpTrackerList.Unsubscribe();
         }
 
