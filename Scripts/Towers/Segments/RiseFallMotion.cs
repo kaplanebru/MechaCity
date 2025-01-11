@@ -1,32 +1,8 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using GameUI;
 using UnityEngine;
-
-[Serializable]
-public class RiseFallData
-{
-    public int Id { get; private set; }
-    public Transform ActiveHolder;
-    public Transform PassiveHolder;
-    public Transform Light;
-
-    public List<Transform> PassiveParts = new();
-    public List<Transform> ActiveParts = new();
-    
-    public RiseState RiseState;
-    public float TargetHeight;
-
-    public CommonData CommonData;
-
-    public void SetId(int id)
-    {
-        Id = id;
-    }
-}
 
 public enum RiseState
 {
@@ -66,6 +42,7 @@ public class RiseFallMotion
         
         Data.TargetHeight = newHeight;
         Data.RiseState = isRising ? RiseState.Rising : RiseState.Falling;
+        MediatorEventbus.ChainMotionEvents.OnMotion?.Invoke();
     }
 
     float RoundByCustomUnit(float number)
@@ -127,7 +104,7 @@ public class RiseFallMotion
                 {
                     Data.RiseState = RiseState.None;
                     speed = startSpeed;
-                    MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
+                    //MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                 }
             }
 
@@ -160,6 +137,8 @@ public class RiseFallMotion
                 {
                     Data.RiseState = RiseState.None;
                     speed = startSpeed;
+                    MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
+
                 }
             }
             yield return null;

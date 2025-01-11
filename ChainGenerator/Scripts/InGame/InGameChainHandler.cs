@@ -21,10 +21,10 @@ namespace ChainInGame
             MediatorEventbus.SetupEvents.OnGearsReady += GetGears;
             ChainEvents.InGameEvents.OnOptionSet += SelectMachinery;
 
-            MediatorEventbus.ChainLinkEvents.OnLinkedTowers += ShowMachinery;
+            MediatorEventbus.ChainLinkEvents.OnFloorsOpened += ShowMachinery;
             MediatorEventbus.ChainLinkEvents.OnLinkBroken += ResetMachinery;
             
-            MediatorEventbus.ChainMotionEvents.OnRising += MoveWithChain;
+            MediatorEventbus.ChainMotionEvents.OnMotion += MoveWithChain;
             MediatorEventbus.ChainMotionEvents.OnStop += StopMotion;
         }
 
@@ -71,6 +71,8 @@ namespace ChainInGame
 
         private void ShowMachinery(int[] ids)
         {
+            if(ids.Length <= 1) return;
+            
             foreach (var id in ids)
             {
                 var gear = gears.FirstOrDefault(g => g.Id == id);
@@ -101,10 +103,10 @@ namespace ChainInGame
             MediatorEventbus.SetupEvents.OnGearsReady -= GetGears;
             ChainEvents.InGameEvents.OnOptionSet -= SelectMachinery;
 
-            MediatorEventbus.ChainLinkEvents.OnLinkedTowers -= ShowMachinery;
+            MediatorEventbus.ChainLinkEvents.OnFloorsOpened -= ShowMachinery;
             MediatorEventbus.ChainLinkEvents.OnLinkBroken -= ResetMachinery;
             
-            MediatorEventbus.ChainMotionEvents.OnRising -= MoveWithChain;
+            MediatorEventbus.ChainMotionEvents.OnMotion -= MoveWithChain;
             MediatorEventbus.ChainMotionEvents.OnStop -= StopMotion;
         }
 

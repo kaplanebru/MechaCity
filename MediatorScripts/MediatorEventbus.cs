@@ -8,12 +8,13 @@ public static class MediatorEventbus
     public static class ChainLinkEvents
     {
         public static Action<int[]> OnLinkedTowers;
+        public static Action<int[]> OnFloorsOpened;
         public static Action OnLinkBroken;
     }
     
     public static class ChainMotionEvents
     {
-        public static Action OnRising;
+        public static Action OnMotion;
         public static Action OnStop;
     }
 

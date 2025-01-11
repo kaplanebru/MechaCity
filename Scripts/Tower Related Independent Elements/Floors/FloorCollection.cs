@@ -10,7 +10,7 @@ namespace TowerRelated
         private List<Floor> selectedFloors = new();
         public override void Subscribe()
         {
-            Eventbus.LinkEvents.OnLinkLoading += OpenFloors;
+            Eventbus.LinkEvents.OnLinkLoading += OperateFloors;
             Eventbus.LinkEvents.OnUnlink += ResetFloors;
 
             GeneralEventbus.InitializerEvents.OnMediatorElementsReady += HideAll;
@@ -21,7 +21,7 @@ namespace TowerRelated
             
         }
         
-        private void OpenFloors(List<int> ids)
+        private void OperateFloors(List<int> ids)
         {
             foreach (var id in ids)
             {
@@ -30,8 +30,18 @@ namespace TowerRelated
                 floor.ShowGear();
             }
 
-            StartCoroutine(nameof(LeCoroutine));
-            //GeneralEventbus.OnCoroutineTrigger?.Invoke(this); //todo: temp
+            //StartCoroutine(nameof(LeCoroutine));
+            OpenFloors(ids);
+        }
+
+        private async void OpenFloors(List<int> ids)
+        {
+            await DelayMaker.WaitForSeconds(.5f);
+            FloorsOpenedCall(ids);
+        }
+        void FloorsOpenedCall(List<int> ids)
+        {
+            MediatorEventbus.ChainLinkEvents.OnFloorsOpened?.Invoke(ids.ToArray());
         }
 
         void HideAll()
@@ -42,10 +52,7 @@ namespace TowerRelated
             }
         }
     
-        void FloorsOpenedCall()
-        {
-            Eventbus.LinkEvents.OnFloorsOpened?.Invoke();
-        }
+      
         
         private void ResetFloors(List<int> ids)
         {
@@ -58,7 +65,7 @@ namespace TowerRelated
         
         public override void Unsubscribe()
         {
-            Eventbus.LinkEvents.OnLinkLoading -= OpenFloors;
+            Eventbus.LinkEvents.OnLinkLoading -= OperateFloors;
             Eventbus.LinkEvents.OnUnlink -= ResetFloors;
             
             GeneralEventbus.InitializerEvents.OnMediatorElementsReady -= HideAll;
@@ -68,7 +75,7 @@ namespace TowerRelated
         public IEnumerator LeCoroutine()
         {
             yield return new WaitForSeconds(0.5f);
-            FloorsOpenedCall();
+            //FloorsOpenedCall();
             yield break;
         }
     }

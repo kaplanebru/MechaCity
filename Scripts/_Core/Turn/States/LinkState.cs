@@ -69,18 +69,18 @@ namespace Turn
             
             
             NetworkEventbus.InputEvents.OnObjectClicked += currentLinkOperator.TowerSelected;
-            Eventbus.LinkEvents.OnFloorsOpened += LinkTowers;
+            MediatorEventbus.ChainLinkEvents.OnFloorsOpened += LinkTowers;
 
         }
         
 
-        private void LinkTowers()
+        private void LinkTowers(int[] ids = null)
         {
             AllTowers.DisableClickability();
             
             if(activeActors.Length <= 1) return;
             Eventbus.LinkEvents.OnLinkingTowers?.Invoke(TransferData.towers);
-            MediatorEventbus.ChainLinkEvents.OnLinkedTowers?.Invoke(TransferData.towers.ToArray());
+            //MediatorEventbus.ChainLinkEvents.OnLinkedTowers?.Invoke(TransferData.towers.ToArray());
         }
 
         public override void Unsubscribe()
@@ -89,7 +89,7 @@ namespace Turn
             MediatorEventbus.ChainLinkEvents.OnLinkBroken?.Invoke();
 
             NetworkEventbus.InputEvents.OnObjectClicked -= currentLinkOperator.TowerSelected;
-            Eventbus.LinkEvents.OnFloorsOpened -= LinkTowers;
+            MediatorEventbus.ChainLinkEvents.OnFloorsOpened -= LinkTowers;
             
             AllTowers.EnableClickability();
 

@@ -35,7 +35,7 @@ namespace Blueprint
         {
             var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamState.RivalTeam);
             SetTowers(rivalTeam.Data.Actors);
-            CreateEarthquake();
+            PrepareAndExecuteEarthquake();
         }
 
         void SetStartSettings()
@@ -60,10 +60,15 @@ namespace Blueprint
             return true;
         }
 
-        private async void CreateEarthquake()
+        private async void PrepareAndExecuteEarthquake()
         {
+            Eventbus.LinkEvents.OnLinkLoading?.Invoke(towerNumericDatas.Select(d=>d.UniqID).ToList());
+            await DelayMaker.WaitForSeconds(1);
+            
             if(HasTowersToGetReady())
                 await DelayMaker.WaitForSeconds(1);
+            
+            MediatorEventbus.ChainMotionEvents.OnMotion?.Invoke();
             
             stepTracker = 0;
             for (int i = 0; i < frequence; i++)
@@ -73,7 +78,9 @@ namespace Blueprint
                 var delay = stepTracker == frequence ? towerTime : waitTime;
                 await DelayMaker.WaitForSeconds(delay);
             }
+            
             towerObjects.ForEach(t=>t.StopRiseFallRoutine());
+            MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
         }
 
         void ResetCollections()

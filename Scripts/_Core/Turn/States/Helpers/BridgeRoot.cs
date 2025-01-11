@@ -58,18 +58,18 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
     {
         float dotProduct = Vector3.Dot(root.transform.forward, direction);
         
-        if (dotProduct > 0) // Positive value
-        {
-            Debug.Log("GameObject is facing the front of the target.");
-        }
-        else if (dotProduct < 0) // Negative value
-        {
-            Debug.Log("GameObject is facing the back of the target.");
-        }
-        else // dotProduct is close to 0
-        {
-            Debug.Log("GameObject is perpendicular to the target.");
-        }
+        // if (dotProduct > 0) // Positive value
+        // {
+        //     Debug.Log("GameObject is facing the front of the target.");
+        // }
+        // else if (dotProduct < 0) // Negative value
+        // {
+        //     Debug.Log("GameObject is facing the back of the target.");
+        // }
+        // else // dotProduct is close to 0
+        // {
+        //     Debug.Log("GameObject is perpendicular to the target.");
+        // }
     }
 
     // int GetSide()

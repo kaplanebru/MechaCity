@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Towers;
 using UnityEngine;
 
 public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
@@ -43,16 +42,7 @@ public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
             bridgeGroups.Add(new BridgeGroup(towerIDs[i], towerIDs[i+1]));
         }
     }
-    // void ConstructBridge(int[] ids)
-    // {
-    //     for (int i = 0; i < ids.Length-1; i++)
-    //     {
-    //         var bridge = Collection[ids[i]];
-    //         var target = Collection[ids[i + 1]];
-    //         bridge.Show(true);
-    //         bridge.Stretch(target.Id); //ids[i+1]
-    //     }
-    // }
+  
 
     void RemoveBridge(int id)
     {
@@ -72,34 +62,5 @@ public class BridgeCollection : TowerRelatedElementCollection<BridgeRoot>
     {
         Eventbus.TowerEvents.OnBridgeAttempt -= ConstructBridge;
         Eventbus.TowerEvents.OnBridgeDestroyRequest -= RemoveBridge;
-    }
-}
-
-public class BridgeGroup
-{
-    public int First;
-    public int Second;
-
-    private TowerNumericData firstTower;
-    private TowerNumericData secondTower;
-
-    public BridgeGroup(int first, int second)
-    {
-        First = first;
-        Second = second;
-        GetTowers();
-        ReorderByHeight();
-    }
-
-    void GetTowers()
-    {
-        firstTower = AllTowers.GetNumericData(First);
-        secondTower = AllTowers.GetNumericData(Second);
-    }
-
-    void ReorderByHeight()
-    {
-        if (firstTower.Height > secondTower.Height)
-            (First, Second) = (Second, First);
     }
 }
