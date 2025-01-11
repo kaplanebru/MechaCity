@@ -30,7 +30,7 @@ namespace Turn
             var actor = ActorDB.Registry[actorID];
             
             Rise(actor.Towers[0], 1);
-           // MediatorEventbus.ChainMotionEvents.OnMotion?.Invoke();
+            MediatorEventbus.ChainMotionEvents.OnMotion?.Invoke();
         }
         
         void Rise(TowerData selectedTower, int step)

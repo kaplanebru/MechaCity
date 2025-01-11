@@ -42,7 +42,7 @@ public class RiseFallMotion
         
         Data.TargetHeight = newHeight;
         Data.RiseState = isRising ? RiseState.Rising : RiseState.Falling;
-        MediatorEventbus.ChainMotionEvents.OnMotion?.Invoke();
+        //MediatorEventbus.ChainMotionEvents.OnMotion?.Invoke();
     }
 
     float RoundByCustomUnit(float number)
@@ -104,7 +104,7 @@ public class RiseFallMotion
                 {
                     Data.RiseState = RiseState.None;
                     speed = startSpeed;
-                    //MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
+                    MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
                 }
             }
 
@@ -137,7 +137,7 @@ public class RiseFallMotion
                 {
                     Data.RiseState = RiseState.None;
                     speed = startSpeed;
-                    MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
+                    //MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
 
                 }
             }

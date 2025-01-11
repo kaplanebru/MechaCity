@@ -62,7 +62,7 @@ namespace Turn
             var totalResource = SafeGroup.TowerCount * step;
             selectedActor.Towers[0].UpdateHeight(totalResource);
 
-            //MediatorEventbus.ChainMotionEvents.OnMotion?.Invoke();
+            MediatorEventbus.ChainMotionEvents.OnMotion?.Invoke();
         }
 
         void SelectedDoubleRise(int step)

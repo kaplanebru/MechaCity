@@ -32,7 +32,7 @@ namespace Towers
         public void Subscribe()
         {
             Eventbus.LinkEvents.OnLinkingTowers += SetLinkedTowersAndStartRiseFallRoutine;
-            Eventbus.LinkEvents.OnUnlink += ResetLinkedTowers;
+            Eventbus.LinkEvents.OnUnlink += StopLinkedTowersMotionRoutine;
             towerRelatedsInitializer.Subscribe();
         }
         public void ReceiveTowers(List<TowerObject> towerObjects)
@@ -53,7 +53,7 @@ namespace Towers
         }
         
 
-        private void ResetLinkedTowers(List<int> towerIds)
+        private void StopLinkedTowersMotionRoutine(List<int> towerIds)
         {
             foreach (var id in towerIds)
             {
@@ -100,7 +100,7 @@ namespace Towers
         public void Unsubscribe()
         {
             Eventbus.LinkEvents.OnLinkingTowers -= SetLinkedTowersAndStartRiseFallRoutine;
-            Eventbus.LinkEvents.OnUnlink -= ResetLinkedTowers;
+            Eventbus.LinkEvents.OnUnlink -= StopLinkedTowersMotionRoutine;
             towerRelatedsInitializer.Unsubscribe();
         }
     }

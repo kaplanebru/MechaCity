@@ -14,6 +14,7 @@ namespace Blueprint
     {
         private int totalHeight;
         private int towerAmount;
+        private List<int> towerIDs = new();
 
         private int startTotalHeight;
         private int startTowerAmount;
@@ -62,25 +63,31 @@ namespace Blueprint
 
         private async void PrepareAndExecuteEarthquake()
         {
-            Eventbus.LinkEvents.OnLinkLoading?.Invoke(towerNumericDatas.Select(d=>d.UniqID).ToList());
+            Eventbus.LinkEvents.OnLinkLoading?.Invoke(towerIDs);
             await DelayMaker.WaitForSeconds(1);
             
             if(HasTowersToGetReady())
                 await DelayMaker.WaitForSeconds(1);
-            
-            MediatorEventbus.ChainMotionEvents.OnMotion?.Invoke();
             
             stepTracker = 0;
             for (int i = 0; i < frequence; i++)
             {
                 stepTracker++;
                 CommitEarthquakePhase();
+                MediatorEventbus.ChainMotionEvents.OnMotion?.Invoke();
+
                 var delay = stepTracker == frequence ? towerTime : waitTime;
                 await DelayMaker.WaitForSeconds(delay);
             }
             
-            towerObjects.ForEach(t=>t.StopRiseFallRoutine());
+            EndEarthquake();
+        }
+
+        void EndEarthquake()
+        {
             MediatorEventbus.ChainMotionEvents.OnStop?.Invoke();
+            MediatorEventbus.ChainLinkEvents.OnLinkBroken?.Invoke();
+            Eventbus.LinkEvents.OnUnlink?.Invoke(towerIDs);
         }
 
         void ResetCollections()
@@ -95,6 +102,7 @@ namespace Blueprint
             totalHeight = actors.Sum(a => a.GetTotalHeight());
             towerAmount = actors.Sum(a => a.TowerAmount);
             towerNumericDatas = actors.SelectMany(a => a.TowerNumericDatas).ToArray();
+            towerIDs = towerNumericDatas.Select(d => d.UniqID).ToList();
             foreach (var actor in actors)
             {
                 foreach (var tower in actor.TowerNumericDatas)

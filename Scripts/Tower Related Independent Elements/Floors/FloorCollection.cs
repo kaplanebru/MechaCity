@@ -10,7 +10,7 @@ namespace TowerRelated
         private List<Floor> selectedFloors = new();
         public override void Subscribe()
         {
-            Eventbus.LinkEvents.OnLinkLoading += OperateFloors;
+            Eventbus.LinkEvents.OnLinkLoading += OpenFloors;
             Eventbus.LinkEvents.OnUnlink += ResetFloors;
 
             GeneralEventbus.InitializerEvents.OnMediatorElementsReady += HideAll;
@@ -21,7 +21,7 @@ namespace TowerRelated
             
         }
         
-        private void OperateFloors(List<int> ids)
+        private void OpenFloors(List<int> ids)
         {
             foreach (var id in ids)
             {
@@ -31,10 +31,10 @@ namespace TowerRelated
             }
 
             //StartCoroutine(nameof(LeCoroutine));
-            OpenFloors(ids);
+            ChainCall(ids);
         }
 
-        private async void OpenFloors(List<int> ids)
+        private async void ChainCall(List<int> ids)
         {
             await DelayMaker.WaitForSeconds(.5f);
             FloorsOpenedCall(ids);
@@ -51,9 +51,7 @@ namespace TowerRelated
                 floor.TurnOffGear();
             }
         }
-    
-      
-        
+
         private void ResetFloors(List<int> ids)
         {
             foreach (var floor in selectedFloors)
@@ -65,7 +63,7 @@ namespace TowerRelated
         
         public override void Unsubscribe()
         {
-            Eventbus.LinkEvents.OnLinkLoading -= OperateFloors;
+            Eventbus.LinkEvents.OnLinkLoading -= OpenFloors;
             Eventbus.LinkEvents.OnUnlink -= ResetFloors;
             
             GeneralEventbus.InitializerEvents.OnMediatorElementsReady -= HideAll;
