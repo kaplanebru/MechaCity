@@ -21,7 +21,6 @@ namespace Towers
                 _towerDatas.AddRange(ActorDB.GetTowersData(actorID));
             }
             
-           
             _towerNumerics = _towerNumerics.OrderBy(t => t.Height).ToList();
             _amount = _towerNumerics.Count;
         }
@@ -32,6 +31,17 @@ namespace Towers
             _towerDatas = towerDatas.OrderBy(t => t.NumericData.Height).ToList();
             _amount = _towerNumerics.Count;
         }
+        
+        public void Equalize() //bridgeden önce olmalı
+        {
+            DoubleTowerEqualizer.Equalize(_towerDatas.ToArray());
+        }
+
+        public void CreateBridge()
+        {
+            _towerIDs = _towerNumerics.Select(tower => tower.UniqID).ToArray();
+            Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towerIDs);
+        }
 
         private void SeRegarde() //iptal, arkasını dönsün istemeyiz
         {
@@ -41,32 +51,6 @@ namespace Towers
             //     tower.Mover.OrientVersTarget();
             // }
         }
-        
-        public void Equalize() //bridgeden önce olmalı
-        {
-            DoubleTowerEqualizer.Equalize(_towerDatas.ToArray());
-        }
-
-        
-        public void CreateBridge()
-        {
-            //_towerIDs = _towerNumerics.OrderBy(tower => tower.Height).Select(tower => tower.UniqID).ToArray();   
-            //Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towerIDs);
-            //todo: aslında id'ye göre dizilmeli, 3lü tower olursa küçük ve büyük arası boşluk olabilir. Ama heighte göre dizilmezse de uzun olan kısalıyor falan
-
-            _towerIDs = _towerNumerics.Select(tower => tower.UniqID).ToArray();
-            Eventbus.TowerEvents.OnBridgeAttempt?.Invoke(_towerIDs);
-          
-            
-            //önce id'ye göre diz
-            //t1-t2 -- t2-t3 olacak şekilde grupla
-            //grupları heighte göre orderla
-            //her grup için event at
-            
-        }
-        
-       
-        
         
         public void Shake()
         {

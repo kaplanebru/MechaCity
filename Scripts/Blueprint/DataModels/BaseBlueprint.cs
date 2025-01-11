@@ -29,6 +29,12 @@ namespace Blueprint
             IsActive = false;
         }
 
+        public async void CompleteActionWithDelay(float delay)
+        {
+            await DelayMaker.WaitForSeconds(delay);
+            CompleteAction();
+        }
+
         //public abstract void CheckSelectionConstraints(int[] selectedItems);
 
         public abstract void TryRestoreAction(uint selectedItem);

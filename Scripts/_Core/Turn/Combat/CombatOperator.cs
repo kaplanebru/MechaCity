@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Actor;
 using DataModels;
+using Enums;
 using Testing;
 using Towers;
 using Unity.Collections;
@@ -39,6 +40,7 @@ namespace Turn
         public void ReverseCombatDirection()
         {
             isReversed = !isReversed;
+            BpEventbus.ActionEvents.OnBpActionCompleted?.Invoke(BpType.Reverse);
             // Debug.Log("combat reversed: " + isReversed);
         }
 
