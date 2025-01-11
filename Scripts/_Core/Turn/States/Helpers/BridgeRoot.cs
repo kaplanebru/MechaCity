@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using DG.Tweening;
 using Towers;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
 {
@@ -11,7 +14,6 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
     public Transform root;
     public float offset = 2;
     public int modelDirection = -1;
-    public float yOffset = 2.4f;
     
     private TowerObject mainTowerObject;
     private TowerObject targetTowerObject;
@@ -27,12 +29,12 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
     public void Stretch(int targetId)
     {
         targetTowerObject = AllTowers.GetTower(targetId);
-        var distance = Vector3.Distance(transform.position, targetTowerObject.transform.position);
+        var distance = Vector3.Distance(mainTowerObject.transform.position, targetTowerObject.transform.position);
         SetDirection();
+        GetFacingDirection();
         
         root.transform.rotation = Quaternion.LookRotation(direction);
         distance = (distance - offset) * modelDirection;
-        //distance -= root.transform.localScale.z * 2; //temp
         root.transform.DOScaleZ(distance, 1); //distance - offset
     }
 
@@ -50,6 +52,24 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
     public void Show(bool isShowing)
     {
         root.gameObject.SetActive(isShowing);
+    }
+
+    void GetFacingDirection()
+    {
+        float dotProduct = Vector3.Dot(root.transform.forward, direction);
+        
+        if (dotProduct > 0) // Positive value
+        {
+            Debug.Log("GameObject is facing the front of the target.");
+        }
+        else if (dotProduct < 0) // Negative value
+        {
+            Debug.Log("GameObject is facing the back of the target.");
+        }
+        else // dotProduct is close to 0
+        {
+            Debug.Log("GameObject is perpendicular to the target.");
+        }
     }
 
     // int GetSide()
