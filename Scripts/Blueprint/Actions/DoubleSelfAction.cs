@@ -24,7 +24,7 @@ namespace Blueprint
             newDouble.CreateBridge();
             
             Eventbus.ActorEvents.OnDoubleTowerCreated?.Invoke(selectedActors);
-            
+            BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BPType);
         }
         public void Restore(params object[] obj)
         {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using DG.Tweening;
+using Enums;
 using Towers;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
@@ -19,6 +20,8 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
     private TowerObject targetTowerObject;
     private Vector3 direction;
     private float startScale;
+    public BPTimingData timingData;
+
     public void Initialize(int id)
     {
         Id = id;
@@ -35,13 +38,13 @@ public class BridgeRoot : MonoBehaviour, ITowerRelatedElement
         
         root.transform.rotation = Quaternion.LookRotation(direction);
         distance = (distance - offset) * modelDirection;
-        root.transform.DOScaleZ(distance, 1); //distance - offset
+        root.transform.DOScaleZ(distance, timingData.DurationByType[BpType.DoubleSelf]); //distance - offset
     }
 
     public void RemoveBridge()
     {
         if(root.gameObject.activeInHierarchy)
-            root.transform.DOScaleZ(startScale, 1);
+            root.transform.DOScaleZ(startScale, timingData.DurationByType[BpType.DoubleSelf]);
     }
 
     void SetDirection()

@@ -1562,6 +1562,7 @@ MonoBehaviour:
   root: {fileID: 8227581847573449621}
   offset: 0.5
   modelDirection: -1
+  timingData: {fileID: 11400000, guid: 2fe4c7698f4be474b91d8781ea4dd3dc, type: 2}
 --- !u!1 &352096349684211116
 GameObject:
   m_ObjectHideFlags: 0
