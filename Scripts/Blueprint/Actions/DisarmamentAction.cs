@@ -21,7 +21,7 @@ namespace Blueprint
             
             foreach (var tower in towers)
             {
-               tower.VisualData.VisualSupportedDatas[VisualDataType.Disarm].SetDataAndVisuals(0);
+               tower.VisualData.VisualSupportedDatas[VisualDataType.Disarm].SetDataAndVisuals(1);
             }
             
             BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BPType);

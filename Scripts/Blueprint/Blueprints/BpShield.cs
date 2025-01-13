@@ -45,7 +45,7 @@ namespace Blueprint
             foreach (var tower in actor.Towers)
             {
                 ShieldData shieldData = tower.VisualData.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
-                if(!shieldData.HasEffectiveShield(tower.NumericData.Height))
+                if(!shieldData.IsActive)
                     availableTowers.Add(tower);
             }
             

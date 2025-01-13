@@ -7,6 +7,7 @@ namespace Towers
 {
     public abstract class BaseVisualSupportedData
     {
+        public bool IsActive;
         protected int TowerID;
         public abstract VisualDataType Type { get; set; }
         public int Amount { get; internal set; } = 0;
@@ -29,7 +30,7 @@ namespace Towers
             Amount += increaseAmount;
             SetVisually();
         }
-        public abstract bool SatisfyRequirements();
+        public abstract bool ConvenientForInitialization();
 
         public void ResetDataOnly(int amount)
         {

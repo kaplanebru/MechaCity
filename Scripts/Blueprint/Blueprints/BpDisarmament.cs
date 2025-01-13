@@ -42,7 +42,7 @@ namespace Blueprint
             foreach (var tower in actor.Towers)
             {
                 DisarmData disarmData = tower.VisualData.VisualSupportedDatas[VisualDataType.Disarm] as DisarmData;
-                //if(!disarmData.HasDisarmed())
+                if(!disarmData.IsActive)
                     availableTowers.Add(tower);
             }
             

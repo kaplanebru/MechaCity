@@ -10,11 +10,10 @@ namespace Towers
         public override VisualDataType Type { get; set; } = VisualDataType.Attack;
         public override void SetVisually()
         {
-            if(!SatisfyRequirements()) return;
             Eventbus.TowerEvents.OnMultiShotActionTriggered?.Invoke(TowerID, Amount);
         }
 
-        public override bool SatisfyRequirements()
+        public override bool ConvenientForInitialization()
         {
             return Amount > 1;
         }

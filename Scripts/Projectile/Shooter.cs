@@ -97,7 +97,7 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
 
             Hide();
             ShieldData shieldData = victim.VisualData.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
-            if (shieldData.HasEffectiveShield(victim.NumericData.Height))
+            if (shieldData.IsProtective(victim.NumericData.Height))
             {
                 //TODO: shield effect
                 _pair.CompleteCombat();

@@ -77,7 +77,8 @@ namespace Towers
         {
             foreach (var visualSupportedData in InclusiveData.VisualData.VisualSupportedDatas)
             {
-                visualSupportedData.Value.SetVisually();
+                if(visualSupportedData.Value.ConvenientForInitialization())
+                    visualSupportedData.Value.SetVisually();
             }
         }
     }

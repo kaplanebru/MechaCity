@@ -7,18 +7,17 @@ namespace Towers
     {
         public override VisualDataType Type { get; set; } = VisualDataType.Shield;
         //actorde heightler farklı olabilir shieldler için
-        public override bool SatisfyRequirements()
+        public override bool ConvenientForInitialization()
         {
             return Amount > 0;
         }
         
         public override void SetVisually()
         {
-            if(!SatisfyRequirements()) return;
             Eventbus.TowerEvents.OnShieldActionTriggered?.Invoke(TowerID, Amount);
         }
        
-        public bool HasEffectiveShield(int towerHeight)
+        public bool IsProtective(int towerHeight)
         {
             return towerHeight <= Amount;
         }
