@@ -24,7 +24,6 @@ namespace Blueprint
                 attackData.IncreaseDataAndVisuals(1);
             }
             
-            BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BPType);
         }
     }
 

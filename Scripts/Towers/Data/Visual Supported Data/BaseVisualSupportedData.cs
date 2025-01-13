@@ -7,7 +7,7 @@ namespace Towers
 {
     public abstract class BaseVisualSupportedData
     {
-        public bool IsActive;
+        public bool IsActive = false;
         protected int TowerID;
         public abstract VisualDataType Type { get; set; }
         public int Amount { get; internal set; } = 0;

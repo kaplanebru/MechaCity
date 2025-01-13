@@ -21,11 +21,10 @@ namespace Blueprint
                 IsPlaying = true;
                 Debug.Log("EXECUTE freeze");
                 BpAction.Execute(selectedItems);
-                DeselectItems();
+                CompleteActionWithDelay();
                 return true;
             }
            
-            DeselectItems();
             CompleteAction();
             return false;
         }

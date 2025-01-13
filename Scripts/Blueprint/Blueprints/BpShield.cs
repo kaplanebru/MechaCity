@@ -20,13 +20,11 @@ namespace Blueprint
             if (CheckBpConstraints(selectedItems, out List<TowerData> towers))
             {
                 IsPlaying = true;
-
                 BpAction.Execute(towers);
-                DeselectItems();
+                CompleteActionWithDelay();
                 return true;
             }
             
-            DeselectItems();
             CompleteAction();
             return false;
         }

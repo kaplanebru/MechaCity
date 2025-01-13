@@ -24,7 +24,6 @@ namespace Blueprint
             }
             
             BpEventbus.ActionEvents.OnBreakShieldActionTriggered?.Invoke(ActorDB.Registry[selectedActors[0]].TowerIDs);
-            BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BPType);
         }
     }
 

@@ -21,11 +21,10 @@ namespace Blueprint
             {
                 IsPlaying = true;
                 BpAction.Execute(availableTowers, selectedItems);
-                DeselectItems();
+                CompleteActionWithDelay();
                 return true;
             }
-           
-            DeselectItems();
+            
             CompleteAction();
             return false;
         }

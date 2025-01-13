@@ -27,7 +27,7 @@ namespace Blueprint
             BpEventbus.OnDirectBpExecution += TryExecuteBpBySystem;
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
-            BpEventbus.ActionEvents.OnBpActionCompleteRequest += TerminateBp;
+            BpEventbus.ActionEvents.OnBpActionCompleteRequest += TerminateBpExternally;
 
             NetworkEventbus.ServerEvents.OnBpSelectionByServer += SetCurrentBpByServer;
             NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer += TryExecuteBpBySystem;
@@ -43,7 +43,7 @@ namespace Blueprint
             BpEventbus.SelectionEvents.OnBpSlotSelected -= ChangeStateAndSetBp;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
-            BpEventbus.ActionEvents.OnBpActionCompleteRequest -= TerminateBp;
+            BpEventbus.ActionEvents.OnBpActionCompleteRequest -= TerminateBpExternally;
 
             NetworkEventbus.ServerEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
             NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer -= TryExecuteBpBySystem;
@@ -67,6 +67,7 @@ namespace Blueprint
         public void Initialize()
         {
             BpHolder.CreateBlueprints();
+            BpHolder.InjectTimingData(timingData);
             PlayerPersona = new PlayerPersona(bpSlotHolder);
             Subscribe();
         }
@@ -76,9 +77,9 @@ namespace Blueprint
             StartCoroutine(BpSelectionDelay(type, level));
         }
 
-        private void TerminateBp(BpType type)
+        private void TerminateBpExternally(BpType type)
         {
-            BpHolder.AllBlueprints[type].CompleteActionWithDelay(timingData.DurationByType[type]);
+            BpHolder.AllBlueprints[type].CompleteActionWithDelay();
         }
 
         IEnumerator BpSelectionDelay(BpType type, int level) //On Interaction : calls network

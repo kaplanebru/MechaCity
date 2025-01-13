@@ -24,7 +24,6 @@ namespace Blueprint
                tower.VisualData.VisualSupportedDatas[VisualDataType.Disarm].SetDataAndVisuals(1);
             }
             
-            BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BPType);
         }
         
         public void Restore(params object[] obj)

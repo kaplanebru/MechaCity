@@ -23,8 +23,6 @@ namespace Blueprint
                 var towerNumeric = tower.NumericData;
                 tower.VisualData.VisualSupportedDatas[VisualDataType.Shield].SetDataAndVisuals(towerNumeric.Height);
             }
-            
-            BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BPType);
         }
     }
 }

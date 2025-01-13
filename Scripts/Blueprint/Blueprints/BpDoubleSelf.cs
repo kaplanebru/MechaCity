@@ -25,13 +25,12 @@ namespace Blueprint
             if (CheckBpConstraints(selectedItems))
             {
                 BpAction.Execute(selectedItems);
-                DeselectItems();
+                CompleteActionWithDelay();
                 return true;
             }
 
             //todo: return double token
             Debug.Log("doesnt conform to constraints");
-            DeselectItems();
             CompleteAction();
             
             return false;

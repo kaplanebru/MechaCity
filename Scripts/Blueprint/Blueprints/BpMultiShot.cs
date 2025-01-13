@@ -21,11 +21,10 @@ namespace Blueprint
                 IsPlaying = true;
                 Debug.Log("execute multiShot");
                 BpAction.Execute(towers); //buraya sadece selected towerı yolla
-                DeselectItems();
+                CompleteActionWithDelay();
                 return true;
             }
             
-            DeselectItems();
             CompleteAction();
             return false;
         }

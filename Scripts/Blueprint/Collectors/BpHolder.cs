@@ -24,6 +24,14 @@ namespace Blueprint
             AllBlueprints.Add(BpType.Disarmament, new BpDisarmament());
             AllBlueprints.Add(BpType.Earthquake, new BpEarthquake());
         }
+
+        public static void InjectTimingData(BPTimingData timingData)
+        {
+            foreach (var bp in AllBlueprints.Values)
+            {
+                bp.SetTimingData(timingData);
+            }
+        }
     }
 
 

@@ -11,6 +11,7 @@ namespace Blueprint
     {
         public abstract BpType Type { get; set; }
         public bool IsPlaying { get; set; }
+        public BPTimingData TimingData;
 
         public abstract SelectionType SelectionType { get; set; }
 
@@ -27,15 +28,20 @@ namespace Blueprint
         {
             IsPlaying = false;
             BpEventbus.ActionEvents.OnBpActionCompleted?.Invoke(Type);
+            DeselectItems();
         }
 
-        public async void CompleteActionWithDelay(float delay)
+        public async void CompleteActionWithDelay()
         {
+            var delay = TimingData.DurationByType[Type];
             if(delay > 0)
                 await DelayMaker.WaitForSeconds(delay);
             
             CompleteAction();
         }
+
+        public void SetTimingData(BPTimingData timingData)=> TimingData = timingData;
+        
 
         //public abstract void CheckSelectionConstraints(int[] selectedItems);
 

@@ -15,6 +15,7 @@ namespace Towers
         public override void SetVisually()
         {
             Eventbus.TowerEvents.OnShieldActionTriggered?.Invoke(TowerID, Amount);
+            IsActive = true;
         }
        
         public bool IsProtective(int towerHeight)
