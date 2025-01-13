@@ -10,10 +10,16 @@ namespace TowerRelated
     public class Fence : MonoBehaviour
     {
         public Transform[] parts;
+        private float explodeTime;
    
         private void Awake()
         {
             parts = GetComponentsInChildren<Transform>();
+        }
+
+        public void Setup(float time)
+        {
+            explodeTime = time;
         }
 
         public void Explode()
@@ -25,8 +31,8 @@ namespace TowerRelated
                 
                 var rot = RandomHelper.GetRandomRotation();
                 
-                part.transform.DOMove(pos, 1f).SetEase(Ease.OutExpo);
-                part.transform.DORotateQuaternion(rot, 1).OnComplete(()=>
+                part.transform.DOMove(pos, explodeTime).SetEase(Ease.OutExpo);
+                part.transform.DORotateQuaternion(rot, explodeTime).OnComplete(()=>
                 {
                     part.gameObject.SetActive(false);
                     //part.transform.DORotateQuaternion( Quaternion.Euler(90, rot.eulerAngles.y, rot.eulerAngles.z), 0.3f).OnComplete(() => part.gameObject.SetActive(false));

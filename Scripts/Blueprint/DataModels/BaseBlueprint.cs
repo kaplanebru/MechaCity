@@ -23,7 +23,7 @@ namespace Blueprint
         
         public abstract bool TryTakeAction([CanBeNull] uint[] selectedItems);
 
-        private void CompleteAction()
+        public void CompleteAction()
         {
             IsActive = false;
             BpEventbus.ActionEvents.OnBpActionCompleted?.Invoke(Type);

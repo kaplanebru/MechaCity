@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Actor;
 using Enums;
+using Towers;
 using UnityEngine;
 
 namespace Blueprint
@@ -20,7 +21,9 @@ namespace Blueprint
             {
                 tower.VisualData.VisualSupportedDatas[VisualDataType.Shield].ResetDataOnly(0);
             }
+            
             BpEventbus.ActionEvents.OnBreakShieldActionTriggered?.Invoke(ActorDB.Registry[selectedActors[0]].TowerIDs);
+            BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BPType);
         }
     }
 

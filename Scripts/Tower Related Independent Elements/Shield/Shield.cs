@@ -20,6 +20,10 @@ namespace TowerRelated
         public void Initialize(int id)
         {
             Id = id;
+            foreach (var fence in fences)
+            {
+                fence.Setup(timingData.DurationByType[BpType.BreakShield]);
+            }
         }
 
         public void RevealShield(int height)

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Actor;
 using Enums;
 using Enums.Selections;
+using Towers;
 using UnityEngine;
 
 namespace Blueprint
@@ -15,16 +17,32 @@ namespace Blueprint
 
         public override bool TryTakeAction(uint[] selectedItems)
         {
-            if (IsActive) return false;
-            IsActive = true;
+            if (CheckBpConstraints(selectedItems))
+            {
+                IsActive = true;
 
-            BpAction.Execute(selectedItems);
+                BpAction.Execute(selectedItems);
+                DeselectItems();
+                return true;
+            }
+            
             DeselectItems();
-            return true;
+            CompleteAction();
+            return false;
         }
 
         public override void TryRestoreAction(uint selectedItem)
         {
+        }
+
+        private bool CheckBpConstraints(uint[] selectedItems)
+        {
+            var actorID = selectedItems[0];
+            var actor = ActorDB.Registry[actorID];
+            var tower = actor.Towers[0];
+
+            ShieldData shieldData = tower.VisualData.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
+            return !shieldData.HasEffectiveShield(tower.NumericData.Height);
         }
     }
 }
