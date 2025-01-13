@@ -18,7 +18,7 @@ namespace Blueprint
         {
             if (CheckBpConstraints(selectedItems, out List<TowerData> towers))
             {
-                IsActive = true;
+                IsPlaying = true;
                 Debug.Log("execute multiShot");
                 BpAction.Execute(towers); //buraya sadece selected towerı yolla
                 DeselectItems();
@@ -36,9 +36,12 @@ namespace Blueprint
         {
             var actorID = selectedItems[0];
             var actor = ActorDB.Registry[actorID];
-
+            
             availableTowers = new();
-
+            
+            if (!actor.ActivityStatus.CanShoot)
+                return false;
+            
             foreach (var tower in actor.Towers)
             {
                 AttackData attackData = tower.VisualData.VisualSupportedDatas[VisualDataType.Attack] as AttackData;

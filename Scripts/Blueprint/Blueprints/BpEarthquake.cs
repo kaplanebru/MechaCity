@@ -14,8 +14,8 @@ namespace Blueprint
         public override int Lifespan { get; set; } = 1;
         public override bool TryTakeAction(uint[] selectedItems)
         {
-            if (IsActive) return false;
-            IsActive = true;
+            if (IsPlaying) return false;
+            IsPlaying = true;
             
             BpAction.Execute();
             return true;

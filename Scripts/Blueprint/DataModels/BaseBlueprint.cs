@@ -10,7 +10,7 @@ namespace Blueprint
     public abstract class BaseBlueprint
     {
         public abstract BpType Type { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsPlaying { get; set; }
 
         public abstract SelectionType SelectionType { get; set; }
 
@@ -25,7 +25,7 @@ namespace Blueprint
 
         public void CompleteAction()
         {
-            IsActive = false;
+            IsPlaying = false;
             BpEventbus.ActionEvents.OnBpActionCompleted?.Invoke(Type);
         }
 

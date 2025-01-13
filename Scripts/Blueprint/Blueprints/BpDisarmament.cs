@@ -19,7 +19,7 @@ namespace Blueprint
         {
             if (CheckBpConstraints(selectedItems, out List<TowerData> availableTowers))
             {
-                IsActive = true;
+                IsPlaying = true;
                 BpAction.Execute(availableTowers, selectedItems);
                 DeselectItems();
                 return true;

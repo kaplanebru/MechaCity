@@ -15,8 +15,8 @@ namespace Blueprint
         public SelectionIncrementAction BpAction { get; } = new();
         public override bool TryTakeAction(uint[] selectedItems)
         {
-            if (IsActive) return false;
-            IsActive = true;
+            if (IsPlaying) return false;
+            IsPlaying = true;
             
             Debug.Log("EXECUTE");
             BpAction.Execute();

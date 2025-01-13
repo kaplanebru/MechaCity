@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using Actor;
 using Enums;
 using Enums.Selections;
+using Towers;
 using UnityEngine;
 
 namespace Blueprint
@@ -13,18 +16,31 @@ namespace Blueprint
 
         public override bool TryTakeAction(uint[] selectedItems)
         {
-            if (IsActive) return false;
-            IsActive = true;
-            
-            Debug.Log("EXECUTE freeze");
-            BpAction.Execute(selectedItems);
+            if (CheckBpConstraints(selectedItems))
+            {
+                IsPlaying = true;
+                Debug.Log("EXECUTE freeze");
+                BpAction.Execute(selectedItems);
+                DeselectItems();
+                return true;
+            }
+           
             DeselectItems();
-            return true;
+            CompleteAction();
+            return false;
         }
 
         public override void TryRestoreAction(uint selectedItem)
         {
             BpAction.Restore(selectedItem);
+        }
+        
+        private bool CheckBpConstraints(uint[] selectedItems)
+        {
+            var actorID = selectedItems[0];
+            var actor = ActorDB.Registry[actorID];
+
+            return actor.ActivityStatus.CanMove;
         }
         
     }

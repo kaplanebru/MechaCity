@@ -22,11 +22,13 @@ namespace Blueprint
             {
                 tower.VisualData.ColorHandler.ToFreezeColor();
             }
+            
             BpEventbus.ActionEvents.OnBpActionCompleteRequest?.Invoke(BPType);
         }
 
         public void Restore(params object[] obj)
         {
+            Debug.Log("restore");
             var selectedActorID = (uint[]) obj[0];
             var selectedActor = ActorDB.Registry[selectedActorID[0]];
             var selectedTowers = selectedActor.Towers;
