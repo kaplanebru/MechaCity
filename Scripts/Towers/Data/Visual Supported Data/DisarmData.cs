@@ -15,9 +15,14 @@ namespace Towers
                 Eventbus.TowerEvents.OnDisarmamentActionTriggered?.Invoke(TowerID);
         }
 
-        protected override bool SatisfyRequirements()
+        public override bool SatisfyRequirements() //bu boşa çıkıyor
         {
             return Amount == 0;
+        }
+
+        public bool HasDisarmed()
+        {
+            return Amount > 0;
         }
     }
 

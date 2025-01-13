@@ -14,7 +14,7 @@ namespace Towers
             Eventbus.TowerEvents.OnMultiShotActionTriggered?.Invoke(TowerID, Amount);
         }
 
-        protected override bool SatisfyRequirements()
+        public override bool SatisfyRequirements()
         {
             return Amount > 1;
         }

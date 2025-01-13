@@ -29,7 +29,7 @@ namespace Towers
             Amount += increaseAmount;
             SetVisually();
         }
-        protected abstract bool SatisfyRequirements();
+        public abstract bool SatisfyRequirements();
 
         public void ResetDataOnly(int amount)
         {

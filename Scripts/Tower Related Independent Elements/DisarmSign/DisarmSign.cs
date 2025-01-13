@@ -9,6 +9,7 @@ namespace TowerRelated
         public int Id { get; set; }
         public Transform disarmSignObject;
         public Transform[] parts;
+        public BPTimingData timingData;
         public void Initialize(int id)
         {
             Id = id;

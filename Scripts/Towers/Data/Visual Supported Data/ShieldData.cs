@@ -7,7 +7,7 @@ namespace Towers
     {
         public override VisualDataType Type { get; set; } = VisualDataType.Shield;
         //actorde heightler farklı olabilir shieldler için
-        protected override bool SatisfyRequirements()
+        public override bool SatisfyRequirements()
         {
             return Amount > 0;
         }

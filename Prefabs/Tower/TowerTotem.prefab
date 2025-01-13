@@ -30053,6 +30053,7 @@ MonoBehaviour:
   parts:
   - {fileID: 5489407286617203689}
   - {fileID: 5603655794490189690}
+  timingData: {fileID: 11400000, guid: 2fe4c7698f4be474b91d8781ea4dd3dc, type: 2}
 --- !u!1 &6291870924330755390
 GameObject:
   m_ObjectHideFlags: 0
