@@ -18,6 +18,11 @@ namespace Towers
         {
             return Amount > 1;
         }
+
+        public bool HasFilledMaxShotLimit()
+        {
+            return Amount == 3;
+        }
     }
 
 }

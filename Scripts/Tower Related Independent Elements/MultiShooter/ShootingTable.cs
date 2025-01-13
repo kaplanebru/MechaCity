@@ -10,10 +10,16 @@ namespace TowerRelated
     {
         public Transform[] parts;
         public float startHeight;
+        private float _duration;
 
         public void Awake()
         {
             startHeight = parts[0].transform.localScale.x;
+        }
+
+        public void Setup(float duration)
+        {
+            _duration = duration;
         }
 
         public void Reveal()
@@ -36,7 +42,7 @@ namespace TowerRelated
         {
             foreach (var part in parts)
             {
-                part.transform.DOScaleX(1, 1); //todo fix later
+                part.transform.DOScaleX(1, _duration); //todo fix later
             }
         }
     }

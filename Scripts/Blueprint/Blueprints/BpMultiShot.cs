@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Actor;
 using Enums;
 using Enums.Selections;
+using Towers;
 using UnityEngine;
 
 namespace Blueprint
@@ -14,18 +16,37 @@ namespace Blueprint
         public override int Lifespan { get; set; } = 1;
         public override bool TryTakeAction(uint[] selectedItems)
         {
-            if (IsActive) return false;
-            IsActive = true;
+            if (CheckBpConstraints(selectedItems, out List<TowerData> towers))
+            {
+                IsActive = true;
+                Debug.Log("execute multiShot");
+                BpAction.Execute(towers); //buraya sadece selected towerı yolla
+                DeselectItems();
+                return true;
+            }
             
-            Debug.Log("execute multiShot");
-            BpAction.Execute(selectedItems);
             DeselectItems();
-            return true;
+            CompleteAction();
+            return false;
         }
 
-        public override void TryRestoreAction(uint selectedItem)
+        public override void TryRestoreAction(uint selectedItem) {}
+        
+        private bool CheckBpConstraints(uint[] selectedItems, out List<TowerData> availableTowers)
         {
+            var actorID = selectedItems[0];
+            var actor = ActorDB.Registry[actorID];
+
+            availableTowers = new();
+
+            foreach (var tower in actor.Towers)
+            {
+                AttackData attackData = tower.VisualData.VisualSupportedDatas[VisualDataType.Attack] as AttackData;
+                if(!attackData.HasFilledMaxShotLimit())
+                    availableTowers.Add(tower);
+            }
             
+            return availableTowers.Count > 0;
         }
     }
 

@@ -17,11 +17,11 @@ namespace Blueprint
 
         public override bool TryTakeAction(uint[] selectedItems)
         {
-            if (CheckBpConstraints(selectedItems))
+            if (CheckBpConstraints(selectedItems, out List<TowerData> towers))
             {
                 IsActive = true;
 
-                BpAction.Execute(selectedItems);
+                BpAction.Execute(towers);
                 DeselectItems();
                 return true;
             }
@@ -35,14 +35,21 @@ namespace Blueprint
         {
         }
 
-        private bool CheckBpConstraints(uint[] selectedItems)
+        private bool CheckBpConstraints(uint[] selectedItems, out List<TowerData> availableTowers)
         {
             var actorID = selectedItems[0];
             var actor = ActorDB.Registry[actorID];
-            var tower = actor.Towers[0];
-
-            ShieldData shieldData = tower.VisualData.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
-            return !shieldData.HasEffectiveShield(tower.NumericData.Height);
+            
+            availableTowers = new();
+            
+            foreach (var tower in actor.Towers)
+            {
+                ShieldData shieldData = tower.VisualData.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
+                if(!shieldData.HasEffectiveShield(tower.NumericData.Height))
+                    availableTowers.Add(tower);
+            }
+            
+            return availableTowers.Count > 0;
         }
     }
 }

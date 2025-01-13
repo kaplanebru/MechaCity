@@ -15,14 +15,12 @@ namespace Blueprint
         public void Execute(params object[] obj)
         {
             Debug.Log("execute shield");
-            var selectedActors = (uint[]) obj[0];
-            var towers = ActorDB.Registry[selectedActors[0]].Towers;
-            var towerNumericDatas = ActorDB.Registry[selectedActors[0]].TowerNumericDatas;
+            var towers = (List<TowerData>) obj[0];
 
-            for (var i = 0; i < towers.Length; i++)
+            for (var i = 0; i < towers.Count; i++)
             {
                 var tower = towers[i];
-                var towerNumeric = towerNumericDatas[i];
+                var towerNumeric = tower.NumericData;
                 tower.VisualData.VisualSupportedDatas[VisualDataType.Shield].SetDataAndVisuals(towerNumeric.Height);
             }
             

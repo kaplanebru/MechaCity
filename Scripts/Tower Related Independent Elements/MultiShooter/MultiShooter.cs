@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Enums;
 using UnityEngine;
 
 namespace TowerRelated
@@ -9,9 +10,11 @@ namespace TowerRelated
         public int Id { get; set; }
         public ShootingTable shootingTable;
         public Transform[] faces;
+        public BPTimingData timingData;
         public void Initialize(int id)
         {
             Id = id;
+            shootingTable.Setup(timingData.DurationByType[BpType.MultiShot]);
         }
 
         public void ShowShootingTable()

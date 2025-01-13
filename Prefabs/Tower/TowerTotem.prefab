@@ -23850,6 +23850,7 @@ MonoBehaviour:
   faces:
   - {fileID: 4328021154564639688}
   - {fileID: 3604014078163434811}
+  timingData: {fileID: 11400000, guid: 2fe4c7698f4be474b91d8781ea4dd3dc, type: 2}
 --- !u!1 &4946714875381968484
 GameObject:
   m_ObjectHideFlags: 0
