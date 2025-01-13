@@ -19,10 +19,15 @@ namespace Blueprint
 
         public override bool TryTakeAction(uint[] selectedItems)
         {
-            //if (IsActive) return false;
             IsPlaying = true;
+
+            if (HasFrozenItem(selectedItems))
+            {
+                CompleteAction();
+                return false;
+            }
             
-            if (CheckBpConstraints(selectedItems))
+            if (CheckJuxtaposition(selectedItems))
             {
                 BpAction.Execute(selectedItems);
                 CompleteActionWithDelay();
@@ -41,7 +46,7 @@ namespace Blueprint
             BpAction.Restore(selectedItem);
         }
 
-        private bool CheckBpConstraints(uint[] selectedItems)
+        private bool CheckJuxtaposition(uint[] selectedItems)
         {
             var actorID = selectedItems[0];
             var actor = ActorDB.Registry[actorID];
@@ -57,6 +62,11 @@ namespace Blueprint
             }
 
             return counter != selectedItems.Length - 1;
+        }
+
+        private bool HasFrozenItem(uint[] selectedItems)
+        {
+            return selectedItems.Any(actorID => !ActorDB.Registry[actorID].ActivityStatus.CanMove);
         }
 
         ActorData[] ConvertToTowers(uint[] selectedItems)

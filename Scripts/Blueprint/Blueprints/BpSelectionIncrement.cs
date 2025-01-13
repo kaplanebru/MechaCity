@@ -15,12 +15,11 @@ namespace Blueprint
         public SelectionIncrementAction BpAction { get; } = new();
         public override bool TryTakeAction(uint[] selectedItems)
         {
-            if (IsPlaying) return false;
             IsPlaying = true;
             
             Debug.Log("EXECUTE");
             BpAction.Execute();
-            DeselectItems();
+            CompleteAction(); //belki .2 snlik delay eklenebilir
             return true;
         }
 

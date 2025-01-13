@@ -13,10 +13,9 @@ namespace Blueprint
         
         public override bool TryTakeAction(uint[] selectedItems)
         {
-            if (IsPlaying) return false;
             IsPlaying = true;
-            
             BpAction.Execute();
+            CompleteAction();
             return true;
         }
 
