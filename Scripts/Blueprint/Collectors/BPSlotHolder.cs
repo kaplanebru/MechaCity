@@ -17,6 +17,14 @@ namespace Blueprint
         {
             slots = GetComponentsInChildren<CardSlot>(true);
             BpEventbus.ActionEvents.OnBpActionCompleted += ActivateSlot;
+            BpEventbus.SelectionEvents.OnCardClicked += SelectBpSlot;
+        }
+
+        private void SelectBpSlot(BpType type)
+        {
+            BpEventbus.SelectionEvents.OnBpSlotSelected?.Invoke(type, bpDataHolder.TypeDataPair[type].Level);
+            var slot = slots.FirstOrDefault(b => b.Data.Type == type);
+            slot.cardInteraction.Deactivate(); //TODO: clientlara bu kart seçildi diye mesaj gitsin, ya da herkese işte.
         }
 
         private void ActivateSlot(BpType type)
@@ -69,6 +77,7 @@ namespace Blueprint
         private void OnDisable()
         {
             BpEventbus.ActionEvents.OnBpActionCompleted -= ActivateSlot;
+            BpEventbus.SelectionEvents.OnCardClicked -= SelectBpSlot;
         }
     }
 }

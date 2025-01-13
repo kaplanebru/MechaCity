@@ -22,8 +22,7 @@ namespace Blueprint
 
         public void SubscribeToEvents()
         {
-            BpEventbus.UIEvents.OnInteraction +=
-                ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
+            BpEventbus.SelectionEvents.OnBpSlotSelected += ChangeStateAndSetBp; //todo: Daha sonra, (datadaki değişkenleri ayırdıktan sonra) network obj olarak data gönderilir yaparız
             BpEventbus.OnSendingSelectionsForExecution += SendBpExecutionRequestByUser;
             BpEventbus.OnDirectBpExecution += TryExecuteBpBySystem;
             BpEventbus.LifespanEvents.OnRestore += RestoreFromBp;
@@ -41,7 +40,7 @@ namespace Blueprint
         {
             BpEventbus.OnSendingSelectionsForExecution -= SendBpExecutionRequestByUser;
             BpEventbus.OnDirectBpExecution -= TryExecuteBpBySystem;
-            BpEventbus.UIEvents.OnInteraction -= ChangeStateAndSetBp;
+            BpEventbus.SelectionEvents.OnBpSlotSelected -= ChangeStateAndSetBp;
             BpEventbus.LifespanEvents.OnRestore -= RestoreFromBp;
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
             BpEventbus.ActionEvents.OnBpActionCompleteRequest -= TerminateBp;

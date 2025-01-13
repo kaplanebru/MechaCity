@@ -74,7 +74,7 @@ namespace Blueprint
                 transform.DOLocalMoveY(startHeight, selectDuration/2);
             });
             
-            BpEventbus.UIEvents.OnInteraction?.Invoke(_currentBpData.Type, _currentBpData.Level); //sadece manager dinliyor, slota event atamaz bütün slotlara gider
+            BpEventbus.SelectionEvents.OnBpSlotSelected?.Invoke(_currentBpData.Type, _currentBpData.Level); //sadece manager dinliyor, slota event atamaz bütün slotlara gider
             
         }
 

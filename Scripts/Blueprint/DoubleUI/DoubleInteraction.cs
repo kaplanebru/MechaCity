@@ -7,6 +7,6 @@ public class DoubleInteraction : MonoBehaviour //TEMPORARY
 {
     public void OnClick()
     {
-        BpEventbus.UIEvents.OnInteraction?.Invoke(BpType.DoubleSelf, 1);
+        BpEventbus.SelectionEvents.OnBpSlotSelected?.Invoke(BpType.DoubleSelf, 1);
     }
 }

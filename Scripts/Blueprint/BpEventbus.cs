@@ -14,6 +14,9 @@ public static class BpEventbus
     public class SelectionEvents
     {
         public static Action<SelectionType> OnCurrentBpSet;
+        public static Action<BpType> OnCardClicked;
+        public static Action<BpType, int> OnBpSlotSelected;
+
     }
 
     public class StateEvents
@@ -48,7 +51,6 @@ public static class BpEventbus
     }
     public static class UIEvents
     {
-        public static Action<BpType, int> OnInteraction;
         public static Action<BpType> OnBpInstalled;
         public static Action<BpType> OnBpInstallBegin;
         public static Action OnBpReset;

@@ -20,16 +20,12 @@ namespace Blueprint
         {
             if(!isInteractable) return;
             print("select: "+_currentBpData.Type);
-            Select();
+            BpEventbus.SelectionEvents.OnCardClicked?.Invoke(_currentBpData.Type);
         }
-
-       
         
         void Select()
         {
             //TODO: öne geçme animasyonu
-            BpEventbus.UIEvents.OnInteraction?.Invoke(_currentBpData.Type, _currentBpData.Level); //sadece manager dinliyor, slota event atamaz bütün slotlara gider
-            Deactivate(); //TODO: clientlara bu kart seçildi diye mesaj gitsin, ya da herkese işte.
         }
         public void Activate()
         {
@@ -43,17 +39,17 @@ namespace Blueprint
             blocker.gameObject.SetActive(true);
         }
 
-        private void OnMouseEnter()
-        {
-            //HoverImage();
-           // print("select: "+_currentBpData.Type);
-        }
-    
-       
-        private void OnMouseExit()
-        {
-            //ResetImage();
-        }
+        // private void OnMouseEnter()
+        // {
+        //     //HoverImage();
+        //    // print("select: "+_currentBpData.Type);
+        // }
+        //
+        //
+        // private void OnMouseExit()
+        // {
+        //     //ResetImage();
+        // }
         
       
     }
