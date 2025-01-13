@@ -14,8 +14,9 @@ namespace Blueprint
         public void Execute(params object[] obj)
         {
             Debug.Log("execute break shield");
-            var selectedActors = (uint[]) obj[0];
-            var towers =ActorDB.Registry[selectedActors[0]].Towers;
+           
+            var towers =  (List<TowerData>) obj[0];
+            var selectedActors = (uint[]) obj[1];
 
             foreach (var tower in towers)
             {
