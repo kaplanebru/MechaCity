@@ -113,7 +113,9 @@ namespace Actor
             foreach (var actorID in actorIDs)
             {
                 var actor = Registry[actorID];
-                if (!actor.ActivityStatus.CanMove) continue;
+                if (!actor.ActivityStatus.CanMove)
+                    continue; 
+                
                 yield return actorID;
             }
         }

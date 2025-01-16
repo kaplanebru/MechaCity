@@ -28,8 +28,8 @@ namespace Blueprint
         public void Restore(params object[] obj)
         {
             Debug.Log("restore");
-            var selectedActorID = (uint[]) obj[0];
-            var selectedActor = ActorDB.Registry[selectedActorID[0]];
+            var selectedActorID = (uint) obj[0];
+            var selectedActor = ActorDB.Registry[selectedActorID];
             var selectedTowers = selectedActor.Towers;
         
             selectedActor.ActivityStatus.CanMove = true;

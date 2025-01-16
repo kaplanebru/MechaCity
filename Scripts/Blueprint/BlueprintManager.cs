@@ -135,9 +135,8 @@ namespace Blueprint
 
         internal void RestoreFromBp(BpType type, uint selectedItem)
         {
-            BpHolder.AllBlueprints[type]
-                .TryRestoreAction(
-                    selectedItem); //todo: bug. sadece 3 tane bp var. ama aynı bpnin birden fazla kullanımı olmalı, ve selected itemlerı farklı olmalı
+            BpHolder.AllBlueprints[type].TryRestoreAction(selectedItem);
+            //todo: bug. sadece 3 tane bp var. ama aynı bpnin birden fazla kullanımı olmalı, ve selected itemlerı farklı olmalı
         }
 
         public void Unsubscribe()

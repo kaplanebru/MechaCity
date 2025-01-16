@@ -20,6 +20,9 @@ namespace Grid
             {
                 if (linkedActors.Contains(interruption.Interrupted)) continue;
                 if (!linkedActors.All(interruption.Interrupters.Contains)) continue;
+                if (linkedActors.Count < interruption.Interrupters.Count) continue;
+                //if every item in linkedActors exists in Interrupters
+                //with !: if not all items in linkedActors are contained in Interrupters
                 
                 Eventbus.LinkEvents.OnInterruptionDetected?.Invoke(interruption.Interrupted, interruption.Offset);
                 return;

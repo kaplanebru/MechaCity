@@ -31,7 +31,7 @@ namespace Towers
         public static Vector3 GetTowerPos(int id) => Towers[id].transform.position;
         public void Subscribe()
         {
-            Eventbus.LinkEvents.OnLinkingTowers += SetLinkedTowersAndStartRiseFallRoutine;
+            Eventbus.LinkEvents.OnLinkMotionEnabled += SetLinkedTowersAndStartRiseFallRoutine;
             Eventbus.LinkEvents.OnUnlink += StopLinkedTowersMotionRoutine;
             towerRelatedsInitializer.Subscribe();
         }
@@ -99,7 +99,7 @@ namespace Towers
 
         public void Unsubscribe()
         {
-            Eventbus.LinkEvents.OnLinkingTowers -= SetLinkedTowersAndStartRiseFallRoutine;
+            Eventbus.LinkEvents.OnLinkMotionEnabled -= SetLinkedTowersAndStartRiseFallRoutine;
             Eventbus.LinkEvents.OnUnlink -= StopLinkedTowersMotionRoutine;
             towerRelatedsInitializer.Unsubscribe();
         }

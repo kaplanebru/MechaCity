@@ -52,13 +52,21 @@ namespace Turn
             TransferData.Actors = data.Actors;
             activeActors = ActorDB.GetActiveActors(TransferData.Actors.ToArray()).ToArray();
             TransferData.towers = ActorDB.ResolveTowersFromActors(activeActors).ToList();
-            
-            Eventbus.LinkEvents.OnLinkActorsLoaded?.Invoke(activeActors.ToList());
-           
+
+            if (activeActors.Length <= 1)
+            {
+                EndStateManually();
+                return;
+            }
+            CheckInterruptions();
             SetLinkOperatorAndSubscribe();
             currentLinkOperator.SetTowers(activeActors);
-            
             Eventbus.LinkEvents.OnLinkLoading?.Invoke(TransferData.towers);
+        }
+
+        void CheckInterruptions()
+        {
+            Eventbus.LinkEvents.OnLinkActorsLoaded?.Invoke(activeActors.ToList());
         }
 
         private void SetLinkOperatorAndSubscribe()
@@ -69,18 +77,16 @@ namespace Turn
             
             
             NetworkEventbus.InputEvents.OnObjectClicked += currentLinkOperator.TowerSelected;
-            MediatorEventbus.ChainLinkEvents.OnFloorsOpened += LinkTowers;
+            MediatorEventbus.ChainLinkEvents.OnFloorsOpened += EnableLinkMotion;
 
         }
         
-
-        private void LinkTowers(int[] ids = null)
+        private void EnableLinkMotion(int[] ids = null)
         {
             AllTowers.DisableClickability();
             
             if(activeActors.Length <= 1) return;
-            Eventbus.LinkEvents.OnLinkingTowers?.Invoke(TransferData.towers);
-            //MediatorEventbus.ChainLinkEvents.OnLinkedTowers?.Invoke(TransferData.towers.ToArray());
+            Eventbus.LinkEvents.OnLinkMotionEnabled?.Invoke(TransferData.towers);
         }
 
         public override void Unsubscribe()
@@ -89,11 +95,21 @@ namespace Turn
             MediatorEventbus.ChainLinkEvents.OnLinkBroken?.Invoke();
 
             NetworkEventbus.InputEvents.OnObjectClicked -= currentLinkOperator.TowerSelected;
-            MediatorEventbus.ChainLinkEvents.OnFloorsOpened -= LinkTowers;
+            MediatorEventbus.ChainLinkEvents.OnFloorsOpened -= EnableLinkMotion;
             
             AllTowers.EnableClickability();
-
             SelectionEvents.OnSelectionTerminated?.Invoke();
+        }
+
+        async void EndStateManually()
+        {
+            Debug.Log("Nothing to link");
+            //TODO: Send UI message
+
+            await DelayMaker.WaitForSeconds(1);
+            AllTowers.EnableClickability();
+            SelectionEvents.OnSelectionTerminated?.Invoke();
+            UIEventbus.OnButtonClicked?.Invoke();
         }
 
         public override void UnsubscribeFromConstantEvents()
