@@ -124,7 +124,10 @@ namespace Enums
         Disarm
     }
 
-   
+    public enum PopupType
+    {
+        NoLink
+    }
    
 
    

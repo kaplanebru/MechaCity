@@ -103,8 +103,7 @@ namespace Turn
 
         async void EndStateManually()
         {
-            Debug.Log("Nothing to link");
-            //TODO: Send UI message
+            UIEventbus.OnPopupTime?.Invoke(PopupType.NoLink);
 
             await DelayMaker.WaitForSeconds(1);
             AllTowers.EnableClickability();

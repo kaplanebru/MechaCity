@@ -20,8 +20,10 @@ namespace GameUI
         public static Action<string> OnPlayerSet;
         
         public static Action<GameObject> OnTeamChange;
-        
-        
+
+        public static Action<PopupType> OnPopupTime;
+
+
     }
     
     
