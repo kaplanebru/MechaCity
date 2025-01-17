@@ -14,9 +14,13 @@ public static class BpEventbus
     public class SelectionEvents
     {
         public static Action<SelectionType> OnCurrentBpSetByClientRpc;
-        public static Action<BpType> OnCardClicked;
+        public static Action<BpType> OnCardSelectionApplied;
         public static Action<BpType, int> OnBpSlotSelected;
-
+    }
+    
+    public static class CardEvents
+    {
+        public static Action<BpType> OnCardSelection;
     }
 
     public class StateEvents

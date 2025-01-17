@@ -12,12 +12,22 @@ namespace Blueprint
     {
         public BPDataHolder bpDataHolder;
         public CardSlot[] slots;
+        public CardSlotFront frontSlot;
         private List<BpType> _activeBlueprints = new();
         private void OnEnable()
         {
             slots = GetComponentsInChildren<CardSlot>(true);
             BpEventbus.ActionEvents.OnBpActionCompleted += ActivateSlot;
-            BpEventbus.SelectionEvents.OnCardClicked += SelectBpSlot;
+            BpEventbus.SelectionEvents.OnCardSelectionApplied += SelectBpSlot;
+            BpEventbus.CardEvents.OnCardSelection += SetFrontSlot;
+
+        }
+
+        private void SetFrontSlot(BpType type)
+        {
+            if(frontSlot.Data.Type == type) return;
+            var newCard = bpDataHolder.TypeDataPair[type];
+            frontSlot.SetNewFrontCard(newCard);
         }
 
         private void SelectBpSlot(BpType type)
@@ -77,7 +87,8 @@ namespace Blueprint
         private void OnDisable()
         {
             BpEventbus.ActionEvents.OnBpActionCompleted -= ActivateSlot;
-            BpEventbus.SelectionEvents.OnCardClicked -= SelectBpSlot;
+            BpEventbus.SelectionEvents.OnCardSelectionApplied -= SelectBpSlot;
+            BpEventbus.CardEvents.OnCardSelection -= SetFrontSlot;
         }
     }
 }

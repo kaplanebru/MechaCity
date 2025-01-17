@@ -42,12 +42,6 @@ public static class Eventbus
         
         //public static Func<uint[], (bool Success, uint InterruptedActor)> OnInterruptionCheck;
     }
-    
-    
-   
-    
-   
-    
     public static class TurnStateEvents
     {
         public static Action<TurnStateType> OnTurnStateBegin;
@@ -71,6 +65,8 @@ public static class Eventbus
         public static Action<int, int> OnMultiShotActionTriggered;
         public static Action<int> OnDisarmamentActionTriggered;
     }
+
+ 
     
    
 

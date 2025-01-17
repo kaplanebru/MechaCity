@@ -19,8 +19,11 @@ namespace Blueprint
         private void OnMouseDown()
         {
             if(!isInteractable) return;
-            print("select: "+_currentBpData.Type);
-            BpEventbus.SelectionEvents.OnCardClicked?.Invoke(_currentBpData.Type);
+            Debug.Log("SELECT");
+            Select();
+            BpEventbus.CardEvents.OnCardSelection?.Invoke(_currentBpData.Type);
+            // print("select: "+_currentBpData.Type);
+            // BpEventbus.SelectionEvents.OnCardClicked?.Invoke(_currentBpData.Type);
         }
         
         void Select()
@@ -37,6 +40,13 @@ namespace Blueprint
         {
             isInteractable = false;
             blocker.gameObject.SetActive(true);
+        }
+
+        internal void ApplyCard()
+        {
+            if(!isInteractable) return;
+            print("select: "+_currentBpData.Type);
+            BpEventbus.SelectionEvents.OnCardSelectionApplied?.Invoke(_currentBpData.Type);
         }
 
         // private void OnMouseEnter()
