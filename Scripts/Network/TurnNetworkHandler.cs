@@ -6,6 +6,7 @@ using Enums;
 using Unity.Netcode;
 using PlayerNetwork;
 using Testing;
+using UnityEngine;
 
 
 namespace Network
@@ -80,12 +81,19 @@ namespace Network
         [ServerRpc]
         void StateChangeBeginServerRpc(TurnStateType nextType) //(TurnStateType lastType)
         {
+            Debug.Log("old newtork value: " + turnStateType.Value + " new network value: " + nextType);
+            if (turnStateType.Value == TurnStateType.Intruder && nextType == TurnStateType.Intruder)
+            {
+                turnStateType.Value = TurnStateType.Selection;
+            }
             turnStateType.Value = nextType;
+            
         }
 
         private void StateChangeBegin(TurnStateType previousvalue, TurnStateType newvalue)
         {
             NetworkEventbus.ServerEvents.OnStateChangeRequestByServer?.Invoke(newvalue);
+            Debug.Log("new state by system: " + newvalue);
         }
 
         #endregion

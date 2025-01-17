@@ -164,24 +164,18 @@ namespace Turn
 
         internal void StateEndByUser()
         {
-            if (currentState.StateType == TurnStateType.Intruder) //apply yapılan yerde enum olabilir
+            if (currentState.StateType == TurnStateType.Intruder) 
             {
-                IntruderExecutionAttempt();
+                BpEventbus.StateEvents.OnIntruderExecutionAttempt?.Invoke();
+                GetPreviousState();
             }
             else
             {
-                GetNextState();
+                GetNextStateAtTheEnd();
             }
         }
 
-        void IntruderExecutionAttempt()
-        {
-            BpEventbus.StateEvents.OnIntruderExecutionAttempt?.Invoke();
-            GetPreviousState();
-            //TODO: IntruderExecutionRequest(nextType); => bu durumda Get previous state'te state change request 2 kez çağrılmış olabilir.
-        }
-
-        public void GetNextState()
+        public void GetNextStateAtTheEnd()
         {
             var nextType = StateHolder.States[TurnHelper.GetNextStateId(currentState.StateId)].StateType;
             SendStateChangeRequest(nextType);
@@ -190,23 +184,28 @@ namespace Turn
         internal void GetPreviousState(bool isDirect = false)
         {
             var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
-            if (!isDirect)
-                SendStateChangeRequest(previousType);
-            else
+            if (isDirect)
+            {
+                Debug.Log(nameof(previousType) + " " + previousType);
                 ChangeStateBySystem(previousType);
+                //SendStateChangeRequest(previousType);
+                //bu üsttteki yapılırsa döngüye giriyor, yapılmazsa da state change yapılmamış oluyor, bunun sadece
+            }
+            else
+                SendStateChangeRequest(previousType);
         }
 
         public void ChangeStateBySystem(TurnStateType newType)
         {
             currentState?.CompleteState();
+            previousState = currentState;
             SetNewState(StateHolder.GetStateByType(newType));
+            //Debug.Log("previous state: "+previousState + " current State: " + currentState);
         }
 
         public void SetNewState(BaseTurnState newState)
         {
-            previousState = currentState;
             currentState = newState;
-
             currentState.SetTeams(TurnHelper.TeamsByTurn);
             currentState.EnterState();
             TurnHelper.GetPreviousStateData(previousState, currentState);

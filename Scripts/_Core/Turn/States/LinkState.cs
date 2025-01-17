@@ -49,6 +49,7 @@ namespace Turn
         private uint[] activeActors;
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
+            Debug.Log("link state process");
             TransferData.Actors = data.Actors;
             activeActors = ActorDB.GetActiveActors(TransferData.Actors.ToArray()).ToArray();
             TransferData.towers = ActorDB.ResolveTowersFromActors(activeActors).ToList();

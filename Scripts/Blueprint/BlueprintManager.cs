@@ -84,6 +84,7 @@ namespace Blueprint
 
         IEnumerator BpSelectionDelay(BpType type, int level) //On Interaction : calls network
         {
+            Debug.Log("state change request to intruder");
             BpEventbus.StateEvents.StateChangeRequestToIntruder?.Invoke(TurnStateType.Intruder);
             yield return new WaitForSeconds(.2f);
             NetworkEventbus.UserEvents.OnSetCurrentBpRequestByUser?.Invoke(type, level);
