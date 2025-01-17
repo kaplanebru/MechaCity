@@ -15,7 +15,7 @@ namespace Network
         {
             public static Action<Player, ulong> OnPlayerSpawned;
             public static Action<TurnStateType> OnStateChangeRequestByServer;
-            public static Action<BpType, int> OnBpSelectionByServer;
+            public static Action<BpType, int> OnBpSelectionByClientRpc;
             public static Action<GameEndState> OnGameEndScreenRequest;
             public static Action<uint[]> OnBpExecutionRequestByServer;
             public static Action<PersonaType> OnPlayerPersonaSet;

@@ -26,7 +26,7 @@ namespace Turn
 
         public override void SubscribeToConstantEvents()
         {
-            BpEventbus.SelectionEvents.OnCurrentBpSet += GetBpSelector; 
+            BpEventbus.SelectionEvents.OnCurrentBpSetByClientRpc += GetBpSelectorByClientRpc; 
             BpEventbus.StateEvents.OnIntruderExecutionAttempt += SendSelections;
         }
 
@@ -42,7 +42,7 @@ namespace Turn
             TransferData.Actors = data.Actors;
         }
 
-        private void GetBpSelector(SelectionType selectionType)
+        private void GetBpSelectorByClientRpc(SelectionType selectionType) //döngü olmaması için
         {
             if (selectionType != SelectionType.None)
                 bpSelector = SelectionReferences.Instance.GetSelector(selectionType);
@@ -76,7 +76,7 @@ namespace Turn
 
         public override void UnsubscribeFromConstantEvents()
         {
-            BpEventbus.SelectionEvents.OnCurrentBpSet -= GetBpSelector;
+            BpEventbus.SelectionEvents.OnCurrentBpSetByClientRpc -= GetBpSelectorByClientRpc;
             BpEventbus.StateEvents.OnIntruderExecutionAttempt -= SendSelections;
         }
     }

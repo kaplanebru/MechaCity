@@ -35,7 +35,7 @@ namespace Network
 
         public override void OnNetworkSpawn()
         {
-            turnStateType.OnValueChanged += StateChangeBegin; //owner ve clone'u değişir
+            turnStateType.OnValueChanged += ChangeStateRequestByServer; //owner ve clone'u değişir
             
 
             if (IsOwner)
@@ -71,7 +71,7 @@ namespace Network
         void ProcessBpSelectionClientRpc(BpType bpType, int level)
         {
            // print("owner");  //2 ownera da 1 kez gidiyor
-            NetworkEventbus.ServerEvents.OnBpSelectionByServer?.Invoke(bpType, level);
+            NetworkEventbus.ServerEvents.OnBpSelectionByClientRpc?.Invoke(bpType, level);
            
         }
 
@@ -90,10 +90,10 @@ namespace Network
             
         }
 
-        private void StateChangeBegin(TurnStateType previousvalue, TurnStateType newvalue)
+        private void ChangeStateRequestByServer(TurnStateType previousvalue, TurnStateType newvalue)
         {
             NetworkEventbus.ServerEvents.OnStateChangeRequestByServer?.Invoke(newvalue);
-            Debug.Log("new state by system: " + newvalue);
+            Debug.Log("new state by system: " + newvalue); //test: 2 clientta da kaç kez çağrıldığına bak: on value changed'in ownerda olmayışını kontrol etmek amaç
         }
 
         #endregion
@@ -101,7 +101,7 @@ namespace Network
 
         public override void OnNetworkDespawn()
         {
-            turnStateType.OnValueChanged -= StateChangeBegin;
+            turnStateType.OnValueChanged -= ChangeStateRequestByServer;
             if (IsOwner)
             {
                 NetworkEventbus.UserEvents.OnStateChangeRequestByUser -= StateChangeBeginServerRpc;

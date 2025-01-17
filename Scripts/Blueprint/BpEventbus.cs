@@ -13,7 +13,7 @@ public static class BpEventbus
     public static Action<uint[]> OnDirectBpExecution;
     public class SelectionEvents
     {
-        public static Action<SelectionType> OnCurrentBpSet;
+        public static Action<SelectionType> OnCurrentBpSetByClientRpc;
         public static Action<BpType> OnCardClicked;
         public static Action<BpType, int> OnBpSlotSelected;
 

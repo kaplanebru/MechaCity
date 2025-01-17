@@ -29,7 +29,7 @@ namespace Blueprint
             BpEventbus.LifespanEvents.OnExpiredTracker += RemoveExpiredBp;
             BpEventbus.ActionEvents.OnBpActionCompleteRequest += TerminateBpExternally;
 
-            NetworkEventbus.ServerEvents.OnBpSelectionByServer += SetCurrentBpByServer;
+            NetworkEventbus.ServerEvents.OnBpSelectionByClientRpc += SetCurrentBpByClientRpc;
             NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer += TryExecuteBpBySystem;
             NetworkEventbus.ServerEvents.OnPlayerPersonaSet += PlayerPersona.SetPlayerPersona;
 
@@ -45,7 +45,7 @@ namespace Blueprint
             BpEventbus.LifespanEvents.OnExpiredTracker -= RemoveExpiredBp;
             BpEventbus.ActionEvents.OnBpActionCompleteRequest -= TerminateBpExternally;
 
-            NetworkEventbus.ServerEvents.OnBpSelectionByServer -= SetCurrentBpByServer;
+            NetworkEventbus.ServerEvents.OnBpSelectionByClientRpc -= SetCurrentBpByClientRpc;
             NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer -= TryExecuteBpBySystem;
             NetworkEventbus.ServerEvents.OnPlayerPersonaSet -= PlayerPersona.SetPlayerPersona;
 
@@ -90,13 +90,13 @@ namespace Blueprint
             NetworkEventbus.UserEvents.OnSetCurrentBpRequestByUser?.Invoke(type, level);
         }
 
-        internal void SetCurrentBpByServer(BpType type, int level) //network call
+        internal void SetCurrentBpByClientRpc(BpType type, int level) //network call
         {
             currentBlueprint = BpHolder.AllBlueprints[type];
             BpEventbus.UIEvents.OnBpInstallBegin?.Invoke(type);
 
             currentBlueprint.Level = level;
-            BpEventbus.SelectionEvents.OnCurrentBpSet?.Invoke(currentBlueprint.SelectionType);
+            BpEventbus.SelectionEvents.OnCurrentBpSetByClientRpc?.Invoke(currentBlueprint.SelectionType);
         }
 
         internal void UpdateBpTrackers()
