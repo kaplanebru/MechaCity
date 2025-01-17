@@ -186,7 +186,6 @@ namespace Turn
             var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
             if (isDirect)
             {
-                Debug.Log(nameof(previousType) + " " + previousType);
                 ChangeStateBySystem(previousType);
                 //SendStateChangeRequest(previousType);
                 //bu üsttteki yapılırsa döngüye giriyor, yapılmazsa da state change yapılmamış oluyor, bunun sadece
@@ -200,11 +199,11 @@ namespace Turn
             currentState?.CompleteState();
             previousState = currentState;
             SetNewState(StateHolder.GetStateByType(newType));
-            //Debug.Log("previous state: "+previousState + " current State: " + currentState);
         }
 
         public void SetNewState(BaseTurnState newState)
         {
+            Debug.Log("new state: " + newState);
             currentState = newState;
             currentState.SetTeams(TurnHelper.TeamsByTurn);
             currentState.EnterState();

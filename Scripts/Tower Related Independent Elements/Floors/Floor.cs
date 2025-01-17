@@ -11,6 +11,7 @@ namespace TowerRelated
         
         private float startPosY;
         private Quaternion startRot;
+        private bool isMoving = false;
         private void OnEnable()
         {
             startPosY = gear.transform.localPosition.y;
@@ -25,17 +26,21 @@ namespace TowerRelated
 
         public void ShowGear()
         {
+            transform.DOKill();
+            isMoving = true;
             gear.gameObject.SetActive(true);
-            gear.DOLocalMoveY(Data.OpenPosY, Data.Duration);
+            gear.DOLocalMoveY(Data.OpenPosY, Data.Duration).OnComplete(()=>isMoving= false);
             
             parts[1].DOLocalRotateQuaternion(Quaternion.Euler(0, 180, 0), Data.Duration);
         }
 
         public void HideGear()
         {
+            transform.DOKill();
             gear.DOLocalMoveY(startPosY, Data.Duration).OnComplete(() =>
             {
-                gear.gameObject.SetActive(false);
+                if(!isMoving) 
+                    gear.gameObject.SetActive(false); //todo: temp
             });
             parts[1].localRotation = startRot;
         }

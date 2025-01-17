@@ -16,21 +16,16 @@ namespace TowerRelated
             GeneralEventbus.InitializerEvents.OnMediatorElementsReady += HideAll;
         }
 
-        public override void Initialize()
-        {
-            
-        }
+        public override void Initialize() {}
         
         private void OpenFloors(List<int> ids)
         {
             foreach (var id in ids)
             {
-                var floor = Collection[id]; //Group.FirstOrDefault(f => f.Id == id);
+                var floor = Collection[id];
                 selectedFloors.Add(floor);
                 floor.ShowGear();
             }
-
-            //StartCoroutine(nameof(LeCoroutine));
             ChainCall(ids);
         }
 
@@ -54,6 +49,7 @@ namespace TowerRelated
 
         private void ResetFloors(List<int> ids)
         {
+           
             foreach (var floor in selectedFloors)
             {
                 floor.HideGear();

@@ -50,7 +50,6 @@ namespace Turn
         private uint[] activeActors;
         public override void ProcessPreviousStateTransferData(BaseTurnTransferData data) //(params object[] args)
         {
-            Debug.Log("link state process");
             TransferData.Actors = data.Actors;
             activeActors = ActorDB.GetActiveActors(TransferData.Actors.ToArray()).ToArray();
             TransferData.towers = ActorDB.ResolveTowersFromActors(activeActors).ToList();
@@ -100,7 +99,6 @@ namespace Turn
             MediatorEventbus.ChainLinkEvents.OnFloorsOpened -= EnableLinkMotion;
             
             AllTowers.EnableClickability();
-            SelectionEvents.OnSelectionTerminated?.Invoke();
         }
 
         async void EndStateManually()
@@ -108,14 +106,13 @@ namespace Turn
             UIEventbus.OnPopupTime?.Invoke(PopupType.NoLink);
 
             await DelayMaker.WaitForSeconds(1);
+            
             AllTowers.EnableClickability();
-            SelectionEvents.OnSelectionTerminated?.Invoke();
             UIEventbus.OnButtonClicked?.Invoke();
         }
 
         public override void UnsubscribeFromConstantEvents()
         {
-            //Eventbus.LinkEvents.OnFloorsOpened -= LinkTowers;
         }
     }
 }

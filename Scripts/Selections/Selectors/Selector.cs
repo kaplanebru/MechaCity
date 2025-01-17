@@ -40,11 +40,8 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     {
         _teamsByTurn = teams;
         Block();
-
-        //BpEventbus.ActionEvents.OnRestoreSelectionAmount?.Invoke();
-
+        
         SelectionEvents.OnSelectionReady?.Invoke(this);
-
     }
 
     protected void Block()

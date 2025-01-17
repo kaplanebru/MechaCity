@@ -19,7 +19,6 @@ public class BlueprintEventHandler
 
     void PublishReverseOrderAction()
     {
-        Debug.Log("publish reverse");
         Eventbus.ActorEvents.OnReverseGrid?.Invoke();
     }
 

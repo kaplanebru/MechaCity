@@ -21,6 +21,7 @@ public class ExitState : BaseTurnState, ITransferDataHolder<ExitTransferData>
     public override void Subscribe()
     {
         //SelectionEvents.OnSelectionTerminated?.Invoke();
+        SelectionEvents.OnSelectionTerminated?.Invoke();
     }
 
     public override void SubscribeToConstantEvents()
