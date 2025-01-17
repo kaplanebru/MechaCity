@@ -38,7 +38,7 @@ namespace Turn
             TeamEvents.OnTeamsSet += SetTurnTeams;
             TeamEvents.OnSingleTeamDemand += SendTeam;
             NetworkEventbus.OnAllClientsSet += FirstTurn;
-            NetworkEventbus.ServerEvents.OnStateChangeRequestByServer += ChangeStateBySystem;
+            NetworkEventbus.ServerEvents.OnStateChangeRequestByClientRpc += ChangeStateBySystem;
 
             Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
             UIEventbus.OnApplyPossibility +=
@@ -61,7 +61,7 @@ namespace Turn
             TeamEvents.OnSingleTeamDemand -= SendTeam;
 
             NetworkEventbus.OnAllClientsSet -= FirstTurn;
-            NetworkEventbus.ServerEvents.OnStateChangeRequestByServer -= ChangeStateBySystem;
+            NetworkEventbus.ServerEvents.OnStateChangeRequestByClientRpc -= ChangeStateBySystem;
 
             Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
             UIEventbus.OnApplyPossibility -= HighlightButtonRequest;

@@ -35,9 +35,8 @@ namespace Network
 
         public override void OnNetworkSpawn()
         {
-            turnStateType.OnValueChanged += ChangeStateRequestByServer; //owner ve clone'u değişir
+            //turnStateType.OnValueChanged += ChangeStateRequestByServer; //owner ve clone'u değişir
             
-
             if (IsOwner)
             {
                 NetworkEventbus.UserEvents.OnStateChangeRequestByUser += StateChangeBeginServerRpc;
@@ -79,29 +78,35 @@ namespace Network
         #region Complete Turn Handle
 
         [ServerRpc]
-        void StateChangeBeginServerRpc(TurnStateType nextType) //(TurnStateType lastType)
+        void StateChangeBeginServerRpc(TurnStateType nextType) 
         {
-            Debug.Log("old newtork value: " + turnStateType.Value + " new network value: " + nextType);
-            if (turnStateType.Value == TurnStateType.Intruder && nextType == TurnStateType.Intruder)
-            {
-                turnStateType.Value = TurnStateType.Selection;
-            }
+            // if (turnStateType.Value == TurnStateType.Intruder && nextType == TurnStateType.Intruder)
+            // {
+            //     turnStateType.Value = TurnStateType.Selection;
+            // }
+            StateChangeBeginClientRpc(nextType);
             turnStateType.Value = nextType;
-            
         }
 
-        private void ChangeStateRequestByServer(TurnStateType previousvalue, TurnStateType newvalue)
+        [ClientRpc]
+        void StateChangeBeginClientRpc(TurnStateType nextType)
         {
-            NetworkEventbus.ServerEvents.OnStateChangeRequestByServer?.Invoke(newvalue);
-            Debug.Log("new state by system: " + newvalue); //test: 2 clientta da kaç kez çağrıldığına bak: on value changed'in ownerda olmayışını kontrol etmek amaç
+            NetworkEventbus.ServerEvents.OnStateChangeRequestByClientRpc?.Invoke(nextType);
         }
+
+        // private void ChangeStateRequestByServer(TurnStateType previousvalue, TurnStateType newvalue)
+        // {
+        //     Debug.Log("old newtork value: " + turnStateType.Value + " new network value: " + nextType);
+        //     NetworkEventbus.ServerEvents.OnStateChangeRequestByServer?.Invoke(newvalue);
+        //     Debug.Log("new state by system: " + newvalue); //test: 2 clientta da kaç kez çağrıldığına bak: on value changed'in ownerda olmayışını kontrol etmek amaç
+        // }
 
         #endregion
 
 
         public override void OnNetworkDespawn()
         {
-            turnStateType.OnValueChanged -= ChangeStateRequestByServer;
+            //turnStateType.OnValueChanged -= ChangeStateRequestByServer;
             if (IsOwner)
             {
                 NetworkEventbus.UserEvents.OnStateChangeRequestByUser -= StateChangeBeginServerRpc;

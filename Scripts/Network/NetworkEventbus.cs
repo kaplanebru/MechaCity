@@ -14,7 +14,7 @@ namespace Network
         public static class ServerEvents
         {
             public static Action<Player, ulong> OnPlayerSpawned;
-            public static Action<TurnStateType> OnStateChangeRequestByServer;
+            public static Action<TurnStateType> OnStateChangeRequestByClientRpc;
             public static Action<BpType, int> OnBpSelectionByClientRpc;
             public static Action<GameEndState> OnGameEndScreenRequest;
             public static Action<uint[]> OnBpExecutionRequestByServer;

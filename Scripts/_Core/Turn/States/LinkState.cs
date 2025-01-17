@@ -31,14 +31,15 @@ namespace Turn
         
         public override void SubscribeToConstantEvents()
         {
-            //Eventbus.LinkEvents.OnFloorsOpened += LinkTowers;
             SetLinkOperators();
         }
 
         void SetLinkOperators()
         {
-            linkOperators.Add(ActorType.Standard, new LinkOperator());
-            linkOperators.Add(ActorType.MultiTower, new DoubleLinkOperator());
+            if(!linkOperators.ContainsKey(ActorType.Standard))
+                linkOperators.Add(ActorType.Standard, new LinkOperator());
+            if(!linkOperators.ContainsKey(ActorType.MultiTower))
+                linkOperators.Add(ActorType.MultiTower, new DoubleLinkOperator());
             
             currentLinkOperator = linkOperators[ActorType.Standard];
         }
