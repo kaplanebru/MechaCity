@@ -1183,9 +1183,10 @@ MonoBehaviour:
   cardInteraction: {fileID: 2882228448692333283}
   titleHolder: {fileID: 4043995787795487}
   priceHolder: {fileID: 3255426914462518415}
-  blocker: {fileID: 0}
+  blocker: {fileID: 7971849196979497468}
   reliefModel: {fileID: 0}
   descriptionHolder: {fileID: 8616603580691203252}
+  applyButton: {fileID: 3922625616639861387}
 --- !u!4 &6877900203104018925 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2593369663243924988, guid: 0cd64e7ca51f2d444af115faa244b3c8, type: 3}
@@ -1194,6 +1195,11 @@ Transform:
 --- !u!4 &6877900203663744615 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2593369662716725878, guid: 0cd64e7ca51f2d444af115faa244b3c8, type: 3}
+  m_PrefabInstance: {fileID: 8975192731814433809}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7971849196979497468 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1310539412974976493, guid: 0cd64e7ca51f2d444af115faa244b3c8, type: 3}
   m_PrefabInstance: {fileID: 8975192731814433809}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8383904059296814768 stripped

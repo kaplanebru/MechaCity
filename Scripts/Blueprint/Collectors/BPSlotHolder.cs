@@ -34,13 +34,13 @@ namespace Blueprint
         {
             BpEventbus.SelectionEvents.OnBpSlotSelected?.Invoke(type, bpDataHolder.TypeDataPair[type].Level);
             var slot = slots.FirstOrDefault(b => b.Data.Type == type);
-            slot.cardInteraction.Deactivate(); //TODO: clientlara bu kart seçildi diye mesaj gitsin, ya da herkese işte.
+            slot.Deactivate(); //TODO: clientlara bu kart seçildi diye mesaj gitsin, ya da herkese işte.
         }
 
         private void ActivateSlot(BpType type)
         {
             var slot = slots.FirstOrDefault(b => b.Data.Type == type);
-            slot.cardInteraction.Activate();
+            slot.Activate();
         }
 
         public void Setup(List<BpType> activeBlueprints) //LEVELA GÖRE VE PERSONAYA GÖRE

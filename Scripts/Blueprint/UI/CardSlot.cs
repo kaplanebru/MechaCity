@@ -37,6 +37,18 @@ namespace Blueprint
             priceHolder.text = Data.Price.ToString();
         }
 
+        public virtual void Activate()
+        {
+            cardInteraction.isInteractable = true;
+            blocker.SetActive(false);
+        }
+
+        public virtual void Deactivate()
+        {
+            cardInteraction.isInteractable = false;
+            blocker.gameObject.SetActive(true);
+        }
+
        
     }
 

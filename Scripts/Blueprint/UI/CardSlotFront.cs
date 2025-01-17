@@ -12,6 +12,7 @@ namespace Blueprint
     {
         public GameObject reliefModel;
         public TextMeshPro descriptionHolder;
+        public GameObject applyButton;
         
         public void SetNewFrontCard(BlueprintData data)
         {
@@ -36,6 +37,18 @@ namespace Blueprint
         public void ApplyCard()
         {
             cardInteraction.ApplyCard();
+        }
+
+        public override void Activate()
+        {
+            base.Activate();
+            applyButton.SetActive(true);
+        }
+
+        public override void Deactivate()
+        {
+            base.Deactivate();
+            applyButton.SetActive(false);
         }
 
     }

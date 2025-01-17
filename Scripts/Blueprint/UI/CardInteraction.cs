@@ -9,7 +9,6 @@ namespace Blueprint
     {
         private BlueprintData _currentBpData;
         public bool isInteractable = true;
-        public GameObject blocker;
         
         public void Setup(BlueprintData currentData) //belki de burda olmamalı
         {
@@ -30,18 +29,10 @@ namespace Blueprint
         {
             //TODO: öne geçme animasyonu
         }
-        public void Activate()
-        {
-            isInteractable = true;
-            blocker.SetActive(false);
-        }
+      
 
-        public void Deactivate()
-        {
-            isInteractable = false;
-            blocker.gameObject.SetActive(true);
-        }
-
+    
+        
         internal void ApplyCard()
         {
             if(!isInteractable) return;
