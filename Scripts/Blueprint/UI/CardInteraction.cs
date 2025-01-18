@@ -20,13 +20,11 @@ namespace Blueprint
             if(!isInteractable) return;
             Debug.Log("SELECT");
             Select();
-            BpEventbus.CardEvents.OnCardSelection?.Invoke(_currentBpData.Type);
-            // print("select: "+_currentBpData.Type);
-            // BpEventbus.SelectionEvents.OnCardClicked?.Invoke(_currentBpData.Type);
         }
         
         void Select()
         {
+            BpEventbus.CardEvents.OnCardSelection?.Invoke(_currentBpData.Type);
             //TODO: öne geçme animasyonu
         }
       

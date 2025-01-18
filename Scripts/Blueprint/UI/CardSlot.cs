@@ -22,15 +22,14 @@ namespace Blueprint
         
         public virtual void Setup(BlueprintData data)
         {
+            currentBpType = data.Type;
             Data = data;
+            
             SetTexts();
             Data.Level = level; //todo: check, ref type diye burdan yapılabilir diye düşündüm
             cardInteraction.Setup(data);
         }
-        public void SetType(BpType type)
-        {
-            currentBpType = type;
-        }
+        
         protected virtual void SetTexts()
         {
             titleHolder.text = Data.Title;
@@ -48,8 +47,6 @@ namespace Blueprint
             cardInteraction.isInteractable = false;
             blocker.gameObject.SetActive(true);
         }
-
-       
     }
 
 }

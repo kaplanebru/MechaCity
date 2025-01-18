@@ -11,29 +11,55 @@ namespace Blueprint
     public class BPSlotHolder : MonoBehaviour
     {
         public BPDataHolder bpDataHolder;
-        public CardSlot[] slots;
-        public CardSlotFront frontSlot;
-        private List<BpType> _activeBlueprints = new();
+        [SerializeField]private CardSlot[] slots;
+        private CardSlotFront frontSlot;
+        private List<BpType> _activeBlueprintTypes = new();
         private void OnEnable()
         {
             slots = GetComponentsInChildren<CardSlot>(true);
+            frontSlot = slots[0] as CardSlotFront;
+            
             BpEventbus.ActionEvents.OnBpActionCompleted += ActivateSlot;
             BpEventbus.SelectionEvents.OnCardSelectionApplied += SelectBpSlot;
-            BpEventbus.CardEvents.OnCardSelection += SetFrontSlot;
+            BpEventbus.CardEvents.OnCardSelection += ShiftToFrontSlot;
 
         }
-
-        private void SetFrontSlot(BpType type)
+        
+        public void Setup(List<BpType> activeBlueprintTypes) //LEVELA GÖRE VE PERSONAYA GÖRE
         {
-            if(frontSlot.Data.Type == type) return;
-            var newCard = bpDataHolder.TypeDataPair[type];
-            frontSlot.SetNewFrontCard(newCard);
+            _activeBlueprintTypes = activeBlueprintTypes;
+            DisableAll();
+            
+            for (var i = 0; i < activeBlueprintTypes.Count; i++)
+            {
+                SetSlot(slots[i], i);
+            }
         }
+        
+        private void SetSlot(CardSlot slot, int typeIndex)
+        {
+            slot.gameObject.SetActive(true);
+            slot.Setup(bpDataHolder.TypeDataPair[_activeBlueprintTypes[typeIndex]]);
+        }
+        
+        private void ShiftToFrontSlot(BpType selectedType)
+        {
+            var oldFrontType = frontSlot.Data.Type;
+            if(oldFrontType == selectedType) return;
+            
+            var oldFrontData = bpDataHolder.TypeDataPair[oldFrontType];
+            var dataToShift = bpDataHolder.TypeDataPair[selectedType];
+            var slotToShift = slots.FirstOrDefault(s => s.currentBpType == selectedType);
+            
+            frontSlot.Setup(dataToShift);
+            slotToShift.Setup(oldFrontData);
+        }
+        
 
         private void SelectBpSlot(BpType type)
         {
             BpEventbus.SelectionEvents.OnBpSlotSelected?.Invoke(type, bpDataHolder.TypeDataPair[type].Level);
-            var slot = slots.FirstOrDefault(b => b.Data.Type == type);
+            var slot = slots.FirstOrDefault(s => s.Data.Type == type);
             slot.Deactivate(); //TODO: clientlara bu kart seçildi diye mesaj gitsin, ya da herkese işte.
         }
 
@@ -42,39 +68,6 @@ namespace Blueprint
             var slot = slots.FirstOrDefault(b => b.Data.Type == type);
             slot.Activate();
         }
-
-        public void Setup(List<BpType> activeBlueprints) //LEVELA GÖRE VE PERSONAYA GÖRE
-        {
-            _activeBlueprints = activeBlueprints;
-            DisableAll();
-            
-            for (var i = 0; i < activeBlueprints.Count; i++)
-            {
-                if (i == 0)
-                    SetFrontSlot();
-                else
-                    SetSlot(slots[i], i);
-            }
-        }
-
-
-        private void SetSlot(CardSlot slot, int index)
-        {
-            slot.gameObject.SetActive(true);
-            slot.SetType(_activeBlueprints[index]);
-            slot.Setup(bpDataHolder.TypeDataPair[slot.currentBpType]);
-        }
-        
-        private void SetFrontSlot()
-        {
-            CardSlotFront front = slots[0] as CardSlotFront;
-            SetSlot(front, 0);
-            // front.gameObject.SetActive(true);
-            // front.SetType(_activeBlueprints[0]);
-            // front.Setup(bpDataHolder.TypeDataPair[front.currentBpType]);
-            front.SetReliefModel();
-        }
-        
 
         void DisableAll()
         {
@@ -88,7 +81,7 @@ namespace Blueprint
         {
             BpEventbus.ActionEvents.OnBpActionCompleted -= ActivateSlot;
             BpEventbus.SelectionEvents.OnCardSelectionApplied -= SelectBpSlot;
-            BpEventbus.CardEvents.OnCardSelection -= SetFrontSlot;
+            BpEventbus.CardEvents.OnCardSelection -= ShiftToFrontSlot;
         }
     }
 }

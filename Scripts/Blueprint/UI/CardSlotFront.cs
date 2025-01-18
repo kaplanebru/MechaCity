@@ -14,12 +14,10 @@ namespace Blueprint
         public TextMeshPro descriptionHolder;
         public GameObject applyButton;
         
-        public void SetNewFrontCard(BlueprintData data)
+        
+        public override void Setup(BlueprintData data)
         {
-            Data = data;
-            cardInteraction.Setup(Data);
-            
-            SetTexts();
+            base.Setup(data);
             SetReliefModel();
         }
         public void SetReliefModel()
