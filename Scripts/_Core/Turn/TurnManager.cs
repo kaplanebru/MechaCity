@@ -105,9 +105,7 @@ namespace Turn
             ((ExitState) StateHolder.GetStateByType(TurnStateType.Exit)).SetCombatOperator(combatOperator);
 
             if (MultiplayerSetter.FasterCombat)
-            {
                 FastenTurn();
-            }
 
             Eventbus.TowerEvents.OnTurnBegin?.Invoke(); //FIRST ACT
         }
@@ -146,10 +144,8 @@ namespace Turn
             if (firstTurn)
             {
                 SetNewState(StateHolder.GetStateByType(TurnStateType.Selection));
-                UIEventbus.OnStateShift?.Invoke(TurnStateType
-                    .Selection); //todo: burdaki buton rivalda da çıkabilir, fix
+                UIEventbus.OnStateShift?.Invoke(TurnStateType.Selection); //todo: burdaki buton rivalda da çıkabilir, fix
             }
-
             else
                 SendStateChangeRequest(TurnStateType.Selection);
         }
@@ -185,11 +181,7 @@ namespace Turn
         {
             var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
             if (isDirect)
-            {
                 ChangeStateBySystem(previousType);
-                //SendStateChangeRequest(previousType);
-                //bu üsttteki yapılırsa döngüye giriyor, yapılmazsa da state change yapılmamış oluyor, bunun sadece
-            }
             else
                 SendStateChangeRequest(previousType);
         }

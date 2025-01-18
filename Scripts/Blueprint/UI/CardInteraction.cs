@@ -27,10 +27,6 @@ namespace Blueprint
             BpEventbus.CardEvents.OnCardSelection?.Invoke(_currentBpData.Type);
             //TODO: öne geçme animasyonu
         }
-      
-
-    
-        
         internal void ApplyCard()
         {
             if(!isInteractable) return;

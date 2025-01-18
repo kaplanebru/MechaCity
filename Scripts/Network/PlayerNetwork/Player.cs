@@ -65,6 +65,11 @@ namespace PlayerNetwork
         }
 
         Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        public void EnableTurnSettings(bool enable)
+        {
+            
+        }
         
         public void EnableInput(bool enable)
         {

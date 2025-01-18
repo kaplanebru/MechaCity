@@ -71,6 +71,8 @@ public class TurnHelper
             
             if (team.Value.Data.Actors.Count < 2) //|| team.Value.Data.Towers.All(t => ActorHolder.GetHealthByActor(t.UniqID) == 0)) //Turn sonunda Health'in 0 olarak kaldığı bir case yok, 0 olan dönüşüyor
             {
+                if (team.Value.Data.Actors[0].TowerAmount > 1) return false;
+                
                 NetworkEventbus.UserEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
                 Debug.Log("game ends");
                 return true;
