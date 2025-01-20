@@ -18,7 +18,6 @@ namespace Blueprint
         private void OnMouseDown()
         {
             if(!isInteractable) return;
-            Debug.Log("SELECT");
             Select();
         }
         

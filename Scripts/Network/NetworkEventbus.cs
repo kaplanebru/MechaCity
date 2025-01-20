@@ -20,7 +20,6 @@ namespace Network
             public static Action<uint[]> OnBpExecutionRequestByServer;
             public static Action<PersonaType> OnPlayerPersonaSet;
         }
-
         public static class UserEvents
         {
             public static Action<TurnStateType> OnStateChangeRequestByUser;
@@ -31,17 +30,14 @@ namespace Network
 
             public static Action<TeamType> OnTeamSwitched;
         }
-
         public static class InputEvents //TODO: bu map node'da nasıl handle ediliyordu
         {
             public static Action<object[]> OnObjectClicked;
         }
-
-      
-
         public static class UIEvents
         {
             public static Action<bool> OnTurnButtonShiftRequest;
+            public static Action<bool> OnBPCardsActivationRequest;
         }
     }
 }

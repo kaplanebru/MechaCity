@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DataModels;
 using Enums;
+using Network;
 using UnityEngine;
 
 namespace Blueprint
@@ -23,8 +24,15 @@ namespace Blueprint
             BpEventbus.SelectionEvents.OnCardSelectionApplied += SelectBpSlot;
             BpEventbus.CardEvents.OnCardSelection += ShiftToFrontSlot;
 
+            NetworkEventbus.UIEvents.OnBPCardsActivationRequest += ActivateBpCards;
+
         }
-        
+
+        private void ActivateBpCards(bool enable)
+        {
+            frontSlot.EnableApplyButton(enable);
+        }
+
         public void Setup(List<BpType> activeBlueprintTypes) //LEVELA GÖRE VE PERSONAYA GÖRE
         {
             _activeBlueprintTypes = activeBlueprintTypes;
@@ -82,6 +90,9 @@ namespace Blueprint
             BpEventbus.ActionEvents.OnBpActionCompleted -= ActivateSlot;
             BpEventbus.SelectionEvents.OnCardSelectionApplied -= SelectBpSlot;
             BpEventbus.CardEvents.OnCardSelection -= ShiftToFrontSlot;
+            
+            NetworkEventbus.UIEvents.OnBPCardsActivationRequest -= ActivateBpCards;
+
         }
     }
 }

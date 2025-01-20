@@ -157,11 +157,13 @@ namespace PlayerNetwork
         private void ApplyActiveTeamSettings()
         {
             EnableInput(true);
+            NetworkEventbus.UIEvents.OnBPCardsActivationRequest?.Invoke(true);
         }
 
         private void ApplyPassiveTeamSettings()
         {
             EnableInput(false);
+            NetworkEventbus.UIEvents.OnBPCardsActivationRequest?.Invoke(false);
         }
 
         #endregion

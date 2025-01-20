@@ -13,19 +13,20 @@ namespace Blueprint
         public GameObject reliefModel;
         public TextMeshPro descriptionHolder;
         public GameObject applyButton;
-        
-        
+
+
         public override void Setup(BlueprintData data)
         {
             base.Setup(data);
             SetReliefModel();
         }
+
         public void SetReliefModel()
         {
             reliefModel = Data.ReliefModel;
             //instantiate?
         }
-        
+
         protected override void SetTexts()
         {
             base.SetTexts();
@@ -40,15 +41,18 @@ namespace Blueprint
         public override void Activate()
         {
             base.Activate();
-            applyButton.SetActive(true);
+            EnableApplyButton(true);
         }
 
         public override void Deactivate()
         {
             base.Deactivate();
-            applyButton.SetActive(false);
+            EnableApplyButton(false);
         }
 
+        public void EnableApplyButton(bool enable)
+        {
+            applyButton.SetActive(enable);
+        }
     }
-
 }
