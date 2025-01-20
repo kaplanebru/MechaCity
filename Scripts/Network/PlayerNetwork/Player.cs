@@ -5,6 +5,7 @@ using UnityEngine;
 using Clicks;
 using Network;
 using Enums;
+using Testing;
 
 namespace PlayerNetwork
 {
@@ -14,12 +15,12 @@ namespace PlayerNetwork
         public int Fail;
         public int Draw;
     }
-    
+
     [Serializable]
     public class PlayerData
     {
         public TeamType TeamType { get; set; } //bu teamle geliyor
-        public PersonaType PersonaType{ get; set; }//bu seçimle geliyor aslında
+        public PersonaType PersonaType { get; set; } //bu seçimle geliyor aslında
         public int Funds = 10; //bu da eşit gelecek zaten
         public PlayerRunData RunData { get; set; } //bu da oynadıkça belrleniyor
     }
@@ -27,6 +28,10 @@ namespace PlayerNetwork
     public class Player : NetworkBehaviour
     {
         public PlayerData Data = new();
+
+        public NetworkVariable<TeamType> ActiveTeam = new(TeamType.Team1, NetworkVariableReadPermission.Everyone,
+            NetworkVariableWritePermission.Owner);
+
         public GameEndState gameEndState = GameEndState.GameStarted;
         public TurnNetworkHandler turnNetworkHandlerPrefab;
 
@@ -34,9 +39,11 @@ namespace PlayerNetwork
         {
             if (IsOwner)
             {
+                NetworkEventbus.UserEvents.OnTeamSwitched += SetActiveTeam;
                 NetworkEventbus.UserEvents.OnGameEnds += GameEndServerRpc;
                 NetworkEventbus.UserEvents.OnPersonaSelectedByUser += SetPersonaType;
             }
+
             NetworkEventbus.ServerEvents.OnPlayerSpawned?.Invoke(this, OwnerClientId);
         }
 
@@ -45,9 +52,9 @@ namespace PlayerNetwork
             Data.PersonaType = type;
             NetworkEventbus.ServerEvents.OnPlayerPersonaSet?.Invoke(type);
         }
-        
+
         #region SpawnTurnNetworkServerRpc
-        
+
         [ServerRpc(RequireOwnership = false)]
         void SpawnTurnNetworkServerRpc(ServerRpcParams serverRpcParams = default)
         {
@@ -56,31 +63,42 @@ namespace PlayerNetwork
             var turnNetworkHandler = Instantiate(turnNetworkHandlerPrefab);
             turnNetworkHandler.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
         }
+
         #endregion
-        
+
         public void Setup(TeamType teamType)
         {
             Data.TeamType = teamType;
-            if(IsOwner) SpawnTurnNetworkServerRpc(); //önce team belirlensin
+            if (IsOwner) SpawnTurnNetworkServerRpc(); //önce team belirlensin
         }
+
+        #region Input Settings
 
         Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        public void EnableTurnSettings(bool enable)
+        private Coroutine inputRoutine;
+        private void EnableInput(bool enable)
         {
+            if (!IsOwner) return;
             
-        }
-        
-        public void EnableInput(bool enable)
-        {
-            if(!IsOwner) return;
+            if (!MultiplayerSetter.IsMultiplayerOn)
+            {
+                NetworkEventbus.UIEvents.OnTurnButtonShiftRequest?.Invoke(true);
+                inputRoutine ??= StartCoroutine(nameof(InputRoutine)); //input kısmı için sadece
+                return; 
+            }
+
             NetworkEventbus.UIEvents.OnTurnButtonShiftRequest?.Invoke(enable);
             
             if (enable)
-                StartCoroutine(nameof(InputRoutine));
+                inputRoutine ??= StartCoroutine(nameof(InputRoutine));
             else
+            {
                 StopCoroutine(nameof(InputRoutine));
+                inputRoutine = null;
+            }
         }
+
         IEnumerator InputRoutine()
         {
             while (true)
@@ -88,12 +106,13 @@ namespace PlayerNetwork
                 //(IsOwner && Input.GetMouseButtonDown(0)) /
                 if (Input.GetMouseButtonDown(0)) //iki tarafın da owner playerı tıklayabiliyor demek bu
                 {
-                    if (Physics.Raycast(RayFromMouse(), out RaycastHit hit,Mathf.Infinity, LayerMask.GetMask("Clickable")))
+                    if (Physics.Raycast(RayFromMouse(), out RaycastHit hit, Mathf.Infinity,
+                            LayerMask.GetMask("Clickable")))
                     {
                         ClickOnTower(hit);
-                       
                     }
                 }
+
                 yield return null;
             }
         }
@@ -102,7 +121,7 @@ namespace PlayerNetwork
         {
             if (hit.collider.TryGetComponent(out Clickable clickable))
             {
-               SendTowerIdToServerRpc(clickable.id);
+                SendTowerIdToServerRpc(clickable.id);
             }
         }
 
@@ -115,11 +134,39 @@ namespace PlayerNetwork
         [ClientRpc]
         void AdjustTowerClientRpc(uint actorID) //burda da hem owner hem klonu dahil clienttaki
         {
-            NetworkEventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {actorID }); //
+            NetworkEventbus.InputEvents.OnObjectClicked?.Invoke(new object[] {actorID}); //
             //print(towerId);
         }
-        
-        #region WinFailConditions
+
+        #endregion
+
+        #region Activity Status
+
+        private void SetActiveTeam(TeamType teamType)
+        {
+            if (!IsOwner) return;
+            ActiveTeam.Value = teamType;
+            Debug.Log("active team: " + ActiveTeam.Value);
+
+            if (ActiveTeam.Value == Data.TeamType)
+                ApplyActiveTeamSettings();
+            else
+                ApplyPassiveTeamSettings();
+        }
+
+        private void ApplyActiveTeamSettings()
+        {
+            EnableInput(true);
+        }
+
+        private void ApplyPassiveTeamSettings()
+        {
+            EnableInput(false);
+        }
+
+        #endregion
+
+        #region Win-Fail Conditions
 
         [ServerRpc]
         private void GameEndServerRpc(TeamType loserTeamType)
@@ -156,17 +203,17 @@ namespace PlayerNetwork
 
         #endregion
 
-
         public override void OnNetworkDespawn()
         {
             if (IsOwner)
             {
+                NetworkEventbus.UserEvents.OnTeamSwitched -= SetActiveTeam;
                 NetworkEventbus.UserEvents.OnGameEnds -= GameEndServerRpc;
                 NetworkEventbus.UserEvents.OnPersonaSelectedByUser -= SetPersonaType;
             }
         }
     }
-    
+
 
     #region Serializing TowerNetworkData
 

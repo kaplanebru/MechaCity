@@ -23,12 +23,8 @@ namespace GameUI
             NetworkEventbus.UIEvents.OnTurnButtonShiftRequest += EnableTurnButton;
             DisableUIs();
         }
-
-       
-
         private void EnableTurnButton(bool enable)
         {
-            //turnButtonsHandler.enabled = enable;
             turnButtonsHandler.gameObject.SetActive(enable);
         }
 

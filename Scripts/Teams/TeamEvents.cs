@@ -6,9 +6,9 @@ namespace Teams
 {
     public static class TeamEvents
     {
-        public static Action<Dictionary<TeamState, Team>> OnTeamsSent;
+        public static Action<Dictionary<TeamStatus, Team>> OnTeamsSent;
         public static Action OnBothTeamsRequest;
         public static Action<Team[]> OnTeamsSet;
-        public static Func<TeamState, Team> OnSingleTeamDemand;
+        public static Func<TeamStatus, Team> OnSingleTeamDemand;
     }
 }

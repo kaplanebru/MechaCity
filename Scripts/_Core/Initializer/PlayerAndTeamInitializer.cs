@@ -56,7 +56,7 @@ namespace Core
 
             if (!MultiplayerSetter.IsMultiplayerOn)
             {
-                newPlayer.EnableInput(true);
+                //newPlayer.EnableInput(true);
                 goto startGame;
             }
             

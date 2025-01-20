@@ -16,26 +16,26 @@ public class SelectionGroup
     public List<uint> SelectedActors { get; set; } = new();
     
     public BlockType BlockType;
-    public TeamState SelectionTeam {
+    public TeamStatus SelectionTeam {
         get
         {
             return BlockType switch
             {
-                BlockType.BlockCurrent => TeamState.RivalTeam,
-                BlockType.BlockRival => TeamState.CurrentTeam,
+                BlockType.BlockCurrent => TeamStatus.PassiveTeam,
+                BlockType.BlockRival => TeamStatus.ActiveTeam,
                 _ => throw new InvalidOperationException("BlockType None")
             };
         }
     }
     
-    public TeamState BlockedTeam
+    public TeamStatus BlockedTeam
     {
         get
         {
             return BlockType switch
             {
-                BlockType.BlockCurrent => TeamState.CurrentTeam,
-                BlockType.BlockRival => TeamState.RivalTeam,
+                BlockType.BlockCurrent => TeamStatus.ActiveTeam,
+                BlockType.BlockRival => TeamStatus.PassiveTeam,
                 _ => throw new InvalidOperationException("BlockType None")
             };
         }

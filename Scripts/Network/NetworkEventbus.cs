@@ -28,6 +28,8 @@ namespace Network
             public static Action<uint[]> OnBpExecutionRequestByUser;
             public static Action<TeamType> OnGameEnds;
             public static Action<PersonaType> OnPersonaSelectedByUser;
+
+            public static Action<TeamType> OnTeamSwitched;
         }
 
         public static class InputEvents //TODO: bu map node'da nasıl handle ediliyordu

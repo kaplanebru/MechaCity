@@ -13,9 +13,9 @@ using UnityEngine;
 
 public class TurnHelper 
 {
-    public Dictionary<TeamState, Team> TeamsByTurn;
+    public Dictionary<TeamStatus, Team> TeamsByTurn;
     
-    public TeamType CurrentTeamType = TeamType.Team1;
+    public TeamType ActiveTeamType = TeamType.Team1;
 
     public void Subscribe()
     {
@@ -49,20 +49,17 @@ public class TurnHelper
 
     public void SwitchTeams()
     {
-        CurrentTeamType = TeamsByTurn[TeamState.RivalTeam].Data.TeamType;
+        //ActiveTeamType = TeamsByTurn[TeamStatus.PassiveTeam].Data.TeamType;
         
-        (TeamsByTurn[TeamState.CurrentTeam], TeamsByTurn[TeamState.RivalTeam]) =
-            (TeamsByTurn[TeamState.RivalTeam], TeamsByTurn[TeamState.CurrentTeam]);
+        (TeamsByTurn[TeamStatus.ActiveTeam], TeamsByTurn[TeamStatus.PassiveTeam]) =
+            (TeamsByTurn[TeamStatus.PassiveTeam], TeamsByTurn[TeamStatus.ActiveTeam]);
 
-        UIEventbus.OnTeamSwitch?.Invoke(CurrentTeamType);
+       UIEventbus.OnTeamSwitch?.Invoke(ActiveTeamType);
+        //NetworkEventbus.UserEvents.OnTeamSwitch?.Invoke(ActiveTeamType);
     }
+    
+    //     TeamsByTurn[TeamStatus.ActiveTeam].Data.Player.EnableInput(true);
 
-    public void ManageInput()
-    {
-        if (!MultiplayerSetter.IsMultiplayerOn) return;
-        TeamsByTurn[TeamState.CurrentTeam].Data.Player.EnableInput(true);
-        TeamsByTurn[TeamState.RivalTeam].Data.Player.EnableInput(false);
-    }
     
     public bool GameEnding()
     {

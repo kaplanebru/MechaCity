@@ -29,7 +29,7 @@ namespace Network
     }
     public class TurnNetworkHandler : NetworkBehaviour
     {
-        public NetworkVariable<TurnStateType> turnStateType = new(TurnStateType.Exit);
+        //public NetworkVariable<TurnStateType> turnStateType = new(TurnStateType.Exit);
         //_player = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>();
 
 
@@ -80,12 +80,8 @@ namespace Network
         [ServerRpc]
         void StateChangeBeginServerRpc(TurnStateType nextType) 
         {
-            // if (turnStateType.Value == TurnStateType.Intruder && nextType == TurnStateType.Intruder)
-            // {
-            //     turnStateType.Value = TurnStateType.Selection;
-            // }
             StateChangeBeginClientRpc(nextType);
-            turnStateType.Value = nextType;
+            //turnStateType.Value = nextType;
         }
 
         [ClientRpc]

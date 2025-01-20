@@ -8,7 +8,7 @@ namespace Turn
     {
         public TurnAction turnAction;
 
-        public Dictionary<TeamState, Team> TeamsByTurn; //todo: güncelleniyor mu?
+        public Dictionary<TeamStatus, Team> TeamsByTurn; //todo: güncelleniyor mu?
         public abstract TurnStateType StateType { get; }
         public abstract int StateId { get; set; }
 
@@ -35,7 +35,7 @@ namespace Turn
             // Debug.LogWarning("Unsubscribed from " + StateType);
         }
 
-        public void SetTeams(Dictionary<TeamState, Team> teams)
+        public void SetTeams(Dictionary<TeamStatus, Team> teams)
         {
             TeamsByTurn = teams;
         }

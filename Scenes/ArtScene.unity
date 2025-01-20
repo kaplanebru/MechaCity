@@ -22224,7 +22224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMultiplayerOn: 1
-  isTestingWithoutCombat: 0
+  isTestingWithoutCombat: 1
   fasterCombat: 0
 --- !u!4 &521987823
 Transform:

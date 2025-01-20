@@ -6,10 +6,10 @@ namespace Enums
         Team2
     }
 
-    public enum TeamState
+    public enum TeamStatus
     {
-        CurrentTeam,
-        RivalTeam
+        ActiveTeam,
+        PassiveTeam
     }
 
     namespace Selections

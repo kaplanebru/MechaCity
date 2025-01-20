@@ -18,7 +18,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
     protected Blocker Blocker = new();
 
 
-    protected Dictionary<TeamState, Team> _teamsByTurn = new();
+    protected Dictionary<TeamStatus, Team> _teamsByTurn = new();
     
     protected abstract void SubscribeAndSetup(); 
     protected abstract void Unregister();
@@ -36,7 +36,7 @@ public abstract class Selector: IBlockable //Selector<T> where T : ISelectionCol
         SubscribeAndSetup();
     }
 
-    public void SetTeamsAndBlock(Dictionary<TeamState, Team> teams)
+    public void SetTeamsAndBlock(Dictionary<TeamStatus, Team> teams)
     {
         _teamsByTurn = teams;
         Block();

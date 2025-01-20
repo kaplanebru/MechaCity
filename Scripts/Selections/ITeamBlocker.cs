@@ -9,13 +9,13 @@ namespace _Core.Turn.Selectors
 {
     public interface IBlockable
     {
-        public void SetTeamsAndBlock(Dictionary<TeamState, Team> teamsByTurn);
+        public void SetTeamsAndBlock(Dictionary<TeamStatus, Team> teamsByTurn);
     }
 
     public interface ITeamBlocker
     {
         public BlockType BlockType { get; set; }
-        public void BlockSelection(Dictionary<TeamState, Team> teams, TeamState blockedTeam);
+        public void BlockSelection(Dictionary<TeamStatus, Team> teams, TeamStatus blockedTeam);
     }
 
 
@@ -24,7 +24,7 @@ namespace _Core.Turn.Selectors
         public BlockType BlockType { get; set; }
         
 
-        public void BlockSelection(Dictionary<TeamState, Team> teams, TeamState blockedTeam)
+        public void BlockSelection(Dictionary<TeamStatus, Team> teams, TeamStatus blockedTeam)
         {
             if(BlockType == BlockType.None) return;
             TeamData teamToBlock = teams[blockedTeam].Data;

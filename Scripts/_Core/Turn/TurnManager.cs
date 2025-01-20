@@ -90,9 +90,9 @@ namespace Turn
             Eventbus.CombatEvents.OnSendingCombatPairs?.Invoke(isReversed);
         }
 
-        internal Team SendTeam(TeamState teamState)
+        internal Team SendTeam(TeamStatus teamStatus)
         {
-            return TurnHelper.TeamsByTurn[teamState]; //TeamState.CurrentTeam
+            return TurnHelper.TeamsByTurn[teamStatus]; //TeamState.CurrentTeam
         }
 
         private void Initialize()
@@ -112,10 +112,10 @@ namespace Turn
 
         internal void SetTurnTeams(Team[] teams)
         {
-            TurnHelper.TeamsByTurn = new Dictionary<TeamState, Team>()
+            TurnHelper.TeamsByTurn = new Dictionary<TeamStatus, Team>()
             {
-                {TeamState.CurrentTeam, teams[0]},
-                {TeamState.RivalTeam, teams[1]},
+                {TeamStatus.ActiveTeam, teams[0]},
+                {TeamStatus.PassiveTeam, teams[1]},
             };
         }
 
@@ -132,11 +132,18 @@ namespace Turn
         {
             _turnTracker++;
             print("turn track: " + _turnTracker);
-            TurnHelper.ManageInput();
+            
+            SetNewTurnTeams();
             SetFirstState();
 
             //SelectionReferences.Instance.GetSelector(SelectionType.PlayerOnlyStd).StartWithNewTowers();
             ((SelectionState) StateHolder.GetStateByType(TurnStateType.Selection)).ResetSelector();
+        }
+
+        void SetNewTurnTeams()
+        {
+            var ActiveTeamType = TurnHelper.TeamsByTurn[TeamStatus.ActiveTeam].Data.TeamType;
+            NetworkEventbus.UserEvents.OnTeamSwitched?.Invoke(ActiveTeamType);
         }
 
         void SetFirstState()
@@ -174,7 +181,7 @@ namespace Turn
         public void GetNextStateAtTheEnd()
         {
             var nextType = StateHolder.States[TurnHelper.GetNextStateId(currentState.StateId)].StateType;
-            SendStateChangeRequest(nextType);
+            SendStateChangeRequest(nextType); //todo: bunda döngü var mı kontrol et.
         }
 
         internal void GetPreviousState(bool isDirect = false)
@@ -195,7 +202,7 @@ namespace Turn
 
         public void SetNewState(BaseTurnState newState)
         {
-            Debug.Log("new state: " + newState);
+           // Debug.Log("new state: " + newState);
             currentState = newState;
             currentState.SetTeams(TurnHelper.TeamsByTurn);
             currentState.EnterState();
