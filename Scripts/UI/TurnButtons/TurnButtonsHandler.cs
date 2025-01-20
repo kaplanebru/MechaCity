@@ -18,8 +18,9 @@ namespace GameUI
         
         private void OnEnable() //ui daha önce gelmeli turnden
         {
-            Subscribe();
             DisableAll();
+            Subscribe();
+            //DisableAll();
             //buttonTextSlot.fontSizeMax = 20;
         }
         
@@ -27,6 +28,7 @@ namespace GameUI
         {
             UIEventbus.OnStateShift += ShiftButton;
             UIEventbus.OnHighlightRequest += Highlight;
+            Debug.Log("subscribe to turn buttons");
         }
 
         private void Highlight(bool enable)
@@ -64,6 +66,8 @@ namespace GameUI
         {
             UIEventbus.OnStateShift -= ShiftButton;
             UIEventbus.OnHighlightRequest -= Highlight;
+            Debug.Log("unsubscribe from turn buttons");
+
         }
     }
 }
