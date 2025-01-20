@@ -9,7 +9,7 @@ namespace GameUI
         public BaseInfoText popupText;
         private void OnEnable()
         {
-            UIEventbus.OnTeamSwitch += ShowPopup;
+            UIEventbus.OnActiveTeamSet += ShowPopup;
         }
 
         private void ShowPopup(TeamType currentTeamType)
@@ -21,7 +21,7 @@ namespace GameUI
 
         private void OnDisable()
         {
-            UIEventbus.OnTeamSwitch -= ShowPopup;
+            UIEventbus.OnActiveTeamSet -= ShowPopup;
         }
     }
 

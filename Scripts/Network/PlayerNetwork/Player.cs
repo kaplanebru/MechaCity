@@ -29,7 +29,7 @@ namespace PlayerNetwork
     {
         public PlayerData Data = new();
 
-        private NetworkVariable<TeamType> ActiveTeam = new(TeamType.Team2, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);//,NetworkVariableWritePermission.Owner
+        private NetworkVariable<TeamType> ActiveTeam = new(TeamType.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);//,NetworkVariableWritePermission.Owner
 
         public GameEndState gameEndState = GameEndState.GameStarted;
         public TurnNetworkHandler turnNetworkHandlerPrefab;
@@ -39,7 +39,7 @@ namespace PlayerNetwork
             if (IsOwner)
             {
                 ActiveTeam.OnValueChanged += OnActiveTeamChanged;
-                NetworkEventbus.UserEvents.OnTeamSwitched += RequestActiveTeamChangeServerRpc;
+                NetworkEventbus.UserEvents.OnActiveTeamSet += RequestActiveTeamChangeServerRpc;
                 NetworkEventbus.UserEvents.OnGameEnds += GameEndServerRpc;
                 NetworkEventbus.UserEvents.OnPersonaSelectedByUser += SetPersonaType;
             }
@@ -180,10 +180,8 @@ namespace PlayerNetwork
             EnableInput(false);
             NetworkEventbus.UIEvents.OnBPCardsActivationRequest?.Invoke(false);
             NetworkEventbus.UIEvents.OnTurnButtonShiftRequest?.Invoke(false);
-
             
             Debug.Log("passive team settings applied");
-
         }
         
            
@@ -245,7 +243,7 @@ namespace PlayerNetwork
             if (IsOwner)
             {
                 ActiveTeam.OnValueChanged -= OnActiveTeamChanged;
-                NetworkEventbus.UserEvents.OnTeamSwitched -= RequestActiveTeamChangeServerRpc;
+                NetworkEventbus.UserEvents.OnActiveTeamSet -= RequestActiveTeamChangeServerRpc;
                 NetworkEventbus.UserEvents.OnGameEnds -= GameEndServerRpc;
                 NetworkEventbus.UserEvents.OnPersonaSelectedByUser -= SetPersonaType;
             }

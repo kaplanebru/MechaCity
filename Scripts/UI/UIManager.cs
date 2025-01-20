@@ -16,7 +16,7 @@ namespace GameUI
         private void OnEnable()
         {
             turnButtonsHandler = GetComponentInChildren<TurnButtonsHandler>();
-            NetworkEventbus.OnAllClientsSet += ShowInfoText;
+            NetworkEventbus.OnAllClientsSet += ShowInfoText; //todo: clients set aynı zamanda bug sebebi çünkü first turn böyle başlıyor
             UIEventbus.OnPlayerSet += ShowPlayerText;
             
             
@@ -25,6 +25,7 @@ namespace GameUI
         }
         private void EnableTurnButton(bool enable)
         {
+            Debug.Log("enable turn button: " + enable);
             turnButtonsHandler.gameObject.SetActive(enable);
         }
 

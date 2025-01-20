@@ -121,6 +121,11 @@ namespace Turn
 
         internal void FirstTurn(params object[] args)
         {
+            Invoke(nameof(FirstTurnWithDelay), 1); //temporary
+        }
+
+        void FirstTurnWithDelay()
+        {
             Initialize();
             ((SelectionState) StateHolder.GetStateByType(TurnStateType.Selection)).ClearSelector(); //todo: temp
 
@@ -133,17 +138,18 @@ namespace Turn
             _turnTracker++;
             print("turn track: " + _turnTracker);
             
-            SetNewTurnTeams();  //cyclic olabiliyor
+            ApplyNewTurnTeamsSettings();  //cyclic olabiliyor
             SetFirstState();
 
             //SelectionReferences.Instance.GetSelector(SelectionType.PlayerOnlyStd).StartWithNewTowers();
             ((SelectionState) StateHolder.GetStateByType(TurnStateType.Selection)).ResetSelector();
         }
 
-        void SetNewTurnTeams()
+        void ApplyNewTurnTeamsSettings()
         {
             var ActiveTeamType = TurnHelper.TeamsByTurn[TeamStatus.ActiveTeam].Data.TeamType;
-            NetworkEventbus.UserEvents.OnTeamSwitched?.Invoke(ActiveTeamType);
+            UIEventbus.OnActiveTeamSet?.Invoke(ActiveTeamType);
+            NetworkEventbus.UserEvents.OnActiveTeamSet?.Invoke(ActiveTeamType);
         }
 
         void SetFirstState()

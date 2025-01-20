@@ -28,7 +28,7 @@ namespace Network
             public static Action<TeamType> OnGameEnds;
             public static Action<PersonaType> OnPersonaSelectedByUser;
 
-            public static Action<TeamType> OnTeamSwitched;
+            public static Action<TeamType> OnActiveTeamSet;
         }
         public static class InputEvents //TODO: bu map node'da nasıl handle ediliyordu
         {

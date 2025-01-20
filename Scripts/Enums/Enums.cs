@@ -3,13 +3,14 @@ namespace Enums
     public enum TeamType
     {
         Team1,
-        Team2
+        Team2,
+        None
     }
 
     public enum TeamStatus
     {
         ActiveTeam,
-        PassiveTeam
+        PassiveTeam,
     }
 
     namespace Selections

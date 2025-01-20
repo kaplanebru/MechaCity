@@ -15,7 +15,7 @@ namespace GameUI
         
         public static Action<int> OnTowerHeightChange;
         
-        public static Action<TeamType> OnTeamSwitch;
+        public static Action<TeamType> OnActiveTeamSet;
 
         public static Action<string> OnPlayerSet;
         

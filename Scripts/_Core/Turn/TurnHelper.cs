@@ -11,11 +11,11 @@ using Testing;
 using Turn;
 using UnityEngine;
 
-public class TurnHelper 
+public class TurnHelper
 {
     public Dictionary<TeamStatus, Team> TeamsByTurn;
-    
-    public TeamType ActiveTeamType = TeamType.Team1;
+
+    //internal TeamType ActiveTeamType = TeamType.None;
 
     public void Subscribe()
     {
@@ -26,12 +26,12 @@ public class TurnHelper
     {
         TeamEvents.OnBothTeamsRequest -= SendTeams;
     }
-    
+
     void SendTeams()
     {
         TeamEvents.OnTeamsSent?.Invoke(TeamsByTurn);
     }
-   
+
     public void GetPreviousStateData(BaseTurnState previousState, BaseTurnState currentState)
     {
         if (previousState == null) return;
@@ -49,27 +49,26 @@ public class TurnHelper
 
     public void SwitchTeams()
     {
-        //ActiveTeamType = TeamsByTurn[TeamStatus.PassiveTeam].Data.TeamType;
-        
         (TeamsByTurn[TeamStatus.ActiveTeam], TeamsByTurn[TeamStatus.PassiveTeam]) =
             (TeamsByTurn[TeamStatus.PassiveTeam], TeamsByTurn[TeamStatus.ActiveTeam]);
 
-       UIEventbus.OnTeamSwitch?.Invoke(ActiveTeamType);
-        //NetworkEventbus.UserEvents.OnTeamSwitch?.Invoke(ActiveTeamType);
-    }
-    
-    //     TeamsByTurn[TeamStatus.ActiveTeam].Data.Player.EnableInput(true);
 
-    
+         // ActiveTeamType = TeamsByTurn[TeamStatus.ActiveTeam].Data.TeamType;
+         // UIEventbus.OnTeamSwitch?.Invoke(ActiveTeamType);
+    }
+
+    //TeamsByTurn[TeamStatus.ActiveTeam].Data.Player.EnableInput(true);
+
+
     public bool GameEnding()
     {
         foreach (var team in TeamsByTurn)
         {
-            
-            if (team.Value.Data.Actors.Count < 2) //|| team.Value.Data.Towers.All(t => ActorHolder.GetHealthByActor(t.UniqID) == 0)) //Turn sonunda Health'in 0 olarak kaldığı bir case yok, 0 olan dönüşüyor
+            if (team.Value.Data.Actors.Count <
+                2) //|| team.Value.Data.Towers.All(t => ActorHolder.GetHealthByActor(t.UniqID) == 0)) //Turn sonunda Health'in 0 olarak kaldığı bir case yok, 0 olan dönüşüyor
             {
                 if (team.Value.Data.Actors[0].TowerAmount > 1) return false;
-                
+
                 NetworkEventbus.UserEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
                 Debug.Log("game ends");
                 return true;
@@ -78,5 +77,4 @@ public class TurnHelper
 
         return false;
     }
-
 }

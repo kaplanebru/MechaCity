@@ -42,8 +42,14 @@ namespace GameUI
             DisableAll();
             
             _currentButton = turnButtons.FirstOrDefault(b=>b.turnStateType == type);
+            
+            Debug.Log("current button type " + _currentButton.turnStateType);
             if (!_currentButton)
+            {
+                Debug.Log("current button is null");
                 return;
+            }
+                
 
             _currentButton.Highlight(false);
             _currentButton.gameObject.SetActive(true);
