@@ -38666,6 +38666,7 @@ MonoBehaviour:
   turnButtons:
   - {fileID: 735110793}
   - {fileID: 1894617624}
+  buttonsHolder: {fileID: 789777815}
 --- !u!224 &899201962
 RectTransform:
   m_ObjectHideFlags: 0

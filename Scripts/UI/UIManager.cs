@@ -20,13 +20,19 @@ namespace GameUI
             UIEventbus.OnPlayerSet += ShowPlayerText;
             
             
-            NetworkEventbus.UIEvents.OnTurnButtonShiftRequest += EnableTurnButton;
+            NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest += ActivateTurnButtonsListener;
             DisableUIs();
         }
-        private void EnableTurnButton(bool enable)
+        private void ActivateTurnButtonsListener(bool enable)
         {
-            Debug.Log("enable turn button: " + enable);
-            turnButtonsHandler.gameObject.SetActive(enable);
+            if (enable)
+            {
+                turnButtonsHandler.SubscribeAndOpenButtons();
+            }
+            else
+            {
+                turnButtonsHandler.UnsubscribeAndCloseButtonHolder();
+            }
         }
 
         void DisableUIs()
@@ -55,7 +61,7 @@ namespace GameUI
         {
             NetworkEventbus.OnAllClientsSet -= ShowInfoText;
             UIEventbus.OnPlayerSet -= ShowPlayerText;
-            NetworkEventbus.UIEvents.OnTurnButtonShiftRequest -= EnableTurnButton;
+            NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest -= ActivateTurnButtonsListener;
     
         }
     

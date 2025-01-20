@@ -79,16 +79,13 @@ namespace PlayerNetwork
         private Coroutine inputRoutine;
         private void EnableInput(bool enable)
         {
-            //if (!IsOwner) return;
-            
+
             if (!MultiplayerSetter.IsMultiplayerOn)
             {
-                NetworkEventbus.UIEvents.OnTurnButtonShiftRequest?.Invoke(true);
+                NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest?.Invoke(true);
                 inputRoutine ??= StartCoroutine(nameof(InputRoutine)); //input kısmı için sadece
                 return; 
             }
-
-            //NetworkEventbus.UIEvents.OnTurnButtonShiftRequest?.Invoke(enable);
             
             if (enable)
                 inputRoutine ??= StartCoroutine(nameof(InputRoutine));
@@ -149,14 +146,13 @@ namespace PlayerNetwork
             {
                 Debug.Log("not owner");
             }
-            Debug.Log("listens team switch event " + ActiveTeam.Value);
+            //Debug.Log("listens team switch event " + ActiveTeam.Value);
             ActiveTeam.Value = teamType;
-            //Debug.Log("server active team: " + ActiveTeam.Value);
         }
         private void OnActiveTeamChanged(TeamType previousvalue, TeamType newvalue)
         {
             //if(!IsOwner) return;
-             Debug.Log("client active team: " + ActiveTeam.Value + " player team type: " + Data.TeamType);
+             //Debug.Log("client active team: " + ActiveTeam.Value + " player team type: " + Data.TeamType);
             
             if (ActiveTeam.Value == Data.TeamType)
                 ApplyActiveTeamSettings();
@@ -169,7 +165,7 @@ namespace PlayerNetwork
         {
             EnableInput(true);
             NetworkEventbus.UIEvents.OnBPCardsActivationRequest?.Invoke(true);
-            NetworkEventbus.UIEvents.OnTurnButtonShiftRequest?.Invoke(true);
+            NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest?.Invoke(true);
 
             Debug.Log("active team settings applied");
 
@@ -179,7 +175,7 @@ namespace PlayerNetwork
         {
             EnableInput(false);
             NetworkEventbus.UIEvents.OnBPCardsActivationRequest?.Invoke(false);
-            NetworkEventbus.UIEvents.OnTurnButtonShiftRequest?.Invoke(false);
+            NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest?.Invoke(false);
             
             Debug.Log("passive team settings applied");
         }

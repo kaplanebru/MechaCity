@@ -14,21 +14,22 @@ namespace GameUI
     public class TurnButtonsHandler : MonoBehaviour
     {
         [SerializeField] private TurnButton[] turnButtons;
+        [SerializeField] private GameObject buttonsHolder;
         private TurnButton _currentButton;
-        
+        private bool isActive = true;
+
         private void OnEnable() //ui daha önce gelmeli turnden
         {
-            DisableAll();
-            Subscribe();
-            //DisableAll();
-            //buttonTextSlot.fontSizeMax = 20;
+            DisableAllButtons();
         }
-        
-        void Subscribe()
+
+     
+
+        public void SubscribeAndOpenButtons()
         {
-            UIEventbus.OnStateShift += ShiftButton;
+            buttonsHolder.SetActive(true);
             UIEventbus.OnHighlightRequest += Highlight;
-            Debug.Log("subscribe to turn buttons");
+            UIEventbus.OnStateShift += ShiftButtonState;
         }
 
         private void Highlight(bool enable)
@@ -37,22 +38,28 @@ namespace GameUI
         }
 
 
-        void ShiftButton(TurnStateType type)
+        void ShiftButtonState(TurnStateType stateType)
         {
-            DisableAll();
-            
-            _currentButton = turnButtons.FirstOrDefault(b=>b.turnStateType == type);
-            
-            Debug.Log("current button type " + _currentButton.turnStateType);
-            if (!_currentButton)
+            DisableAllButtons();
+
+            if (stateType == TurnStateType.Combat)//(type != TurnStateType.Selection && type != TurnStateType.Link && type != TurnStateType.Intruder)
             {
-                Debug.Log("current button is null");
+                UnsubscribeAndCloseButtonHolder();
                 return;
             }
-                
 
+            _currentButton = turnButtons.FirstOrDefault(b => b.turnStateType == stateType);
+
+            if (!_currentButton) return;
+            
             _currentButton.Highlight(false);
             _currentButton.gameObject.SetActive(true);
+        }
+
+        public void UnsubscribeAndCloseButtonHolder()
+        {
+            buttonsHolder.SetActive(false);
+            Unsubscribe();
         }
 
         public void ButtonClicked()
@@ -60,20 +67,18 @@ namespace GameUI
             UIEventbus.OnButtonClicked?.Invoke();
         }
 
-        void DisableAll()
+        void DisableAllButtons()
         {
             foreach (var turnButton in turnButtons)
             {
                 turnButton.gameObject.SetActive(false);
             }
         }
-        
-        private void OnDisable()
-        {
-            UIEventbus.OnStateShift -= ShiftButton;
-            UIEventbus.OnHighlightRequest -= Highlight;
-            Debug.Log("unsubscribe from turn buttons");
 
+        void Unsubscribe()
+        {
+            UIEventbus.OnHighlightRequest -= Highlight;
+            UIEventbus.OnStateShift -= ShiftButtonState;
         }
     }
 }

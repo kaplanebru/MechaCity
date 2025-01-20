@@ -36,7 +36,7 @@ namespace Network
         }
         public static class UIEvents
         {
-            public static Action<bool> OnTurnButtonShiftRequest;
+            public static Action<bool> OnTurnButtonsListenerActivationRequest;
             public static Action<bool> OnBPCardsActivationRequest;
         }
     }

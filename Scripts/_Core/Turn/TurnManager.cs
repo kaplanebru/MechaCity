@@ -221,6 +221,8 @@ namespace Turn
 
             TurnStatusEvents.OnTurnEnding?.Invoke();
             TurnHelper.SwitchTeams();
+            NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest?.Invoke(true);
+            
             NewTurn();
 
             foreach (var state in StateHolder.States)
