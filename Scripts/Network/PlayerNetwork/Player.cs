@@ -29,17 +29,17 @@ namespace PlayerNetwork
     {
         public PlayerData Data = new();
 
-        public NetworkVariable<TeamType> ActiveTeam = new(TeamType.Team1, NetworkVariableReadPermission.Everyone,
-            NetworkVariableWritePermission.Owner);
+        private NetworkVariable<TeamType> ActiveTeam = new(TeamType.Team2, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);//,NetworkVariableWritePermission.Owner
 
         public GameEndState gameEndState = GameEndState.GameStarted;
         public TurnNetworkHandler turnNetworkHandlerPrefab;
 
         public override void OnNetworkSpawn()
         {
+            ActiveTeam.OnValueChanged += OnActiveTeamChanged;
             if (IsOwner)
             {
-                NetworkEventbus.UserEvents.OnTeamSwitched += SetActiveTeam;
+                NetworkEventbus.UserEvents.OnTeamSwitched += RequestActiveTeamChangeServerRpc;
                 NetworkEventbus.UserEvents.OnGameEnds += GameEndServerRpc;
                 NetworkEventbus.UserEvents.OnPersonaSelectedByUser += SetPersonaType;
             }
@@ -142,17 +142,34 @@ namespace PlayerNetwork
 
         #region Activity Status
 
-        private void SetActiveTeam(TeamType teamType)
+        [ServerRpc(RequireOwnership = false)]
+        private void RequestActiveTeamChangeServerRpc(TeamType teamType) //dikkat: team1 ile başlanırsa team change tetiklenmez
         {
-            if (!IsOwner) return;
+            Debug.Log("listens team switch event");
             ActiveTeam.Value = teamType;
+        }
+        private void OnActiveTeamChanged(TeamType previousvalue, TeamType newvalue)
+        {
             Debug.Log("active team: " + ActiveTeam.Value);
-
+            
             if (ActiveTeam.Value == Data.TeamType)
                 ApplyActiveTeamSettings();
             else
                 ApplyPassiveTeamSettings();
         }
+
+        
+        // private void SetActiveTeam(TeamType teamType)
+        // {
+        //     if (!IsOwner) return;
+        //     ActiveTeam.Value = teamType;
+        //     Debug.Log("active team: " + ActiveTeam.Value);
+        //
+        //     if (ActiveTeam.Value == Data.TeamType)
+        //         ApplyActiveTeamSettings();
+        //     else
+        //         ApplyPassiveTeamSettings();
+        // }
 
         private void ApplyActiveTeamSettings()
         {
@@ -182,7 +199,7 @@ namespace PlayerNetwork
             };
 
             if (loserTeamType == Data.TeamType)
-                LoseClientRpc(clientRpcParams);
+                LoseClientRpc(clientRpcParams); //todo: check - client rpc params'ın kullanılmayışı sorun olur mu?
             else
                 WinClientRpc(clientRpcParams);
         }
@@ -209,10 +226,11 @@ namespace PlayerNetwork
         {
             if (IsOwner)
             {
-                NetworkEventbus.UserEvents.OnTeamSwitched -= SetActiveTeam;
+                NetworkEventbus.UserEvents.OnTeamSwitched -= RequestActiveTeamChangeServerRpc;
                 NetworkEventbus.UserEvents.OnGameEnds -= GameEndServerRpc;
                 NetworkEventbus.UserEvents.OnPersonaSelectedByUser -= SetPersonaType;
             }
+            ActiveTeam.OnValueChanged -= OnActiveTeamChanged;
         }
     }
 

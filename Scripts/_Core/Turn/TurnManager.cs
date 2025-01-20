@@ -128,12 +128,12 @@ namespace Turn
             firstTurn = false;
         }
 
-        void NewTurn()
+        void NewTurn() 
         {
             _turnTracker++;
             print("turn track: " + _turnTracker);
             
-            SetNewTurnTeams();
+            SetNewTurnTeams();  //cyclic olabiliyor
             SetFirstState();
 
             //SelectionReferences.Instance.GetSelector(SelectionType.PlayerOnlyStd).StartWithNewTowers();
