@@ -37,18 +37,7 @@ namespace Turn
         private bool isReversed = false;
 
         private CombatPair currentPair;
-        private CombatPair nextPair;
-        public void Subscribe()
-        {
-            Eventbus.CombatEvents.OnNextPairCheck += NextPairSameActor;
-        }
-        
-
-        private bool NextPairSameActor()
-        {
-            if (nextPair == null) return false;
-            return currentPair.MainActor == nextPair.MainActor;
-        }
+        public void Subscribe() {}
         
         public void ReverseCombatDirection()
         {
@@ -139,15 +128,14 @@ namespace Turn
                 yield return new WaitForSeconds(Data.cursorDuration);
 
                 
-                var pairs = _pairController.GetPairGroupByActorID(actorID);
+                var pairs = CombatPairController.GetPairGroupByActorID(actorID);
                 SetSelectionColor(actorID);
 
                 yield return new WaitForSeconds(Data.selectionDelay);
 
-                for (var i = 0; i < pairs.Count; i++)
+                foreach (var pair in pairs)
                 {
-                    currentPair = pairs[i];
-                    nextPair = i + 1 < pairs.Count ? pairs[i + 1] : null;
+                    currentPair = pair;
 
                     if (currentPair.Combat())
                     {
@@ -187,7 +175,6 @@ namespace Turn
         public void Unsubscribe()
         {
             DeselectAlteredTowers();
-            Eventbus.CombatEvents.OnNextPairCheck -= NextPairSameActor;
         }
     }
 }

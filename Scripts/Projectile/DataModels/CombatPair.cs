@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Actor;
+using Enums.Combat;
 using GameUI;
 using Health;
 using UnityEngine;
@@ -25,6 +26,7 @@ namespace DataModels
         public TowerNumericData OtherTowerData { get; private set; }
 
         public bool CombatCompleted { get; set; } = false;
+        public Enums.Combat.LiaisonStatus liaisonStatus = LiaisonStatus.None;
 
         public CombatPair(ActorData mainActor, ActorData otherActor)
         {

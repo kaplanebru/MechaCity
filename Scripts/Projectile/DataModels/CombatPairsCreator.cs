@@ -33,7 +33,6 @@ public class CombatPairsCreator
             pair.OrderTowersByGridDirection(isReversed);
         }
     }
-
     CombatPair AddToPair(ActorData actor1, ActorData actor2)
     {
       

@@ -29,8 +29,6 @@ public static class Eventbus
 
         public static Action<uint> OnTurnTowerSelection;
         public static Action OnTurnTowerDeselect;
-
-        public static Func<bool> OnNextPairCheck;
     }
 
     public static class LinkEvents

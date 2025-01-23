@@ -48,6 +48,17 @@ namespace Enums
         }
     }
 
+    namespace Combat
+    {
+        public enum LiaisonStatus
+        {
+            None,
+            OnStart,
+            OnEnd,
+            OnBoth
+        }
+    }
+
     public enum ActorType
     {
         Standard,
@@ -59,13 +70,6 @@ namespace Enums
         Relation,
         Health,
     }
-
-    public enum TurnState
-    {
-        TurnStarted,
-        TurnEnded
-    }
-
     public enum TurnAction
     {
         Started,

@@ -1495,8 +1495,8 @@ MonoBehaviour:
   ActorStarterDatas:
   - ActorData:
       Type: 0
-      TeamType: 1
-      TeamVisualData: {fileID: 11400000, guid: bbc84b53b875dfb4c9ba3a5ea1d7bc66, type: 2}
+      TeamType: 0
+      TeamVisualData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
       Row: 0
       InitialHealth: 1
     TowerObjects:
@@ -1511,16 +1511,16 @@ MonoBehaviour:
     - {fileID: 7831488675430679437}
   - ActorData:
       Type: 0
-      TeamType: 0
-      TeamVisualData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
+      TeamType: 1
+      TeamVisualData: {fileID: 11400000, guid: bbc84b53b875dfb4c9ba3a5ea1d7bc66, type: 2}
       Row: 2
       InitialHealth: 1
     TowerObjects:
     - {fileID: 2465807986315917993}
   - ActorData:
       Type: 0
-      TeamType: 0
-      TeamVisualData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
+      TeamType: 1
+      TeamVisualData: {fileID: 11400000, guid: bbc84b53b875dfb4c9ba3a5ea1d7bc66, type: 2}
       Row: 3
       InitialHealth: 1
     TowerObjects:

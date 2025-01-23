@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DataModels;
 using DG.Tweening;
 using Enums;
+using Enums.Combat;
 using GameUI;
 using Health;
 using ProjectileHandler;
@@ -46,10 +47,7 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
         RevealSelf();
     }
 
-    bool CombatPairWithSameActor()
-    {
-        return Eventbus.CombatEvents.OnNextPairCheck.Invoke();
-    }
+   
 
     private Tweener coverRoutine;
     void OpenCover()
@@ -67,14 +65,18 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
         var otherTower = AllTowers.GetData(_pair.OtherTowerData.UniqID);
         
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(coverRoutine);
-        sequence.Append(transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration));
-        sequence.Append(transform.DORotateQuaternion(
-            Quaternion.LookRotation(
-               otherTower.VisualData.Mover.Data.Top.transform.position - transform.position
-            ) * Quaternion.Euler(0, 180, 0), _motionDuration / 2
-        ));
 
+        if (_pair.liaisonStatus == LiaisonStatus.None || _pair.liaisonStatus == LiaisonStatus.OnEnd)
+        {
+            sequence.Append(coverRoutine);
+            sequence.Append(transform.DOLocalMoveY(transform.localPosition.y + motionDistance, _motionDuration));
+            sequence.Append(transform.DORotateQuaternion(
+                Quaternion.LookRotation(
+                    otherTower.VisualData.Mover.Data.Top.transform.position - transform.position
+                ) * Quaternion.Euler(0, 180, 0), _motionDuration / 2
+            ));
+        }
+        
         sequence.AppendCallback(() =>
         {
             SendProjectile(mainTower, otherTower, _projectileDuration);
@@ -83,14 +85,17 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
 
     private void Hide(TowerData perpetrator)
     {
-        if(CombatPairWithSameActor()) return;
-        
-        perpetrator.VisualData.ColorHandler.ToOriginalSelectionColor();
-        transform.DORotateQuaternion(startRot, _motionDuration/2).OnComplete(() =>
+        if (_pair.liaisonStatus == LiaisonStatus.None || _pair.liaisonStatus == LiaisonStatus.OnStart)
         {
-            transform.DOLocalMoveY(hiddenPosY, _motionDuration);
-            CloseCover();
-        });
+            perpetrator.VisualData.ColorHandler.ToOriginalSelectionColor();
+            transform.DORotateQuaternion(startRot, _motionDuration/2).OnComplete(() =>
+            {
+                transform.DOLocalMoveY(hiddenPosY, _motionDuration);
+                CloseCover();
+            });
+        }
+
+       
     }
     
     void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
