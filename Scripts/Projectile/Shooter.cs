@@ -41,8 +41,14 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
     public void Shoot(CombatPair pair)
     {
         _pair = pair;
+        
         OpenCover();
         RevealSelf();
+    }
+
+    bool CombatPairWithSameActor()
+    {
+        return Eventbus.CombatEvents.OnNextPairCheck.Invoke();
     }
 
     private Tweener coverRoutine;
@@ -75,15 +81,16 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
         });
     }
 
-    private void Hide()
+    private void Hide(TowerData perpetrator)
     {
+        if(CombatPairWithSameActor()) return;
+        
+        perpetrator.VisualData.ColorHandler.ToOriginalSelectionColor();
         transform.DORotateQuaternion(startRot, _motionDuration/2).OnComplete(() =>
         {
             transform.DOLocalMoveY(hiddenPosY, _motionDuration);
             CloseCover();
         });
-       
-        
     }
     
     void SendProjectile(TowerData perpetrator, TowerData victim, float duration)
@@ -93,19 +100,16 @@ public class Shooter : MonoBehaviour, ITowerRelatedElement
 
         projectile.Move(() =>
         {
-            perpetrator.VisualData.ColorHandler.ToOriginalSelectionColor();
-
-            Hide();
-            ShieldData shieldData = victim.VisualData.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
-            if (shieldData.IsProtective(victim.NumericData.Height))
+            Hide(perpetrator);
+            
+            ShieldData victimShield = victim.VisualData.VisualSupportedDatas[VisualDataType.Shield] as ShieldData;
+            if (victimShield.IsProtective(victim.NumericData.Height))
             {
                 //TODO: shield effect
                 _pair.CompleteCombat();
                 return;
             }
             Eventbus.HealthEvents.OnShoot?.Invoke(_pair.OtherActor.ID, perpetrator.NumericData.DamagePower, _pair.ID);
-            
-            //Hide();
         });
     }
 }

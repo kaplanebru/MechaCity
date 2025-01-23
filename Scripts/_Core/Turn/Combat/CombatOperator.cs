@@ -36,7 +36,20 @@ namespace Turn
         private CombatTimingData _timingData;
         private bool isReversed = false;
 
+        private CombatPair currentPair;
+        private CombatPair nextPair;
+        public void Subscribe()
+        {
+            Eventbus.CombatEvents.OnNextPairCheck += NextPairSameActor;
+        }
+        
 
+        private bool NextPairSameActor()
+        {
+            if (nextPair == null) return false;
+            return currentPair.MainActor == nextPair.MainActor;
+        }
+        
         public void ReverseCombatDirection()
         {
             isReversed = !isReversed;
@@ -105,6 +118,7 @@ namespace Turn
                 : ActorDB.Registry.Keys.ToArray();
         }
 
+        
         public IEnumerator LeCoroutine()
         {
             if (MultiplayerSetter.IsTestingWithoutCombat)
@@ -124,16 +138,20 @@ namespace Turn
                 Eventbus.CombatEvents.OnNextActor?.Invoke(Data.cursorDuration);
                 yield return new WaitForSeconds(Data.cursorDuration);
 
+                
                 var pairs = _pairController.GetPairGroupByActorID(actorID);
                 SetSelectionColor(actorID);
 
                 yield return new WaitForSeconds(Data.selectionDelay);
 
-                foreach (var pair in pairs)
+                for (var i = 0; i < pairs.Count; i++)
                 {
-                    if (pair.Combat())
+                    currentPair = pairs[i];
+                    nextPair = i + 1 < pairs.Count ? pairs[i + 1] : null;
+
+                    if (currentPair.Combat())
                     {
-                        yield return new WaitUntil(() => pair.CombatCompleted);
+                        yield return new WaitUntil(() => currentPair.CombatCompleted);
                     }
                     else
                     {
@@ -149,6 +167,8 @@ namespace Turn
            
             EndCombat();
         }
+
+      
 
         void EndCombat()
         {
@@ -167,6 +187,7 @@ namespace Turn
         public void Unsubscribe()
         {
             DeselectAlteredTowers();
+            Eventbus.CombatEvents.OnNextPairCheck -= NextPairSameActor;
         }
     }
 }

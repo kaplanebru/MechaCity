@@ -33,6 +33,7 @@ namespace Turn
         {
             BpEventHandler.SubscribeToBlueprintEvents();
             StateHolder.Setup();
+            combatOperator.Subscribe();
 
             Eventbus.CombatEvents.OnPairsSet += SendCombatPairs;
             TeamEvents.OnTeamsSet += SetTurnTeams;
@@ -55,6 +56,7 @@ namespace Turn
         {
             BpEventHandler.UnsubscribeFromBlueprintEvents();
             StateHolder.UnsubscribeFromConstantEvents();
+            combatOperator.Unsubscribe();
 
             Eventbus.CombatEvents.OnPairsSet -= SendCombatPairs;
             TeamEvents.OnTeamsSet -= SetTurnTeams;

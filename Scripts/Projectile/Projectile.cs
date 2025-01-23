@@ -22,7 +22,7 @@ namespace ProjectileHandler
             targetPos = _targetPos;
         }
 
-        public void Move(Action callback)
+        public void Move(Action closeCallback)
         {
             var direction = (targetPos - transform.position).normalized;
             var projectileLookRotation = Quaternion.LookRotation(direction);
@@ -31,7 +31,7 @@ namespace ProjectileHandler
             transform.DOMove(targetPos-direction*0.6f, duration).SetEase(Ease.InSine).OnComplete(() =>
             {
                 ProjectilePool.Instance.ReleaseItem(this);
-                callback?.Invoke();
+                closeCallback?.Invoke();
             });
         }
     }

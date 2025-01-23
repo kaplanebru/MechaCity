@@ -42,7 +42,6 @@ public class TurnHelper
     {
         var nextStateId = (currentStateId + 1) % (TurnStateHolder.StateCount - 1);
         return nextStateId;
-        //return _stateHolder.States[nextStateId].StateType;
     }
 
     public void SwitchTeams()
@@ -50,23 +49,17 @@ public class TurnHelper
         (TeamsByTurn[TeamStatus.ActiveTeam], TeamsByTurn[TeamStatus.PassiveTeam]) =
             (TeamsByTurn[TeamStatus.PassiveTeam], TeamsByTurn[TeamStatus.ActiveTeam]);
 
-
-         // ActiveTeamType = TeamsByTurn[TeamStatus.ActiveTeam].Data.TeamType;
-         // UIEventbus.OnTeamSwitch?.Invoke(ActiveTeamType);
     }
-
     //TeamsByTurn[TeamStatus.ActiveTeam].Data.Player.EnableInput(true);
-
-
     public bool GameEnding()
     {
         foreach (var team in TeamsByTurn)
         {
-            if (team.Value.Data.Actors.Count <
-                2) //|| team.Value.Data.Towers.All(t => ActorHolder.GetHealthByActor(t.UniqID) == 0)) //Turn sonunda Health'in 0 olarak kaldığı bir case yok, 0 olan dönüşüyor
+            if(team.Value.Data.Actors.Count == 1)
+                if (team.Value.Data.Actors[0].TowerAmount > 1) return false;//todo: check
+            
+            if (team.Value.Data.Actors.Count < 2)
             {
-                if (team.Value.Data.Actors[0].TowerAmount > 1) return false;
-
                 NetworkEventbus.UserEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
                 Debug.Log("game ends");
                 return true;
