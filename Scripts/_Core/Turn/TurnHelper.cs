@@ -15,8 +15,6 @@ public class TurnHelper
 {
     public Dictionary<TeamStatus, Team> TeamsByTurn;
 
-    //internal TeamType ActiveTeamType = TeamType.None;
-
     public void Subscribe()
     {
         TeamEvents.OnBothTeamsRequest += SendTeams;

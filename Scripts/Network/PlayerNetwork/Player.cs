@@ -29,7 +29,7 @@ namespace PlayerNetwork
     {
         public PlayerData Data = new();
 
-        private NetworkVariable<TeamType> ActiveTeam = new(TeamType.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);//,NetworkVariableWritePermission.Owner
+        [SerializeField]private NetworkVariable<TeamType> ActiveTeam = new(TeamType.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);//,NetworkVariableWritePermission.Owner
 
         public GameEndState gameEndState = GameEndState.GameStarted;
         public TurnNetworkHandler turnNetworkHandlerPrefab;
@@ -174,9 +174,11 @@ namespace PlayerNetwork
         private void ApplyPassiveTeamSettings()
         {
             EnableInput(false);
+            if(!MultiplayerSetter.IsMultiplayerOn) return; //for testing
+            
             NetworkEventbus.UIEvents.OnBPCardsActivationRequest?.Invoke(false);
             NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest?.Invoke(false);
-            
+
             Debug.Log("passive team settings applied");
         }
         
