@@ -22,12 +22,13 @@ public class BpInfoUI : MonoBehaviour
         BpEventbus.UIEvents.OnBpInstalled += ShowPanel;
     }
 
-    private void ShowPanel(BpType type)
+    private async void ShowPanel(BpType type)
     {
         _currentData = bpDataHolder.TypeDataPair[type];
         SetPanel();
         panelObject.SetActive(true);
-        
+        await DelayMaker.WaitForSeconds(3f);
+        panelObject.SetActive(false);
     }
 
     void SetPanel()
