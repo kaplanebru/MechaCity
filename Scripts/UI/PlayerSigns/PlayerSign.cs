@@ -14,15 +14,14 @@ public class PlayerSign : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private GameObject statsGo;
 
     private string _playerName;
-    private TeamType _teamType;
-    
-    public void Setup(string playerName, TeamType teamType)
+    public TeamType teamType;
+
+    public void Setup(string playerName, TeamType type)
     {
         _playerName = playerName;
-        _teamType = teamType;
+        teamType = type;
         isSet = true;
-        print(playerName);
-        
+      
         SetText();
     }
 

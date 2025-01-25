@@ -29,7 +29,9 @@ namespace PlayerNetwork
     {
         public PlayerData Data = new();
 
-        [SerializeField]private NetworkVariable<TeamType> ActiveTeam = new(TeamType.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);//,NetworkVariableWritePermission.Owner
+        [SerializeField] private NetworkVariable<TeamType> ActiveTeam = new(TeamType.None,
+            NetworkVariableReadPermission.Everyone,
+            NetworkVariableWritePermission.Server); //,NetworkVariableWritePermission.Owner
 
         public GameEndState gameEndState = GameEndState.GameStarted;
         public TurnNetworkHandler turnNetworkHandlerPrefab;
@@ -66,10 +68,14 @@ namespace PlayerNetwork
 
         #endregion
 
-        public void Setup(TeamType teamType)
+        public void Setup(TeamType teamType, string playerName)
         {
             Data.TeamType = teamType;
-            if (IsOwner) SpawnTurnNetworkServerRpc(); //önce team belirlensin
+            if (IsOwner)
+            {
+                NetworkEventbus.UIEvents.OnPlayerSet?.Invoke(playerName, teamType);
+                SpawnTurnNetworkServerRpc(); //önce team belirlensin
+            }
         }
 
         #region Input Settings
@@ -77,16 +83,16 @@ namespace PlayerNetwork
         Ray RayFromMouse() => Camera.main.ScreenPointToRay(Input.mousePosition);
 
         private Coroutine inputRoutine;
+
         private void EnableInput(bool enable)
         {
-
             if (!MultiplayerSetter.IsMultiplayerOn)
             {
                 NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest?.Invoke(true);
                 inputRoutine ??= StartCoroutine(nameof(InputRoutine)); //input kısmı için sadece
-                return; 
+                return;
             }
-            
+
             if (enable)
                 inputRoutine ??= StartCoroutine(nameof(InputRoutine));
             else
@@ -140,27 +146,31 @@ namespace PlayerNetwork
         #region Activity Status
 
         [ServerRpc(RequireOwnership = true)]
-        private void RequestActiveTeamChangeServerRpc(TeamType teamType) //dikkat: team1 ile başlanırsa team change tetiklenmez + team2yi de dinliyorsa ondan gelen klon cyclic mesajı da alır
+        private void
+            RequestActiveTeamChangeServerRpc(
+                TeamType teamType) //dikkat: team1 ile başlanırsa team change tetiklenmez + team2yi de dinliyorsa ondan gelen klon cyclic mesajı da alır
         {
             if (!IsOwner)
             {
                 Debug.Log("not owner");
             }
+
             //Debug.Log("listens team switch event " + ActiveTeam.Value);
             ActiveTeam.Value = teamType;
         }
+
         private void OnActiveTeamChanged(TeamType previousvalue, TeamType newvalue)
         {
             //if(!IsOwner) return;
-             //Debug.Log("client active team: " + ActiveTeam.Value + " player team type: " + Data.TeamType);
-            
+            //Debug.Log("client active team: " + ActiveTeam.Value + " player team type: " + Data.TeamType);
+
             if (ActiveTeam.Value == Data.TeamType)
                 ApplyActiveTeamSettings();
             else
                 ApplyPassiveTeamSettings();
         }
 
-     
+
         private void ApplyActiveTeamSettings()
         {
             EnableInput(true);
@@ -168,21 +178,20 @@ namespace PlayerNetwork
             NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest?.Invoke(true);
 
             Debug.Log("active team settings applied");
-
         }
 
         private void ApplyPassiveTeamSettings()
         {
             EnableInput(false);
-            if(!MultiplayerSetter.IsMultiplayerOn) return; //for testing
-            
+            if (!MultiplayerSetter.IsMultiplayerOn) return; //for testing
+
             NetworkEventbus.UIEvents.OnBPCardsActivationRequest?.Invoke(false);
             NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest?.Invoke(false);
 
             Debug.Log("passive team settings applied");
         }
-        
-           
+
+
         // private void SetActiveTeam(TeamType teamType)
         // {
         //     if (!IsOwner) return;
@@ -194,7 +203,6 @@ namespace PlayerNetwork
         //     else
         //         ApplyPassiveTeamSettings();
         // }
-
 
         #endregion
 

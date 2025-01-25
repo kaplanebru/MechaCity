@@ -26,6 +26,7 @@ namespace Turn
         internal CombatPairController PairController = new();
         internal TurnHelper TurnHelper = new();
         private CombatOperator combatOperator = new();
+        private TeamsController teamsController = new();
 
         private bool firstTurn = true;
 
@@ -34,10 +35,11 @@ namespace Turn
             BpEventHandler.SubscribeToBlueprintEvents();
             StateHolder.Setup();
             combatOperator.Subscribe();
+            teamsController.Subscribe();
 
             Eventbus.CombatEvents.OnPairsSet += SendCombatPairs;
             TeamEvents.OnTeamsSet += SetTurnTeams;
-            TeamEvents.OnSingleTeamDemand += SendTeam;
+            TeamEvents.OnTurnTeamDemand += SendTeam;
             NetworkEventbus.OnAllClientsSet += FirstTurn;
             NetworkEventbus.ServerEvents.OnStateChangeRequestByClientRpc += ChangeStateBySystem;
 
@@ -57,10 +59,11 @@ namespace Turn
             BpEventHandler.UnsubscribeFromBlueprintEvents();
             StateHolder.UnsubscribeFromConstantEvents();
             combatOperator.Unsubscribe();
+            teamsController.Unsubscribe();
 
             Eventbus.CombatEvents.OnPairsSet -= SendCombatPairs;
             TeamEvents.OnTeamsSet -= SetTurnTeams;
-            TeamEvents.OnSingleTeamDemand -= SendTeam;
+            TeamEvents.OnTurnTeamDemand -= SendTeam;
 
             NetworkEventbus.OnAllClientsSet -= FirstTurn;
             NetworkEventbus.ServerEvents.OnStateChangeRequestByClientRpc -= ChangeStateBySystem;

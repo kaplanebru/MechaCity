@@ -9,6 +9,6 @@ namespace Teams
         public static Action<Dictionary<TeamStatus, Team>> OnTeamsSent;
         public static Action OnBothTeamsRequest;
         public static Action<Team[]> OnTeamsSet;
-        public static Func<TeamStatus, Team> OnSingleTeamDemand;
+        public static Func<TeamStatus, Team> OnTurnTeamDemand;
     }
 }

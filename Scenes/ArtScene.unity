@@ -16723,50 +16723,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3109081886833488653, guid: c4582a46c21a8984c9bab761dc9a7b2d, type: 3}
   m_PrefabInstance: {fileID: 774190543}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &396632920
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 396632921}
-  - component: {fileID: 396632922}
-  m_Layer: 0
-  m_Name: TeamSwitcher
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &396632921
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 396632920}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 973694560}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &396632922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 396632920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7524c88f2624e1244ad88416a52e89d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &398285726
 GameObject:
   m_ObjectHideFlags: 0
@@ -22516,7 +22472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6ef5335cecd104ab9ee485fbb0a9e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMultiplayerOn: 0
+  isMultiplayerOn: 1
   isTestingWithoutCombat: 0
   fasterCombat: 0
 --- !u!4 &521987823
@@ -35036,10 +34992,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSet: 0
-  teamType: 0
   textHolder: {fileID: 1407780233}
   imageHolder: {fileID: 0}
   statsGo: {fileID: 1344652335}
+  teamType: 0
 --- !u!1 &783460976
 GameObject:
   m_ObjectHideFlags: 0
@@ -42163,7 +42119,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 396632921}
   - {fileID: 1005707314}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -42690,7 +42645,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Unknown
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -43008,7 +42963,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 973694560}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1005707315
 MonoBehaviour:
@@ -86538,10 +86493,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSet: 0
-  teamType: 1
   textHolder: {fileID: 999411391}
   imageHolder: {fileID: 0}
   statsGo: {fileID: 1261627267}
+  teamType: 0
 --- !u!1 &2050427717
 GameObject:
   m_ObjectHideFlags: 0

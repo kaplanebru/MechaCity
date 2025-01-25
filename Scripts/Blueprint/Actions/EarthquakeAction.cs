@@ -36,7 +36,7 @@ namespace Blueprint
 
         public void Execute(params object[] obj)
         {
-            var rivalTeam = TeamEvents.OnSingleTeamDemand?.Invoke(TeamStatus.PassiveTeam);
+            var rivalTeam = TeamEvents.OnTurnTeamDemand?.Invoke(TeamStatus.PassiveTeam);
             SetTowers(rivalTeam.Data.Actors);
             PrepareAndExecuteEarthquake();
         }

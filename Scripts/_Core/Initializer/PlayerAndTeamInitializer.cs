@@ -52,8 +52,8 @@ namespace Core
         {
             Teams[id].Data.Player = newPlayer;
             var teamType = Teams[id].Data.teamColorData.TeamType;
-            newPlayer.Setup(teamType);
-            UIEventbus.OnPlayerSet?.Invoke(Teams[id].Data.Name, teamType);
+            newPlayer.Setup(teamType, Teams[id].Data.Name);
+            // UIEventbus.OnPlayerSet?.Invoke(Teams[id].Data.Name, teamType);
 
             if (!MultiplayerSetter.IsMultiplayerOn)
             {

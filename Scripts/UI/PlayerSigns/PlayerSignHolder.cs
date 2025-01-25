@@ -13,35 +13,28 @@ namespace GameUI
 
         private void OnEnable()
         {
-            UIEventbus.OnPlayerSet += SetPlayerSign;
+            NetworkEventbus.UIEvents.OnPlayerSet += SetPlayerSign;
             NetworkEventbus.OnAllClientsSet += SetOtherPlayerSign;
         }
-
-      
-
         private void SetPlayerSign(string playerName, TeamType teamType)
         {
             signs[0].Setup(playerName, teamType);
-            // foreach (var sign in signs)
-            // {
-            //     if(sign.isSet) continue;
-            //     
-            //     sign.Setup(playerName);
-            //     return;
-            // }
         }
 
         private void SetOtherPlayerSign(object[] args)
         {
             var teamNamesByType = args[0] as Dictionary<TeamType, string>;
-            
-            //var otherTeam = teamNamesByType[]
-            
+
+            foreach (var teamNameByType in teamNamesByType)
+            {
+                if(teamNameByType.Key == signs[0].teamType) continue;
+                signs[1].Setup(teamNameByType.Value, teamNameByType.Key);
+            }
         }
         
         private void OnDisable()
         {
-            UIEventbus.OnPlayerSet -= SetPlayerSign;
+            NetworkEventbus.UIEvents.OnPlayerSet -= SetPlayerSign;
             NetworkEventbus.OnAllClientsSet -= SetOtherPlayerSign;
         }
     }

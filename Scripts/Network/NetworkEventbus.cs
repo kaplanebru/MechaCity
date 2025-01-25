@@ -38,6 +38,7 @@ namespace Network
         {
             public static Action<bool> OnTurnButtonsListenerActivationRequest;
             public static Action<bool> OnBPCardsActivationRequest;
+            public static Action<string, TeamType> OnPlayerSet;
         }
     }
 }

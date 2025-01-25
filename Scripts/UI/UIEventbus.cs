@@ -17,7 +17,6 @@ namespace GameUI
         
         public static Action<TeamType> OnActiveTeamSet;
 
-        public static Action<string, TeamType> OnPlayerSet;
         
         public static Action<GameObject> OnTeamChange;
         public static Action<PopupType> OnPopupTime;
