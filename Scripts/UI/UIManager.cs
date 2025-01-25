@@ -17,7 +17,7 @@ namespace GameUI
         {
             turnButtonsHandler = GetComponentInChildren<TurnButtonsHandler>();
             NetworkEventbus.OnAllClientsSet += ShowInfoText; //todo: clients set aynı zamanda bug sebebi çünkü first turn böyle başlıyor
-            UIEventbus.OnPlayerSet += ShowPlayerText;
+           // UIEventbus.OnPlayerSet += ShowPlayerText;
             
             
             NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest += ActivateTurnButtonsListener;
@@ -60,7 +60,7 @@ namespace GameUI
         private void OnDisable()
         {
             NetworkEventbus.OnAllClientsSet -= ShowInfoText;
-            UIEventbus.OnPlayerSet -= ShowPlayerText;
+            //UIEventbus.OnPlayerSet -= ShowPlayerText;
             NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest -= ActivateTurnButtonsListener;
     
         }

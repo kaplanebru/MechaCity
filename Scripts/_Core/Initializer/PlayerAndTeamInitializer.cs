@@ -51,8 +51,9 @@ namespace Core
         private void AssignPlayers(Player newPlayer, ulong id)
         {
             Teams[id].Data.Player = newPlayer;
-            newPlayer.Setup(Teams[id].Data.teamColorData.TeamType);
-            UIEventbus.OnPlayerSet?.Invoke(Teams[id].Data.Name);
+            var teamType = Teams[id].Data.teamColorData.TeamType;
+            newPlayer.Setup(teamType);
+            UIEventbus.OnPlayerSet?.Invoke(Teams[id].Data.Name, teamType);
 
             if (!MultiplayerSetter.IsMultiplayerOn)
             {

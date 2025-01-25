@@ -8,14 +8,9 @@ namespace GameUI
 {
     public class PlayerText : BaseInfoText
     {
-      
-       
-
         public override void SetInfoText(string teamName)
         {
             InfoText.text = teamName;
         }
-        
     }
-
 }
