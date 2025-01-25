@@ -140,11 +140,7 @@ namespace Turn
 
         void NewTurn() 
         {
-           
-            TurnTracker.IncreaseTracker();
-            print("turn track: " + TurnTracker.GetTurnTracker());
-            
-            ApplyNewTurnTeamsSettings();  //cyclic olabiliyor
+            ApplyNewTurnTeamsSettings();  //cyclic olabiliyor dikkat
             SetFirstState();
 
             //SelectionReferences.Instance.GetSelector(SelectionType.PlayerOnlyStd).StartWithNewTowers();
@@ -153,9 +149,13 @@ namespace Turn
 
         void ApplyNewTurnTeamsSettings()
         {
-            var ActiveTeamType = TurnHelper.TeamsByTurn[TeamStatus.ActiveTeam].Data.TeamType;
-            UIEventbus.OnActiveTeamSet?.Invoke(ActiveTeamType);
-            NetworkEventbus.UserEvents.OnActiveTeamSetBegin?.Invoke(ActiveTeamType);
+            var activeTeamType = TurnHelper.TeamsByTurn[TeamStatus.ActiveTeam].Data.TeamType;
+            
+            if(activeTeamType == TeamType.Team1)
+                TurnTracker.IncreaseTracker();
+            
+            UIEventbus.OnActiveTeamSet?.Invoke(activeTeamType);
+            NetworkEventbus.UserEvents.OnActiveTeamSetBegin?.Invoke(activeTeamType);
         }
 
         void SetFirstState()

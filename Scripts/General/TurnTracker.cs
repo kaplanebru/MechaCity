@@ -10,6 +10,7 @@ public static class TurnTracker
     public static void IncreaseTracker()
     {
         Tracker++;
+        //Debug.Log("turn track: " + Tracker);
     }
 
    
