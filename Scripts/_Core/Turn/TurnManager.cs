@@ -13,10 +13,10 @@ namespace Turn
 {
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
-        public static int TurnTracker => _turnTracker; //no setter
+        //public static int TurnTracker => _turnTracker; //no setter
         public CombatTimingData combatTimingData;
 
-        private static int _turnTracker = 0;
+        //private static int _turnTracker = 0;
 
         private BaseTurnState currentState;
         private BaseTurnState previousState;
@@ -140,8 +140,9 @@ namespace Turn
 
         void NewTurn() 
         {
-            _turnTracker++;
-            print("turn track: " + _turnTracker);
+           
+            TurnTracker.IncreaseTracker();
+            print("turn track: " + TurnTracker.GetTurnTracker());
             
             ApplyNewTurnTeamsSettings();  //cyclic olabiliyor
             SetFirstState();
@@ -153,8 +154,8 @@ namespace Turn
         void ApplyNewTurnTeamsSettings()
         {
             var ActiveTeamType = TurnHelper.TeamsByTurn[TeamStatus.ActiveTeam].Data.TeamType;
-            UIEventbus.OnActiveTeamSet?.Invoke(ActiveTeamType);
-            NetworkEventbus.UserEvents.OnActiveTeamSet?.Invoke(ActiveTeamType);
+            //UIEventbus.OnActiveTeamSet?.Invoke(ActiveTeamType);
+            NetworkEventbus.UserEvents.OnActiveTeamSetBegin?.Invoke(ActiveTeamType);
         }
 
         void SetFirstState()

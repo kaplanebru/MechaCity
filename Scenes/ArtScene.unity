@@ -22473,7 +22473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMultiplayerOn: 1
-  isTestingWithoutCombat: 0
+  isTestingWithoutCombat: 1
   fasterCombat: 0
 --- !u!4 &521987823
 Transform:
@@ -51925,6 +51925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f98599d0852c0fd409e87e14facaadb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  infoText: {fileID: 1594001232}
 --- !u!1 &1190545980
 GameObject:
   m_ObjectHideFlags: 0
@@ -84245,7 +84246,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 30, y: -34}
+  m_AnchoredPosition: {x: 353, y: -34}
   m_SizeDelta: {x: 400, y: 70}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1982669217
@@ -84260,6 +84261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ca09ee3312b70e4882d5a28850e2d1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  infoText: {fileID: 1394026992}
 --- !u!1 &1983862091
 GameObject:
   m_ObjectHideFlags: 0
@@ -86021,6 +86023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa9045b8df195c47a70ae8f93c72ce5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  infoText: {fileID: 0}
 --- !u!1 &2035759579
 GameObject:
   m_ObjectHideFlags: 0

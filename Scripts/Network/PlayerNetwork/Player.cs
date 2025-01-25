@@ -41,7 +41,7 @@ namespace PlayerNetwork
             if (IsOwner)
             {
                 ActiveTeam.OnValueChanged += OnActiveTeamChanged;
-                NetworkEventbus.UserEvents.OnActiveTeamSet += RequestActiveTeamChangeServerRpc;
+                NetworkEventbus.UserEvents.OnActiveTeamSetBegin += RequestActiveTeamChangeServerRpc;
                 NetworkEventbus.UserEvents.OnGameEnds += GameEndServerRpc;
                 NetworkEventbus.UserEvents.OnPersonaSelectedByUser += SetPersonaType;
             }
@@ -144,16 +144,15 @@ namespace PlayerNetwork
         #endregion
 
         #region Activity Status
-
+        
+        //dikkat: team1 ile başlanırsa team change tetiklenmez + team2yi de dinliyorsa ondan gelen klon cyclic mesajı da alır
         [ServerRpc(RequireOwnership = true)]
-        private void
-            RequestActiveTeamChangeServerRpc(
-                TeamType teamType) //dikkat: team1 ile başlanırsa team change tetiklenmez + team2yi de dinliyorsa ondan gelen klon cyclic mesajı da alır
+        private void RequestActiveTeamChangeServerRpc(TeamType teamType)
         {
-            if (!IsOwner)
-            {
-                Debug.Log("not owner");
-            }
+            // if (!IsOwner)
+            // {
+            //     Debug.Log("not owner");
+            // }
 
             //Debug.Log("listens team switch event " + ActiveTeam.Value);
             ActiveTeam.Value = teamType;
@@ -168,6 +167,10 @@ namespace PlayerNetwork
                 ApplyActiveTeamSettings();
             else
                 ApplyPassiveTeamSettings();
+            
+            //if(!IsOwner) return;
+            Debug.Log("set active team ui");
+            NetworkEventbus.UIEvents.OnActiveTeamSet?.Invoke(ActiveTeam.Value);
         }
 
 
@@ -176,6 +179,9 @@ namespace PlayerNetwork
             EnableInput(true);
             NetworkEventbus.UIEvents.OnBPCardsActivationRequest?.Invoke(true);
             NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest?.Invoke(true);
+            
+            
+            
 
             Debug.Log("active team settings applied");
         }
@@ -249,7 +255,7 @@ namespace PlayerNetwork
             if (IsOwner)
             {
                 ActiveTeam.OnValueChanged -= OnActiveTeamChanged;
-                NetworkEventbus.UserEvents.OnActiveTeamSet -= RequestActiveTeamChangeServerRpc;
+                NetworkEventbus.UserEvents.OnActiveTeamSetBegin -= RequestActiveTeamChangeServerRpc;
                 NetworkEventbus.UserEvents.OnGameEnds -= GameEndServerRpc;
                 NetworkEventbus.UserEvents.OnPersonaSelectedByUser -= SetPersonaType;
             }

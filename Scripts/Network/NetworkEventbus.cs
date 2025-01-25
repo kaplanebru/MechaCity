@@ -28,7 +28,7 @@ namespace Network
             public static Action<TeamType> OnGameEnds;
             public static Action<PersonaType> OnPersonaSelectedByUser;
 
-            public static Action<TeamType> OnActiveTeamSet;
+            public static Action<TeamType> OnActiveTeamSetBegin;
         }
         public static class InputEvents //TODO: bu map node'da nasıl handle ediliyordu
         {
@@ -39,6 +39,8 @@ namespace Network
             public static Action<bool> OnTurnButtonsListenerActivationRequest;
             public static Action<bool> OnBPCardsActivationRequest;
             public static Action<string, TeamType> OnPlayerSet;
+
+            public static Action<TeamType> OnActiveTeamSet;
         }
     }
 }

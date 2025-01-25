@@ -1,5 +1,6 @@
 
 using Enums;
+using Network;
 using UnityEngine;
 
 namespace GameUI
@@ -9,7 +10,7 @@ namespace GameUI
         public BaseInfoText popupText;
         private void OnEnable()
         {
-            UIEventbus.OnActiveTeamSet += ShowPopup;
+            NetworkEventbus.UIEvents.OnActiveTeamSet += ShowPopup;
         }
 
         private void ShowPopup(TeamType currentTeamType)
@@ -21,7 +22,7 @@ namespace GameUI
 
         private void OnDisable()
         {
-            UIEventbus.OnActiveTeamSet -= ShowPopup;
+            NetworkEventbus.UIEvents.OnActiveTeamSet -= ShowPopup;
         }
     }
 

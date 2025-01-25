@@ -10,7 +10,7 @@ namespace GameUI
     {
         public override void SetInfoText(string teamName)
         {
-            InfoText.text = teamName;
+            infoText.text = teamName;
         }
     }
 }

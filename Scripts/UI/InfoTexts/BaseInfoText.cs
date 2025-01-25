@@ -9,11 +9,10 @@ namespace GameUI
     {
         
         protected Dictionary<TeamType, string> TeamNamesByType = new();
-        protected TextMeshProUGUI InfoText;
+        public TextMeshProUGUI infoText;
 
         private void OnEnable()
         {
-            InfoText = GetComponentInChildren<TextMeshProUGUI>();
             SubscribeEvents();
         }
 
