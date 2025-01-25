@@ -7,7 +7,7 @@ namespace GameUI
     {
         protected override void SubscribeEvents()
         {
-            NetworkEventbus.UIEvents.OnActiveTeamSet += UpdateInfoText;
+            UIEventbus.OnActiveTeamSet += UpdateInfoText;
         }
 
 
@@ -22,7 +22,7 @@ namespace GameUI
 
         protected override void Unsubscribe()
         {
-            NetworkEventbus.UIEvents.OnActiveTeamSet -= UpdateInfoText;
+            UIEventbus.OnActiveTeamSet -= UpdateInfoText;
         }
     }
 }

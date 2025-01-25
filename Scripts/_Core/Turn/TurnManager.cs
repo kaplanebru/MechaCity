@@ -154,7 +154,7 @@ namespace Turn
         void ApplyNewTurnTeamsSettings()
         {
             var ActiveTeamType = TurnHelper.TeamsByTurn[TeamStatus.ActiveTeam].Data.TeamType;
-            //UIEventbus.OnActiveTeamSet?.Invoke(ActiveTeamType);
+            UIEventbus.OnActiveTeamSet?.Invoke(ActiveTeamType);
             NetworkEventbus.UserEvents.OnActiveTeamSetBegin?.Invoke(ActiveTeamType);
         }
 

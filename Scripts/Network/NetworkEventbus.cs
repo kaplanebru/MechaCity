@@ -40,7 +40,7 @@ namespace Network
             public static Action<bool> OnBPCardsActivationRequest;
             public static Action<string, TeamType> OnPlayerSet;
 
-            public static Action<TeamType> OnActiveTeamSet;
+            //public static Action<TeamType> OnActiveTeamSet;
         }
     }
 }

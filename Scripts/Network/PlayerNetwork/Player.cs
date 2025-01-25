@@ -168,9 +168,8 @@ namespace PlayerNetwork
             else
                 ApplyPassiveTeamSettings();
             
-            //if(!IsOwner) return;
-            Debug.Log("set active team ui");
-            NetworkEventbus.UIEvents.OnActiveTeamSet?.Invoke(ActiveTeam.Value);
+            
+            //NetworkEventbus.UIEvents.OnActiveTeamSet?.Invoke(ActiveTeam.Value);
         }
 
 
