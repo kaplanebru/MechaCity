@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AlienTower
+  m_Name: InsideAlienTower 3
   m_Shader: {fileID: 4800000, guid: e4468eb8a8320f7488ddbb0e591f9fbc, type: 3}
   m_ValidKeywords:
   - _EMISSIVE_SIMPLE
@@ -220,11 +220,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _1st2nd_Shades_Feather: 0.86
-    - _1st_ShadeColor_Feather: 0.402
-    - _1st_ShadeColor_Step: 0.933
-    - _2nd_ShadeColor_Feather: 0.86
-    - _2nd_ShadeColor_Step: 0.726
+    - _1st2nd_Shades_Feather: 0.0001
+    - _1st_ShadeColor_Feather: 0.321
+    - _1st_ShadeColor_Step: 0.881
+    - _2nd_ShadeColor_Feather: 0.0001
+    - _2nd_ShadeColor_Step: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ARSampler_AlphaOn: 0
@@ -252,8 +252,8 @@ Material:
     - _AutoRenderQueue: 1
     - _BaseColorOverridden: 0
     - _BaseColorVisible: 1
-    - _BaseColor_Step: 0.933
-    - _BaseShade_Feather: 0.402
+    - _BaseColor_Step: 0.881
+    - _BaseShade_Feather: 0.321
     - _Base_Speed: 0
     - _BlendMode: 0
     - _BlurLevelMatcap: 0
@@ -405,7 +405,7 @@ Material:
     - _SecondShadeOverridden: 0
     - _SecondShadeVisible: 1
     - _Set_SystemShadowsToBase: 0
-    - _ShadeColor_Step: 0.726
+    - _ShadeColor_Step: 0
     - _Smoothness: 0.5
     - _SmoothnessRemapMax: 1
     - _SmoothnessRemapMin: 0
@@ -491,15 +491,15 @@ Material:
     - _utsVersionY: 10
     - _utsVersionZ: 2
     m_Colors:
-    - _1st_ShadeColor: {r: 0.4720541, g: 0.53445494, b: 0.8018868, a: 1}
-    - _2nd_ShadeColor: {r: 0.3529412, g: 0.42715588, b: 0.49019608, a: 1}
+    - _1st_ShadeColor: {r: 0.41509432, g: 0.21694551, b: 0.2528156, a: 1}
+    - _2nd_ShadeColor: {r: 0.3137255, g: 0.35686275, b: 0.41568628, a: 1}
     - _AngelRingMaskColor: {r: 0, g: 1, b: 0, a: 1}
     - _AngelRing_Color: {r: 1, g: 1, b: 1, a: 1}
     - _Ap_RimLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor: {r: 0.7924528, g: 0.70336646, b: 0.6234959, a: 1}
+    - _BaseColor: {r: 0.4542758, g: 0.41603777, b: 0.46226418, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColorMaskColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.7924528, g: 0.70336646, b: 0.6234958, a: 1}
+    - _Color: {r: 0.45427573, g: 0.41603774, b: 0.46226412, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}

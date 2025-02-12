@@ -492,7 +492,7 @@ Material:
     - _utsVersionZ: 2
     m_Colors:
     - _1st_ShadeColor: {r: 0.49312744, g: 0.43529412, b: 0.5647059, a: 1}
-    - _2nd_ShadeColor: {r: 0.4496084, g: 0.5135525, b: 0.6320754, a: 1}
+    - _2nd_ShadeColor: {r: 0.4950822, g: 0.4509804, b: 0.6313726, a: 1}
     - _AngelRingMaskColor: {r: 0, g: 1, b: 0, a: 1}
     - _AngelRing_Color: {r: 1, g: 1, b: 1, a: 1}
     - _Ap_RimLightColor: {r: 1, g: 1, b: 1, a: 1}
