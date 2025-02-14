@@ -35956,6 +35956,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tower 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1133882496706147859, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2934538511369056237, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
       propertyPath: m_RootOrder
       value: 18
