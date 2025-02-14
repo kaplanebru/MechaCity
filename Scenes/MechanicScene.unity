@@ -18079,10 +18079,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tower 1 (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 5744507020319740103, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
       propertyPath: m_RootOrder
       value: 24
@@ -18125,10 +18121,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7579806058015640631, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
