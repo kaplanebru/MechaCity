@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Leaf
+  m_Name: Leaf 1
   m_Shader: {fileID: 4800000, guid: a472f014eba10b14a902b7ed871289ac, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -75,6 +75,6 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.11808471, g: 0.5000354, b: 0.5849056, a: 1}
+    - _Color: {r: 0.12156863, g: 0.34117648, b: 0.3254902, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
