@@ -35779,13 +35779,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tower 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1133882496706147859, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 1643868762658123270, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.3169017
       objectReference: {fileID: 0}
-    - target: {fileID: 2934538511369056237, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 1643868762658123270, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.4
       objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
       propertyPath: m_RootOrder
@@ -59896,6 +59896,10 @@ PrefabInstance:
     - target: {fileID: 836925315153596545, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
       propertyPath: m_Name
       value: Tower 1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1643868762658123270, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.54
       objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
       propertyPath: m_RootOrder
@@ -101746,6 +101750,10 @@ PrefabInstance:
     - target: {fileID: 836925315153596545, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
       propertyPath: m_Name
       value: Tower 1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1643868762658123270, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9.35
       objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
       propertyPath: m_RootOrder
