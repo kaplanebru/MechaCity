@@ -16,12 +16,13 @@ MonoBehaviour:
   LinkSize: {x: 0.8, y: 0.8, z: 0.8}
   RadiusOffset: 0.45
   Tension: 0.8
-  LinksPoolPrefab: {fileID: 6962783941987750660, guid: 89824a9a8ff77a440ae7e6a474f075bc, type: 3}
+  LinksPoolPrefab: {fileID: 0}
   SpeedMultiplier: 1
   LinkRotationMultiplier: 1
   motionDirection: 0
   SetRadiusByGear: 1
   SetMotionByGear: 1
   IsMoving: 1
+  LinkLagAmount: 0.001
   LinkRotationEffect: 0
   OnTesting: 0

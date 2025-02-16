@@ -23,5 +23,6 @@ MonoBehaviour:
   SetRadiusByGear: 1
   SetMotionByGear: 1
   IsMoving: 1
+  LinkLagAmount: 0.001
   LinkRotationEffect: 0
   OnTesting: 0
