@@ -491,12 +491,12 @@ Material:
     - _utsVersionY: 10
     - _utsVersionZ: 2
     m_Colors:
-    - _1st_ShadeColor: {r: 0.29291552, g: 0.42960185, b: 0.6415094, a: 1}
+    - _1st_ShadeColor: {r: 0.2929155, g: 0.42960182, b: 0.6415094, a: 1}
     - _2nd_ShadeColor: {r: 0.3137255, g: 0.35686275, b: 0.41568628, a: 1}
     - _AngelRingMaskColor: {r: 0, g: 1, b: 0, a: 1}
     - _AngelRing_Color: {r: 1, g: 1, b: 1, a: 1}
     - _Ap_RimLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor: {r: 0.58381987, g: 0.7417765, b: 0.8207547, a: 1}
+    - _BaseColor: {r: 0.58381987, g: 0.74177647, b: 0.8207547, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColorMaskColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.58381987, g: 0.74177647, b: 0.8207547, a: 1}
