@@ -136500,9 +136500,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 721136333078955529, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 836925315153596545, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
       propertyPath: m_Name
       value: Tower 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5543372758348451279, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6095367932178840500, guid: f9bb640878c4e1c40b5f2a90b91b9446, type: 3}
       propertyPath: m_RootOrder
