@@ -2175,10 +2175,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7929f2e86231e8649a5f0bb46b0fd0e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roots:
-  - {fileID: 2424158229490792371}
-  - {fileID: 2368684382563243271}
+  root: {fileID: 0}
   offset: 1
+  modelDirection: -1
+  timingData: {fileID: 0}
 --- !u!1 &354052916598315907
 GameObject:
   m_ObjectHideFlags: 0
@@ -5324,55 +5324,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConstantData: {fileID: 11400000, guid: 24382b7643f9bbb4d826eaf0d7c75384, type: 2}
   Data:
-    UniqID: 0
-    SlotId: 0
-    AvailableHeight: 0
-    _bulletAmountt: 0
-    DamagePower: 0
-    TeamType: 0
-    NeighbourIDs: 
-    IsClickable: 1
-    LockStatus:
-      Locked: 0
-      Limit: 1
-    timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
-    clickHandler: {fileID: 1183604849590895228}
-    SegmentData:
-      MoverData:
-        Top: {fileID: 16387687648852039}
-        Middle: {fileID: 2376249443096567679}
-        TopOffset: 0.5
-        ShakeMagnitude: 0.03
-        TimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
-        CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
-        RiseFallData:
-          ActiveHolder: {fileID: 4634288368227671964}
-          PassiveHolder: {fileID: 4634288368307197951}
-          Light: {fileID: 0}
-          PassiveParts:
-          - {fileID: 6678535424241232063}
-          - {fileID: 8031784240193922467}
-          - {fileID: 6409681217529868635}
-          - {fileID: 3419638950561773545}
-          - {fileID: 4092403680901453473}
-          - {fileID: 111462554085428871}
-          - {fileID: 2923696310501287757}
-          ActiveParts:
-          - {fileID: 458587706314466722}
-          RiseState: 0
-          TargetHeight: 0
-          CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
-      ColorData:
-        TeamData: {fileID: 0}
-        Logo: {fileID: 6072226709376358539}
-        MiddleMeshes:
-        - {fileID: 2328033783533135803}
-        - {fileID: 8810974359279897268}
-        TimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
-      UIData:
-        HeightTexts:
-        - {fileID: 3762396250786755446}
-        CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
+    NumericData:
+      UniqID: 0
+      DamagePower: 0
+    VisualData:
+      IsClickable: 1
+      clickHandler: {fileID: 0}
+      timingData: {fileID: 0}
+      SegmentData:
+        MoverData:
+          Body: {fileID: 0}
+          Top: {fileID: 0}
+          Middle: {fileID: 0}
+          TopOffset: 0
+          ShakeMagnitude: 0.03
+          TimingData: {fileID: 0}
+          CommonData: {fileID: 0}
+          RiseFallData:
+            ActiveHolder: {fileID: 0}
+            PassiveHolder: {fileID: 0}
+            Light: {fileID: 0}
+            PassiveParts: []
+            ActiveParts: []
+            RiseState: 0
+            TargetHeight: 0
+            CommonData: {fileID: 0}
+        ColorData:
+          TeamData: {fileID: 0}
+          Logo: {fileID: 0}
+          MeshCombiners: []
+          MiddleMeshes: []
+          SelectionMeshes:
+            Light: {fileID: 0}
+            Head: []
+          TimingData: {fileID: 0}
+        UIData:
+          HeightTexts: []
+          IDText: {fileID: 0}
+          CommonData: {fileID: 0}
 --- !u!114 &1183604849590895228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9816,6 +9805,7 @@ MonoBehaviour:
   clickableParent: 0
   id: 0
   teamType: 0
+  indicatorScanner: {fileID: 0}
 --- !u!1 &1852314313355286233
 GameObject:
   m_ObjectHideFlags: 0
@@ -47559,11 +47549,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6504840726450541097, guid: b198109290d594146b0504b36b673a9a, type: 3}
   m_PrefabInstance: {fileID: 7314681730919859704}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &4634288368227671964 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2725439668176542308, guid: b198109290d594146b0504b36b673a9a, type: 3}
-  m_PrefabInstance: {fileID: 7314681730919859704}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4634288368307197951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2725439667987567111, guid: b198109290d594146b0504b36b673a9a, type: 3}
@@ -47675,11 +47660,6 @@ PrefabInstance:
 --- !u!4 &7642030928468636123 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1e81d6fa2e43ae04597389dec795afbc, type: 3}
-  m_PrefabInstance: {fileID: 7892360291451049520}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &8810974359279897268 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 1e81d6fa2e43ae04597389dec795afbc, type: 3}
   m_PrefabInstance: {fileID: 7892360291451049520}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8010220996082644208
