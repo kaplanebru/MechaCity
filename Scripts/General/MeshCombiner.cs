@@ -15,29 +15,32 @@ public class MeshCombiner : MonoBehaviour
     public void CombineMeshes(out MeshRenderer newRenderer)
     {
         
-        MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
-
-        // Array to hold combine instances
-        CombineInstance[] combine = new CombineInstance[meshFilters.Length];
-        Matrix4x4 parentTransform = transform.worldToLocalMatrix;
-
-        // Iterate through MeshFilters
-        parentMeshFilter = GetComponent<MeshFilter>();
-        for (int i = 0; i < meshFilters.Length; i++)
-        {
-            if (meshFilters[i] == parentMeshFilter)
-                continue;
-
-            Mesh mesh = meshFilters[i].sharedMesh;
-            if (mesh == null)
-                continue;
-
-            combine[i].mesh = mesh;
-            combine[i].transform = parentTransform * meshFilters[i].transform.localToWorldMatrix;
-            meshFilters[i].gameObject.SetActive(false); // Disable child object
-        }
-
-        AssignCombinedMesh(combine, out newRenderer);
+        // MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
+        //
+        // // Array to hold combine instances
+        // CombineInstance[] combine = new CombineInstance[meshFilters.Length];
+        // Matrix4x4 parentTransform = transform.worldToLocalMatrix;
+        //
+        // // Iterate through MeshFilters
+        // parentMeshFilter = GetComponent<MeshFilter>();
+        // for (int i = 0; i < meshFilters.Length; i++)
+        // {
+        //     if (meshFilters[i] == parentMeshFilter)
+        //         continue;
+        //
+        //     Mesh mesh = meshFilters[i].sharedMesh;
+        //     if (mesh == null)
+        //         continue;
+        //
+        //     combine[i].mesh = mesh;
+        //     combine[i].transform = parentTransform * meshFilters[i].transform.localToWorldMatrix;
+        //     meshFilters[i].gameObject.SetActive(false); // Disable child object
+        // }
+        //
+        // AssignCombinedMesh(combine, out newRenderer);
+        
+        //sonradan:
+       newRenderer =  GetComponentInChildren<MeshRenderer>();
 
     }
     private void AssignCombinedMesh(CombineInstance[] combine,  out MeshRenderer newRenderer)
