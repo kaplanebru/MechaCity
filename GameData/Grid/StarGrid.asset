@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c021ad7314484229ba529fb23ede7dbb, type: 3}
+  m_Name: StarGrid
+  m_EditorClassIdentifier: 
+  slots:
+  - Id: 0
+    TargetSlots: 0100000002000000
+    ReversedTargetSlots: 05000000
+    Neighbours: 010000000200000005000000
+  - Id: 1
+    TargetSlots: 04000000
+    ReversedTargetSlots: 00000000
+    Neighbours: 0000000002000000
+  - Id: 2
+    TargetSlots: 03000000
+    ReversedTargetSlots: 0100000000000000
+    Neighbours: 0100000003000000
+  - Id: 3
+    TargetSlots: 0400000005000000
+    ReversedTargetSlots: 02000000
+    Neighbours: 0200000004000000
+  - Id: 4
+    TargetSlots: 05000000
+    ReversedTargetSlots: 01000000
+    Neighbours: 0300000005000000
+  - Id: 5
+    TargetSlots: 00000000
+    ReversedTargetSlots: 0400000003000000
+    Neighbours: 040000000300000000000000
+  interruptions:
+  - id: 0
+    Interrupters: 0300000005000000
+    Interrupted: 4
+    Offset: {x: -5.5, y: 0, z: 0}
+  - id: 1
+    Interrupters: 0200000005000000
+    Interrupted: 4
+    Offset: {x: 2, y: 0, z: 0}
+  - id: 2
+    Interrupters: 0000000002000000
+    Interrupted: 1
+    Offset: {x: -4, y: 0, z: 1}
+  - id: 3
+    Interrupters: 0000000003000000
+    Interrupted: 1
+    Offset: {x: -2, y: 0, z: 0}

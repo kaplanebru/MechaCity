@@ -1,0 +1,18 @@
+{
+    "name": "Scripts.UX",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c64b13ec877346c48a1158d0e05eb30e",
+        "GUID:8bb426bd7b6f04b41bd053132e8170af",
+        "GUID:388216c1bf30cd04589fa8ea3330e450"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

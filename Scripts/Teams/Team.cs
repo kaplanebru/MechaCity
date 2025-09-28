@@ -1,50 +1,57 @@
+using System.Linq;
+using Actor;
 using Towers;
 using UnityEngine;
-
+using Random = UnityEngine.Random;
 
 
 namespace Teams
 {
-    public class Team : MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : TeamData
+    public class Team //: MonoBehaviour //<TPlayerData>: MonoBehaviour where TPlayerData : TeamData
     {
         public TeamData Data;
-        
 
-        public void Initialize()
+        public Team(TeamData data)
         {
-            GetTeamTowers();
-            SetGrid();
+            Data = data;
         }
-
-        void GetTeamTowers()
+        
+        public void DistributeTeamActors()
         {
-            Data.Towers.Clear(); //TODO: team so olmayabilir
-            
-            AllTowers.Towers.ForEach(t =>
+            Data.Actors.Clear();
+
+            foreach (var actor in ActorDB.Registry.Values)
             {
-                if (t.ConstantData.StartTeam == Data.TeamType)
+                if (actor.TeamType == Data.TeamType)
                 {
-                    Data.Towers.Add(t.Data);
-                    t.Setup(Data.TeamTowerData);
+                    Data.Actors.Add(actor);
                 }
-            });
+            }
         }
         
+        public void TakeActorFromRival(ActorData actor)
+        {
+            Data.Actors.Add(actor);
+            actor.TeamType = Data.TeamType;
+
+            foreach (var tower in actor.Towers)
+            {
+               tower.VisualData.SetTeamVisuals(Data.teamColorData);
+            }
+
+            foreach (var data in actor.TowerNumericDatas)
+            {
+                data.TeamType = actor.TeamType;
+            }
+        }
+
+        public void RemoveTower(ActorData actor)
+        {
+            Data.Actors.Remove(actor);
+        }
         
-        void SetGrid()
-        {
-            Data.Grid.Initialize(Data.Towers);
-        }
+        // todo: separate
 
-        public void TakeTowerFromRival(TowerData tower)
-        {
-            Data.Towers.Add(tower);
-            AllTowers.GetTower(tower.UniqID).SetTeam(Data.TeamTowerData);
-        }
-
-        public void RemoveTower(TowerData tower)
-        {
-            Data.Towers.Remove(tower);
-        }
+       
     }
 }

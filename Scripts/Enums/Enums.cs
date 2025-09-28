@@ -3,27 +3,87 @@ namespace Enums
     public enum TeamType
     {
         Team1,
-        Team2
+        Team2,
+        None
     }
 
-    public enum TurnState
+    public enum TeamStatus
     {
-        TurnStarted,
-        TurnEnded
+        ActiveTeam,
+        PassiveTeam,
     }
 
+    namespace Selections
+    {
+        public enum SelectionType
+        {
+            PlayerOnlyStd,
+            PlayerOnlyBp,
+            RivalOnlyBp,
+            SinglePlayerOnlyBP,
+            SingleRivalOnlyBP,
+            All, 
+            None
+        }
+        public enum BlockType
+        {
+            BlockCurrent,
+            BlockRival,
+            None
+        }
+
+        public enum ColorState
+        {
+            Default,
+            Selection,
+            Blueprint,
+            Freeze
+        }
+
+        public enum ColorDistrict
+        {
+            OuterShell,
+            InnerShell,
+            Inside
+        }
+    }
+
+    namespace Combat
+    {
+        public enum LiaisonStatus
+        {
+            None,
+            OnStart,
+            OnEnd,
+            OnBoth
+        }
+    }
+
+    public enum ActorType
+    {
+        Standard,
+        MultiTower,
+    }
+
+    public enum ActorUnit
+    {
+        Relation,
+        Health,
+    }
     public enum TurnAction
     {
         Started,
         Completed
     }
 
-    public enum TurnHandlerType
+    public enum TurnStateType
     {
         Selection,
-        TowerGroup,
+        Link,
+        Exit,
         Combat,
-        Match
+        Intruder
+     
     }
 
     public enum GameEndState
@@ -32,6 +92,50 @@ namespace Enums
         Win,
         Lose
     }
+
+    public enum BpType
+    {
+        Reverse,
+        Freeze,
+        Double,
+        SelectionIncrement,
+        DoubleSelf,
+        Shield,
+        BreakShield,
+        MultiShot,
+        Disarmament,
+        Earthquake,
+        None
+    }
+
+    public enum PersonaType
+    {
+        Jester,
+        Fighter,
+        Defender,
+        Common
+    }
+
+    public enum IndicatorState
+    {
+        Friendly,
+        Enemy
+    }
+
+    public enum VisualDataType
+    {
+        Shield,
+        Attack,
+        Disarm
+    }
+
+    public enum PopupType
+    {
+        NoLink
+    }
+   
+
+   
 
     
     

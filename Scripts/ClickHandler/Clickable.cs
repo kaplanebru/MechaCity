@@ -1,31 +1,40 @@
+using System;
 using Enums;
-
+using UnityEngine;
 
 
 namespace Clicks
 {
     public class Clickable : BaseClickable<int> //uniqID
     {
-        public int id;
+        public uint id;
         public TeamType teamType;
-   
+        private Collider _collider;
+        public IndicatorScanner indicatorScanner;
 
-        protected override void Setup()
+        private void Awake()
         {
-            // clickableParent = GetComponentInParent<Tower>();
-            // Eventbus.TeamEvents.OnTowerTeamSet += SetTeam;
+            _collider = GetComponent<Collider>();
+            indicatorScanner = GetComponent<IndicatorScanner>();
+            // _collider.enabled = false;
+            
         }
 
-        // private void SetTeam(TeamType _teamType, Tower tower) //id de karşılaştırılabilir
-        // {
-        //     if(clickableParent !=  tower) return; //diğer teamdekiler etkilenir
-        //     teamType = _teamType;
-        // }
-    
-        public override void UnsubscribeFromEvent()
+        public void SetID(uint Id)
         {
-            //Eventbus.TeamEvents.OnTowerTeamSet -= SetTeam;
+            id = Id;
+            SetIndicator();
         }
+        
+        public void SetIndicator()
+        {
+            indicatorScanner.Setup(id);
+        }
+
+       
+        protected override void Setup() {}
+
+        public override void UnsubscribeFromEvent() {}
     }
 
 }

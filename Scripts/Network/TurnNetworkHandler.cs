@@ -1,80 +1,113 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Enums;
 using Unity.Netcode;
 using PlayerNetwork;
+using Testing;
+using UnityEngine;
 
 
 namespace Network
 {
+    public class TurnStateData
+    {
+        public TurnStateType StateType;
+        public BpType BpType;
+
+        public TurnStateData(TurnStateType stateType, BpType bpType)
+        {
+            StateType = stateType;
+            BpType = bpType;
+        }
+
+        public TurnStateData(TurnStateType stateType)
+        {
+            StateType = stateType;
+        }
+    }
     public class TurnNetworkHandler : NetworkBehaviour
     {
-        public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
-        public TeamType ownerTeamType;
+        //public NetworkVariable<TurnStateType> turnStateType = new(TurnStateType.Exit);
+        //_player = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>();
 
 
         public override void OnNetworkSpawn()
         {
-            turnHandlerType.OnValueChanged += CompleteActionSetup; //owner ve clone'u değişir
+            //turnStateType.OnValueChanged += ChangeStateRequestByServer; //owner ve clone'u değişir
             
             if (IsOwner)
             {
-                NetworkEventbus.TurnEvents.OnTurnEnding += RequestNewTurnServerRpc;
-                NetworkEventbus.TriggerEvents.OnCompleteActionRequestByUser += CompleteActionSetupServerRpc;
-                NetworkEventbus.TurnEvents.OnTurnStarted += TurnButtonsSetup;  //not: player 1'e mi bakıyor 2 pcde de
+                NetworkEventbus.UserEvents.OnStateChangeRequestByUser += StateChangeBeginServerRpc;
+                NetworkEventbus.UserEvents.OnSetCurrentBpRequestByUser += ProcessBpSelectionServerRpc;
+                NetworkEventbus.UserEvents.OnBpExecutionRequestByUser += BpExecutionBeginServerRpc;
             }
         }
+
+        //BP EXE
+        [ServerRpc]
+        private void BpExecutionBeginServerRpc(uint[] selectedItems)
+        {
+            BpExecutionBeginClientRpc(selectedItems);
+        }
+        
+        [ClientRpc]
+        private void BpExecutionBeginClientRpc(uint[] selectedItems)
+        {
+            NetworkEventbus.ServerEvents.OnBpExecutionRequestByServer?.Invoke(selectedItems);
+        }
+        //BP EXE
         
 
-        private void Start()
+        [ServerRpc]
+        private void ProcessBpSelectionServerRpc(BpType bpType, int level)
         {
-            if(IsOwner)
-                ownerTeamType = NetworkManager.LocalClient.PlayerObject.GetComponent<Player>().Data.TeamType;
+            ProcessBpSelectionClientRpc(bpType, level);
         }
 
-        void TurnButtonsSetup(TeamType currentTeamType)
+        [ClientRpc]
+        void ProcessBpSelectionClientRpc(BpType bpType, int level)
         {
-            //print("owner team type: " + ownerTeamType + " currentTeamType: " + currentTeamType);
-            if (currentTeamType == ownerTeamType)
-                NetworkEventbus.RequestEvents.OnTurnButtonsShiftRequest?.Invoke();
+           // print("owner");  //2 ownera da 1 kez gidiyor
+            NetworkEventbus.ServerEvents.OnBpSelectionByClientRpc?.Invoke(bpType, level);
+           
         }
 
 
         #region Complete Turn Handle
 
         [ServerRpc]
-        void CompleteActionSetupServerRpc(TurnHandlerType lastType)
+        void StateChangeBeginServerRpc(TurnStateType nextType) 
         {
-            int nextType = ((int) lastType + 1) % Enum.GetValues(typeof(TurnHandlerType)).Length;
-            turnHandlerType.Value = (TurnHandlerType) nextType;
+            StateChangeBeginClientRpc(nextType);
+            //turnStateType.Value = nextType;
         }
 
-        [ServerRpc]
-        void RequestNewTurnServerRpc()
+        [ClientRpc]
+        void StateChangeBeginClientRpc(TurnStateType nextType)
         {
-            turnHandlerType.Value = TurnHandlerType.Selection;
+            NetworkEventbus.ServerEvents.OnStateChangeRequestByClientRpc?.Invoke(nextType);
         }
 
-        private void CompleteActionSetup(TurnHandlerType previousvalue, TurnHandlerType newvalue)
-        {
-            //print("complete action : " + newvalue);
-
-            if (newvalue != TurnHandlerType.Selection)
-                NetworkEventbus.RequestEvents.OnCompleteActionRequest?.Invoke();
-            else
-                NetworkEventbus.RequestEvents.OnNewTurnRequest?.Invoke();
-        }
+        // private void ChangeStateRequestByServer(TurnStateType previousvalue, TurnStateType newvalue)
+        // {
+        //     Debug.Log("old newtork value: " + turnStateType.Value + " new network value: " + nextType);
+        //     NetworkEventbus.ServerEvents.OnStateChangeRequestByServer?.Invoke(newvalue);
+        //     Debug.Log("new state by system: " + newvalue); //test: 2 clientta da kaç kez çağrıldığına bak: on value changed'in ownerda olmayışını kontrol etmek amaç
+        // }
 
         #endregion
 
 
         public override void OnNetworkDespawn()
         {
-            turnHandlerType.OnValueChanged -= CompleteActionSetup;
+            //turnStateType.OnValueChanged -= ChangeStateRequestByServer;
             if (IsOwner)
             {
-                NetworkEventbus.TurnEvents.OnTurnEnding -= RequestNewTurnServerRpc;
-                NetworkEventbus.TriggerEvents.OnCompleteActionRequestByUser -= CompleteActionSetupServerRpc;
-                NetworkEventbus.TurnEvents.OnTurnStarted -= TurnButtonsSetup;
+                NetworkEventbus.UserEvents.OnStateChangeRequestByUser -= StateChangeBeginServerRpc;
+                NetworkEventbus.UserEvents.OnBpExecutionRequestByUser -= BpExecutionBeginServerRpc;
+                NetworkEventbus.UserEvents.OnSetCurrentBpRequestByUser -= ProcessBpSelectionServerRpc;
             }
         }
     }

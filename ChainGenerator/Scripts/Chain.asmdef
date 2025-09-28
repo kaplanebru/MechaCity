@@ -1,0 +1,18 @@
+{
+    "name": "Chain",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b18e4d249f4d12844ae2fdcd52fda70a",
+        "GUID:a21a114c0fb41cc459b8074d67a393b5",
+        "GUID:fc028956e2236734ab8e2531e3359589"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

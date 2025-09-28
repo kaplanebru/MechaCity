@@ -1,0 +1,71 @@
+using System;
+using Towers;
+using UnityEngine;
+
+namespace Actor
+{
+    public class HealthUnit : ActorUnit
+    {
+        public HealthUnit(ActorDB db) : base(db) {}
+        public override void Subscribe()
+        {
+            Eventbus.HealthEvents.OnShoot += ApplyDamage;
+            Eventbus.CombatEvents.OnTeamSwitched += ResetHealth;
+        }
+        
+       
+        
+        void ApplyDamage(uint actorID, int damage, int pairID)
+        {
+            var actor = ActorDB.Registry[actorID]; //eski bug: burda double'a denk gelirse!! double ID girilmiyor çünkü shoot towerlarla ilgili. First towerı shoor et diyebiliriz
+            var health = actor.Health - damage;
+            
+            SetHealth(actor, health);
+            
+            if (IsDead(actorID, pairID)) return;
+
+            
+            Eventbus.CombatEvents.OnCombatCompleteRequest?.Invoke(pairID);
+        }
+
+        private bool IsDead(uint actorID, int pairID)
+        {
+            if (ActorDB.Registry[actorID].Health <= 0)
+            {
+                DeathOperator.Instance.HandleDeath(actorID, 
+                    () => Eventbus.CombatEvents.OnActorKilled?.Invoke(actorID), 
+                    pairID);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public void ResetHealth(uint actorID)
+        {
+            var actor = ActorDB.Registry[actorID];
+            actor.Health = actor.InitialHealth;
+            
+            Eventbus.HealthEvents.OnHealthChange?.Invoke(actorID);
+        }
+        
+        public void SetHealth(ActorData actor, int health, bool isInitial = false)
+        {
+            if (isInitial)
+                actor.InitialHealth = health;
+            actor.Health = health;
+            
+            Eventbus.HealthEvents.OnHealthChange?.Invoke(actor.ID);
+        }
+        
+        
+        public override void Unsubscribe()
+        {
+            Eventbus.HealthEvents.OnShoot -= ApplyDamage;
+            Eventbus.CombatEvents.OnTeamSwitched -= ResetHealth;
+        }
+        
+       
+    }
+}

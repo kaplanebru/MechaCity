@@ -15,14 +15,61 @@ MonoBehaviour:
   Name: Player 1
   TeamType: 0
   Player: {fileID: 0}
-  TowerIds: 000000000100000002000000
-  Grid:
-    Slots:
-    - Id: 0
-      TowerID: 0
-    - Id: 1
-      TowerID: 1
-    - Id: 2
-      TowerID: 2
-  towerDatas: {fileID: 11400000, guid: 59b44fa1b60a2e24fb78ab3cfc8fef0c, type: 2}
-  TeamTowerData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}
+  Towers:
+  - UniqID: 1
+    SlotId: 0
+    AvailableHeight: 1
+    _bulletAmountt: 1
+    DamagePower: 1
+    TeamType: 1
+    NeighbourIDs: 0000000002000000
+    IsClickable: 1
+    LockStatus:
+      Locked: 0
+      Limit: 1
+    timingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
+    clickHandler: {fileID: 0}
+    SegmentData:
+      MoverData:
+        Body: {fileID: 0}
+        Top: {fileID: 0}
+        Middle: {fileID: 0}
+        TopOffset: 0.5
+        ShakeMagnitude: 0.03
+        TimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
+        CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
+        RiseFallData:
+          ActiveHolder: {fileID: 0}
+          PassiveHolder: {fileID: 0}
+          Light: {fileID: 0}
+          PassiveParts:
+          - {fileID: 0}
+          - {fileID: 0}
+          - {fileID: 0}
+          - {fileID: 0}
+          - {fileID: 0}
+          ActiveParts:
+          - {fileID: 0}
+          RiseState: 0
+          TargetHeight: 0
+          CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
+      ColorData:
+        TeamData: {fileID: 0}
+        Logo: {fileID: 0}
+        MeshCombiners:
+        - {fileID: 0}
+        - {fileID: 0}
+        - {fileID: 0}
+        - {fileID: 0}
+        - {fileID: 0}
+        MiddleMeshes:
+        - {fileID: 0}
+        - {fileID: 0}
+        - {fileID: 0}
+        TimingData: {fileID: 11400000, guid: 59cced80baa0a134aa2b3dc68d85c2d8, type: 2}
+      UIData:
+        HeightTexts:
+        - {fileID: 0}
+        IDText: {fileID: 0}
+        CommonData: {fileID: 11400000, guid: 6ca3e2b52dc1e4a4e8831017070dbb88, type: 2}
+  teamColorData: {fileID: 11400000, guid: 54f0bd010bdd40f4a94b25987cff3d8b, type: 2}

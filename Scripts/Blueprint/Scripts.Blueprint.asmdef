@@ -1,0 +1,24 @@
+{
+    "name": "Scripts.Blueprint",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6546d7765b4165b40850b3667f981c26",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:8bb426bd7b6f04b41bd053132e8170af",
+        "GUID:3cbaaff15ce509c468e969be4aea5e79",
+        "GUID:c64b13ec877346c48a1158d0e05eb30e",
+        "GUID:4cd07b7a2e0f9e140949e2c783e228fa",
+        "GUID:fc028956e2236734ab8e2531e3359589",
+        "GUID:d76453737f7f5104a914332ccaf1ca6a",
+        "GUID:e121731687a06dd4c990565cd339e799"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

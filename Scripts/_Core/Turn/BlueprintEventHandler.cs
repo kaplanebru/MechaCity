@@ -1,0 +1,44 @@
+using Turn;
+using UnityEngine;
+
+public class BlueprintEventHandler
+{
+    
+    public BlueprintEventHandler()
+    {
+       //BUG: 2 KEZ YARATILIYOR
+    }
+    
+    public void SubscribeToBlueprintEvents()
+    {
+        BpEventbus.ActionEvents.OnReverseActionTriggered += PublishReverseOrderAction;
+        BpEventbus.ActionEvents.OnSelectionIncrementTriggered += PublishSelectionIncrementAction;
+        BpEventbus.ActionEvents.OnRestoreSelectionAmount += PublishSelectionRestoration;
+
+    }
+
+    void PublishReverseOrderAction()
+    {
+        Eventbus.ActorEvents.OnReverseGrid?.Invoke();
+    }
+
+    void PublishSelectionIncrementAction()
+    {
+        
+        BpEventbus.SubscriberEvents.OnSelectionIncrease?.Invoke();
+    }
+
+    void PublishSelectionRestoration()
+    {
+        //Debug.Log("publish restore");
+        BpEventbus.SubscriberEvents.OnSelectionRestoration?.Invoke();
+    }
+    
+    public void UnsubscribeFromBlueprintEvents()
+    {
+        BpEventbus.ActionEvents.OnReverseActionTriggered -= PublishReverseOrderAction;
+        BpEventbus.ActionEvents.OnSelectionIncrementTriggered -= PublishSelectionIncrementAction;
+        BpEventbus.ActionEvents.OnRestoreSelectionAmount -= PublishSelectionRestoration;
+
+    }
+}

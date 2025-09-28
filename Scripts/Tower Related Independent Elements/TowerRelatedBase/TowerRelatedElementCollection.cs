@@ -1,0 +1,39 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Object = UnityEngine.Object;
+
+public abstract class TowerRelatedElementCollection<TRelatedElement> : MonoBehaviour where TRelatedElement : ITowerRelatedElement
+{
+    protected Dictionary<int, TRelatedElement> Collection { get; set; } = new();
+
+    private void OnEnable()
+    {
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet += RegisterItems;
+        Subscribe();
+    }
+
+    public abstract void Subscribe();
+
+    public abstract void Initialize();
+
+    private void RegisterItems()
+    {
+        var items = GetComponentsInChildren<TRelatedElement>();
+        foreach (var item in items)
+        {
+            Collection.Add(item.Id, item);
+        }
+        Initialize();
+    }
+
+
+    public abstract void Unsubscribe();
+
+    private void OnDisable()
+    {
+        GeneralEventbus.InitializerEvents.OnTowerRelatedIDsSet -= RegisterItems;
+        Unsubscribe();
+    }
+}

@@ -1,159 +1,252 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using DataModels;
 using Enums;
+using Enums.Selections;
 using Network;
-using Unity.Netcode;
 using UnityEngine;
 using Teams;
 using GameUI;
+using Testing;
 
 
 namespace Turn
 {
     public class TurnManager : MonoBehaviour ////NetworkBehaviour
     {
-        public NetworkVariable<TurnHandlerType> turnHandlerType = new(TurnHandlerType.Selection);
-        BaseTurnHandler[] turnHandlers;
-        Dictionary<string, Team> turnTeams;
+        //public static int TurnTracker => _turnTracker; //no setter
+        public CombatTimingData combatTimingData;
 
+        //private static int _turnTracker = 0;
 
-        public TeamType currentTeamType = TeamType.Team1;
+        private BaseTurnState currentState;
+        private BaseTurnState previousState;
 
-        private BaseTurnHandler currentTurnHandler;
+        internal TurnStateHolder StateHolder = new();
+        internal BlueprintEventHandler BpEventHandler = new();
+        internal CombatPairController PairController = new();
+        internal TurnHelper TurnHelper = new();
+        private CombatOperator combatOperator = new();
+        private TeamsController teamsController = new();
 
+        private bool firstTurn = true;
+
+        public void SubscribeToEvents()
+        {
+            BpEventHandler.SubscribeToBlueprintEvents();
+            StateHolder.Setup();
+            combatOperator.Subscribe();
+            teamsController.Subscribe();
+
+            Eventbus.CombatEvents.OnPairsSet += SendCombatPairs;
+            TeamEvents.OnTeamsSet += SetTurnTeams;
+            TeamEvents.OnTurnTeamDemand += SendTeam;
+            NetworkEventbus.OnAllClientsSet += FirstTurn;
+            NetworkEventbus.ServerEvents.OnStateChangeRequestByClientRpc += ChangeStateBySystem;
+
+            Eventbus.CombatEvents.OnCombatTerminated += EndTurn;
+            UIEventbus.OnApplyPossibility +=
+                HighlightButtonRequest; //todo: sadece state'i tutan bir kod olabilir, state'e göre action alan
+            UIEventbus.OnButtonClicked += StateEndByUser;
+
+            BpEventbus.StateEvents.OnDirectStateChangeFromIntruder += GetPreviousState;
+            BpEventbus.StateEvents.StateChangeRequestToIntruder += SendStateChangeRequest;
+            PairController.Subscribe();
+            TurnHelper.Subscribe();
+        }
+
+        public void UnsubscribeFromEvents()
+        {
+            BpEventHandler.UnsubscribeFromBlueprintEvents();
+            StateHolder.UnsubscribeFromConstantEvents();
+            combatOperator.Unsubscribe();
+            teamsController.Unsubscribe();
+
+            Eventbus.CombatEvents.OnPairsSet -= SendCombatPairs;
+            TeamEvents.OnTeamsSet -= SetTurnTeams;
+            TeamEvents.OnTurnTeamDemand -= SendTeam;
+
+            NetworkEventbus.OnAllClientsSet -= FirstTurn;
+            NetworkEventbus.ServerEvents.OnStateChangeRequestByClientRpc -= ChangeStateBySystem;
+
+            Eventbus.CombatEvents.OnCombatTerminated -= EndTurn; //TODO: check
+            UIEventbus.OnApplyPossibility -= HighlightButtonRequest;
+            UIEventbus.OnButtonClicked -= StateEndByUser;
+
+            BpEventbus.StateEvents.OnDirectStateChangeFromIntruder -= GetPreviousState;
+            BpEventbus.StateEvents.StateChangeRequestToIntruder -= SendStateChangeRequest;
+            PairController.Unsubscribe();
+            TurnHelper.Unsubscribe();
+        }
 
         private void OnEnable()
         {
-            Eventbus.TeamEvents.OnTeamsSet += SetTurnTeams;
-            
-            NetworkEventbus.OnAllClientsSet += FirstTurn;
-            NetworkEventbus.RequestEvents.OnCompleteActionRequest += CompleteActionByUser;
-            NetworkEventbus.RequestEvents.OnNewTurnRequest += NewTurn;
+            SubscribeToEvents();
 
-            turnHandlers = GetComponentsInChildren<BaseTurnHandler>(true).ToArray();
-            DisableAllTurnHandlers();
+            combatOperator.SetElements(combatTimingData, PairController);
+        }
+
+        internal void HighlightButtonRequest(bool enable)
+        {
+            UIEventbus.OnHighlightRequest?.Invoke(enable);
+        }
+
+        internal void SendCombatPairs(bool isReversed)
+        {
+            Eventbus.CombatEvents.OnSendingCombatPairs?.Invoke(isReversed);
+        }
+
+        internal Team SendTeam(TeamStatus teamStatus)
+        {
+            return TurnHelper.TeamsByTurn[teamStatus]; //TeamState.CurrentTeam
         }
 
         private void Initialize()
         {
-            UIEventbus.TurnEvents.OnInitialize?.Invoke();
+            SendCombatPairs(false); //false todo, hep aynı yönde başlamasın
+
+            StateHolder.RegisterStates();
+            StateHolder.SubscribeToConstantEvents();
+
+            ((ExitState) StateHolder.GetStateByType(TurnStateType.Exit)).SetCombatOperator(combatOperator);
+
+            if (MultiplayerSetter.FasterCombat)
+                FastenTurn();
+
+            Eventbus.TowerEvents.OnTurnBegin?.Invoke(); //FIRST ACT
         }
 
-
-        void SetTurnTeams(Team[] teams)
+        internal void SetTurnTeams(Team[] teams)
         {
-            turnTeams = new Dictionary<string, Team>()
+            TurnHelper.TeamsByTurn = new Dictionary<TeamStatus, Team>()
             {
-                {"currentTeam", teams[0]},
-                {"rivalTeam", teams[1]},
+                {TeamStatus.ActiveTeam, teams[0]},
+                {TeamStatus.PassiveTeam, teams[1]},
             };
         }
 
-        void DisableAllTurnHandlers()
+        internal void FirstTurn(params object[] args)
         {
-            foreach (var turnHandler in turnHandlers)
-            {
-                turnHandler.enabled = false;
-            }
+            Invoke(nameof(FirstTurnWithDelay), 1); //temporary
         }
 
-
-        void FirstTurn(params object[] args)
+        void FirstTurnWithDelay()
         {
             Initialize();
-            SetFirstCombatElements();
-            StartCoroutine(nameof(TurnActionRoutine));
+            ((SelectionState) StateHolder.GetStateByType(TurnStateType.Selection)).ClearSelector(); //todo: temp
+
+            NewTurn();
+            firstTurn = false;
         }
 
-        void SetFirstCombatElements()
+        void NewTurn() 
         {
-            var combatHandler = turnHandlers.FirstOrDefault(i => i as CombatHandler != null) as CombatHandler;
-            combatHandler.enabled = true;
+            ApplyNewTurnTeamsSettings();  //cyclic olabiliyor dikkat
+            SetFirstState();
+
+            //SelectionReferences.Instance.GetSelector(SelectionType.PlayerOnlyStd).StartWithNewTowers();
+            ((SelectionState) StateHolder.GetStateByType(TurnStateType.Selection)).ResetSelector();
+        }
+
+        void ApplyNewTurnTeamsSettings()
+        {
+            var activeTeamType = TurnHelper.TeamsByTurn[TeamStatus.ActiveTeam].Data.TeamType;
             
-            foreach (var tower in turnTeams["currentTeam"].Data.Towers)
-            {
-                combatHandler.CreateCombatPairByTower(tower);
-                var matchHelper = (MatchHelper) combatHandler.TurnHelpers[0];
-                matchHelper.SetGrids(turnTeams.Values.ToArray());
-            }
-            combatHandler.CompleteAction();
-        }
-
-        IEnumerator TurnActionRoutine()
-        {
-            NetworkEventbus.TurnEvents.OnTurnStarted?.Invoke(currentTeamType);
+            if(activeTeamType == TeamType.Team1)
+                TurnTracker.IncreaseTracker();
             
-            for (var i = 0; i < turnHandlers.Length; i++)
+            UIEventbus.OnActiveTeamSet?.Invoke(activeTeamType);
+            NetworkEventbus.UserEvents.OnActiveTeamSetBegin?.Invoke(activeTeamType);
+        }
+
+        void SetFirstState()
+        {
+            if (firstTurn)
             {
-                currentTurnHandler = turnHandlers[i];
-                currentTurnHandler.enabled = true;
-                currentTurnHandler.SetTeams(turnTeams);
-
-                GetIncomingData(i);
-                currentTurnHandler.Setup();
-
-                yield return new WaitUntil(() => currentTurnHandler.turnAction == TurnAction.Completed);
+                SetNewState(StateHolder.GetStateByType(TurnStateType.Selection));
+                UIEventbus.OnStateShift?.Invoke(TurnStateType.Selection); //todo: burdaki buton rivalda da çıkabilir, fix
             }
-
-            if (!GameEnding())
-                NetworkEventbus.TurnEvents.OnTurnEnding?.Invoke();
+            else
+                SendStateChangeRequest(TurnStateType.Selection);
         }
 
-        void GetIncomingData(int turnIndex)
+        internal void SendStateChangeRequest(TurnStateType type)
         {
-            if (turnIndex <= 0) return;
+            NetworkEventbus.UserEvents.OnStateChangeRequestByUser?.Invoke(type);
 
-            var transferData = ((ITurnActionHandler<BaseTurnTransferData>) turnHandlers[turnIndex - 1]).TransferData;
-            currentTurnHandler.ProcessIncomingData(transferData);
+            if (type != TurnStateType.Intruder)
+                UIEventbus.OnStateShift?.Invoke(type);
         }
 
-        void NewTurn()
+        internal void StateEndByUser()
         {
-            StopCoroutine(nameof(TurnActionRoutine));
-            SwitchTeams();
-            StartCoroutine(nameof(TurnActionRoutine));
-        }
-
-        void CompleteActionByUser()
-        {
-            currentTurnHandler.CompleteAction();
-        }
-
-        void SwitchTeams()
-        {
-            currentTeamType = turnTeams["rivalTeam"].Data.TeamType;
-            (turnTeams["currentTeam"], turnTeams["rivalTeam"]) = (turnTeams["rivalTeam"], turnTeams["currentTeam"]);
-
-            UIEventbus.OnTeamSwitch?.Invoke(currentTeamType);
-
-            // var temp = currentTeam;
-            // currentTeam = rivalTeam;
-            // rivalTeam = temp;
-        }
-
-        bool GameEnding()
-        {
-            foreach (var team in turnTeams)
+            if (currentState.StateType == TurnStateType.Intruder) 
             {
-                if (team.Value.Data.Towers.Count < 2 || team.Value.Data.Towers.All(t => t.Health == 0))
-                {
-                    NetworkEventbus.TriggerEvents.OnGameEnds?.Invoke(team.Value.Data.TeamType);
-                    print("game ends");
-                    return true;
-                }
+                BpEventbus.StateEvents.OnIntruderExecutionAttempt?.Invoke();
+                GetPreviousState();
             }
+            else
+            {
+                GetNextStateAtTheEnd();
+            }
+        }
 
-            return false;
+        public void GetNextStateAtTheEnd()
+        {
+            var nextType = StateHolder.States[TurnHelper.GetNextStateId(currentState.StateId)].StateType;
+            SendStateChangeRequest(nextType); //todo: bunda döngü var mı kontrol et.
+        }
+
+        internal void GetPreviousState(bool isDirect = false)
+        {
+            var previousType = previousState?.StateType ?? TurnStateType.Exit; //todo: check
+            if (isDirect)
+                ChangeStateBySystem(previousType);
+            else
+                SendStateChangeRequest(previousType);
+        }
+
+        public void ChangeStateBySystem(TurnStateType newType)
+        {
+            currentState?.CompleteState();
+            previousState = currentState;
+            SetNewState(StateHolder.GetStateByType(newType));
+        }
+
+        public void SetNewState(BaseTurnState newState)
+        {
+           // Debug.Log("new state: " + newState);
+            currentState = newState;
+            currentState.SetTeams(TurnHelper.TeamsByTurn);
+            currentState.EnterState();
+            TurnHelper.GetPreviousStateData(previousState, currentState);
+        }
+
+        public void EndTurn()
+        {
+            if (TurnHelper.GameEnding()) return;
+
+            TurnStatusEvents.OnTurnEnding?.Invoke();
+            TurnHelper.SwitchTeams();
+            NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest?.Invoke(true);
+            
+            NewTurn();
+
+            foreach (var state in StateHolder.States)
+            {
+                var turnData = (ITransferDataHolder<BaseTurnTransferData>) state;
+                turnData.TransferData.ResetPreviousTurnData();
+            }
+        }
+
+        void FastenTurn()
+        {
+            combatTimingData.AccelerateValues();
+            //combatOperator.Fasten();
         }
 
         private void OnDisable()
         {
-            Eventbus.TeamEvents.OnTeamsSet -= SetTurnTeams;
-            
-            NetworkEventbus.RequestEvents.OnCompleteActionRequest -= CompleteActionByUser;
-            NetworkEventbus.RequestEvents.OnNewTurnRequest -= NewTurn;
-            NetworkEventbus.OnAllClientsSet -= FirstTurn;
+            UnsubscribeFromEvents();
         }
     }
 }

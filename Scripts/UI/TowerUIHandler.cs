@@ -1,45 +1,49 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 namespace GameUI
 {
-    public class TowerUIHandler : MonoBehaviour
+    [Serializable]
+    public class TowerUIData : TowerSegmentData
     {
-        public TextMeshPro heightText;
-        public TextMeshPro healthIndicator;
-
-        private void OnEnable() //TODO: tower scriptinden yönet
+        public TextMeshPro[] HeightTexts;
+        public TextMeshPro IDText;
+        public CommonData CommonData;
+    }
+    public class TowerUIHandler : ITowerSegment
+    {
+        private TowerUIData Data;
+        public TowerUIHandler(TowerSegmentData data)
         {
-            UIEventbus.OnTowerHeightChange += ChangeHeightUI;
-            UIEventbus.OnHealthChange += AdjustHealthUI;
+            Data = data as TowerUIData;
+        }
+        
+        public int Id { get; set; }
+
+        public void SetId(int id)
+        {
+            Id = id;
         }
 
-        private void AdjustHealthUI(int health, GameObject towerGameObject)
+        public void Initialize()
         {
-            if (towerGameObject != gameObject) return;
-
-            healthIndicator.text = health.ToString();
+            SetIDText();
+        }
+        
+        public void ChangeHeightUI(int height)
+        {
+            //int heightInt = Mathf.FloorToInt(height / Data.CommonData.TowerHeightPerStep); //todo: later
+            foreach (var heightText in Data.HeightTexts)
+            {
+                if (heightText != null)
+                    heightText.text = height.ToString(); //heightInt.ToString();
+            }
         }
 
-        void ChangeHeightUI(float height, GameObject obj) //DoTween
+        private void SetIDText()
         {
-            if (obj != gameObject) return;
-
-            int heightInt = Mathf.RoundToInt(height);
-            heightText.text = heightInt.ToString();
+            Data.IDText.text = RomanNumberConverter.IntToRoman(Id + 1);
         }
-
-        private void OnDisable()
-        {
-            UIEventbus.OnTowerHeightChange -= ChangeHeightUI;
-            UIEventbus.OnHealthChange -= AdjustHealthUI;
-        }
-
-        // void AdjustHealthIndicatorPosition(float height)
-        // {
-        //    var pos = healthIndicator.transform.localPosition;
-        //    pos.y = height;
-        //    healthIndicator.transform.localPosition = pos;
-        // }
     }
 }

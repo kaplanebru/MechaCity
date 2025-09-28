@@ -11,14 +11,33 @@ namespace GameUI
        
         public BaseInfoText turnInfoPopupText;
         public BaseInfoText turnInfoText;
+        public BaseInfoText playerText;
+        public TurnButtonsHandler turnButtonsHandler;
         private void OnEnable()
         {
-            NetworkEventbus.OnAllClientsSet += ShowInfoText;
+            turnButtonsHandler = GetComponentInChildren<TurnButtonsHandler>();
+            NetworkEventbus.OnAllClientsSet += ShowInfoText; //todo: clients set aynı zamanda bug sebebi çünkü first turn böyle başlıyor
+           // UIEventbus.OnPlayerSet += ShowPlayerText;
+            
+            
+            NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest += ActivateTurnButtonsListener;
             DisableUIs();
         }
-    
+        private void ActivateTurnButtonsListener(bool enable)
+        {
+            if (enable)
+            {
+                turnButtonsHandler.SubscribeAndOpenButtons();
+            }
+            else
+            {
+                turnButtonsHandler.UnsubscribeAndCloseButtonHolder();
+            }
+        }
+
         void DisableUIs()
         {
+            playerText.gameObject.SetActive(false);
             turnInfoText.gameObject.SetActive(false);
             turnInfoPopupText.gameObject.SetActive(false);
         }
@@ -31,10 +50,18 @@ namespace GameUI
             turnInfoText.Setup(teamNamesByType);
             turnInfoPopupText.Setup(teamNamesByType);
         }
+        
+        private void ShowPlayerText(string name)
+        {
+           playerText.gameObject.SetActive(true);
+           playerText.SetInfoText(name);
+        }
     
         private void OnDisable()
         {
             NetworkEventbus.OnAllClientsSet -= ShowInfoText;
+            //UIEventbus.OnPlayerSet -= ShowPlayerText;
+            NetworkEventbus.UIEvents.OnTurnButtonsListenerActivationRequest -= ActivateTurnButtonsListener;
     
         }
     

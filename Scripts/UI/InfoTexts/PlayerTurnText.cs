@@ -1,21 +1,28 @@
+using Network;
+using UnityEngine;
+
 namespace GameUI
 {
     public class PlayerTurnText : BaseInfoText
     {
         protected override void SubscribeEvents()
         {
-            UIEventbus.OnTeamSwitch += UpdateInfoText;
+            UIEventbus.OnActiveTeamSet += UpdateInfoText;
         }
 
 
-        protected override void SetInfoText(string teamName)
+        public override void SetInfoText(string teamName)
         {
-            InfoText.text = "Turn: " + teamName;
+            int turnTrack = TurnTracker.GetTurnTracker() == 0 ? 1 : TurnTracker.GetTurnTracker();
+            infoText.text = null;
+            infoText.text = "Turn " + turnTrack + ": " + teamName;
+            
+            Debug.Log("Updating text to: " + "Turn " + turnTrack + ": " + teamName);
         }
 
         protected override void Unsubscribe()
         {
-            UIEventbus.OnTeamSwitch -= UpdateInfoText;
+            UIEventbus.OnActiveTeamSet -= UpdateInfoText;
         }
     }
 }

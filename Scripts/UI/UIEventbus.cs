@@ -8,15 +8,20 @@ namespace GameUI
 {
     public class UIEventbus
     {
-        public static Action<bool> OnButtonCall;
-        public static Action<float, GameObject> OnTowerHeightChange;
-        public static Action<int, GameObject> OnHealthChange;
-        public static Action<TeamType> OnTeamSwitch;
+        public static Action<bool> OnApplyPossibility;
+        public static Action<TurnStateType> OnStateShift;
+        public static Action<bool> OnHighlightRequest;
+        public static Action OnButtonClicked;
         
-        public static class TurnEvents
-        {
-            public static Action OnInitialize;
-        }
+        public static Action<int> OnTowerHeightChange;
+        
+        public static Action<TeamType> OnActiveTeamSet;
+
+        
+        public static Action<GameObject> OnTeamChange;
+        public static Action<PopupType> OnPopupTime;
+
+
     }
     
     

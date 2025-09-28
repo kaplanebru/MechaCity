@@ -1,0 +1,20 @@
+{
+    "name": "Chain.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:45ab0a2e46182f0419718266c33d0584",
+        "GUID:b18e4d249f4d12844ae2fdcd52fda70a",
+        "GUID:a21a114c0fb41cc459b8074d67a393b5"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

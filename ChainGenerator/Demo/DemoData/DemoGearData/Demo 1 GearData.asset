@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d24f08cdc525e724ca5966a1f7405f6c, type: 3}
+  m_Name: Demo 1 GearData
+  m_EditorClassIdentifier: 
+  Radius: 3
+  Volume: 4
+  HoleDepth: 2.5
+  ContactType: 0
+  RotationDirection: 1
+  HoleSize: 1.63
+  HoleId: 1
+  IsMoving: 1
+  WithoutTeeth: 0
+  TeethPoolPrefab: {fileID: 9152990021179743734, guid: d2fa283adacf1b946a845ceb80dbf498, type: 3}
+  relatedGearData: {fileID: 0}
+  toothScale: {x: 0.6, y: 1, z: 0.5}
+  ToothGap: 59
+  MinGapLimit: 6
+  Equalize: 1
+  TeethCount: 20
+  ToothUnit: 0.93860644

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fe8c36c6213cd34aadd74f5d453a03b, type: 3}
+  m_Name: PlayerColorData
+  m_EditorClassIdentifier: 
+  TeamType: 0
+  ColorDatas:
+  - DistrictType: 2
+    DefaultMaterials:
+    - {fileID: 2100000, guid: 387bc85380ace014fa7d1ce29aec1a6a, type: 2}
+    - {fileID: 2100000, guid: 358cb8df24202d4458e8812518c33c89, type: 2}
+    SelectedMaterials:
+    - {fileID: 2100000, guid: 74b69eac11c5fd841abe59ffcc4e9ff5, type: 2}
+    - {fileID: 2100000, guid: 3c107d6ddb36bde4c8cab60ad5d46802, type: 2}
+    BlueprintMaterials:
+    - {fileID: 2100000, guid: 5a5c1f93e2f375d4c8c1436db089787a, type: 2}
+    - {fileID: 2100000, guid: 5a5c1f93e2f375d4c8c1436db089787a, type: 2}
+    FreezeMaterials:
+    - {fileID: 2100000, guid: ac0fe3824c76d374bac55c991b356a91, type: 2}
+    - {fileID: 2100000, guid: ac0fe3824c76d374bac55c991b356a91, type: 2}
+  - DistrictType: 1
+    DefaultMaterials:
+    - {fileID: 2100000, guid: c506bdf6567352449b0408d65cc3c3b4, type: 2}
+    - {fileID: 2100000, guid: 4cb09656eb0473249bed5fa95480f449, type: 2}
+    SelectedMaterials: []
+    BlueprintMaterials: []
+    FreezeMaterials: []
+  - DistrictType: 0
+    DefaultMaterials:
+    - {fileID: 2100000, guid: c506bdf6567352449b0408d65cc3c3b4, type: 2}
+    - {fileID: 2100000, guid: 4cb09656eb0473249bed5fa95480f449, type: 2}
+    SelectedMaterials: []
+    BlueprintMaterials: []
+    FreezeMaterials:
+    - {fileID: 2100000, guid: ac0fe3824c76d374bac55c991b356a91, type: 2}
+    - {fileID: 2100000, guid: ac0fe3824c76d374bac55c991b356a91, type: 2}

@@ -48,9 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     TeamType: 0
-    GameEndState: 0
-    AllTowers: []
-    turnNetworkHandlerPrefab: {fileID: 8086289143307490011, guid: 9c5789954f1425140af6f45048b79766, type: 3}
+    PersonaType: 0
+  gameEndState: 0
+  turnNetworkHandlerPrefab: {fileID: 8086289143307490011, guid: 9c5789954f1425140af6f45048b79766, type: 3}
 --- !u!114 &4750990132970392541
 MonoBehaviour:
   m_ObjectHideFlags: 0
